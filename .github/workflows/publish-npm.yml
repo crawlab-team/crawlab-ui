@@ -22,7 +22,7 @@ jobs:
       - name: Initial setup
         run: |
           rm .npmrc
-          npm i -g pnpm
+          npm i -g pnpm@7
       - name: Install dependencies
         run: pnpm install
       - name: Build
