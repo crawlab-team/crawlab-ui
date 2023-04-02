@@ -39,6 +39,7 @@ const endpoint = '/env/deps/settings';
 const {
   getList,
   post,
+  put,
 } = useRequest();
 
 export default defineComponent({
@@ -56,7 +57,7 @@ export default defineComponent({
         width: '150',
         value: (row: any) => h(ClNavLink, {
           label: row.name,
-          path: `/dependencies/${row.key}`,
+          path: `/env/deps/${row.key}`,
         }),
       },
       // {
@@ -77,10 +78,24 @@ export default defineComponent({
       //   }),
       // },
       {
+        key: 'cmd',
+        label: t('views.env.deps.settings.form.cmd'),
+        icon: ['fa', 'terminal'],
+        width: '200',
+        value: (row: any) => t(row.cmd),
+      },
+      {
+        key: 'proxy',
+        label: t('views.env.deps.settings.form.proxy'),
+        icon: ['fa', 'at'],
+        width: '300',
+        value: (row: any) => t(row.proxy),
+      },
+      {
         key: 'description',
         label: t('views.env.deps.settings.form.description'),
         icon: ['fa', 'comment-alt'],
-        width: '1000',
+        width: 'auto',
         value: (row: any) => t(row.description),
       },
       {
@@ -134,10 +149,11 @@ export default defineComponent({
 
     const onDialogConfirm = async () => {
       if (!form.value._id) return;
-      await post(`${endpoint}/${form.value._id}`, form.value);
+      await put(`${endpoint}/${form.value._id}`, form.value);
       await ElMessage.success(t('common.message.success.save'));
       form.value = {};
       dialogVisible.value = false;
+      await actionFunctions.value.getList();
     };
 
     const onFormChange = (value: any) => {

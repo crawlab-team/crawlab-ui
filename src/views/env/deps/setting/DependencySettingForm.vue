@@ -10,7 +10,7 @@
       <el-input v-model="internalForm.name" disabled/>
     </cl-form-item>
     <cl-form-item :span="4" prop="description" :label="t('views.env.deps.settings.form.description')">
-      <el-input :model-value="internalForm.description" type="textarea" disabled/>
+      <el-input :model-value="internalForm.description" type="textarea"/>
     </cl-form-item>
     <cl-form-item :span="4" prop="cmd" :label="t('views.env.deps.settings.form.cmd')">
       <el-input v-model="internalForm.cmd" :placeholder="t('views.env.deps.settings.form.cmd')" @change="onChange"/>
