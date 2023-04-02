@@ -54,6 +54,7 @@ export declare global {
         delete: string;
         restart: string;
         cancel: string;
+        run: string;
         stop: string;
         install: string;
         start: string;
@@ -65,6 +66,7 @@ export declare global {
       success: {
         delete: string;
         restart: string;
+        run: string;
         copy: string;
         start: string;
         save: string;

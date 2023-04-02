@@ -41,6 +41,7 @@ const common: LCommon = {
       delete: '您是否确定删除?',
       restart: '您是否确定重新运行?',
       cancel: '您是否确定取消?',
+      run: '您是否确定运行?',
       stop: '您是否确定停止?',
       install: '您是否确定安装?',
       start: '您是否确定启动?',
@@ -52,6 +53,7 @@ const common: LCommon = {
     success: {
       delete: '删除成功',
       restart: '重新运行成功',
+      run: '运行成功',
       copy: '复制成功',
       start: '启动成功',
       save: '保存成功',

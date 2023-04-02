@@ -1,7 +1,7 @@
 import {computed, h} from 'vue';
 import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
 import {useStore} from 'vuex';
-import {ElMessage} from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
 import useList from '@/layouts/content/list/list';
 import NavLink from '@/components/nav/NavLink.vue';
 import {useRouter} from 'vue-router';
@@ -20,6 +20,7 @@ import {
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_FILTER_SELECT,
+  ACTION_RUN,
   ACTION_VIEW,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
@@ -271,6 +272,36 @@ const useScheduleList = () => {
         //     console.log('clone', row);
         //   }
         // },
+        {
+          type: 'success',
+          size: 'small',
+          icon: ['fa', 'play'],
+          tooltip: t('common.actions.run'),
+          onClick: async (row) => {
+            sendEvent('click_schedule_list_actions_run');
+
+            await ElMessageBox.confirm(
+              t('common.messageBox.confirm.run'),
+              t('common.actions.run'),
+              {
+                type: 'warning',
+                confirmButtonText: t('common.actions.confirm'),
+                cancelButtonText: t('common.actions.cancel'),
+              },
+            );
+            sendEvent('click_schedule_list_actions_run_confirm');
+            await store.dispatch('task/create', {
+              mode: row.mode,
+              priority: row.priority,
+              spider_id: row.spider_id,
+              cmd: row.cmd,
+              param: row.param
+            });
+            await ElMessage.success(t('common.message.success.run'));
+          },
+          className: 'run-btn',
+          action: ACTION_RUN,
+        },
         {
           className: 'delete-btn',
           type: 'danger',
