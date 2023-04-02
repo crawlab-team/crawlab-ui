@@ -1,31 +1,31 @@
 <template>
   <cl-form
-      :key="JSON.stringify(form)"
-      :model="form"
+    :key="JSON.stringify(form)"
+    :model="form"
   >
-    <cl-form-item :span="4" prop="key" :label="t('settings.form.key')">
+    <cl-form-item :span="4" prop="key" :label="t('views.env.deps.settings.form.key')">
       <el-input v-model="internalForm.key" disabled/>
     </cl-form-item>
-    <cl-form-item :span="4" prop="name" :label="t('settings.form.name')">
+    <cl-form-item :span="4" prop="name" :label="t('views.env.deps.settings.form.name')">
       <el-input v-model="internalForm.name" disabled/>
     </cl-form-item>
-    <cl-form-item :span="4" prop="description" :label="t('settings.form.description')">
-      <el-input :model-value="t(internalForm.description)" type="textarea" disabled/>
+    <cl-form-item :span="4" prop="description" :label="t('views.env.deps.settings.form.description')">
+      <el-input :model-value="internalForm.description" type="textarea" disabled/>
     </cl-form-item>
-    <cl-form-item :span="4" prop="cmd" :label="t('settings.form.command')">
-      <el-input v-model="internalForm.cmd" :placeholder="t('settings.form.command')" @change="onChange"/>
+    <cl-form-item :span="4" prop="cmd" :label="t('views.env.deps.settings.form.cmd')">
+      <el-input v-model="internalForm.cmd" :placeholder="t('views.env.deps.settings.form.cmd')" @change="onChange"/>
     </cl-form-item>
-    <cl-form-item :span="4" prop="proxy" :label="t('settings.form.proxy')">
-      <el-input v-model="internalForm.proxy" :placeholder="t('settings.form.proxy')" @change="onChange"/>
+    <cl-form-item :span="4" prop="proxy" :label="t('views.env.deps.settings.form.proxy')">
+      <el-input v-model="internalForm.proxy" :placeholder="t('views.env.deps.settings.form.proxy')" @change="onChange"/>
     </cl-form-item>
   </cl-form>
 </template>
 
 <script lang="ts">
 import {defineComponent, onBeforeMount, ref, watch} from 'vue';
+import {translate} from "@/utils";
 
-const pluginName = 'dependency';
-const t = (path) => window['_tp'](pluginName, path);
+const t = translate;
 
 export default defineComponent({
   name: 'DependencySettingForm',
