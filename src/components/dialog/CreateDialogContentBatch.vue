@@ -12,13 +12,13 @@
       </el-form-item>
     </el-form>
     <cl-form-table
-        :data="data"
-        :fields="fields"
-        @add="onAdd"
-        @clone="onClone"
-        @delete="onDelete"
-        @field-change="onFieldChange"
-        @field-register="onFieldRegister"
+      :data="data"
+      :fields="fields"
+      @add="onAdd"
+      @clone="onClone"
+      @delete="onDelete"
+      @field-change="onFieldChange"
+      @field-register="onFieldRegister"
     />
   </div>
 </template>

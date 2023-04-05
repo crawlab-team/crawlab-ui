@@ -144,11 +144,11 @@ const useRequest = () => {
   };
 
   const postList = async <T = any, R = ResponseWithListData, PM = any>(url: string, data?: T[], params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
-    return await put<T[], R, PM>(url, data, params, opts);
+    return await post<T[], R, PM>(url, data, params, opts);
   };
 
   const putList = async <T = any, R = Response, PM = any>(url: string, data?: BatchRequestPayloadWithJsonStringData, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
-    return await post<BatchRequestPayloadWithJsonStringData, R, PM>(url, data, params, opts);
+    return await put<BatchRequestPayloadWithJsonStringData, R, PM>(url, data, params, opts);
   };
 
   const delList = async <T = any, R = Response, PM = any>(url: string, data?: BatchRequestPayload, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {

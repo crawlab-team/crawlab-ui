@@ -173,6 +173,7 @@ export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, se
         case 'create':
           if (isBatchForm.value) {
             const changedFormList = formList.value.filter(d => !isEmptyForm(d));
+            console.debug(isBatchForm.value, activeDialogKey.value);
             res = await createList(changedFormList);
           } else {
             res = await create(form.value);
