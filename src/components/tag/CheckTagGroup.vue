@@ -1,5 +1,6 @@
 <template>
   <div class="check-tag-group">
+    {{ checkedMap }}
     <cl-check-tag
       v-for="op in options"
       :key="{v: op.value, c: checkedMap[op.value]}"
@@ -15,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, reactive, watch} from 'vue';
+import {computed, defineComponent, onBeforeMount, PropType, reactive, watch} from 'vue';
 
 export default defineComponent({
   name: 'CheckTagGroup',
@@ -56,13 +57,16 @@ export default defineComponent({
       emit('change', checkedKeys.value);
     };
 
-    watch(() => props.modelValue, () => {
+    const updateCheckedMap = () => {
       if (props.modelValue) {
         props.modelValue.forEach(key => {
           checkedMap[key] = true;
         });
       }
-    });
+    };
+
+    onBeforeMount(updateCheckedMap);
+    watch(() => props.modelValue, updateCheckedMap);
 
     return {
       checkedMap,

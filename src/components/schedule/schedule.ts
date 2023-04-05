@@ -13,6 +13,7 @@ import {parseExpression} from 'cron-parser';
 import {getModeOptions} from '@/utils/task';
 import useSpider from '@/components/spider/spider';
 import {translate} from '@/utils/i18n';
+import useScheduleDetail from "@/views/schedule/detail/useScheduleDetail";
 
 // i18n
 const t = translate;
@@ -20,7 +21,7 @@ const t = translate;
 // form component data
 const formComponentData = getDefaultFormComponentData<Schedule>();
 
-const useSchedule = (store: Store<RootStoreState>) => {
+const schedule = (store: Store<RootStoreState>) => {
   // store
   const ns = 'schedule';
   const state = store.state[ns];
@@ -124,7 +125,12 @@ const useSchedule = (store: Store<RootStoreState>) => {
     };
   }));
 
+  const {
+    activeId,
+  } = useScheduleDetail();
+
   watch(() => form.value?.spider_id, () => {
+    if (activeId.value) return;
     if (!form.value?.spider_id) return;
     const spider = allSpiderDict.value.get(form.value?.spider_id);
     if (!spider) return;
@@ -146,4 +152,4 @@ const useSchedule = (store: Store<RootStoreState>) => {
   };
 };
 
-export default useSchedule;
+export default schedule;

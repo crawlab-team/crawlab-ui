@@ -19,7 +19,7 @@ import useSpider from '@/components/spider/spider';
 import useTask from '@/components/task/task';
 import {translate} from '@/utils/i18n';
 import {sendEvent} from '@/admin/umeng';
-import useSchedule from '@/components/schedule/schedule';
+import schedule from '@/components/schedule/schedule';
 import TaskCommand from '@/components/task/TaskCommand.vue';
 import {
   ACTION_ADD,
@@ -174,7 +174,7 @@ const useTaskList = () => {
 
   const {
     allListSelectOptions: allScheduleListSelectOptions,
-  } = useSchedule(store);
+  } = schedule(store);
 
   // table columns
   const tableColumns = computed<TableColumns<Task>>(() => [
