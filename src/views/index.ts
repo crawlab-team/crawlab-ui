@@ -1,4 +1,7 @@
 import ResultList from './data/list/ResultList.vue';
+import DataSourceDetail from './ds/detail/DataSourceDetail.vue';
+import DataSourceDetailTabOverview from './ds/detail/tabs/DataSourceDetailTabOverview.vue';
+import DataSourceList from './ds/list/DataSourceList.vue';
 import InstallForm from './env/deps/components/form/InstallForm.vue';
 import UninstallForm from './env/deps/components/form/UninstallForm.vue';
 import DependencyLang from './env/deps/components/lang/DependencyLang.vue';
@@ -37,6 +40,7 @@ import ScheduleList from './schedule/list/ScheduleList.vue';
 import SpiderDetail from './spider/detail/SpiderDetail.vue';
 import SpiderDetailActionsCommon from './spider/detail/actions/SpiderDetailActionsCommon.vue';
 import SpiderDetailActionsData from './spider/detail/actions/SpiderDetailActionsData.vue';
+import SpiderDetailActionsDataSource from './spider/detail/actions/SpiderDetailActionsDataSource.vue';
 import SpiderDetailActionsFiles from './spider/detail/actions/SpiderDetailActionsFiles.vue';
 import SpiderDetailActionsGit from './spider/detail/actions/SpiderDetailActionsGit.vue';
 import SpiderDetailTabData from './spider/detail/tabs/SpiderDetailTabData.vue';
@@ -70,6 +74,9 @@ import UserList from './user/list/UserList.vue';
 
 export {
   ResultList as ClResultList,
+  DataSourceDetail as ClDataSourceDetail,
+  DataSourceDetailTabOverview as ClDataSourceDetailTabOverview,
+  DataSourceList as ClDataSourceList,
   InstallForm as ClInstallForm,
   UninstallForm as ClUninstallForm,
   DependencyLang as ClDependencyLang,
@@ -108,6 +115,7 @@ export {
   SpiderDetail as ClSpiderDetail,
   SpiderDetailActionsCommon as ClSpiderDetailActionsCommon,
   SpiderDetailActionsData as ClSpiderDetailActionsData,
+  SpiderDetailActionsDataSource as ClSpiderDetailActionsDataSource,
   SpiderDetailActionsFiles as ClSpiderDetailActionsFiles,
   SpiderDetailActionsGit as ClSpiderDetailActionsGit,
   SpiderDetailTabData as ClSpiderDetailTabData,

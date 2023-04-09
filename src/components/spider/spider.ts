@@ -1,7 +1,7 @@
 import {useRoute} from 'vue-router';
 import {computed} from 'vue';
 import {Store} from 'vuex';
-import useForm from '@/components/form/form';
+import useForm from '@/components/form/useForm';
 import useSpiderService from '@/services/spider/spiderService';
 import {getDefaultFormComponentData} from '@/utils/form';
 import {

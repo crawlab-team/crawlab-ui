@@ -1,6 +1,6 @@
 import {computed, readonly} from 'vue';
 import {Store} from 'vuex';
-import useForm from '@/components/form/form';
+import useForm from '@/components/form/useForm';
 import useUserService from '@/services/user/userService';
 import {getDefaultFormComponentData} from '@/utils/form';
 import {FORM_FIELD_TYPE_INPUT, FORM_FIELD_TYPE_INPUT_PASSWORD, FORM_FIELD_TYPE_SELECT,} from '@/constants/form';

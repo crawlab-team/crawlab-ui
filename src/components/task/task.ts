@@ -1,7 +1,7 @@
 import {useRoute} from 'vue-router';
 import {computed} from 'vue';
 import {Store} from 'vuex';
-import useForm from '@/components/form/form';
+import useForm from '@/components/form/useForm';
 import useTaskService from '@/services/task/taskService';
 import {getDefaultFormComponentData} from '@/utils/form';
 import {FORM_FIELD_TYPE_INPUT_WITH_BUTTON, FORM_FIELD_TYPE_SELECT} from '@/constants/form';

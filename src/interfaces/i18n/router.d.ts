@@ -7,6 +7,7 @@ export declare global {
       spiders: string;
       schedules: string;
       tasks: string;
+      ds: string;
       users: string;
       tags: string;
       tokens: string;

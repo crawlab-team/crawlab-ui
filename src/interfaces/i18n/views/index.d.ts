@@ -14,5 +14,6 @@ export declare global {
     notification: LViewsNotification;
     plugins: LViewsPlugins;
     misc: LViewsMisc;
+    ds: LViewsDataSource;
   }
 }

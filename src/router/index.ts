@@ -13,6 +13,7 @@ import env from '@/router/env';
 import notification from '@/router/notification';
 import plugin from '@/router/plugin';
 import misc from '@/router/misc';
+import ds from '@/router/ds';
 import {initRouterAuth} from '@/router/hooks/auth';
 import {initRouterStats} from '@/router/hooks/stats';
 import {ROUTER_ROOT_NAME_ROOT} from '@/constants/router';
@@ -39,6 +40,7 @@ export function getDefaultRoutes(): Array<RouteRecordRaw> {
         ...notification,
         ...plugin,
         ...misc,
+        ...ds,
       ],
     },
   ];
@@ -52,6 +54,7 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
     {path: '/spiders', title: 'router.menuItems.spiders', icon: ['fa', 'spider']},
     {path: '/schedules', title: 'router.menuItems.schedules', icon: ['fa', 'clock']},
     {path: '/tasks', title: 'router.menuItems.tasks', icon: ['fa', 'tasks']},
+    {path: '/data-sources', title: 'router.menuItems.ds', icon: ['fa', 'database']},
     {path: '/users', title: 'router.menuItems.users', icon: ['fa', 'users']},
     // {path: '/tags', title: 'router.menuItems.tags', icon: ['fa', 'tag']},
     {path: '/tokens', title: 'router.menuItems.tokens', icon: ['fa', 'key']},
@@ -66,7 +69,7 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
       ]
     },
     {path: '/notifications', title: 'router.menuItems.notification', icon: ['fa', 'envelope']},
-    {path: '/plugins', title: 'router.menuItems.plugins', icon: ['fa', 'plug']},
+    // {path: '/plugins', title: 'router.menuItems.plugins', icon: ['fa', 'plug']},
   ];
 }
 

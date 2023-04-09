@@ -19,6 +19,11 @@ import Dialog from './dialog/Dialog.vue';
 import DraggableItem from './drag/DraggableItem.vue';
 import DraggableItemContent from './drag/DraggableItemContent.vue';
 import DraggableList from './drag/DraggableList.vue';
+import CreateEditDataSourceDialog from './ds/CreateEditDataSourceDialog.vue';
+import DataSourceConnectType from './ds/DataSourceConnectType.vue';
+import DataSourceForm from './ds/DataSourceForm.vue';
+import DataSourceStatus from './ds/DataSourceStatus.vue';
+import DataSourceType from './ds/DataSourceType.vue';
 import Empty from './empty/Empty.vue';
 import ImgEmpty from './empty/ImgEmpty.vue';
 import ExportForm from './export/ExportForm.vue';
@@ -157,6 +162,11 @@ export {
   DraggableItem as ClDraggableItem,
   DraggableItemContent as ClDraggableItemContent,
   DraggableList as ClDraggableList,
+  CreateEditDataSourceDialog as ClCreateEditDataSourceDialog,
+  DataSourceConnectType as ClDataSourceConnectType,
+  DataSourceForm as ClDataSourceForm,
+  DataSourceStatus as ClDataSourceStatus,
+  DataSourceType as ClDataSourceType,
   Empty as ClEmpty,
   ImgEmpty as ClImgEmpty,
   ExportForm as ClExportForm,

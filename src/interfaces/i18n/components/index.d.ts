@@ -16,6 +16,7 @@ export declare global {
     metric: LComponentsMetric;
     export: LComponentsExport;
     result: LComponentsResult;
+    ds: LComponentsDataSource;
 
     // model-related components
     node: LComponentsNode;

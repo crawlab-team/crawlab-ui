@@ -7,7 +7,7 @@ import {
   TASK_MODE_SELECTED_NODES
 } from '@/constants/task';
 import {Store} from 'vuex';
-import useForm from '@/components/form/form';
+import useForm from '@/components/form/useForm';
 import useTagService from '@/services/tag/tagService';
 import {getDefaultFormComponentData} from '@/utils/form';
 import {FORM_FIELD_TYPE_INPUT, FORM_FIELD_TYPE_INPUT_TEXTAREA,} from '@/constants/form';

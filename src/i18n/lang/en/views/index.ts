@@ -5,6 +5,7 @@ import projects from './projects';
 import spiders from './spiders';
 import schedules from './schedules';
 import tasks from './tasks';
+import ds from './ds';
 import users from './users';
 import tags from './tags';
 import tokens from './tokens';
@@ -21,6 +22,7 @@ const views: LViews = {
   spiders,
   schedules,
   tasks,
+  ds,
   users,
   tags,
   tokens,

@@ -6,6 +6,7 @@ const router: LRouter = {
     spiders: '爬虫',
     schedules: '定时任务',
     tasks: '任务',
+    ds: '数据源',
     users: '用户',
     tags: '标签',
     tokens: '令牌',

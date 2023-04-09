@@ -1,6 +1,6 @@
 import {computed, readonly, watch} from 'vue';
 import {Store} from 'vuex';
-import useForm from '@/components/form/form';
+import useForm from '@/components/form/useForm';
 import useScheduleService from '@/services/schedule/scheduleService';
 import {getDefaultFormComponentData} from '@/utils/form';
 import {

@@ -6,6 +6,7 @@ const router: LRouter = {
     spiders: 'Spiders',
     schedules: 'Schedules',
     tasks: 'Tasks',
+    ds: 'Data Sources',
     users: 'Users',
     tags: 'Tags',
     tokens: 'Tokens',

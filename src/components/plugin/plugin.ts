@@ -1,6 +1,6 @@
 import {computed, readonly} from 'vue';
 import {Store} from 'vuex';
-import useForm from '@/components/form/form';
+import useForm from '@/components/form/useForm';
 import usePluginService from '@/services/plugin/pluginService';
 import {getDefaultFormComponentData} from '@/utils/form';
 import {getPluginBaseUrlOptions, getPluginGoproxyOptions} from '@/utils/plugin';

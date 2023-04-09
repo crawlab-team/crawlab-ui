@@ -1,7 +1,7 @@
 import {computed, readonly} from 'vue';
 import {Store} from 'vuex';
 import {isDuplicated} from '@/utils/array';
-import useForm from '@/components/form/form';
+import useForm from '@/components/form/useForm';
 import useProjectService from '@/services/project/projectService';
 import {getDefaultFormComponentData} from '@/utils/form';
 import {FORM_FIELD_TYPE_INPUT, FORM_FIELD_TYPE_INPUT_TEXTAREA, FORM_FIELD_TYPE_TAG_INPUT} from '@/constants/form';
