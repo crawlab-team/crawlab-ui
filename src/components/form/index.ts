@@ -1,2 +1,2 @@
-export * from './form';
+export * from './useForm';
 export * from './formTable';
