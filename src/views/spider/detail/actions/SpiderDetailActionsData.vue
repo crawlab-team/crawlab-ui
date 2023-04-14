@@ -1,8 +1,8 @@
 <template>
   <cl-nav-action-group class="spider-detail-actions-data">
     <cl-nav-action-fa-icon
-      :icon="['fa', 'database']"
-      :tooltip="t('components.spider.actions.data.tooltip.dataActions')"
+      :icon="['fa', 'table']"
+      :label="t('components.spider.actions.data.tooltip.dataActions')"
     />
     <cl-nav-action-item>
       <el-tooltip :content="t('components.spider.actions.data.tooltip.displayAllFields')">
@@ -65,6 +65,7 @@
           class="dedup-type"
           v-model="dedupType"
           @change="onDedupTypeChange"
+          style="margin-right: 10px"
         >
           <el-option :value="DEDUP_TYPE_IGNORE" :label="t('components.result.dedup.types.ignore')"/>
           <el-option :value="DEDUP_TYPE_OVERWRITE" :label="t('components.result.dedup.types.overwrite')"/>

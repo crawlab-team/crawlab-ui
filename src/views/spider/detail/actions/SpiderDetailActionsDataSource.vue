@@ -53,7 +53,8 @@ export default defineComponent({
 
     const dsId = ref<string>();
     const onDataSourceChange = async (value: string) => {
-      await post(`/spiders/${id.value}/data-source/${value}`);
+      await post(`/spiders/${id.value}/data-source/${value || '000000000000000000000000'}`);
+      await store.dispatch('spider/getById', id.value);
       await ElMessage.success(t('components.ds.message.success.change'));
     };
     onBeforeMount(async () => {

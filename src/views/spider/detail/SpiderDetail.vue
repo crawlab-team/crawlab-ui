@@ -5,7 +5,7 @@
       <cl-spider-detail-actions-files v-if="activeTabName === 'files'"/>
       <cl-spider-detail-actions-git v-if="activeTabName === 'git'"/>
       <cl-spider-detail-actions-data v-if="activeTabName === 'data'"/>
-      <cl-spider-detail-actions-data-source/>
+      <cl-spider-detail-actions-data-source v-if="activeTabName === 'data'"/>
       <slot name="actions-suffix"/>
     </template>
   </cl-detail-layout>
