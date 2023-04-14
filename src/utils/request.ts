@@ -16,8 +16,12 @@ export const downloadURI = (uri: string, name: string) => {
   link.click();
 };
 
-export const downloadData = (data: string, name: string) => {
-  const blob = new Blob([data], {});
+export const downloadData = (data: string, name: string, type: string) => {
+  let blobArr = [data];
+  if (type === 'json') {
+    blobArr = [JSON.stringify(data)];
+  }
+  const blob = new Blob(blobArr, {});
   const url = window.URL.createObjectURL(blob);
   downloadURI(url, name);
   window.URL.revokeObjectURL(url);

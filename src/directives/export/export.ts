@@ -91,7 +91,7 @@ const export_: Directive<HTMLElement, ExportDirective> = {
       } else {
         const n = notifications.get(exportId);
         const dataDownload = await getExportDownload(exportType.value, exportId);
-        downloadData(dataDownload, exp?.file_name as string);
+        downloadData(dataDownload, exp?.file_name as string, exp?.type);
         n?.close();
         return;
       }
