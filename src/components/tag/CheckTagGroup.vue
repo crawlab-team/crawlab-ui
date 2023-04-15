@@ -1,6 +1,5 @@
 <template>
   <div class="check-tag-group">
-    {{ checkedMap }}
     <cl-check-tag
       v-for="op in options"
       :key="{v: op.value, c: checkedMap[op.value]}"
@@ -77,7 +76,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.check-tag-group >>> .check-tag:not(:last-child) {
+.check-tag-group >>> .el-tag:not(:last-child) {
   margin-right: 10px;
 }
 </style>
