@@ -170,6 +170,7 @@ import {TASK_MODE_SELECTED_NODE_TAGS, TASK_MODE_SELECTED_NODES} from '@/constant
 import pinyin, {STYLE_NORMAL} from 'pinyin';
 import {isZeroObjectId} from '@/utils/mongo';
 import {useI18n} from 'vue-i18n';
+import useSpiderDetail from "@/views/spider/detail/useSpiderDetail";
 
 export default defineComponent({
   name: 'SpiderForm',
@@ -196,6 +197,11 @@ export default defineComponent({
       form,
     } = useSpider(store);
 
+    // use spider detail
+    const {
+      activeId,
+    } = useSpiderDetail();
+
     // whether col field of form has been changed
     const isFormColChanged = ref<boolean>(false);
 
@@ -206,6 +212,7 @@ export default defineComponent({
     watch(() => form.value?.name, () => {
       if (isFormColChanged.value) return;
       if (form.value?._id && isZeroObjectId(form.value?._id)) return;
+      if (activeId.value && form.value?.col_name) return;
       if (!form.value.name) {
         form.value.col_name = '';
       } else {
