@@ -29,7 +29,9 @@ const {
 
 const keys = ref<string[]>(dataCollectionState.form?.dedup?.keys || []);
 watch(() => dataCollectionState.form?.dedup?.keys, (val) => {
-  keys.value = val || [''];
+  if (!val?.length) {
+    keys.value = [''];
+  }
 });
 
 const dialogVisible = computed<boolean>(() => dataCollectionState.dedupFieldsDialogVisible)
