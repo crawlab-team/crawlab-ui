@@ -21,6 +21,7 @@ export declare global {
         };
       };
       notification: string;
+      environment: string;
       misc: {
         disclaimer: string;
         mySettings: string;

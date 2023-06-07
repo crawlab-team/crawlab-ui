@@ -20,6 +20,7 @@ const router: LRouter = {
       },
     },
     notification: 'Notification',
+    environment: 'Environment',
     misc: {
       disclaimer: 'Disclaimer',
       mySettings: 'My Settings',

@@ -26,6 +26,8 @@ import DataSourceStatus from './ds/DataSourceStatus.vue';
 import DataSourceType from './ds/DataSourceType.vue';
 import Empty from './empty/Empty.vue';
 import ImgEmpty from './empty/ImgEmpty.vue';
+import CreateEditEnvironmentDialog from './environment/CreateEditEnvironmentDialog.vue';
+import EnvironmentForm from './environment/EnvironmentForm.vue';
 import ExportForm from './export/ExportForm.vue';
 import FileEditor from './file/FileEditor.vue';
 import FileEditorNavMenu from './file/FileEditorNavMenu.vue';
@@ -169,6 +171,8 @@ export {
   DataSourceType as ClDataSourceType,
   Empty as ClEmpty,
   ImgEmpty as ClImgEmpty,
+  CreateEditEnvironmentDialog as ClCreateEditEnvironmentDialog,
+  EnvironmentForm as ClEnvironmentForm,
   ExportForm as ClExportForm,
   FileEditor as ClFileEditor,
   FileEditorNavMenu as ClFileEditorNavMenu,

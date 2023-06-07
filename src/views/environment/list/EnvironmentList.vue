@@ -6,11 +6,11 @@
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
-    class="data-source-list"
+    class="environment-list"
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-data-source-dialog/>
+      <cl-create-edit-environment-dialog/>
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
@@ -18,13 +18,13 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import useDataSourceList from '@/views/ds/list/useDataSourceList';
+import useEnvironmentList from '@/views/environment/list/useEnvironmentList';
 
 export default defineComponent({
-  name: 'DataSourceList',
+  name: 'EnvironmentList',
   setup() {
     return {
-      ...useDataSourceList(),
+      ...useEnvironmentList(),
     };
   }
 });

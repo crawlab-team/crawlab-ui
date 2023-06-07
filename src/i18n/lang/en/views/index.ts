@@ -11,6 +11,7 @@ import tags from './tags';
 import tokens from './tokens';
 import env from './env';
 import notification from './notification';
+import environment from './environment';
 import plugins from './plugins';
 import misc from './misc';
 
@@ -28,6 +29,7 @@ const views: LViews = {
   tokens,
   env,
   notification,
+  environment,
   plugins,
   misc,
 };

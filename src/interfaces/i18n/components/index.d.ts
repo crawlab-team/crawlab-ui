@@ -17,6 +17,7 @@ export declare global {
     export: LComponentsExport;
     result: LComponentsResult;
     ds: LComponentsDataSource;
+    environment: LComponentsEnvironment;
 
     // model-related components
     node: LComponentsNode;

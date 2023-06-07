@@ -13,6 +13,7 @@ import DependencySpiderTab from './env/deps/spider/DependencySpiderTab.vue';
 import DependencyTaskList from './env/deps/task/DependencyTaskList.vue';
 import LogsView from './env/deps/task/LogsView.vue';
 import TaskAction from './env/deps/task/TaskAction.vue';
+import EnvironmentList from './environment/list/EnvironmentList.vue';
 import Home from './home/Home.vue';
 import Login from './login/Login.vue';
 import Disclaimer from './misc/Disclaimer.vue';
@@ -88,6 +89,7 @@ export {
   DependencyTaskList as ClDependencyTaskList,
   LogsView as ClLogsView,
   TaskAction as ClTaskAction,
+  EnvironmentList as ClEnvironmentList,
   Home as ClHome,
   Login as ClLogin,
   Disclaimer as ClDisclaimer,

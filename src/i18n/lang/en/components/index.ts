@@ -23,6 +23,7 @@ import ds from './ds';
 import user from './user';
 import tag from './tag';
 import plugin from './plugin';
+import environment from './environment';
 
 const components: LComponents = {
   chart,
@@ -50,6 +51,7 @@ const components: LComponents = {
   user,
   tag,
   plugin,
+  environment,
 };
 
 export default components;

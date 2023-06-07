@@ -15,5 +15,6 @@ export declare global {
     plugins: LViewsPlugins;
     misc: LViewsMisc;
     ds: LViewsDataSource;
+    environment: LViewsEnvironments;
   }
 }

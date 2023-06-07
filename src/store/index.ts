@@ -15,6 +15,7 @@ import plugin from '@/store/modules/plugin';
 import git from '@/store/modules/git';
 import notification from '@/store/modules/notification';
 import ds from '@/store/modules/ds';
+import environment from '@/store/modules/environment';
 
 let _store: Store<RootStoreState>;
 
@@ -37,6 +38,7 @@ export const createStore = (): Store<RootStoreState> => {
       git,
       notification,
       ds,
+      environment,
     },
   });
 };
