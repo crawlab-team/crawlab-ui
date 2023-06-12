@@ -5,12 +5,14 @@ import {getStore} from '@/store';
 import {onListFilterChangeByKey, translate} from "@/utils";
 import {getRouter} from "@/router";
 import {
+  ACTION_COPY,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   FILTER_OP_CONTAINS,
   TABLE_COLUMN_NAME_ACTIONS
 } from "@/constants";
 import {useList} from "@/layouts/content";
+import {sendEvent} from "@/admin/umeng";
 
 // i18n
 const t = translate;
@@ -82,6 +84,17 @@ const useEnvironmentList = () => {
       fixed: 'right',
       width: '200',
       buttons: [
+        {
+          type: 'warning',
+          size: 'small',
+          icon: ['far', 'edit'],
+          tooltip: t('common.actions.edit'),
+          onClick: async (row: Environment) => {
+            commit(`${ns}/setForm`, row);
+            commit(`${ns}/showDialog`, 'edit');
+          },
+          action: ACTION_COPY,
+        },
         {
           type: 'danger',
           size: 'small',
