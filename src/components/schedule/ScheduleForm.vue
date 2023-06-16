@@ -74,12 +74,10 @@
       :label="t('components.schedule.form.command')"
       prop="cmd"
     >
-      <cl-input-with-button
+      <el-input
         v-locate="'cmd'"
         v-model="form.cmd"
-        :button-icon="['fa', 'edit']"
         :disabled="isFormItemDisabled('cmd')"
-        :button-label="t('common.actions.edit')"
         :placeholder="t('components.schedule.form.command')"
       />
     </cl-form-item>
@@ -88,12 +86,10 @@
       :label="t('components.schedule.form.param')"
       prop="param"
     >
-      <cl-input-with-button
+      <el-input
         v-locate="'param'"
         v-model="form.param"
-        :button-icon="['fa', 'edit']"
         :disabled="isFormItemDisabled('param')"
-        :button-label="t('common.actions.edit')"
         :placeholder="t('components.schedule.form.param')"
       />
     </cl-form-item>

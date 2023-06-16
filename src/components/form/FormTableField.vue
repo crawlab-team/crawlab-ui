@@ -38,7 +38,7 @@
           :value="op.value"
         />
       </el-select>
-      <cl-input-with-button
+      <el-input
         v-else-if="fieldType === FORM_FIELD_TYPE_INPUT_WITH_BUTTON"
         v-model="internalValue"
         :placeholder="t(placeholder)"

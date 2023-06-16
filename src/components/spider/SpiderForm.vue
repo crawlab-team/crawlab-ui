@@ -44,10 +44,8 @@
       prop="cmd"
       required
     >
-      <cl-input-with-button
+      <el-input
         v-model="form.cmd"
-        :button-icon="['fa', 'edit']"
-        :button-label="t('common.actions.edit')"
         :placeholder="t('components.spider.form.command')"
         :disabled="isFormItemDisabled('cmd')"
         id="cmd"
@@ -59,10 +57,8 @@
       :label="t('components.spider.form.param')"
       prop="param"
     >
-      <cl-input-with-button
+      <el-input
         v-model="form.param"
-        :button-icon="['fa', 'edit']"
-        :button-label="t('common.actions.edit')"
         :placeholder="t('components.spider.form.param')"
         :disabled="isFormItemDisabled('param')"
         id="cmd"
