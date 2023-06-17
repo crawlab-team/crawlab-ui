@@ -15,9 +15,8 @@
   </span>
   <el-aside :class="sidebarCollapsed ? 'collapsed' : ''" class="sidebar" width="inherit">
     <div class="logo-container">
-      <div class="logo">
+      <div v-if="!sidebarCollapsed" class="logo">
         <img class="logo-img" alt="logo-img" :src="logo"/>
-        <span class="logo-title">Crawlab</span>
         <span class="logo-sub-title">
           <div class="logo-sub-title-block">
             {{ t(systemInfo.edition || '') }}
@@ -26,6 +25,9 @@
             {{ systemInfo.version }}
           </div>
         </span>
+      </div>
+      <div v-else class="logo">
+        <img class="logo-img" alt="logo-img" :src="logoIcon"/>
       </div>
     </div>
     <div class="sidebar-menu">
@@ -52,7 +54,8 @@
 import {computed, defineComponent} from 'vue';
 import {useStore} from 'vuex';
 import {useRoute, useRouter} from 'vue-router';
-import logo from '@/assets/svg/logo';
+import logo from '@/assets/svg/logo-white.svg';
+import logoIcon from '@/assets/svg/logo-icon-white.svg';
 import {getPrimaryPath} from '@/utils/path';
 import {useI18n} from 'vue-i18n';
 import urljoin from 'url-join';
@@ -139,6 +142,7 @@ export default defineComponent({
       toggleIcon,
       menuItems,
       logo,
+      logoIcon,
       activePath,
       openedIndexes,
       onMenuItemClick,
@@ -161,6 +165,12 @@ export default defineComponent({
     .sidebar-menu {
       width: var(--cl-sidebar-width-collapsed);
     }
+
+    .logo-container {
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
   }
 
   .logo-container {
@@ -179,8 +189,7 @@ export default defineComponent({
       height: 100%;
 
       .logo-img {
-        height: 40px;
-        width: 40px;
+        height: 32px;
       }
 
       .logo-title {

@@ -11,7 +11,7 @@
     >
       <h3 class="title">
         <img :src="logo" alt="logo" class="logo-img"/>
-        <span class="logo-title">Crawlab</span>
+<!--        <span class="logo-title">Crawlab</span>-->
         <span class="logo-sub-title">
           <div class="logo-sub-title-block">
             {{ t(systemInfo.edition || '') }}
@@ -118,7 +118,7 @@
 import {computed, defineComponent, onMounted, onUnmounted, ref} from 'vue';
 import {isValidUsername} from '@/utils/validate';
 import {useRoute, useRouter} from 'vue-router';
-import logo from '@/assets/svg/logo';
+import logo from '@/assets/svg/logo-main.svg';
 import {ElMessage} from 'element-plus';
 import useRequest from '@/services/request';
 import {useStore} from 'vuex';
