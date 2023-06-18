@@ -16,6 +16,7 @@ const spider: LComponentsSpider = {
         fileEditorActions: 'File Editor Actions',
         uploadFiles: 'Upload Files',
         fileEditorSettings: 'File Editor Settings',
+        export: 'Export Files',
       }
     },
     data: {

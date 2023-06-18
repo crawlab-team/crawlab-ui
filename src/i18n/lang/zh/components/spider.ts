@@ -16,6 +16,7 @@ const spider: LComponentsSpider = {
         fileEditorActions: '文件编辑器操作',
         uploadFiles: '上传文件',
         fileEditorSettings: '文件编辑器设置',
+        export: '导出文件',
       },
     },
     data: {
