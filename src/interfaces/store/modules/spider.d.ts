@@ -58,6 +58,7 @@ declare global {
     renameFile: StoreAction<SpiderStoreState, FileRequestPayload>;
     deleteFile: StoreAction<SpiderStoreState, FileRequestPayload>;
     copyFile: StoreAction<SpiderStoreState, FileRequestPayload>;
+    exportFiles: StoreAction<SpiderStoreState, { id: string }>;
     getGit: StoreAction<SpiderStoreState, { id: string }>;
     getGitRemoteRefs: StoreAction<SpiderStoreState, { id: string }>;
     gitCheckout: StoreAction<SpiderStoreState, { id: string; branch: string }>;

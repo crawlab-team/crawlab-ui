@@ -216,6 +216,9 @@ const actions = {
   copyFile: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id, path, new_path}: FileRequestPayload) => {
     return await post(`${endpoint}/${id}/files/copy`, {path, new_path});
   },
+  exportFiles: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id}: { id: string }) => {
+    return await post(`${endpoint}/${id}/files/export`, {}, {}, {responseType: 'arraybuffer'}) as any;
+  },
   getGit: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id}: { id: string }) => {
     try {
       commit('setGitCurrentBranchLoading', true);

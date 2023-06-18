@@ -16,12 +16,13 @@ export const downloadURI = (uri: string, name: string) => {
   link.click();
 };
 
-export const downloadData = (data: string, name: string, type: string) => {
-  let blobArr = [data];
+export const downloadData = (data: string | ArrayBuffer, name: string, type: string) => {
+  let blobArr: any[] = [data];
+  let options: BlobPropertyBag = {};
   if (type === 'json') {
     blobArr = [JSON.stringify(data)];
   }
-  const blob = new Blob(blobArr, {});
+  const blob = new Blob(blobArr, options);
   const url = window.URL.createObjectURL(blob);
   downloadURI(url, name);
   window.URL.revokeObjectURL(url);

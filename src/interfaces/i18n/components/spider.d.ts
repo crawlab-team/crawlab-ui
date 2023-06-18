@@ -16,6 +16,7 @@ interface LComponentsSpider {
         fileEditorActions: string;
         uploadFiles: string;
         fileEditorSettings: string;
+        export: string;
       };
     };
     data: {
