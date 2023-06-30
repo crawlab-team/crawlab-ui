@@ -4,6 +4,15 @@
       <div class="left">
       </div>
       <div class="right">
+        <el-link
+          v-if="systemInfo.edition === 'global.edition.community'"
+          v-track="{code: 'click_header_pro'}"
+          href="https://www.crawlab.cn/prices"
+          target="_blank"
+        >
+          <font-awesome-icon class="icon" :icon="['fa', 'arrow-up']"/>
+          {{ t('global.upgrade.pro') }}
+        </el-link>
         <el-dropdown class="lang">
           <span class="el-dropdown-link item action ">
             <font-awesome-icon class="icon" :icon="['fa', 'globe']"/>
@@ -102,6 +111,7 @@ export default defineComponent({
     // store states
     const {
       layout: layoutState,
+      common: commonState,
     } = store.state as RootStoreState;
 
     // whether side is collapsed
@@ -151,6 +161,8 @@ export default defineComponent({
       router.push('/misc/my-settings');
     };
 
+    const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
+
     return {
       sidebarCollapsed,
       locale,
@@ -160,6 +172,7 @@ export default defineComponent({
       onLogout,
       onClickDisclaimer,
       onClickMySettings,
+      systemInfo,
       t,
     };
   },

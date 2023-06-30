@@ -8,5 +8,8 @@ export declare global {
     };
     title: string;
     subTitle: string;
+    upgrade: {
+      pro: string;
+    };
   }
 }
