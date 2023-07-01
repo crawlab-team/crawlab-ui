@@ -11,5 +11,7 @@ export declare global {
     upgrade: {
       pro: string;
     };
+    docs: string;
+    github: string;
   }
 }

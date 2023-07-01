@@ -10,6 +10,8 @@ const global: LGlobal = {
   upgrade: {
     pro: 'Upgrade to Pro Edition',
   },
+  docs: 'Docs',
+  github: 'GitHub',
 };
 
 export default global;

@@ -10,6 +10,8 @@ const global: LGlobal = {
   upgrade: {
     pro: '升级到专业版',
   },
+  docs: '文档',
+  github: 'GitHub',
 };
 
 export default global;
