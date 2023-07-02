@@ -5,6 +5,7 @@ export declare global {
     spider_type?: string;
     cmd?: string;
     param?: string;
+    priority?: number;
     col_id?: string;
     col_name?: string;
     data_source_id?: string;

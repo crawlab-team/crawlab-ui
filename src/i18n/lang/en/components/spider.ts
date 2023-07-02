@@ -9,6 +9,7 @@ const spider: LComponentsSpider = {
     selectedTags: 'Selected Tags',
     selectedNodes: 'Selected Nodes',
     description: 'Description',
+    priority: 'Priority',
   },
   actions: {
     files: {

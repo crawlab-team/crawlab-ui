@@ -98,6 +98,30 @@
     <!-- Row -->
     <cl-form-item
       :span="2"
+      :offset="2"
+      :label="t('components.spider.form.priority')"
+      prop="priority"
+    >
+      <el-select
+        v-model="form.priority"
+        :placeholder="t('components.spider.form.priority')"
+        :disabled="isFormItemDisabled('priority')"
+        id="priority"
+        class-name="priority"
+      >
+        <el-option
+          v-for="op in priorityOptions"
+          :key="op.value"
+          :label="op.label"
+          :value="op.value"
+        />
+      </el-select>
+    </cl-form-item>
+    <!-- ./Row -->
+
+    <!-- Row -->
+    <cl-form-item
+      :span="2"
       :label="t('components.schedule.form.defaultMode')"
       prop="mode"
     >
@@ -128,22 +152,7 @@
     <!-- ./Row -->
 
     <cl-form-item
-      v-if="form.mode === TASK_MODE_SELECTED_NODE_TAGS"
-      :span="4"
-      :label="t('components.schedule.form.selectedTags')"
-      prop="node_tags"
-      required
-    >
-      <cl-check-tag-group
-        v-locate="'node_tags'"
-        v-model="form.node_tags"
-        :disabled="isFormItemDisabled('node_tags')"
-        :options="allNodeTags"
-      />
-    </cl-form-item>
-
-    <cl-form-item
-      v-if="[TASK_MODE_SELECTED_NODES, TASK_MODE_SELECTED_NODE_TAGS].includes(form.mode)"
+      v-if="[TASK_MODE_SELECTED_NODES].includes(form.mode)"
       :span="4"
       :label="t('components.schedule.form.selectedNodes')"
       required
@@ -151,7 +160,7 @@
       <cl-check-tag-group
         v-locate="'node_ids'"
         v-model="form.node_ids"
-        :disabled="form.mode === TASK_MODE_SELECTED_NODE_TAGS && isFormItemDisabled('node_ids')"
+        :disabled="isFormItemDisabled('node_ids')"
         :options="allNodeSelectOptions"
       />
     </cl-form-item>
@@ -184,6 +193,7 @@ import useNode from '@/components/node/node';
 import {ElMessage} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import {sendEvent} from '@/admin/umeng';
+import useTask from "@/components/task/task";
 
 export default defineComponent({
   name: 'ScheduleForm',
@@ -205,6 +215,11 @@ export default defineComponent({
     const {
       allListSelectOptions: allSpiderSelectOptions,
     } = useSpider(store);
+
+    // use task
+    const {
+      priorityOptions,
+    } = useTask(store);
 
     // use schedule
     const {
@@ -231,7 +246,7 @@ export default defineComponent({
 
       allSpiderSelectOptions,
       allNodeSelectOptions,
-      allNodeTags,
+      priorityOptions,
       TASK_MODE_SELECTED_NODES,
       TASK_MODE_SELECTED_NODE_TAGS,
       onEnabledChange,

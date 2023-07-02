@@ -7,6 +7,7 @@ interface Schedule {
   cron?: string;
   cmd?: string;
   param?: string;
+  priority?: number;
   mode?: TaskMode;
   node_ids?: string[];
   node_tags?: string[];

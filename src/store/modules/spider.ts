@@ -34,6 +34,7 @@ const state = {
   newFormFn: () => {
     return {
       mode: TASK_MODE_RANDOM,
+      priority: 5,
     };
   },
   tabs: [

@@ -9,6 +9,7 @@ interface LComponentsSpider {
     selectedTags: string;
     selectedNodes: string;
     description: string;
+    priority: string;
   };
   actions: {
     files: {

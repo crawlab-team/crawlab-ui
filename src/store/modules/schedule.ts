@@ -22,6 +22,7 @@ const state = {
     return {
       enabled: true,
       mode: TASK_MODE_RANDOM,
+      priority: 5,
     };
   },
   tabs: [

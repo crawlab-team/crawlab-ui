@@ -146,10 +146,10 @@ export default defineComponent({
     // get run options
     const getOptions = (): SpiderRunOptions => {
       return {
-        mode: TASK_MODE_RANDOM,
+        mode: spider.value.mode || TASK_MODE_RANDOM,
         cmd: spider.value.cmd,
         param: spider.value.param,
-        priority: 5,
+        priority: spider.value.priority || 5,
       };
     };
 
