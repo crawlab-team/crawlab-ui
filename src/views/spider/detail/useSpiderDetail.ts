@@ -1,4 +1,4 @@
-import {watch, computed, ref} from 'vue';
+import {watch, computed, ref, onBeforeMount, onMounted} from 'vue';
 import {useStore} from 'vuex';
 import useSpiderService from '@/services/spider/spiderService';
 import {useRoute, useRouter} from 'vue-router';
@@ -154,6 +154,8 @@ const useSpiderDetail = () => {
       store.dispatch(`${nsDc}/getById`, val);
     }
   });
+
+  onBeforeMount(() => store.dispatch(`node/getAllList`));
 
   return {
     ...useDetail('spider'),
