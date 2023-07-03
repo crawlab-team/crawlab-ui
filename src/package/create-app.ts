@@ -14,6 +14,7 @@ import {initUmeng} from '@/admin/umeng';
 import {setGlobalLang} from '@/utils/i18n';
 import {track, locate, auth, export_} from '@/directives';
 import {initDemo} from '@/demo';
+import {initClarity} from "@/admin/clarity";
 
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
@@ -73,6 +74,9 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
       console.info('initialized umeng');
     }
   }
+
+  // clarity
+  if (options.initClarity) initClarity();
 
   // demo
   if (options.initDemo) initDemo();
