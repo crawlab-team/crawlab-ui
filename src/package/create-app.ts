@@ -22,6 +22,7 @@ export const getDefaultCreateAppOptions = (): CreateAppOptions => {
     initScripts: true,
     initBaiduTongji: true,
     initUmeng: true,
+    initClarity: true,
     initDemo: false,
     loadStore: true,
     loadRouter: true,
