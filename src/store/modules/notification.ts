@@ -83,10 +83,6 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<NotificationSetting>('/notifications/settings'),
-  getTriggersList: async ({commit}: StoreActionContext) => {
-    const res = await get('/notifications/triggers');
-    commit('setTriggersList', res.data);
-  },
 } as NotificationStoreActions;
 
 export default {

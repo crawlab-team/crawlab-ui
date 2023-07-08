@@ -18,5 +18,4 @@ interface NotificationStoreMutations extends BaseStoreMutations<NotificationSett
 }
 
 interface NotificationStoreActions extends BaseStoreActions<NotificationSetting> {
-  getTriggersList: StoreAction<NotificationStoreState>;
 }

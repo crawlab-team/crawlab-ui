@@ -33,25 +33,11 @@ interface LViewsNotification {
     };
   };
   triggers: {
-    models: {
-      tags: string;
-      nodes: string;
-      projects: string;
-      spiders: string;
-      tasks: string;
-      jobs: string;
-      schedules: string;
-      users: string;
-      settings: string;
-      tokens: string;
-      variables: string;
-      task_stats: string;
-      plugins: string;
-      spider_stats: string;
-      data_sources: string;
-      data_collections: string;
-      passwords: string;
-    };
+    taskTrigger: string;
+    taskTriggerFinish: string;
+    taskTriggerError: string;
+    taskTriggerEmptyResults: string;
+    taskTriggerNever: string;
   };
   tabs: {
     overview: string;

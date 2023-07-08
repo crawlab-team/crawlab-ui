@@ -5,7 +5,8 @@ import NavLink from '@/components/nav/NavLink.vue';
 import {useRouter} from 'vue-router';
 import {translate} from '@/utils/i18n';
 import {
-  ACTION_ADD, ACTION_DELETE,
+  ACTION_ADD,
+  ACTION_DELETE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   FILTER_OP_CONTAINS
@@ -45,8 +46,8 @@ const useNotificationList = () => {
           id: 'add-btn',
           className: 'add-btn',
           buttonType: 'label',
-          label: t('views.projects.navActions.new.label'),
-          tooltip: t('views.projects.navActions.new.tooltip'),
+          label: t('views.notification.navActions.new.label'),
+          tooltip: t('views.notification.navActions.new.tooltip'),
           icon: ['fa', 'plus'],
           type: 'success',
           onClick: () => {
@@ -63,7 +64,7 @@ const useNotificationList = () => {
           action: ACTION_FILTER_SEARCH,
           id: 'filter-search',
           className: 'search',
-          placeholder: t('views.projects.navActions.filter.search.placeholder'),
+          placeholder: t('views.notification.navActions.filter.search.placeholder'),
           onChange: onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS),
         },
       ]

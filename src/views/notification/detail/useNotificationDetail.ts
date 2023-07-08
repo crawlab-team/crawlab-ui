@@ -1,4 +1,4 @@
-import {computed, onBeforeMount} from 'vue';
+import {computed, onBeforeMount, ref} from 'vue';
 import useDetail from '@/layouts/content/detail/useDetail';
 import useNotification from '@/components/notification/notification';
 import {useStore} from 'vuex';
@@ -19,11 +19,6 @@ const useNotificationDetail = () => {
     form,
   } = useNotification(store);
 
-  const triggersTitles = computed(() => [
-    t('components.transfer.titles.available'),
-    t('components.transfer.titles.enabled'),
-  ]);
-
   const triggersList = computed<DataItem[]>(() => state.triggersList?.map((trigger: string) => {
     return {
       label: trigger,
@@ -31,26 +26,14 @@ const useNotificationDetail = () => {
     } as DataItem;
   }) || []);
 
-  const triggersEnabled = computed<string[]>(() => {
-    const {triggers} = form.value;
-    return triggers || [];
-  });
-
-  const onTriggersChange = (triggers: string[]) => {
-    store.commit(`${ns}/setTriggersEnabled`, triggers);
-  };
-
   onBeforeMount(async () => {
-    await store.dispatch(`${ns}/getTriggersList`);
     await store.dispatch(`${ns}/getById`, id.value);
   });
 
   return {
     ...useDetail('notification'),
-    triggersTitles,
+    form,
     triggersList,
-    triggersEnabled,
-    onTriggersChange,
   };
 };
 

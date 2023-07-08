@@ -3,13 +3,15 @@
     <cl-simple-layout padding="0">
       <cl-nav-actions ref="navActions" class="nav-actions">
         <cl-nav-action-group>
-          <cl-nav-action-button
-            :icon="['fa', 'save']"
-            button-type="label"
-            :label="t('components.nav.actions.save')"
-            type="success"
-            @click="onSave"
-          />
+          <cl-nav-action-item>
+            <cl-nav-action-button
+              :icon="['fa', 'save']"
+              button-type="label"
+              :label="t('components.nav.actions.save')"
+              type="success"
+              @click="onSave"
+            />
+          </cl-nav-action-item>
         </cl-nav-action-group>
       </cl-nav-actions>
       <cl-form
@@ -107,7 +109,7 @@ export default defineComponent({
     const onChangePassword = () => onChangePasswordFunc(form.value._id);
 
     const onSave = async () => {
-      await store.dispatch(`${ns}/postMe`, form.value);
+      await store.dispatch(`${ns}/putMe`, form.value);
       await ElMessage.success(t('common.message.success.save'));
       await store.dispatch(`${ns}/getMe`);
     };

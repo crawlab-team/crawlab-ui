@@ -16,5 +16,5 @@ interface UserStoreMutations extends BaseStoreMutations<User> {
 interface UserStoreActions extends BaseStoreActions<User> {
   changePassword: StoreAction<UserStoreState, { id: string; password: string }>;
   getMe: StoreAction<UserStoreState>;
-  postMe: StoreAction<UserStoreState, User>;
+  putMe: StoreAction<UserStoreState, User>;
 }

@@ -1,6 +1,7 @@
 import {plainClone} from '@/utils/object';
 import {normalizeTree} from '@/utils/tree';
 import {getDefaultMenuItems} from '@/router';
+import {computed} from "vue";
 
 export default {
   namespaced: true,
@@ -43,9 +44,16 @@ export default {
       if (activeTabId === undefined) return;
       return tabs.find(d => d.id === activeTabId);
     },
-    sidebarMenuItems: state => {
+    sidebarMenuItems: (state, getters, rootState) => {
       return state.menuItems
         .filter(d => !d.hidden)
+        .filter(d => {
+          if (!d.path) return false;
+          if (['/notifications'].includes(d.path) && rootState.common.systemInfo?.edition !== 'global.edition.pro') {
+            return false;
+          }
+          return true;
+        })
         .filter(d => {
           if (!state.navVisibleFn) return true;
           if (!d.path) return true;

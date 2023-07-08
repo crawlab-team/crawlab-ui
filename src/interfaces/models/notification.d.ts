@@ -7,8 +7,7 @@ export declare global {
     global?: boolean;
     title?: string;
     template?: string;
-    triggers?: string[];
-    targets?: NotificationSettingTarget[];
+    task_trigger?: string;
     mail?: NotificationSettingMail;
     mobile?: NotificationSettingMobile;
   }
@@ -26,14 +25,5 @@ export declare global {
 
   interface NotificationSettingMobile {
     webhook?: string;
-  }
-
-  interface NotificationSettingTarget extends BaseModel {
-    model?: string;
-  }
-
-  interface NotificationSettingTrigger {
-    name?: string;
-    event?: string;
   }
 }

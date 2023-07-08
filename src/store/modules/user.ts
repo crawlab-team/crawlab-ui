@@ -11,6 +11,7 @@ import {LOCAL_STORAGE_KEY_ME} from '@/constants/localStorage';
 const {
   get,
   post,
+  put,
 } = useRequest();
 
 const state = {
@@ -59,8 +60,8 @@ const actions = {
     const res = await get(`/users/me`);
     commit('setMe', res.data);
   },
-  postMe: async (ctx: StoreActionContext, me: User) => {
-    await post(`/users/me`, me);
+  putMe: async (ctx: StoreActionContext, me: User) => {
+    await put(`/users/me`, me);
   },
 } as UserStoreActions;
 
