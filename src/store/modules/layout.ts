@@ -49,7 +49,10 @@ export default {
         .filter(d => !d.hidden)
         .filter(d => {
           if (!d.path) return false;
-          if (['/notifications'].includes(d.path) && rootState.common.systemInfo?.edition !== 'global.edition.pro') {
+          if ([
+            '/notifications',
+            '/environments',
+          ].includes(d.path) && rootState.common.systemInfo?.edition !== 'global.edition.pro') {
             return false;
           }
           return true;
