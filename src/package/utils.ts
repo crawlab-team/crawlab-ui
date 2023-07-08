@@ -8,7 +8,6 @@ export const mapElements = (elements: any) => {
 
 export const importStylesheets = () => {
   import('normalize.css/normalize.css');
-  import('font-awesome/css/font-awesome.min.css');
   import('element-plus/theme-chalk/index.css');
   import('codemirror/lib/codemirror.css');
   import('@/styles/index.scss');

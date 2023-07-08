@@ -31,3 +31,5 @@ lib/
 **/package-lock.json
 typings
 dist_local/
+
+stats.html
