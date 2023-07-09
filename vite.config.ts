@@ -2,6 +2,7 @@ import {resolve} from 'path';
 import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
+import externalGlobals from 'rollup-plugin-external-globals';
 import {visualizer} from 'rollup-plugin-visualizer';
 
 export default defineConfig({
@@ -17,7 +18,7 @@ export default defineConfig({
       external: [
         'vue',
         'vue-router',
-        // 'vue-i18n',
+        'vue-i18n',
         'vuex',
         'axios',
         'element-plus',
@@ -57,6 +58,7 @@ export default defineConfig({
     },
   },
   resolve: {
+    dedupe: ['vue'],
     alias: [
       {find: '@', replacement: resolve(__dirname, 'src')},
     ],
@@ -73,7 +75,7 @@ export default defineConfig({
   plugins: [
     vue(),
     dynamicImport(),
-    // visualizer({open: true}),
+    visualizer({open: true}),
   ],
   server: {
     cors: true,

@@ -4,7 +4,7 @@ import {isDuplicated} from '@/utils/array';
 import useForm from '@/components/form/useForm';
 import useProjectService from '@/services/project/projectService';
 import {getDefaultFormComponentData} from '@/utils/form';
-import {FORM_FIELD_TYPE_INPUT, FORM_FIELD_TYPE_INPUT_TEXTAREA, FORM_FIELD_TYPE_TAG_INPUT} from '@/constants/form';
+import {FORM_FIELD_TYPE_INPUT, FORM_FIELD_TYPE_INPUT_TEXTAREA} from '@/constants/form';
 import {translate} from '@/utils/i18n';
 
 // form component data
@@ -28,13 +28,13 @@ const useProject = (store: Store<RootStoreState>) => {
       placeholder: t('components.project.form.name'),
       required: true,
     },
-    {
-      prop: 'tags',
-      label: t('components.project.form.tags'),
-      width: '200',
-      placeholder: t('components.project.form.tags'),
-      fieldType: FORM_FIELD_TYPE_TAG_INPUT,
-    },
+    // {
+    //   prop: 'tags',
+    //   label: t('components.project.form.tags'),
+    //   width: '200',
+    //   placeholder: t('components.project.form.tags'),
+    //   fieldType: FORM_FIELD_TYPE_TAG_INPUT,
+    // },
     {
       prop: 'description',
       label: t('components.project.form.description'),
