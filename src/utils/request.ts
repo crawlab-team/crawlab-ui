@@ -21,6 +21,10 @@ export const downloadData = (data: string | ArrayBuffer, name: string, type: str
   let options: BlobPropertyBag = {};
   if (type === 'json') {
     blobArr = [JSON.stringify(data)];
+  } else if (type === 'csv') {
+    const read = new Uint8Array([0xEF, 0xBB, 0xBF]);
+    blobArr = [read, data];
+    options = {type: 'text/csv;charset=utf-8'};
   }
   const blob = new Blob(blobArr, options);
   const url = window.URL.createObjectURL(blob);
