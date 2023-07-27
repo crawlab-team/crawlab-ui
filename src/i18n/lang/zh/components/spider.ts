@@ -10,6 +10,7 @@ const spider: LComponentsSpider = {
     selectedNodes: '指定节点',
     description: '描述',
     priority: '优先级',
+    incrementalSync: '增量同步文件',
   },
   actions: {
     files: {

@@ -70,7 +70,6 @@
     <!-- Row -->
     <cl-form-item
       :span="2"
-      :offset="2"
       :label="t('components.spider.form.priority')"
       prop="priority"
     >
@@ -88,6 +87,15 @@
           :value="op.value"
         />
       </el-select>
+    </cl-form-item>
+    <cl-form-item
+      :span="2"
+      :label="t('components.spider.form.incrementalSync')"
+      prop="incremental_sync"
+    >
+      <cl-switch
+        v-model="form.incremental_sync"
+      />
     </cl-form-item>
     <!-- ./Row -->
 

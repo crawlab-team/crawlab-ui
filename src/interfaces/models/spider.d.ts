@@ -19,6 +19,7 @@ export declare global {
     create_ts?: string;
     last_task?: Task;
     stat?: SpiderStat;
+    incremental_sync?: boolean;
   }
 
   interface SpiderStat {

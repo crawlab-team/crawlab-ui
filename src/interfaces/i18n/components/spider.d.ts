@@ -10,6 +10,7 @@ interface LComponentsSpider {
     selectedNodes: string;
     description: string;
     priority: string;
+    incrementalSync: string;
   };
   actions: {
     files: {
