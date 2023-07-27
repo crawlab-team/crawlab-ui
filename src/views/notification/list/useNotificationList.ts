@@ -13,6 +13,11 @@ import {
 } from '@/constants';
 import {onListFilterChangeByKey} from '@/utils';
 import Switch from '@/components/switch/Switch.vue';
+import useRequest from "@/services/request";
+
+const {
+  post,
+} = useRequest();
 
 const useNotificationList = () => {
   // router
@@ -98,12 +103,12 @@ const useNotificationList = () => {
       value: (row: NotificationSetting) => h(Switch, {
         modelValue: row.enabled,
         onChange: async (value) => {
-          // if (!row._id) return;
-          // if (value.enabled) {
-          //   await post(`${endpoint}/${row._id}/disable`);
-          // } else {
-          //   await post(`${endpoint}/${row._id}/enable`);
-          // }
+          if (!row._id) return;
+          if (!value) {
+            await post(`/notifications/settings/${row._id}/disable`);
+          } else {
+            await post(`/notifications/settings/${row._id}/enable`);
+          }
         },
       }),
     },
