@@ -45,7 +45,9 @@ export default defineComponent({
         placeholder: t('views.notification.settings.form.templateContent'),
       });
       simpleMDE.value.codemirror.on('change', () => {
-        store.commit(`${ns}/setTemplateContent`, simpleMDE.value.value());
+        if (simpleMDE.value.value() !== form.value.template) {
+          store.commit(`${ns}/setTemplateContent`, simpleMDE.value.value());
+        }
       });
 
       const {title} = form.value;
@@ -63,7 +65,9 @@ export default defineComponent({
 
     watch(() => form.value.template, (template) => {
       if (simpleMDE.value) {
-        simpleMDE.value.value(template);
+        if (simpleMDE.value.value() !== template) {
+          simpleMDE.value.value(template);
+        }
       }
     });
 
