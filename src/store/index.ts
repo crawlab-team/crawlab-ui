@@ -16,6 +16,7 @@ import git from '@/store/modules/git';
 import notification from '@/store/modules/notification';
 import ds from '@/store/modules/ds';
 import environment from '@/store/modules/environment';
+import system from '@/store/modules/system';
 
 let _store: Store<RootStoreState>;
 
@@ -39,6 +40,7 @@ export const createStore = (): Store<RootStoreState> => {
       notification,
       ds,
       environment,
+      system,
     },
   });
 };

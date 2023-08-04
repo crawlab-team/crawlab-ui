@@ -12,6 +12,7 @@ import tokens from './tokens';
 import env from './env';
 import notification from './notification';
 import environment from './environment';
+import system from './system';
 import plugins from './plugins';
 import misc from './misc';
 
@@ -31,6 +32,7 @@ const views: LViews = {
   notification,
   environment,
   plugins,
+  system,
   misc,
 };
 export default views;

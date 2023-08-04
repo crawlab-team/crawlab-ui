@@ -14,22 +14,38 @@
     <font-awesome-icon v-else :icon="['fas', 'indent']"/>
   </span>
   <el-aside :class="sidebarCollapsed ? 'collapsed' : ''" class="sidebar" width="inherit">
+    <!-- Logo -->
     <div class="logo-container">
       <div v-if="!sidebarCollapsed" class="logo">
-        <img class="logo-img" alt="logo-img" :src="logo"/>
-        <span class="logo-sub-title">
-          <div class="logo-sub-title-block">
-            {{ t(systemInfo.edition || '') }}
-          </div>
-          <div class="logo-sub-title-block">
-            {{ systemInfo.version }}
-          </div>
-        </span>
+        <div
+          v-if="!siteTitle.value?.customize_site_title || !siteTitle.value?.site_title"
+          class="logo"
+        >
+          <img class="logo-img" alt="logo-img" :src="logo"/>
+          <span class="logo-sub-title">
+            <div class="logo-sub-title-block">
+              {{ t(systemInfo.edition || '') }}
+            </div>
+            <div class="logo-sub-title-block">
+              {{ systemInfo.version }}
+            </div>
+          </span>
+        </div>
+        <div v-else class="logo-title">
+          {{ siteTitle.value?.site_title }}
+        </div>
       </div>
       <div v-else class="logo">
-        <img class="logo-img" alt="logo-img" :src="logoIcon"/>
+        <img
+          class="logo-img"
+          alt="logo-img"
+          :src="logoIcon"
+        />
       </div>
     </div>
+    <!-- ./Logo -->
+
+    <!-- Sidebar Menu -->
     <div class="sidebar-menu">
       <el-menu
         :collapse="sidebarCollapsed"
@@ -46,6 +62,7 @@
         <div class="plugin-anchor"/>
       </el-menu>
     </div>
+    <!-- ./Sidebar Menu -->
   </el-aside>
   <div class="script-anchor"/>
 </template>
@@ -74,6 +91,7 @@ export default defineComponent({
     const {
       common: commonState,
       layout: layoutState,
+      system: systemState,
     } = store.state as RootStoreState;
 
     const storeNamespace = 'layout';
@@ -137,6 +155,8 @@ export default defineComponent({
 
     const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
+    const siteTitle = computed<Setting>(() => systemState.siteTitle);
+
     return {
       sidebarCollapsed,
       toggleIcon,
@@ -148,6 +168,7 @@ export default defineComponent({
       onMenuItemClick,
       toggleSidebar,
       systemInfo,
+      siteTitle,
       t,
     };
   },
@@ -194,7 +215,7 @@ export default defineComponent({
 
       .logo-title {
         font-family: BlinkMacSystemFont, -apple-system, segoe ui, roboto, oxygen, ubuntu, cantarell, fira sans, droid sans, helvetica neue, helvetica, arial, sans-serif;
-        font-size: 28px;
+        font-size: 20px;
         font-weight: 600;
         margin-left: 12px;
         color: #ffffff;

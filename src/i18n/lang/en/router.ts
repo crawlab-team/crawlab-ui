@@ -21,6 +21,7 @@ const router: LRouter = {
     },
     notification: 'Notification',
     environment: 'Environment',
+    system: 'System Settings',
     misc: {
       disclaimer: 'Disclaimer',
       mySettings: 'My Settings',

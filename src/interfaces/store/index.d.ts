@@ -19,6 +19,7 @@ export declare global {
     notification: NotificationStoreState;
     ds: DataSourceStoreState;
     environment: EnvironmentStoreState;
+    system: SystemStoreState;
   }
 
   type StoreGetter<S, T, R = RootStoreState> = (state: S, getters: GetterTree<S, R>, rootState: R, rootGetters: any) => T;

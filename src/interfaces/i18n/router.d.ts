@@ -22,6 +22,7 @@ export declare global {
       };
       notification: string;
       environment: string;
+      system: string;
       misc: {
         disclaimer: string;
         mySettings: string;

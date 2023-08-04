@@ -16,5 +16,6 @@ export declare global {
     misc: LViewsMisc;
     ds: LViewsDataSource;
     environment: LViewsEnvironments;
+    system: LViewsSystem;
   }
 }

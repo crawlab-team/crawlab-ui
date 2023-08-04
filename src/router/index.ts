@@ -12,9 +12,10 @@ import token from '@/router/token';
 import env from '@/router/env';
 import notification from '@/router/notification';
 import plugin from '@/router/plugin';
-import misc from '@/router/misc';
 import ds from '@/router/ds';
 import environment from '@/router/environment';
+import system from '@/router/system';
+import misc from '@/router/misc';
 import {initRouterAuth} from '@/router/hooks/auth';
 import {initRouterStats} from '@/router/hooks/stats';
 import {ROUTER_ROOT_NAME_ROOT} from '@/constants/router';
@@ -43,6 +44,7 @@ export function getDefaultRoutes(): Array<RouteRecordRaw> {
         ...misc,
         ...ds,
         ...environment,
+        ...system,
       ],
     },
   ];
@@ -72,7 +74,7 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
     },
     {path: '/notifications', title: 'router.menuItems.notification', icon: ['fa', 'envelope']},
     {path: '/environments', title: 'router.menuItems.environment', icon: ['fa', 'percent']},
-    // {path: '/plugins', title: 'router.menuItems.plugins', icon: ['fa', 'plug']},
+    {path: '/system', title: 'router.menuItems.system', icon: ['fa', 'cogs']},
   ];
 }
 

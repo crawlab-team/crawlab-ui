@@ -21,6 +21,7 @@ const router: LRouter = {
     },
     notification: '消息通知',
     environment: '环境变量',
+    system: '系统设置',
     misc: {
       disclaimer: '免责声明',
       mySettings: '我的设置',
