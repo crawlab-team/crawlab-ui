@@ -10,7 +10,7 @@ const spider: LComponentsSpider = {
     selectedNodes: 'Selected Nodes',
     description: 'Description',
     priority: 'Priority',
-    incrementalSync: 'Incrementally Sync Files',
+    incrementalSync: 'Incremental Sync',
   },
   actions: {
     files: {
