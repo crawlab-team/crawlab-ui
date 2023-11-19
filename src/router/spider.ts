@@ -55,7 +55,7 @@ export default [
       },
       {
         path: TAB_NAME_DEPENDENCIES,
-        component: () => import('@/views/env/deps/spider/DependencySpiderTab.vue'),
+        component: () => import('@/views/deps/spider/DependencySpiderTab.vue'),
       },
     ]
   },

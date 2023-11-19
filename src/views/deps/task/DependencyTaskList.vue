@@ -24,7 +24,7 @@ import {computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch} fr
 import {useStore} from 'vuex';
 import {translate} from '@/utils';
 import useRequest from '@/services/request';
-import TaskAction from '@/views/env/deps/task/TaskAction.vue';
+import TaskAction from '@/views/deps/task/TaskAction.vue';
 import NodeType from '@/components/node/NodeType.vue';
 import TaskStatus from '@/components/task/TaskStatus.vue';
 import Tag from '@/components/tag/Tag.vue';

@@ -13,16 +13,16 @@ export default [
   {
     name: 'EnvDepsSettings',
     path: `${endpoint}/deps/settings`,
-    component: () => import('@/views/env/deps/setting/DependencySettings.vue'),
+    component: () => import('@/views/deps/setting/DependencySettings.vue'),
   },
   {
     name: 'EnvDepsPython',
     path: `${endpoint}/deps/python`,
-    component: () => import('@/views/env/deps/python/DependencyPython.vue'),
+    component: () => import('@/views/deps/python/DependencyPython.vue'),
   },
   {
     name: 'EnvDepsNode',
     path: `${endpoint}/deps/node`,
-    component: () => import('@/views/env/deps/node/DependencyNode.vue'),
+    component: () => import('@/views/deps/node/DependencyNode.vue'),
   }
 ] as Array<RouteRecordRaw>;
