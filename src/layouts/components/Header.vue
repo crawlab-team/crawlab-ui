@@ -5,6 +5,7 @@
       </div>
       <div class="right">
         <iframe
+          v-if="systemInfo.edition === 'global.edition.community'"
           class="item"
           src="https://ghbtns.com/github-btn.html?user=crawlab-team&repo=crawlab&type=star&count=true"
           frameborder="0"
