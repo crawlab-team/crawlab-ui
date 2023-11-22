@@ -24,17 +24,20 @@
           <el-option value="selected-nodes" :label="t('views.env.deps.dependency.form.selectedNodes')"/>
         </el-select>
       </cl-form-item>
-      <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.version')">
-        <el-select v-model="version">
-        </el-select>
-      </cl-form-item>
-      <cl-form-item :label="t('views.env.deps.dependency.form.upgrade')">
-        <cl-switch v-model="upgrade"/>
-      </cl-form-item>
       <cl-form-item v-if="mode === 'selected-nodes'" :span="4"
                     :label="t('views.env.deps.dependency.form.selectedNodes')">
         <el-select v-model="nodeIds" multiple :placeholder="t('views.env.deps.dependency.form.selectedNodes')">
           <el-option v-for="n in nodes" :key="n.key" :value="n._id" :label="n.name"/>
+        </el-select>
+      </cl-form-item>
+      <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.version')">
+        <el-select v-model="version" :disabled="versionsLoading" :placeholder="t('common.status.loading')">
+          <el-option
+            v-for="(v, $index) in versions"
+            :key="$index"
+            :label="v"
+            :value="v"
+          />
         </el-select>
       </cl-form-item>
     </cl-form>
@@ -42,16 +45,26 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onBeforeMount, ref} from 'vue';
+import {defineComponent, onBeforeMount, ref, watch} from 'vue';
 import {translate} from '@/utils';
+import useRequest from "@/services/request";
 
 const t = translate;
+
+const endpointL = '/deps/lang';
+
+const {
+  get,
+} = useRequest();
 
 export default defineComponent({
   name: 'InstallForm',
   props: {
     visible: {
       type: Boolean,
+    },
+    lang: {
+      type: String,
     },
     names: {
       type: Array,
@@ -73,9 +86,8 @@ export default defineComponent({
     'confirm',
     'close',
   ],
-  setup(_, {emit}) {
+  setup(props, {emit}) {
     const mode = ref('all');
-    const upgrade = ref(true);
     const nodeIds = ref([]);
     const version = ref('');
 
@@ -88,8 +100,8 @@ export default defineComponent({
     const onConfirm = () => {
       emit('confirm', {
         mode: mode.value,
-        upgrade: upgrade.value,
         nodeIds: nodeIds.value,
+        version: version.value,
       });
       reset();
     };
@@ -99,14 +111,30 @@ export default defineComponent({
       reset();
     };
 
-    onBeforeMount(async () => {
-    });
+    const versions = ref([]);
+    const versionsLoading = ref(false);
+    const getVersions = async () => {
+      if (!props.visible) return;
+      versionsLoading.value = true;
+      try {
+        const res = await get(`${endpointL}/${props.lang}/${props.names[0]}/versions`)
+        versions.value = res.data;
+        if (versions.value.length > 0) {
+          version.value = versions.value[0];
+        }
+      } finally {
+        versionsLoading.value = false;
+      }
+    };
+    watch(() => props.visible, getVersions);
+    onBeforeMount(getVersions);
 
     return {
       mode,
-      upgrade,
       nodeIds,
       version,
+      versions,
+      versionsLoading,
       onConfirm,
       onClose,
       t,

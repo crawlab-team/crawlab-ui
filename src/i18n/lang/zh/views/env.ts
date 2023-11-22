@@ -28,6 +28,7 @@ const env: LViewsEnv = {
         selectedNodes: '已选节点',
         upgrade: '是否升级',
         mode: '模式',
+        version: '版本',
       },
     },
     task: {

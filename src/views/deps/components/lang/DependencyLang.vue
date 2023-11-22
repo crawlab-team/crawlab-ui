@@ -82,6 +82,7 @@
     <template #extra>
       <cl-install-form
         :visible="dialogVisible.install"
+        :lang="lang"
         :nodes="allNodes"
         :names="installForm.names"
         @confirm="onInstall"
@@ -242,19 +243,6 @@ export default defineComponent({
       names: [],
     });
 
-    const isInstallable = (dep: EnvDepsDependency) => {
-      if (dep.upgradable) return true;
-      let node_ids = [];
-      if (installed.value) {
-        node_ids = dep.node_ids || [];
-      } else if (dep.result) {
-        node_ids = dep.result.node_ids || [];
-      } else {
-        return false;
-      }
-      return node_ids.length < allNodes.value.length;
-    };
-
     const isUninstallable = (dep: EnvDepsDependency) => {
       let node_ids = [];
       if (installed.value) {
@@ -353,8 +341,7 @@ export default defineComponent({
             {
               type: 'primary',
               icon: ['fa', 'download'],
-              tooltip: row.upgradable ? t('views.env.deps.common.actions.installAndUpgrade') : t('common.actions.install'),
-              disabled: (row) => !isInstallable(row),
+              tooltip: t('common.actions.install'),
               onClick: async (row) => {
                 installForm.value.names = [row.name];
                 dialogVisible.value.install = true;
@@ -514,10 +501,9 @@ export default defineComponent({
       uninstallForm.value.names = rows.map(d => d.name || '');
     };
 
-    const onInstall = async ({mode, upgrade, nodeIds, version}: { mode: string; upgrade: boolean; nodeIds: string[]; version: string; }) => {
+    const onInstall = async ({mode, nodeIds, version}: { mode: string; nodeIds: string[]; version: string; }) => {
       const data = {
         mode,
-        upgrade,
         names: installForm.value.names,
         node_id: [] as string[],
         version,
@@ -541,7 +527,7 @@ export default defineComponent({
         data['node_id'] = nodeIds;
       }
       await post(`${endpoint.value}/uninstall`, data);
-      await ElMessage.success(t('common.message.success.uninstall'));
+      ElMessage.success(t('common.message.success.uninstall'));
       await getRunningTaskList();
       onDialogClose('uninstall');
     };

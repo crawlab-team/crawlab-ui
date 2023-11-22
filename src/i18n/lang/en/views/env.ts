@@ -28,6 +28,7 @@ const env: LViewsEnv = {
         selectedNodes: 'Selected nodes',
         upgrade: 'Upgrade',
         mode: 'Mode',
+        version: 'Version',
       },
     },
     task: {

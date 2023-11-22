@@ -8,7 +8,6 @@ interface LViewsEnv {
         enabled: string;
         cmd: string;
         proxy: string;
-        version: string;
       };
       lang: {
         python: {
@@ -29,6 +28,7 @@ interface LViewsEnv {
         selectedNodes: string;
         upgrade: string;
         mode: string;
+        version: string;
       };
     };
     task: {
