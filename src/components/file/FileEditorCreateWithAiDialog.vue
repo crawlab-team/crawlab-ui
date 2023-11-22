@@ -6,7 +6,7 @@
       @close="onClose"
     >
       <el-form
-        label-width="180px"
+        label-width="120px"
         class="form"
         ref="formRef"
         :model="form"
@@ -38,7 +38,11 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="t('components.file.editor.createWithAi.form.prompt')" prop="prompt" required>
-          <el-input v-model="form.prompt" type="textarea" :placeholder="t('components.file.editor.createWithAi.form.prompt')"/>
+          <el-input
+            v-model="form.prompt"
+            type="textarea"
+            :placeholder="t('components.file.editor.createWithAi.form.prompt')"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -180,7 +184,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.file-editor-settings-dialog {
+.file-editor-create-with-ai-dialog {
   .nav-menu {
     .el-menu-item {
       height: 40px;
@@ -195,20 +199,24 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.file-editor-settings-dialog >>> .el-dialog .el-dialog__body {
+.file-editor-create-with-ai-dialog >>> .el-dialog .el-dialog__body {
   padding: 10px 20px;
 }
 
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__label .icon {
+.file-editor-create-with-ai-dialog >>> .el-dialog .el-dialog__body .el-form-item__label {
+  word-break: break-word;
+}
+
+.file-editor-create-with-ai-dialog >>> .el-form-item > .el-form-item__label .icon {
   cursor: pointer;
 }
 
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__content {
+.file-editor-create-with-ai-dialog >>> .el-form-item > .el-form-item__content {
   width: 240px;
 }
 
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__content .el-input,
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__content .el-select {
+.file-editor-create-with-ai-dialog >>> .el-form-item > .el-form-item__content .el-input,
+.file-editor-create-with-ai-dialog >>> .el-form-item > .el-form-item__content .el-select {
   width: 100%;
 }
 </style>
