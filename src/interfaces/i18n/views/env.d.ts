@@ -8,6 +8,7 @@ interface LViewsEnv {
         enabled: string;
         cmd: string;
         proxy: string;
+        version: string;
       };
       lang: {
         python: {

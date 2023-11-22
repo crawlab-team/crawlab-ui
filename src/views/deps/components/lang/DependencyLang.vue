@@ -514,18 +514,19 @@ export default defineComponent({
       uninstallForm.value.names = rows.map(d => d.name || '');
     };
 
-    const onInstall = async ({mode, upgrade, nodeIds}: { mode: string; upgrade: boolean; nodeIds: string[] }) => {
+    const onInstall = async ({mode, upgrade, nodeIds, version}: { mode: string; upgrade: boolean; nodeIds: string[]; version: string; }) => {
       const data = {
         mode,
         upgrade,
         names: installForm.value.names,
         node_id: [] as string[],
+        version,
       };
       if (data.mode === 'all') {
         data['node_id'] = nodeIds;
       }
       await post(`${endpoint.value}/install`, data);
-      await ElMessage.success(t('common.message.success.install'));
+      ElMessage.success(t('common.message.success.install'));
       await getRunningTaskList();
       onDialogClose('install');
     };

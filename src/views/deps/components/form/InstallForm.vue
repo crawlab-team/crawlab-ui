@@ -24,10 +24,15 @@
           <el-option value="selected-nodes" :label="t('views.env.deps.dependency.form.selectedNodes')"/>
         </el-select>
       </cl-form-item>
+      <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.version')">
+        <el-select v-model="version">
+        </el-select>
+      </cl-form-item>
       <cl-form-item :label="t('views.env.deps.dependency.form.upgrade')">
         <cl-switch v-model="upgrade"/>
       </cl-form-item>
-      <cl-form-item v-if="mode === 'selected-nodes'" :span="4" :label="t('views.env.deps.dependency.form.selectedNodes')">
+      <cl-form-item v-if="mode === 'selected-nodes'" :span="4"
+                    :label="t('views.env.deps.dependency.form.selectedNodes')">
         <el-select v-model="nodeIds" multiple :placeholder="t('views.env.deps.dependency.form.selectedNodes')">
           <el-option v-for="n in nodes" :key="n.key" :value="n._id" :label="n.name"/>
         </el-select>
@@ -37,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import {defineComponent, onBeforeMount, ref} from 'vue';
 import {translate} from '@/utils';
 
 const t = translate;
@@ -68,14 +73,16 @@ export default defineComponent({
     'confirm',
     'close',
   ],
-  setup(props, {emit}) {
+  setup(_, {emit}) {
     const mode = ref('all');
     const upgrade = ref(true);
     const nodeIds = ref([]);
+    const version = ref('');
 
     const reset = () => {
       mode.value = 'all';
       nodeIds.value = [];
+      version.value = '';
     };
 
     const onConfirm = () => {
@@ -92,10 +99,14 @@ export default defineComponent({
       reset();
     };
 
+    onBeforeMount(async () => {
+    });
+
     return {
       mode,
       upgrade,
       nodeIds,
+      version,
       onConfirm,
       onClose,
       t,
