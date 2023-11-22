@@ -49,6 +49,7 @@ export default {
     editorOptions: getDefaultEditorOptions(),
     editorSettingsDialogVisible: false,
     editorCreateWithAiDialogVisible: false,
+    editorFileNavItem: undefined,
   },
   mutations: {
     setEditorOptions: (state: FileStoreState, options: EditorConfiguration) => {
@@ -65,6 +66,12 @@ export default {
     },
     setEditorCreateWithAiDialogVisible: (state: FileStoreState, value: boolean) => {
       state.editorCreateWithAiDialogVisible = value;
+    },
+    resetEditorFileNavItem: (state: FileStoreState) => {
+      state.editorFileNavItem = undefined;
+    },
+    setEditorFileNavItem: (state: FileStoreState, value: FileNavItem) => {
+      state.editorFileNavItem = value;
     },
   },
   actions: {}

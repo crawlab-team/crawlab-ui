@@ -38,7 +38,7 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="t('components.file.editor.createWithAi.form.prompt')" prop="prompt" required>
-          <el-input v-model="form.prompt" :placeholder="t('components.file.editor.createWithAi.form.prompt')"/>
+          <el-input v-model="form.prompt" type="textarea" :placeholder="t('components.file.editor.createWithAi.form.prompt')"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -50,16 +50,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, readonly, ref} from 'vue';
+import {computed, defineComponent, ref} from 'vue';
 import {useStore} from 'vuex';
-import {plainClone} from '@/utils/object';
-import {getOptionDefinition, getThemes} from '@/utils/codemirror';
 import {onBeforeRouteLeave} from 'vue-router';
 import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
 import useRequest from "@/services/request";
-import useSpiderService from "@/services/spider/spiderService";
-import useSpiderDetail from "@/views/spider/detail/useSpiderDetail";
 import {ElMessage} from "element-plus";
 
 const {
@@ -82,13 +77,6 @@ export default defineComponent({
       const {editorCreateWithAiDialogVisible} = file;
       return editorCreateWithAiDialogVisible;
     });
-
-    const {
-      activeId,
-    } = useSpiderDetail();
-
-    // spider id
-    const id = computed<string>(() => activeId.value);
 
     const form = ref({
       fileName: '',
@@ -143,6 +131,8 @@ export default defineComponent({
       }
     });
 
+    const item = computed(() => file.editorFileNavItem);
+
     const onClose = () => {
       store.commit(`${storeNamespace}/setEditorCreateWithAiDialogVisible`, false);
     };
@@ -161,7 +151,7 @@ export default defineComponent({
         } as any);
         const sourceCode = res.data?.source_code || res.data?.output.source_code;
         store.commit(`${storeNamespace}/setEditorCreateWithAiDialogVisible`, false);
-        emit('create', form.value.fileName, sourceCode);
+        emit('create', form.value.fileName, sourceCode, item.value);
       } catch (e: any) {
         ElMessage.error(e.message)
       } finally {

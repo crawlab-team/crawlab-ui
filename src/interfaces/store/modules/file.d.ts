@@ -11,6 +11,7 @@ declare global {
     editorOptions: FileEditorConfiguration;
     editorSettingsDialogVisible: boolean;
     editorCreateWithAiDialogVisible: boolean;
+    editorFileNavItem?: FileNavItem;
   }
 
   // interface FileStoreGetters extends GetterTree<FileStoreState, RootStoreState> {
@@ -21,5 +22,7 @@ declare global {
     resetEditorOptions: StoreMutation<FileStoreState>;
     setEditorSettingsDialogVisible: StoreMutation<FileStoreState, boolean>;
     setEditorCreateWithAiDialogVisible: StoreMutation<FileStoreState, boolean>;
+    resetEditorFileNavItem: StoreMutation<FileStoreState>;
+    setEditorFileNavItem: StoreMutation<FileStoreState, FileNavItem>;
   }
 }

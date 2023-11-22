@@ -10,6 +10,7 @@
     @node-db-click="onNavItemDbClick"
     @node-drop="onNavItemDrop"
     @ctx-menu-new-file="onContextMenuNewFile"
+    @ctx-menu-new-file-with-ai="onContextMenuNewFileWithAi"
     @ctx-menu-new-directory="onContextMenuNewDirectory"
     @ctx-menu-rename="onContextMenuRename"
     @ctx-menu-clone="onContextMenuClone"
@@ -134,6 +135,12 @@ export default defineComponent({
       await openFile(path);
     };
 
+    const onContextMenuNewFileWithAi = async (item: FileNavItem) => {
+      console.debug(item);
+      store.commit('file/setEditorFileNavItem', item);
+      store.commit(`file/setEditorCreateWithAiDialogVisible`, true);
+    };
+
     const onContextMenuNewDirectory = async (item: FileNavItem, name: string) => {
       if (!item.path) return;
       const path = getPath(item, name);
@@ -173,8 +180,11 @@ export default defineComponent({
       await listRootDir(id.value);
     };
 
-    const onCreateWithAi = async (name: string, sourceCode: string) => {
-      const path = `/${name}`;
+    const onCreateWithAi = async (name: string, sourceCode: string, item?: FileNavItem) => {
+      let path = `/${name}`;
+      if (item) {
+        path = getPath(item, name);
+      }
       await saveFile(id.value, path, sourceCode);
       await listRootDir(id.value);
       await openFile(path);
@@ -215,6 +225,7 @@ export default defineComponent({
       onNavItemDbClick,
       onNavItemDrop,
       onContextMenuNewFile,
+      onContextMenuNewFileWithAi,
       onContextMenuNewDirectory,
       onContextMenuRename,
       onContextMenuClone,

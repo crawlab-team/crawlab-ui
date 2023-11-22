@@ -84,6 +84,7 @@ export default defineComponent({
     };
 
     const onOpenCreateWithAi = async () => {
+      store.commit('file/resetEditorFileNavItem');
       store.commit(`file/setEditorCreateWithAiDialogVisible`, true);
     };
 

@@ -66,6 +66,11 @@ export default defineComponent({
       background-color: var(--cl-primary-plain-color);
     }
 
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
     .title {
       white-space: nowrap;
       overflow: hidden;

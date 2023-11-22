@@ -41,6 +41,7 @@
           @delete="onNodeContextMenuDelete(data)"
           @rename="onNodeContextMenuRename(data)"
           @new-file="onNodeContextMenuNewFile(data)"
+          @new-file-with-ai="onNodeContextMenuNewFileWithAi(data)"
           @new-directory="onNodeContextMenuNewDirectory(data)"
         >
           <div
@@ -113,6 +114,7 @@ export default defineComponent({
     'node-db-click',
     'node-drop',
     'ctx-menu-new-file',
+    'ctx-menu-new-file-with-ai',
     'ctx-menu-new-directory',
     'ctx-menu-rename',
     'ctx-menu-clone',
@@ -229,6 +231,11 @@ export default defineComponent({
         }
       );
       emit('ctx-menu-new-file', item, res.value);
+    };
+
+    const onNodeContextMenuNewFileWithAi = async (item: FileNavItem) => {
+      console.debug(item);
+      emit('ctx-menu-new-file-with-ai', item);
     };
 
     const onNodeContextMenuNewDirectory = async (item: FileNavItem) => {
@@ -414,6 +421,7 @@ export default defineComponent({
       onNodeContextMenuShow,
       onNodeContextMenuHide,
       onNodeContextMenuNewFile,
+      onNodeContextMenuNewFileWithAi,
       onNodeContextMenuNewDirectory,
       onNodeContextMenuRename,
       onNodeContextMenuClone,

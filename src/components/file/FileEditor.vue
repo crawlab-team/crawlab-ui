@@ -51,6 +51,7 @@
         @node-db-click="onNavItemDbClick"
         @node-drop="onNavItemDrop"
         @ctx-menu-new-file="onContextMenuNewFile"
+        @ctx-menu-new-file-with-ai="onContextMenuNewFileWithAi"
         @ctx-menu-new-directory="onContextMenuNewDirectory"
         @ctx-menu-rename="onContextMenuRename"
         @ctx-menu-clone="onContextMenuClone"
@@ -191,6 +192,7 @@ export default defineComponent({
     'node-drop',
     'save-file',
     'ctx-menu-new-file',
+    'ctx-menu-new-file-with-ai',
     'ctx-menu-new-directory',
     'ctx-menu-rename',
     'ctx-menu-clone',
@@ -459,6 +461,11 @@ export default defineComponent({
       sendEvent('click_file_editor_nav_menu_item_context_menu_new_file');
     };
 
+    const onContextMenuNewFileWithAi = (item: FileNavItem) => {
+      console.debug(item);
+      emit('ctx-menu-new-file-with-ai', item);
+    };
+
     const onContextMenuNewDirectory = (item: FileNavItem, name: string) => {
       emit('ctx-menu-new-directory', item, name);
 
@@ -676,8 +683,8 @@ export default defineComponent({
       codeMirrorTemplateEditor.setOption('mode', 'text/x-python');
     };
 
-    const onCreateWithAi = (name: string, sourceCode: string) => {
-      emit('create-with-ai', name, sourceCode);
+    const onCreateWithAi = (name: string, sourceCode: string, item?: FileNavItem) => {
+      emit('create-with-ai', name, sourceCode, item);
     };
 
     onMounted(initEditor);
@@ -709,6 +716,7 @@ export default defineComponent({
       onNavItemDbClick,
       onNavItemDrop,
       onContextMenuNewFile,
+      onContextMenuNewFileWithAi,
       onContextMenuNewDirectory,
       onContextMenuRename,
       onContextMenuClone,

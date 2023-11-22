@@ -11,9 +11,9 @@
 
 <script lang="ts">
 import {computed, defineComponent} from 'vue';
-import ContextMenu, {contextMenuDefaultProps} from '@/components/context-menu/ContextMenu.vue';
-import ContextMenuList from '@/components/context-menu/ContextMenuList.vue';
+import {contextMenuDefaultProps} from '@/components/context-menu/ContextMenu.vue';
 import {useI18n} from 'vue-i18n';
+import {useStore} from "vuex";
 
 export default defineComponent({
   name: 'FileEditorNavMenuContextMenu',
@@ -21,13 +21,21 @@ export default defineComponent({
   emits: [
     'hide',
     'new-file',
+    'new-file-with-ai',
     'new-directory',
     'rename',
     'clone',
     'delete',
   ],
-  setup(props, {emit}) {
+  setup(_, {emit}) {
     const {t} = useI18n();
+
+    const store = useStore();
+    const {
+      common: commonState
+    } = store.state as RootStoreState;
+
+    const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
     const items = computed<ContextMenuItem[]>(() => [
       {
@@ -35,6 +43,12 @@ export default defineComponent({
         icon: ['fa', 'file-alt'],
         className: 'new-file',
         action: () => emit('new-file'),
+      },
+      {
+        title: t('components.file.editor.navMenu.newFileWithAi'),
+        icon: ['fa', 'robot'],
+        className: 'new-file-with-ai' + (systemInfo.value.edition === 'global.edition.community' ? ' disabled' : ''),
+        action: () => emit('new-file-with-ai'),
       },
       {
         title: t('components.file.editor.navMenu.newDirectory'),

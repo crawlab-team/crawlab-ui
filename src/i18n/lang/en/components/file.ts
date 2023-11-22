@@ -8,6 +8,7 @@ const file: LComponentsFile = {
     },
     navMenu: {
       newFile: 'New File',
+      newFileWithAi: 'New File with AI',
       newDirectory: 'New Directory',
       rename: 'Rename',
       duplicate: 'Duplicate',
