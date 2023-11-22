@@ -64,7 +64,7 @@ const {
   post,
 } = useRequest();
 
-const endpoint = '/env/deps';
+const endpoint = '/deps';
 
 export default defineComponent({
   name: 'DependencySpiderTab',

@@ -32,7 +32,7 @@ import Time from '@/components/time/Time.vue';
 
 const t = translate;
 
-const endpoint = '/env/deps/tasks';
+const endpoint = '/deps/tasks';
 
 const {
   getList: getList_,

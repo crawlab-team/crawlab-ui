@@ -53,6 +53,7 @@ export default {
             '/notifications',
             '/environments',
             '/system',
+            '/deps',
           ].includes(d.path) && rootState.common.systemInfo?.edition !== 'global.edition.pro') {
             return false;
           }

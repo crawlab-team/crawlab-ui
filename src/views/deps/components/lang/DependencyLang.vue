@@ -123,8 +123,8 @@ import NodeType from '@/components/node/NodeType.vue';
 
 const t = translate;
 
-const endpointS = '/env/deps/settings';
-const endpointT = '/env/deps/tasks';
+const endpointS = '/deps/settings';
+const endpointT = '/deps/tasks';
 
 const {
   get,
@@ -162,7 +162,7 @@ export default defineComponent({
     },
   },
   setup(props: DependencyLangProps) {
-    const endpoint = computed<string>(() => `/env/deps/lang/${props.lang}`);
+    const endpoint = computed<string>(() => `/deps/lang/${props.lang}`);
 
     const store = useStore();
 

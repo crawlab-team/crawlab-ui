@@ -34,7 +34,7 @@ import ClNavLink from '@/components/nav/NavLink.vue';
 
 const t = translate;
 
-const endpoint = '/env/deps/settings';
+const endpoint = '/deps/settings';
 
 const {
   getList,
@@ -57,7 +57,7 @@ export default defineComponent({
         width: '150',
         value: (row: any) => h(ClNavLink, {
           label: row.name,
-          path: `/env/deps/${row.key}`,
+          path: `/deps/${row.key}`,
         }),
       },
       // {
