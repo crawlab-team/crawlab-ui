@@ -124,7 +124,11 @@
   </div>
   <div ref="codeMirrorTemplate" class="code-mirror-template"/>
   <div ref="styleRef" v-html="extraStyle"/>
+
   <cl-file-editor-settings-dialog/>
+  <cl-file-editor-create-with-ai-dialog
+    @create="onCreateWithAi"
+  />
 </template>
 
 <script lang="ts">
@@ -192,6 +196,7 @@ export default defineComponent({
     'ctx-menu-clone',
     'ctx-menu-delete',
     'drop-files',
+    'create-with-ai',
   ],
   setup(props: FileEditorProps, {emit}) {
     // i18n
@@ -355,7 +360,7 @@ export default defineComponent({
       const key = tab.path;
       const content = codeMirrorTabContentCache.get(key);
       emit('content-change', content as string);
-      setTimeout(updateEditorContent, 0);
+      // setTimeout(updateEditorContent, 0);
     };
 
     const updateContentCache = (tab: FileNavItem, content: string) => {
@@ -671,6 +676,10 @@ export default defineComponent({
       codeMirrorTemplateEditor.setOption('mode', 'text/x-python');
     };
 
+    const onCreateWithAi = (name: string, sourceCode: string) => {
+      emit('create-with-ai', name, sourceCode);
+    };
+
     onMounted(initEditor);
 
     onUnmounted(() => {
@@ -719,6 +728,7 @@ export default defineComponent({
       updateContentCache,
       onDropFiles,
       onFileSearch,
+      onCreateWithAi,
       t,
     };
   },

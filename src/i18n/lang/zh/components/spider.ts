@@ -19,6 +19,8 @@ const spider: LComponentsSpider = {
         uploadFiles: '上传文件',
         fileEditorSettings: '文件编辑器设置',
         export: '导出文件',
+        createWithAi: '用 AI 创建',
+        createWithAiDisabled: '用 AI 创建 (仅限 Crawlab Pro)',
       },
     },
     data: {

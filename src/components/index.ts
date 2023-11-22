@@ -30,6 +30,7 @@ import CreateEditEnvironmentDialog from './environment/CreateEditEnvironmentDial
 import EnvironmentForm from './environment/EnvironmentForm.vue';
 import ExportForm from './export/ExportForm.vue';
 import FileEditor from './file/FileEditor.vue';
+import FileEditorCreateWithAiDialog from './file/FileEditorCreateWithAiDialog.vue';
 import FileEditorNavMenu from './file/FileEditorNavMenu.vue';
 import FileEditorNavMenuContextMenu from './file/FileEditorNavMenuContextMenu.vue';
 import FileEditorNavTabs from './file/FileEditorNavTabs.vue';
@@ -175,6 +176,7 @@ export {
   EnvironmentForm as ClEnvironmentForm,
   ExportForm as ClExportForm,
   FileEditor as ClFileEditor,
+  FileEditorCreateWithAiDialog as ClFileEditorCreateWithAiDialog,
   FileEditorNavMenu as ClFileEditorNavMenu,
   FileEditorNavMenuContextMenu as ClFileEditorNavMenuContextMenu,
   FileEditorNavTabs as ClFileEditorNavTabs,

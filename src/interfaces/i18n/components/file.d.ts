@@ -106,6 +106,16 @@ interface LComponentsFile {
         };
       }
     };
+    createWithAi: {
+      title: string;
+      form: {
+        fileName: string;
+        url: string;
+        language: string;
+        framework: string;
+        prompt: string;
+      };
+    };
   };
   upload: {
     title: string;

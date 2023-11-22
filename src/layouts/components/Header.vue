@@ -18,7 +18,7 @@
           v-if="systemInfo.edition === 'global.edition.community'"
           v-track="{code: 'click_header_pro'}"
           class="item"
-          href="https://www.crawlab.cn/prices"
+          :href="`https://www.crawlab.cn/${locale}/#pricing`"
           target="_blank"
           type="warning"
         >

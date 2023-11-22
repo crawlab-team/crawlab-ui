@@ -1,18 +1,18 @@
 import ResultList from './data/list/ResultList.vue';
+import InstallForm from './deps/components/form/InstallForm.vue';
+import UninstallForm from './deps/components/form/UninstallForm.vue';
+import DependencyLang from './deps/components/lang/DependencyLang.vue';
+import DependencyNode from './deps/node/DependencyNode.vue';
+import DependencyPython from './deps/python/DependencyPython.vue';
+import DependencySettingForm from './deps/setting/DependencySettingForm.vue';
+import DependencySettings from './deps/setting/DependencySettings.vue';
+import DependencySpiderTab from './deps/spider/DependencySpiderTab.vue';
+import DependencyTaskList from './deps/task/DependencyTaskList.vue';
+import LogsView from './deps/task/LogsView.vue';
+import TaskAction from './deps/task/TaskAction.vue';
 import DataSourceDetail from './ds/detail/DataSourceDetail.vue';
 import DataSourceDetailTabOverview from './ds/detail/tabs/DataSourceDetailTabOverview.vue';
 import DataSourceList from './ds/list/DataSourceList.vue';
-import InstallForm from '@/views/deps/components/form/InstallForm.vue';
-import UninstallForm from '@/views/deps/components/form/UninstallForm.vue';
-import DependencyLang from '@/views/deps/components/lang/DependencyLang.vue';
-import DependencyNode from '@/views/deps/node/DependencyNode.vue';
-import DependencyPython from '@/views/deps/python/DependencyPython.vue';
-import DependencySettingForm from '@/views/deps/setting/DependencySettingForm.vue';
-import DependencySettings from '@/views/deps/setting/DependencySettings.vue';
-import DependencySpiderTab from '@/views/deps/spider/DependencySpiderTab.vue';
-import DependencyTaskList from '@/views/deps/task/DependencyTaskList.vue';
-import LogsView from '@/views/deps/task/LogsView.vue';
-import TaskAction from '@/views/deps/task/TaskAction.vue';
 import EnvironmentList from './environment/list/EnvironmentList.vue';
 import Home from './home/Home.vue';
 import Login from './login/Login.vue';
@@ -57,6 +57,7 @@ import SpiderDetailTabGitLogs from './spider/detail/tabs/git/SpiderDetailTabGitL
 import SpiderDetailTabGitReferences from './spider/detail/tabs/git/SpiderDetailTabGitReferences.vue';
 import SpiderDetailTabGitRemote from './spider/detail/tabs/git/SpiderDetailTabGitRemote.vue';
 import SpiderList from './spider/list/SpiderList.vue';
+import SystemDetail from './system/detail/SystemDetail.vue';
 import TagDetail from './tag/detail/TagDetail.vue';
 import TagDetailTabOverview from './tag/detail/tabs/TagDetailTabOverview.vue';
 import TagViewList from './tag/list/TagViewList.vue';
@@ -75,9 +76,6 @@ import UserList from './user/list/UserList.vue';
 
 export {
   ResultList as ClResultList,
-  DataSourceDetail as ClDataSourceDetail,
-  DataSourceDetailTabOverview as ClDataSourceDetailTabOverview,
-  DataSourceList as ClDataSourceList,
   InstallForm as ClInstallForm,
   UninstallForm as ClUninstallForm,
   DependencyLang as ClDependencyLang,
@@ -89,6 +87,9 @@ export {
   DependencyTaskList as ClDependencyTaskList,
   LogsView as ClLogsView,
   TaskAction as ClTaskAction,
+  DataSourceDetail as ClDataSourceDetail,
+  DataSourceDetailTabOverview as ClDataSourceDetailTabOverview,
+  DataSourceList as ClDataSourceList,
   EnvironmentList as ClEnvironmentList,
   Home as ClHome,
   Login as ClLogin,
@@ -133,6 +134,7 @@ export {
   SpiderDetailTabGitReferences as ClSpiderDetailTabGitReferences,
   SpiderDetailTabGitRemote as ClSpiderDetailTabGitRemote,
   SpiderList as ClSpiderList,
+  SystemDetail as ClSystemDetail,
   TagDetail as ClTagDetail,
   TagDetailTabOverview as ClTagDetailTabOverview,
   TagViewList as ClTagViewList,

@@ -6,6 +6,15 @@
     />
     <cl-nav-action-item>
       <cl-fa-icon-button
+        :icon="['fa', 'robot']"
+        :tooltip="systemInfo.edition !== 'global.edition.community' ? t('components.spider.actions.files.tooltip.createWithAi') : t('components.spider.actions.files.tooltip.createWithAiDisabled')"
+        type="primary"
+        id="create-with-ai-btn"
+        class-name="create-with-ai-btn"
+        :disabled="systemInfo.edition === 'global.edition.community'"
+        @click="onOpenCreateWithAi"
+      />
+      <cl-fa-icon-button
         :icon="['fa', 'upload']"
         :tooltip="t('components.spider.actions.files.tooltip.uploadFiles')"
         type="primary"
@@ -36,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import {defineComponent, ref, computed} from 'vue';
 import {useStore} from 'vuex';
 import {useI18n} from 'vue-i18n';
 import {sendEvent} from '@/admin/umeng';
@@ -52,10 +61,15 @@ export default defineComponent({
     // store
     const ns = 'spider';
     const store = useStore();
+    const {
+      common: commonState,
+    } = store.state as RootStoreState;
 
     const {
       activeId,
     } = useSpiderDetail();
+
+    const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
     const onClickUpload = () => {
       store.commit(`spider/showDialog`, 'uploadFiles');
@@ -67,6 +81,10 @@ export default defineComponent({
       store.commit(`file/setEditorSettingsDialogVisible`, true);
 
       sendEvent('click_spider_detail_actions_files_settings');
+    };
+
+    const onOpenCreateWithAi = async () => {
+      store.commit(`file/setEditorCreateWithAiDialogVisible`, true);
     };
 
     const exportLoading = ref(false);
@@ -82,10 +100,12 @@ export default defineComponent({
     };
 
     return {
+      systemInfo,
       onClickUpload,
       onOpenFilesSettings,
       exportLoading,
       onClickExport,
+      onOpenCreateWithAi,
       t,
     };
   },

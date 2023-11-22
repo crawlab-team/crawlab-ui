@@ -48,6 +48,7 @@ export default {
   state: {
     editorOptions: getDefaultEditorOptions(),
     editorSettingsDialogVisible: false,
+    editorCreateWithAiDialogVisible: false,
   },
   mutations: {
     setEditorOptions: (state: FileStoreState, options: EditorConfiguration) => {
@@ -61,6 +62,9 @@ export default {
     },
     setEditorSettingsDialogVisible: (state: FileStoreState, value: boolean) => {
       state.editorSettingsDialogVisible = value;
+    },
+    setEditorCreateWithAiDialogVisible: (state: FileStoreState, value: boolean) => {
+      state.editorCreateWithAiDialogVisible = value;
     },
   },
   actions: {}

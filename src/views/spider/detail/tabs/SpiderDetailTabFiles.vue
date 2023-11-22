@@ -15,6 +15,7 @@
     @ctx-menu-clone="onContextMenuClone"
     @ctx-menu-delete="onContextMenuDelete"
     @drop-files="onDropFiles"
+    @create-with-ai="onCreateWithAi"
     @tab-click="onTabClick"
   />
 </template>
@@ -172,6 +173,13 @@ export default defineComponent({
       await listRootDir(id.value);
     };
 
+    const onCreateWithAi = async (name: string, sourceCode: string) => {
+      const path = `/${name}`;
+      await saveFile(id.value, path, sourceCode);
+      await listRootDir(id.value);
+      await openFile(path);
+    };
+
     const onTabClick = async (tab: FileNavItem) => {
       await getFile(id.value, tab.path as string);
     };
@@ -213,6 +221,7 @@ export default defineComponent({
       onContextMenuDelete,
       onContentChange,
       onDropFiles,
+      onCreateWithAi,
       onTabClick,
       defaultExpandedKeys,
     };

@@ -106,6 +106,16 @@ const file: LComponentsFile = {
         },
       },
     },
+    createWithAi: {
+      title: 'Create with AI',
+      form: {
+        fileName: 'File Name',
+        url: 'URL',
+        language: 'Programming Language',
+        framework: 'Framework',
+        prompt: 'Prompt',
+      },
+    },
   },
   upload: {
     title: 'Files Upload',
