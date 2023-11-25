@@ -280,12 +280,12 @@ export default defineComponent({
             external: true,
           }),
         },
-        {
-          key: 'latest_version',
-          label: t('views.env.deps.dependency.form.latestVersion'),
-          icon: ['fa', 'tag'],
-          width: '200',
-        },
+        // {
+        //   key: 'latest_version',
+        //   label: t('views.env.deps.dependency.form.latestVersion'),
+        //   icon: ['fa', 'tag'],
+        //   width: '200',
+        // },
         {
           key: 'versions',
           label: t('views.env.deps.dependency.form.installedVersion'),
@@ -302,15 +302,15 @@ export default defineComponent({
               versions = row.result.versions;
             }
             res.push(h('span', {style: 'margin-right: 5px'}, versions.join(', ')));
-            if (row.upgradable) {
-              res.push(h(Tag, {
-                type: 'primary',
-                effect: 'light',
-                size: 'mini',
-                label: t('views.env.deps.common.status.upgradable'),
-                icon: ['fa', 'arrow-up'],
-              }));
-            }
+            // if (row.upgradable) {
+            //   res.push(h(Tag, {
+            //     type: 'primary',
+            //     effect: 'light',
+            //     size: 'mini',
+            //     label: t('views.env.deps.common.status.upgradable'),
+            //     icon: ['fa', 'arrow-up'],
+            //   }));
+            // }
             return res;
           },
         },
