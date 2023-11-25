@@ -69,14 +69,6 @@
             @click="onUpdate"
           />
         </div>
-        <el-pagination
-          :current-page="tablePagination.page"
-          :page-size="tablePagination.pageSize"
-          :total="tableTotal"
-          class="pagination"
-          layout="total, prev, pager, next"
-          @current-change="(page) => tablePagination.page = page"
-        />
       </div>
     </template>
     <template #extra>
@@ -280,12 +272,6 @@ export default defineComponent({
             external: true,
           }),
         },
-        // {
-        //   key: 'latest_version',
-        //   label: t('views.env.deps.dependency.form.latestVersion'),
-        //   icon: ['fa', 'tag'],
-        //   width: '200',
-        // },
         {
           key: 'versions',
           label: t('views.env.deps.dependency.form.installedVersion'),
@@ -302,15 +288,6 @@ export default defineComponent({
               versions = row.result.versions;
             }
             res.push(h('span', {style: 'margin-right: 5px'}, versions.join(', ')));
-            // if (row.upgradable) {
-            //   res.push(h(Tag, {
-            //     type: 'primary',
-            //     effect: 'light',
-            //     size: 'mini',
-            //     label: t('views.env.deps.common.status.upgradable'),
-            //     icon: ['fa', 'arrow-up'],
-            //   }));
-            // }
             return res;
           },
         },
