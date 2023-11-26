@@ -11,6 +11,7 @@ const spider: LComponentsSpider = {
     description: 'Description',
     priority: 'Priority',
     incrementalSync: 'Incremental Sync',
+    autoInstall: 'Auto Install',
   },
   actions: {
     files: {

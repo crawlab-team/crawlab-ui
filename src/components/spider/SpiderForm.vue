@@ -102,6 +102,19 @@
     <!-- Row -->
     <cl-form-item
       :span="2"
+      :offset="2"
+      :label="t('components.spider.form.autoInstall')"
+      prop="auto_install"
+    >
+      <cl-switch
+        v-model="form.auto_install"
+      />
+    </cl-form-item>
+    <!-- ./Row -->
+
+    <!-- Row -->
+    <cl-form-item
+      :span="2"
       :label="t('components.spider.form.defaultMode')"
       prop="mode"
       required

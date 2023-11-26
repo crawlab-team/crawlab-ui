@@ -11,6 +11,7 @@ const spider: LComponentsSpider = {
     description: '描述',
     priority: '优先级',
     incrementalSync: '增量同步文件',
+    autoInstall: '自动安装依赖',
   },
   actions: {
     files: {

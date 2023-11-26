@@ -20,6 +20,7 @@ export declare global {
     last_task?: Task;
     stat?: SpiderStat;
     incremental_sync?: boolean;
+    auto_install?: boolean;
   }
 
   interface SpiderStat {
