@@ -1,18 +1,20 @@
 <template>
-  <el-switch
-    v-model="internalValue"
-    :active-color="activeColor"
-    :active-icon="activeIconComp"
-    :active-text="activeText"
-    :disabled="disabled"
-    :inactive-color="inactiveColor"
-    :inactive-icon="inactiveIconComp"
-    :inactive-text="inactiveText"
-    :loading="loading"
-    :width="width"
-    :inline-prompt="inlinePrompt"
-    @change="onChange"
-  />
+  <el-tooltip :content="tooltip" :disabled="!tooltip">
+    <el-switch
+      v-model="internalValue"
+      :active-color="activeColor"
+      :active-icon="activeIconComp"
+      :active-text="activeText"
+      :disabled="disabled"
+      :inactive-color="inactiveColor"
+      :inactive-icon="inactiveIconComp"
+      :inactive-text="inactiveText"
+      :loading="loading"
+      :width="width"
+      :inline-prompt="inlinePrompt"
+      @change="onChange"
+    />
+  </el-tooltip>
 </template>
 
 <script lang="ts">
@@ -63,6 +65,9 @@ export default defineComponent({
     inlinePrompt: {
       type: Boolean,
       default: false,
+    },
+    tooltip: {
+      type: String,
     },
   },
   emits: [

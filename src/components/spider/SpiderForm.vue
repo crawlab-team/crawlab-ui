@@ -108,6 +108,8 @@
     >
       <cl-switch
         v-model="form.auto_install"
+        :tooltip="systemInfo.edition === 'global.edition.community' ? t('components.spider.form.autoInstallDisabled') : undefined"
+        :disabled="systemInfo.edition === 'global.edition.community'"
       />
     </cl-form-item>
     <!-- ./Row -->
@@ -190,7 +192,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch} from 'vue';
+import {computed, defineComponent, ref, watch} from 'vue';
 import {useStore} from 'vuex';
 import useSpider from '@/components/spider/spider';
 import useNode from '@/components/node/node';
@@ -210,6 +212,12 @@ export default defineComponent({
 
     // store
     const store = useStore();
+
+    const {
+      common: commonState
+    } = store.state as RootStoreState;
+
+    const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
     // use node
     const {
@@ -271,6 +279,7 @@ export default defineComponent({
       ...useSpider(store),
 
       // custom
+      systemInfo,
       TASK_MODE_SELECTED_NODES,
       TASK_MODE_SELECTED_NODE_TAGS,
       allNodeSelectOptions,

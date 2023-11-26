@@ -12,6 +12,7 @@ const spider: LComponentsSpider = {
     priority: '优先级',
     incrementalSync: '增量同步文件',
     autoInstall: '自动安装依赖',
+    autoInstallDisabled: '自动安装依赖 (仅限 Crawlab Pro)',
   },
   actions: {
     files: {

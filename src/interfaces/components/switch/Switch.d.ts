@@ -11,5 +11,6 @@ export declare global {
     width?: number;
     loading?: boolean;
     inlinePrompt?: boolean;
+    tooltip?: string;
   }
 }

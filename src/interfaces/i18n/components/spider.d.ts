@@ -12,6 +12,7 @@ interface LComponentsSpider {
     priority: string;
     incrementalSync: string;
     autoInstall: string;
+    autoInstallDisabled: string;
   };
   actions: {
     files: {
