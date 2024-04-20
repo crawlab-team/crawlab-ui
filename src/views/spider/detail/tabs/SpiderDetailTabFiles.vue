@@ -28,6 +28,7 @@ import useSpiderService from '@/services/spider/spiderService';
 import {ElMessage} from 'element-plus';
 import {useI18n} from 'vue-i18n';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
+import {getOSPathSeparator} from "@/utils";
 
 export default defineComponent({
   name: 'SpiderDetailTabFiles',
@@ -72,27 +73,31 @@ export default defineComponent({
     // file content
     const content = computed<string>(() => state.fileContent);
 
+    // os path sep (server side)
+    const pathSep = '/';
+
     const isRoot = (item: FileNavItem): boolean => {
       return item.path === '~';
     };
 
     const getDirPath = (path: string): string => {
-      const arr = path?.split('/') as string[];
+      const arr = path?.split(pathSep) as string[];
       arr.splice(arr.length - 1, 1);
-      return arr.join('/');
+      return arr.join(pathSep);
     };
 
     const getPath = (item: FileNavItem, name: string): string => {
       let path;
       if (item.is_dir) {
         if (isRoot(item)) {
-          path = `/${name}`;
+          path = `${pathSep}${name}`;
         } else {
-          path = `${item.path}/${name}`;
+          const itemDirPath = getDirPath(item.path || '');
+          path = `${itemDirPath}${pathSep}${name}`;
         }
       } else {
         const dirPath = getDirPath(item.path as string);
-        path = `${dirPath}/${name}`;
+        path = `${dirPath}${pathSep}${name}`;
       }
       return path;
     };
@@ -122,7 +127,7 @@ export default defineComponent({
 
     const onNavItemDrop = async (draggingItem: FileNavItem, dropItem: FileNavItem) => {
       const dirPath = dropItem.path !== '~' ? dropItem.path : '';
-      const newPath = `${dirPath}/${draggingItem.name}`;
+      const newPath = `${dirPath}${pathSep}${draggingItem.name}`;
       await renameFile(id.value, draggingItem.path as string, newPath);
       await listRootDir(id.value);
     };
@@ -130,13 +135,12 @@ export default defineComponent({
     const onContextMenuNewFile = async (item: FileNavItem, name: string) => {
       if (!item.path) return;
       const path = getPath(item, name);
-      await saveFile(id.value, path, ' ');
+      await saveFile(id.value, path, '');
       await listRootDir(id.value);
       await openFile(path);
     };
 
     const onContextMenuNewFileWithAi = async (item: FileNavItem) => {
-      console.debug(item);
       store.commit('file/setEditorFileNavItem', item);
       store.commit(`file/setEditorCreateWithAiDialogVisible`, true);
     };
@@ -158,7 +162,7 @@ export default defineComponent({
     const onContextMenuClone = async (item: FileNavItem, name: string) => {
       if (!item.path) return;
       const dirPath = getDirPath(item.path);
-      const path = `${dirPath}/${name}`;
+      const path = `${dirPath}${pathSep}${name}`;
       await copyFile(id.value, item.path, path);
       await listRootDir(id.value);
     };
@@ -181,7 +185,7 @@ export default defineComponent({
     };
 
     const onCreateWithAi = async (name: string, sourceCode: string, item?: FileNavItem) => {
-      let path = `/${name}`;
+      let path = `${pathSep}${name}`;
       if (item) {
         path = getPath(item, name);
       }
