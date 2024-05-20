@@ -42,70 +42,9 @@ interface LComponentsFile {
     };
     settings: {
       title: string;
-      tabs: {
-        general: string;
-        edit: string;
-        indentation: string;
-        cursor: string;
-      };
       form: {
-        title: {
-          theme: string;
-          indentUnit: string;
-          smartIndent: string;
-          tabSize: string;
-          indentWithTabs: string;
-          electricChars: string;
-          keyMap: string;
-          lineWrapping: string;
-          lineNumbers: string;
-          showCursorWhenSelecting: string;
-          lineWiseCopyCut: string;
-          pasteLinesPerSelection: string;
-          undoDepth: string;
-          cursorBlinkRate: string;
-          cursorScrollMargin: string;
-          cursorHeight: string;
-          maxHighlightLength: string;
-          spellcheck: string;
-          autocorrect: string;
-          autocapitalize: string;
-          highlightSelectionMatches: string;
-          matchBrackets: string;
-          matchTags: string;
-          autoCloseBrackets: string;
-          autoCloseTags: string;
-          showHint: string;
-        };
-        description: {
-          theme: string;
-          indentUnit: string;
-          smartIndent: string;
-          tabSize: string;
-          indentWithTabs: string;
-          electricChars: string;
-          keyMap: string;
-          lineWrapping: string;
-          lineNumbers: string;
-          showCursorWhenSelecting: string;
-          lineWiseCopyCut: string;
-          pasteLinesPerSelection: string;
-          undoDepth: string;
-          cursorBlinkRate: string;
-          cursorScrollMargin: string;
-          cursorHeight: string;
-          maxHighlightLength: string;
-          spellcheck: string;
-          autocorrect: string;
-          autocapitalize: string;
-          highlightSelectionMatches: string;
-          matchBrackets: string;
-          matchTags: string;
-          autoCloseBrackets: string;
-          autoCloseTags: string;
-          showHint: string;
-        };
-      }
+        theme: string;
+      };
     };
     createWithAi: {
       title: string;

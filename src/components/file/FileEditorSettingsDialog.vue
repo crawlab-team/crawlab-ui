@@ -5,26 +5,23 @@
       :title="t('components.file.editor.settings.title')"
       @close="onClose"
     >
-      <el-menu :default-active="activeTabName" class="nav-menu" mode="horizontal" @select="onTabChange">
-        <el-menu-item v-for="tab in tabs" :key="tab.name" :index="tab.name">
-          {{ tab.title }}
-        </el-menu-item>
-      </el-menu>
       <el-form
         label-width="var(--cl-file-editor-settings-dialog-label-width)"
         class="form"
       >
         <el-form-item
-          v-for="name in optionNames[activeTabName]"
-          :key="name"
+          :label="t('components.file.editor.settings.form.theme')"
         >
-          <template #label>
-            <el-tooltip :content="getDefinitionDescription(name)" popper-class="help-tooltip" trigger="click">
-              <font-awesome-icon :icon="['far', 'question-circle']" class="icon" size="sm"/>
-            </el-tooltip>
-            {{ getDefinitionTitle(name) }}
-          </template>
-          <cl-file-editor-settings-form-item v-model="options[name]" :name="name"/>
+          <el-select
+            v-model="options.theme"
+          >
+            <el-option
+              v-for="(op, $index) in themeOptions"
+              :key="$index"
+              :label="op.label"
+              :value="op.value"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -53,60 +50,23 @@ export default defineComponent({
     const store = useStore();
     const {file} = store.state as RootStoreState;
 
-    const options = ref<FileEditorConfiguration>({});
-
-    const tabs = readonly([
-      {name: 'general', title: t('components.file.editor.settings.tabs.general')},
-      {name: 'edit', title: t('components.file.editor.settings.tabs.edit')},
-      {name: 'indentation', title: t('components.file.editor.settings.tabs.indentation')},
-      {name: 'cursor', title: t('components.file.editor.settings.tabs.cursor')},
-    ]);
-
-    const optionNames = readonly({
-      general: [
-        'theme',
-        'keyMap',
-        'lineWrapping',
-        'lineNumbers',
-        'maxHighlightLength',
-        'spellcheck',
-        'autocorrect',
-        'autocapitalize',
-      ],
-      edit: [
-        'lineWiseCopyCut',
-        'pasteLinesPerSelection',
-        'undoDepth',
-      ],
-      indentation: [
-        'indentUnit',
-        'smartIndent',
-        'tabSize',
-        'indentWithTabs',
-        'electricChars',
-      ],
-      cursor: [
-        'showCursorWhenSelecting',
-        'cursorBlinkRate',
-        'cursorScrollMargin',
-        'cursorHeight',
-      ],
-    });
-
-    const activeTabName = ref<string>(tabs[0].name);
-
     const visible = computed<boolean>(() => {
       const {editorSettingsDialogVisible} = file;
       return editorSettingsDialogVisible;
     });
 
-    const themes = computed<string[]>(() => {
-      return getThemes();
+    const themeOptions = computed<SelectOption[]>(() => {
+      return [
+        {value: 'vs', label: 'Visual Studio'},
+        {value: 'vs-dark', label: 'Visual Studio Dark'},
+        {value: 'hc-black', label: 'High Contrast Black'},
+      ];
     });
 
+    const options = ref<typeof file.editorOptions>(plainClone(file.editorOptions));
+
     const resetOptions = () => {
-      const {editorOptions} = file;
-      options.value = plainClone(editorOptions);
+      options.value = plainClone(file.editorOptions);
     };
 
     const onClose = () => {
@@ -122,12 +82,6 @@ export default defineComponent({
       resetOptions();
 
       sendEvent('click_file_editor_settings_dialog_confirm');
-    };
-
-    const onTabChange = (tabName: string) => {
-      activeTabName.value = tabName;
-
-      sendEvent('click_file_editor_settings_dialog_tab_change', {tabName});
     };
 
     const getDefinitionDescription = (name: string) => {
@@ -148,14 +102,10 @@ export default defineComponent({
 
     return {
       options,
-      activeTabName,
-      tabs,
-      optionNames,
       visible,
-      themes,
+      themeOptions,
       onClose,
       onConfirm,
-      onTabChange,
       getDefinitionDescription,
       getDefinitionTitle,
       t,

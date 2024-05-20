@@ -22,10 +22,8 @@ declare global {
     bottom?: boolean;
   }
 
-  interface FileEditorConfiguration extends EditorConfiguration {
-    search?: FileEditorConfigurationSearch;
-
-    [key: string]: any;
+  interface FileEditorOptions {
+    theme: 'vs' | 'vs-dark' | 'hc-black';
   }
 
   type FileEditorOptionDefinitionType = 'select' | 'input-number' | 'switch';

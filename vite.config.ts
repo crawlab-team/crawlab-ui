@@ -2,7 +2,6 @@ import {resolve} from 'path';
 import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
-import externalGlobals from 'rollup-plugin-external-globals';
 import {visualizer} from 'rollup-plugin-visualizer';
 
 export default defineConfig({
@@ -34,6 +33,9 @@ export default defineConfig({
         'simplemde',
       ],
       output: {
+        manualChunks: {
+          'monaco-editor': ['monaco-editor'],
+        },
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
@@ -71,6 +73,9 @@ export default defineConfig({
       '.vue',
       '.scss',
     ]
+  },
+  optimizeDeps: {
+    include: ['monaco-editor']
   },
   plugins: [
     vue(),

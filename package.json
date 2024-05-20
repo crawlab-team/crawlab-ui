@@ -94,6 +94,7 @@
     "humanize-duration": "^3.26.0",
     "javascript-time-ago": "^2.3.13",
     "md5": "^2.3.0",
+    "monaco-editor": "^0.48.0",
     "normalize.css": "^8.0.1",
     "os-name": "^5.0.1",
     "pinyin": "^2.10.2",

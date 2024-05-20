@@ -81,19 +81,12 @@
         </template>
       </cl-file-editor-nav-tabs>
       <div
-        ref="codeMirrorEditor"
-        :class="showCodeMirrorEditor ? '' : 'hidden'"
-        :style="{
-            scrollbar: style.backgroundColorGutters,
-          }"
-        class="code-mirror-editor"
+        ref="editorRef"
+        :class="showEditor ? '' : 'hidden'"
+        class="editor"
       />
       <div
-        v-show="!showCodeMirrorEditor"
-        :style="{
-            backgroundColor: style.backgroundColor,
-            color: style.color,
-          }"
+        v-show="!showEditor"
         class="empty-content"
       >
         {{ t('components.file.editor.empty.placeholder') }}
@@ -123,8 +116,8 @@
       </template>
     </div>
   </div>
-  <div ref="codeMirrorTemplate" class="code-mirror-template"/>
-  <div ref="styleRef" v-html="extraStyle"/>
+  <!--  <div ref="codeMirrorTemplate" class="code-mirror-template"/>-->
+  <!--  <div ref="styleRef" v-html="extraStyle"/>-->
 
   <cl-file-editor-settings-dialog/>
   <cl-file-editor-create-with-ai-dialog
@@ -134,11 +127,10 @@
 
 <script lang="ts">
 import {computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch} from 'vue';
-import {Editor, EditorConfiguration, KeyMap} from 'codemirror';
-import {MimeType} from 'codemirror/mode/meta';
 import {useStore} from 'vuex';
-import {getCodemirrorEditor, getCodeMirrorTemplate, initTheme} from '@/utils/codemirror';
+import * as monaco from 'monaco-editor';
 import {FILE_ROOT} from '@/constants/file';
+import 'monaco-editor';
 
 // codemirror mode
 import 'codemirror/mode/meta';
@@ -147,19 +139,13 @@ import 'codemirror/mode/meta';
 import '@/utils/codemirror';
 
 // components
-import FileEditorNavMenu from '@/components/file/FileEditorNavMenu.vue';
 import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';
-import FileEditorSettingsDialog from '@/components/file/FileEditorSettingsDialog.vue';
-import FileEditorNavTabsShowMoreContextMenu from '@/components/file/FileEditorNavTabsShowMoreContextMenu.vue';
 import {emptyArrayFunc} from '@/utils/func';
 import {useI18n} from 'vue-i18n';
 import {sendEvent} from '@/admin/umeng';
 
-// codemirror mode import cache
-const codeMirrorModeCache = new Set<string>();
-
 // codemirror tab content cache
-const codeMirrorTabContentCache = new Map<string, string>();
+const editorTabContentCache = new Map<string, string>();
 
 export default defineComponent({
   name: 'FileEditor',
@@ -207,11 +193,14 @@ export default defineComponent({
     // store
     const ns = 'spider';
     const store = useStore();
-    const {file} = store.state as RootStoreState;
 
     const fileEditor = ref<HTMLDivElement>();
 
-    const codeMirrorEditor = ref<HTMLDivElement>();
+    const resizeObserver = new ResizeObserver(() => {
+      setTimeout(() => {
+        editor?.layout();
+      }, 200);
+    });
 
     const tabs = ref<FileNavItem[]>([]);
 
@@ -227,38 +216,57 @@ export default defineComponent({
 
     const styleRef = ref<HTMLDivElement>();
 
-    let editor: Editor | null = null;
+    const editorRef = ref<HTMLDivElement>();
 
-    let codeMirrorTemplateEditor: Editor | null = null;
+    let editor: monaco.editor.IStandaloneCodeEditor | null = null;
 
-    const codeMirrorTemplate = ref<HTMLDivElement>();
-
-    let codeMirrorEditorSearchLabel: HTMLSpanElement | undefined;
-
-    let codeMirrorEditorSearchInput: HTMLInputElement | undefined;
+    const showEditor = computed<boolean>(() => !!activeFileItem.value);
 
     const navTabs = ref<typeof FileEditorNavTabs>();
 
     const showMoreContextMenuVisible = ref<boolean>(false);
 
-    const showCodeMirrorEditor = computed<boolean>(() => {
-      return !!activeFileItem.value;
-    });
-
-    const language = computed<MimeType | undefined>(() => {
+    const language = computed<string>(() => {
       const fileName = activeFileItem.value?.name;
-      if (!fileName) return;
-      return window.CodeMirror?.findModeByFileName?.(fileName);
-    });
-
-    const languageMime = computed<string | undefined>(() => language.value?.mime);
-
-    const options = computed<FileEditorConfiguration>(() => {
-      const {editorOptions} = file as FileStoreState;
-      return {
-        ...editorOptions,
-        mode: languageMime.value || 'text',
-      };
+      const ext = fileName?.split('.').pop();
+      switch (ext) {
+        case 'js':
+          return 'javascript';
+        case 'ts':
+          return 'typescript';
+        case 'html':
+          return 'html';
+        case 'css':
+          return 'css';
+        case 'json':
+          return 'json';
+        case 'md':
+          return 'markdown';
+        case 'py':
+          return 'python';
+        case 'java':
+          return 'java';
+        case 'go':
+          return 'go';
+        case 'cs':
+          return 'csharp';
+        case 'php':
+          return 'php';
+        case 'rb':
+          return 'ruby';
+        case 'rs':
+          return 'rust';
+        case 'sh':
+          return 'shell';
+        case 'sql':
+          return 'sql';
+        case 'xml':
+          return 'xml';
+        case 'yaml':
+          return 'yaml';
+        default:
+          return 'text';
+      }
     });
 
     const content = computed<string>(() => {
@@ -266,127 +274,39 @@ export default defineComponent({
       return content || '';
     });
 
-    const extraStyle = computed<string>(() => {
-      return `<style>
-.file-editor .file-editor-nav-menu::-webkit-scrollbar {
-  background-color: ${style.value.backgroundColor};
-  width: 8px;
-  height: 8px;
-}
-.file-editor .file-editor-nav-menu::-webkit-scrollbar-thumb {
-  background-color: var(--cl-primary-color);
-  border-radius: 4px;
-}
-.file-editor .file-editor-content .code-mirror-editor .CodeMirror-vscrollbar::-webkit-scrollbar {
-  background-color: ${style.value.backgroundColor};
-  width: 8px;
-}
-.file-editor .file-editor-content .code-mirror-editor .CodeMirror-hscrollbar::-webkit-scrollbar {
-  background-color: ${style.value.backgroundColor};
-  height: 8px;
-}
-.file-editor .file-editor-content .code-mirror-editor .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-.file-editor .file-editor-content .code-mirror-editor .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--cl-primary-color);
-  border-radius: 4px;
-}
-.file-editor .file-editor-nav-tabs::-webkit-scrollbar {
-  display: none;
-}
-</style>`;
-    });
-
-    const codeMirrorTemplateContent = computed<string>(() => {
-      return getCodeMirrorTemplate();
-    });
-
-    const updateEditorOptions = () => {
-      for (const k in options.value) {
-        const key = k as keyof EditorConfiguration;
-        const value = options.value[key];
-        editor?.setOption(key, value);
-      }
-    };
-
     const updateEditorContent = () => {
       editor?.setValue(content.value || '');
-    };
-
-    const updateStyle = () => {
-      // codemirror style: background color / color / height
-      const el = codeMirrorEditor.value as HTMLElement;
-      const cm = el.querySelector('.CodeMirror');
-      if (!cm) return;
-      const computedStyle = window.getComputedStyle(cm);
-      style.value = {
-        backgroundColor: computedStyle.backgroundColor,
-        color: computedStyle.color,
-        height: computedStyle.height,
-      };
-
-      // gutter
-      const cmGutters = el.querySelector('.CodeMirror-gutters');
-      if (!cmGutters) return;
-      const computedStyleGutters = window.getComputedStyle(cmGutters);
-      style.value.backgroundColorGutters = computedStyleGutters.backgroundColor;
-    };
-
-    const updateTheme = async () => {
-      await initTheme(options.value.theme);
-    };
-
-    const updateMode = async () => {
-      const mode = language.value?.mode;
-      if (!mode || codeMirrorModeCache.has(mode)) return;
-      // @ts-ignore
-      await import(`codemirror/mode/${mode}/${mode}.js`);
-      codeMirrorModeCache.add(mode);
-    };
-
-    const updateSearchInput = () => {
-      codeMirrorEditorSearchLabel = codeMirrorEditor.value?.querySelector<HTMLSpanElement>('.CodeMirror-search-label') || undefined;
-      codeMirrorEditorSearchInput = codeMirrorEditor.value?.querySelector<HTMLInputElement>('.CodeMirror-search-field') || undefined;
-      if (!codeMirrorEditorSearchInput) return;
-      codeMirrorEditorSearchInput.onblur = () => {
-        if (codeMirrorEditorSearchLabel?.textContent?.includes('Search')) {
-          setTimeout(() => {
-            codeMirrorEditorSearchInput?.parentElement?.remove();
-            editor?.focus();
-          }, 10);
-        }
-      };
     };
 
     const getContentCache = (tab: FileNavItem) => {
       if (!tab.path) return;
       const key = tab.path;
-      const content = codeMirrorTabContentCache.get(key);
+      const content = editorTabContentCache.get(key);
       emit('content-change', content as string);
-      // setTimeout(updateEditorContent, 0);
     };
 
     const updateContentCache = (tab: FileNavItem, content: string) => {
       if (!tab.path) return;
       const key = tab.path as string;
-      codeMirrorTabContentCache.set(key, content as string);
+      editorTabContentCache.set(key, content as string);
     };
 
     const deleteContentCache = (tab: FileNavItem) => {
       if (!tab.path) return;
       const key = tab.path;
-      codeMirrorTabContentCache.delete(key);
+      editorTabContentCache.delete(key);
     };
 
     const deleteOtherContentCache = (tab: FileNavItem) => {
       if (!tab.path) return;
       const key = tab.path;
-      const content = codeMirrorTabContentCache.get(key);
-      codeMirrorTabContentCache.clear();
-      codeMirrorTabContentCache.set(key, content as string);
+      const content = editorTabContentCache.get(key);
+      editorTabContentCache.clear();
+      editorTabContentCache.set(key, content as string);
     };
 
     const clearContentCache = () => {
-      codeMirrorTabContentCache.clear();
+      editorTabContentCache.clear();
     };
 
     const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
@@ -426,7 +346,6 @@ export default defineComponent({
       if (item && !tabs.value.find(t => t.path === item.path)) {
         if (tabs.value.length === 0) {
           store.commit(`${ns}/setActiveFileNavItem`, item);
-          editor?.focus();
         }
         tabs.value.push(item);
         getContentCache(item);
@@ -490,8 +409,7 @@ export default defineComponent({
       sendEvent('click_file_editor_nav_menu_item_context_menu_delete');
     };
 
-    const onContentChange = (cm: Editor) => {
-      const content = cm.getValue();
+    const onContentChange = (content: string) => {
       if (!activeFileItem.value) return;
       emit('content-change', content);
 
@@ -593,19 +511,8 @@ export default defineComponent({
       emit('save-file', activeFileItem.value);
     };
 
-    const keyMapClose = () => {
-      if (!activeFileItem.value) return;
-      closeTab(activeFileItem.value);
-    };
-
-    const addSaveKeyMap = (cm: Editor) => {
-      const map = {
-        'Cmd-S': keyMapSave,
-        'Ctrl-S': keyMapSave,
-        // 'Cmd-W': keyMapClose,
-        'Ctrl-W': keyMapClose,
-      } as KeyMap;
-      cm.addKeyMap(map);
+    const addSaveKeyMap = () => {
+      editor?.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, keyMapSave);
     };
 
     const onToggleNavMenu = () => {
@@ -614,24 +521,15 @@ export default defineComponent({
       sendEvent('click_file_editor_nav_menu_toggle', {collapse: !navMenuCollapsed.value});
     };
 
-    const listenToKeyboardEvents = () => {
-      editor?.on('blur', () => {
-        updateSearchInput();
-      });
-    };
-
-    const unlistenToKeyboardEvents = () => {
-      document.onkeydown = null;
-    };
-
     const update = async () => {
-      await updateMode();
-      await updateTheme();
-      updateEditorOptions();
-      updateStyle();
+      setTimeout(() => {
+        editor?.layout();
+        editor?.setValue(content.value);
+        monaco.editor.setModelLanguage(editor?.getModel()!, language.value);
+      }, 100);
     };
 
-    watch(() => JSON.stringify(options.value), update);
+    // watch(() => JSON.stringify(options.value), update);
     watch(() => JSON.stringify(activeFileItem.value), update);
 
     const onDropFiles = (files: InputFile[]) => {
@@ -645,42 +543,42 @@ export default defineComponent({
     };
 
     const initEditor = async () => {
-      // init codemirror editor
-      const el = codeMirrorEditor.value as HTMLElement;
-      editor = getCodemirrorEditor(el, options.value);
+      if (!editorRef.value) return;
+      editor = monaco.editor.create(editorRef.value, {
+        theme: 'vs-dark',
+      });
+
+      resizeObserver.observe(editorRef.value);
 
       // add save key map
-      addSaveKeyMap(editor);
+      addSaveKeyMap();
 
       // on editor change
-      editor.on('change', onContentChange);
+      // editor.on('change', onContentChange);
+      editor.onDidChangeModelContent(() => {
+        onContentChange(editor?.getValue() || '');
+      });
 
       // update editor options
-      updateEditorOptions();
+      // updateEditorOptions();
 
       // update editor content
       updateEditorContent();
 
       // update editor theme
-      await updateTheme();
+      // await updateTheme();
 
       // update styles
-      updateStyle();
+      // updateStyle();
 
       // listen to keyboard events key
-      listenToKeyboardEvents();
+      // listenToKeyboardEvents();
 
       // by default show line numbers (this is a hack to make line numbers visible)
-      store.commit(`file/setEditorOptions`, {
-        ...options.value,
-        lineNumbers: true,
-      });
-
-      // init codemirror template
-      const elTemplate = codeMirrorTemplate.value as HTMLElement;
-      codeMirrorTemplateEditor = getCodemirrorEditor(elTemplate, options.value);
-      codeMirrorTemplateEditor.setValue(codeMirrorTemplateContent.value);
-      codeMirrorTemplateEditor.setOption('mode', 'text/x-python');
+      // store.commit(`file/setEditorOptions`, {
+      //   ...options.value,
+      //   lineNumbers: true,
+      // });
     };
 
     const onCreateWithAi = (name: string, sourceCode: string, item?: FileNavItem) => {
@@ -691,27 +589,29 @@ export default defineComponent({
 
     onUnmounted(() => {
       // turnoff listening to keyboard events
-      unlistenToKeyboardEvents();
+      // unlistenToKeyboardEvents();
+      if (resizeObserver && editorRef.value) {
+        resizeObserver.unobserve(editorRef.value);
+      }
+      editor?.dispose();
     });
 
     return {
+      editorRef,
+      showEditor,
       fileEditor,
-      codeMirrorEditor,
       tabs,
       activeFileItem,
       fileSearchString,
       navMenuCollapsed,
       styleRef,
-      codeMirrorTemplate,
       showSettings,
-      showCodeMirrorEditor,
       navTabs,
       showMoreContextMenuVisible,
-      languageMime,
-      options,
+      // languageMime,
+      // options,
       style,
       files,
-      extraStyle,
       onNavItemClick,
       onNavItemDbClick,
       onNavItemDrop,
@@ -732,7 +632,6 @@ export default defineComponent({
       onShowMoreHide,
       onClickShowMoreContextMenuItem,
       updateTabs,
-      updateEditorContent,
       updateContentCache,
       onDropFiles,
       onFileSearch,
@@ -783,7 +682,7 @@ export default defineComponent({
     min-width: calc(100% - var(--cl-file-editor-nav-menu-width));
     flex-direction: column;
 
-    .code-mirror-editor {
+    .editor {
       flex: 1;
 
       &.hidden {
@@ -898,5 +797,10 @@ export default defineComponent({
 }
 
 .file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror-linenumber {
+}
+
+.file-editor .file-editor-content >>> .monaco-editor {
+  //height: 100% !important;
+  //width: 100% !important;
 }
 </style>

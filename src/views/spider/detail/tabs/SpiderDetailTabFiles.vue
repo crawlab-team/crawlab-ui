@@ -107,7 +107,7 @@ export default defineComponent({
       if (!res.data) return;
       const item = res.data;
       await getFile(id.value, path);
-      fileEditor.value?.updateEditorContent();
+      // fileEditor.value?.updateEditorContent();
       fileEditor.value?.updateTabs(item);
       fileEditor.value?.updateContentCache(item, content.value);
     };
