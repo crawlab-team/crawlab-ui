@@ -1,10 +1,7 @@
 <template>
   <div
       ref="navTabs"
-      :style="{
-        backgroundColor: style.backgroundColorGutters,
-        color: style.color,
-      }"
+      :style="{...styles.default}"
       class="file-editor-nav-tabs"
   >
     <slot name="prefix"></slot>
@@ -23,10 +20,8 @@
             @close-all="onCloseAll"
         >
           <div
-              :class="activeTab && activeTab.path === item.path ? 'active' : ''"
-              :style="{
-                backgroundColor: style.backgroundColor,
-              }"
+              :class="isActive(item) ? 'active' : ''"
+              :style="{...(isActive(item) ? styles.active : styles.default)}"
               class="file-editor-nav-tab"
               @click="onClick(item)"
               @contextmenu.prevent="onContextMenuShow(item)"
@@ -35,7 +30,12 @@
               <cl-atom-material-icon :is-dir="item.is_dir" :name="item.name"/>
             </span>
             <el-tooltip :content="getTitle(item)" :show-after="500">
-              <span class="title">
+              <span
+                class="title"
+                :style="{
+                  color: styles.active.color,
+                }"
+              >
                 {{ getTitle(item) }}
               </span>
             </el-tooltip>
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, ref, watch} from 'vue';
+import {computed, defineComponent, onMounted, PropType, ref, watch} from 'vue';
 import {Close} from '@element-plus/icons';
 
 export default defineComponent({
@@ -71,8 +71,8 @@ export default defineComponent({
         return [];
       },
     },
-    style: {
-      type: Object,
+    styles: {
+      type: Object as PropType<FileEditorStyles>,
       required: false,
       default: () => {
         return {};
@@ -162,6 +162,10 @@ export default defineComponent({
       }
     };
 
+    const isActive = (item: FileNavItem) => {
+      return props.activeTab && props.activeTab.path === item.path;
+    };
+
     watch(tabs.value, () => {
       setTimeout(updateWidths, 100);
     });
@@ -187,6 +191,7 @@ export default defineComponent({
       onContextMenuShow,
       onContextMenuHide,
       isShowContextMenu,
+      isActive,
     };
   },
 });
@@ -199,6 +204,7 @@ export default defineComponent({
   align-items: center;
   overflow: auto;
   height: var(--cl-file-editor-nav-tabs-height);
+  flex: var(--cl-file-editor-nav-tabs-height) 0 0;
 
   .file-editor-nav-tab {
     position: relative;

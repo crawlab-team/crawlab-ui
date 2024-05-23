@@ -4,7 +4,6 @@ const getDefaultEditorOptions = (): FileEditorOptions => {
     if (options) {
       return options;
     }
-    return options;
   } catch (e) {
   }
   const options: FileEditorOptions = {

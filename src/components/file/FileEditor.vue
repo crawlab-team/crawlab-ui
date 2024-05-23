@@ -2,18 +2,15 @@
   <div ref="fileEditor" class="file-editor">
     <div :class="navMenuCollapsed ? 'collapsed' : ''" class="nav-menu">
       <div
-        :style="{
-            backgroundColor: style.backgroundColorGutters,
-            color: style.color,
-          }"
+        :style="{...styles.default}"
         class="nav-menu-top-bar"
       >
         <div class="left">
           <el-input
             v-model="fileSearchString"
             :style="{
-                color: style.color,
-              }"
+              color: styles.default.color,
+            }"
             class="search"
             clearable
             :placeholder="t('components.file.editor.sidebar.search.placeholder')"
@@ -46,7 +43,7 @@
         :default-expand-all="!!fileSearchString"
         :default-expanded-keys="defaultExpandedKeys"
         :items="files"
-        :style="style"
+        :styles="styles"
         @node-click="onNavItemClick"
         @node-db-click="onNavItemDbClick"
         @node-drop="onNavItemDrop"
@@ -64,7 +61,7 @@
         ref="navTabs"
         :active-tab="activeFileItem"
         :tabs="tabs"
-        :style="style"
+        :styles="styles"
         @tab-click="onTabClick"
         @tab-close="onTabClose"
         @tab-close-others="onTabCloseOthers"
@@ -84,10 +81,12 @@
         ref="editorRef"
         :class="showEditor ? '' : 'hidden'"
         class="editor"
+        :style="{...styles.default}"
       />
       <div
         v-show="!showEditor"
         class="empty-content"
+        :style="{...styles.default}"
       >
         {{ t('components.file.editor.empty.placeholder') }}
       </div>
@@ -99,10 +98,7 @@
           @tab-click="onClickShowMoreContextMenuItem"
         >
           <div
-            :style="{
-                background: style.backgroundColor,
-                color: style.color,
-              }"
+            :style="{...styles.default}"
             class="nav-tabs-suffix"
           >
             <el-tooltip :content="t('components.file.editor.sidebar.showMore')">
@@ -116,8 +112,6 @@
       </template>
     </div>
   </div>
-  <!--  <div ref="codeMirrorTemplate" class="code-mirror-template"/>-->
-  <!--  <div ref="styleRef" v-html="extraStyle"/>-->
 
   <cl-file-editor-settings-dialog/>
   <cl-file-editor-create-with-ai-dialog
@@ -130,21 +124,15 @@ import {computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch}
 import {useStore} from 'vuex';
 import * as monaco from 'monaco-editor';
 import {FILE_ROOT} from '@/constants/file';
-import 'monaco-editor';
-
-// codemirror mode
-import 'codemirror/mode/meta';
-
-// codemirror utils
-import '@/utils/codemirror';
 
 // components
 import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';
 import {emptyArrayFunc} from '@/utils/func';
 import {useI18n} from 'vue-i18n';
 import {sendEvent} from '@/admin/umeng';
+import {getLanguageByFileName} from "@/utils";
 
-// codemirror tab content cache
+// tab content cache
 const editorTabContentCache = new Map<string, string>();
 
 export default defineComponent({
@@ -193,6 +181,9 @@ export default defineComponent({
     // store
     const ns = 'spider';
     const store = useStore();
+    const {
+      file: fileState
+    } = store.state as RootStoreState;
 
     const fileEditor = ref<HTMLDivElement>();
 
@@ -206,7 +197,20 @@ export default defineComponent({
 
     const activeFileItem = computed<FileNavItem | undefined>(() => props.activeNavItem);
 
-    const style = ref<FileEditorStyle>({});
+    const themeColors = ref<monaco.editor.IColors>({});
+
+    const styles = computed<FileEditorStyles>(() => {
+      return {
+        default: {
+          backgroundColor: themeColors.value['editor.background'],
+          color: themeColors.value['editor.foreground'],
+        },
+        active: {
+          backgroundColor: themeColors.value['editor.selectionHighlightBackground'],
+          color: themeColors.value['editor.foreground'],
+        },
+      };
+    });
 
     const fileSearchString = ref<string>('');
 
@@ -228,51 +232,20 @@ export default defineComponent({
 
     const language = computed<string>(() => {
       const fileName = activeFileItem.value?.name;
-      const ext = fileName?.split('.').pop();
-      switch (ext) {
-        case 'js':
-          return 'javascript';
-        case 'ts':
-          return 'typescript';
-        case 'html':
-          return 'html';
-        case 'css':
-          return 'css';
-        case 'json':
-          return 'json';
-        case 'md':
-          return 'markdown';
-        case 'py':
-          return 'python';
-        case 'java':
-          return 'java';
-        case 'go':
-          return 'go';
-        case 'cs':
-          return 'csharp';
-        case 'php':
-          return 'php';
-        case 'rb':
-          return 'ruby';
-        case 'rs':
-          return 'rust';
-        case 'sh':
-          return 'shell';
-        case 'sql':
-          return 'sql';
-        case 'xml':
-          return 'xml';
-        case 'yaml':
-          return 'yaml';
-        default:
-          return 'text';
-      }
+      return getLanguageByFileName(fileName);
     });
 
     const content = computed<string>(() => {
       const {content} = props as FileEditorProps;
       return content || '';
     });
+
+    const updateEditorOptions = () => {
+      editor?.updateOptions(fileState.editorOptions);
+
+      // @ts-ignore
+      themeColors.value = editor?._themeService.getColorTheme().themeData.colors;
+    };
 
     const updateEditorContent = () => {
       editor?.setValue(content.value || '');
@@ -529,7 +502,7 @@ export default defineComponent({
       }, 100);
     };
 
-    // watch(() => JSON.stringify(options.value), update);
+    watch(() => JSON.stringify(fileState.editorOptions), updateEditorOptions);
     watch(() => JSON.stringify(activeFileItem.value), update);
 
     const onDropFiles = (files: InputFile[]) => {
@@ -544,9 +517,7 @@ export default defineComponent({
 
     const initEditor = async () => {
       if (!editorRef.value) return;
-      editor = monaco.editor.create(editorRef.value, {
-        theme: 'vs-dark',
-      });
+      editor = monaco.editor.create(editorRef.value, fileState.editorOptions);
 
       resizeObserver.observe(editorRef.value);
 
@@ -560,25 +531,10 @@ export default defineComponent({
       });
 
       // update editor options
-      // updateEditorOptions();
+      updateEditorOptions();
 
       // update editor content
       updateEditorContent();
-
-      // update editor theme
-      // await updateTheme();
-
-      // update styles
-      // updateStyle();
-
-      // listen to keyboard events key
-      // listenToKeyboardEvents();
-
-      // by default show line numbers (this is a hack to make line numbers visible)
-      // store.commit(`file/setEditorOptions`, {
-      //   ...options.value,
-      //   lineNumbers: true,
-      // });
     };
 
     const onCreateWithAi = (name: string, sourceCode: string, item?: FileNavItem) => {
@@ -588,8 +544,6 @@ export default defineComponent({
     onMounted(initEditor);
 
     onUnmounted(() => {
-      // turnoff listening to keyboard events
-      // unlistenToKeyboardEvents();
       if (resizeObserver && editorRef.value) {
         resizeObserver.unobserve(editorRef.value);
       }
@@ -610,7 +564,7 @@ export default defineComponent({
       showMoreContextMenuVisible,
       // languageMime,
       // options,
-      style,
+      styles,
       files,
       onNavItemClick,
       onNavItemDbClick,
@@ -757,50 +711,5 @@ export default defineComponent({
   border: none;
   background: transparent;
   color: inherit;
-}
-
-.file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror {
-  position: relative;
-  min-height: 100%;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-}
-
-.file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror.dialog-opened {
-  position: relative;
-}
-
-.file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror-dialog {
-  font-size: 14px;
-}
-
-.file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror-dialog.CodeMirror-dialog-top {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-}
-
-.file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror-dialog.CodeMirror-dialog-bottom {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  z-index: 2;
-}
-
-.file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror-search-field {
-  background-color: transparent;
-  border: 1px solid;
-  color: inherit;
-  outline: none;
-}
-
-.file-editor .file-editor-content .code-mirror-editor >>> .CodeMirror-linenumber {
-}
-
-.file-editor .file-editor-content >>> .monaco-editor {
-  //height: 100% !important;
-  //width: 100% !important;
 }
 </style>

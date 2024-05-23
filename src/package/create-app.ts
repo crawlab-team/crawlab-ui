@@ -6,9 +6,8 @@ import AppComp from './App.vue';
 import {getStore} from '@/store';
 import {getI18n} from '@/i18n';
 import {initBaiduTonji} from '@/admin/baidu';
-import {importScripts, importStylesheets, initWindowGlobals} from '@/package/utils';
+import {importStylesheets} from '@/package/utils';
 import {getRouter} from '@/router';
-// import {initPlugins} from '@/utils/plugin';
 import {initRequest} from '@/services/request';
 import {initUmeng} from '@/admin/umeng';
 import {setGlobalLang} from '@/utils/i18n';
@@ -19,7 +18,6 @@ import {initClarity} from "@/admin/clarity";
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
     initStylesheet: true,
-    initScripts: true,
     initBaiduTongji: true,
     initUmeng: true,
     initClarity: true,
@@ -61,9 +59,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   // import stylesheets
   if (options.initStylesheet) importStylesheets();
 
-  // import scripts
-  if (options.initScripts) importScripts();
-
   // baidu tongji
   if (options.initBaiduTongji) initBaiduTonji();
 
@@ -90,9 +85,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
 
   // router
   const router = getRouter(options.rootRoutes, options.routes, options.allRoutes, options.createRouterOptions);
-
-  // window globals
-  initWindowGlobals();
 
   // app
   const app = createApp(AppComp);

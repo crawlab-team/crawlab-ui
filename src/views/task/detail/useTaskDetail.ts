@@ -4,7 +4,7 @@ import {setupGetAllList} from '@/utils/list';
 import useTask from '@/components/task/task';
 import {computed, onBeforeMount, onBeforeUnmount} from 'vue';
 import {isCancellable} from '@/utils/task';
-import {Editor} from 'codemirror';
+import * as monaco from 'monaco-editor';
 
 const useTaskDetail = () => {
   // store
@@ -22,8 +22,8 @@ const useTaskDetail = () => {
     form,
   } = useTask(store);
 
-  // codemirror editor
-  const logCodeMirrorEditor = computed<Editor | undefined>(() => state.logCodeMirrorEditor);
+  // editor
+  const logEditor = computed<monaco.editor.IStandaloneCodeEditor | undefined>(() => state.logEditor);
 
   const updateLogs = async () => {
     // skip if active id is empty
@@ -45,8 +45,8 @@ const useTaskDetail = () => {
 
     // scroll to bottom
     setTimeout(() => {
-      const info = logCodeMirrorEditor.value?.getScrollInfo();
-      logCodeMirrorEditor.value?.scrollTo(null, info?.height);
+      const model = logEditor.value?.getModel();
+      logEditor.value?.revealLine(model?.getLineCount() || 0);
     }, 100);
   };
 
@@ -102,7 +102,7 @@ const useTaskDetail = () => {
 
   return {
     ...useDetail('task'),
-    logCodeMirrorEditor,
+    logEditor,
   };
 };
 

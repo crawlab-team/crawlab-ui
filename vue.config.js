@@ -19,11 +19,6 @@ const optimization = {
         priority: -1,
         enforce: true,
       },
-      codemirror: {
-        test: /[\\/]node_modules[\\/]codemirror/,
-        priority: -1,
-        enforce: true,
-      },
       fontawesome: {
         test: /[\\/]node_modules[\\/](@fortawesome|fontawesome)/,
         priority: -1,

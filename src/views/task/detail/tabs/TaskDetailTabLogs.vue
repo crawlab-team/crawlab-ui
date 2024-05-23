@@ -19,11 +19,8 @@
 
 <script lang="ts">
 import {computed, defineComponent, onMounted, onUnmounted, ref, watch} from 'vue';
-import {EditorConfiguration} from 'codemirror';
-import {getCodemirrorEditor, initTheme} from '@/utils/codemirror';
 import {useStore} from 'vuex';
-
-// codemirror css
+import * as monaco from "monaco-editor";
 import useTaskDetail from '@/views/task/detail/useTaskDetail';
 
 export default defineComponent({
@@ -32,26 +29,16 @@ export default defineComponent({
     // store
     const ns = 'task';
     const store = useStore();
-    const {task: state} = store.state as RootStoreState;
+    const {task: state, file: fileState} = store.state as RootStoreState;
 
     // use task detail
     const {
       activeId,
-      logCodeMirrorEditor: cm,
+      logEditor,
     } = useTaskDetail();
 
     // log div element
-    const log = ref<HTMLDivElement>();
-
-    // codemirror options
-    const options = computed<EditorConfiguration>(() => {
-      return {
-        mode: 'text',
-        theme: 'darcula',
-        readOnly: 'nocursor',
-        inputStyle: 'contenteditable',
-      };
-    });
+    const editorRef = ref<HTMLDivElement>();
 
     // content
     const content = computed<string>(() => state.logContent);
@@ -66,9 +53,15 @@ export default defineComponent({
     // id
     const id = computed<string>(() => activeId.value);
 
+    const resizeObserver = new ResizeObserver(() => {
+      setTimeout(() => {
+        logEditor.value?.layout();
+      }, 200);
+    });
+
     // set editor content
     watch(content, () => {
-      cm.value?.setValue(content.value);
+      logEditor.value?.setValue(content.value);
     });
 
     // pagination change
@@ -94,23 +87,34 @@ export default defineComponent({
 
     // initialize
     onMounted(async () => {
-      const el = log.value as HTMLElement;
-      store.commit(`${ns}/setLogCodeMirrorEditor`, getCodemirrorEditor(el, options.value));
+      if (!editorRef.value) return;
 
-      await initTheme('darcula');
+      const editor = monaco.editor.create(editorRef.value, {
+        ...fileState.editorOptions,
+        readOnly: true,
+      });
+
+      resizeObserver.observe(editorRef.value);
 
       if (content.value) {
-        cm.value?.setValue(content.value);
+        editor.setValue(content.value);
       }
+
+      store.commit(`${ns}/setLogEditor`, editor)
     });
 
     // dispose
     onUnmounted(() => {
       store.commit(`${ns}/resetLogPagination`);
+      if (resizeObserver && editorRef.value) {
+        resizeObserver.unobserve(editorRef.value);
+      }
+      logEditor.value?.dispose();
+      store.commit(`${ns}/setLogEditor`, undefined);
     });
 
     return {
-      log,
+      log: editorRef,
       page,
       size,
       total,
@@ -150,12 +154,5 @@ export default defineComponent({
       }
     }
   }
-}
-</style>
-
-<style scoped>
-.task-detail-tab-logs .log-container .log >>> .CodeMirror {
-  position: relative;
-  min-height: 100%;
 }
 </style>

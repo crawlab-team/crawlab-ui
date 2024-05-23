@@ -37,7 +37,6 @@ import FileEditorNavTabs from './file/FileEditorNavTabs.vue';
 import FileEditorNavTabsContextMenu from './file/FileEditorNavTabsContextMenu.vue';
 import FileEditorNavTabsShowMoreContextMenu from './file/FileEditorNavTabsShowMoreContextMenu.vue';
 import FileEditorSettingsDialog from './file/FileEditorSettingsDialog.vue';
-import FileEditorSettingsFormItem from './file/FileEditorSettingsFormItem.vue';
 import FileUpload from './file/FileUpload.vue';
 import FilterCondition from './filter/FilterCondition.vue';
 import FilterConditionList from './filter/FilterConditionList.vue';
@@ -183,7 +182,6 @@ export {
   FileEditorNavTabsContextMenu as ClFileEditorNavTabsContextMenu,
   FileEditorNavTabsShowMoreContextMenu as ClFileEditorNavTabsShowMoreContextMenu,
   FileEditorSettingsDialog as ClFileEditorSettingsDialog,
-  FileEditorSettingsFormItem as ClFileEditorSettingsFormItem,
   FileUpload as ClFileUpload,
   FilterCondition as ClFilterCondition,
   FilterConditionList as ClFilterConditionList,

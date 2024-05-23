@@ -1,9 +1,6 @@
 <template>
   <div
-    :style="{
-        backgroundColor: style.backgroundColorGutters,
-        borderRight: `1px solid ${style.backgroundColor}`
-      }"
+    :style="{...styles.default}"
     ref="fileEditorNavMenu"
     class="file-editor-nav-menu"
   >
@@ -16,10 +13,7 @@
       :allow-drop="allowDrop"
       empty-text="No files available"
       icon-class="fa fa-angle-right"
-      :style="{
-          backgroundColor: style.backgroundColorGutters,
-          color: style.color,
-        }"
+      :style="{...styles.default}"
       node-key="path"
       :default-expanded-keys="computedDefaultExpandedKeys"
       draggable
@@ -49,7 +43,10 @@
             :class="getItemClass(data)"
             class="nav-item-wrapper"
           >
-            <div class="background"/>
+            <div
+              class="background"
+              :style="{backgroundColor: isSelected(data) ? styles.active.backgroundColor : ''}"
+            />
             <div class="nav-item">
               <span class="icon">
                 <cl-atom-material-icon :is-dir="data.is_dir" :name="data.name"/>
@@ -103,8 +100,8 @@ export default defineComponent({
       required: false,
       default: emptyArrayFunc,
     },
-    style: {
-      type: Object as PropType<Partial<CSSStyleDeclaration>>,
+    styles: {
+      type: Object as PropType<FileEditorStyles>,
       required: false,
       default: emptyObjectFunc,
     },
@@ -348,7 +345,6 @@ export default defineComponent({
 
     const getItemClass = (item: FileNavItem): string[] => {
       const cls = [];
-      if (isSelected(item)) cls.push('selected');
       if (isDroppable(item)) cls.push('droppable');
       return cls;
     };
@@ -463,16 +459,6 @@ export default defineComponent({
 
         & * {
           pointer-events: none;
-        }
-
-        &.selected {
-          .background {
-            background-color: var(--cl-file-editor-mask-bg);
-          }
-
-          .nav-item {
-            color: var(--cl-file-editor-nav-menu-item-selected-color);
-          }
         }
 
         &.droppable {

@@ -52,10 +52,6 @@ export default defineComponent({
 
       const {title} = form.value;
       internalTitle.value = title;
-
-      const codeMirrorEl = document.querySelector('.CodeMirror');
-      if (!codeMirrorEl) return;
-      codeMirrorEl.setAttribute('style', 'height: 100%; min-height: 100%;');
     });
 
     onBeforeUnmount(() => {
@@ -110,9 +106,5 @@ export default defineComponent({
   border-radius: 0;
   border-left: none;
   border-right: none;
-}
-
-.notification-detail-tab-template >>> .CodeMirror {
-  border-radius: 0;
 }
 </style>

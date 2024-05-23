@@ -3,7 +3,7 @@ interface FileEditorNavMenuProps {
   items: FileNavItem[];
   defaultExpandAll: boolean;
   defaultExpandedKeys: string[];
-  style?: Partial<CSSStyleDeclaration>;
+  styles?: FileEditorStyles;
 }
 
 interface FileEditorNavMenuClickStatus {

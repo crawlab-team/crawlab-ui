@@ -1,5 +1,4 @@
-import {EditorConfiguration} from 'codemirror';
-import '@/utils/codemirror';
+import '@/utils/editor';
 
 declare global {
   interface FileNavItem {
@@ -14,12 +13,11 @@ declare global {
   interface FileEditorStyle {
     backgroundColor?: string;
     color?: string;
-    height?: string;
-    backgroundColorGutters?: string;
   }
 
-  interface FileEditorConfigurationSearch {
-    bottom?: boolean;
+  interface FileEditorStyles {
+    default: FileEditorStyle;
+    active: FileEditorStyle;
   }
 
   interface FileEditorOptions {

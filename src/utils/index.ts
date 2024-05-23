@@ -2,7 +2,7 @@ export * from './admin';
 export * from './array';
 export * from './auth';
 export * from './auto';
-export * from './codemirror';
+export * from './editor';
 export * from './color';
 export * from './date';
 export * from './debounce';

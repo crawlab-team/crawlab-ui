@@ -1,4 +1,4 @@
-import {Editor} from 'codemirror';
+import * as monaco from 'monaco-editor';
 
 declare global {
   type TaskStoreModule = BaseModule<TaskStoreState, TaskStoreGetters, TaskStoreMutations, TaskStoreActions>;
@@ -8,7 +8,7 @@ declare global {
     logPagination: TablePagination;
     logTotal: number;
     logAutoUpdate: boolean;
-    logCodeMirrorEditor?: Editor;
+    logEditor?: monaco.editor.IStandaloneCodeEditor;
     dataDisplayAllFields: boolean;
   }
 
@@ -24,7 +24,7 @@ declare global {
     resetLogTotal: StoreMutation<TaskStoreState>;
     enableLogAutoUpdate: StoreMutation<TaskStoreState>;
     disableLogAutoUpdate: StoreMutation<TaskStoreState>;
-    setLogCodeMirrorEditor: StoreMutation<TaskStoreState, Editor>;
+    setLogEditor: StoreMutation<TaskStoreState, monaco.editor.IStandaloneCodeEditor>;
     setDataDisplayAllFields: StoreMutation<TaskStoreState, boolean>;
   }
 

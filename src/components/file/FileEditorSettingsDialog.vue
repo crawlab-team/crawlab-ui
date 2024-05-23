@@ -33,10 +33,9 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, readonly, ref} from 'vue';
+import {computed, defineComponent, onBeforeMount, ref} from 'vue';
 import {useStore} from 'vuex';
 import {plainClone} from '@/utils/object';
-import {getOptionDefinition, getThemes} from '@/utils/codemirror';
 import {onBeforeRouteLeave} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import {sendEvent} from '@/admin/umeng';
@@ -63,7 +62,7 @@ export default defineComponent({
       ];
     });
 
-    const options = ref<typeof file.editorOptions>(plainClone(file.editorOptions));
+    const options = ref<FileEditorOptions>(plainClone(file.editorOptions));
 
     const resetOptions = () => {
       options.value = plainClone(file.editorOptions);
@@ -84,14 +83,6 @@ export default defineComponent({
       sendEvent('click_file_editor_settings_dialog_confirm');
     };
 
-    const getDefinitionDescription = (name: string) => {
-      return getOptionDefinition(name)?.description;
-    };
-
-    const getDefinitionTitle = (name: string) => {
-      return getOptionDefinition(name)?.title;
-    };
-
     onBeforeMount(() => {
       resetOptions();
     });
@@ -106,8 +97,6 @@ export default defineComponent({
       themeOptions,
       onClose,
       onConfirm,
-      getDefinitionDescription,
-      getDefinitionTitle,
       t,
     };
   },

@@ -1,5 +1,4 @@
 import {Module, MutationTree} from 'vuex';
-import {EditorConfiguration} from 'codemirror';
 
 declare global {
   interface FileStoreModule extends Module<FileStoreState, RootStoreState> {
@@ -14,7 +13,7 @@ declare global {
   }
 
   interface FileStoreMutations extends MutationTree<FileStoreState> {
-    setEditorOptions: StoreMutation<FileStoreState, EditorConfiguration>;
+    setEditorOptions: StoreMutation<FileStoreState, FileEditorOptions>;
     resetEditorOptions: StoreMutation<FileStoreState>;
     setEditorSettingsDialogVisible: StoreMutation<FileStoreState, boolean>;
     setEditorCreateWithAiDialogVisible: StoreMutation<FileStoreState, boolean>;
