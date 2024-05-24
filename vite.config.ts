@@ -30,11 +30,9 @@ export default defineConfig({
         'echarts',
         'atom-material-icons',
         'simplemde',
+        'monaco-editor',
       ],
       output: {
-        manualChunks: {
-          'monaco-editor': ['monaco-editor'],
-        },
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
@@ -53,6 +51,7 @@ export default defineConfig({
           echarts: 'Echarts',
           'atom-material-icons': 'AtomMaterialIcons',
           'simplemde': 'SimpleMDE',
+          'monaco-editor': 'monaco',
         }
       }
     },
