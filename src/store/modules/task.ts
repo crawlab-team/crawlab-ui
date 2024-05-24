@@ -6,7 +6,6 @@ import {
 } from '@/utils/store';
 import useRequest from '@/services/request';
 import {TAB_NAME_DATA, TAB_NAME_LOGS, TAB_NAME_OVERVIEW} from '@/constants/tab';
-import * as monaco from 'monaco-editor';
 import {TASK_MODE_RANDOM} from '@/constants/task';
 import {translate} from '@/utils/i18n';
 
@@ -38,7 +37,6 @@ const state = {
   },
   logTotal: 0,
   logAutoUpdate: false,
-  logEditor: undefined,
   dataDisplayAllFields: false,
 } as TaskStoreState;
 
@@ -71,9 +69,6 @@ const mutations = {
   },
   disableLogAutoUpdate: (state: TaskStoreState) => {
     state.logAutoUpdate = false;
-  },
-  setLogEditor: (state: TaskStoreState, editor: monaco.editor.IStandaloneCodeEditor) => {
-    state.logEditor = editor;
   },
   setDataDisplayAllFields: (state: TaskStoreState, displayAllFields: boolean) => {
     state.dataDisplayAllFields = displayAllFields;

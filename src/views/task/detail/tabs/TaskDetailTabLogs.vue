@@ -2,26 +2,27 @@
   <div class="task-detail-tab-logs">
     <div class="pagination">
       <el-pagination
-          :current-page="page"
-          :page-size="size"
-          :page-sizes="pageSizes"
-          :total="total"
-          layout="total, sizes, prev, pager, next"
-          @current-change="onPageChange"
-          @size-change="onSizeChange"
+        :current-page="page"
+        :page-size="size"
+        :page-sizes="pageSizes"
+        :total="total"
+        layout="total, sizes, prev, pager, next"
+        @current-change="onPageChange"
+        @size-change="onSizeChange"
       />
     </div>
     <div class="log-container">
-      <div ref="log" class="log"/>
+      <div ref="editorRef" class="log"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, onUnmounted, ref, watch} from 'vue';
+import {computed, defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, watch} from 'vue';
 import {useStore} from 'vuex';
 import * as monaco from "monaco-editor";
 import useTaskDetail from '@/views/task/detail/useTaskDetail';
+import {isCancellable} from "@/utils";
 
 export default defineComponent({
   name: 'TaskDetailTabLogs',
@@ -33,12 +34,15 @@ export default defineComponent({
 
     // use task detail
     const {
+      form,
       activeId,
-      logEditor,
     } = useTaskDetail();
 
     // log div element
     const editorRef = ref<HTMLDivElement>();
+
+    // log editor
+    let logEditor: monaco.editor.IStandaloneCodeEditor | null = null;
 
     // content
     const content = computed<string>(() => state.logContent);
@@ -55,13 +59,13 @@ export default defineComponent({
 
     const resizeObserver = new ResizeObserver(() => {
       setTimeout(() => {
-        logEditor.value?.layout();
+        logEditor?.layout();
       }, 200);
     });
 
     // set editor content
     watch(content, () => {
-      logEditor.value?.setValue(content.value);
+      logEditor?.setValue(content.value);
     });
 
     // pagination change
@@ -85,11 +89,58 @@ export default defineComponent({
       50000,
     ]);
 
+    const updateLogs = async () => {
+      // skip if active id is empty
+      if (!activeId.value) return;
+
+      // update logs
+      await store.dispatch(`${ns}/getLogs`, activeId.value);
+
+      // update pagination
+      const {logPagination, logTotal} = state;
+      const {page, size} = logPagination;
+      if (logTotal > size * page) {
+        const maxPage = Math.ceil(logTotal / size);
+        store.commit(`${ns}/setLogPagination`, {
+          page: maxPage,
+          size,
+        });
+      }
+
+      // scroll to bottom
+      setTimeout(() => {
+        const model = logEditor?.getModel();
+        logEditor?.revealLine(model?.getLineCount() || 0);
+      }, 100);
+    };
+
+    // auto update
+    let autoUpdateHandle: number;
+    const setupDetail = () => {
+      if (isCancellable(form.value?.status)) {
+        // @ts-ignore
+        autoUpdateHandle = setInterval(async () => {
+          // form data
+          const res = await store.dispatch(`${ns}/getById`, activeId.value);
+
+          // logs
+          if (state.logAutoUpdate) {
+            await updateLogs();
+          }
+
+          // dispose
+          if (!isCancellable(res.data.status)) {
+            clearInterval(autoUpdateHandle);
+          }
+        }, 5000);
+      }
+    };
+
     // initialize
     onMounted(async () => {
       if (!editorRef.value) return;
 
-      const editor = monaco.editor.create(editorRef.value, {
+      logEditor = monaco.editor.create(editorRef.value, {
         ...fileState.editorOptions,
         readOnly: true,
       });
@@ -97,11 +148,25 @@ export default defineComponent({
       resizeObserver.observe(editorRef.value);
 
       if (content.value) {
-        editor.setValue(content.value);
+        logEditor.setValue(content.value);
       }
-
-      store.commit(`${ns}/setLogEditor`, editor)
     });
+
+    onBeforeMount(async () => {
+      // logs
+      await updateLogs();
+
+      // initialize logs auto update
+      setTimeout(() => {
+        if (isCancellable(form.value?.status)) {
+          store.commit(`${ns}/enableLogAutoUpdate`);
+        }
+      }, 500);
+
+      // setup
+      setupDetail();
+    });
+    onBeforeUnmount(() => clearInterval(autoUpdateHandle))
 
     // dispose
     onUnmounted(() => {
@@ -109,12 +174,12 @@ export default defineComponent({
       if (resizeObserver && editorRef.value) {
         resizeObserver.unobserve(editorRef.value);
       }
-      logEditor.value?.dispose();
+      logEditor?.dispose();
       store.commit(`${ns}/setLogEditor`, undefined);
     });
 
     return {
-      log: editorRef,
+      editorRef,
       page,
       size,
       total,
@@ -131,8 +196,14 @@ export default defineComponent({
   height: 100%;
 
   .pagination {
-    text-align: right;
-    height: 32px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+
+    .el-pagination {
+      padding: 0 16px;
+    }
   }
 
   .log-container {
