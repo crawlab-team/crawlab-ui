@@ -168,9 +168,9 @@ const useSpiderList = () => {
       icon: ['fa', 'heartbeat'],
       width: '120',
       value: (row: Spider) => {
-        const status = row.stat?.last_task?.status;
+        const {error, status} = row.stat?.last_task || {};
         if (!status) return;
-        return h(TaskStatus, {status} as TaskStatusProps);
+        return h(TaskStatus, {status, error} as TaskStatusProps);
       }
     },
     {

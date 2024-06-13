@@ -27,6 +27,7 @@ const {
   get,
   post,
   getList,
+  del,
 } = useRequest();
 
 const state = {
@@ -201,6 +202,20 @@ const actions = {
       }
     });
   },
+  saveFilesBinary: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {
+    id,
+    files,
+  }: SaveFilesRequestPayload) => {
+    const data = new FormData();
+    files.forEach(({path, file}) => {
+      data.append(path, file as File);
+    });
+    return await post(`${endpoint}/${id}/files/save/batch`, data, null, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    });
+  },
   saveDir: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id, path}: FileRequestPayload) => {
     return await post(`${endpoint}/${id}/files/save/dir`, {path});
   },
@@ -212,7 +227,7 @@ const actions = {
     return await post(`${endpoint}/${id}/files/rename`, {path, new_path});
   },
   deleteFile: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id, path}: FileRequestPayload) => {
-    return await post(`${endpoint}/${id}/files/delete`, {path});
+    return await del(`${endpoint}/${id}/files`, {path});
   },
   copyFile: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id, path, new_path}: FileRequestPayload) => {
     return await post(`${endpoint}/${id}/files/copy`, {path, new_path});

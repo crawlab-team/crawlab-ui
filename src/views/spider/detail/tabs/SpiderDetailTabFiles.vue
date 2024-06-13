@@ -92,13 +92,14 @@ export default defineComponent({
         if (isRoot(item)) {
           path = `${pathSep}${name}`;
         } else {
-          const itemDirPath = getDirPath(item.path || '');
+          const itemDirPath = item.path || '';
           path = `${itemDirPath}${pathSep}${name}`;
         }
       } else {
         const dirPath = getDirPath(item.path as string);
         path = `${dirPath}${pathSep}${name}`;
       }
+      console.debug(path)
       return path;
     };
 

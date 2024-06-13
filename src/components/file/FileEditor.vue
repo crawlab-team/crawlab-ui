@@ -285,6 +285,7 @@ export default defineComponent({
     const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
       return items
         .filter(d => {
+          if (!fileSearchString.value) return true;
           if (!d.is_dir) {
             return d.name?.toLowerCase().includes(fileSearchString.value.toLowerCase());
           }
@@ -300,6 +301,11 @@ export default defineComponent({
           if (!d.is_dir) return d;
           d.children = getFilteredFiles(d.children || []);
           return d;
+        })
+        .sort((a, b) => {
+          if (a.is_dir && !b.is_dir) return -1;
+          if (!a.is_dir && b.is_dir) return 1;
+          return a.name?.localeCompare(b.name || '') || 0;
         });
     };
 
@@ -309,7 +315,7 @@ export default defineComponent({
         path: FILE_ROOT,
         name: FILE_ROOT,
         is_dir: true,
-        children: fileSearchString.value ? getFilteredFiles(navItems) : navItems,
+        children: getFilteredFiles(navItems || []),
       };
       return [root];
     });

@@ -67,6 +67,7 @@ export default defineComponent({
     const {
       listRootDir,
       saveFileBinary,
+      saveFilesBinary,
     } = useSpiderService(store);
 
     const id = computed<string>(() => {
@@ -117,8 +118,8 @@ export default defineComponent({
 
     const uploadFiles = async () => {
       if (!files.value) return;
-      await Promise.all(files.value.map((f: FileWithPath) => {
-        return saveFileBinary(id.value, getFilePath(f), f as File);
+      await saveFilesBinary(id.value, files.value.map((f: FileWithPath) => {
+        return {path: getFilePath(f), file: f as File};
       }));
       store.commit(`${ns}/resetFiles`);
       await listRootDir(id.value);

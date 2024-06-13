@@ -25,6 +25,11 @@ export declare global {
     file?: File;
   }
 
+  interface SaveFilesRequestPayload {
+    id: string;
+    files: { path: string, file: File }[];
+  }
+
   interface Response {
     status: string;
     message: string;

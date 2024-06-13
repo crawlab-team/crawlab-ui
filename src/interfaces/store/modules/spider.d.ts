@@ -54,6 +54,7 @@ declare global {
     getFileInfo: StoreAction<SpiderStoreState, FileRequestPayload>;
     saveFile: StoreAction<SpiderStoreState, FileRequestPayload>;
     saveFileBinary: StoreAction<SpiderStoreState, FileRequestPayload>;
+    saveFilesBinary: StoreAction<SpiderStoreState, SaveFilesRequestPayload>;
     saveDir: StoreAction<SpiderStoreState, FileRequestPayload>;
     renameFile: StoreAction<SpiderStoreState, FileRequestPayload>;
     deleteFile: StoreAction<SpiderStoreState, FileRequestPayload>;
