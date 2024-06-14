@@ -9,29 +9,12 @@
     @close="onClose"
     @confirm="onConfirm"
   >
-    <el-tabs
-      v-model="internalTabName"
-      :class="[type, visible ? 'visible' : '']"
-      class="create-edit-dialog-tabs"
-      @tab-click="onTabChange"
-    >
-      <el-tab-pane :label="t('components.dialog.type.single')" name="single">
-        <slot/>
-      </el-tab-pane>
-      <el-tab-pane v-if="!noBatch" :label="t('components.dialog.type.batch')" name="batch">
-        <cl-create-dialog-content-batch
-          :data="batchFormData"
-          :fields="batchFormFields"
-        />
-      </el-tab-pane>
-    </el-tabs>
+    <slot/>
   </cl-dialog>
 </template>
 
 <script lang="ts">
 import {computed, defineComponent, PropType, provide, ref, SetupContext, watch} from 'vue';
-import CreateDialogContentBatch from '@/components/dialog/CreateDialogContentBatch.vue';
-import Dialog from '@/components/dialog/Dialog.vue';
 import {emptyArrayFunc, emptyObjectFunc} from '@/utils/func';
 import {TabsPaneContext} from 'element-plus/lib/tokens/tabs.d';
 import {useI18n} from 'vue-i18n';
