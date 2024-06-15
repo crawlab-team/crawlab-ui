@@ -31,6 +31,7 @@
     />
     <cl-install-form
       :visible="dialogVisible.install"
+      :lang="lang"
       :nodes="allNodes"
       :names="installForm.names"
       @confirm="onInstall"
@@ -47,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, h, onMounted, ref} from 'vue';
+import {computed, defineComponent, h, onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router';
 import {useStore} from 'vuex';
 import {ElMessage, ElMessageBox} from 'element-plus';
@@ -234,6 +235,8 @@ export default defineComponent({
 
     onMounted(getSpiderData);
 
+    watch(() => route.params.id, getSpiderData);
+
     const spiderDataDependencyTypeLabel = computed(() => {
       switch (spiderData.value.dependency_type) {
         case 'requirements.txt':
@@ -263,6 +266,17 @@ export default defineComponent({
           return spiderData.value.dependency_type;
         default:
           return t('common.mode.other');
+      }
+    });
+
+    const lang = computed(() => {
+      switch (spiderData.value.dependency_type) {
+        case 'requirements.txt':
+          return 'python';
+        case 'package.json':
+          return 'node';
+        default:
+          return '';
       }
     });
 
@@ -362,6 +376,7 @@ export default defineComponent({
       onDialogClose,
       onInstall,
       onUninstall,
+      lang,
       dialogVisible,
       installForm,
       uninstallForm,
