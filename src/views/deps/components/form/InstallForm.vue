@@ -117,8 +117,9 @@ export default defineComponent({
       if (!props.visible) return;
       versionsLoading.value = true;
       try {
-        console.debug('getVersions', props.names[0])
-        const res = await get(`${endpointL}/${props.lang}/${props.names[0]}/versions`)
+        const res = await get(`${endpointL}/${props.lang}/versions`, {
+          repo: props.names[0],
+        })
         versions.value = res.data;
         if (versions.value.length > 0) {
           version.value = versions.value[0];
