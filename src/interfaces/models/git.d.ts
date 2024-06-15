@@ -37,6 +37,7 @@ export declare global {
 
   interface Git extends BaseModel {
     url?: string;
+    name?: string;
     auth_type?: string;
     username?: string;
     password?: string;

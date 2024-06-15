@@ -14,6 +14,7 @@ export declare global {
     notification: LViewsNotification;
     plugins: LViewsPlugins;
     misc: LViewsMisc;
+    gits: LViewGits;
     ds: LViewsDataSource;
     environment: LViewsEnvironments;
     system: LViewsSystem;

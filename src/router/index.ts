@@ -11,7 +11,7 @@ import tag from '@/router/tag';
 import token from '@/router/token';
 import deps from '@/router/deps';
 import notification from '@/router/notification';
-import plugin from '@/router/plugin';
+import git from '@/router/git';
 import ds from '@/router/ds';
 import environment from '@/router/environment';
 import system from '@/router/system';
@@ -40,8 +40,8 @@ export function getDefaultRoutes(): Array<RouteRecordRaw> {
         ...token,
         ...deps,
         ...notification,
-        ...plugin,
         ...misc,
+        ...git,
         ...ds,
         ...environment,
         ...system,
@@ -58,9 +58,9 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
     {path: '/spiders', title: 'router.menuItems.spiders', icon: ['fa', 'spider']},
     {path: '/schedules', title: 'router.menuItems.schedules', icon: ['fa', 'clock']},
     {path: '/tasks', title: 'router.menuItems.tasks', icon: ['fa', 'tasks']},
+    {path: '/gits', title: 'router.menuItems.git', icon: ['fab', 'git']},
     {path: '/data-sources', title: 'router.menuItems.ds', icon: ['fa', 'database']},
     {path: '/users', title: 'router.menuItems.users', icon: ['fa', 'users']},
-    // {path: '/tags', title: 'router.menuItems.tags', icon: ['fa', 'tag']},
     {path: '/tokens', title: 'router.menuItems.tokens', icon: ['fa', 'key']},
     {
       path: '/deps',

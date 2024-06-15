@@ -6,6 +6,7 @@ const router: LRouter = {
     spiders: 'Spiders',
     schedules: 'Schedules',
     tasks: 'Tasks',
+    git: 'Git Repo',
     ds: 'Data Sources',
     users: 'Users',
     tags: 'Tags',
