@@ -78,7 +78,7 @@ const useGitList = () => {
       key: 'name',
       label: t('views.gits.table.columns.name'),
       icon: ['fa', 'font'],
-      width: '150',
+      width: '240',
       value: (row: Git) => h(NavLink, {
         path: `/gits/${row._id}`,
         label: row.name,

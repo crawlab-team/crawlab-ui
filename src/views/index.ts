@@ -14,6 +14,15 @@ import DataSourceDetail from './ds/detail/DataSourceDetail.vue';
 import DataSourceDetailTabOverview from './ds/detail/tabs/DataSourceDetailTabOverview.vue';
 import DataSourceList from './ds/list/DataSourceList.vue';
 import EnvironmentList from './environment/list/EnvironmentList.vue';
+import GitDetail from './git/detail/GitDetail.vue';
+import GitDetailTabBranches from './git/detail/tabs/GitDetailTabBranches.vue';
+import GitDetailTabChanges from './git/detail/tabs/GitDetailTabChanges.vue';
+import GitDetailTabIgnore from './git/detail/tabs/GitDetailTabIgnore.vue';
+import GitDetailTabLogs from './git/detail/tabs/GitDetailTabLogs.vue';
+import GitDetailTabOverview from './git/detail/tabs/GitDetailTabOverview.vue';
+import GitDetailTabRemote from './git/detail/tabs/GitDetailTabRemote.vue';
+import GitDetailTabTags from './git/detail/tabs/GitDetailTabTags.vue';
+import GitList from './git/list/GitList.vue';
 import Home from './home/Home.vue';
 import Login from './login/Login.vue';
 import Disclaimer from './misc/Disclaimer.vue';
@@ -46,16 +55,10 @@ import SpiderDetailActionsFiles from './spider/detail/actions/SpiderDetailAction
 import SpiderDetailActionsGit from './spider/detail/actions/SpiderDetailActionsGit.vue';
 import SpiderDetailTabData from './spider/detail/tabs/SpiderDetailTabData.vue';
 import SpiderDetailTabFiles from './spider/detail/tabs/SpiderDetailTabFiles.vue';
-import SpiderDetailTabGit from './spider/detail/tabs/SpiderDetailTabGit.vue';
 import SpiderDetailTabOverview from './spider/detail/tabs/SpiderDetailTabOverview.vue';
 import SpiderDetailTabSchedules from './spider/detail/tabs/SpiderDetailTabSchedules.vue';
 import SpiderDetailTabSettings from './spider/detail/tabs/SpiderDetailTabSettings.vue';
 import SpiderDetailTabTasks from './spider/detail/tabs/SpiderDetailTabTasks.vue';
-import SpiderDetailTabGitChanges from './spider/detail/tabs/git/SpiderDetailTabGitChanges.vue';
-import SpiderDetailTabGitIgnore from './spider/detail/tabs/git/SpiderDetailTabGitIgnore.vue';
-import SpiderDetailTabGitLogs from './spider/detail/tabs/git/SpiderDetailTabGitLogs.vue';
-import SpiderDetailTabGitReferences from './spider/detail/tabs/git/SpiderDetailTabGitReferences.vue';
-import SpiderDetailTabGitRemote from './spider/detail/tabs/git/SpiderDetailTabGitRemote.vue';
 import SpiderList from './spider/list/SpiderList.vue';
 import SystemDetail from './system/detail/SystemDetail.vue';
 import TagDetail from './tag/detail/TagDetail.vue';
@@ -91,6 +94,15 @@ export {
   DataSourceDetailTabOverview as ClDataSourceDetailTabOverview,
   DataSourceList as ClDataSourceList,
   EnvironmentList as ClEnvironmentList,
+  GitDetail as ClGitDetail,
+  GitDetailTabBranches as ClGitDetailTabBranches,
+  GitDetailTabChanges as ClGitDetailTabChanges,
+  GitDetailTabIgnore as ClGitDetailTabIgnore,
+  GitDetailTabLogs as ClGitDetailTabLogs,
+  GitDetailTabOverview as ClGitDetailTabOverview,
+  GitDetailTabRemote as ClGitDetailTabRemote,
+  GitDetailTabTags as ClGitDetailTabTags,
+  GitList as ClGitList,
   Home as ClHome,
   Login as ClLogin,
   Disclaimer as ClDisclaimer,
@@ -123,16 +135,10 @@ export {
   SpiderDetailActionsGit as ClSpiderDetailActionsGit,
   SpiderDetailTabData as ClSpiderDetailTabData,
   SpiderDetailTabFiles as ClSpiderDetailTabFiles,
-  SpiderDetailTabGit as ClSpiderDetailTabGit,
   SpiderDetailTabOverview as ClSpiderDetailTabOverview,
   SpiderDetailTabSchedules as ClSpiderDetailTabSchedules,
   SpiderDetailTabSettings as ClSpiderDetailTabSettings,
   SpiderDetailTabTasks as ClSpiderDetailTabTasks,
-  SpiderDetailTabGitChanges as ClSpiderDetailTabGitChanges,
-  SpiderDetailTabGitIgnore as ClSpiderDetailTabGitIgnore,
-  SpiderDetailTabGitLogs as ClSpiderDetailTabGitLogs,
-  SpiderDetailTabGitReferences as ClSpiderDetailTabGitReferences,
-  SpiderDetailTabGitRemote as ClSpiderDetailTabGitRemote,
   SpiderList as ClSpiderList,
   SystemDetail as ClSystemDetail,
   TagDetail as ClTagDetail,

@@ -1,6 +1,7 @@
 const git: LComponentsGit = {
   form: {
-    remoteUrl: '远程 URL',
+    repoUrl: '仓库 URL',
+    name: '名称',
     currentBranch: '当前分支',
     authType: '验证类型',
     username: '用户名',

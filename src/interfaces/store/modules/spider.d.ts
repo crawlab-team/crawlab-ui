@@ -10,18 +10,10 @@ declare global {
     files: FileWithPath[];
     fileContent: string;
     defaultFilePaths: string[];
-    gitData: GitData;
-    gitChangeSelection: TableData<GitChange>;
-    gitRemoteRefs: GitRef[];
-    gitRefType: string;
-    gitCurrentBranchLoading: boolean;
     dataDisplayAllFields: boolean;
   }
 
-  interface SpiderStoreGetters extends BaseStoreGetters<SpiderStoreState> {
-    gitLogsMap: StoreGetter<SpiderStoreState, Map<string, GitLog>>;
-    gitBranchSelectOptions: StoreGetter<SpiderStoreState, SelectOption[]>;
-  }
+  type SpiderStoreGetters = BaseStoreGetters<SpiderStoreState>;
 
   interface SpiderStoreMutations extends BaseStoreMutations<Spider> {
     setFileNavItems: StoreMutation<SpiderStoreState, FileNavItem[]>;
@@ -35,15 +27,6 @@ declare global {
     resetFileContent: StoreMutation<SpiderStoreState>;
     setDefaultFilePaths: StoreMutation<SpiderStoreState, string[]>;
     resetDefaultFilePaths: StoreMutation<SpiderStoreState>;
-    setGitData: StoreMutation<SpiderStoreState, GitData>;
-    resetGitData: StoreMutation<SpiderStoreState>;
-    setGitChangeSelection: StoreMutation<SpiderStoreState, GitChange[]>;
-    resetGitChangeSelection: StoreMutation<SpiderStoreState>;
-    setGitRemoteRefs: StoreMutation<SpiderStoreState, GitRef[]>;
-    resetGitRemoteRefs: StoreMutation<SpiderStoreState>;
-    setGitRefType: StoreMutation<SpiderStoreState, string>;
-    resetGitRefType: StoreMutation<SpiderStoreState>;
-    setGitCurrentBranchLoading: StoreMutation<SpiderStoreState, boolean>;
     setDataDisplayAllFields: StoreMutation<SpiderStoreState, boolean>;
   }
 
@@ -60,10 +43,5 @@ declare global {
     deleteFile: StoreAction<SpiderStoreState, FileRequestPayload>;
     copyFile: StoreAction<SpiderStoreState, FileRequestPayload>;
     exportFiles: StoreAction<SpiderStoreState, { id: string }>;
-    getGit: StoreAction<SpiderStoreState, { id: string }>;
-    getGitRemoteRefs: StoreAction<SpiderStoreState, { id: string }>;
-    gitCheckout: StoreAction<SpiderStoreState, { id: string; branch: string }>;
-    gitPull: StoreAction<SpiderStoreState, { id: string }>;
-    gitCommit: StoreAction<SpiderStoreState, { id: string; commit_message: string }>;
   }
 }

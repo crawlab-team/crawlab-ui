@@ -104,6 +104,12 @@ export declare global {
       dependencies: string;
       triggers: string;
       template: string;
+      remote: string;
+      branches: string;
+      tags: string;
+      references: string;
+      changes: string;
+      ignore: string;
     };
     status: {
       unassigned: string;

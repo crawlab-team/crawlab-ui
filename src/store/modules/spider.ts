@@ -8,12 +8,10 @@ import useRequest from '@/services/request';
 import {
   TAB_NAME_DATA, TAB_NAME_DEPENDENCIES,
   TAB_NAME_FILES,
-  TAB_NAME_GIT,
   TAB_NAME_OVERVIEW,
   TAB_NAME_SCHEDULES,
   TAB_NAME_TASKS
 } from '@/constants/tab';
-import {GIT_REF_TYPE_BRANCH} from '@/constants/git';
 import {TASK_MODE_RANDOM} from '@/constants/task';
 import {translate} from '@/utils/i18n';
 import {FILE_UPLOAD_MODE_DIR} from '@/constants';
@@ -41,7 +39,6 @@ const state = {
   tabs: [
     {id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview')},
     {id: TAB_NAME_FILES, title: t('common.tabs.files')},
-    {id: TAB_NAME_GIT, title: t('common.tabs.git')},
     {id: TAB_NAME_TASKS, title: t('common.tabs.tasks')},
     {id: TAB_NAME_SCHEDULES, title: t('common.tabs.schedules')},
     {id: TAB_NAME_DATA, title: t('common.tabs.data')},
@@ -54,33 +51,11 @@ const state = {
   files: [],
   fileContent: '',
   defaultFilePaths: [],
-  gitData: {},
-  gitChangeSelection: [],
-  gitRemoteRefs: [],
-  gitRefType: GIT_REF_TYPE_BRANCH,
-  gitCurrentBranchLoading: false,
   dataDisplayAllFields: false,
 } as SpiderStoreState;
 
 const getters = {
   ...getDefaultStoreGetters<Spider>(),
-  gitLogsMap: (state: SpiderStoreState) => {
-    const m = new Map<string, GitLog>();
-    state.gitData.logs?.forEach(l => {
-      if (l.hash) {
-        m.set(l.hash, l);
-      }
-    });
-    return m;
-  },
-  gitBranchSelectOptions: (state: SpiderStoreState) => {
-    return state.gitRemoteRefs
-      .filter(r => r.type === GIT_REF_TYPE_BRANCH)
-      .map(r => ({
-        label: r.name,
-        value: r.name,
-      }));
-  },
 } as SpiderStoreGetters;
 
 const mutations = {
@@ -117,34 +92,6 @@ const mutations = {
   },
   resetDefaultFilePaths: (state: SpiderStoreState) => {
     state.defaultFilePaths = [];
-  },
-  setGitData: (state: SpiderStoreState, data: GitData) => {
-    state.gitData = data;
-  },
-  resetGitData: (state: SpiderStoreState) => {
-    state.gitData = {};
-  },
-  setGitChangeSelection: (state: SpiderStoreState, selection: GitChange[]) => {
-    debugger
-    state.gitChangeSelection = selection;
-  },
-  resetGitChangeSelection: (state: SpiderStoreState) => {
-    state.gitChangeSelection = [];
-  },
-  setGitRemoteRefs: (state: SpiderStoreState, refs: GitRef[]) => {
-    state.gitRemoteRefs = refs;
-  },
-  resetGitRemoteRefs: (state: SpiderStoreState) => {
-    state.gitRemoteRefs = [];
-  },
-  setGitRefType: (state: SpiderStoreState, refType: string) => {
-    state.gitRefType = refType;
-  },
-  resetGitRefType: (state: SpiderStoreState) => {
-    state.gitRefType = GIT_REF_TYPE_BRANCH;
-  },
-  setGitCurrentBranchLoading: (state: SpiderStoreState, loading: boolean) => {
-    state.gitCurrentBranchLoading = loading;
   },
   setDataDisplayAllFields: (state: SpiderStoreState, display: boolean) => {
     state.dataDisplayAllFields = display;
@@ -234,38 +181,6 @@ const actions = {
   },
   exportFiles: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id}: { id: string }) => {
     return await post(`${endpoint}/${id}/files/export`, {}, {}, {responseType: 'arraybuffer'}) as any;
-  },
-  getGit: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id}: { id: string }) => {
-    try {
-      commit('setGitCurrentBranchLoading', true);
-      const res = await get(`${endpoint}/${id}/git`);
-      commit('setGitData', res?.data || {});
-      return res;
-    } finally {
-      commit('setGitCurrentBranchLoading', false);
-    }
-  },
-  getGitRemoteRefs: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id}: { id: string }) => {
-    const res = await get(`${endpoint}/${id}/git/remote-refs`);
-    commit('setGitRemoteRefs', res?.data || []);
-    return res;
-  },
-  gitCheckout: async ({state}: StoreActionContext<SpiderStoreState>, {id, branch}: { id: string; branch: string }) => {
-    const res = await post(`${endpoint}/${id}/git/checkout`, {branch});
-    return res;
-  },
-  gitPull: async ({state}: StoreActionContext<SpiderStoreState>, {id}: { id: string }) => {
-    const res = await post(`${endpoint}/${id}/git/pull`, {});
-    return res;
-  },
-  gitCommit: async ({state}: StoreActionContext<SpiderStoreState>, {
-    id,
-    commit_message
-  }: { id: string; commit_message: string }) => {
-    const paths = state.gitChangeSelection.map(d => d.path);
-    console.debug(paths);
-    const res = await post(`${endpoint}/${id}/git/commit`, {paths, commit_message});
-    return res;
   },
 } as SpiderStoreActions;
 

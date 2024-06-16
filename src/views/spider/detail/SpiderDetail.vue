@@ -3,7 +3,6 @@
     <template #actions>
       <cl-spider-detail-actions-common/>
       <cl-spider-detail-actions-files v-if="activeTabName === 'files'"/>
-      <cl-spider-detail-actions-git v-if="activeTabName === 'git'"/>
       <cl-spider-detail-actions-data v-if="activeTabName === 'data'"/>
       <cl-spider-detail-actions-data-source v-if="activeTabName === 'data'"/>
       <slot name="actions-suffix"/>
@@ -29,7 +28,6 @@ export default defineComponent({
 
     const {
       saveFile,
-      saveGit,
     } = useSpiderDetail();
 
     onBeforeMount(async () => {
@@ -39,7 +37,6 @@ export default defineComponent({
 
       store.commit(`${ns}/setAfterSave`, [
         saveFile,
-        saveGit,
       ]);
     });
 

@@ -1,28 +1,30 @@
-import {plainClone} from '@/utils/object';
+export function debounce<T extends (...args: any[]) => Promise<any>>(func: T, wait: number): (...args: Parameters<T>) => Promise<ReturnType<T>> {
+  let timeout: ReturnType<typeof setTimeout>;
+  let resolveQueue: ((value: ReturnType<T> | PromiseLike<ReturnType<T>>) => void)[] = [];
 
-interface DebounceOptions {
-  delay?: number;
-}
+  return function (...args: Parameters<T>): Promise<ReturnType<T>> {
+    // Clear the previous timeout
+    clearTimeout(timeout);
 
-const defaultDebounceOptions: DebounceOptions = {
-  delay: 500,
-};
+    // Create a new promise and push its resolve function to the queue
+    const promise = new Promise<ReturnType<T>>(resolve => {
+      resolveQueue.push(resolve);
+    });
 
-const getDefaultDebounceOptions = (): DebounceOptions => {
-  return plainClone(defaultDebounceOptions);
-};
+    // Set the new timeout
+    timeout = setTimeout(async () => {
+      // Execute the function
+      const result = await func(...args);
 
-const normalizeDebounceOptions = (options?: DebounceOptions): DebounceOptions => {
-  if (!options) options = getDefaultDebounceOptions();
-  if (!options.delay) options.delay = defaultDebounceOptions.delay;
-  return options;
-};
+      // Resolve all promises in the queue with the result
+      while (resolveQueue.length) {
+        const resolve = resolveQueue.shift();
+        if (resolve) {
+          resolve(result);
+        }
+      }
+    }, wait);
 
-export const debounce = <T = any>(fn: Function, options?: DebounceOptions): Function => {
-  let handle: number | null = null;
-  return () => {
-    if (handle) clearTimeout(handle);
-    const {delay} = normalizeDebounceOptions(options);
-    handle = setTimeout(fn, delay);
+    return promise;
   };
-};
+}

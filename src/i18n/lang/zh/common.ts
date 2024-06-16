@@ -91,6 +91,12 @@ const common: LCommon = {
     dependencies: '依赖',
     triggers: '触发',
     template: '模板',
+    remote: '远程',
+    branches: '分支',
+    tags: '标签',
+    references: '引用',
+    changes: '变更',
+    ignore: '忽略',
   },
   status: {
     unassigned: '未指定',

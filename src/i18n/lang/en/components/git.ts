@@ -1,6 +1,7 @@
 const git: LComponentsGit = {
   form: {
-    remoteUrl: 'Remote URL',
+    repoUrl: 'Repo URL',
+    name: 'Name',
     currentBranch: 'Current Branch',
     authType: 'Auth Type',
     username: 'Username',

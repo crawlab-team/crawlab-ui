@@ -1,7 +1,8 @@
 import {RouteRecordRaw} from 'vue-router';
 import {
-  TAB_NAME_DATA, TAB_NAME_DEPENDENCIES,
-  TAB_NAME_FILES, TAB_NAME_GIT,
+  TAB_NAME_DATA,
+  TAB_NAME_DEPENDENCIES,
+  TAB_NAME_FILES,
   TAB_NAME_OVERVIEW,
   TAB_NAME_SCHEDULES,
   TAB_NAME_SETTINGS,
@@ -31,10 +32,6 @@ export default [
       {
         path: TAB_NAME_FILES,
         component: () => import('@/views/spider/detail/tabs/SpiderDetailTabFiles.vue'),
-      },
-      {
-        path: TAB_NAME_GIT,
-        component: () => import('@/views/spider/detail/tabs/SpiderDetailTabGit.vue'),
       },
       {
         path: TAB_NAME_TASKS,

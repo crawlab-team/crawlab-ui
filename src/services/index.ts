@@ -1,4 +1,5 @@
 import useRequest from '@/services/request';
+import {debounce} from "@/utils";
 
 const {
   get,
@@ -14,9 +15,9 @@ const {
 
 export const useService = <T = any>(endpoint: string): Services<T> => {
   return {
-    getById: async (id: string) => {
+    getById: debounce<{ (id: string): Promise<ResponseWithData<T>> }>(async (id: string) => {
       return await get<T>(`${endpoint}/${id}`);
-    },
+    }),
     create: async (form: T) => {
       return await post<T>(`${endpoint}`, form);
     },

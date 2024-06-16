@@ -8,34 +8,38 @@
     <!--Row-->
     <cl-form-item
       :span="4"
-      :label="t('components.git.form.remoteUrl')"
+      :label="t('components.git.form.repoUrl')"
       prop="url"
     >
-      <el-input
-        v-model="form.url"
-        :placeholder="t('components.git.form.remoteUrl')"
-        id="url"
-        class="url"
-        @change="onUrlChange"
-      />
+      <div style="display: flex; align-items: center; gap: 5px">
+        <el-input
+          v-model="form.url"
+          :placeholder="t('components.git.form.repoUrl')"
+          id="url"
+          class="url"
+          @input="onUrlChange"
+        />
+        <cl-tag
+          v-if="form.auth_type"
+          type="primary"
+          :icon="form.auth_type === 'http' ? ['fa', 'fa-link'] : ['fa', 'fa-key']"
+          :label="form.auth_type?.toUpperCase()"
+        />
+      </div>
     </cl-form-item>
     <!--./Row-->
 
     <!--Row-->
     <cl-form-item
-      :span="1"
-      :offset="3"
-      :label="t('components.git.form.authType')"
-      prop="auth_type"
+      :span="2"
+      :offset="2"
+      :label="t('components.git.form.name')"
+      prop="name"
     >
-      <el-radio-group
-        v-model="form.auth_type"
-        id="auth_type"
-        class="auth_type"
-      >
-        <el-radio-button label="http">HTTP</el-radio-button>
-        <el-radio-button label="ssh">SSH</el-radio-button>
-      </el-radio-group>
+      <el-input
+        v-model="form.name"
+        :placeholder="t('components.git.form.name')"
+      />
     </cl-form-item>
     <!--./Row-->
 
@@ -43,7 +47,6 @@
       <!--Row-->
       <cl-form-item
         :span="2"
-        :offset="2"
         :label="t('components.git.form.username')"
         prop="username"
       >
@@ -52,15 +55,12 @@
           :placeholder="t('components.git.form.username')"
           id="username"
           class="username"
+          autocomplete="off"
           @change="onUsernameChange"
         />
       </cl-form-item>
-      <!--./Row-->
-
-      <!--Row-->
       <cl-form-item
         :span="2"
-        :offset="2"
         :label="t('components.git.form.password')"
         prop="password"
       >
@@ -70,6 +70,7 @@
           type="password"
           id="password"
           class="password"
+          autocomplete="off"
           @change="onPasswordChange"
         />
       </cl-form-item>
@@ -77,23 +78,6 @@
     </template>
 
     <template v-else-if="form.auth_type === 'ssh'">
-      <!--Row-->
-      <cl-form-item
-        :span="2"
-        :offset="2"
-        :label="t('components.git.form.username')"
-        prop="username"
-      >
-        <el-input
-          v-model="form.username"
-          :placeholder="t('components.git.form.username')"
-          id="username"
-          class="username"
-          @change="onUsernameChange"
-        />
-      </cl-form-item>
-      <!--./Row-->
-
       <!--Row-->
       <cl-form-item
         :span="4"
@@ -147,17 +131,22 @@ export default defineComponent({
     const onUrlChange = (url: string) => {
       let authType;
       let username;
-      if (url.match(/^http|^\/\//)) {
+      let name;
+      if (url.match(/^https?:\/\//)) {
         authType = 'http';
-      } else if (url.match(/^ssh|@/)) {
+        name = url.match(/^https?:\/\/[^\/]+\/(.*?)(\.git)?$/)?.[1] || '';
+      } else if (url.match(/^git@/)) {
         authType = 'ssh';
+        name = url.match(/^git@[^:]+:(.*?)(\.git)?$/)?.[1] || '';
         username = url.match(/(\w+)@/)?.[1];
       } else {
-        authType = 'http';
+        authType = '';
+        name = '';
       }
       const payload = {
         ...state.form,
         auth_type: authType,
+        name,
       };
       if (username) payload.username = username;
       store.commit(`${ns}/setForm`, payload);

@@ -1,6 +1,7 @@
 interface LComponentsGit {
   form: {
-    remoteUrl: string;
+    repoUrl: string;
+    name: string;
     currentBranch: string;
     authType: string;
     username: string;

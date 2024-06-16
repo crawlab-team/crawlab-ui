@@ -91,6 +91,12 @@ const common: LCommon = {
     dependencies: 'Dependencies',
     triggers: 'Triggers',
     template: 'Template',
+    remote: 'Remote',
+    branches: 'Branches',
+    tags: 'Tags',
+    references: 'References',
+    changes: 'Changes',
+    ignore: 'Ignore',
   },
   status: {
     unassigned: 'Unassigned',
