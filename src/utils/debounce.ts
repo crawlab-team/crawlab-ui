@@ -1,30 +1,31 @@
-export function debounce<T extends (...args: any[]) => Promise<any>>(func: T, wait: number): (...args: Parameters<T>) => Promise<ReturnType<T>> {
+export function debounce<T extends (...args: any[]) => any>(func: T, wait?: number): (...args: Parameters<T>) => ReturnType<T> extends Promise<any> ? Promise<ReturnType<T>> : ReturnType<T> {
   let timeout: ReturnType<typeof setTimeout>;
-  let resolveQueue: ((value: ReturnType<T> | PromiseLike<ReturnType<T>>) => void)[] = [];
+  let resolveQueue: ((value: any) => void)[] = [];
 
-  return function (...args: Parameters<T>): Promise<ReturnType<T>> {
-    // Clear the previous timeout
+  return function (this: any, ...args: Parameters<T>): any {
     clearTimeout(timeout);
 
-    // Create a new promise and push its resolve function to the queue
-    const promise = new Promise<ReturnType<T>>(resolve => {
-      resolveQueue.push(resolve);
-    });
+    if (func.constructor.name === "AsyncFunction") {
+      const promise = new Promise<ReturnType<T>>((resolve) => {
+        resolveQueue.push(resolve);
+      });
 
-    // Set the new timeout
-    timeout = setTimeout(async () => {
-      // Execute the function
-      const result = await func(...args);
+      timeout = setTimeout(async () => {
+        const result = await func.apply(this, args);
 
-      // Resolve all promises in the queue with the result
-      while (resolveQueue.length) {
-        const resolve = resolveQueue.shift();
-        if (resolve) {
-          resolve(result);
+        while (resolveQueue.length) {
+          const resolve = resolveQueue.shift();
+          if (resolve) {
+            resolve(result);
+          }
         }
-      }
-    }, wait);
+      }, wait || 100);
 
-    return promise;
+      return promise;
+    } else {
+      timeout = setTimeout(() => {
+        func.apply(this, args);
+      }, wait || 100);
+    }
   };
 }

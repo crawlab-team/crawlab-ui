@@ -15,9 +15,9 @@ const {
 
 export const useService = <T = any>(endpoint: string): Services<T> => {
   return {
-    getById: debounce<{ (id: string): Promise<ResponseWithData<T>> }>(async (id: string) => {
+    getById: debounce(async (id: string) => {
       return await get<T>(`${endpoint}/${id}`);
-    }),
+    }) as any,
     create: async (form: T) => {
       return await post<T>(`${endpoint}`, form);
     },
