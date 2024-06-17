@@ -6,13 +6,14 @@ import {
 } from '@/utils/store';
 import {
   GIT_REF_TYPE_BRANCH, TAB_NAME_BRANCHES,
-  TAB_NAME_CHANGES, TAB_NAME_IGNORE,
+  TAB_NAME_CHANGES, TAB_NAME_FILES, TAB_NAME_IGNORE,
   TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
   TAB_NAME_TAGS,
 } from "@/constants";
 import useRequest from "@/services/request";
 import {translate} from "@/utils";
+import {getBaseFileStoreActions, getBaseFileStoreMutations, getBaseFileStoreState} from "@/store/utils/file";
 
 const t = translate;
 
@@ -25,8 +26,10 @@ const {
 
 const state = {
   ...getDefaultStoreState<Git>('git'),
+  ...getBaseFileStoreState(),
   tabs: [
     {id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview')},
+    {id: TAB_NAME_FILES, title: t('common.tabs.files')},
     {id: TAB_NAME_BRANCHES, title: t('common.tabs.branches')},
     {id: TAB_NAME_TAGS, title: t('common.tabs.tags')},
     {id: TAB_NAME_LOGS, title: t('common.tabs.logs')},
@@ -65,6 +68,7 @@ const getters = {
 
 const mutations = {
   ...getDefaultStoreMutations<Git>(),
+  ...getBaseFileStoreMutations<GitStoreState>(),
   resetAll: (state: GitStoreState) => {
     state.gitData = {};
     state.gitChangeSelection = [];
@@ -111,6 +115,7 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<Git>('/gits'),
+  ...getBaseFileStoreActions<GitStoreState>(endpoint),
   getGit: async ({commit}: StoreActionContext<GitStoreState>, {id}: { id: string }) => {
     try {
       commit('setGitCurrentBranchLoading', true);

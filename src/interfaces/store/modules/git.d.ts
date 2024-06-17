@@ -1,6 +1,6 @@
 type GitStoreModule = BaseModule<GitStoreState, GitStoreGetters, GitStoreMutations, GitStoreActions>;
 
-interface GitStoreState extends BaseStoreState<Git> {
+interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
   gitData?: GitData;
   gitCurrentBranchLoading: boolean;
   gitChangeSelection: TableData<GitChange>;
@@ -16,7 +16,7 @@ interface GitStoreGetters extends BaseStoreGetters<Git> {
   [key: string]: any;
 }
 
-interface GitStoreMutations extends BaseStoreMutations<Git> {
+interface GitStoreMutations extends BaseStoreMutations<Git>, BaseFileStoreMutations<GitStoreState> {
   resetAll: StoreMutation<GitStoreState>;
   setGitData: StoreMutation<GitStoreState, GitData>;
   resetGitData: StoreMutation<GitStoreState>;
@@ -31,7 +31,7 @@ interface GitStoreMutations extends BaseStoreMutations<Git> {
   setGitCurrentBranchLoading: StoreMutation<GitStoreState, boolean>;
 }
 
-interface GitStoreActions extends BaseStoreActions<Git> {
+interface GitStoreActions extends BaseStoreActions<Git>, BaseFileStoreActions<GitStoreState> {
   getGit: StoreAction<GitStoreState, { id: string }>;
   getGitRemoteRefs: StoreAction<GitStoreState, { id: string }>;
   getGitBranches: StoreAction<GitStoreState, { id: string }>;

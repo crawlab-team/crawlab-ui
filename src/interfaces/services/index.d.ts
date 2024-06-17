@@ -14,3 +14,4 @@ export declare global {
 
 export * from './request';
 export * from './spider';
+export * from './git';

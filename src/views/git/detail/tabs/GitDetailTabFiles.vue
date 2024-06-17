@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import {computed, onBeforeMount, onBeforeUnmount, ref, watch} from 'vue';
 import {useStore} from 'vuex';
-import useSpiderService from '@/services/spider/spiderService';
+import useGitService from '@/services/git/gitService';
 import {ElMessage} from 'element-plus';
 import {useI18n} from 'vue-i18n';
-import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
+import useGitDetail from '@/views/git/detail/useGitDetail';
 
 // i18n
 const {t} = useI18n();
 
 // store
-const ns = 'spider';
+const ns = 'git';
 const store = useStore();
 const {commit} = store;
-const {spider: state} = store.state as RootStoreState;
+const {git: state} = store.state as RootStoreState;
 
 const {
   listRootDir,
@@ -25,13 +25,13 @@ const {
   renameFile,
   deleteFile,
   copyFile,
-} = useSpiderService(store);
+} = useGitService(store);
 
 const {
   activeId,
-} = useSpiderDetail();
+} = useGitDetail();
 
-// spider id
+// git id
 const id = computed<string>(() => activeId.value);
 
 // file editor

@@ -1,11 +1,11 @@
 import {Store} from 'vuex';
-import {getDefaultService} from '@/utils/service';
+import useFileService from "@/services/utils/file";
 
-const useGitService = (store: Store<RootStoreState>): Services<Git> => {
+const useGitService = (store: Store<RootStoreState>): GitServices => {
   const ns = 'git';
 
   return {
-    ...getDefaultService<Git>(ns, store),
+    ...useFileService<Git>(ns, store),
   };
 };
 
