@@ -10,7 +10,6 @@ import {
   defineEmits
 } from 'vue';
 import Node from 'element-plus/lib/components/tree/src/model/node';
-import {DropType} from 'element-plus/lib/components/tree/src/tree.type';
 import {KEY_CONTROL, KEY_META} from '@/constants/keyboard';
 import {ElMessageBox, ElTree} from 'element-plus';
 import {useDropzone} from 'crawlab-vue3-dropzone';
@@ -251,7 +250,7 @@ const isShowContextMenu = (item: FileNavItem) => {
   return activeContextMenuItem.value?.path === item.path;
 };
 
-const allowDrop = (draggingNode: Node, dropNode: Node, type: DropType) => {
+const allowDrop = (draggingNode: Node, dropNode: Node, type: any) => {
   if (type !== 'inner') return false;
   if (draggingNode.data?.path === dropNode.data?.path) return false;
   if (draggingNode.parent?.data?.path === dropNode.data?.path) return false;
@@ -330,7 +329,7 @@ watch(() => props.defaultExpandedKeys, () => {
     ref="fileEditorNavMenu"
     class="file-editor-nav-menu"
   >
-    <el-tree
+    <el-tree-v2
       ref="tree"
       :render-after-expand="defaultExpandAll"
       :data="items"
@@ -384,7 +383,7 @@ watch(() => props.defaultExpandedKeys, () => {
           </div>
         </cl-file-editor-nav-menu-context-menu>
       </template>
-    </el-tree>
+    </el-tree-v2>
   </div>
 </template>
 
