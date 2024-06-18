@@ -99,11 +99,9 @@ export default defineComponent({
   align-items: center;
   flex: 1 0 auto;
 
-  .label {
-  }
-
   .content {
     flex: 1 0 180px;
+    width: 180px;
   }
 }
 </style>

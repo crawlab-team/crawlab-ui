@@ -141,7 +141,7 @@ onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </style>
 
 <style scoped>
-.git-changes >>> .el-table {
+.git-changes:deep(.el-table) {
   border-top: none;
   border-left: none;
   border-right: none;

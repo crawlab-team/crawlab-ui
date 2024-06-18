@@ -58,7 +58,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.spider-detail-tab-tasks >>> .el-table {
+.spider-detail-tab-tasks:deep(.el-table) {
   border: none;
 }
 </style>

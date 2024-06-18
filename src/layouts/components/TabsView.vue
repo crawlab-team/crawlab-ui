@@ -120,11 +120,11 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.tabs-view >>> .draggable-item {
+.tabs-view:deep(.draggable-item) {
   margin: 0 5px;
 }
 
-.tabs-view >>> .draggable-item:first-child {
+.tabs-view:deep(.draggable-item:first-child) {
   margin-left: 10px;
 }
 </style>

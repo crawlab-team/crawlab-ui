@@ -68,11 +68,13 @@
       </el-form>
       <template #footer>
         <el-button plain type="info" @click="onClose">{{
-          t('common.actions.cancel')
-        }}</el-button>
+            t('common.actions.cancel')
+          }}
+        </el-button>
         <el-button type="primary" :loading="loading" @click="onConfirm">{{
-          t('common.actions.confirm')
-        }}</el-button>
+            t('common.actions.confirm')
+          }}
+        </el-button>
       </template>
     </el-dialog>
   </div>
@@ -161,7 +163,7 @@ export default defineComponent({
     const onClose = () => {
       store.commit(
         `${storeNamespace}/setEditorCreateWithAiDialogVisible`,
-        false
+        false,
       );
     };
 
@@ -181,7 +183,7 @@ export default defineComponent({
           res.data?.source_code || res.data?.output.source_code;
         store.commit(
           `${storeNamespace}/setEditorCreateWithAiDialogVisible`,
-          false
+          false,
         );
         emit('create', form.value.fileName, sourceCode, item.value);
       } catch (e: any) {
@@ -194,7 +196,7 @@ export default defineComponent({
     onBeforeRouteLeave(() => {
       store.commit(
         `${storeNamespace}/setEditorCreateWithAiDialogVisible`,
-        false
+        false,
       );
     });
 
@@ -229,36 +231,24 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.file-editor-create-with-ai-dialog >>> .el-dialog .el-dialog__body {
+.file-editor-create-with-ai-dialog:deep(.el-dialog .el-dialog__body) {
   padding: 10px 20px;
 }
 
-.file-editor-create-with-ai-dialog
-  >>> .el-dialog
-  .el-dialog__body
-  .el-form-item__label {
+.file-editor-create-with-ai-dialog:deep(.el-dialog .el-dialog__body .el-form-item__label) {
   word-break: break-word;
 }
 
-.file-editor-create-with-ai-dialog
-  >>> .el-form-item
-  > .el-form-item__label
-  .icon {
+.file-editor-create-with-ai-dialog:deep(.el-form-item > .el-form-item__label .icon) {
   cursor: pointer;
 }
 
-.file-editor-create-with-ai-dialog >>> .el-form-item > .el-form-item__content {
+.file-editor-create-with-ai-dialog:deep(.el-form-item > .el-form-item__content) {
   width: 240px;
 }
 
-.file-editor-create-with-ai-dialog
-  >>> .el-form-item
-  > .el-form-item__content
-  .el-input,
-.file-editor-create-with-ai-dialog
-  >>> .el-form-item
-  > .el-form-item__content
-  .el-select {
+.file-editor-create-with-ai-dialog:deep(.el-form-item > .el-form-item__content .el-input),
+.file-editor-create-with-ai-dialog:deep(.el-form-item > .el-form-item__content .el-select) {
   width: 100%;
 }
 </style>

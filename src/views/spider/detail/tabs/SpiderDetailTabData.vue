@@ -24,7 +24,7 @@ const { form } = useSpider(store);
 </script>
 
 <style scoped>
-.spider-detail-tab-data >>> .el-table {
+.spider-detail-tab-data:deep(.el-table) {
   border: none;
 }
 </style>

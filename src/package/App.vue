@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
-import en from 'element-plus/lib/locale/lang/en';
-import zh from 'element-plus/lib/locale/lang/zh-cn';
+import en from 'element-plus/es/locale/lang/en';
+import zh from 'element-plus/es/locale/lang/zh-cn';
 import { getI18n } from '@/i18n';
 
 // store

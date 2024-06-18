@@ -213,12 +213,12 @@ const onClickDedupFields = () => {
 </script>
 
 <style scoped>
-.spider-detail-actions-data >>> .display-all-fields,
-.spider-detail-actions-data >>> .dedup {
+.spider-detail-actions-data:deep(.display-all-fields),
+.spider-detail-actions-data:deep(.dedup) {
   margin-right: 10px;
 }
 
-.spider-detail-actions-data >>> .dedup-type {
+.spider-detail-actions-data:deep(.dedup-type) {
   width: 120px;
 }
 </style>

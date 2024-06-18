@@ -67,7 +67,7 @@ onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </style>
 
 <style scoped>
-.git-ignore >>> .el-table {
+.git-ignore:deep(.el-table) {
   border-top: none;
   border-left: none;
   border-right: none;

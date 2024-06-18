@@ -99,10 +99,7 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.table-header-dialog-sort
-  >>> .el-radio-group
-  .el-radio-button
-  .el-radio-button__inner {
+.table-header-dialog-sort:deep(.el-radio-group .el-radio-button .el-radio-button__inner) {
   width: 100%;
 }
 </style>

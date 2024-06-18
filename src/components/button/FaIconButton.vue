@@ -71,9 +71,9 @@ export default defineComponent({
 .el-button,
 .el-button--mini,
 .fa-icon-button,
-.fa-icon-button >>> .el-button,
-.fa-icon-button >>> .el-button--mini,
-.fa-icon-button >>> .button {
+.fa-icon-button:deep(.el-button),
+.fa-icon-button:deep(.el-button--mini),
+.fa-icon-button:deep(.button) {
   padding: 7px;
 }
 </style>

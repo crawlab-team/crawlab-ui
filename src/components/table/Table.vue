@@ -260,7 +260,7 @@ export default defineComponent({
       props,
       ctx,
       tableRef,
-      actionFunctions as ListLayoutActionFunctions
+      actionFunctions as ListLayoutActionFunctions,
     );
 
     const { onCurrentChange, onSizeChange } = usePagination(props, ctx);
@@ -318,34 +318,23 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.el-table >>> th > .cell {
+.el-table:deep(th > .cell) {
   line-height: 1.5;
   word-break: normal;
 }
 
-.table.embedded >>> .el-table--border .el-table__inner-wrapper:after {
+.table.embedded:deep(.el-table--border .el-table__inner-wrapper:after) {
   height: 0;
 }
 
-.table.embedded >>> .el-table__border-left-patch,
-.table.embedded >>> .el-table--border:before {
+.table.embedded:deep(.el-table__border-left-patch),
+.table.embedded:deep(.el-table--border:before) {
   width: 0;
 }
 
-.table.embedded
-  >>> .el-table--border
-  .el-table__inner-wrapper
-  tr:first-child
-  td:first-child,
-.table.embedded
-  >>> .el-table.is-scrolling-left.el-table--border
-  tr:first-child
-  td:first-child,
-.table.embedded
-  >>> .el-table--border
-  .el-table__inner-wrapper
-  tr:first-child
-  th:first-child {
+.table.embedded:deep(.el-table--border .el-table__inner-wrapper  tr:first-child  td:first-child),
+.table.embedded:deep(.el-table.is-scrolling-left.el-table--border  tr:first-child  td:first-child),
+.table.embedded:deep(.el-table--border .el-table__inner-wrapper  tr:first-child  th:first-child) {
   border-left: none;
 }
 </style>

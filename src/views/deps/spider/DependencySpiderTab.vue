@@ -121,7 +121,7 @@ export default defineComponent({
             if (!result) return;
             const { versions } = result;
             res.push(
-              h('span', { style: 'margin-right: 5px' }, versions?.join(', '))
+              h('span', { style: 'margin-right: 5px' }, versions?.join(', ')),
             );
             if (result.upgradable) {
               res.push(
@@ -131,7 +131,7 @@ export default defineComponent({
                   size: 'mini',
                   tooltip: t('views.env.deps.common.status.upgradable'),
                   icon: ['fa', 'arrow-up'],
-                })
+                }),
               );
             } else if (result.downgradable) {
               res.push(
@@ -141,7 +141,7 @@ export default defineComponent({
                   size: 'mini',
                   tooltip: t('views.env.deps.common.status.downgradable'),
                   icon: ['fa', 'arrow-down'],
-                })
+                }),
               );
             }
             return res;
@@ -307,10 +307,10 @@ export default defineComponent({
     };
 
     const onInstall = async ({
-      mode,
-      upgrade,
-      nodeIds,
-    }: {
+                               mode,
+                               upgrade,
+                               nodeIds,
+                             }: {
       mode: string;
       upgrade: boolean;
       nodeIds: string[];
@@ -332,9 +332,9 @@ export default defineComponent({
     };
 
     const onUninstall = async ({
-      mode,
-      nodeIds,
-    }: {
+                                 mode,
+                                 nodeIds,
+                               }: {
       mode: string;
       nodeIds: string[];
     }) => {
@@ -360,7 +360,7 @@ export default defineComponent({
     const onInstallByConfig = async () => {
       await ElMessageBox.confirm(
         t('common.messageBox.confirm.install'),
-        t('common.actions.install')
+        t('common.actions.install'),
       );
       const id = route.params.id;
       if (!id) return;
@@ -409,49 +409,41 @@ export default defineComponent({
   border-bottom: 1px solid #e6e6e6;
 }
 
-.dependency-spider-tab .top-bar >>> .el-form-item {
+.dependency-spider-tab .top-bar:deep(.el-form-item) {
   margin-bottom: 0;
 }
 
-.dependency-spider-tab .top-bar >>> .action-btn {
+.dependency-spider-tab .top-bar:deep(.action-btn) {
   margin-left: 10px;
 }
 
-.dependency-spider-tab .top-bar >>> .icon {
+.dependency-spider-tab .top-bar:deep(.icon) {
   margin-right: 5px;
 }
 
-.dependency-spider-tab >>> .el-table {
+.dependency-spider-tab:deep(.el-table) {
   border-top: none;
   border-left: none;
   border-right: none;
 }
 
-.dependency-spider-tab >>> .el-table::before,
-.dependency-spider-tab >>> .el-table::after,
-.dependency-spider-tab >>> .el-table--border::before,
-.dependency-spider-tab >>> .el-table--border::after {
+.dependency-spider-tab:deep(.el-table::before),
+.dependency-spider-tab:deep(.el-table::after),
+.dependency-spider-tab:deep(.el-table--border::before),
+.dependency-spider-tab:deep(.el-table--border::after) {
   display: none;
 }
 
-.dependency-spider-tab >>> .el-table .el-table__inner-wrapper::before,
-.dependency-spider-tab >>> .el-table .el-table__inner-wrapper::after {
+.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper::before),
+.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper::after) {
   display: none;
 }
 
-.dependency-spider-tab >>> .el-table .el-table__inner-wrapper thead,
-.dependency-spider-tab >>> .el-table .el-table__inner-wrapper tbody,
-.dependency-spider-tab >>> .el-table .el-table__inner-wrapper tr,
-.dependency-spider-tab
-  >>> .el-table
-  .el-table__inner-wrapper
-  tr
-  > th:first-child,
-.dependency-spider-tab
-  >>> .el-table
-  .el-table__inner-wrapper
-  tr
-  > td:first-child {
+.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper thead),
+.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tbody),
+.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tr),
+.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tr > th:first-child),
+.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tr > td:first-child) {
   border-left: none;
 }
 </style>

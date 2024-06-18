@@ -190,14 +190,14 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.metric-progress >>> .el-progress__text {
+.metric-progress:deep(.el-progress__text) {
   height: 100%;
   display: flex;
   flex-direction: column;
   /*justify-content: center;*/
 }
 
-.metric-progress >>> .el-progress__text .label {
+.metric-progress:deep(.el-progress__text .label) {
   flex: 0 0 20%;
   display: flex;
   align-items: center;
@@ -206,11 +206,11 @@ export default defineComponent({
   font-size: 12px;
 }
 
-.metric-progress >>> .el-progress__text .label .label-icon {
+.metric-progress:deep(.el-progress__text .label .label-icon) {
   margin-right: 5px;
 }
 
-.metric-progress >>> .el-progress__text .value {
+.metric-progress:deep(.el-progress__text .value) {
   flex: 0 0 40%;
   display: flex;
   align-items: center;
@@ -218,7 +218,7 @@ export default defineComponent({
   font-size: 18px;
 }
 
-.metric-progress >>> .el-progress__text .status {
+.metric-progress:deep(.el-progress__text .status) {
   flex: 0 0 10%;
   padding-bottom: 10%;
   font-size: 14px;

@@ -116,13 +116,13 @@ onBeforeMount(() =>
 </style>
 
 <style scoped>
-.git-branches >>> .el-table {
+.git-branches:deep(.el-table) {
   border-top: none;
   border-left: none;
   border-right: none;
 }
 
-.git-branches >>> .el-table:before,
-.git-branches >>> .el-table .el-table__inner-wrapper:before {
+.git-branches:deep(.el-table:before),
+.git-branches:deep(.el-table .el-table__inner-wrapper:before) {
 }
 </style>

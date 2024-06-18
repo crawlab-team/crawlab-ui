@@ -235,7 +235,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.tag-input >>> .tag {
+.tag-input:deep(.tag) {
   margin-right: 10px;
 }
 </style>

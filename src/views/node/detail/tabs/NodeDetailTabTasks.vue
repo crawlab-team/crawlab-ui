@@ -48,7 +48,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.node-detail-tab-tasks >>> .el-table {
+.node-detail-tab-tasks:deep(.el-table) {
   border: none;
 }
 </style>

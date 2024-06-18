@@ -72,15 +72,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeMount,
-  onBeforeUnmount,
-  PropType,
-  ref,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onBeforeMount, onBeforeUnmount, PropType, ref, watch } from 'vue';
 import { emptyArrayFunc, voidFunc } from '@/utils/func';
 import { cloneArray } from '@/utils/object';
 import { translate } from '@/utils/i18n';
@@ -367,7 +359,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.metric-list >>> .content .top .form-item .el-form-item {
+.metric-list:deep(.content .top .form-item .el-form-item) {
   margin-bottom: 0;
 }
 </style>

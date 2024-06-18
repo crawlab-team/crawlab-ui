@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onBeforeMount } from 'vue';
+import { defineComponent, onBeforeMount, ref } from 'vue';
 import useRequest from '@/services/request';
 import dayjs from 'dayjs';
 import { useI18n } from 'vue-i18n';
@@ -170,12 +170,12 @@ export default defineComponent({
 <style lang="scss" scoped></style>
 
 <style scoped>
-.demo-layout >>> .el-tabs {
+.demo-layout:deep(.el-tabs) {
   display: flex;
   flex-direction: column;
 }
 
-.demo-layout >>> .nav-sidebar {
+.demo-layout:deep(.nav-sidebar) {
   border-right: none;
 }
 </style>

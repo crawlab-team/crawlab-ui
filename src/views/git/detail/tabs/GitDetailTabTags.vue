@@ -119,13 +119,13 @@ onBeforeMount(async () => {
 </style>
 
 <style scoped>
-.git-tags >>> .el-table {
+.git-tags:deep(.el-table) {
   border-top: none;
   border-left: none;
   border-right: none;
 }
 
-.git-tags >>> .el-table:before,
-.git-tags >>> .el-table .el-table__inner-wrapper:before {
+.git-tags:deep(.el-table:before),
+.git-tags:deep(.el-table .el-table__inner-wrapper:before) {
 }
 </style>

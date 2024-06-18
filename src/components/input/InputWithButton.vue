@@ -170,18 +170,18 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.input-with-button >>> .input.el-input .el-input__inner {
+.input-with-button:deep(.input.el-input .el-input__inner) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   /*border-right-color: transparent;*/
 }
 
-.input-with-button >>> .button-wrapper .el-button {
+.input-with-button:deep(.button-wrapper .el-button) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.input-with-button >>> .button-wrapper {
+.input-with-button:deep(.button-wrapper) {
   height: 32px;
 }
 </style>

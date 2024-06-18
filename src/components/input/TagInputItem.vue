@@ -313,28 +313,28 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.tag-input-item >>> .input,
-.tag-input-item >>> .actions,
-.tag-input-item >>> .color-picker,
-.tag-input-item >>> .color-picker .el-color-picker {
+.tag-input-item:deep(.input),
+.tag-input-item:deep(.actions),
+.tag-input-item:deep(.color-picker),
+.tag-input-item:deep(.color-picker .el-color-picker) {
   margin: 0;
   padding: 0;
   height: 28px;
   line-height: 28px;
 }
 
-.tag-input-item >>> .input {
+.tag-input-item:deep(.input) {
   display: inherit;
 }
 
-.tag-input-item >>> .input .el-input__inner {
+.tag-input-item:deep(.input .el-input__inner) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right: none;
   transition: none;
 }
 
-.tag-input-item >>> .color-picker .el-color-picker__trigger {
+.tag-input-item:deep(.color-picker .el-color-picker__trigger) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left: none;
@@ -344,15 +344,15 @@ export default defineComponent({
   padding: 0;
 }
 
-.tag-input-item.is-focus >>> .color-picker .el-color-picker__trigger {
+.tag-input-item.is-focus:deep(.color-picker .el-color-picker__trigger) {
   border-color: #409eff;
 }
 
-.tag-input-item >>> .color-picker .el-color-picker__color {
+.tag-input-item:deep(.color-picker .el-color-picker__color) {
   border: none;
 }
 
-.tag-input-item >>> .color-picker .el-color-picker__mask {
+.tag-input-item:deep(.color-picker .el-color-picker__mask) {
   background: transparent;
   border-radius: 0;
   left: 0;
@@ -360,13 +360,13 @@ export default defineComponent({
   width: 28px;
 }
 
-.tag-input-item >>> .el-autocomplete-suggestion__list > li {
+.tag-input-item:deep(.el-autocomplete-suggestion__list > li) {
   height: 28px;
 }
 </style>
 
 <style>
-.tag-input-item-popper >>> .el-autocomplete-suggestion__list > li {
+.tag-input-item-popper:deep(.el-autocomplete-suggestion__list > li) {
   height: 28px;
 }
 </style>

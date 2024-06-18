@@ -329,17 +329,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.task-form >>> .nav-btn {
+.task-form:deep(.nav-btn) {
   position: absolute;
   padding-left: 10px;
 }
 
-.task-form >>> .error-message,
-.task-form >>> .cancel-btn {
+.task-form:deep(.error-message),
+.task-form:deep(.cancel-btn) {
   margin-left: 10px;
 }
 
-.task-form >>> .cancel-btn:hover {
+.task-form:deep(.cancel-btn:hover) {
   opacity: 0.8;
 }
 </style>

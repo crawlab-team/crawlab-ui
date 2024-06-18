@@ -197,9 +197,9 @@ import useDataSource from '@/components/ds/useDataSource';
 import { useI18n } from 'vue-i18n';
 import useDataSourceDetail from '@/views/ds/detail/useDataSourceDetail';
 import {
+  DATA_SOURCE_CONNECT_TYPE_HOSTS,
   DATA_SOURCE_CONNECT_TYPE_STANDARD,
   DATA_SOURCE_CONNECT_TYPE_URL,
-  DATA_SOURCE_CONNECT_TYPE_HOSTS,
 } from '@/constants/ds';
 
 export default defineComponent({
@@ -238,12 +238,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.data-source-form >>> .hosts-item .hosts-item-input {
+.data-source-form:deep(.hosts-item .hosts-item-input) {
   width: calc(100% - 10px - (10px + 32px) * 2);
   margin-right: 10px;
 }
 
-.data-source-form >>> .hosts-item .el-button {
+.data-source-form:deep(.hosts-item .el-button) {
   width: 32px;
 }
 </style>

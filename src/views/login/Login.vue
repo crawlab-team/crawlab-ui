@@ -511,7 +511,7 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.mobile-warning >>> .el-alert .el-alert__description {
+.mobile-warning:deep(.el-alert .el-alert__description) {
   font-size: 1.2rem;
 }
 

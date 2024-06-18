@@ -228,12 +228,12 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.nav-sidebar > .search >>> .el-input__inner {
+.nav-sidebar > .search:deep(.el-input__inner) {
   border: none;
   height: 100%;
 }
 
-.nav-sidebar.collapsed > .search >>> .el-input__inner {
+.nav-sidebar.collapsed > .search:deep(.el-input__inner) {
   padding: 0;
   width: 0;
 }

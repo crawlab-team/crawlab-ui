@@ -120,16 +120,16 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.button-wrapper >>> .icon-button {
+.button-wrapper:deep(.icon-button) {
   padding: 7px;
 }
 
-.button-wrapper.label-button >>> .icon,
-.button-wrapper.icon-button >>> .icon {
+.button-wrapper.label-button:deep(.icon),
+.button-wrapper.icon-button:deep(.icon) {
   width: 20px;
 }
 
-.button-wrapper.fa-icon-button >>> .el-button--small {
+.button-wrapper.fa-icon-button:deep(.el-button--small) {
   width: 32px;
   height: 32px;
 }

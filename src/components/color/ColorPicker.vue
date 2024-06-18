@@ -63,12 +63,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.color-picker >>> .el-color-picker__trigger {
+.color-picker:deep(.el-color-picker__trigger) {
   border: none;
   padding: 0;
 }
 
-.color-picker >>> .el-color-picker__mask {
+.color-picker:deep(.el-color-picker__mask) {
   background: transparent;
   border-radius: 0;
   left: 0;

@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { translate } from '@/utils';
 import 'simplemde/dist/simplemde.min.js';
 import { useStore } from 'vuex';
@@ -102,11 +102,11 @@ export default defineComponent({
   /*margin-bottom: 20px;*/
 }
 
-.notification-detail-tab-template .title >>> .el-input__inner {
+.notification-detail-tab-template .title:deep(.el-input__inner) {
   border: none;
 }
 
-.notification-detail-tab-template >>> .editor-toolbar {
+.notification-detail-tab-template:deep(.editor-toolbar) {
   border-radius: 0;
   border-left: none;
   border-right: none;

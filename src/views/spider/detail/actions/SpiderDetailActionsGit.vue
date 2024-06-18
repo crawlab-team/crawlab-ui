@@ -151,17 +151,17 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.branch >>> .branch-select .action {
+.branch:deep(.branch-select .action) {
   margin-left: 5px;
   margin-right: 10px;
 }
 
-.branch >>> .branch-select .action .button {
+.branch:deep(.branch-select .action .button) {
   width: 28px;
   height: 28px;
 }
 
-.branch >>> .branch-label:hover {
+.branch:deep(.branch-label:hover) {
   opacity: 0.8;
 }
 </style>

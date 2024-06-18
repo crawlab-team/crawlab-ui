@@ -142,7 +142,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.nav-tabs >>> .el-menu--horizontal {
+.nav-tabs:deep(.el-menu--horizontal) {
   /*border-bottom: none;*/
 }
 </style>

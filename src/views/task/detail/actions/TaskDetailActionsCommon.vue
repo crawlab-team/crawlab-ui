@@ -151,9 +151,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.task-detail-actions-common >>> .task-results,
-.task-detail-actions-common >>> .task-status,
-.task-detail-actions-common >>> .duration {
+.task-detail-actions-common:deep(.task-results),
+.task-detail-actions-common:deep(.task-status),
+.task-detail-actions-common:deep(.duration) {
   margin-right: 10px;
 }
 </style>

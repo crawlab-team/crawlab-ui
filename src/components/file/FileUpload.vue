@@ -194,12 +194,12 @@ onBeforeMount(() => {
 </style>
 
 <style scoped>
-.file-upload >>> .el-upload,
-.file-upload >>> .el-upload .el-upload-dragger {
+.file-upload:deep(.el-upload),
+.file-upload:deep(.el-upload .el-upload-dragger) {
   width: 100%;
 }
 
-.file-upload >>> .folder-upload .info-tag {
+.file-upload:deep(.folder-upload .info-tag) {
   margin-left: 10px;
 }
 </style>

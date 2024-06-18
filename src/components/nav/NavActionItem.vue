@@ -46,30 +46,30 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.nav-action-item >>> .title {
+.nav-action-item:deep(.title) {
   color: inherit;
 }
 
-.nav-action-item >>> .label {
+.nav-action-item:deep(.label) {
   color: inherit;
   font-size: 14px;
   margin-right: 5px;
   margin-left: 5px;
 }
 
-.nav-action-item >>> .el-button.el-button--small {
+.nav-action-item:deep(.el-button.el-button--small) {
   height: 32px;
 }
 
-.nav-action-item >>> .el-button:not(.is-circle) .fa {
+.nav-action-item:deep(.el-button:not(.is-circle) .fa) {
   margin-right: 0;
 }
 
-.nav-action-item >>> .el-button .icon + span {
+.nav-action-item:deep(.el-button .icon + span) {
   margin-left: 5px;
 }
 
-.nav-action-item >>> .nav-action-item-label {
+.nav-action-item:deep(.nav-action-item-label) {
   color: inherit;
   font-size: 12px;
   margin-right: 5px;

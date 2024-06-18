@@ -49,7 +49,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.nav-action-group >>> .nav-action-item:last-child {
+.nav-action-group:deep(.nav-action-item:last-child) {
   margin-right: 0;
 }
 </style>

@@ -58,7 +58,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.spider-detail-tab-schedules >>> .el-table {
+.spider-detail-tab-schedules:deep(.el-table) {
   border: none;
 }
 </style>

@@ -95,30 +95,30 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.nav-menu >>> .el-tree {
+.nav-menu:deep(.el-tree) {
   /*overflow-y: auto;*/
 }
 
-.nav-menu >>> .el-tree-node {
+.nav-menu:deep(.el-tree-node) {
   font-size: 14px;
   cursor: pointer;
 }
 
-.nav-menu >>> .el-tree-node > .el-tree-node__content {
+.nav-menu:deep(.el-tree-node > .el-tree-node__content) {
   height: 48px;
 }
 
-.nav-menu >>> .el-tree-node > .el-tree-node__content:hover {
+.nav-menu:deep(.el-tree-node > .el-tree-node__content:hover) {
   background-color: #ecf5ff !important;
 }
 
-.nav-menu:not(.show-checkbox) >>> .el-tree-node.active > .el-tree-node__content,
-.nav-menu:not(.show-checkbox) >>> .el-tree-node > .el-tree-node__content:hover {
+.nav-menu:not(.show-checkbox):deep(.el-tree-node.active > .el-tree-node__content),
+.nav-menu:not(.show-checkbox):deep(.el-tree-node > .el-tree-node__content:hover) {
   color: #409eff;
 }
 
-.nav-menu >>> .el-tree-node:focus > .el-tree-node__content,
-.nav-menu >>> .el-tree-node:hover > .el-tree-node__content {
+.nav-menu:deep(.el-tree-node:focus > .el-tree-node__content),
+.nav-menu:deep(.el-tree-node:hover > .el-tree-node__content) {
   background: inherit;
 }
 </style>

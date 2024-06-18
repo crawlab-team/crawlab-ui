@@ -42,7 +42,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.plugin-list >>> .filter .el-form-item {
+.plugin-list:deep(.filter .el-form-item) {
   display: flex;
   align-items: center;
   margin: 0 0 0 10px;

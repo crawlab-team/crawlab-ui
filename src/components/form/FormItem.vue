@@ -35,15 +35,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  inject,
-  onMounted,
-  PropType,
-  ref,
-  watch,
-} from 'vue';
+import { computed, defineComponent, inject, onMounted, PropType, ref, watch } from 'vue';
 import { RuleItem } from 'async-validator';
 import { cloneArray } from '@/utils/object';
 
@@ -225,10 +217,10 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.form-item >>> .form-item-content,
-.form-item >>> .form-item-content > .el-select,
-.form-item >>> .form-item-content > .el-autocomplete,
-.form-item >>> .form-item-content > .el-input {
+.form-item:deep(.form-item-content),
+.form-item:deep(.form-item-content > .el-select),
+.form-item:deep(.form-item-content > .el-autocomplete),
+.form-item:deep(.form-item-content > .el-input) {
   width: 100%;
 }
 </style>

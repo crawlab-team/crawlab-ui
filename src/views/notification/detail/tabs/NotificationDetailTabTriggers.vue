@@ -63,8 +63,8 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.notification-detail-tab-triggers >>> .transfer .el-card,
-.notification-detail-tab-triggers >>> .transfer .el-card .check-list {
+.notification-detail-tab-triggers:deep(.transfer .el-card),
+.notification-detail-tab-triggers:deep(.transfer .el-card .check-list) {
   height: 100%;
 }
 </style>

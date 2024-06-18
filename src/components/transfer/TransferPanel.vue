@@ -196,7 +196,7 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.transfer-panel >>> .draggable-list {
+.transfer-panel:deep(.draggable-list) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;

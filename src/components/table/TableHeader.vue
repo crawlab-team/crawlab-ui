@@ -284,11 +284,11 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.table-header:hover .actions >>> .action {
+.table-header:hover .actions:deep(.action) {
   display: inline;
 }
 
-.table-header .actions >>> .action {
+.table-header .actions:deep(.action) {
   display: none;
 }
 </style>

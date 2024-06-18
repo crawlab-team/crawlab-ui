@@ -142,7 +142,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.input-list >>> .actions .tag:not(:first-child) {
+.input-list:deep(.actions .tag:not(:first-child)) {
   margin-left: 5px;
 }
 </style>

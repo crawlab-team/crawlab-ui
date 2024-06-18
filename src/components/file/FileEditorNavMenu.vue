@@ -1,15 +1,6 @@
 <script setup lang="ts">
-import {
-  computed,
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-  watch,
-  defineProps,
-  defineEmits,
-} from 'vue';
-import Node from 'element-plus/lib/components/tree/src/model/node';
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
+import Node from 'element-plus/es/components/tree/src/model/node';
 import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
 import { ElMessageBox, ElTree } from 'element-plus';
 import { useDropzone } from 'crawlab-vue3-dropzone';
@@ -142,7 +133,7 @@ const onNodeContextMenuNewFile = async (item: FileNavItem) => {
     {
       inputPlaceholder: t('components.file.editor.messageBox.prompt.newFile'),
       confirmButtonClass: 'confirm-btn',
-    }
+    },
   );
   emit('ctx-menu-new-file', item, res.value);
 };
@@ -158,10 +149,10 @@ const onNodeContextMenuNewDirectory = async (item: FileNavItem) => {
     t('components.file.editor.navMenu.newDirectory'),
     {
       inputPlaceholder: t(
-        'components.file.editor.messageBox.prompt.newDirectory'
+        'components.file.editor.messageBox.prompt.newDirectory',
       ),
       confirmButtonClass: 'confirm-btn',
-    }
+    },
   );
   emit('ctx-menu-new-directory', item, res.value);
 };
@@ -175,10 +166,10 @@ const onNodeContextMenuRename = async (item: FileNavItem) => {
       inputPlaceholder: t('components.file.editor.messageBox.prompt.rename'),
       inputValidator: (value: string) => value !== item.name,
       inputErrorMessage: t(
-        'components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName'
+        'components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName',
       ),
       confirmButtonClass: 'confirm-btn',
-    }
+    },
   );
   emit('ctx-menu-rename', item, res.value);
 };
@@ -192,10 +183,10 @@ const onNodeContextMenuClone = async (item: FileNavItem) => {
       inputPlaceholder: t('components.file.editor.messageBox.prompt.newFile'),
       inputValidator: (value: string) => value !== item.name,
       inputErrorMessage: t(
-        'components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName'
+        'components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName',
       ),
       confirmButtonClass: 'confirm-btn',
-    }
+    },
   );
   emit('ctx-menu-clone', item, res.value);
 };
@@ -207,7 +198,7 @@ const onNodeContextMenuDelete = async (item: FileNavItem) => {
     {
       type: 'warning',
       confirmButtonClass: 'el-button--danger confirm-btn',
-    }
+    },
   );
   emit('ctx-menu-delete', item);
 };
@@ -329,8 +320,20 @@ watch(
       if (!n?.data) return;
       emit('node-db-click', n.data);
     });
-  }
+  },
 );
+
+const treeHeight = ref<number>();
+const treeHeightObserver = new ResizeObserver(() => {
+  treeHeight.value = fileEditorNavMenu.value?.clientHeight;
+});
+onMounted(() => {
+  treeHeight.value = fileEditorNavMenu.value?.clientHeight;
+  treeHeightObserver.observe(fileEditorNavMenu.value as Element);
+});
+onUnmounted(() => {
+  treeHeightObserver.unobserve(fileEditorNavMenu.value as Element);
+});
 </script>
 
 <template>
@@ -341,6 +344,7 @@ watch(
   >
     <el-tree-v2
       ref="tree"
+      :height="treeHeight"
       :render-after-expand="defaultExpandAll"
       :data="items"
       :expand-on-click-node="false"
@@ -349,7 +353,6 @@ watch(
       empty-text="No files available"
       icon-class="fa fa-angle-right"
       :style="{ ...styles?.default }"
-      node-key="path"
       :default-expanded-keys="computedDefaultExpandedKeys"
       draggable
       @node-drag-enter="onNodeDragEnter"
@@ -429,8 +432,7 @@ watch(
           }
 
           .nav-item {
-            border: 1px dashed
-              var(--cl-file-editor-nav-menu-item-drag-target-border-color);
+            border: 1px dashed var(--cl-file-editor-nav-menu-item-drag-target-border-color);
           }
         }
 
@@ -464,17 +466,13 @@ watch(
 }
 </style>
 <style scoped>
-.file-editor-nav-menu >>> .el-tree .el-tree-node > .el-tree-node__content {
+.file-editor-nav-menu:deep(.el-tree .el-tree-node > .el-tree-node__content) {
   background-color: inherit;
   position: relative;
   z-index: 0;
 }
 
-.file-editor-nav-menu
-  >>> .el-tree
-  .el-tree-node
-  > .el-tree-node__content
-  .el-tree-node__expand-icon {
+.file-editor-nav-menu:deep(.el-tree .el-tree-node > .el-tree-node__content .el-tree-node__expand-icon) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -484,7 +482,7 @@ watch(
   margin: 0;
 }
 
-.file-editor-nav-menu >>> .el-tree .el-tree-node * {
+.file-editor-nav-menu:deep(.el-tree .el-tree-node *) {
   transition: none;
 }
 </style>

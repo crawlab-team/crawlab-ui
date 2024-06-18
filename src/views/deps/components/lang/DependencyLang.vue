@@ -108,15 +108,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  h,
-  onBeforeUnmount,
-  onMounted,
-  PropType,
-  ref,
-} from 'vue';
+import { computed, defineComponent, h, onBeforeUnmount, onMounted, PropType, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
@@ -599,13 +591,13 @@ export default defineComponent({
   align-items: center;
 }
 
-.top-bar >>> .search-btn {
+.top-bar:deep(.search-btn) {
   margin-right: 0;
 }
 
-.top-bar >>> .update-btn,
-.top-bar >>> .view-mode,
-.top-bar >>> .tasks-btn {
+.top-bar:deep(.update-btn),
+.top-bar:deep(.view-mode),
+.top-bar:deep(.tasks-btn) {
   margin-left: 10px;
   margin-right: 0;
 }
@@ -615,7 +607,7 @@ export default defineComponent({
   text-align: right;
 }
 
-.dependency-list >>> .node-type {
+.dependency-list:deep(.node-type) {
   margin-right: 10px;
 }
 </style>

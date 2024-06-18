@@ -68,12 +68,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.environment-form >>> .hosts-item .hosts-item-input {
+.environment-form:deep(.hosts-item .hosts-item-input) {
   width: calc(100% - 10px - (10px + 32px) * 2);
   margin-right: 10px;
 }
 
-.environment-form >>> .hosts-item .el-button {
+.environment-form:deep(.hosts-item .el-button) {
   width: 32px;
 }
 </style>

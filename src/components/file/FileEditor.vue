@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-  defineProps,
-  defineEmits,
-} from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
 import { FILE_ROOT } from '@/constants/file';
@@ -46,7 +38,7 @@ const emit = defineEmits<{
     e: 'create-with-ai',
     name: string,
     sourceCode: string,
-    item?: FileNavItem
+    item?: FileNavItem,
   ): void;
 }>();
 
@@ -69,7 +61,7 @@ const resizeObserver = new ResizeObserver(() => {
 const tabs = ref<FileNavItem[]>([]);
 
 const activeFileItem = computed<FileNavItem | undefined>(
-  () => props.activeNavItem
+  () => props.activeNavItem,
 );
 
 const themeColors = ref<monaco.editor.IColors>({});
@@ -174,6 +166,7 @@ const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
     })
     .map(d => {
       if (!d.is_dir) return d;
+      d.id = d.path;
       d.children = getFilteredFiles(d.children || []);
       return d;
     })
@@ -187,6 +180,7 @@ const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
 const files = computed<FileNavItem[]>(() => {
   const { navItems } = props as FileEditorProps;
   const root: FileNavItem = {
+    id: FILE_ROOT,
     path: FILE_ROOT,
     name: FILE_ROOT,
     is_dir: true,
@@ -423,7 +417,7 @@ const initEditor = async () => {
 const onCreateWithAi = (
   name: string,
   sourceCode: string,
-  item?: FileNavItem
+  item?: FileNavItem,
 ) => {
   emit('create-with-ai', name, sourceCode, item);
 };
@@ -435,6 +429,7 @@ onUnmounted(() => {
     resizeObserver.unobserve(editorRef.value);
   }
   editor?.dispose();
+  store.commit(`${ns}resetActiveFileNavItem`);
 });
 </script>
 
@@ -445,9 +440,7 @@ onUnmounted(() => {
         <div class="left">
           <el-input
             v-model="fileSearchString"
-            :style="{
-              color: styles.default.color,
-            }"
+            :style="styles.default"
             class="search"
             clearable
             :placeholder="
@@ -662,18 +655,12 @@ onUnmounted(() => {
     }
   }
 }
-
-.code-mirror-template {
-  position: fixed;
-  top: -100vh;
-  left: 0;
-  height: 100vh;
-}
 </style>
 <style scoped>
-.file-editor .nav-menu .nav-menu-top-bar >>> .search.el-input .el-input__inner {
+.file-editor .nav-menu .nav-menu-top-bar:deep(.search.el-input .el-input__wrapper) {
   border: none;
   background: transparent;
   color: inherit;
+  box-shadow: none;
 }
 </style>

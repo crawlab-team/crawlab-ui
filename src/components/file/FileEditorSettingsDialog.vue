@@ -22,11 +22,13 @@
       </el-form>
       <template #footer>
         <el-button plain type="info" @click="onClose">{{
-          t('common.actions.cancel')
-        }}</el-button>
+            t('common.actions.cancel')
+          }}
+        </el-button>
         <el-button type="primary" @click="onConfirm">{{
-          t('common.actions.confirm')
-        }}</el-button>
+            t('common.actions.confirm')
+          }}
+        </el-button>
       </template>
     </el-dialog>
   </div>
@@ -119,26 +121,20 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.file-editor-settings-dialog >>> .el-dialog .el-dialog__body {
+.file-editor-settings-dialog:deep(.el-dialog .el-dialog__body) {
   padding: 10px 20px;
 }
 
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__label .icon {
+.file-editor-settings-dialog:deep(.el-form-item > .el-form-item__label .icon) {
   cursor: pointer;
 }
 
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__content {
+.file-editor-settings-dialog:deep(.el-form-item > .el-form-item__content) {
   width: 240px;
 }
 
-.file-editor-settings-dialog
-  >>> .el-form-item
-  > .el-form-item__content
-  .el-input,
-.file-editor-settings-dialog
-  >>> .el-form-item
-  > .el-form-item__content
-  .el-select {
+.file-editor-settings-dialog:deep(.el-form-item  > .el-form-item__content  .el-input),
+.file-editor-settings-dialog:deep(.el-form-item  > .el-form-item__content  .el-select) {
   width: 100%;
 }
 </style>

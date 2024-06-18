@@ -189,11 +189,11 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.tag >>> .el-tag__close:hover {
+.tag:deep(.el-tag__close:hover) {
   font-weight: bolder;
 }
 
-.tag:not(.no-label) >>> .icon {
+.tag:not(.no-label):deep(.icon) {
   margin-right: 5px;
 }
 </style>

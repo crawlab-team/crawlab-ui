@@ -210,7 +210,7 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.transfer >>> .button-wrapper {
+.transfer:deep(.button-wrapper) {
   margin: 0 10px;
 }
 </style>

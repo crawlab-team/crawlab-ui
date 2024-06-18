@@ -104,7 +104,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/*.settings-form >>> .alert-tip {*/
+/*.settings-form:deep(.alert-tip) {*/
 /*  position: absolute;*/
 /*  left: 100%;*/
 /*  top: 0;*/

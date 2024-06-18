@@ -15,14 +15,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeMount,
-  PropType,
-  reactive,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onBeforeMount, PropType, reactive, watch } from 'vue';
 
 export default defineComponent({
   name: 'CheckTagGroup',
@@ -80,7 +73,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.check-tag-group >>> .el-tag:not(:last-child) {
+.check-tag-group:deep(.el-tag:not(:last-child)) {
   margin-right: 10px;
 }
 </style>

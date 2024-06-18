@@ -53,7 +53,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.action-tab >>> .icon {
+.action-tab:deep(.icon) {
   color: #909399;
 }
 </style>

@@ -4,13 +4,7 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeMount,
-  onBeforeUnmount,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { FILTER_OP_EQUAL } from '@/constants/filter';
@@ -73,7 +67,7 @@ export default defineComponent({
 </style>
 
 <style scoped>
-.schedule-detail-tab-tasks >>> .el-table {
+.schedule-detail-tab-tasks:deep(.el-table) {
   border: none;
 }
 </style>

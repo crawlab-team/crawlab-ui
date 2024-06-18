@@ -105,25 +105,10 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeMount,
-  onMounted,
-  PropType,
-  provide,
-  ref,
-  SetupContext,
-  toRefs,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onMounted, PropType, provide, ref, SetupContext, watch } from 'vue';
 import { emptyArrayFunc, emptyObjectFunc } from '@/utils/func';
 import { getMd5 } from '@/utils/hash';
-import {
-  ACTION_ADD,
-  ACTION_FILTER_SEARCH,
-  ACTION_FILTER_SELECT,
-} from '@/constants/action';
+import { ACTION_ADD, ACTION_FILTER_SEARCH, ACTION_FILTER_SELECT } from '@/constants/action';
 
 export default defineComponent({
   name: 'ListLayout',
@@ -304,7 +289,7 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.list-layout >>> .tag {
+.list-layout:deep(.tag) {
   margin-right: 10px;
 }
 </style>

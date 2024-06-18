@@ -59,7 +59,7 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.task-detail-tab-data >>> .el-table {
+.task-detail-tab-data:deep(.el-table) {
   border: none;
 }
 </style>

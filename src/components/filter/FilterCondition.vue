@@ -146,21 +146,19 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.filter-condition >>> .filter-condition-type.el-select .el-input__inner {
+.filter-condition:deep(.filter-condition-type.el-select .el-input__inner) {
   border-color: #dcdfe6 !important;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right: none;
 }
 
-.filter-condition >>> .filter-condition-value.el-input .el-input__inner {
+.filter-condition:deep(.filter-condition-value.el-input .el-input__inner) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.filter-condition
-  >>> .filter-condition-value.el-input.invalid
-  .el-input__inner {
+.filter-condition:deep(.filter-condition-value.el-input.invalid .el-input__inner) {
   border-color: #f56c6c;
 }
 </style>

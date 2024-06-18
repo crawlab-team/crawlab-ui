@@ -141,7 +141,7 @@ watch(
 </script>
 
 <style scoped>
-.task-detail-actions-data >>> .display-all-fields {
+.task-detail-actions-data:deep(.display-all-fields) {
   margin-right: 10px;
 }
 </style>
