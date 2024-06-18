@@ -7,16 +7,16 @@
       @input="onTitleChange"
     />
     <div class="simple-mde">
-      <textarea :value="form.template" ref="simpleMDERef"/>
+      <textarea :value="form.template" ref="simpleMDERef" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, onBeforeUnmount, ref, watch} from 'vue';
-import {translate} from '@/utils';
+import { defineComponent, onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { translate } from '@/utils';
 import 'simplemde/dist/simplemde.min.js';
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 import useNotification from '@/components/notification/notification';
 import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
@@ -28,9 +28,7 @@ export default defineComponent({
     // store
     const ns = 'notification';
     const store = useStore();
-    const {
-      form,
-    } = useNotification(store);
+    const { form } = useNotification(store);
 
     const simpleMDERef = ref();
 
@@ -50,7 +48,7 @@ export default defineComponent({
         }
       });
 
-      const {title} = form.value;
+      const { title } = form.value;
       internalTitle.value = title;
     });
 
@@ -59,17 +57,23 @@ export default defineComponent({
       simpleMDE.value = null;
     });
 
-    watch(() => form.value.template, (template) => {
-      if (simpleMDE.value) {
-        if (simpleMDE.value.value() !== template) {
-          simpleMDE.value.value(template);
+    watch(
+      () => form.value.template,
+      template => {
+        if (simpleMDE.value) {
+          if (simpleMDE.value.value() !== template) {
+            simpleMDE.value.value(template);
+          }
         }
       }
-    });
+    );
 
-    watch(() => form.value.title, (title) => {
-      internalTitle.value = title;
-    });
+    watch(
+      () => form.value.title,
+      title => {
+        internalTitle.value = title;
+      }
+    );
 
     const onTitleChange = (title: string) => {
       store.commit(`${ns}/setTemplateTitle`, title);

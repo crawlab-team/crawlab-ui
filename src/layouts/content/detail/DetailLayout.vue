@@ -1,5 +1,8 @@
 <template>
-  <div :class="(noSidebar || sidebarCollapsed) ? 'collapsed' : ''" class="detail-layout">
+  <div
+    :class="noSidebar || sidebarCollapsed ? 'collapsed' : ''"
+    class="detail-layout"
+  >
     <div class="sidebar">
       <cl-nav-sidebar
         v-if="!noSidebar"
@@ -24,39 +27,56 @@
         <template #extra>
           <el-tooltip
             v-model="showActionsToggleTooltip"
-            :content="actionsCollapsed ? t('layouts.detailLayout.navTabs.toggle.tooltip.expand') : t('layouts.detailLayout.navTabs.toggle.tooltip.collapse')"
+            :content="
+              actionsCollapsed
+                ? t('layouts.detailLayout.navTabs.toggle.tooltip.expand')
+                : t('layouts.detailLayout.navTabs.toggle.tooltip.collapse')
+            "
           >
-            <div :class="actionsCollapsed ? 'collapsed' : ''" class="actions-toggle" @click="onActionsToggle">
-              <font-awesome-icon :icon="['fa', 'angle-up']" class="icon"/>
+            <div
+              :class="actionsCollapsed ? 'collapsed' : ''"
+              class="actions-toggle"
+              @click="onActionsToggle"
+            >
+              <font-awesome-icon :icon="['fa', 'angle-up']" class="icon" />
             </div>
           </el-tooltip>
         </template>
       </cl-nav-tabs>
-      <cl-nav-actions ref="navActions" :collapsed="actionsCollapsed" class="nav-actions">
+      <cl-nav-actions
+        ref="navActions"
+        :collapsed="actionsCollapsed"
+        class="nav-actions"
+      >
         <cl-nav-action-group-detail-common
           :show-back-button="showBackButton"
           :show-save-button="showSaveButton"
           @back="onBack"
           @save="onSave"
         />
-        <slot name="actions"/>
+        <slot name="actions" />
       </cl-nav-actions>
       <div :style="contentContainerStyle" class="content-container">
-        <router-view/>
+        <router-view />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, onBeforeUnmount, onMounted, PropType} from 'vue';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  PropType,
+} from 'vue';
 import useDetail from '@/layouts/content/detail/useDetail';
-import {useStore} from 'vuex';
-import {useI18n} from 'vue-i18n';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 
-const IGNORE_GET_ALL_NS = [
-  'task',
-];
+const IGNORE_GET_ALL_NS = ['task'];
 
 export default defineComponent({
   name: 'DetailLayout',
@@ -82,26 +102,25 @@ export default defineComponent({
       default: true,
     },
   },
-  setup(props: DetailLayoutProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: DetailLayoutProps, { emit }) {
+    const { t } = useI18n();
     const ns = computed(() => props.storeNamespace);
     const store = useStore();
     const state = store.state[ns.value] as BaseStoreState;
 
-    const computedNavItems = computed<NavItem[]>(() => state.allList.map((d: BaseModel) => {
-      const {navItemNameKey} = props;
-      return {
-        id: d._id,
-        title: d[navItemNameKey],
-      } as NavItem;
-    }));
+    const computedNavItems = computed<NavItem[]>(() =>
+      state.allList.map((d: BaseModel) => {
+        const { navItemNameKey } = props;
+        return {
+          id: d._id,
+          title: d[navItemNameKey],
+        } as NavItem;
+      })
+    );
 
-    const {
-      activeId,
-      activeTabName,
-      navSidebar,
-      getForm,
-    } = useDetail(ns.value);
+    const { activeId, activeTabName, navSidebar, getForm } = useDetail(
+      ns.value
+    );
 
     // get form before mount
     onBeforeMount(getForm);

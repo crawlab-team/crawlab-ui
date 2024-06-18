@@ -15,7 +15,7 @@ const tasks: LViewsTasks = {
         runtime_duration: '运行时间',
         total_duration: '总时间',
         results: '结果数',
-      }
+      },
     },
   },
   navActions: {
@@ -26,8 +26,8 @@ const tasks: LViewsTasks = {
     filter: {
       search: {
         placeholder: '搜索任务',
-      }
-    }
+      },
+    },
   },
   navActionsExtra: {
     filter: {
@@ -46,15 +46,15 @@ const tasks: LViewsTasks = {
         },
         status: {
           label: '状态',
-        }
+        },
       },
       search: {
         cmd: {
           placeholder: '搜索执行命令',
-        }
-      }
+        },
+      },
     },
-  }
+  },
 };
 
 export default tasks;

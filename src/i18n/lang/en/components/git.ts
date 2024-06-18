@@ -16,7 +16,7 @@ const git: LComponentsGit = {
         checkout: 'Checkout successfully',
         pull: 'Pulled successfully',
         commit: 'Committed successfully',
-      }
+      },
     },
     messageBox: {
       confirm: {
@@ -26,8 +26,8 @@ const git: LComponentsGit = {
         commit: {
           label: 'Are you sure to commit?',
           placeholder: 'Commit Message',
-        }
-      }
+        },
+      },
     },
     actions: {
       pull: 'Git Pull',
@@ -72,8 +72,8 @@ const git: LComponentsGit = {
     table: {
       columns: {
         timestamp: 'Timestamp',
-      }
-    }
+      },
+    },
   },
   logs: {
     table: {
@@ -82,8 +82,8 @@ const git: LComponentsGit = {
         commitMessage: 'Commit Message',
         author: 'Author',
         timestamp: 'Timestamp',
-      }
-    }
+      },
+    },
   },
   changes: {
     status: {
@@ -99,16 +99,16 @@ const git: LComponentsGit = {
       columns: {
         changedFile: 'Changed File',
         status: 'Status',
-      }
-    }
+      },
+    },
   },
   ignore: {
     table: {
       columns: {
         file: 'File',
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export default git;

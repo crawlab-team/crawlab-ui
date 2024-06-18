@@ -1,18 +1,18 @@
 <template>
   <div class="color-picker">
     <el-color-picker
-        v-model="internalValue"
-        :disabled="disabled"
-        :predefine="predefine"
-        :show-alpha="showAlpha"
-        @change="onChange"
+      v-model="internalValue"
+      :disabled="disabled"
+      :predefine="predefine"
+      :show-alpha="showAlpha"
+      @change="onChange"
     />
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, PropType, ref, watch} from 'vue';
-import {sendEvent} from '@/admin/umeng';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
+import { sendEvent } from '@/admin/umeng';
 
 export default defineComponent({
   name: 'ColorPicker',
@@ -31,16 +31,16 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: [
-    'update:model-value',
-    'change',
-  ],
-  setup(props: ColorPickerProps, {emit}) {
+  emits: ['update:model-value', 'change'],
+  setup(props: ColorPickerProps, { emit }) {
     const internalValue = ref<string>();
 
-    watch(() => props.modelValue, () => {
-      internalValue.value = props.modelValue;
-    });
+    watch(
+      () => props.modelValue,
+      () => {
+        internalValue.value = props.modelValue;
+      }
+    );
 
     const onChange = (value: string) => {
       emit('update:model-value', value);
@@ -50,7 +50,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      const {modelValue} = props;
+      const { modelValue } = props;
       internalValue.value = modelValue;
     });
 
@@ -67,7 +67,6 @@ export default defineComponent({
   border: none;
   padding: 0;
 }
-
 
 .color-picker >>> .el-color-picker__mask {
   background: transparent;

@@ -1,14 +1,26 @@
-import {computed, onBeforeMount, onMounted, ref, Ref, SetupContext} from 'vue';
-import {Table} from 'element-plus/lib/components/table/src/table/defaults';
-import {cloneArray, plainClone} from '@/utils/object';
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref,
+  Ref,
+  SetupContext,
+} from 'vue';
+import { Table } from 'element-plus/lib/components/table/src/table/defaults';
+import { cloneArray, plainClone } from '@/utils/object';
 import useStore from '@/components/table/store';
-import {getColumnWidth, getTableWidth} from '@/utils/table';
-import {sendEvent} from '@/admin/umeng';
+import { getColumnWidth, getTableWidth } from '@/utils/table';
+import { sendEvent } from '@/admin/umeng';
 
-const useColumns = (props: TableProps, ctx: SetupContext, table: Ref<Table<any> | undefined>, wrapper: Ref<Element>) => {
-  const {columns} = props;
+const useColumns = (
+  props: TableProps,
+  ctx: SetupContext,
+  table: Ref<Table<any> | undefined>,
+  wrapper: Ref<Element>
+) => {
+  const { columns } = props;
 
-  const {store} = useStore(props, ctx, table);
+  const { store } = useStore(props, ctx, table);
 
   const columnsTransferVisible = ref<boolean>(false);
 
@@ -56,7 +68,11 @@ const useColumns = (props: TableProps, ctx: SetupContext, table: Ref<Table<any> 
 
   const isColumnsEqual = (columnKeys: string[]) => {
     const columnKeysSorted = cloneArray(columnKeys).sort().join(',');
-    const internalSelectedColumnKeysSorted = cloneArray(internalSelectedColumnKeys.value).sort().join(',');
+    const internalSelectedColumnKeysSorted = cloneArray(
+      internalSelectedColumnKeys.value
+    )
+      .sort()
+      .join(',');
     return columnKeysSorted === internalSelectedColumnKeysSorted;
   };
 
@@ -68,19 +84,26 @@ const useColumns = (props: TableProps, ctx: SetupContext, table: Ref<Table<any> 
     }
 
     // selection column keys
-    const selectionColumnKeys = columnsCtx.value.filter(d => d.type === 'selection').map(d => d.columnKey);
+    const selectionColumnKeys = columnsCtx.value
+      .filter(d => d.type === 'selection')
+      .map(d => d.columnKey);
 
     // table width
     const tableWidth = getTableWidth(wrapper.value);
 
     // table width
     let tableFixedTotalWidth = 0;
-    columns.map((d) => getColumnWidth(d) as number).filter(w => !!w).forEach((w: number) => {
-      tableFixedTotalWidth += w;
-    });
+    columns
+      .map(d => getColumnWidth(d) as number)
+      .filter(w => !!w)
+      .forEach((w: number) => {
+        tableFixedTotalWidth += w;
+      });
 
     // auto width
-    const autoWidth = tableWidth ? (tableWidth - tableFixedTotalWidth - 40 - 12) : 0;
+    const autoWidth = tableWidth
+      ? tableWidth - tableFixedTotalWidth - 40 - 12
+      : 0;
 
     // columns to update
     const columnsToUpdate = selectionColumnKeys.concat(columnKeys).map(key => {
@@ -115,7 +138,9 @@ const useColumns = (props: TableProps, ctx: SetupContext, table: Ref<Table<any> 
 
   const initColumns = () => {
     if (defaultSelectedColumns.value.length < columns.length) {
-      internalSelectedColumnKeys.value = plainClone(defaultSelectedColumns.value.map(d => d.key));
+      internalSelectedColumnKeys.value = plainClone(
+        defaultSelectedColumns.value.map(d => d.key)
+      );
     } else {
       internalSelectedColumnKeys.value = cloneArray(columns.map(d => d.key));
     }

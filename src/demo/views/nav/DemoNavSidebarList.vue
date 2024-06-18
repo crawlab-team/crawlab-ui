@@ -9,18 +9,16 @@
       />
     </template>
     <template #content>
-      <div>
-        Active Item:
-      </div>
-      <Tag :label="activeItem?.title"/>
+      <div>Active Item:</div>
+      <Tag :label="activeItem?.title" />
     </template>
   </DemoNavSidebarLayout>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import { defineComponent, ref } from 'vue';
 import NavSidebar from '@/components/nav/NavSidebar.vue';
-import {ElMessage} from 'element-plus';
+import { ElMessage } from 'element-plus';
 import DemoNavSidebarLayout from '@/demo/views/nav/DemoNavSidebarLayout.vue';
 import Tag from '@/components/tag/Tag.vue';
 
@@ -35,9 +33,9 @@ export default defineComponent({
     const activeKey = ref<string>('1');
 
     const items = ref<NavItem[]>([
-      {id: '1', title: 'Item 1'},
-      {id: '2', title: 'Item 2'},
-      {id: '3', title: 'Item 3'},
+      { id: '1', title: 'Item 1' },
+      { id: '2', title: 'Item 2' },
+      { id: '3', title: 'Item 3' },
     ]);
 
     const activeItem = ref<NavItem>(items.value[0]);
@@ -54,10 +52,8 @@ export default defineComponent({
       onSelect,
       activeItem,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

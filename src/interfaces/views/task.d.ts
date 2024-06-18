@@ -40,7 +40,7 @@ declare global {
   }
 
   type TaskStatus =
-    TASK_STATUS_PENDING
+    | TASK_STATUS_PENDING
     | TASK_STATUS_RUNNING
     | TASK_STATUS_FINISHED
     | TASK_STATUS_ERROR
@@ -59,7 +59,7 @@ declare global {
   }
 
   type TaskMode =
-    TASK_MODE_RANDOM
+    | TASK_MODE_RANDOM
     | TASK_MODE_ALL_NODES
     | TASK_MODE_SELECTED_NODES
     | TASK_MODE_SELECTED_NODE_TAGS;

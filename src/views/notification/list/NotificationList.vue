@@ -10,14 +10,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-notification-dialog/>
+      <cl-create-edit-notification-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useNotificationList from '@/views/notification/list/useNotificationList';
 
 export default defineComponent({
@@ -50,6 +50,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

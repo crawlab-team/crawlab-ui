@@ -16,7 +16,8 @@ const login: LViewsLogin = {
   },
   documentation: 'Documentation',
   mobile: {
-    warning: 'You are running on a mobile device, which is not optimized yet. Please try with a laptop or desktop.'
+    warning:
+      'You are running on a mobile device, which is not optimized yet. Please try with a laptop or desktop.',
   },
   errors: {
     incorrectUsername: 'Please enter the correct username',

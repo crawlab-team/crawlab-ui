@@ -1,4 +1,4 @@
-import {createApp} from '@/package';
+import { createApp } from '@/package';
 // import {getDemoRoutes} from '@/demo/router';
 
 (function () {
@@ -12,8 +12,7 @@ import {createApp} from '@/package';
   // }
 
   // create app
-  createApp(options)
-    .then(app => {
-      window._app = app;
-    });
+  createApp(options).then(app => {
+    window._app = app;
+  });
 })();

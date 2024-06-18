@@ -1,9 +1,6 @@
 <template>
   <el-tooltip :content="tooltip" :disabled="!tooltip">
-    <span
-      :id="id"
-      :class="cls"
-    >
+    <span :id="id" :class="cls">
       <el-button
         :circle="circle"
         :disabled="disabled"
@@ -22,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 
 export const buttonProps = {
   tooltip: {
@@ -89,15 +86,11 @@ export const buttonProps = {
 export default defineComponent({
   name: 'Button',
   props: buttonProps,
-  emits: [
-    'click',
-  ],
+  emits: ['click'],
   setup(props: ButtonProps) {
     const cls = computed<string>(() => {
-      const {noMargin, className, isIcon} = props;
-      const classes = [
-        'button-wrapper',
-      ];
+      const { noMargin, className, isIcon } = props;
+      const classes = ['button-wrapper'];
       if (noMargin) classes.push('no-margin');
       if (isIcon) classes.push('icon-button');
       if (className) classes.push(className);

@@ -6,31 +6,27 @@
       item-key="id"
       @d-end="onDragDrop"
     >
-      <template v-slot="{item}">
+      <template v-slot="{ item }">
         <cl-tab
           v-track="{
-              code: 'click_tabs_view_click_tab',
-              params: {path: item.path}
-            }"
+            code: 'click_tabs_view_click_tab',
+            params: { path: item.path },
+          }"
           :tab="item"
         />
       </template>
     </cl-draggable-list>
 
     <!-- Add cl-tab -->
-    <cl-action-tab
-      :icon="['fa', 'plus']"
-      class="add-tab"
-      @click="onAddTab"
-    />
+    <cl-action-tab :icon="['fa', 'plus']" class="add-tab" @click="onAddTab" />
     <!-- ./Add cl-tab -->
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, onMounted, watch} from 'vue';
-import {useStore} from 'vuex';
-import {useRoute, useRouter} from 'vue-router';
-import {plainClone} from '@/utils/object';
+import { computed, defineComponent, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+import { plainClone } from '@/utils/object';
 
 export default defineComponent({
   name: 'TabsView',
@@ -49,36 +45,29 @@ export default defineComponent({
     const currentPath = computed(() => route.path);
 
     // tabs
-    const tabs = computed < Tab[] > (() => store.getters[`${storeNameSpace}/tabs`]);
+    const tabs = computed<Tab[]>(() => store.getters[`${storeNameSpace}/tabs`]);
 
-    const addTab = (tab: Tab) =>
-    {
+    const addTab = (tab: Tab) => {
       store.commit(`${storeNameSpace}/addTab`, tab);
-    }
-    ;
-
-    const setActiveTab = (tab: Tab) =>
-    {
+    };
+    const setActiveTab = (tab: Tab) => {
       store.commit(`${storeNameSpace}/setActiveTabId`, tab.id);
-    }
-    ;
-
+    };
     const onAddTab = () => {
-      addTab({path: '/'});
+      addTab({ path: '/' });
       const newTab = tabs.value[tabs.value.length - 1];
       setActiveTab(newTab);
       router.push(newTab.path);
     };
 
-    const onDragDrop = (tabs: Tab[]) =>
-    {
+    const onDragDrop = (tabs: Tab[]) => {
       store.commit(`${storeNameSpace}/setTabs`, tabs);
-    }
-    ;
-
+    };
     const updateTabs = (path: string) => {
       // active tab
-      const activeTab = store.getters[`${storeNameSpace}/activeTab`] as Tab | undefined;
+      const activeTab = store.getters[`${storeNameSpace}/activeTab`] as
+        | Tab
+        | undefined;
 
       // skip if active tab is undefined
       if (!activeTab) return;
@@ -99,7 +88,7 @@ export default defineComponent({
       // add current page to tabs if no tab exists
       if (tabs.value.length === 0) {
         // add tab
-        addTab({path: currentPath.value});
+        addTab({ path: currentPath.value });
 
         // new tab
         const newTab = tabs.value[0];
@@ -119,7 +108,7 @@ export default defineComponent({
       currentPath,
       onDragDrop,
     };
-  }
+  },
 });
 </script>
 <style lang="scss" scoped>

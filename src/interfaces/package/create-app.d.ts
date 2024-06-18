@@ -1,5 +1,5 @@
-import {RouteRecordRaw} from 'vue-router';
-import {Store} from 'vuex';
+import { RouteRecordRaw } from 'vue-router';
+import { Store } from 'vuex';
 
 export declare global {
   interface CreateAppOptions {

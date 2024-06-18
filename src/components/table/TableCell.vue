@@ -1,8 +1,8 @@
 <script lang="ts">
-import {defineComponent, h, PropType} from 'vue';
+import { defineComponent, h, PropType } from 'vue';
 import FaIconButton from '@/components/button/FaIconButton.vue';
-import {useRoute} from 'vue-router';
-import {useStore} from 'vuex';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'TableCell',
@@ -18,11 +18,9 @@ export default defineComponent({
     rowIndex: {
       type: Number,
       required: true,
-    }
+    },
   },
-  emits: [
-    'click',
-  ],
+  emits: ['click'],
   setup: function (props: TableCellProps) {
     // route
     const route = useRoute();
@@ -31,8 +29,8 @@ export default defineComponent({
     const store = useStore();
 
     const getChildren = () => {
-      const {row, column, rowIndex} = props;
-      const {value, buttons} = column;
+      const { row, column, rowIndex } = props;
+      const { value, buttons } = column;
 
       // buttons
       if (buttons) {
@@ -48,7 +46,8 @@ export default defineComponent({
         const currentRoutePath = route.path;
 
         // action visible function
-        const actionVisibleFn = (store.state as RootStoreState).layout.actionVisibleFn;
+        const actionVisibleFn = (store.state as RootStoreState).layout
+          .actionVisibleFn;
 
         return _buttons
           .filter(btn => {
@@ -59,9 +58,18 @@ export default defineComponent({
             return actionVisibleFn(currentRoutePath, btn.action);
           })
           .map(btn => {
-            const {tooltip, type, size, icon, disabled, onClick, id, className} = btn;
+            const {
+              tooltip,
+              type,
+              size,
+              icon,
+              disabled,
+              onClick,
+              id,
+              className,
+            } = btn;
             const props = {
-              key: JSON.stringify({tooltip, type, size, icon}),
+              key: JSON.stringify({ tooltip, type, size, icon }),
               tooltip: typeof tooltip === 'function' ? tooltip(row) : tooltip,
               type,
               size: size || 'small',
@@ -97,6 +105,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

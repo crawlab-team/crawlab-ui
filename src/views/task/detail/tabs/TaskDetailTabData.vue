@@ -11,11 +11,11 @@
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, watch} from 'vue';
-import {useStore} from 'vuex';
-import useTask from "@/components/task/task";
-import useTaskDetail from "@/views/task/detail/useTaskDetail";
-import {FILTER_OP_EQUAL} from "@/constants";
+import { computed, defineComponent, watch } from 'vue';
+import { useStore } from 'vuex';
+import useTask from '@/components/task/task';
+import useTaskDetail from '@/views/task/detail/useTaskDetail';
+import { FILTER_OP_EQUAL } from '@/constants';
 
 export default defineComponent({
   name: 'TaskDetailTabOverview',
@@ -23,13 +23,9 @@ export default defineComponent({
     // store
     const nsDc = 'dataCollection';
     const store = useStore();
-    const {
-      task: state,
-    } = store.state as RootStoreState;
+    const { task: state } = store.state as RootStoreState;
 
-    const {
-      activeId,
-    } = useTaskDetail();
+    const { activeId } = useTaskDetail();
 
     const filter = computed<FilterConditionData[]>(() => {
       return [
@@ -41,13 +37,18 @@ export default defineComponent({
       ];
     });
 
-    const displayAllFields = computed<boolean>(() => state.dataDisplayAllFields);
+    const displayAllFields = computed<boolean>(
+      () => state.dataDisplayAllFields
+    );
 
-    watch(() => state.form?.spider?.col_id, (val) => {
-      if (val) {
-        store.dispatch(`${nsDc}/getById`, val);
+    watch(
+      () => state.form?.spider?.col_id,
+      val => {
+        if (val) {
+          store.dispatch(`${nsDc}/getById`, val);
+        }
       }
-    });
+    );
 
     return {
       ...useTask(store),

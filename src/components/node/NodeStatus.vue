@@ -1,26 +1,26 @@
 <template>
   <cl-tag
-      :key="data"
-      :icon="data.icon"
-      :label="data.label"
-      :size="size"
-      :spinning="data.spinning"
-      :tooltip="data.tooltip"
-      :type="data.type"
-      @click="$emit('click')"
+    :key="data"
+    :icon="data.icon"
+    :label="data.label"
+    :size="size"
+    :spinning="data.spinning"
+    :tooltip="data.tooltip"
+    :type="data.type"
+    @click="$emit('click')"
   />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import Tag from '@/components/tag/Tag.vue';
 import {
   NODE_STATUS_OFFLINE,
   NODE_STATUS_ONLINE,
   NODE_STATUS_REGISTERED,
-  NODE_STATUS_UNREGISTERED
+  NODE_STATUS_UNREGISTERED,
 } from '@/constants/node';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'NodeStatus',
@@ -36,11 +36,11 @@ export default defineComponent({
     },
   },
   emits: ['click'],
-  setup(props: NodeStatusProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: NodeStatusProps, { emit }) {
+    const { t } = useI18n();
 
     const data = computed<TagData>(() => {
-      const {status} = props;
+      const { status } = props;
       switch (status) {
         case NODE_STATUS_UNREGISTERED:
           return {

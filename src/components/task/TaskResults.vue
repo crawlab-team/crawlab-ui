@@ -11,17 +11,17 @@
     @click="onClick"
   >
     <template #tooltip>
-      <div v-html="data.tooltip"/>
+      <div v-html="data.tooltip" />
     </template>
   </cl-tag>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {isCancellable} from '@/utils/task';
-import {TASK_STATUS_PENDING} from '@/constants/task';
-import {useI18n} from 'vue-i18n';
-import {voidFunc} from '@/utils';
+import { computed, defineComponent, PropType } from 'vue';
+import { isCancellable } from '@/utils/task';
+import { TASK_STATUS_PENDING } from '@/constants/task';
+import { useI18n } from 'vue-i18n';
+import { voidFunc } from '@/utils';
 
 export default defineComponent({
   name: 'TaskResults',
@@ -45,13 +45,13 @@ export default defineComponent({
     onClick: {
       type: Function,
       default: voidFunc,
-    }
+    },
   },
-  setup(props: TaskResultsProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: TaskResultsProps, { emit }) {
+    const { t } = useI18n();
 
     const data = computed<TagData>(() => {
-      const {results, status} = props;
+      const { results, status } = props;
       if (isCancellable(status)) {
         if (status === TASK_STATUS_PENDING) {
           return {

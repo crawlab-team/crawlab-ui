@@ -10,15 +10,15 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-install-plugin-dialog v-if="activeDialogKey === 'install'"/>
-      <cl-settings-plugin-dialog v-if="activeDialogKey === 'settings'"/>
+      <cl-install-plugin-dialog v-if="activeDialogKey === 'install'" />
+      <cl-settings-plugin-dialog v-if="activeDialogKey === 'settings'" />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import usePluginList from '@/views/plugin/list/usePluginList';
 
 export default defineComponent({
@@ -27,7 +27,7 @@ export default defineComponent({
     return {
       ...usePluginList(),
     };
-  }
+  },
 });
 </script>
 

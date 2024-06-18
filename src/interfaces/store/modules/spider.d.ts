@@ -1,4 +1,9 @@
-type SpiderStoreModule = BaseModule<SpiderStoreState, SpiderStoreGetters, SpiderStoreMutations, SpiderStoreActions>;
+type SpiderStoreModule = BaseModule<
+  SpiderStoreState,
+  SpiderStoreGetters,
+  SpiderStoreMutations,
+  SpiderStoreActions
+>;
 
 interface SpiderStoreState extends BaseStoreState<Spider>, BaseFileStoreState {
   dataDisplayAllFields: boolean;
@@ -6,10 +11,17 @@ interface SpiderStoreState extends BaseStoreState<Spider>, BaseFileStoreState {
 
 type SpiderStoreGetters = BaseStoreGetters<SpiderStoreState>;
 
-interface SpiderStoreMutations extends BaseStoreMutations<Spider>, BaseFileStoreMutations<SpiderStoreState> {
+interface SpiderStoreMutations
+  extends BaseStoreMutations<Spider>,
+    BaseFileStoreMutations<SpiderStoreState> {
   setDataDisplayAllFields: StoreMutation<SpiderStoreState, boolean>;
 }
 
-interface SpiderStoreActions extends BaseStoreActions<Spider>, BaseFileStoreActions<SpiderStoreState> {
-  runById: StoreAction<SpiderStoreState, { id: string; options: SpiderRunOptions }>;
+interface SpiderStoreActions
+  extends BaseStoreActions<Spider>,
+    BaseFileStoreActions<SpiderStoreState> {
+  runById: StoreAction<
+    SpiderStoreState,
+    { id: string; options: SpiderRunOptions }
+  >;
 }

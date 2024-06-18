@@ -47,7 +47,7 @@ const common: LCommon = {
       start: '您是否确定启动?',
       deleteSelected: '您是否确定删除已选项?',
       proceed: '您是否确定继续?',
-    }
+    },
   },
   message: {
     success: {
@@ -76,7 +76,7 @@ const common: LCommon = {
     },
   },
   notification: {
-    loggedOut: '您已退出登陆，请重新登陆'
+    loggedOut: '您已退出登陆，请重新登陆',
   },
   tabs: {
     overview: '概览',

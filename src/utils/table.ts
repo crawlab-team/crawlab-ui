@@ -1,10 +1,17 @@
-import {ElMessageBox} from 'element-plus';
-import {useStore} from 'vuex';
-import {ACTION_CANCEL, ACTION_CLONE, ACTION_DELETE, ACTION_EDIT, ACTION_RUN, ACTION_VIEW,} from '@/constants/action';
-import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
-import {getRouter} from '@/router';
+import { ElMessageBox } from 'element-plus';
+import { useStore } from 'vuex';
+import {
+  ACTION_CANCEL,
+  ACTION_CLONE,
+  ACTION_DELETE,
+  ACTION_EDIT,
+  ACTION_RUN,
+  ACTION_VIEW,
+} from '@/constants/action';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
+import { getRouter } from '@/router';
 
 // i18n
 const t = translate;
@@ -38,7 +45,11 @@ export const getColumnWidth = (column: TableColumn): number | undefined => {
   }
 };
 
-export const getActionColumn = (endpoint: string, ns: ListStoreNamespace, actionNames: TableActionName[]): TableColumn => {
+export const getActionColumn = (
+  endpoint: string,
+  ns: ListStoreNamespace,
+  actionNames: TableActionName[]
+): TableColumn => {
   const store = useStore();
 
   const column = {
@@ -49,7 +60,10 @@ export const getActionColumn = (endpoint: string, ns: ListStoreNamespace, action
     buttons: [],
   } as TableColumn;
 
-  const buttons = typeof column.buttons === 'function' ? column.buttons() : column.buttons as TableColumnButton[];
+  const buttons =
+    typeof column.buttons === 'function'
+      ? column.buttons()
+      : (column.buttons as TableColumnButton[]);
 
   const router = getRouter();
 
@@ -64,12 +78,15 @@ export const getActionColumn = (endpoint: string, ns: ListStoreNamespace, action
     const currentRoutePath = router.currentRoute.value.path;
 
     // action visible function
-    const actionVisibleFn = (store.state as RootStoreState).layout.actionVisibleFn;
+    const actionVisibleFn = (store.state as RootStoreState).layout
+      .actionVisibleFn;
 
     // skip if action is not allowed
-    if (!!actionVisibleFn &&
+    if (
+      !!actionVisibleFn &&
       currentRoutePath &&
-      !actionVisibleFn(currentRoutePath, name)) {
+      !actionVisibleFn(currentRoutePath, name)
+    ) {
       return;
     }
 
@@ -97,7 +114,7 @@ export const getActionColumn = (endpoint: string, ns: ListStoreNamespace, action
 
             sendEvent('click_table_row_action_edit');
           },
-        },);
+        });
         break;
       case ACTION_CLONE:
         buttons.push({
@@ -110,7 +127,7 @@ export const getActionColumn = (endpoint: string, ns: ListStoreNamespace, action
             // console.log('clone', row);
 
             sendEvent('click_table_row_action_clone');
-          }
+          },
         });
         break;
       case ACTION_DELETE:
@@ -124,7 +141,7 @@ export const getActionColumn = (endpoint: string, ns: ListStoreNamespace, action
 
             const res = await ElMessageBox.confirm(
               t('common.messageBox.confirm.delete'),
-              t('common.actions.delete'),
+              t('common.actions.delete')
             );
 
             sendEvent('click_table_row_action_delete_confirm');

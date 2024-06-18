@@ -1,7 +1,9 @@
 export declare global {
   type ExportDirectiveTarget = string | (() => string);
 
-  type ExportDirectiveConditions = FilterConditionData[] | (() => FilterConditionData[]);
+  type ExportDirectiveConditions =
+    | FilterConditionData[]
+    | (() => FilterConditionData[]);
 
   interface ExportDirectivePayload {
     target: ExportDirectiveTarget;

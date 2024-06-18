@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {tagProps} from '@/components/tag/Tag.vue';
-import {useRouter} from 'vue-router';
+import { defineComponent } from 'vue';
+import { tagProps } from '@/components/tag/Tag.vue';
+import { useRouter } from 'vue-router';
 
 const linkTagProps = {
   ...tagProps,
@@ -30,11 +30,11 @@ const linkTagProps = {
 export default defineComponent({
   name: 'LinkTag',
   props: linkTagProps,
-  setup(props: LinkTagProps, {emit}) {
+  setup(props: LinkTagProps, { emit }) {
     const router = useRouter();
 
     const onClick = () => {
-      const {path} = props;
+      const { path } = props;
       if (path) {
         router.push(path);
       }
@@ -47,6 +47,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

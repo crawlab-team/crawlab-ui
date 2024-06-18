@@ -15,8 +15,8 @@ const tasks: LViewsTasks = {
         runtime_duration: 'Runtime Duration',
         total_duration: 'Total Duration',
         results: 'Results',
-      }
-    }
+      },
+    },
   },
   navActions: {
     new: {
@@ -26,8 +26,8 @@ const tasks: LViewsTasks = {
     filter: {
       search: {
         placeholder: 'Search tasks',
-      }
-    }
+      },
+    },
   },
   navActionsExtra: {
     filter: {
@@ -46,15 +46,15 @@ const tasks: LViewsTasks = {
         },
         status: {
           label: 'Status',
-        }
+        },
       },
       search: {
         cmd: {
           placeholder: 'Search Execute Command',
-        }
-      }
+        },
+      },
     },
-  }
+  },
 };
 
 export default tasks;

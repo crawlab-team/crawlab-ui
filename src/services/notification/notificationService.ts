@@ -1,7 +1,9 @@
-import {Store} from 'vuex';
-import {getDefaultService} from '@/utils/service';
+import { Store } from 'vuex';
+import { getDefaultService } from '@/utils/service';
 
-const useNotificationService = (store: Store<RootStoreState>): Services<NotificationSetting> => {
+const useNotificationService = (
+  store: Store<RootStoreState>
+): Services<NotificationSetting> => {
   const ns = 'notification';
 
   return {

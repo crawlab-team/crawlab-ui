@@ -14,7 +14,7 @@
       @mouseenter="$emit('mouseenter')"
       @mouseleave="$emit('mouseleave')"
     >
-      <cl-icon :icon="icon" :spinning="spinning"/>
+      <cl-icon :icon="icon" :spinning="spinning" />
       <span>{{ label || tag?.name }}</span>
     </el-tag>
     <template #content>
@@ -24,8 +24,15 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, PropType, ref, watch} from 'vue';
-import {ElTag} from 'element-plus';
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import { ElTag } from 'element-plus';
 
 export const tagProps = {
   label: {
@@ -86,18 +93,13 @@ export const tagProps = {
 export default defineComponent({
   name: 'Tag',
   props: tagProps,
-  emits: [
-    'click',
-    'close',
-    'mouseenter',
-    'mouseleave',
-  ],
-  setup(props: TagProps, {emit}) {
+  emits: ['click', 'close', 'mouseenter', 'mouseleave'],
+  setup(props: TagProps, { emit }) {
     const tagRef = ref<typeof ElTag>();
 
     const onClick = (ev?: Event) => {
       ev?.stopPropagation();
-      const {clickable} = props;
+      const { clickable } = props;
       if (clickable) {
         emit('click');
       }
@@ -105,14 +107,14 @@ export default defineComponent({
 
     const onClose = (ev?: Event) => {
       ev?.stopPropagation();
-      const {closable} = props;
+      const { closable } = props;
       if (closable) {
         emit('close');
       }
     };
 
     const cls = computed<string[]>(() => {
-      const {clickable, disabled, label, tag, className} = props;
+      const { clickable, disabled, label, tag, className } = props;
       const cls = [] as string[];
       if (clickable) cls.push('clickable');
       if (disabled) cls.push('disabled');
@@ -122,7 +124,7 @@ export default defineComponent({
     });
 
     const setStyle = () => {
-      const {color, borderColor, width, tag} = props;
+      const { color, borderColor, width, tag } = props;
 
       // normalize colors
       const color_ = color ?? tag?.color;

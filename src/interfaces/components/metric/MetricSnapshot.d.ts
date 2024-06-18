@@ -3,4 +3,4 @@ interface MetricSnapshotProps {
   format?: MetricSnapshotFormat;
 }
 
-type MetricSnapshotFormat = (percentage: number) => string
+type MetricSnapshotFormat = (percentage: number) => string;

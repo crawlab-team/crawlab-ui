@@ -1,13 +1,13 @@
-import {useStore} from 'vuex';
-import {computed, h} from 'vue';
+import { useStore } from 'vuex';
+import { computed, h } from 'vue';
 import useList from '@/layouts/content/list/list';
 import NavLink from '@/components/nav/NavLink.vue';
 import ColorPicker from '@/components/color/ColorPicker.vue';
-import {getActionColumn} from '@/utils/table';
-import {ACTION_ADD, ACTION_DELETE, ACTION_VIEW} from '@/constants/action';
+import { getActionColumn } from '@/utils/table';
+import { ACTION_ADD, ACTION_DELETE, ACTION_VIEW } from '@/constants/action';
 import Tag from '@/components/tag/Tag.vue';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
 
 // i18n
 const t = translate;
@@ -16,7 +16,7 @@ const useTagList = () => {
   // store
   const ns = 'tag';
   const store = useStore<RootStoreState>();
-  const {commit} = store;
+  const { commit } = store;
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -36,10 +36,10 @@ const useTagList = () => {
             commit(`${ns}/showDialog`, 'create');
 
             sendEvent('click_tag_list_new');
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    },
   ]);
 
   // table columns
@@ -50,22 +50,23 @@ const useTagList = () => {
       icon: ['fa', 'font'],
       width: '160',
       align: 'left',
-      value: (row: Tag) => h(NavLink, {
-        path: `/tags/${row._id}`,
-        label: row.name,
-      }),
+      value: (row: Tag) =>
+        h(NavLink, {
+          path: `/tags/${row._id}`,
+          label: row.name,
+        }),
     },
     {
       key: 'color',
       label: t('views.tags.table.columns.color'),
       icon: ['fa', 'palette'],
       width: '120',
-      value: ({color}: Tag) => {
+      value: ({ color }: Tag) => {
         return h(ColorPicker, {
           modelValue: color,
           disabled: true,
         });
-      }
+      },
     },
     {
       key: 'col',

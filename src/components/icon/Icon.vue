@@ -4,19 +4,19 @@
       v-if="isFaIcon"
       :class="spinning ? 'fa-spin' : ''"
       :icon="icon"
-      :style="{fontSize}"
+      :style="{ fontSize }"
       class="icon"
     />
     <i
       v-else
       :class="[spinning ? 'fa-spin' : '', icon, 'icon']"
-      :style="{fontSize}"
+      :style="{ fontSize }"
     />
   </template>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import useIcon from '@/components/icon/icon';
 
 export default defineComponent({
@@ -32,21 +32,18 @@ export default defineComponent({
     size: {
       type: String as PropType<IconSize>,
       default: 'default',
-    }
+    },
   },
-  setup(props: IconProps, {emit}) {
-    const {
-      isFaIcon: _isFaIcon,
-      getFontSize,
-    } = useIcon();
+  setup(props: IconProps, { emit }) {
+    const { isFaIcon: _isFaIcon, getFontSize } = useIcon();
 
     const fontSize = computed(() => {
-      const {size} = props;
+      const { size } = props;
       return getFontSize(size);
     });
 
     const isFaIcon = computed<boolean>(() => {
-      const {icon} = props;
+      const { icon } = props;
       if (!icon) return false;
       return _isFaIcon(icon);
     });
@@ -59,6 +56,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

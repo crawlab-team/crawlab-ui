@@ -16,7 +16,10 @@
         @click="onLeftMove"
       >
         <div class="btn-content">
-          <font-awesome-icon :icon="['fa', 'angle-left']" style="margin-right: 5px"/>
+          <font-awesome-icon
+            :icon="['fa', 'angle-left']"
+            style="margin-right: 5px"
+          />
           {{ buttonTexts[0] }}
         </div>
       </cl-button>
@@ -28,7 +31,10 @@
       >
         <div class="btn-content">
           {{ buttonTexts[1] }}
-          <font-awesome-icon :icon="['fa', 'angle-right']" style="margin-left: 5px"/>
+          <font-awesome-icon
+            :icon="['fa', 'angle-right']"
+            style="margin-left: 5px"
+          />
         </div>
       </cl-button>
     </div>
@@ -44,9 +50,9 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref} from 'vue';
-import {DataItem, Key} from 'element-plus';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, PropType, ref } from 'vue';
+import { DataItem, Key } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'Transfer',
@@ -56,46 +62,44 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
     data: {
       type: Array as PropType<DataItem[]>,
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
     titles: {
       type: Array as PropType<string[]>,
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
     buttonTexts: {
       type: Array as PropType<string[]>,
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
     buttonTooltips: {
       type: Array as PropType<string[]>,
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
   },
-  emits: [
-    'change',
-  ],
-  setup(props: TransferProps, {emit}) {
+  emits: ['change'],
+  setup(props: TransferProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const dataMap = computed<DataMap>(() => {
-      const {data} = props as TransferProps;
+      const { data } = props as TransferProps;
       const map = {} as DataMap;
       data.forEach(d => {
         map[d.key] = d;
@@ -105,11 +109,11 @@ export default defineComponent({
 
     const leftChecked = ref<Key[]>([]);
     const leftData = computed<DataItem[]>(() => {
-      const {value, data} = props as TransferProps;
+      const { value, data } = props as TransferProps;
       return data.filter(d => !value.includes(d.key));
     });
     const leftTooltip = computed<string>(() => {
-      const {buttonTooltips} = props as TransferProps;
+      const { buttonTooltips } = props as TransferProps;
       return buttonTooltips[0];
     });
     const onLeftCheck = (value: Key[]) => {
@@ -118,39 +122,43 @@ export default defineComponent({
 
     const rightChecked = ref<Key[]>([]);
     const rightData = computed<DataItem[]>(() => {
-      const {value} = props as TransferProps;
+      const { value } = props as TransferProps;
       return value.map(key => dataMap.value[key]);
     });
     const rightTooltip = computed<string>(() => {
-      const {buttonTooltips} = props as TransferProps;
+      const { buttonTooltips } = props as TransferProps;
       return buttonTooltips[1];
     });
     const onRightCheck = (value: Key[]) => {
       rightChecked.value = value;
     };
 
-    const leftDisabled = computed<boolean>(() => rightChecked.value.length === 0);
-    const rightDisabled = computed<boolean>(() => leftChecked.value.length === 0);
+    const leftDisabled = computed<boolean>(
+      () => rightChecked.value.length === 0
+    );
+    const rightDisabled = computed<boolean>(
+      () => leftChecked.value.length === 0
+    );
 
     const change = (value: Key[]) => {
       emit('change', value);
     };
 
     const onLeftMove = () => {
-      const {value} = props as TransferProps;
+      const { value } = props as TransferProps;
       const newValue = value.filter(d => !rightChecked.value.includes(d));
       change(newValue);
       rightChecked.value = [];
     };
     const onLeftDrag = (items: DataItem[]) => {
-      const {value} = props as TransferProps;
+      const { value } = props as TransferProps;
       const itemKeys = items.map(d => d.key);
       const newValue = value.filter(d => !itemKeys.includes(d));
       change(newValue);
     };
 
     const onRightMove = () => {
-      const {value} = props as TransferProps;
+      const { value } = props as TransferProps;
       const newValue = value.concat(leftChecked.value);
       change(newValue);
       leftChecked.value = [];

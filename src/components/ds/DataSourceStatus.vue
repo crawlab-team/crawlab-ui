@@ -9,18 +9,18 @@
     @click="$emit('click')"
   >
     <template #tooltip>
-      <div v-html="data.tooltip"/>
+      <div v-html="data.tooltip" />
     </template>
   </cl-tag>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import {
   DATA_SOURCE_STATUS_OFFLINE,
-  DATA_SOURCE_STATUS_ONLINE
+  DATA_SOURCE_STATUS_ONLINE,
 } from '@/constants/ds';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'DataSourceStatus',
@@ -41,10 +41,10 @@ export default defineComponent({
   },
   emits: ['click'],
   setup(props: DataSourceStatusProps) {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const data = computed<TagData>(() => {
-      const {status, error} = props;
+      const { status, error } = props;
       switch (status) {
         case DATA_SOURCE_STATUS_ONLINE:
           return {

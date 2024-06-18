@@ -1,4 +1,4 @@
-import {RouteRecordRaw} from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 import DemoInputList from '@/demo/views/input/DemoInputList.vue';
 
 const endpoint = '/demo/input';

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <canvas id="canvas" class="login-canvas"/>
+    <canvas id="canvas" class="login-canvas" />
     <el-form
       ref="loginFormRef"
       :model="loginForm"
@@ -10,8 +10,8 @@
       label-position="left"
     >
       <h3 class="title">
-        <img :src="logo" alt="logo" class="logo-img"/>
-<!--        <span class="logo-title">Crawlab</span>-->
+        <img :src="logo" alt="logo" class="logo-img" />
+        <!--        <span class="logo-title">Crawlab</span>-->
         <span class="logo-sub-title">
           <div class="logo-sub-title-block">
             {{ t(systemInfo.edition || '') }}
@@ -21,7 +21,7 @@
           </div>
         </span>
       </h3>
-      <el-form-item prop="username" style="margin-bottom: 28px;">
+      <el-form-item prop="username" style="margin-bottom: 28px">
         <el-input
           v-model="loginForm.username"
           :placeholder="t('views.login.loginForm.username')"
@@ -32,7 +32,7 @@
           @keyup.enter="onLogin"
         />
       </el-form-item>
-      <el-form-item prop="password" style="margin-bottom: 28px;">
+      <el-form-item prop="password" style="margin-bottom: 28px">
         <el-input
           v-model="loginForm.password"
           :placeholder="t('views.login.loginForm.password')"
@@ -43,7 +43,11 @@
           @keyup.enter="onLogin"
         />
       </el-form-item>
-      <el-form-item v-if="isSignup" prop="confirmPassword" style="margin-bottom: 28px;">
+      <el-form-item
+        v-if="isSignup"
+        prop="confirmPassword"
+        style="margin-bottom: 28px"
+      >
         <el-input
           v-model="loginForm.confirmPassword"
           :placeholder="t('views.login.loginForm.confirmPassword')"
@@ -52,7 +56,7 @@
           size="large"
         />
       </el-form-item>
-      <el-form-item v-if="isSignup" prop="email" style="margin-bottom: 28px;">
+      <el-form-item v-if="isSignup" prop="email" style="margin-bottom: 28px">
         <el-input
           v-model="loginForm.email"
           :placeholder="t('views.login.loginForm.email')"
@@ -64,7 +68,7 @@
         <el-button
           v-if="isSignup"
           :loading="loading"
-          style="width:100%;"
+          style="width: 100%"
           type="primary"
           size="large"
         >
@@ -73,7 +77,7 @@
         <el-button
           v-if="!isSignup"
           :loading="loading"
-          style="width:100%;"
+          style="width: 100%"
           type="primary"
           size="large"
           @click="onLogin"
@@ -83,31 +87,48 @@
       </el-form-item>
       <div class="alternatives">
         <div class="left">
-          <el-tooltip :content="t('views.login.forgotPassword.content')" trigger="click">
-            <span class="forgot-password">{{ t('views.login.forgotPassword.label') }}</span>
+          <el-tooltip
+            :content="t('views.login.forgotPassword.content')"
+            trigger="click"
+          >
+            <span class="forgot-password">{{
+              t('views.login.forgotPassword.label')
+            }}</span>
           </el-tooltip>
         </div>
       </div>
       <div class="tips">
         <span>{{ t('views.login.initial.title') }}: admin/admin</span>
         <!--TODO: implement github stars-->
-        <a v-if="false" href="https://github.com/crawlab-team/crawlab" style="float:right" target="_blank">
-          <img alt="github-stars" src="https://img.shields.io/github/stars/crawlab-team/crawlab?logo=github">
+        <a
+          v-if="false"
+          href="https://github.com/crawlab-team/crawlab"
+          style="float: right"
+          target="_blank"
+        >
+          <img
+            alt="github-stars"
+            src="https://img.shields.io/github/stars/crawlab-team/crawlab?logo=github"
+          />
         </a>
       </div>
       <div class="lang">
-        <span :class="lang==='zh'?'active':''" @click="setLang('zh')">中文</span>
+        <span :class="lang === 'zh' ? 'active' : ''" @click="setLang('zh')"
+          >中文</span
+        >
         |
-        <span :class="lang==='en'?'active':''" @click="setLang('en')">English</span>
+        <span :class="lang === 'en' ? 'active' : ''" @click="setLang('en')"
+          >English</span
+        >
       </div>
       <div v-if="false" class="documentation">
-        <a href="https://docs-next.crawlab.cn" target="_blank">{{ t('views.login.documentation') }}</a>
+        <a href="https://docs-next.crawlab.cn" target="_blank">{{
+          t('views.login.documentation')
+        }}</a>
       </div>
       <div class="mobile-warning" v-if="isShowMobileWarning">
         <el-alert :closable="false" type="error">
-          {{
-            t('views.login.mobile.warning')
-          }}
+          {{ t('views.login.mobile.warning') }}
         </el-alert>
       </div>
     </el-form>
@@ -115,29 +136,25 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, onUnmounted, ref} from 'vue';
-import {isValidUsername} from '@/utils/validate';
-import {useRoute, useRouter} from 'vue-router';
+import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue';
+import { isValidUsername } from '@/utils/validate';
+import { useRoute, useRouter } from 'vue-router';
 import logo from '@/assets/svg/logo-main.svg';
-import {ElMessage} from 'element-plus';
+import { ElMessage } from 'element-plus';
 import useRequest from '@/services/request';
-import {useStore} from 'vuex';
-import {setGlobalLang} from '@/utils/i18n';
-import {useI18n} from 'vue-i18n';
-import {LOCAL_STORAGE_KEY_TOKEN} from '@/constants/localStorage';
+import { useStore } from 'vuex';
+import { setGlobalLang } from '@/utils/i18n';
+import { useI18n } from 'vue-i18n';
+import { LOCAL_STORAGE_KEY_TOKEN } from '@/constants/localStorage';
 
-const {
-  post,
-} = useRequest();
+const { post } = useRequest();
 
 export default defineComponent({
   name: 'Login',
   setup() {
     // store
     const store = useStore();
-    const {
-      common: commonState,
-    } = store.state as RootStoreState;
+    const { common: commonState } = store.state as RootStoreState;
 
     // current route
     const route = useRoute();
@@ -146,7 +163,7 @@ export default defineComponent({
     const router = useRouter();
 
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // loading
     const loading = ref<boolean>(false);
@@ -191,9 +208,13 @@ export default defineComponent({
     };
 
     const loginRules: LoginRules = {
-      username: [{required: true, trigger: 'blur', validator: validateUsername}],
-      password: [{required: true, trigger: 'blur', validator: validatePass}],
-      confirmPassword: [{required: true, trigger: 'blur', validator: validateConfirmPass}]
+      username: [
+        { required: true, trigger: 'blur', validator: validateUsername },
+      ],
+      password: [{ required: true, trigger: 'blur', validator: validatePass }],
+      confirmPassword: [
+        { required: true, trigger: 'blur', validator: validateConfirmPass },
+      ],
     };
 
     const isShowMobileWarning = ref<boolean>(false);
@@ -202,7 +223,9 @@ export default defineComponent({
 
     const internalLang = ref<string>(localStorage.getItem('lang') || 'en');
 
-    const lang = computed<string | null>(() => internalLang.value || localStorage.getItem('lang'));
+    const lang = computed<string | null>(
+      () => internalLang.value || localStorage.getItem('lang')
+    );
 
     const setLang = (lang: Lang) => {
       internalLang.value = lang;
@@ -218,7 +241,7 @@ export default defineComponent({
       await loginFormRef.value.validate();
 
       // username and password
-      const {username, password} = loginForm.value;
+      const { username, password } = loginForm.value;
 
       // set loading
       loading.value = true;
@@ -246,7 +269,6 @@ export default defineComponent({
 
         // redirect to home page
         await router.push('/');
-
       } catch (e: any) {
         // error
         if (e.toString().includes('401')) {
@@ -348,11 +370,11 @@ export default defineComponent({
   }
 
   .title {
-    font-family: "Verdana", serif;
+    font-family: 'Verdana', serif;
     /*font-style: italic;*/
     font-weight: 600;
     font-size: 24px;
-    color: #409EFF;
+    color: #409eff;
     margin: 0px auto 20px auto;
     text-align: center;
     cursor: default;
@@ -366,7 +388,20 @@ export default defineComponent({
     }
 
     .logo-title {
-      font-family: BlinkMacSystemFont, -apple-system, segoe ui, roboto, oxygen, ubuntu, cantarell, fira sans, droid sans, helvetica neue, helvetica, arial, sans-serif;
+      font-family:
+        BlinkMacSystemFont,
+        -apple-system,
+        segoe ui,
+        roboto,
+        oxygen,
+        ubuntu,
+        cantarell,
+        fira sans,
+        droid sans,
+        helvetica neue,
+        helvetica,
+        arial,
+        sans-serif;
       font-size: 56px;
       font-weight: 600;
       margin-left: 24px;
@@ -374,7 +409,20 @@ export default defineComponent({
     }
 
     .logo-sub-title {
-      font-family: BlinkMacSystemFont, -apple-system, segoe ui, roboto, oxygen, ubuntu, cantarell, fira sans, droid sans, helvetica neue, helvetica, arial, sans-serif;
+      font-family:
+        BlinkMacSystemFont,
+        -apple-system,
+        segoe ui,
+        roboto,
+        oxygen,
+        ubuntu,
+        cantarell,
+        fira sans,
+        droid sans,
+        helvetica neue,
+        helvetica,
+        arial,
+        sans-serif;
       font-size: 20px;
       height: 48px;
       line-height: 48px;
@@ -419,7 +467,7 @@ export default defineComponent({
     .sign-in,
     .sign-up {
       cursor: pointer;
-      color: #409EFF;
+      color: #409eff;
       font-weight: 600;
     }
   }
@@ -460,7 +508,6 @@ export default defineComponent({
   .mobile-warning {
     margin-top: 20px;
   }
-
 }
 </style>
 <style scoped>

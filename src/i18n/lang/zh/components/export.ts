@@ -12,6 +12,6 @@ const export_: LComponentsExport = {
   },
   status: {
     exporting: '正在导出...',
-  }
+  },
 };
 export default export_;

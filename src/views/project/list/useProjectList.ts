@@ -1,21 +1,21 @@
-import {computed, h} from 'vue';
-import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
-import {useStore} from 'vuex';
+import { computed, h } from 'vue';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import { useStore } from 'vuex';
 import useList from '@/layouts/content/list/list';
 import NavLink from '@/components/nav/NavLink.vue';
-import {useRouter} from 'vue-router';
-import {TAB_NAME_SPIDERS} from '@/constants/tab';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
+import { useRouter } from 'vue-router';
+import { TAB_NAME_SPIDERS } from '@/constants/tab';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
-  FILTER_OP_CONTAINS
+  FILTER_OP_CONTAINS,
 } from '@/constants';
-import {onListFilterChangeByKey} from '@/utils';
+import { onListFilterChangeByKey } from '@/utils';
 
 const useProjectList = () => {
   // router
@@ -24,20 +24,16 @@ const useProjectList = () => {
   // store
   const ns = 'project';
   const store = useStore<RootStoreState>();
-  const {commit} = store;
+  const { commit } = store;
 
   // i18n
   const t = translate;
 
   // use list
-  const {
-    actionFunctions,
-  } = useList<Project>(ns, store);
+  const { actionFunctions } = useList<Project>(ns, store);
 
   // action functions
-  const {
-    deleteByIdConfirm,
-  } = actionFunctions;
+  const { deleteByIdConfirm } = actionFunctions;
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -55,9 +51,9 @@ const useProjectList = () => {
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       action: ACTION_FILTER,
@@ -68,9 +64,14 @@ const useProjectList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t('views.projects.navActions.filter.search.placeholder'),
-          onChange: onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'name',
+            FILTER_OP_CONTAINS
+          ),
         },
-      ]
+      ],
     },
   ]);
 
@@ -82,10 +83,11 @@ const useProjectList = () => {
       label: t('views.projects.table.columns.name'),
       icon: ['fa', 'font'],
       width: '150',
-      value: (row: Project) => h(NavLink, {
-        path: `/projects/${row._id}`,
-        label: row.name,
-      }),
+      value: (row: Project) =>
+        h(NavLink, {
+          path: `/projects/${row._id}`,
+          label: row.name,
+        }),
       hasSort: true,
       hasFilter: true,
       allowFilterSearch: true,
@@ -95,10 +97,11 @@ const useProjectList = () => {
       key: 'spiders',
       label: t('views.projects.table.columns.spiders'),
       icon: ['fa', 'spider'],
-      value: (row: Project) => h(NavLink, {
-        path: `/projects/${row._id}/${TAB_NAME_SPIDERS}`,
-        label: row.spiders,
-      }),
+      value: (row: Project) =>
+        h(NavLink, {
+          path: `/projects/${row._id}/${TAB_NAME_SPIDERS}`,
+          label: row.spiders,
+        }),
       width: '120',
     },
     // {
@@ -129,7 +132,7 @@ const useProjectList = () => {
           type: 'primary',
           icon: ['fa', 'search'],
           tooltip: t('common.actions.view'),
-          onClick: (row) => {
+          onClick: row => {
             router.push(`/projects/${row._id}`);
 
             sendEvent('click_project_list_actions_view');
@@ -165,7 +168,7 @@ const useProjectList = () => {
         },
       ],
       disableTransfer: true,
-    }
+    },
   ]);
 
   // options

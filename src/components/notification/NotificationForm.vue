@@ -1,10 +1,5 @@
 <template>
-  <cl-form
-    v-if="form"
-    ref="formRef"
-    :model="form"
-    :selective="isSelectiveForm"
-  >
+  <cl-form v-if="form" ref="formRef" :model="form" :selective="isSelectiveForm">
     <cl-form-item
       :span="2"
       :label="t('views.notification.settings.form.name')"
@@ -34,8 +29,14 @@
       prop="type"
     >
       <el-select v-model="form.type">
-        <el-option value="mail" :label="t('views.notification.settings.type.mail')"/>
-        <el-option value="mobile" :label="t('views.notification.settings.type.mobile')"/>
+        <el-option
+          value="mail"
+          :label="t('views.notification.settings.type.mail')"
+        />
+        <el-option
+          value="mobile"
+          :label="t('views.notification.settings.type.mobile')"
+        />
       </el-select>
     </cl-form-item>
     <cl-form-item
@@ -43,7 +44,7 @@
       :label="t('views.notification.settings.form.enabled')"
       prop="enabled"
     >
-      <cl-switch v-model="form.enabled"/>
+      <cl-switch v-model="form.enabled" />
     </cl-form-item>
 
     <template v-if="form.type === 'mail'">
@@ -86,14 +87,21 @@
       >
         <el-input
           v-model="form.mail.password"
-          :placeholder="t('views.notification.settings.form.mail.smtp.password')"
+          :placeholder="
+            t('views.notification.settings.form.mail.smtp.password')
+          "
         />
       </cl-form-item>
-      <cl-form-item :span="2" :label="t('views.notification.settings.form.mail.smtp.sender.email')"
-                prop="mail.sender_email">
+      <cl-form-item
+        :span="2"
+        :label="t('views.notification.settings.form.mail.smtp.sender.email')"
+        prop="mail.sender_email"
+      >
         <el-input
           v-model="form.mail.sender_email"
-          :placeholder="t('views.notification.settings.form.mail.smtp.sender.email')"
+          :placeholder="
+            t('views.notification.settings.form.mail.smtp.sender.email')
+          "
         />
       </cl-form-item>
       <cl-form-item
@@ -103,7 +111,9 @@
       >
         <el-input
           v-model="form.mail.sender_identity"
-          :placeholder="t('views.notification.settings.form.mail.smtp.sender.identity')"
+          :placeholder="
+            t('views.notification.settings.form.mail.smtp.sender.identity')
+          "
         />
       </cl-form-item>
       <cl-form-item
@@ -145,9 +155,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
 import useNotification from '@/components/notification/notification';
 
 export default defineComponent({
@@ -155,14 +165,12 @@ export default defineComponent({
   props: {
     readonly: {
       type: Boolean,
-    }
+    },
   },
-  emits: [
-    'update:modelValue',
-  ],
-  setup(props, {emit}) {
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const store = useStore();
@@ -175,6 +183,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,4 +1,9 @@
-type DataCollectionStoreModule = BaseModule<DataCollectionStoreState, DataCollectionStoreGetters, DataCollectionStoreMutations, DataCollectionStoreActions>;
+type DataCollectionStoreModule = BaseModule<
+  DataCollectionStoreState,
+  DataCollectionStoreGetters,
+  DataCollectionStoreMutations,
+  DataCollectionStoreActions
+>;
 
 interface DataCollectionStoreState extends BaseStoreState<DataCollection> {
   resultTableData: TableData<Result>;
@@ -12,16 +17,27 @@ interface DataCollectionStoreState extends BaseStoreState<DataCollection> {
   dedupFieldsDialogVisible: boolean;
 }
 
-interface DataCollectionStoreGetters extends BaseStoreGetters<DataCollectionStoreState> {
+interface DataCollectionStoreGetters
+  extends BaseStoreGetters<DataCollectionStoreState> {
   resultFields: StoreGetter<DataCollectionStoreState, DataField[]>;
 }
 
-interface DataCollectionStoreMutations extends BaseStoreMutations<DataCollection> {
-  setResultTableData: StoreMutation<DataCollectionStoreState, TableDataWithTotal<Result>>;
+interface DataCollectionStoreMutations
+  extends BaseStoreMutations<DataCollection> {
+  setResultTableData: StoreMutation<
+    DataCollectionStoreState,
+    TableDataWithTotal<Result>
+  >;
   resetResultTableData: StoreMutation<DataCollectionStoreState>;
-  setResultTablePagination: StoreMutation<DataCollectionStoreState, TablePagination>;
+  setResultTablePagination: StoreMutation<
+    DataCollectionStoreState,
+    TablePagination
+  >;
   resetResultTablePagination: StoreMutation<DataCollectionStoreState>;
-  setResultTableFilter: StoreMutation<DataCollectionStoreState, FilterConditionData[]>;
+  setResultTableFilter: StoreMutation<
+    DataCollectionStoreState,
+    FilterConditionData[]
+  >;
   resetResultTableFilter: StoreMutation<DataCollectionStoreState>;
   setResultDialogVisible: StoreMutation<DataCollectionStoreState, boolean>;
   setResultDialogContent: StoreMutation<DataCollectionStoreState, any>;
@@ -34,5 +50,8 @@ interface DataCollectionStoreMutations extends BaseStoreMutations<DataCollection
 }
 
 interface DataCollectionStoreActions extends BaseStoreActions<DataCollection> {
-  getResultData: StoreAction<DataCollectionStoreState, { string; ListRequestParams }>;
+  getResultData: StoreAction<
+    DataCollectionStoreState,
+    { string; ListRequestParams }
+  >;
 }

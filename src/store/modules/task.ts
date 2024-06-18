@@ -2,20 +2,21 @@ import {
   getDefaultStoreActions,
   getDefaultStoreGetters,
   getDefaultStoreMutations,
-  getDefaultStoreState
+  getDefaultStoreState,
 } from '@/utils/store';
 import useRequest from '@/services/request';
-import {TAB_NAME_DATA, TAB_NAME_LOGS, TAB_NAME_OVERVIEW} from '@/constants/tab';
-import {TASK_MODE_RANDOM} from '@/constants/task';
-import {translate} from '@/utils/i18n';
+import {
+  TAB_NAME_DATA,
+  TAB_NAME_LOGS,
+  TAB_NAME_OVERVIEW,
+} from '@/constants/tab';
+import { TASK_MODE_RANDOM } from '@/constants/task';
+import { translate } from '@/utils/i18n';
 
 // i18n
 const t = translate;
 
-const {
-  post,
-  getList,
-} = useRequest();
+const { post, getList } = useRequest();
 
 const state = {
   ...getDefaultStoreState<Task>('task'),
@@ -26,9 +27,9 @@ const state = {
     };
   },
   tabs: [
-    {id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview')},
-    {id: TAB_NAME_LOGS, title: t('common.tabs.logs')},
-    {id: TAB_NAME_DATA, title: t('common.tabs.data')},
+    { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
+    { id: TAB_NAME_LOGS, title: t('common.tabs.logs') },
+    { id: TAB_NAME_DATA, title: t('common.tabs.data') },
   ],
   logContent: '',
   logPagination: {
@@ -56,7 +57,7 @@ const mutations = {
     state.logPagination = pagination;
   },
   resetLogPagination: (state: TaskStoreState) => {
-    state.logPagination = {page: 1, size: 1000};
+    state.logPagination = { page: 1, size: 1000 };
   },
   setLogTotal: (state: TaskStoreState, total: number) => {
     state.logTotal = total;
@@ -70,14 +71,17 @@ const mutations = {
   disableLogAutoUpdate: (state: TaskStoreState) => {
     state.logAutoUpdate = false;
   },
-  setDataDisplayAllFields: (state: TaskStoreState, displayAllFields: boolean) => {
+  setDataDisplayAllFields: (
+    state: TaskStoreState,
+    displayAllFields: boolean
+  ) => {
     state.dataDisplayAllFields = displayAllFields;
-  }
+  },
 } as TaskStoreMutations;
 
 const actions = {
   ...getDefaultStoreActions<Task>('/tasks'),
-  getList: async ({state, commit}: StoreActionContext<TaskStoreState>) => {
+  getList: async ({ state, commit }: StoreActionContext<TaskStoreState>) => {
     const payload = {
       ...state.tablePagination,
       conditions: JSON.stringify(state.tableListFilter),
@@ -85,15 +89,21 @@ const actions = {
       stats: true,
     };
     const res = await getList(`/tasks`, payload);
-    commit('setTableData', {data: res.data || [], total: res.total});
+    commit('setTableData', { data: res.data || [], total: res.total });
     return res;
   },
-  create: async ({state, commit}: StoreActionContext<TaskStoreState>, form: Task) => {
+  create: async (
+    { state, commit }: StoreActionContext<TaskStoreState>,
+    form: Task
+  ) => {
     return await post(`/tasks/run`, form);
   },
-  getLogs: async ({state, commit}: StoreActionContext<TaskStoreState>, id: string) => {
-    const {page, size} = state.logPagination;
-    const res = await getList(`/tasks/${id}/logs`, {page, size});
+  getLogs: async (
+    { state, commit }: StoreActionContext<TaskStoreState>,
+    id: string
+  ) => {
+    const { page, size } = state.logPagination;
+    const res = await getList(`/tasks/${id}/logs`, { page, size });
     commit('setLogContent', res.data?.join('\n'));
     commit('setLogTotal', res.total);
     return res;

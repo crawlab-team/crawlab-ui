@@ -5,9 +5,17 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch} from 'vue';
-import {init} from 'echarts';
-import {translate} from '@/utils/i18n';
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import { init } from 'echarts';
+import { translate } from '@/utils/i18n';
 
 export const lineChartProps = {
   config: {
@@ -42,11 +50,11 @@ export const lineChartProps = {
 export default defineComponent({
   name: 'LineChart',
   props: lineChartProps,
-  setup(props: LineChartProps, {emit}) {
+  setup(props: LineChartProps, { emit }) {
     const t = translate;
 
     const style = computed<Partial<CSSStyleDeclaration>>(() => {
-      const {width, height} = props;
+      const { width, height } = props;
       return {
         width,
         height,
@@ -57,13 +65,13 @@ export default defineComponent({
     const chart = ref<ECharts>();
 
     const isMultiSeries = computed<boolean>(() => {
-      const {config} = props;
-      const {dataMetas} = config as EChartsConfig;
+      const { config } = props;
+      const { dataMetas } = config as EChartsConfig;
       return dataMetas ? dataMetas.length > 1 : false;
     });
 
     const getSeriesData = (data?: StatsResult[], key?: string) => {
-      const {valueKey, labelKey, isTimeSeries} = props;
+      const { valueKey, labelKey, isTimeSeries } = props;
       const _valueKey = !key ? valueKey : key;
 
       if (_valueKey) {
@@ -81,20 +89,22 @@ export default defineComponent({
     };
 
     const getSeries = (): EChartSeries[] => {
-      const {config} = props;
-      const {data, dataMetas} = config as EChartsConfig;
+      const { config } = props;
+      const { data, dataMetas } = config as EChartsConfig;
 
       if (!isMultiSeries.value) {
         // single series
-        return [{
-          type: 'line',
-          data: getSeriesData(data),
-        }];
+        return [
+          {
+            type: 'line',
+            data: getSeriesData(data),
+          },
+        ];
       } else {
         // multiple series
         const series = [] as EChartSeries[];
         if (!dataMetas) return series;
-        dataMetas.forEach(({key, name, yAxisIndex}) => {
+        dataMetas.forEach(({ key, name, yAxisIndex }) => {
           series.push({
             name: t(name),
             yAxisIndex,
@@ -107,8 +117,8 @@ export default defineComponent({
     };
 
     const render = () => {
-      const {config, theme, isTimeSeries} = props;
-      const option = {...config?.option};
+      const { config, theme, isTimeSeries } = props;
+      const option = { ...config?.option };
 
       // dom
       const el = elRef.value;

@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {buttonProps} from '@/components/button/Button.vue';
+import { defineComponent } from 'vue';
+import { buttonProps } from '@/components/button/Button.vue';
 
 export const iconButtonProps = {
   icon: {
@@ -33,15 +33,11 @@ export const iconButtonProps = {
 export default defineComponent({
   name: 'IconButton',
   props: iconButtonProps,
-  emits: [
-    'click',
-  ],
+  emits: ['click'],
   setup() {
     return {};
   },
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

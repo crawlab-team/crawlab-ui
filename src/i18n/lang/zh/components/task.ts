@@ -24,8 +24,8 @@ const task: LComponentsTask = {
         export: '导出',
         displayAllFields: '显示所有字段',
         inferDataFieldsTypes: '推断数据字段类型',
-      }
-    }
+      },
+    },
   },
   status: {
     label: {

@@ -13,28 +13,31 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue';
-import {useStore} from 'vuex';
-import {translate} from "@/utils";
-import {ElMessage} from "element-plus";
+import { computed, ref, watch } from 'vue';
+import { useStore } from 'vuex';
+import { translate } from '@/utils';
+import { ElMessage } from 'element-plus';
 
 const t = translate;
 
 // store
 const nsDc = 'dataCollection';
 const store = useStore();
-const {
-  dataCollection: dataCollectionState,
-} = store.state as RootStoreState;
+const { dataCollection: dataCollectionState } = store.state as RootStoreState;
 
 const keys = ref<string[]>(dataCollectionState.form?.dedup?.keys || []);
-watch(() => dataCollectionState.form?.dedup?.keys, (val) => {
-  if (!val?.length) {
-    keys.value = [''];
+watch(
+  () => dataCollectionState.form?.dedup?.keys,
+  val => {
+    if (!val?.length) {
+      keys.value = [''];
+    }
   }
-});
+);
 
-const dialogVisible = computed<boolean>(() => dataCollectionState.dedupFieldsDialogVisible)
+const dialogVisible = computed<boolean>(
+  () => dataCollectionState.dedupFieldsDialogVisible
+);
 const onDialogClose = () => {
   store.commit(`${nsDc}/setDedupFieldsDialogVisible`, false);
 };
@@ -55,5 +58,4 @@ const onDialogConfirm = async () => {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

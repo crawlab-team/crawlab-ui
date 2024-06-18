@@ -1,16 +1,18 @@
-import {App, ComponentOptionsMixin, Plugin} from 'vue';
+import { App, ComponentOptionsMixin, Plugin } from 'vue';
 import ElementPlus from 'element-plus';
-import {library} from '@fortawesome/fontawesome-svg-core';
-import {fab} from '@fortawesome/free-brands-svg-icons';
-import {far} from '@fortawesome/free-regular-svg-icons';
-import {fas} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {importStylesheets} from '@/package/utils';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { importStylesheets } from '@/package/utils';
 
 // fontawesome
 library.add(fab, far, fas);
 
-const makeInstaller = (items: [string, ComponentOptionsMixin][] = []): Plugin => {
+const makeInstaller = (
+  items: [string, ComponentOptionsMixin][] = []
+): Plugin => {
   const apps: App[] = [];
 
   // install function

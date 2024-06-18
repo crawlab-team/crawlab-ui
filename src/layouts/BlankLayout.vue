@@ -1,7 +1,6 @@
 <template>
   <div class="blank-layout">
-    <slot>
-    </slot>
+    <slot> </slot>
   </div>
 </template>
 
@@ -10,8 +9,8 @@ export default {
   name: 'BlankLayout',
   setup() {
     return {};
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

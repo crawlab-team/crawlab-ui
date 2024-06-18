@@ -26,7 +26,7 @@
       class-name="button"
       @click="onClick"
     >
-      <cl-icon v-if="buttonIcon" :icon="buttonIcon"/>
+      <cl-icon v-if="buttonIcon" :icon="buttonIcon" />
       {{ buttonLabel }}
     </cl-button>
     <template v-else-if="buttonIcon">
@@ -54,9 +54,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, PropType, ref, watch} from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import useIcon from '@/components/icon/icon';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'InputWithButton',
@@ -101,25 +101,26 @@ export default defineComponent({
     'focus',
     'keyup.enter',
   ],
-  setup(props: InputWithButtonProps, {emit}) {
+  setup(props: InputWithButtonProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const internalValue = ref<string>();
 
-    const {
-      isFaIcon: _isFaIcon,
-    } = useIcon();
+    const { isFaIcon: _isFaIcon } = useIcon();
 
     const isFaIcon = () => {
-      const {buttonIcon} = props;
+      const { buttonIcon } = props;
       if (!buttonIcon) return false;
       return _isFaIcon(buttonIcon);
     };
 
-    watch(() => props.modelValue, () => {
-      internalValue.value = props.modelValue;
-    });
+    watch(
+      () => props.modelValue,
+      () => {
+        internalValue.value = props.modelValue;
+      }
+    );
 
     const onInput = (value: string) => {
       emit('update:model-value', value);
@@ -143,7 +144,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      const {modelValue} = props;
+      const { modelValue } = props;
       internalValue.value = modelValue;
     });
 

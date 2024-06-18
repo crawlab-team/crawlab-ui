@@ -1,7 +1,6 @@
 <template>
-  <div class="simple-layout" :style="{background, padding}">
-    <slot>
-    </slot>
+  <div class="simple-layout" :style="{ background, padding }">
+    <slot> </slot>
   </div>
 </template>
 
@@ -19,8 +18,8 @@ export default {
   },
   setup() {
     return {};
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">

@@ -10,14 +10,14 @@
     :batch-form-fields="batchFormFields"
   >
     <template #default>
-      <cl-spider-form/>
+      <cl-spider-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';
 
 export default defineComponent({
@@ -33,6 +33,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

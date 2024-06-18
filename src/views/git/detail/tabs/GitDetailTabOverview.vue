@@ -1,10 +1,8 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="git-detail-tab-overview">
-    <cl-git-form/>
+    <cl-git-form />
   </div>
 </template>
 

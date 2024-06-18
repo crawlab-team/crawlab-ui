@@ -1,8 +1,7 @@
 <template>
   <div :class="sidebarCollapsed ? 'collapsed' : ''" class="header-container">
     <el-header height="var(--cl-header-height)" class="header">
-      <div class="left">
-      </div>
+      <div class="left"></div>
       <div class="right">
         <iframe
           v-if="systemInfo.edition === 'global.edition.community'"
@@ -16,30 +15,30 @@
         />
         <el-link
           v-if="systemInfo.edition === 'global.edition.community'"
-          v-track="{code: 'click_header_pro'}"
+          v-track="{ code: 'click_header_pro' }"
           class="item"
           :href="`https://www.crawlab.cn/${locale}/#pricing`"
           target="_blank"
           type="warning"
         >
-          <font-awesome-icon class="icon" :icon="['fa', 'arrow-up']"/>
+          <font-awesome-icon class="icon" :icon="['fa', 'arrow-up']" />
           {{ t('global.upgrade.pro') }}
         </el-link>
         <el-link
-          v-track="{code: 'click_header_docs'}"
+          v-track="{ code: 'click_header_docs' }"
           class="item"
           :href="`https://docs.crawlab.cn/${locale}/`"
           target="_blank"
         >
-          <font-awesome-icon class="icon" :icon="['fa', 'book']"/>
+          <font-awesome-icon class="icon" :icon="['fa', 'book']" />
           {{ t('global.docs') }}
         </el-link>
         <el-dropdown class="lang">
-          <span class="el-dropdown-link item action ">
-            <font-awesome-icon class="icon" :icon="['fa', 'globe']"/>
+          <span class="el-dropdown-link item action">
+            <font-awesome-icon class="icon" :icon="['fa', 'globe']" />
             {{ langName }}
             <el-icon class="el-icon--right">
-              <arrow-down/>
+              <arrow-down />
             </el-icon>
           </span>
           <template #dropdown>
@@ -47,56 +46,55 @@
               <el-dropdown-item
                 v-track="{
                   code: 'click_header_lang',
-                  params: {locale: 'en'}
+                  params: { locale: 'en' },
                 }"
                 :class="locale === 'en' ? 'active' : ''"
                 @click="() => setLang('en')"
               >
-                {{ t('global.lang', [], {locale: 'en'}) }}
+                {{ t('global.lang', [], { locale: 'en' }) }}
               </el-dropdown-item>
               <el-dropdown-item
                 v-track="{
                   code: 'click_header_lang',
-                  params: {locale: 'zh'}
+                  params: { locale: 'zh' },
                 }"
                 :class="locale === 'zh' ? 'active' : ''"
                 @click="() => setLang('zh')"
               >
-                {{ t('global.lang', [], {locale: 'zh'}) }}
+                {{ t('global.lang', [], { locale: 'zh' }) }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <el-dropdown
-          v-locate="'me'"
-          class="me"
-        >
+        <el-dropdown v-locate="'me'" class="me">
           <span class="el-dropdown-link item action">
-            <font-awesome-icon class="icon" :icon="['far', 'user']"/>
+            <font-awesome-icon class="icon" :icon="['far', 'user']" />
             {{ username }}
             <el-icon class="el-icon--right">
-              <arrow-down/>
+              <arrow-down />
             </el-icon>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
-                v-track="{code: 'click_header_disclaimer'}"
+                v-track="{ code: 'click_header_disclaimer' }"
                 @click="onClickDisclaimer"
               >
                 {{ t('layouts.components.header.disclaimer') }}
               </el-dropdown-item>
               <el-dropdown-item
-                v-track="{code: 'click_header_my_settings'}"
+                v-track="{ code: 'click_header_my_settings' }"
                 @click="onClickMySettings"
               >
                 {{ t('layouts.components.header.mySettings') }}
               </el-dropdown-item>
               <el-dropdown-item
-                v-track="{code: 'click_header_logout'}"
+                v-track="{ code: 'click_header_logout' }"
                 @click="onLogout"
               >
-                <span v-locate="'logout'">{{ t('layouts.components.header.logout') }}</span>
+                <span v-locate="'logout'">{{
+                  t('layouts.components.header.logout')
+                }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -107,12 +105,12 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {useStore} from 'vuex';
-import {useRouter} from 'vue-router';
-import {useI18n} from 'vue-i18n';
-import {setGlobalLang} from '@/utils/i18n';
-import {ArrowDown} from '@element-plus/icons-vue';
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { setGlobalLang } from '@/utils/i18n';
+import { ArrowDown } from '@element-plus/icons-vue';
 
 export default defineComponent({
   name: 'Header',
@@ -121,7 +119,7 @@ export default defineComponent({
   },
   setup() {
     // i18n
-    const {t, locale} = useI18n();
+    const { t, locale } = useI18n();
 
     // router
     const router = useRouter();
@@ -130,10 +128,8 @@ export default defineComponent({
     const store = useStore();
 
     // store states
-    const {
-      layout: layoutState,
-      common: commonState,
-    } = store.state as RootStoreState;
+    const { layout: layoutState, common: commonState } =
+      store.state as RootStoreState;
 
     // whether side is collapsed
     const sidebarCollapsed = computed(() => {
@@ -142,7 +138,7 @@ export default defineComponent({
 
     // language name
     const langName = computed<string>(() => {
-      return t('global.lang', [], {locale: locale.value});
+      return t('global.lang', [], { locale: locale.value });
     });
 
     // set language

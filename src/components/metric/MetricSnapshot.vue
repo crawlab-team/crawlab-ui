@@ -6,7 +6,7 @@
         :width="80"
         :percentage="snapshot.metrics?.['performance:node:cpu:percent']?.value"
         :format="format"
-        :label="{key: 'cpu', title: t('components.metric.snapshot.node.cpu')}"
+        :label="{ key: 'cpu', title: t('components.metric.snapshot.node.cpu') }"
         :label-icon="['fa', 'microchip']"
         :status="status.node.cpu"
         :detail-metrics="getChildMetrics(':node:cpu:')"
@@ -14,9 +14,11 @@
       <cl-metric-progress
         type="dashboard"
         :width="80"
-        :percentage="snapshot.metrics?.['performance:node:mem:used_percent']?.value"
+        :percentage="
+          snapshot.metrics?.['performance:node:mem:used_percent']?.value
+        "
         :format="format"
-        :label="{key: 'mem', title: t('components.metric.snapshot.node.mem')}"
+        :label="{ key: 'mem', title: t('components.metric.snapshot.node.mem') }"
         :label-icon="['fa', 'memory']"
         :status="status.node.mem"
         :detail-metrics="getChildMetrics(':node:mem:')"
@@ -24,9 +26,14 @@
       <cl-metric-progress
         type="dashboard"
         :width="80"
-        :percentage="snapshot.metrics?.['performance:node:disk:used_percent']?.value"
+        :percentage="
+          snapshot.metrics?.['performance:node:disk:used_percent']?.value
+        "
         :format="format"
-        :label="{key: 'disk', title: t('components.metric.snapshot.node.disk')}"
+        :label="{
+          key: 'disk',
+          title: t('components.metric.snapshot.node.disk'),
+        }"
         :label-icon="['fa', 'hard-drive']"
         :status="status.node.disk"
         :detail-metrics="getChildMetrics(':node:disk:')"
@@ -35,9 +42,12 @@
         v-if="false"
         type="dashboard"
         :width="80"
-        :percentage="null && snapshot.metrics?.['performance:node:net:io_bytes_recv_rate']?.value"
+        :percentage="
+          null &&
+          snapshot.metrics?.['performance:node:net:io_bytes_recv_rate']?.value
+        "
         :format="format"
-        :label="{key: 'net', title: t('components.metric.snapshot.node.net')}"
+        :label="{ key: 'net', title: t('components.metric.snapshot.node.net') }"
         :label-icon="['fa', 'wifi']"
         :status="status.net"
         :detail-metrics="getChildMetrics(':node:net:')"
@@ -48,9 +58,12 @@
       <cl-metric-progress
         type="dashboard"
         :width="80"
-        :percentage="snapshot.metrics?.['performance:mongo:size:fs_used_size_percent']?.value"
+        :percentage="
+          snapshot.metrics?.['performance:mongo:size:fs_used_size_percent']
+            ?.value
+        "
         :format="format"
-        :label="{key: 'fs', title: t('components.metric.snapshot.mongo.fs')}"
+        :label="{ key: 'fs', title: t('components.metric.snapshot.mongo.fs') }"
         :label-icon="['fa', 'hard-drive']"
         :status="status.mongo.size"
         :detail-metrics="getChildMetrics(':mongo:size:fs')"
@@ -58,25 +71,25 @@
       <cl-metric-progress
         type="dashboard"
         :width="80"
-        :percentage="snapshot.metrics?.['performance:mongo:size:total_size_percent']?.value"
+        :percentage="
+          snapshot.metrics?.['performance:mongo:size:total_size_percent']?.value
+        "
         :format="format"
-        :label="{key: 'db', title: t('components.metric.snapshot.mongo.db')}"
+        :label="{ key: 'db', title: t('components.metric.snapshot.mongo.db') }"
         :label-icon="['fa', 'database']"
         :status="status.mongo.size"
         :detail-metrics="getChildMetrics(':mongo:size:')"
       />
     </template>
 
-    <template v-else-if="snapshot.type === 'seaweedfs'">
-
-    </template>
+    <template v-else-if="snapshot.type === 'seaweedfs'"> </template>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, readonly} from 'vue';
-import {emptyObjectFunc} from '@/utils/func';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, PropType, readonly } from 'vue';
+import { emptyObjectFunc } from '@/utils/func';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'MetricSnapshot',
@@ -86,8 +99,8 @@ export default defineComponent({
       default: emptyObjectFunc,
     },
   },
-  setup(props: MetricSnapshotProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: MetricSnapshotProps, { emit }) {
+    const { t } = useI18n();
 
     const format = computed(() => {
       return (percentage: number | null): string => {
@@ -112,26 +125,28 @@ export default defineComponent({
       danger: {
         color: 'var(--cl-danger-color)',
         icon: ['fa', 'circle-exclamation'],
-        label: t('components.metric.status.danger')
+        label: t('components.metric.status.danger'),
       },
       warning: {
         color: 'var(--cl-warning-color)',
         icon: ['fa', 'triangle-exclamation'],
-        label: t('components.metric.status.warning')
+        label: t('components.metric.status.warning'),
       },
       healthy: {
         color: 'var(--cl-success-color)',
         icon: ['fa', 'circle-check'],
-        label: t('components.metric.status.healthy')
+        label: t('components.metric.status.healthy'),
       },
       unknown: {
         color: 'var(--cl-info-medium-color)',
         icon: ['fa', 'circle-question'],
-        label: t('components.metric.status.unknown')
+        label: t('components.metric.status.unknown'),
       },
     });
 
-    const status = readonly<{ [key: string]: { [key: string]: MetricProgressStatus } }>({
+    const status = readonly<{
+      [key: string]: { [key: string]: MetricProgressStatus };
+    }>({
       node: {
         cpu: (p: number | null) => {
           if (p === null) {
@@ -190,7 +205,7 @@ export default defineComponent({
             return statusItems.healthy as MetricProgressStatusData;
           }
         },
-      }
+      },
     });
 
     return {
@@ -199,7 +214,7 @@ export default defineComponent({
       status,
       t,
     };
-  }
+  },
 });
 </script>
 
@@ -211,5 +226,4 @@ export default defineComponent({
 }
 </style>
 
-<style scoped>
-</style>
+<style scoped></style>

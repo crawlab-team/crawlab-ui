@@ -1,13 +1,8 @@
 <template>
-  <div
-    :class="classes"
-    :draggable="true"
-    class="tab"
-    @click="onClick"
-  >
+  <div :class="classes" :draggable="true" class="tab" @click="onClick">
     <span :key="item?.icon || icon" class="icon">
-      <cl-menu-item-icon v-if="!icon" :item="item" size="10px"/>
-      <cl-icon v-else :icon="icon" size="10px"/>
+      <cl-menu-item-icon v-if="!icon" :item="item" size="10px" />
+      <cl-icon v-else :icon="icon" size="10px" />
     </span>
     <span v-if="showTitle" class="title">
       {{ t(title) }}
@@ -17,28 +12,28 @@
         code: 'click_tabs_view_close_tab',
         params: {
           path: () => tab.path,
-        }
+        },
       }"
       v-if="showClose"
       class="close-btn"
       @click.stop="onClose"
     >
       <el-icon>
-        <close/>
+        <close />
       </el-icon>
     </span>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {useStore} from 'vuex';
-import {getPrimaryPath} from '@/utils/path';
+import { computed, defineComponent, PropType } from 'vue';
+import { useStore } from 'vuex';
+import { getPrimaryPath } from '@/utils/path';
 // import {useI18n} from 'vue-i18n';
-import {useRouter} from 'vue-router';
+import { useRouter } from 'vue-router';
 import Icon from '@/components/icon/Icon.vue';
-import {useI18n} from 'vue-i18n';
-import {Close} from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n';
+import { Close } from '@element-plus/icons-vue';
 
 export default defineComponent({
   name: 'Tab',
@@ -50,7 +45,7 @@ export default defineComponent({
       type: Object as PropType<Tab>,
     },
     icon: {
-      type: [String, Array] as PropType<Icon>
+      type: [String, Array] as PropType<Icon>,
     },
     showTitle: {
       type: Boolean,
@@ -63,25 +58,25 @@ export default defineComponent({
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-  emits: [
-    'click',
-  ],
-  setup(props: TabProps, {emit}) {
+  emits: ['click'],
+  setup(props: TabProps, { emit }) {
     const router = useRouter();
     const storeNamespace = 'layout';
     const store = useStore();
-    const {layout: state} = store.state as RootStoreState;
+    const { layout: state } = store.state as RootStoreState;
 
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const item = computed<MenuItem | undefined>(() => {
-      const {tab} = props as TabProps;
+      const { tab } = props as TabProps;
       if (!tab) return;
 
       // normalized menu items
-      const menuItems = store.getters['layout/normalizedMenuItems'] as MenuItem[];
+      const menuItems = store.getters[
+        'layout/normalizedMenuItems'
+      ] as MenuItem[];
 
       // iterate normalized menu items
       for (const _item of menuItems) {
@@ -89,8 +84,7 @@ export default defineComponent({
         const primaryPath = getPrimaryPath(tab.path);
 
         // if primary path equals to item path, or tab path equals to item path, return it
-        if (primaryPath === _item.path ||
-          tab.path === _item.path) {
+        if (primaryPath === _item.path || tab.path === _item.path) {
           return _item;
         }
       }
@@ -108,13 +102,13 @@ export default defineComponent({
     });
 
     const active = computed(() => {
-      const {tab} = props as TabProps;
-      const {activeTabId} = state;
+      const { tab } = props as TabProps;
+      const { activeTabId } = state;
       return tab?.id === activeTabId;
     });
 
     const dragging = computed<boolean>(() => {
-      const {tab} = props as TabProps;
+      const { tab } = props as TabProps;
       return !!tab?.dragging;
     });
 
@@ -130,7 +124,7 @@ export default defineComponent({
 
     const onClick = () => {
       emit('click');
-      const {tab} = props as TabProps;
+      const { tab } = props as TabProps;
       if (!tab) return;
       store.commit(`${storeNamespace}/setActiveTabId`, tab.id);
       router.push(tab.path);
@@ -138,11 +132,11 @@ export default defineComponent({
 
     const close = () => {
       // current tab
-      const {tab} = props as TabProps;
+      const { tab } = props as TabProps;
       if (!tab) return;
 
       // tabs
-      const {tabs} = state;
+      const { tabs } = state;
 
       // index of current tab (to be removed)
       const idx = tabs.findIndex(d => d.id === tab.id);
@@ -153,7 +147,7 @@ export default defineComponent({
       // after-remove actions
       if (active.value) {
         if (tabs.length === 0) {
-          const newTab: Tab = {path: '/'};
+          const newTab: Tab = { path: '/' };
           store.commit(`${storeNamespace}/addTab`, newTab);
           store.commit(`${storeNamespace}/setActiveTabId`, newTab.id);
           router.push(newTab.path);

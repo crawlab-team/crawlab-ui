@@ -1,46 +1,43 @@
 <template>
   <div
-      :class="[
-          isFocus ? 'is-focus' : '',
-          isNew ? 'is-new' : '',
-      ]"
-      class="tag-input-item"
+    :class="[isFocus ? 'is-focus' : '', isNew ? 'is-new' : '']"
+    class="tag-input-item"
   >
     <!-- Input -->
     <div class="input-wrapper">
       <el-autocomplete
-          ref="inputRef"
-          v-model="internalValue.name"
-          :disabled="disabled"
-          :fetch-suggestions="fetchSuggestions"
-          :placeholder="placeholder"
-          :size="size"
-          popper-class="tag-input-item-popper"
-          class="input"
-          value-key="name"
-          @blur="onBlur"
-          @focus="onFocus"
-          @select="onSelect"
-          @keyup.enter="onCheck"
+        ref="inputRef"
+        v-model="internalValue.name"
+        :disabled="disabled"
+        :fetch-suggestions="fetchSuggestions"
+        :placeholder="placeholder"
+        :size="size"
+        popper-class="tag-input-item-popper"
+        class="input"
+        value-key="name"
+        @blur="onBlur"
+        @focus="onFocus"
+        @select="onSelect"
+        @keyup.enter="onCheck"
       />
       <div class="actions">
         <font-awesome-icon
-            :class="[isDisabled('check') ? 'disabled' : '']"
-            :icon="['fa', 'check']"
-            class="action-btn check"
-            @click="onCheck"
+          :class="[isDisabled('check') ? 'disabled' : '']"
+          :icon="['fa', 'check']"
+          class="action-btn check"
+          @click="onCheck"
         />
         <font-awesome-icon
-            :class="[isDisabled('close') ? 'disabled' : '']"
-            :icon="['fa', 'times']"
-            class="action-btn close"
-            @click="onClose"
+          :class="[isDisabled('close') ? 'disabled' : '']"
+          :icon="['fa', 'times']"
+          class="action-btn close"
+          @click="onClose"
         />
         <font-awesome-icon
-            :class="[isDisabled('delete') ? 'disabled' : '']"
-            :icon="['fa', 'trash']"
-            class="action-btn delete"
-            @click="onDelete"
+          :class="[isDisabled('delete') ? 'disabled' : '']"
+          :icon="['fa', 'trash']"
+          class="action-btn delete"
+          @click="onDelete"
         />
       </div>
     </div>
@@ -48,11 +45,11 @@
 
     <!-- Color Picker -->
     <cl-color-picker
-        v-model="internalValue.color"
-        :disabled="!isNew"
-        :predefine="predefinedColors"
-        class="color-picker"
-        show-alpha
+      v-model="internalValue.color"
+      :disabled="!isNew"
+      :predefine="predefinedColors"
+      class="color-picker"
+      show-alpha
     />
     <!--    <el-color-picker-->
     <!--        v-model="internalValue.color"-->
@@ -66,13 +63,22 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, inject, onMounted, PropType, readonly, ref, watch} from 'vue';
-import {ElInput} from 'element-plus';
-import {plainClone} from '@/utils/object';
+import {
+  computed,
+  defineComponent,
+  inject,
+  onMounted,
+  PropType,
+  readonly,
+  ref,
+  watch,
+} from 'vue';
+import { ElInput } from 'element-plus';
+import { plainClone } from '@/utils/object';
 import useTagService from '@/services/tag/tagService';
-import {useStore} from 'vuex';
-import {FILTER_OP_CONTAINS, FILTER_OP_EQUAL} from '@/constants/filter';
-import {getPredefinedColors} from '@/utils/color';
+import { useStore } from 'vuex';
+import { FILTER_OP_CONTAINS, FILTER_OP_EQUAL } from '@/constants/filter';
+import { getPredefinedColors } from '@/utils/color';
 import ColorPicker from '@/components/color/ColorPicker.vue';
 
 export default defineComponent({
@@ -91,7 +97,7 @@ export default defineComponent({
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   emits: [
     'update:model-value',
@@ -104,7 +110,7 @@ export default defineComponent({
     'check',
     'delete',
   ],
-  setup(props: TagInputItemProps, {emit}) {
+  setup(props: TagInputItemProps, { emit }) {
     // store
     const ns = 'tag';
     const store = useStore<RootStoreState>();
@@ -130,13 +136,16 @@ export default defineComponent({
     // predefined colors
     const predefinedColors = readonly<string[]>(getPredefinedColors());
 
-    watch(() => props.modelValue, () => {
-      if (!props.modelValue) {
-        internalValue.value = getNewTag();
-      } else {
-        internalValue.value = plainClone(props.modelValue);
+    watch(
+      () => props.modelValue,
+      () => {
+        if (!props.modelValue) {
+          internalValue.value = getNewTag();
+        } else {
+          internalValue.value = plainClone(props.modelValue);
+        }
       }
-    });
+    );
 
     const isDisabled = (key: string) => {
       switch (key) {
@@ -152,7 +161,7 @@ export default defineComponent({
     };
 
     const onInput = (name: string) => {
-      const value = {...props.modelValue, name};
+      const value = { ...props.modelValue, name };
       emit('input', value);
     };
 
@@ -196,20 +205,25 @@ export default defineComponent({
 
     const ctx = inject<ListStoreContext<BaseModel>>('store-context');
 
-    const fetchSuggestions = async (queryString: string, callback: (data: Tag[]) => void) => {
-      const {
-        getList,
-      } = useTagService(store);
+    const fetchSuggestions = async (
+      queryString: string,
+      callback: (data: Tag[]) => void
+    ) => {
+      const { getList } = useTagService(store);
       const params = {
         page: 1,
         size: 50,
         conditions: [
-          {key: 'col', op: FILTER_OP_EQUAL, value: `${ctx?.namespace}s`}
-        ]
+          { key: 'col', op: FILTER_OP_EQUAL, value: `${ctx?.namespace}s` },
+        ],
       } as ListRequestParams;
       if (queryString) {
         const conditions = params.conditions as FilterConditionData[];
-        conditions.push({key: 'name', op: FILTER_OP_CONTAINS, value: queryString});
+        conditions.push({
+          key: 'name',
+          op: FILTER_OP_CONTAINS,
+          value: queryString,
+        });
       }
       try {
         const res = await getList(params);
@@ -324,9 +338,9 @@ export default defineComponent({
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left: none;
-  border-top: 1px solid #DCDFE6;
-  border-right: 1px solid #DCDFE6;
-  border-bottom: 1px solid #DCDFE6;
+  border-top: 1px solid #dcdfe6;
+  border-right: 1px solid #dcdfe6;
+  border-bottom: 1px solid #dcdfe6;
   padding: 0;
 }
 
@@ -349,7 +363,6 @@ export default defineComponent({
 .tag-input-item >>> .el-autocomplete-suggestion__list > li {
   height: 28px;
 }
-
 </style>
 
 <style>

@@ -28,8 +28,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {buttonProps} from '@/components/button/Button.vue';
+import { defineComponent, PropType } from 'vue';
+import { buttonProps } from '@/components/button/Button.vue';
 
 export default defineComponent({
   name: 'NavActionButton',
@@ -42,19 +42,17 @@ export default defineComponent({
       type: String,
     },
     icon: {
-      type: [String, Array] as PropType<Icon>
+      type: [String, Array] as PropType<Icon>,
     },
     onClick: {
-      type: Function as PropType<() => void>
+      type: Function as PropType<() => void>,
     },
     ...buttonProps,
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     return {};
   },
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

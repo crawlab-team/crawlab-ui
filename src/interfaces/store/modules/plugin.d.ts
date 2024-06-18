@@ -1,4 +1,9 @@
-type PluginStoreModule = BaseModule<PluginStoreState, PluginStoreGetters, PluginStoreMutations, PluginStoreActions>;
+type PluginStoreModule = BaseModule<
+  PluginStoreState,
+  PluginStoreGetters,
+  PluginStoreMutations,
+  PluginStoreActions
+>;
 
 interface PluginStoreState extends BaseStoreState<CPlugin> {
   settings: Setting;

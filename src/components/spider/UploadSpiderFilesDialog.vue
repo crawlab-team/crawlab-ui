@@ -15,28 +15,28 @@
       @mode-change="onModeChange"
       @files-change="onFilesChange"
     />
-  </cl-Dialog>
+  </cl-dialog>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeUnmount, ref} from 'vue';
-import {useStore} from 'vuex';
-import {ElMessage} from 'element-plus';
-import {FileWithPath} from 'file-selector';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
+import { computed, defineComponent, onBeforeUnmount, ref } from 'vue';
+import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
+import { FileWithPath } from 'file-selector';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
 import useSpiderService from '@/services/spider/spiderService';
-import {getOSPathSeparator} from '@/utils';
-import {useRoute} from 'vue-router';
-import {FILE_UPLOAD_MODE_DIR} from '@/constants';
-import {useDropzone} from 'crawlab-vue3-dropzone';
+import { getOSPathSeparator } from '@/utils';
+import { useRoute } from 'vue-router';
+import { FILE_UPLOAD_MODE_DIR } from '@/constants';
+import { useDropzone } from 'crawlab-vue3-dropzone';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 
 export default defineComponent({
   name: 'UploadSpiderFilesDialog',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // route
     const route = useRoute();
@@ -44,31 +44,26 @@ export default defineComponent({
     // store
     const ns = 'spider';
     const store = useStore();
-    const {
-      spider: state,
-    } = store.state as RootStoreState;
+    const { spider: state } = store.state as RootStoreState;
 
     const fileUploadRef = ref();
 
     const mode = computed(() => state.fileMode);
     const files = computed(() => state.files);
-    const fileUploadVisible = computed(() => state.activeDialogKey === 'uploadFiles');
+    const fileUploadVisible = computed(
+      () => state.activeDialogKey === 'uploadFiles'
+    );
     const name = computed(() => state.form?.name);
 
     const confirmLoading = ref<boolean>(false);
     const confirmDisabled = computed<boolean>(() => !files.value?.length);
 
-    const {
-      activeId,
-    } = useSpiderDetail();
+    const { activeId } = useSpiderDetail();
 
     const isDetail = computed<boolean>(() => !!activeId.value);
 
-    const {
-      listRootDir,
-      saveFileBinary,
-      saveFilesBinary,
-    } = useSpiderService(store);
+    const { listRootDir, saveFileBinary, saveFilesBinary } =
+      useSpiderService(store);
 
     const id = computed<string>(() => {
       if (isDetail.value) {
@@ -112,15 +107,21 @@ export default defineComponent({
       if (hasMultiDir.value) {
         return path;
       } else {
-        return path.split(getOSPathSeparator()).filter((_: any, i: number) => i > 0).join(getOSPathSeparator());
+        return path
+          .split(getOSPathSeparator())
+          .filter((_: any, i: number) => i > 0)
+          .join(getOSPathSeparator());
       }
     };
 
     const uploadFiles = async () => {
       if (!files.value) return;
-      await saveFilesBinary(id.value, files.value.map((f: FileWithPath) => {
-        return {path: getFilePath(f), file: f as File};
-      }));
+      await saveFilesBinary(
+        id.value,
+        files.value.map((f: FileWithPath) => {
+          return { path: getFilePath(f), file: f as File };
+        })
+      );
       store.commit(`${ns}/resetFiles`);
       await listRootDir(id.value);
     };
@@ -139,7 +140,7 @@ export default defineComponent({
       confirmLoading.value = true;
       try {
         sendEvent('click_spider_detail_actions_upload_confirm', {
-          mode: mode.value
+          mode: mode.value,
         });
 
         await uploadFiles();
@@ -153,12 +154,12 @@ export default defineComponent({
       }
     };
 
-    const {
-      getInputProps,
-      open,
-    } = useDropzone({
+    const { getInputProps, open } = useDropzone({
       onDrop: (fileList: InputFile[]) => {
-        store.commit(`${ns}/setFiles`, fileList.map(f => f as FileWithPath));
+        store.commit(
+          `${ns}/setFiles`,
+          fileList.map(f => f as FileWithPath)
+        );
 
         // set file upload info
         setInfo();
@@ -185,7 +186,10 @@ export default defineComponent({
     };
 
     const title = computed(() => {
-      return t('components.file.upload.title') + (name.value ? ` - ${name.value}` : '');
+      return (
+        t('components.file.upload.title') +
+        (name.value ? ` - ${name.value}` : '')
+      );
     });
 
     onBeforeUnmount(() => {
@@ -211,9 +215,8 @@ export default defineComponent({
       title,
       t,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

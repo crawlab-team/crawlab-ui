@@ -1,16 +1,20 @@
-import {Store} from 'vuex';
-import {cloneArray} from '@/utils/object';
-import {PLUGIN_UI_COMPONENT_TYPE_TAB, PLUGIN_UI_COMPONENT_TYPE_VIEW} from '@/constants/plugin';
-import {loadModule} from '@/utils/sfc';
-import {Router} from 'vue-router';
+import { Store } from 'vuex';
+import { cloneArray } from '@/utils/object';
+import {
+  PLUGIN_UI_COMPONENT_TYPE_TAB,
+  PLUGIN_UI_COMPONENT_TYPE_VIEW,
+} from '@/constants/plugin';
+import { loadModule } from '@/utils/sfc';
+import { Router } from 'vue-router';
 import useRequest from '@/services/request';
 import {
   SETTING_PLUGIN_BASE_URL_GITEE,
   SETTING_PLUGIN_BASE_URL_GITHUB,
-  SETTING_PLUGIN_GOPROXY_GOPROXY_CN, SETTING_PLUGIN_GOPROXY_GOPROXY_IO
+  SETTING_PLUGIN_GOPROXY_GOPROXY_CN,
+  SETTING_PLUGIN_GOPROXY_GOPROXY_IO,
 } from '@/constants/setting';
-import {getI18n} from '@/i18n';
-import {translate, translatePlugin} from '@/utils/i18n';
+import { getI18n } from '@/i18n';
+import { translate, translatePlugin } from '@/utils/i18n';
 
 type Plugin = CPlugin;
 
@@ -18,9 +22,7 @@ const t = translate;
 
 const PLUGIN_PROXY_ENDPOINT = '/plugin-proxy';
 
-const {
-  getRaw,
-} = useRequest();
+const { getRaw } = useRequest();
 
 const getStoreNamespaceFromRoutePath = (path: string): ListStoreNamespace => {
   const arr = path.split('/');
@@ -32,10 +34,7 @@ const getStoreNamespaceFromRoutePath = (path: string): ListStoreNamespace => {
 };
 
 const initPluginSidebarMenuItems = (store: Store<RootStoreState>) => {
-  const {
-    layout,
-    plugin: state,
-  } = store.state;
+  const { layout, plugin: state } = store.state;
 
   // sidebar menu items
   const menuItems = cloneArray(layout.menuItems);
@@ -54,7 +53,12 @@ const initPluginSidebarMenuItems = (store: Store<RootStoreState>) => {
   store.commit(`layout/setMenuItems`, menuItems);
 };
 
-const addPluginRouteTab = (router: Router, store: Store<RootStoreState>, p: Plugin, pc: PluginUIComponent) => {
+const addPluginRouteTab = (
+  router: Router,
+  store: Store<RootStoreState>,
+  p: Plugin,
+  pc: PluginUIComponent
+) => {
   // current routes paths
   const routesPaths = router.getRoutes().map(r => r.path);
 
@@ -74,7 +78,8 @@ const addPluginRouteTab = (router: Router, store: Store<RootStoreState>, p: Plug
     router.addRoute(parentRoute.name?.toString() as string, {
       name: `${parentRoute.name?.toString()}-${pc.name}`,
       path: pc.path as string,
-      component: () => loadModule(`${PLUGIN_PROXY_ENDPOINT}/${p.name}/_ui/${pc.src}`)
+      component: () =>
+        loadModule(`${PLUGIN_PROXY_ENDPOINT}/${p.name}/_ui/${pc.src}`),
     });
 
     // add tab
@@ -90,7 +95,12 @@ const addPluginRouteTab = (router: Router, store: Store<RootStoreState>, p: Plug
   });
 };
 
-const addPluginRouteView = (router: Router, p: Plugin, pc: PluginUIComponent, parentRouteName?: string) => {
+const addPluginRouteView = (
+  router: Router,
+  p: Plugin,
+  pc: PluginUIComponent,
+  parentRouteName?: string
+) => {
   // current routes paths
   const routesPaths = router.getRoutes().map(r => r.path);
 
@@ -104,7 +114,8 @@ const addPluginRouteView = (router: Router, p: Plugin, pc: PluginUIComponent, pa
   router.addRoute(parentRouteName || 'Root', {
     name: pc.name,
     path: pc.path as string,
-    component: () => loadModule(`${PLUGIN_PROXY_ENDPOINT}/${p.name}/_ui/${pc.src}`),
+    component: () =>
+      loadModule(`${PLUGIN_PROXY_ENDPOINT}/${p.name}/_ui/${pc.src}`),
   });
 
   // add children routes
@@ -115,9 +126,7 @@ const addPluginRouteView = (router: Router, p: Plugin, pc: PluginUIComponent, pa
 
 const initPluginRoutes = (router: Router, store: Store<RootStoreState>) => {
   // store
-  const {
-    plugin: state,
-  } = store.state as RootStoreState;
+  const { plugin: state } = store.state as RootStoreState;
 
   // add plugin routes
   state.allList.forEach(p => {
@@ -138,9 +147,7 @@ const initPluginRoutes = (router: Router, store: Store<RootStoreState>) => {
 };
 
 const initPluginAssets = (store: Store<RootStoreState>) => {
-  const {
-    plugin: state,
-  } = store.state;
+  const { plugin: state } = store.state;
 
   state.allList.forEach(async p => {
     if (!p.ui_assets) return;
@@ -149,11 +156,15 @@ const initPluginAssets = (store: Store<RootStoreState>) => {
       const res = await getRaw(url);
       const textContent = res.data;
       if (asset.type === 'css') {
-        const el = Object.assign(document.createElement('style'), {textContent});
+        const el = Object.assign(document.createElement('style'), {
+          textContent,
+        });
         const ref = document.head.getElementsByTagName('style')[0] || null;
         document.head.insertBefore(el, ref);
       } else if (asset.type === 'js') {
-        const el = Object.assign(document.createElement('script'), {textContent});
+        const el = Object.assign(document.createElement('script'), {
+          textContent,
+        });
         const ref = document.head.getElementsByTagName('script')[0] || null;
         document.head.insertBefore(el, ref);
       }
@@ -162,16 +173,14 @@ const initPluginAssets = (store: Store<RootStoreState>) => {
 };
 
 const initPluginLang = (store: Store<RootStoreState>) => {
-  const {
-    plugin: state,
-  } = store.state;
+  const { plugin: state } = store.state;
 
   state.allList.forEach(async p => {
     const url = `${PLUGIN_PROXY_ENDPOINT}/${p.name}/_lang`;
     const res = await getRaw(url);
     Object.keys(res.data?.data).forEach(lang => {
       const msg = {
-        plugins: {}
+        plugins: {},
       };
       (msg.plugins as any)[p.name || ''] = res.data?.data?.[lang];
       getI18n().global.mergeLocaleMessage(lang, msg);
@@ -179,12 +188,13 @@ const initPluginLang = (store: Store<RootStoreState>) => {
   });
 };
 
-export const initPlugins = async (router: Router, store: Store<RootStoreState>) => {
+export const initPlugins = async (
+  router: Router,
+  store: Store<RootStoreState>
+) => {
   // store
   const ns = 'plugin';
-  const {
-    plugin: state,
-  } = store.state as RootStoreState;
+  const { plugin: state } = store.state as RootStoreState;
 
   // skip if not logged-in
   if (!localStorage.getItem('token')) return;
@@ -206,15 +216,18 @@ export const initPlugins = async (router: Router, store: Store<RootStoreState>) 
 
 export const getPluginBaseUrlOptions = (): SelectOption[] => {
   return [
-    {value: SETTING_PLUGIN_BASE_URL_GITHUB, label: 'GitHub'},
-    {value: SETTING_PLUGIN_BASE_URL_GITEE, label: 'Gitee'},
+    { value: SETTING_PLUGIN_BASE_URL_GITHUB, label: 'GitHub' },
+    { value: SETTING_PLUGIN_BASE_URL_GITEE, label: 'Gitee' },
   ];
 };
 
 export const getPluginGoproxyOptions = (): SelectOption[] => {
   return [
-    {value: undefined, label: t('components.plugin.settings.goProxy.default')},
-    {value: SETTING_PLUGIN_GOPROXY_GOPROXY_CN, label: 'Goproxy.cn'},
-    {value: SETTING_PLUGIN_GOPROXY_GOPROXY_IO, label: 'Goproxy.io'},
+    {
+      value: undefined,
+      label: t('components.plugin.settings.goProxy.default'),
+    },
+    { value: SETTING_PLUGIN_GOPROXY_GOPROXY_CN, label: 'Goproxy.cn' },
+    { value: SETTING_PLUGIN_GOPROXY_GOPROXY_IO, label: 'Goproxy.io' },
   ];
 };

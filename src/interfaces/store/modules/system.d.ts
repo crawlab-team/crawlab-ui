@@ -1,4 +1,4 @@
-import {GetterTree, Module, MutationTree} from 'vuex';
+import { GetterTree, Module, MutationTree } from 'vuex';
 
 declare global {
   interface SystemStoreModule extends Module<SystemStoreState, RootStoreState> {
@@ -11,8 +11,8 @@ declare global {
     siteTitle: Setting;
   }
 
-  interface SystemStoreGetters extends GetterTree<SystemStoreState, RootStoreState> {
-  }
+  interface SystemStoreGetters
+    extends GetterTree<SystemStoreState, RootStoreState> {}
 
   interface SystemStoreMutations extends MutationTree<SystemStoreState> {
     setSiteTitle: StoreMutation<SystemStoreState, Setting>;

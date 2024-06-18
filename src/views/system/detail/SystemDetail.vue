@@ -8,16 +8,13 @@
       />
     </cl-nav-actions>
     <cl-form>
-      <cl-form-item
-        :span="1"
-        :label="t('views.system.customizeSiteTitle')"
-      >
-        <cl-switch v-model="siteTitle.value.customize_site_title" @change="onSiteTitleChange"/>
+      <cl-form-item :span="1" :label="t('views.system.customizeSiteTitle')">
+        <cl-switch
+          v-model="siteTitle.value.customize_site_title"
+          @change="onSiteTitleChange"
+        />
       </cl-form-item>
-      <cl-form-item
-        :span="3"
-        :label="t('views.system.siteTitle')"
-      >
+      <cl-form-item :span="3" :label="t('views.system.siteTitle')">
         <el-input
           v-model="siteTitle.value.site_title"
           :disabled="!siteTitle.value.customize_site_title"
@@ -30,28 +27,26 @@
 </template>
 
 <script lang="ts" setup>
-import {onBeforeMount, ref} from "vue";
-import {translate} from "@/utils";
-import {useStore} from "vuex";
-import {ElMessage} from "element-plus";
+import { onBeforeMount, ref } from 'vue';
+import { translate } from '@/utils';
+import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
 
 const t = translate;
 
 const ns = 'system';
 const store = useStore();
-const {
-  system: state,
-} = store.state as RootStoreState;
+const { system: state } = store.state as RootStoreState;
 
 const siteTitle = ref<Setting>({
   key: 'site_title',
   value: {
     customize_site_title: false,
     site_title: '',
-  }
+  },
 });
 const onSiteTitleChange = () => {
-  store.commit(`${ns}/setSiteTitle`, siteTitle.value)
+  store.commit(`${ns}/setSiteTitle`, siteTitle.value);
 };
 onBeforeMount(async () => {
   await store.dispatch(`${ns}/getSiteTitle`);

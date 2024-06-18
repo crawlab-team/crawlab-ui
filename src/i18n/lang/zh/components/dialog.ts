@@ -4,7 +4,7 @@ const dialog: LComponentsDialog = {
   dialog: '对话框',
   type: {
     single: '单个',
-    batch: '批量'
+    batch: '批量',
   },
   batch: {
     add: '添加',

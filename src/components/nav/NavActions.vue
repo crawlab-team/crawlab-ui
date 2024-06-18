@@ -1,16 +1,11 @@
 <template>
-  <div
-    ref="navActions"
-    :class="classes"
-    :style="style"
-    class="nav-actions"
-  >
+  <div ref="navActions" :class="classes" :style="style" class="nav-actions">
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, ref, watch} from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'NavActions',
@@ -27,7 +22,7 @@ export default defineComponent({
     const unmounted = ref<boolean>(true);
 
     const collapsed = computed<boolean>(() => {
-      const {collapsed} = props as NavActionsProps;
+      const { collapsed } = props as NavActionsProps;
       return collapsed || false;
     });
 

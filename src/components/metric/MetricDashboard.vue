@@ -1,21 +1,25 @@
 <template>
   <div class="metric-dashboard">
-    <cl-table
-      :data="tableData"
-      :columns="tableColumns"
-      hide-footer
-    />
+    <cl-table :data="tableData" :columns="tableColumns" hide-footer />
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeUnmount, onBeforeMount, PropType, ref, h} from 'vue';
-import {useI18n} from 'vue-i18n';
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onBeforeMount,
+  PropType,
+  ref,
+  h,
+} from 'vue';
+import { useI18n } from 'vue-i18n';
 import MetricTargetType from '@/components/metric/MetricTargetType.vue';
 import NodeStatus from '@/components/node/NodeStatus.vue';
 import MetricTargetName from '@/components/metric/MetricTargetName.vue';
 import MetricSnapshotComp from '@/components/metric/MetricSnapshot.vue';
-import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 
 export default defineComponent({
   name: 'MetricDashboard',
@@ -24,11 +28,9 @@ export default defineComponent({
       type: Function as PropType<MetricDashboardDataFunc>,
     },
   },
-  emits: [
-    'row-click',
-  ],
-  setup(props: MetricDashboardProps, {emit}) {
-    const {t} = useI18n();
+  emits: ['row-click'],
+  setup(props: MetricDashboardProps, { emit }) {
+    const { t } = useI18n();
 
     const tableData = ref<TableData<MetricSnapshot>>([]);
     const tableColumns = computed<TableColumns<MetricSnapshot>>(() => {
@@ -38,32 +40,35 @@ export default defineComponent({
           label: t('components.metric.dashboard.columns.name'),
           icon: ['fa', 'font'],
           width: '180',
-          value: (row: MetricSnapshot) => h(MetricTargetName, {
-            name: row.name,
-            type: row.type,
-            onClick: () => emit('row-click', row)
-          }),
+          value: (row: MetricSnapshot) =>
+            h(MetricTargetName, {
+              name: row.name,
+              type: row.type,
+              onClick: () => emit('row-click', row),
+            }),
         },
         {
           key: 'type',
           label: t('components.metric.dashboard.columns.type'),
           icon: ['fa', 'font'],
           width: '180',
-          value: (row: MetricSnapshot) => h(MetricTargetType, {type: row.type, isMaster: row.is_master}),
+          value: (row: MetricSnapshot) =>
+            h(MetricTargetType, { type: row.type, isMaster: row.is_master }),
         },
         {
           key: 'status',
           label: t('components.metric.dashboard.columns.status'),
           icon: ['fa', 'heartbeat'],
           width: '120',
-          value: (row: MetricSnapshot) => h(NodeStatus, {status: row.status}),
+          value: (row: MetricSnapshot) => h(NodeStatus, { status: row.status }),
         },
         {
           key: 'metrics',
           label: t('components.metric.dashboard.columns.metrics.title'),
           icon: ['fa', 'chart-line'],
           width: 'auto',
-          value: (row: MetricSnapshot) => h(MetricSnapshotComp, {snapshot: row}),
+          value: (row: MetricSnapshot) =>
+            h(MetricSnapshotComp, { snapshot: row }),
         },
         {
           key: TABLE_COLUMN_NAME_ACTIONS,
@@ -79,12 +84,12 @@ export default defineComponent({
               onClick: (row: MetricSnapshot) => emit('row-click', row),
             },
           ],
-        }
+        },
       ] as TableColumns;
     });
 
     const getData = async () => {
-      tableData.value = await props.metricDataFunc?.() || [];
+      tableData.value = (await props.metricDataFunc?.()) || [];
     };
 
     // timer
@@ -101,7 +106,7 @@ export default defineComponent({
       tableData,
       tableColumns,
     };
-  }
+  },
 });
 </script>
 

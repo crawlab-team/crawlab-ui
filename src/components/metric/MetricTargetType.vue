@@ -1,22 +1,14 @@
 <template>
   <div class="metric-target-type">
-    <cl-node-type
-      v-if="type === 'node'"
-      :is-master="isMaster"
-    />
-    <cl-tag
-      v-else
-      :label="label"
-      :type="tagType"
-      :icon="icon"
-    />
+    <cl-node-type v-if="type === 'node'" :is-master="isMaster" />
+    <cl-tag v-else :label="label" :type="tagType" :icon="icon" />
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import Tag from '@/components/tag/Tag.vue';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 import NodeType from '@/components/node/NodeType.vue';
 
 export default defineComponent({
@@ -27,11 +19,11 @@ export default defineComponent({
       default: 'node',
     },
     isMaster: {
-      type: Boolean
+      type: Boolean,
     },
   },
-  setup(props: MetricTargetTypeProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: MetricTargetTypeProps, { emit }) {
+    const { t } = useI18n();
 
     const label = computed<string>(() => {
       switch (props.type) {
@@ -73,7 +65,7 @@ export default defineComponent({
       icon,
       tagType,
     };
-  }
+  },
 });
 </script>
 

@@ -1,10 +1,9 @@
 <template>
-  <div class="logs-view" v-html="content">
-  </div>
+  <div class="logs-view" v-html="content"></div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'LogsView',
@@ -14,9 +13,9 @@ export default defineComponent({
       default: () => {
         return [];
       },
-    }
+    },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const content = computed(() => {
       return props.logs.join('\n').replace(/\n/g, '<br>');
     });

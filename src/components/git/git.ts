@@ -1,7 +1,7 @@
-import {Store} from 'vuex';
+import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useGitService from '@/services/git/gitService';
-import {getDefaultFormComponentData} from '@/utils/form';
+import { getDefaultFormComponentData } from '@/utils/form';
 
 // get new git
 export const getNewGit = (): Git => {

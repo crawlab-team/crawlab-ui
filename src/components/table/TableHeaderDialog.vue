@@ -8,7 +8,7 @@
   >
     <template #reference>
       <div>
-        <slot name="reference"/>
+        <slot name="reference" />
       </div>
     </template>
     <div v-click-outside="onClickOutside" class="content">
@@ -21,7 +21,10 @@
       <div class="body">
         <div class="list">
           <div v-if="column.hasSort" class="item sort">
-            <cl-table-header-dialog-sort :value="internalSort?.d" @change="onSortChange"/>
+            <cl-table-header-dialog-sort
+              :value="internalSort?.d"
+              @change="onSortChange"
+            />
           </div>
           <div v-if="column.hasFilter" class="item filter">
             <cl-table-header-dialog-filter
@@ -65,11 +68,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref, watch} from 'vue';
-import {plainClone} from '@/utils/object';
-import {FILTER_OP_NOT_SET} from '@/constants/filter';
-import {ClickOutside} from 'element-plus';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
+import { plainClone } from '@/utils/object';
+import { FILTER_OP_NOT_SET } from '@/constants/filter';
+import { ClickOutside } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TableHeaderFilter',
@@ -99,23 +102,22 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: [
-    'click',
-    'cancel',
-    'clear',
-    'apply',
-  ],
-  setup(props: TableHeaderDialogProps, {emit}) {
+  emits: ['click', 'cancel', 'clear', 'apply'],
+  setup(props: TableHeaderDialogProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
-    const defaultInternalSort = {key: props.column.key} as SortData;
+    const defaultInternalSort = { key: props.column.key } as SortData;
     const internalSort = ref<SortData>();
     const internalFilter = ref<TableHeaderDialogFilterData>();
 
-    const searchString = computed<string | undefined>(() => internalFilter.value?.searchString);
+    const searchString = computed<string | undefined>(
+      () => internalFilter.value?.searchString
+    );
 
-    const conditions = computed<FilterConditionData[]>(() => internalFilter.value?.conditions || []);
+    const conditions = computed<FilterConditionData[]>(
+      () => internalFilter.value?.conditions || []
+    );
 
     const items = computed<string[]>(() => internalFilter.value?.items || []);
 
@@ -124,7 +126,11 @@ export default defineComponent({
     });
 
     const isEmptyFilter = computed<boolean>(() => {
-      return !searchString.value && trueConditions.value.length == 0 && items.value.length === 0;
+      return (
+        !searchString.value &&
+        trueConditions.value.length == 0 &&
+        items.value.length === 0
+      );
     });
 
     const isApplyDisabled = computed<boolean>(() => {
@@ -141,7 +147,8 @@ export default defineComponent({
     };
 
     const clear = () => {
-      if (!internalSort.value) internalSort.value = plainClone(defaultInternalSort);
+      if (!internalSort.value)
+        internalSort.value = plainClone(defaultInternalSort);
       internalSort.value.d = undefined;
       internalFilter.value = undefined;
       emit('clear');
@@ -160,7 +167,7 @@ export default defineComponent({
     };
 
     const onClickOutside = () => {
-      const {visible} = props;
+      const { visible } = props;
       if (!visible) return;
       cancel();
     };
@@ -178,7 +185,8 @@ export default defineComponent({
     };
 
     const onSortChange = (value: string) => {
-      if (!internalSort.value) internalSort.value = plainClone(defaultInternalSort);
+      if (!internalSort.value)
+        internalSort.value = plainClone(defaultInternalSort);
       internalSort.value.d = value;
     };
 
@@ -190,16 +198,23 @@ export default defineComponent({
       apply();
     };
 
-    watch(() => {
-      const {visible} = props;
-      return visible;
-    }, () => {
-      const {sort, filter, visible} = props;
-      if (visible) {
-        internalSort.value = (sort ? plainClone(sort) : plainClone(defaultInternalSort)) as SortData;
-        internalFilter.value = plainClone(filter) as TableHeaderDialogFilterData;
+    watch(
+      () => {
+        const { visible } = props;
+        return visible;
+      },
+      () => {
+        const { sort, filter, visible } = props;
+        if (visible) {
+          internalSort.value = (
+            sort ? plainClone(sort) : plainClone(defaultInternalSort)
+          ) as SortData;
+          internalFilter.value = plainClone(
+            filter
+          ) as TableHeaderDialogFilterData;
+        }
       }
-    });
+    );
 
     return {
       internalSort,

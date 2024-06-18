@@ -1,19 +1,19 @@
-import {computed, readonly, watch} from 'vue';
-import {Store} from 'vuex';
+import { computed, readonly, watch } from 'vue';
+import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useScheduleService from '@/services/schedule/scheduleService';
-import {getDefaultFormComponentData} from '@/utils/form';
+import { getDefaultFormComponentData } from '@/utils/form';
 import {
   FORM_FIELD_TYPE_INPUT,
   FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
   FORM_FIELD_TYPE_SELECT,
   FORM_FIELD_TYPE_SWITCH,
 } from '@/constants/form';
-import {parseExpression} from 'cron-parser';
-import {getModeOptions} from '@/utils/task';
+import { parseExpression } from 'cron-parser';
+import { getModeOptions } from '@/utils/task';
 import useSpider from '@/components/spider/spider';
-import {translate} from '@/utils/i18n';
-import useScheduleDetail from "@/views/schedule/detail/useScheduleDetail";
+import { translate } from '@/utils/i18n';
+import useScheduleDetail from '@/views/schedule/detail/useScheduleDetail';
 
 // i18n
 const t = translate;
@@ -103,45 +103,51 @@ const schedule = (store: Store<RootStoreState>) => {
   const formRules = readonly<FormRules>({
     cron: {
       trigger: 'blur',
-      validator: ((_, value: string, callback) => {
-        const invalidMessage = t('components.schedule.rules.message.invalidCronExpression');
+      validator: (_, value: string, callback) => {
+        const invalidMessage = t(
+          'components.schedule.rules.message.invalidCronExpression'
+        );
         if (!value) return callback(invalidMessage);
-        if (value.trim().split(' ').length != 5) return callback(invalidMessage);
+        if (value.trim().split(' ').length != 5)
+          return callback(invalidMessage);
         try {
           parseExpression(value);
           callback();
         } catch (e: any) {
           callback(e.message);
         }
-      }),
+      },
     },
   });
 
   // all schedule select options
-  const allScheduleSelectOptions = computed<SelectOption[]>(() => state.allList.map(d => {
-    return {
-      label: d.name,
-      value: d._id,
-    };
-  }));
+  const allScheduleSelectOptions = computed<SelectOption[]>(() =>
+    state.allList.map(d => {
+      return {
+        label: d.name,
+        value: d._id,
+      };
+    })
+  );
 
-  const {
-    activeId,
-  } = useScheduleDetail();
+  const { activeId } = useScheduleDetail();
 
-  watch(() => form.value?.spider_id, () => {
-    if (activeId.value) return;
-    if (!form.value?.spider_id) return;
-    const spider = allSpiderDict.value.get(form.value?.spider_id);
-    if (!spider) return;
-    const payload = {...form.value} as Schedule;
-    if (spider.cmd) payload.cmd = spider.cmd;
-    if (spider.param) payload.param = spider.param;
-    if (spider.mode) payload.mode = spider.mode;
-    if (spider.node_ids?.length) payload.node_ids = spider.node_ids;
-    if (spider.node_tags?.length) payload.node_tags = spider.node_tags;
-    store.commit(`${ns}/setForm`, payload);
-  });
+  watch(
+    () => form.value?.spider_id,
+    () => {
+      if (activeId.value) return;
+      if (!form.value?.spider_id) return;
+      const spider = allSpiderDict.value.get(form.value?.spider_id);
+      if (!spider) return;
+      const payload = { ...form.value } as Schedule;
+      if (spider.cmd) payload.cmd = spider.cmd;
+      if (spider.param) payload.param = spider.param;
+      if (spider.mode) payload.mode = spider.mode;
+      if (spider.node_ids?.length) payload.node_ids = spider.node_ids;
+      if (spider.node_tags?.length) payload.node_tags = spider.node_tags;
+      store.commit(`${ns}/setForm`, payload);
+    }
+  );
 
   return {
     ...useForm('schedule', store, useScheduleService(store), formComponentData),

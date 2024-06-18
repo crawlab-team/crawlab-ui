@@ -9,13 +9,13 @@ const node: LComponentsNode = {
     hostname: '主机名',
     enabled: '是否启用',
     max_runners: '最大执行器数',
-    description: '描述'
+    description: '描述',
   },
   nodeType: {
     label: {
       master: '主节点',
-      worker: '工作节点'
-    }
+      worker: '工作节点',
+    },
   },
   nodeStatus: {
     label: {
@@ -31,7 +31,7 @@ const node: LComponentsNode = {
       online: '节点处于在线状态',
       offline: '节点处于离线状态',
       unknown: '未知节点状态',
-    }
+    },
   },
   nodeRunners: {
     tooltip: {

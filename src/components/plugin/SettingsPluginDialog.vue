@@ -25,10 +25,7 @@
           />
         </el-select>
       </cl-form-item>
-      <cl-form-item
-        :span="4"
-        label=" "
-      >
+      <cl-form-item :span="4" label=" ">
         <el-alert class="alert-tip" type="info" :closable="false" show-icon>
           {{ t('components.plugin.settings.tips.installSource') }}
         </el-alert>
@@ -53,10 +50,7 @@
           />
         </el-select>
       </cl-form-item>
-      <cl-form-item
-        :span="4"
-        label=" "
-      >
+      <cl-form-item :span="4" label=" ">
         <el-alert class="alert-tip" type="info" :closable="false" show-icon>
           {{ t('components.plugin.settings.tips.goProxy') }}
         </el-alert>
@@ -66,25 +60,23 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import usePlugin from '@/components/plugin/plugin';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
 
 export default defineComponent({
   name: 'SettingsPluginDialog',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'plugin';
     const store = useStore();
 
-    const {
-      settings,
-    } = usePlugin(store);
+    const { settings } = usePlugin(store);
 
     const onClose = () => {
       store.commit(`${ns}/hideDialog`, 'settings');

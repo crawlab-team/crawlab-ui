@@ -2,13 +2,14 @@
   <el-dialog
     :before-close="onClose"
     :model-value="visible"
-    :title="t('components.table.columnsTransfer.title')">
+    :title="t('components.table.columnsTransfer.title')"
+  >
     <div class="table-columns-transfer-content">
       <cl-transfer
         :data="computedData"
         :titles="[
           t('components.table.columnsTransfer.titles.left'),
-          t('components.table.columnsTransfer.titles.right')
+          t('components.table.columnsTransfer.titles.right'),
         ]"
         :value="internalSelectedColumnKeys"
         @change="onChange"
@@ -26,9 +27,9 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, ref} from 'vue';
-import {DataItem} from 'element-plus';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, onBeforeMount, ref } from 'vue';
+import { DataItem } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TableColumnsTransfer',
@@ -47,25 +48,20 @@ export default defineComponent({
       type: Array,
       default: () => {
         return [];
-      }
+      },
     },
   },
-  emits: [
-    'close',
-    'change',
-    'sort',
-    'confirm',
-  ],
-  setup(props, {emit}) {
+  emits: ['close', 'change', 'sort', 'confirm'],
+  setup(props, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const internalSelectedColumnKeys = ref<string[]>([]);
 
     const computedData = computed<DataItem[]>(() => {
-      const {columns} = props as TableColumnsTransferProps;
+      const { columns } = props as TableColumnsTransferProps;
       return columns.map(d => {
-        const {key, label, disableTransfer} = d;
+        const { key, label, disableTransfer } = d;
         return {
           key,
           label,
@@ -88,7 +84,7 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
-      const {selectedColumnKeys} = props as TableColumnsTransferProps;
+      const { selectedColumnKeys } = props as TableColumnsTransferProps;
       internalSelectedColumnKeys.value = selectedColumnKeys || [];
     });
 

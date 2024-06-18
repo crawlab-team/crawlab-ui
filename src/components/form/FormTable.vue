@@ -1,19 +1,15 @@
 <template>
   <div class="form-table">
-    <cl-table
-        :columns="columns"
-        :data="data"
-        hide-footer
-    />
+    <cl-table :columns="columns" :data="data" hide-footer />
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, h, inject, PropType, Ref} from 'vue';
-import {emptyArrayFunc} from '@/utils/func';
+import { computed, defineComponent, h, inject, PropType, Ref } from 'vue';
+import { emptyArrayFunc } from '@/utils/func';
 import FormTableField from '@/components/form/FormTableField.vue';
-import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
-import {useI18n} from 'vue-i18n';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'FormTable',
@@ -27,21 +23,15 @@ export default defineComponent({
       type: Array as PropType<FormTableField[]>,
       required: false,
       default: emptyArrayFunc,
-    }
+    },
   },
-  emits: [
-    'add',
-    'clone',
-    'delete',
-    'field-change',
-    'field-register',
-  ],
-  setup(props: FormTableProps, {emit}) {
+  emits: ['add', 'clone', 'delete', 'field-change', 'field-register'],
+  setup(props: FormTableProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const columns = computed<TableColumns>(() => {
-      const {fields} = props;
+      const { fields } = props;
       const formRules = inject<FormRuleItem[]>('form-rules');
       const columns = fields.map(f => {
         const {
@@ -59,23 +49,29 @@ export default defineComponent({
           label,
           width,
           required,
-          value: (row: BaseModel, rowIndex: number) => h(FormTableField, {
-            form: row,
-            formRules,
-            prop,
-            fieldType,
-            options,
-            required,
-            placeholder,
-            disabled: typeof disabled === 'function' ? disabled(row) : disabled,
-            onChange: (value: any) => {
-              emit('field-change', rowIndex, prop, value);
-            },
-            onRegister: (formRef: Ref) => {
-              if (rowIndex < 0) return;
-              emit('field-register', rowIndex, prop, formRef);
-            },
-          } as FormTableFieldProps, emptyArrayFunc),
+          value: (row: BaseModel, rowIndex: number) =>
+            h(
+              FormTableField,
+              {
+                form: row,
+                formRules,
+                prop,
+                fieldType,
+                options,
+                required,
+                placeholder,
+                disabled:
+                  typeof disabled === 'function' ? disabled(row) : disabled,
+                onChange: (value: any) => {
+                  emit('field-change', rowIndex, prop, value);
+                },
+                onRegister: (formRef: Ref) => {
+                  if (rowIndex < 0) return;
+                  emit('field-register', rowIndex, prop, formRef);
+                },
+              } as FormTableFieldProps,
+              emptyArrayFunc
+            ),
         } as TableColumn;
       }) as TableColumns;
       columns.push({
@@ -107,8 +103,8 @@ export default defineComponent({
             onClick: (_, rowIndex) => {
               emit('delete', rowIndex);
             },
-          }
-        ]
+          },
+        ],
       });
       return columns;
     });
@@ -120,6 +116,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

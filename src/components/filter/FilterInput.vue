@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
-import {debounce} from 'vue-debounce';
+import { defineComponent, ref } from 'vue';
+import { debounce } from 'vue-debounce';
 
 export default defineComponent({
   name: 'FilterInput',
@@ -27,10 +27,8 @@ export default defineComponent({
       type: String,
     },
   },
-  emits: [
-    'change',
-  ],
-  setup(props: FilterInputProps, {emit}) {
+  emits: ['change'],
+  setup(props: FilterInputProps, { emit }) {
     const internalModelValue = ref();
 
     const onChange = debounce((value: any) => {
@@ -47,9 +45,8 @@ export default defineComponent({
       onChange,
       onClear,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

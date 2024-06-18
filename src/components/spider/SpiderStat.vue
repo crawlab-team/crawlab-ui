@@ -24,17 +24,17 @@
       @click="() => $emit('duration-click')"
     >
       <template #tooltip>
-        <div v-html="tooltips.duration"/>
+        <div v-html="tooltips.duration" />
       </template>
     </cl-tag>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import humanizeDuration from 'humanize-duration';
-import {useI18n} from 'vue-i18n';
-import {getLanguage} from '@/utils/i18n';
+import { useI18n } from 'vue-i18n';
+import { getLanguage } from '@/utils/i18n';
 
 export default defineComponent({
   name: 'SpiderStats',
@@ -44,17 +44,13 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: [
-    'tasks-click',
-    'results-click',
-    'duration-click',
-  ],
-  setup(props: SpiderStatProps, {emit}) {
+  emits: ['tasks-click', 'results-click', 'duration-click'],
+  setup(props: SpiderStatProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const labels = computed<SpiderStatLabels>(() => {
-      const {stat} = props;
+      const { stat } = props;
       const {
         tasks,
         results,
@@ -66,12 +62,12 @@ export default defineComponent({
       return {
         tasks: `${tasks}`,
         results: `${results}`,
-        duration: `${average_total_duration}`
+        duration: `${average_total_duration}`,
       };
     });
 
     const tooltips = computed<SpiderStatTooltips>(() => {
-      const {stat} = props;
+      const { stat } = props;
       const {
         tasks,
         results,
@@ -87,20 +83,29 @@ export default defineComponent({
         results: `${t('components.spider.stat.totalResults')}: ${results}`,
         duration: `
 <span class="label">${t('components.spider.stat.averageWaitDuration')}:</span>
-<span class="value" style="color: var(--cl-blue)">${humanizeDuration(average_wait_duration * 1000, {
-          spacer: ' ',
-          language
-        })}</span><br>
+<span class="value" style="color: var(--cl-blue)">${humanizeDuration(
+          average_wait_duration * 1000,
+          {
+            spacer: ' ',
+            language,
+          }
+        )}</span><br>
 <span class="label">${t('components.spider.stat.averageRuntimeDuration')}:</span>
-<span class="value" style="color: var(--cl-orange)">${humanizeDuration(average_runtime_duration * 1000, {
-          spacer: ' ',
-          language
-        })}</span><br>
+<span class="value" style="color: var(--cl-orange)">${humanizeDuration(
+          average_runtime_duration * 1000,
+          {
+            spacer: ' ',
+            language,
+          }
+        )}</span><br>
 <span class="label">${t('components.spider.stat.averageRuntimeDuration')}:</span>
-<span class="value" style="color: var(--cl-white)">${humanizeDuration(average_total_duration * 1000, {
-          spacer: ' ',
-          language
-        })}</span><br>
+<span class="value" style="color: var(--cl-white)">${humanizeDuration(
+          average_total_duration * 1000,
+          {
+            spacer: ' ',
+            language,
+          }
+        )}</span><br>
 `,
       };
     });
@@ -118,5 +123,4 @@ export default defineComponent({
 }
 </style>
 
-<style scoped>
-</style>
+<style scoped></style>

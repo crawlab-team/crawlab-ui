@@ -1,27 +1,28 @@
 <template>
   <div class="demo-layout">
-    <el-tabs :active-name="activeName" @tab-click="(tab) => $emit('tab-click', tab)">
-      <slot/>
+    <el-tabs
+      :active-name="activeName"
+      @tab-click="tab => $emit('tab-click', tab)"
+    >
+      <slot />
     </el-tabs>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'DemoLayout',
   props: {
     activeName: {
       type: String,
-    }
+    },
   },
-  emits: [
-    'tab-click',
-  ],
+  emits: ['tab-click'],
   setup(props: DemoLayoutProps) {
     return {};
-  }
+  },
 });
 </script>
 

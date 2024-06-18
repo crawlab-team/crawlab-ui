@@ -1,4 +1,4 @@
-import {GetterTree, Module, MutationTree} from 'vuex';
+import { GetterTree, Module, MutationTree } from 'vuex';
 
 declare global {
   interface LayoutStoreModule extends Module<LayoutStoreState, RootStoreState> {
@@ -29,7 +29,8 @@ declare global {
     actionVisibleFn: (target: string, action: string) => boolean;
   }
 
-  interface LayoutStoreGetters extends GetterTree<LayoutStoreState, RootStoreState> {
+  interface LayoutStoreGetters
+    extends GetterTree<LayoutStoreState, RootStoreState> {
     tabs: StoreGetter<LayoutStoreState, Tab[]>;
     activeTab: StoreGetter<LayoutStoreState, Tab | undefined>;
     sidebarMenuItems: StoreGetter<LayoutStoreState, MenuItem[]>;
@@ -51,7 +52,13 @@ declare global {
     resetTargetTab: StoreMutation<LayoutStoreState>;
     setIsTabsDragging: StoreMutation<LayoutStoreState, boolean>;
     setNavVisibleFn: StoreMutation<LayoutStoreState, (path: string) => boolean>;
-    setDetailTabVisibleFn: StoreMutation<LayoutStoreState, (ns: StoreNamespace, tab: NavItem) => boolean>;
-    setActionVisibleFn: StoreMutation<LayoutStoreState, (target: string, action: string) => boolean>;
+    setDetailTabVisibleFn: StoreMutation<
+      LayoutStoreState,
+      (ns: StoreNamespace, tab: NavItem) => boolean
+    >;
+    setActionVisibleFn: StoreMutation<
+      LayoutStoreState,
+      (target: string, action: string) => boolean
+    >;
   }
 }

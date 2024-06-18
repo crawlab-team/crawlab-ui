@@ -1,45 +1,69 @@
 <script setup lang="ts">
-import {computed, h, onBeforeMount, ref, watch} from 'vue';
-import {useStore} from 'vuex';
+import { computed, h, onBeforeMount, ref, watch } from 'vue';
+import { useStore } from 'vuex';
 import GitFileStatus from '@/components/git/GitFileStatus.vue';
 import Tag from '@/components/tag/Tag.vue';
-import {useI18n} from 'vue-i18n';
-import useGitDetail from "@/views/git/detail/useGitDetail";
-import Table from "@/components/table/Table.vue";
+import { useI18n } from 'vue-i18n';
+import useGitDetail from '@/views/git/detail/useGitDetail';
+import Table from '@/components/table/Table.vue';
 
 // i18n
-const {t} = useI18n();
+const { t } = useI18n();
 
 // store
 const ns = 'spider';
 const store = useStore();
-const {
-  git: state,
-} = store.state as RootStoreState;
+const { git: state } = store.state as RootStoreState;
 
-const {
-  activeId,
-} = useGitDetail();
+const { activeId } = useGitDetail();
 
 const getStatusTagProps = (status?: string): TagProps => {
   const label = status;
   switch (status) {
     case '?':
-      return {type: 'danger', tooltip: t('components.git.changes.status.untracked'), label};
+      return {
+        type: 'danger',
+        tooltip: t('components.git.changes.status.untracked'),
+        label,
+      };
     case 'M':
-      return {type: 'primary', tooltip: t('components.git.changes.status.modified'), label};
+      return {
+        type: 'primary',
+        tooltip: t('components.git.changes.status.modified'),
+        label,
+      };
     case 'A':
-      return {type: 'success', tooltip: t('components.git.changes.status.added'), label};
+      return {
+        type: 'success',
+        tooltip: t('components.git.changes.status.added'),
+        label,
+      };
     case 'D':
-      return {type: 'info', tooltip: t('components.git.changes.status.deleted'), label};
+      return {
+        type: 'info',
+        tooltip: t('components.git.changes.status.deleted'),
+        label,
+      };
     case 'R':
-      return {type: 'primary', tooltip: t('components.git.changes.status.renamed'), label};
+      return {
+        type: 'primary',
+        tooltip: t('components.git.changes.status.renamed'),
+        label,
+      };
     case 'C':
-      return {type: 'primary', tooltip: t('components.git.changes.status.copied'), label};
+      return {
+        type: 'primary',
+        tooltip: t('components.git.changes.status.copied'),
+        label,
+      };
     case 'U':
-      return {type: 'danger', tooltip: t('components.git.changes.status.updatedButUnmerged'), label};
+      return {
+        type: 'danger',
+        tooltip: t('components.git.changes.status.updatedButUnmerged'),
+        label,
+      };
     default:
-      return {label};
+      return { label };
   }
 };
 
@@ -47,7 +71,9 @@ const getStatusTagProps = (status?: string): TagProps => {
 const tableRef = ref<typeof Table>();
 
 // table data
-const tableData = computed<TableData<GitChange>>(() => state.gitData?.changes || []);
+const tableData = computed<TableData<GitChange>>(
+  () => state.gitData?.changes || []
+);
 
 // table columns
 const tableColumns = computed<TableColumns<GitChange>>(() => {
@@ -58,7 +84,7 @@ const tableColumns = computed<TableColumns<GitChange>>(() => {
       width: '1000',
       icon: ['far', 'file-code'],
       value: (row: GitChange) => {
-        return h(GitFileStatus, {fileStatus: row});
+        return h(GitFileStatus, { fileStatus: row });
       },
     },
     {
@@ -78,10 +104,16 @@ const onSelectionChange = (rows: TableData<GitChange>) => {
   store.commit(`${ns}/setGitChangeSelection`, rows);
 };
 
-watch(() => tableData.value, () => tableRef.value?.clearSelection());
+watch(
+  () => tableData.value,
+  () => tableRef.value?.clearSelection()
+);
 
-watch(() => activeId.value, () => store.dispatch(`${ns}/getGit`, {id: activeId.value}));
-onBeforeMount(() => store.dispatch(`${ns}/getGit`, {id: activeId.value}));
+watch(
+  () => activeId.value,
+  () => store.dispatch(`${ns}/getGit`, { id: activeId.value })
+);
+onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </script>
 
 <template>

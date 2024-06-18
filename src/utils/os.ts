@@ -1,4 +1,4 @@
-import {OS_WINDOWS} from '@/constants/os';
+import { OS_WINDOWS } from '@/constants/os';
 
 function getOS() {
   const userAgent = window.navigator.userAgent;

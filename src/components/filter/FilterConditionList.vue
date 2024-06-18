@@ -1,18 +1,22 @@
 <template>
   <ul class="filter-condition-list">
     <li
-        v-for="(cond, $index) in conditions"
-        :key="$index"
-        class="filter-condition-item"
+      v-for="(cond, $index) in conditions"
+      :key="$index"
+      class="filter-condition-item"
     >
-      <cl-filter-condition :condition="cond" @change="onChange($index, $event)" @delete="onDelete($index)"/>
+      <cl-filter-condition
+        :condition="cond"
+        @change="onChange($index, $event)"
+        @delete="onDelete($index)"
+      />
     </li>
   </ul>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {getDefaultFilterCondition} from '@/components/filter/FilterCondition.vue';
+import { defineComponent } from 'vue';
+import { getDefaultFilterCondition } from '@/components/filter/FilterCondition.vue';
 
 export default defineComponent({
   name: 'FilterConditionList',
@@ -22,21 +26,19 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
-  emits: [
-    'change',
-  ],
-  setup(props, {emit}) {
+  emits: ['change'],
+  setup(props, { emit }) {
     const onChange = (index: number, condition: FilterConditionData) => {
-      const {conditions} = props as FilterConditionListProps;
+      const { conditions } = props as FilterConditionListProps;
       conditions[index] = condition;
       emit('change', conditions);
     };
 
     const onDelete = (index: number) => {
-      const {conditions} = props as FilterConditionListProps;
+      const { conditions } = props as FilterConditionListProps;
       conditions.splice(index, 1);
       if (conditions.length === 0) {
         conditions.push(getDefaultFilterCondition());

@@ -1,10 +1,7 @@
 <template>
   <div class="dependency-spider-tab">
     <div class="top-bar">
-      <cl-form
-        :model="spiderData"
-        inline
-      >
+      <cl-form :model="spiderData" inline>
         <cl-form-item :label="t('views.env.deps.spider.form.dependencyType')">
           <cl-tag
             :label="spiderDataDependencyTypeLabel"
@@ -20,15 +17,11 @@
         :disabled="!spiderData.dependency_type"
         @click="onInstallByConfig"
       >
-        <font-awesome-icon class="icon" :icon="['fa', 'download']"/>
+        <font-awesome-icon class="icon" :icon="['fa', 'download']" />
         {{ t('common.actions.install') }}
       </cl-button>
     </div>
-    <cl-table
-      :data="tableData"
-      :columns="tableColumns"
-      hide-footer
-    />
+    <cl-table :data="tableData" :columns="tableColumns" hide-footer />
     <cl-install-form
       :visible="dialogVisible.install"
       :lang="lang"
@@ -48,22 +41,19 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, h, onMounted, ref, watch} from 'vue';
-import {useRoute} from 'vue-router';
-import {useStore} from 'vuex';
-import {ElMessage, ElMessageBox} from 'element-plus';
+import { computed, defineComponent, h, onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import useRequest from '@/services/request';
-import {translate} from '@/utils';
+import { translate } from '@/utils';
 import NavLink from '@/components/nav/NavLink.vue';
 import NodeType from '@/components/node/NodeType.vue';
 import Tag from '@/components/tag/Tag.vue';
 
 const t = translate;
 
-const {
-  get,
-  post,
-} = useRequest();
+const { get, post } = useRequest();
 
 const endpoint = '/deps';
 
@@ -79,7 +69,7 @@ export default defineComponent({
     onMounted(() => store.dispatch(`node/getAllList`));
 
     const isInstallable = (dep: EnvDepsDependency) => {
-      const {result} = dep;
+      const { result } = dep;
       if (!result) return true;
       if (result.upgradable || result.downgradable) return true;
       const node_ids = result.node_ids || [];
@@ -87,7 +77,7 @@ export default defineComponent({
     };
 
     const isUninstallable = (dep: EnvDepsDependency) => {
-      const {result} = dep;
+      const { result } = dep;
       if (!result) return true;
       const node_ids = result.node_ids || [];
       return node_ids.length > 0;
@@ -100,11 +90,12 @@ export default defineComponent({
           label: t('views.env.deps.spider.form.name'),
           icon: ['fa', 'font'],
           width: '200',
-          value: (row: EnvDepsDependency) => h(NavLink, {
-            label: row.name,
-            path: `https://pypi.org/project/${row.name}`,
-            external: true,
-          }),
+          value: (row: EnvDepsDependency) =>
+            h(NavLink, {
+              label: row.name,
+              path: `https://pypi.org/project/${row.name}`,
+              external: true,
+            }),
         },
         {
           key: 'version',
@@ -126,26 +117,32 @@ export default defineComponent({
           value: (row: EnvDepsDependency) => {
             const res = [];
             if (!row.result || !row.result.versions) return;
-            const {result} = row;
+            const { result } = row;
             if (!result) return;
-            const {versions} = result;
-            res.push(h('span', {style: 'margin-right: 5px'}, versions?.join(', ')));
+            const { versions } = result;
+            res.push(
+              h('span', { style: 'margin-right: 5px' }, versions?.join(', '))
+            );
             if (result.upgradable) {
-              res.push(h(Tag, {
-                type: 'primary',
-                effect: 'light',
-                size: 'mini',
-                tooltip: t('views.env.deps.common.status.upgradable'),
-                icon: ['fa', 'arrow-up'],
-              }));
+              res.push(
+                h(Tag, {
+                  type: 'primary',
+                  effect: 'light',
+                  size: 'mini',
+                  tooltip: t('views.env.deps.common.status.upgradable'),
+                  icon: ['fa', 'arrow-up'],
+                })
+              );
             } else if (result.downgradable) {
-              res.push(h(Tag, {
-                type: 'warning',
-                effect: 'light',
-                size: 'mini',
-                tooltip: t('views.env.deps.common.status.downgradable'),
-                icon: ['fa', 'arrow-down'],
-              }));
+              res.push(
+                h(Tag, {
+                  type: 'warning',
+                  effect: 'light',
+                  size: 'mini',
+                  tooltip: t('views.env.deps.common.status.downgradable'),
+                  icon: ['fa', 'arrow-down'],
+                })
+              );
             }
             return res;
           },
@@ -157,7 +154,7 @@ export default defineComponent({
           width: 'auto',
           value: (row: EnvDepsDependency) => {
             const result = row.result || {};
-            let {node_ids} = result;
+            let { node_ids } = result;
             if (!node_ids) return;
             return allNodes.value
               .filter(n => node_ids?.includes(n._id as string))
@@ -175,7 +172,7 @@ export default defineComponent({
           fixed: 'right',
           width: '200',
           buttons: (row: EnvDepsDependency) => {
-            let {result} = row;
+            let { result } = row;
             if (!result) result = {};
             let tooltip;
             if (result.upgradable) {
@@ -192,8 +189,8 @@ export default defineComponent({
                 type: 'primary',
                 icon: ['fa', 'download'],
                 tooltip,
-                disabled: (row) => !isInstallable(row),
-                onClick: async (row) => {
+                disabled: row => !isInstallable(row),
+                onClick: async row => {
                   installForm.value.names = [row.name];
                   dialogVisible.value.install = true;
                 },
@@ -202,7 +199,7 @@ export default defineComponent({
                 type: 'danger',
                 icon: ['fa', 'trash-alt'],
                 tooltip: t('common.actions.uninstall'),
-                disabled: (row) => !isUninstallable(row),
+                disabled: row => !isUninstallable(row),
                 onClick: async (row: EnvDepsDependency) => {
                   uninstallForm.value.names = [row.name as string];
                   dialogVisible.value.uninstall = true;
@@ -229,7 +226,7 @@ export default defineComponent({
       const id = route.params.id;
       if (!id) return;
       const res = await get(`${endpoint}/spiders/${id}`);
-      const {data} = res;
+      const { data } = res;
       spiderData.value = data;
     };
 
@@ -309,7 +306,15 @@ export default defineComponent({
       resetForms();
     };
 
-    const onInstall = async ({mode, upgrade, nodeIds}: { mode: string; upgrade: boolean; nodeIds: string[] }) => {
+    const onInstall = async ({
+      mode,
+      upgrade,
+      nodeIds,
+    }: {
+      mode: string;
+      upgrade: boolean;
+      nodeIds: string[];
+    }) => {
       const id = route.params.id;
       if (!id) return;
       const data = {
@@ -326,7 +331,13 @@ export default defineComponent({
       onDialogClose('install');
     };
 
-    const onUninstall = async ({mode, nodeIds}: { mode: string; nodeIds: string[] }) => {
+    const onUninstall = async ({
+      mode,
+      nodeIds,
+    }: {
+      mode: string;
+      nodeIds: string[];
+    }) => {
       const id = route.params.id;
       if (!id) return;
       const data = {
@@ -347,7 +358,10 @@ export default defineComponent({
     };
 
     const onInstallByConfig = async () => {
-      await ElMessageBox.confirm(t('common.messageBox.confirm.install'), t('common.actions.install'));
+      await ElMessageBox.confirm(
+        t('common.messageBox.confirm.install'),
+        t('common.actions.install')
+      );
       const id = route.params.id;
       if (!id) return;
       const mode = 'all';
@@ -428,9 +442,16 @@ export default defineComponent({
 .dependency-spider-tab >>> .el-table .el-table__inner-wrapper thead,
 .dependency-spider-tab >>> .el-table .el-table__inner-wrapper tbody,
 .dependency-spider-tab >>> .el-table .el-table__inner-wrapper tr,
-.dependency-spider-tab >>> .el-table .el-table__inner-wrapper tr > th:first-child,
-.dependency-spider-tab >>> .el-table .el-table__inner-wrapper tr > td:first-child {
+.dependency-spider-tab
+  >>> .el-table
+  .el-table__inner-wrapper
+  tr
+  > th:first-child,
+.dependency-spider-tab
+  >>> .el-table
+  .el-table__inner-wrapper
+  tr
+  > td:first-child {
   border-left: none;
 }
-
 </style>

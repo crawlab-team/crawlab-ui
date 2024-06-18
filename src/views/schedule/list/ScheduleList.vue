@@ -12,14 +12,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-schedule-dialog/>
+      <cl-create-edit-schedule-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useScheduleList from './useScheduleList';
 
 export default defineComponent({
@@ -32,7 +32,7 @@ export default defineComponent({
     embedded: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   setup() {
     const {
@@ -56,6 +56,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -23,13 +23,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, PropType, ref} from 'vue';
+import { computed, defineComponent, onBeforeMount, PropType, ref } from 'vue';
 import useRequest from '@/services/request';
-import {cloneArray, prependAllToSelectOptions} from '@/utils';
+import { cloneArray, prependAllToSelectOptions } from '@/utils';
 
-const {
-  get,
-} = useRequest();
+const { get } = useRequest();
 
 export default defineComponent({
   name: 'FilterSelect',
@@ -51,10 +49,8 @@ export default defineComponent({
       type: Object as PropType<FilterSelectOptionsRemote>,
     },
   },
-  emits: [
-    'change',
-  ],
-  setup(props: FilterSelectProps, {emit}) {
+  emits: ['change'],
+  setup(props: FilterSelectProps, { emit }) {
     const internalModelValue = ref();
     const internalOptions = ref<SelectOption[]>([]);
 
@@ -75,7 +71,7 @@ export default defineComponent({
 
     const getOptions = async () => {
       if (!props.optionsRemote) return;
-      const {colName, value, label} = props.optionsRemote;
+      const { colName, value, label } = props.optionsRemote;
       let url = `/filters/${colName}`;
       if (value) url += `/${value}`;
       if (label) url += `/${label}`;
@@ -93,7 +89,7 @@ export default defineComponent({
       onChange,
       onClear,
     };
-  }
+  },
 });
 </script>
 

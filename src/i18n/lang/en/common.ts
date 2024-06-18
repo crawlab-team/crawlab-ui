@@ -47,7 +47,7 @@ const common: LCommon = {
       start: 'Are you sure to start?',
       deleteSelected: 'Are you sure to delete selected items?',
       proceed: 'Are you sure to proceed?',
-    }
+    },
   },
   message: {
     success: {
@@ -76,7 +76,7 @@ const common: LCommon = {
     },
   },
   notification: {
-    loggedOut: 'You have been logged-out, please login again.'
+    loggedOut: 'You have been logged-out, please login again.',
   },
   tabs: {
     overview: 'Overview',

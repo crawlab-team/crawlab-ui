@@ -1,4 +1,4 @@
-import {initDemoRoutes} from '@/demo/router';
+import { initDemoRoutes } from '@/demo/router';
 
 export const initDemo = () => {
   initDemoRoutes();

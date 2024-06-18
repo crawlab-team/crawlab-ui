@@ -18,22 +18,21 @@ import {
 
 export declare global {
   type ActionName =
-    ACTION_VIEW |
-    ACTION_EDIT |
-    ACTION_CLONE |
-    ACTION_RUN |
-    ACTION_DELETE |
-    ACTION_UPLOAD |
-    ACTION_RESTART |
-    ACTION_VIEW_LOGS |
-    ACTION_VIEW_DATA |
-    ACTION_COPY |
-    ACTION_START |
-    ACTION_STOP |
-    ACTION_SAVE |
-    ACTION_BACK |
-    ACTION_ENABLE
-    ;
+    | ACTION_VIEW
+    | ACTION_EDIT
+    | ACTION_CLONE
+    | ACTION_RUN
+    | ACTION_DELETE
+    | ACTION_UPLOAD
+    | ACTION_RESTART
+    | ACTION_VIEW_LOGS
+    | ACTION_VIEW_DATA
+    | ACTION_COPY
+    | ACTION_START
+    | ACTION_STOP
+    | ACTION_SAVE
+    | ACTION_BACK
+    | ACTION_ENABLE;
 
   type GenericAction = ActionName | string;
 }

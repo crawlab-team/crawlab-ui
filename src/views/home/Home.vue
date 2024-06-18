@@ -8,11 +8,11 @@
       >
         <cl-metric
           v-track="{
-              code: 'click_home',
-              params: {
-                metricName: m.name
-              }
-            }"
+            code: 'click_home',
+            params: {
+              metricName: m.name,
+            },
+          }"
           :icon="m.icon"
           :title="m.name"
           :value="m.value"
@@ -23,11 +23,7 @@
       </el-col>
     </el-row>
     <el-row class="row-line-chart">
-      <cl-line-chart
-        :config="dailyConfig"
-        is-time-series
-        label-key="date"
-      />
+      <cl-line-chart :config="dailyConfig" is-time-series label-key="date" />
     </el-row>
     <el-row class="row-pie-chart">
       <el-col :span="8">
@@ -56,23 +52,21 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import useRequest from '@/services/request';
 import dayjs from 'dayjs';
-import {spanDateRange} from '@/utils/stats';
-import {useRouter} from 'vue-router';
+import { spanDateRange } from '@/utils/stats';
+import { useRouter } from 'vue-router';
 import {
   TASK_STATUS_CANCELLED,
   TASK_STATUS_ERROR,
   TASK_STATUS_FINISHED,
   TASK_STATUS_PENDING,
-  TASK_STATUS_RUNNING
+  TASK_STATUS_RUNNING,
 } from '@/constants/task';
-import {getColorByKey} from '@/utils';
+import { getColorByKey } from '@/utils';
 
-const {
-  get,
-} = useRequest();
+const { get } = useRequest();
 
 export default defineComponent({
   name: 'Home',
@@ -97,7 +91,7 @@ export default defineComponent({
         icon: ['fa', 'project-diagram'],
         key: 'projects',
         value: 0,
-        path: '/projects'
+        path: '/projects',
       },
       {
         name: 'views.home.metrics.spiders',
@@ -126,14 +120,16 @@ export default defineComponent({
         key: 'error_tasks',
         value: 0,
         path: '/tasks',
-        color: (m: MetricMeta) => m.value > 0 ? getColorByKey('danger') : getColorByKey('success'),
+        color: (m: MetricMeta) =>
+          m.value > 0 ? getColorByKey('danger') : getColorByKey('success'),
       },
       {
         name: 'views.home.metrics.results',
         icon: ['fa', 'table'],
         key: 'results',
         value: 0,
-        color: (m: MetricMeta) => m.value > 0 ? getColorByKey('success') : getColorByKey('info-medium'),
+        color: (m: MetricMeta) =>
+          m.value > 0 ? getColorByKey('success') : getColorByKey('info-medium'),
       },
       {
         name: 'views.home.metrics.users',
@@ -163,14 +159,11 @@ export default defineComponent({
           text: 'views.home.dailyConfig.title',
         },
         yAxis: [
-          {name: 'views.home.metrics.tasks', position: 'left'},
-          {name: 'views.home.metrics.results', position: 'right'},
+          { name: 'views.home.metrics.tasks', position: 'left' },
+          { name: 'views.home.metrics.results', position: 'right' },
         ],
-        color: [
-          getColorByKey('primary'),
-          getColorByKey('success'),
-        ],
-      }
+        color: [getColorByKey('primary'), getColorByKey('success')],
+      },
     });
 
     const tasksByStatusConfig = ref<EChartsConfig>({
@@ -180,8 +173,8 @@ export default defineComponent({
           text: 'views.home.tasksByStatusConfig.title',
         },
       },
-      itemStyleColorFunc: ({data}: any) => {
-        const {name} = data;
+      itemStyleColorFunc: ({ data }: any) => {
+        const { name } = data;
         switch (name) {
           case TASK_STATUS_PENDING:
             return getColorByKey('primary');
@@ -196,7 +189,7 @@ export default defineComponent({
           default:
             return 'red';
         }
-      }
+      },
     });
 
     const tasksByNodeConfig = ref<EChartsConfig>({
@@ -205,7 +198,7 @@ export default defineComponent({
         title: {
           text: 'views.home.tasksByNodeConfig.title',
         },
-      }
+      },
     });
 
     const tasksBySpiderConfig = ref<EChartsConfig>({
@@ -214,7 +207,7 @@ export default defineComponent({
         title: {
           text: 'views.home.tasksBySpiderConfig.title',
         },
-      }
+      },
     });
 
     const getOverview = async () => {
@@ -228,25 +221,27 @@ export default defineComponent({
 
     const getDaily = async () => {
       // TODO: filter by date range?
-      const {start, end} = dateRange.value;
+      const { start, end } = dateRange.value;
       const res = await get(`/stats/daily`);
-      dailyConfig.value.data = spanDateRange(start, end, res?.data || [], 'date');
+      dailyConfig.value.data = spanDateRange(
+        start,
+        end,
+        res?.data || [],
+        'date'
+      );
     };
 
     const getTasks = async () => {
       // TODO: filter by date range?
-      const {start, end} = dateRange.value;
+      const { start, end } = dateRange.value;
       const res = await get(`/stats/tasks`);
       tasksByStatusConfig.value.data = res?.data.by_status;
       tasksByNodeConfig.value.data = res?.data.by_node;
       tasksBySpiderConfig.value.data = res?.data.by_spider;
     };
 
-    const getData = async () => Promise.all([
-      getOverview(),
-      getDaily(),
-      getTasks(),
-    ]);
+    const getData = async () =>
+      Promise.all([getOverview(), getDaily(), getTasks()]);
 
     const onMetricClick = (m: MetricMeta) => {
       if (m.path) {
@@ -303,7 +298,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home {
   background: white;
-  min-height: calc(100vh - var(--cl-header-height) - var(--cl-tabs-view-height));
+  min-height: calc(
+    100vh - var(--cl-header-height) - var(--cl-tabs-view-height)
+  );
   padding: 20px;
 
   .row-overview-metrics {

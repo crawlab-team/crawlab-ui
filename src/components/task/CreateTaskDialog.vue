@@ -12,14 +12,14 @@
     :title="title"
   >
     <template #default>
-      <cl-task-form/>
+      <cl-task-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useTask from '@/components/task/task';
 
 export default defineComponent({
@@ -43,6 +43,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

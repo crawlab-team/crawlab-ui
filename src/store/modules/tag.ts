@@ -2,9 +2,9 @@ import {
   getDefaultStoreActions,
   getDefaultStoreGetters,
   getDefaultStoreMutations,
-  getDefaultStoreState
+  getDefaultStoreState,
 } from '@/utils/store';
-import {getColors} from '@/utils';
+import { getColors } from '@/utils';
 
 const state = {
   ...getDefaultStoreState<Tag>('tag'),

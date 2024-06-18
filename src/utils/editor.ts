@@ -38,4 +38,4 @@ export const getLanguageByFileName = (name?: string) => {
     default:
       return 'text';
   }
-}
+};

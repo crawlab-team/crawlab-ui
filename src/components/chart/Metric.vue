@@ -1,8 +1,13 @@
 <template>
-  <div :class="[clickable ? 'clickable' : '']" :style="style" class="metric" @click="onClick">
-    <div class="background"/>
+  <div
+    :class="[clickable ? 'clickable' : '']"
+    :style="style"
+    class="metric"
+    @click="onClick"
+  >
+    <div class="background" />
     <div class="icon">
-      <font-awesome-icon :icon="icon"/>
+      <font-awesome-icon :icon="icon" />
     </div>
     <div class="info">
       <div class="title">
@@ -16,8 +21,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'Metric',
@@ -36,23 +41,21 @@ export default defineComponent({
     },
     clickable: {
       type: Boolean,
-    }
+    },
   },
-  emits: [
-    'click',
-  ],
-  setup(props: MetricProps, {emit}) {
-    const {t} = useI18n();
+  emits: ['click'],
+  setup(props: MetricProps, { emit }) {
+    const { t } = useI18n();
 
     const style = computed<Partial<CSSStyleDeclaration>>(() => {
-      const {color} = props;
+      const { color } = props;
       return {
         backgroundColor: color,
       };
     });
 
     const onClick = () => {
-      const {clickable} = props;
+      const { clickable } = props;
       if (!clickable) return;
       emit('click');
     };
@@ -74,7 +77,6 @@ export default defineComponent({
   border: 1px solid var(--cl-info-light-color);
   border-radius: 5px;
   position: relative;
-
 
   &.clickable {
     cursor: pointer;

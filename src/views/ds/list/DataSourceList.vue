@@ -10,14 +10,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-data-source-dialog/>
+      <cl-create-edit-data-source-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useDataSourceList from '@/views/ds/list/useDataSourceList';
 
 export default defineComponent({
@@ -26,9 +26,8 @@ export default defineComponent({
     return {
       ...useDataSourceList(),
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

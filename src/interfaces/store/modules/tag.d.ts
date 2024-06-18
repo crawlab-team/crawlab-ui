@@ -1,4 +1,9 @@
-type TagStoreModule = BaseModule<TagStoreState, TagStoreGetters, TagStoreMutations, TagStoreActions>;
+type TagStoreModule = BaseModule<
+  TagStoreState,
+  TagStoreGetters,
+  TagStoreMutations,
+  TagStoreActions
+>;
 
 type TagStoreState = BaseStoreState<Tag>;
 

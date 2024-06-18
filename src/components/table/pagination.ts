@@ -1,11 +1,11 @@
-import {SetupContext} from 'vue';
-import {sendEvent} from '@/admin/umeng';
+import { SetupContext } from 'vue';
+import { sendEvent } from '@/admin/umeng';
 
 const usePagination = (props: TableProps, ctx: SetupContext) => {
-  const {emit} = ctx;
+  const { emit } = ctx;
 
   const onCurrentChange = (page: number) => {
-    const {pageSize} = props;
+    const { pageSize } = props;
     emit('pagination-change', {
       page,
       size: pageSize,
@@ -17,7 +17,7 @@ const usePagination = (props: TableProps, ctx: SetupContext) => {
   };
 
   const onSizeChange = (size: number) => {
-    const {page} = props;
+    const { page } = props;
     emit('pagination-change', {
       page,
       size,

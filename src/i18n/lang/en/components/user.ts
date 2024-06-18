@@ -14,12 +14,12 @@ const user: LComponentsUser = {
   delete: {
     tooltip: {
       adminUserNonDeletable: 'Admin user is non-deletable',
-    }
+    },
   },
   messageBox: {
     prompt: {
       changePassword: 'Please enter the new password',
-    }
+    },
   },
   rules: {
     invalidPassword: 'Invalid password. Length must be no less than 5.',

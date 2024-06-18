@@ -1,10 +1,10 @@
 <template>
   <el-popover
-      :placement="placement"
-      :show-arrow="false"
-      :visible="visible"
-      popper-class="context-menu"
-      trigger="manual"
+    :placement="placement"
+    :show-arrow="false"
+    :visible="visible"
+    popper-class="context-menu"
+    trigger="manual"
   >
     <template #default>
       <slot name="default"></slot>
@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {ClickOutside} from 'element-plus';
+import { defineComponent } from 'vue';
+import { ClickOutside } from 'element-plus';
 
 export const contextMenuDefaultProps = {
   visible: {
@@ -33,12 +33,10 @@ export const contextMenuDefaultProps = {
   clicking: {
     type: Boolean,
     default: false,
-  }
+  },
 };
 
-export const contextMenuDefaultEmits = [
-  'hide',
-];
+export const contextMenuDefaultEmits = ['hide'];
 
 export default defineComponent({
   name: 'ContextMenu',
@@ -47,7 +45,7 @@ export default defineComponent({
   },
   emits: contextMenuDefaultEmits,
   props: contextMenuDefaultProps,
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const onClickOutside = () => {
       if (props.clicking) return;
       emit('hide');
@@ -60,6 +58,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

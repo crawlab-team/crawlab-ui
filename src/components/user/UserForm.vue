@@ -39,7 +39,7 @@
         v-else
         id="password"
         class-name="password"
-        :icon="['fa','lock']"
+        :icon="['fa', 'lock']"
         :label="t('components.user.form.changePassword')"
         type="danger"
         @click="onChangePassword"
@@ -72,8 +72,16 @@
         v-model="form.role"
         :disabled="isFormItemDisabled('role')"
       >
-        <el-option v-locate="ROLE_ADMIN" :value="ROLE_ADMIN" :label="t('components.user.role.admin')"/>
-        <el-option v-locate="ROLE_NORMAL" :value="ROLE_NORMAL" :label="t('components.user.role.normal')"/>
+        <el-option
+          v-locate="ROLE_ADMIN"
+          :value="ROLE_ADMIN"
+          :label="t('components.user.role.admin')"
+        />
+        <el-option
+          v-locate="ROLE_NORMAL"
+          :value="ROLE_NORMAL"
+          :label="t('components.user.role.normal')"
+        />
       </el-select>
     </cl-form-item>
     <!-- ./Row -->
@@ -81,30 +89,26 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useUser from '@/components/user/user';
-import {ROLE_ADMIN, ROLE_NORMAL} from '@/constants/user';
+import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import useUserDetail from '@/views/user/detail/useUserDetail';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'UserForm',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'user';
     const store = useStore();
 
-    const {
-      activeId,
-    } = useUserDetail();
+    const { activeId } = useUserDetail();
 
-    const {
-      onChangePasswordFunc,
-    } = useUser(store);
+    const { onChangePasswordFunc } = useUser(store);
 
     const onChangePassword = () => onChangePasswordFunc(activeId.value);
 
@@ -122,5 +126,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

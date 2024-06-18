@@ -1,4 +1,4 @@
-import {Router} from 'vue-router';
+import { Router } from 'vue-router';
 
 export const getRoutePathByDepth = (path: string, depth?: number) => {
   if (!depth) depth = 1;

@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {emptyArrayFunc} from '@/utils/func';
+import { defineComponent, PropType } from 'vue';
+import { emptyArrayFunc } from '@/utils/func';
 
 export default defineComponent({
   name: 'TagList',
@@ -24,10 +24,8 @@ export default defineComponent({
       default: true,
     },
   },
-  emits: [
-    'click'
-  ],
-  setup(props: TagListProps, {emit}) {
+  emits: ['click'],
+  setup(props: TagListProps, { emit }) {
     const onClick = (tag: Tag) => {
       emit('click', tag);
     };
@@ -39,6 +37,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

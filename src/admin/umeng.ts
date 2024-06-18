@@ -1,8 +1,6 @@
 import useRequest from '@/services/request';
 
-const {
-  get,
-} = useRequest();
+const { get } = useRequest();
 
 export const initUmeng = async () => {
   // import umeng.js
@@ -11,23 +9,25 @@ export const initUmeng = async () => {
   if (localStorage.getItem('useStats') !== '0') {
     const res = await get('/version');
     const version = res.data;
-    const {aplus_queue} = window;
+    const { aplus_queue } = window;
 
     // set meta info
     aplus_queue.push({
       action: 'aplus.setMetaInfo',
-      arguments: ['globalproperty', {version}, 'OVERWRITE'],
+      arguments: ['globalproperty', { version }, 'OVERWRITE'],
     });
 
     // send pv
     window.aplus_queue.push({
       action: 'aplus.sendPV',
-      arguments: [{is_auto: true}, {}]
+      arguments: [{ is_auto: true }, {}],
     });
   }
 };
 
-export const getEventParamsWrapped = (eventParams?: TrackEventParams): TrackEventParamsWrapped => {
+export const getEventParamsWrapped = (
+  eventParams?: TrackEventParams
+): TrackEventParamsWrapped => {
   if (!eventParams) return {};
   const res: TrackEventParamsWrapped = {};
   Object.keys(eventParams).forEach(key => {
@@ -41,19 +41,23 @@ export const getEventParamsWrapped = (eventParams?: TrackEventParams): TrackEven
   return res;
 };
 
-export const sendEvent = (eventCode: string, eventParams?: TrackEventParams, eventType?: TrackEventType) => {
+export const sendEvent = (
+  eventCode: string,
+  eventParams?: TrackEventParams,
+  eventType?: TrackEventType
+) => {
   window.aplus_queue?.push({
     action: 'aplus.record',
-    arguments: [eventCode, eventType || 'CLK', getEventParamsWrapped(eventParams)],
+    arguments: [
+      eventCode,
+      eventType || 'CLK',
+      getEventParamsWrapped(eventParams),
+    ],
   });
 };
 
 export const wrapTrack = (payload: TrackSendEventPayload, func: Function) => {
-  const {
-    eventCode,
-    eventParams,
-    eventType,
-  } = payload;
+  const { eventCode, eventParams, eventType } = payload;
   sendEvent(eventCode, eventParams, eventType);
   func();
 };

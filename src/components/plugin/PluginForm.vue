@@ -1,17 +1,9 @@
 <template>
-  <cl-form
-    v-if="form"
-    ref="formRef"
-    :model="form"
-    :selective="isSelectiveForm"
-  >
+  <cl-form v-if="form" ref="formRef" :model="form" :selective="isSelectiveForm">
     <template v-if="isDialog">
       <!--Row-->
-      <cl-form-item
-        :span="2"
-        :label="t('components.plugin.form.autoStart')"
-      >
-        <cl-switch v-model="form.auto_start"/>
+      <cl-form-item :span="2" :label="t('components.plugin.form.autoStart')">
+        <cl-switch v-model="form.auto_start" />
       </cl-form-item>
       <!--./Row-->
 
@@ -91,37 +83,36 @@
         />
       </cl-form-item>
     </template>
-
   </cl-form>
   <!--./Row-->
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref} from 'vue';
-import {useStore} from 'vuex';
+import { computed, defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
 import usePlugin from '@/components/plugin/plugin';
 import {
   PLUGIN_INSTALL_TYPE_PUBLIC,
   PLUGIN_INSTALL_TYPE_GIT,
   PLUGIN_INSTALL_TYPE_LOCAL,
 } from '@/constants/plugin';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'PluginForm',
   props: {
     readonly: {
       type: Boolean,
-    }
+    },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'plugin';
     const store = useStore();
-    const {plugin: state} = store.state as RootStoreState;
+    const { plugin: state } = store.state as RootStoreState;
 
     const isDialog = computed<boolean>(() => !!state.activeDialogKey);
 
@@ -140,6 +131,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

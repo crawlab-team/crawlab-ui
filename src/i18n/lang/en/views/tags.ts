@@ -15,8 +15,8 @@ const tags: LViewsTags = {
     filter: {
       search: {
         placeholder: 'Search tags',
-      }
-    }
+      },
+    },
   },
 };
 

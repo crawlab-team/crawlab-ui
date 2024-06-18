@@ -12,7 +12,7 @@ const plugin: LComponentsPlugin = {
     label: {
       public: 'Public',
       git: 'Git',
-      local: 'Local'
+      local: 'Local',
     },
     notice: {
       public: 'Install official public plugins from Crawlab Team',
@@ -34,12 +34,14 @@ const plugin: LComponentsPlugin = {
       goProxy: 'Go Proxy',
     },
     tips: {
-      installSource: 'You can select Install Source as "Gitee" to speed up plugin installation if you are in Mainland China.',
-      goProxy: 'You can set Go Proxy to speed up plugin compilation if you are in Mainland China.',
+      installSource:
+        'You can select Install Source as "Gitee" to speed up plugin installation if you are in Mainland China.',
+      goProxy:
+        'You can set Go Proxy to speed up plugin compilation if you are in Mainland China.',
     },
     goProxy: {
       default: 'Default',
-    }
+    },
   },
   status: {
     label: {
@@ -65,8 +67,8 @@ const plugin: LComponentsPlugin = {
         running: 'Running Nodes',
         error: 'Error Nodes',
         unknown: 'Unknown Nodes',
-      }
-    }
+      },
+    },
   },
 };
 

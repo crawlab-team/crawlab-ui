@@ -1,23 +1,21 @@
-import {computed, h} from 'vue';
-import {useStore} from 'vuex';
+import { computed, h } from 'vue';
+import { useStore } from 'vuex';
 import useList from '@/layouts/content/list/list';
 import NavLink from '@/components/nav/NavLink.vue';
-import {useRouter} from 'vue-router';
-import {translate} from '@/utils/i18n';
+import { useRouter } from 'vue-router';
+import { translate } from '@/utils/i18n';
 import {
   ACTION_ADD,
   ACTION_DELETE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
-  FILTER_OP_CONTAINS
+  FILTER_OP_CONTAINS,
 } from '@/constants';
-import {onListFilterChangeByKey} from '@/utils';
+import { onListFilterChangeByKey } from '@/utils';
 import Switch from '@/components/switch/Switch.vue';
-import useRequest from "@/services/request";
+import useRequest from '@/services/request';
 
-const {
-  post,
-} = useRequest();
+const { post } = useRequest();
 
 const useNotificationList = () => {
   // router
@@ -26,20 +24,16 @@ const useNotificationList = () => {
   // store
   const ns = 'notification';
   const store = useStore<RootStoreState>();
-  const {commit} = store;
+  const { commit } = store;
 
   // i18n
   const t = translate;
 
   // use list
-  const {
-    actionFunctions,
-  } = useList<NotificationSetting>(ns, store);
+  const { actionFunctions } = useList<NotificationSetting>(ns, store);
 
   // action functions
-  const {
-    deleteByIdConfirm,
-  } = actionFunctions;
+  const { deleteByIdConfirm } = actionFunctions;
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -57,9 +51,9 @@ const useNotificationList = () => {
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       action: ACTION_FILTER,
@@ -69,10 +63,17 @@ const useNotificationList = () => {
           action: ACTION_FILTER_SEARCH,
           id: 'filter-search',
           className: 'search',
-          placeholder: t('views.notification.navActions.filter.search.placeholder'),
-          onChange: onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS),
+          placeholder: t(
+            'views.notification.navActions.filter.search.placeholder'
+          ),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'name',
+            FILTER_OP_CONTAINS
+          ),
         },
-      ]
+      ],
     },
   ]);
 
@@ -83,34 +84,37 @@ const useNotificationList = () => {
       label: t('views.notification.settings.form.name'),
       icon: ['fa', 'font'],
       width: '240',
-      value: (row: NotificationSetting) => h(NavLink, {
-        label: row.name,
-        path: `/notifications/${row._id}`,
-      }),
+      value: (row: NotificationSetting) =>
+        h(NavLink, {
+          label: row.name,
+          path: `/notifications/${row._id}`,
+        }),
     },
     {
       key: 'type',
       label: t('views.notification.settings.form.type'),
       icon: ['fa', 'list'],
       width: '120',
-      value: (row: NotificationSetting) => t(`views.notification.settings.type.${row.type}`)
+      value: (row: NotificationSetting) =>
+        t(`views.notification.settings.type.${row.type}`),
     },
     {
       key: 'enabled',
       label: t('views.notification.settings.form.enabled'),
       icon: ['fa', 'toggle-on'],
       width: '120',
-      value: (row: NotificationSetting) => h(Switch, {
-        modelValue: row.enabled,
-        onChange: async (value) => {
-          if (!row._id) return;
-          if (!value) {
-            await post(`/notifications/settings/${row._id}/disable`);
-          } else {
-            await post(`/notifications/settings/${row._id}/enable`);
-          }
-        },
-      }),
+      value: (row: NotificationSetting) =>
+        h(Switch, {
+          modelValue: row.enabled,
+          onChange: async value => {
+            if (!row._id) return;
+            if (!value) {
+              await post(`/notifications/settings/${row._id}/disable`);
+            } else {
+              await post(`/notifications/settings/${row._id}/enable`);
+            }
+          },
+        }),
     },
     {
       key: 'description',

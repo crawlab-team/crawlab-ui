@@ -13,7 +13,7 @@ declare global {
   }
 
   type BuiltInTableActionButtonName =
-    TABLE_ACTION_ADD
+    | TABLE_ACTION_ADD
     | TABLE_ACTION_EDIT
     | TABLE_ACTION_DELETE
     | TABLE_ACTION_EXPORT

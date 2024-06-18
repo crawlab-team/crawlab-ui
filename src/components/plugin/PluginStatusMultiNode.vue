@@ -11,22 +11,22 @@
       @click="$emit('click')"
     >
       <template #tooltip>
-        <div v-html="t.tooltip"/>
+        <div v-html="t.tooltip" />
       </template>
     </cl-tag>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import {
   PLUGIN_STATUS_INSTALLING,
   PLUGIN_STATUS_STOPPED,
   PLUGIN_STATUS_RUNNING,
   PLUGIN_STATUS_ERROR,
 } from '@/constants/plugin';
-import {emptyArrayFunc} from '@/utils/func';
-import {useI18n} from 'vue-i18n';
+import { emptyArrayFunc } from '@/utils/func';
+import { useI18n } from 'vue-i18n';
 
 const statusList = [
   PLUGIN_STATUS_INSTALLING,
@@ -50,12 +50,12 @@ export default defineComponent({
     },
   },
   emits: ['click'],
-  setup(props: PluginStatusMultiNodeProps, {emit}) {
+  setup(props: PluginStatusMultiNodeProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const tags = computed<TagData[]>(() => {
-      const {status} = props;
+      const { status } = props;
       if (!status) return [];
       const dict = {} as { [key: string]: PluginStatus[] };
       status.forEach(s => {

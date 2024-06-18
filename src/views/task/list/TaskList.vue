@@ -12,14 +12,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-task-dialog/>
+      <cl-create-task-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useTaskList from '@/views/task/list/useTaskList';
 
 export default defineComponent({
@@ -34,7 +34,7 @@ export default defineComponent({
       default: false,
     },
   },
-  setup(props: TaskListProps, {emit}) {
+  setup(props: TaskListProps, { emit }) {
     return {
       ...useTaskList(),
     };
@@ -42,6 +42,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

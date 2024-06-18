@@ -9,12 +9,8 @@
         label-width="var(--cl-file-editor-settings-dialog-label-width)"
         class="form"
       >
-        <el-form-item
-          :label="t('components.file.editor.settings.form.theme')"
-        >
-          <el-select
-            v-model="options.theme"
-          >
+        <el-form-item :label="t('components.file.editor.settings.form.theme')">
+          <el-select v-model="options.theme">
             <el-option
               v-for="(op, $index) in themeOptions"
               :key="$index"
@@ -25,40 +21,44 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button plain type="info" @click="onClose">{{ t('common.actions.cancel') }}</el-button>
-        <el-button type="primary" @click="onConfirm">{{ t('common.actions.confirm') }}</el-button>
+        <el-button plain type="info" @click="onClose">{{
+          t('common.actions.cancel')
+        }}</el-button>
+        <el-button type="primary" @click="onConfirm">{{
+          t('common.actions.confirm')
+        }}</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, ref} from 'vue';
-import {useStore} from 'vuex';
-import {plainClone} from '@/utils/object';
-import {onBeforeRouteLeave} from 'vue-router';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
+import { computed, defineComponent, onBeforeMount, ref } from 'vue';
+import { useStore } from 'vuex';
+import { plainClone } from '@/utils/object';
+import { onBeforeRouteLeave } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
 
 export default defineComponent({
   name: 'FileEditorSettingsDialog',
   setup() {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const storeNamespace = 'file';
     const store = useStore();
-    const {file} = store.state as RootStoreState;
+    const { file } = store.state as RootStoreState;
 
     const visible = computed<boolean>(() => {
-      const {editorSettingsDialogVisible} = file;
+      const { editorSettingsDialogVisible } = file;
       return editorSettingsDialogVisible;
     });
 
     const themeOptions = computed<SelectOption[]>(() => {
       return [
-        {value: 'vs', label: 'Visual Studio'},
-        {value: 'vs-dark', label: 'Visual Studio Dark'},
-        {value: 'hc-black', label: 'High Contrast Black'},
+        { value: 'vs', label: 'Visual Studio' },
+        { value: 'vs-dark', label: 'Visual Studio Dark' },
+        { value: 'hc-black', label: 'High Contrast Black' },
       ];
     });
 
@@ -131,8 +131,14 @@ export default defineComponent({
   width: 240px;
 }
 
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__content .el-input,
-.file-editor-settings-dialog >>> .el-form-item > .el-form-item__content .el-select {
+.file-editor-settings-dialog
+  >>> .el-form-item
+  > .el-form-item__content
+  .el-input,
+.file-editor-settings-dialog
+  >>> .el-form-item
+  > .el-form-item__content
+  .el-select {
   width: 100%;
 }
 </style>

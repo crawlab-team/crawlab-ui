@@ -1,8 +1,13 @@
-import dayjs, {Dayjs} from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 
-export const spanDateRange = (start: Dayjs | string, end: Dayjs | string, data: StatsResult[], dateKey?: string): StatsResult[] => {
+export const spanDateRange = (
+  start: Dayjs | string,
+  end: Dayjs | string,
+  data: StatsResult[],
+  dateKey?: string
+): StatsResult[] => {
   // date key
   const key = dateKey || 'date';
 
@@ -17,7 +22,11 @@ export const spanDateRange = (start: Dayjs | string, end: Dayjs | string, data: 
   const results = [] as StatsResult[];
 
   // iterate
-  for (let date = dayjs(start, format); date.format(format) <= dayjs(end, format).format(format); date = date.add(1, 'day')) {
+  for (
+    let date = dayjs(start, format);
+    date.format(format) <= dayjs(end, format).format(format);
+    date = date.add(1, 'day')
+  ) {
     let item = cache.get(date.format(format));
     if (!item) item = {};
     item[key] = date.format(format);

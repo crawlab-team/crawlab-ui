@@ -40,21 +40,21 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {getStore} from '@/store';
+import { defineComponent } from 'vue';
+import { getStore } from '@/store';
 import useEnvironment from '@/components/environment/useEnvironment';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'EnvironmentForm',
   props: {
     readonly: {
       type: Boolean,
-    }
+    },
   },
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const store = getStore();

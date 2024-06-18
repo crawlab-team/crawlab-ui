@@ -58,7 +58,7 @@ const ds: LComponentsDataSource = {
       online: '数据源处于在线状态',
       offline: '数据源处于离线状态',
       unknown: '未知数据源状态',
-    }
+    },
   },
   default: {
     host: '默认主机',

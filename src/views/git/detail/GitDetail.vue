@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
-import {useStore} from 'vuex';
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import {translate} from "@/utils";
-import {ElMessage} from "element-plus";
+import { translate } from '@/utils';
+import { ElMessage } from 'element-plus';
 
 const t = translate;
 
 const store = useStore();
-const {
-  git: state,
-} = store.state as RootStoreState;
+const { git: state } = store.state as RootStoreState;
 
 // git form
 const gitForm = computed<Git>(() => state.form);
@@ -37,10 +35,12 @@ const onBranchCheckout = () => {
 };
 
 const onAutoPullChange = async () => {
-  await store.dispatch(`git/updateById`, {id: gitForm.value._id, form: gitForm.value});
+  await store.dispatch(`git/updateById`, {
+    id: gitForm.value._id,
+    form: gitForm.value,
+  });
   await ElMessage.success(t('common.message.success.save'));
 };
-
 </script>
 
 <template>
@@ -66,14 +66,17 @@ const onAutoPullChange = async () => {
             :disabled="!gitForm.url || !gitForm.auth_type"
             @click="onClickCommit"
           />
-          <div v-if="gitCurrentBranch || gitCurrentBranchLoading" class="branch">
+          <div
+            v-if="gitCurrentBranch || gitCurrentBranchLoading"
+            class="branch"
+          >
             <cl-tag
               v-if="gitCurrentBranchLoading"
               class-name="current-branch-loading"
               type="warning"
               :label="t('components.git.common.status.loading.label')"
               :tooltip="t('components.git.common.status.loading.tooltip')"
-              :icon="['fa','spinner']"
+              :icon="['fa', 'spinner']"
               spinning
               size="large"
             />
@@ -81,7 +84,7 @@ const onAutoPullChange = async () => {
               v-else
               class-name="current-branch"
               type="primary"
-              :icon="['fa','code-branch']"
+              :icon="['fa', 'code-branch']"
               size="large"
               :label="gitCurrentBranch"
               @click="onBranchClick"
@@ -91,8 +94,8 @@ const onAutoPullChange = async () => {
                 <span
                   style="color: #409eff; margin-left: 5px; font-weight: bolder"
                 >
-              {{ gitCurrentBranch }}
-            </span>
+                  {{ gitCurrentBranch }}
+                </span>
               </template>
             </cl-tag>
           </div>
@@ -160,6 +163,4 @@ const onAutoPullChange = async () => {
   </cl-detail-layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

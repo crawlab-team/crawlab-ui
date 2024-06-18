@@ -1,4 +1,9 @@
-type ProjectStoreModule = BaseModule<ProjectStoreState, ProjectStoreGetters, ProjectStoreMutations, ProjectStoreActions>;
+type ProjectStoreModule = BaseModule<
+  ProjectStoreState,
+  ProjectStoreGetters,
+  ProjectStoreMutations,
+  ProjectStoreActions
+>;
 
 interface ProjectStoreState extends BaseStoreState<Project> {
   allProjectSelectOptions: SelectOption[];

@@ -12,17 +12,26 @@
       />
     </div>
     <div class="log-container">
-      <div ref="editorRef" class="log"/>
+      <div ref="editorRef" class="log" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, watch} from 'vue';
-import {useStore} from 'vuex';
-import * as monaco from "monaco-editor";
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from 'vue';
+import { useStore } from 'vuex';
+import * as monaco from 'monaco-editor';
 import useTaskDetail from '@/views/task/detail/useTaskDetail';
-import {isCancellable} from "@/utils";
+import { isCancellable } from '@/utils';
 
 export default defineComponent({
   name: 'TaskDetailTabLogs',
@@ -30,13 +39,10 @@ export default defineComponent({
     // store
     const ns = 'task';
     const store = useStore();
-    const {task: state, file: fileState} = store.state as RootStoreState;
+    const { task: state, file: fileState } = store.state as RootStoreState;
 
     // use task detail
-    const {
-      form,
-      activeId,
-    } = useTaskDetail();
+    const { form, activeId } = useTaskDetail();
 
     // log div element
     const editorRef = ref<HTMLDivElement>();
@@ -70,24 +76,20 @@ export default defineComponent({
 
     // pagination change
     const onPageChange = (page: number) => {
-      store.commit(`${ns}/setLogPagination`, {...state.logPagination, page});
+      store.commit(`${ns}/setLogPagination`, { ...state.logPagination, page });
     };
     const onSizeChange = (size: number) => {
-      store.commit(`${ns}/setLogPagination`, {...state.logPagination, size});
+      store.commit(`${ns}/setLogPagination`, { ...state.logPagination, size });
     };
-    watch(() => state.logPagination, async () => {
-      await store.dispatch(`${ns}/getLogs`, id.value);
-    });
+    watch(
+      () => state.logPagination,
+      async () => {
+        await store.dispatch(`${ns}/getLogs`, id.value);
+      }
+    );
 
     // page sizes
-    const pageSizes = ref<number[]>([
-      1000,
-      2000,
-      5000,
-      10000,
-      20000,
-      50000,
-    ]);
+    const pageSizes = ref<number[]>([1000, 2000, 5000, 10000, 20000, 50000]);
 
     const updateLogs = async () => {
       // skip if active id is empty
@@ -97,8 +99,8 @@ export default defineComponent({
       await store.dispatch(`${ns}/getLogs`, activeId.value);
 
       // update pagination
-      const {logPagination, logTotal} = state;
-      const {page, size} = logPagination;
+      const { logPagination, logTotal } = state;
+      const { page, size } = logPagination;
       if (logTotal > size * page) {
         const maxPage = Math.ceil(logTotal / size);
         store.commit(`${ns}/setLogPagination`, {
@@ -166,7 +168,7 @@ export default defineComponent({
       // setup
       setupDetail();
     });
-    onBeforeUnmount(() => clearInterval(autoUpdateHandle))
+    onBeforeUnmount(() => clearInterval(autoUpdateHandle));
 
     // dispose
     onUnmounted(() => {

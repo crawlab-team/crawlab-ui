@@ -1,22 +1,22 @@
 <template>
   <cl-detail-layout store-namespace="spider">
     <template #actions>
-      <cl-spider-detail-actions-common/>
-      <cl-spider-detail-actions-files v-if="activeTabName === 'files'"/>
-      <cl-spider-detail-actions-data v-if="activeTabName === 'data'"/>
-      <cl-spider-detail-actions-data-source v-if="activeTabName === 'data'"/>
-      <slot name="actions-suffix"/>
+      <cl-spider-detail-actions-common />
+      <cl-spider-detail-actions-files v-if="activeTabName === 'files'" />
+      <cl-spider-detail-actions-data v-if="activeTabName === 'data'" />
+      <cl-spider-detail-actions-data-source v-if="activeTabName === 'data'" />
+      <slot name="actions-suffix" />
     </template>
   </cl-detail-layout>
 
   <!-- Dialogs (handled by store) -->
-  <cl-upload-spider-files-dialog/>
-  <cl-result-dedup-fields-dialog/>
+  <cl-upload-spider-files-dialog />
+  <cl-result-dedup-fields-dialog />
   <!-- ./Dialogs -->
 </template>
 <script lang="ts">
-import {defineComponent, onBeforeMount, onBeforeUnmount} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 
 export default defineComponent({
@@ -26,18 +26,12 @@ export default defineComponent({
     const nsGit = 'git';
     const store = useStore();
 
-    const {
-      saveFile,
-    } = useSpiderDetail();
+    const { saveFile } = useSpiderDetail();
 
     onBeforeMount(async () => {
-      await Promise.all([
-        store.dispatch(`project/getAllList`),
-      ]);
+      await Promise.all([store.dispatch(`project/getAllList`)]);
 
-      store.commit(`${ns}/setAfterSave`, [
-        saveFile,
-      ]);
+      store.commit(`${ns}/setAfterSave`, [saveFile]);
     });
 
     onBeforeUnmount(() => {
@@ -51,5 +45,4 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

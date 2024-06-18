@@ -1,11 +1,11 @@
-import {useRoute, useRouter} from 'vue-router';
-import {useStore} from 'vuex';
-import {computed, watch, provide, ref} from 'vue';
-import {plainClone} from '@/utils/object';
-import {getRoutePathByDepth, getTabName} from '@/utils/route';
-import {ElMessage} from 'element-plus';
-import {sendEvent} from '@/admin/umeng';
-import {translate} from '@/utils/i18n';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { computed, watch, provide, ref } from 'vue';
+import { plainClone } from '@/utils/object';
+import { getRoutePathByDepth, getTabName } from '@/utils/route';
+import { ElMessage } from 'element-plus';
+import { sendEvent } from '@/admin/umeng';
+import { translate } from '@/utils/i18n';
 
 // i18n
 const t = translate;
@@ -17,9 +17,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
   // store state
   const store = useStore();
   const state = store.state[ns] as BaseStoreState;
-  const {
-    form,
-  } = state;
+  const { form } = state;
 
   const navSidebar = ref<NavSidebar | null>(null);
 
@@ -27,16 +25,18 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
 
   const showActionsToggleTooltip = ref<boolean>(false);
 
-  const navItems = computed<NavItem<T>[]>(() => state.allList.map((d: BaseModel) => {
-    return {
-      id: d._id,
-      title: d.name,
-    } as NavItem;
-  }));
+  const navItems = computed<NavItem<T>[]>(() =>
+    state.allList.map((d: BaseModel) => {
+      return {
+        id: d._id,
+        title: d.name,
+      } as NavItem;
+    })
+  );
 
   const activeId = computed<string>(() => {
-    const {id} = route.params;
-    return id as string || form._id || '';
+    const { id } = route.params;
+    return (id as string) || form._id || '';
   });
 
   const activeTabName = computed<string>(() => getTabName(router));
@@ -55,7 +55,9 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     };
   });
 
-  const primaryRoutePath = computed<string>(() => getRoutePathByDepth(route.path));
+  const primaryRoutePath = computed<string>(() =>
+    getRoutePathByDepth(route.path)
+  );
 
   const afterSave = computed<Function[]>(() => state.afterSave);
 
@@ -69,7 +71,9 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
       console.error(new Error('item is empty'));
       return;
     }
-    await router.push(`${primaryRoutePath.value}/${item.id}/${activeTabName.value}`);
+    await router.push(
+      `${primaryRoutePath.value}/${item.id}/${activeTabName.value}`
+    );
     await getForm();
 
     sendEvent('click_detail_layout_nav_sidebar_select');
@@ -83,7 +87,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     }
 
     sendEvent('click_detail_layout_nav_sidebar_toggle', {
-      collapse: value
+      collapse: value,
     });
   };
 
@@ -116,7 +120,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     }
 
     sendEvent('click_detail_layout_nav_tabs_toggle', {
-      collapse: !sidebarCollapsed.value
+      collapse: !sidebarCollapsed.value,
     });
   };
 
@@ -131,7 +135,10 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
       console.error('Active id is empty');
       return;
     }
-    await store.dispatch(`${ns}/updateById`, {id: activeId.value, form: state.form});
+    await store.dispatch(`${ns}/updateById`, {
+      id: activeId.value,
+      form: state.form,
+    });
     await ElMessage.success(t('common.message.success.save'));
     await Promise.all([
       store.dispatch(`${ns}/getAllList`),

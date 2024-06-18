@@ -2,17 +2,13 @@ import {
   getDefaultStoreActions,
   getDefaultStoreGetters,
   getDefaultStoreMutations,
-  getDefaultStoreState
+  getDefaultStoreState,
 } from '@/utils/store';
 import useRequest from '@/services/request';
-import {ROLE_NORMAL} from '@/constants/user';
-import {LOCAL_STORAGE_KEY_ME} from '@/constants/localStorage';
+import { ROLE_NORMAL } from '@/constants/user';
+import { LOCAL_STORAGE_KEY_ME } from '@/constants/localStorage';
 
-const {
-  get,
-  post,
-  put,
-} = useRequest();
+const { get, post, put } = useRequest();
 
 const state = {
   ...getDefaultStoreState<User>('user'),
@@ -53,10 +49,13 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<User>('/users'),
-  changePassword: async (ctx: StoreActionContext, {id, password}: { id: string; password: string }) => {
-    return await post(`/users/${id}/change-password`, {password});
+  changePassword: async (
+    ctx: StoreActionContext,
+    { id, password }: { id: string; password: string }
+  ) => {
+    return await post(`/users/${id}/change-password`, { password });
   },
-  getMe: async ({commit}: StoreActionContext) => {
+  getMe: async ({ commit }: StoreActionContext) => {
     const res = await get(`/users/me`);
     commit('setMe', res.data);
   },

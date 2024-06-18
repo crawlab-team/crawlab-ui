@@ -1,4 +1,4 @@
-import {Module, MutationTree} from 'vuex';
+import { Module, MutationTree } from 'vuex';
 
 declare global {
   interface FileStoreModule extends Module<FileStoreState, RootStoreState> {

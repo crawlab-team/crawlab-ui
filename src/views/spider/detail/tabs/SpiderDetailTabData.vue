@@ -10,21 +10,17 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {computed} from 'vue';
-import {useStore} from 'vuex';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';
 
 // store
 const store = useStore();
-const {
-  spider: state,
-} = store.state;
+const { spider: state } = store.state;
 
 const displayAllFields = computed<boolean>(() => state.dataDisplayAllFields);
 
-const {
-  form,
-} = useSpider(store);
+const { form } = useSpider(store);
 </script>
 
 <style scoped>

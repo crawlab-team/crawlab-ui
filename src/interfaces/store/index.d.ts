@@ -1,4 +1,11 @@
-import {ActionContext, ActionTree, GetterTree, Module, MutationTree, Store} from 'vuex';
+import {
+  ActionContext,
+  ActionTree,
+  GetterTree,
+  Module,
+  MutationTree,
+  Store,
+} from 'vuex';
 
 export declare global {
   interface RootStoreState {
@@ -22,11 +29,20 @@ export declare global {
     system: SystemStoreState;
   }
 
-  type StoreGetter<S, T, R = RootStoreState> = (state: S, getters: GetterTree<S, R>, rootState: R, rootGetters: any) => T;
+  type StoreGetter<S, T, R = RootStoreState> = (
+    state: S,
+    getters: GetterTree<S, R>,
+    rootState: R,
+    rootGetters: any
+  ) => T;
 
   type StoreMutation<S, P> = (state: S, payload: P) => void;
 
-  type StoreActionHandler<S, P, T, R = RootStoreState> = (this: Store<R>, ctx: ActionContext<S, R>, payload?: P) => T;
+  type StoreActionHandler<S, P, T, R = RootStoreState> = (
+    this: Store<R>,
+    ctx: ActionContext<S, R>,
+    payload?: P
+  ) => T;
 
   interface StoreActionObject<S, P, T> {
     root?: boolean;
@@ -34,10 +50,11 @@ export declare global {
   }
 
   type StoreAction<S, P, T> =
-    StoreActionHandler<S, P, T>
+    | StoreActionHandler<S, P, T>
     | StoreActionObject<S, P, T>;
 
-  interface BaseModule<S, G = any, M = any, A = any, R = RootStoreState> extends Module<S, R> {
+  interface BaseModule<S, G = any, M = any, A = any, R = RootStoreState>
+    extends Module<S, R> {
     getters: G;
     mutations: M;
     actions: A;
@@ -67,7 +84,8 @@ export declare global {
     afterSave: (() => Promise)[];
   }
 
-  interface BaseStoreGetters<S = BaseStoreState, R = RootStoreState> extends GetterTree<S, R> {
+  interface BaseStoreGetters<S = BaseStoreState, R = RootStoreState>
+    extends GetterTree<S, R> {
     dialogVisible: StoreGetter<BaseStoreState, boolean>;
     isBatchForm: StoreGetter<BaseStoreState, boolean>;
     formListIds: StoreGetter<BaseStoreState, string[]>;
@@ -78,10 +96,14 @@ export declare global {
     tabs: StoreGetter<BaseStoreState, NavItem[]>;
   }
 
-  interface BaseStoreMutations<T = any> extends MutationTree<BaseStoreState<T>> {
+  interface BaseStoreMutations<T = any>
+    extends MutationTree<BaseStoreState<T>> {
     showDialog: StoreMutation<BaseStoreState<T>, DialogKey>;
     hideDialog: StoreMutation<BaseStoreState<T>>;
-    setCreateEditDialogTabName: StoreMutation<BaseStoreState<T>, CreateEditTabName>;
+    setCreateEditDialogTabName: StoreMutation<
+      BaseStoreState<T>,
+      CreateEditTabName
+    >;
     resetCreateEditDialogTabName: StoreMutation<BaseStoreState<T>>;
     setForm: StoreMutation<BaseStoreState<T>, T>;
     resetForm: StoreMutation<BaseStoreState<T>>;
@@ -99,11 +121,17 @@ export declare global {
     resetTablePagination: StoreMutation<BaseStoreState<T>>;
     setTableListFilter: StoreMutation<BaseStoreState<T>, FilterConditionData[]>;
     resetTableListFilter: StoreMutation<BaseStoreState<T>>;
-    setTableListFilterByKey: StoreMutation<BaseStoreState<T>, { key: string; conditions: FilterConditionData[] }>;
+    setTableListFilterByKey: StoreMutation<
+      BaseStoreState<T>,
+      { key: string; conditions: FilterConditionData[] }
+    >;
     resetTableListFilterByKey: StoreMutation<BaseStoreState<T>, string>;
     setTableListSort: StoreMutation<BaseStoreState<T>, SortData[]>;
     resetTableListSort: StoreMutation<BaseStoreState<T>>;
-    setTableListSortByKey: StoreMutation<BaseStoreState<T>, { key: string; sort: SortData }>;
+    setTableListSortByKey: StoreMutation<
+      BaseStoreState<T>,
+      { key: string; sort: SortData }
+    >;
     resetTableListSortByKey: StoreMutation<BaseStoreState<T>, string>;
     setAllList: StoreMutation<BaseStoreState<T>, T[]>;
     resetAllList: StoreMutation<BaseStoreState<T>>;
@@ -115,7 +143,8 @@ export declare global {
     setAfterSave: StoreMutation<BaseStoreState<T>, (() => Promise)[]>;
   }
 
-  interface BaseStoreActions<T = any, R = RootStoreState> extends ActionTree<BaseStoreState<T>, R> {
+  interface BaseStoreActions<T = any, R = RootStoreState>
+    extends ActionTree<BaseStoreState<T>, R> {
     getById: StoreAction<BaseStoreState<T>, string>;
     create: StoreAction<BaseStoreState<T>, T>;
     updateById: StoreAction<BaseStoreState<T>, { id: string; form: T }>;
@@ -128,10 +157,13 @@ export declare global {
     deleteList: StoreAction<BaseStoreState<T>, BatchRequestPayload>;
   }
 
-  type StoreActionContext<S = BaseStoreState, R = RootStoreState> = ActionContext<S, R>;
+  type StoreActionContext<
+    S = BaseStoreState,
+    R = RootStoreState,
+  > = ActionContext<S, R>;
 
   type StoreNamespace =
-    'layout'
+    | 'layout'
     | 'node'
     | 'project'
     | 'spider'
@@ -148,7 +180,7 @@ export declare global {
     | 'ds'
     | 'environment';
   type ListStoreNamespace =
-    'node'
+    | 'node'
     | 'project'
     | 'spider'
     | 'task'

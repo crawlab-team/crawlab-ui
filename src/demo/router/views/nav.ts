@@ -1,4 +1,4 @@
-import {RouteRecordRaw} from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 import DemoNavSidebarList from '@/demo/views/nav/DemoNavSidebarList.vue';
 import DemoNavSidebarTree from '@/demo/views/nav/DemoNavSidebarTree.vue';
 

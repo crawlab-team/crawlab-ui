@@ -20,7 +20,7 @@ const home: LViewsHome = {
   },
   tasksBySpiderConfig: {
     title: '按爬虫任务统计',
-  }
+  },
 };
 
 export default home;

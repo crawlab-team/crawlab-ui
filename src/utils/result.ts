@@ -10,6 +10,6 @@ export const getFieldsFromData = (data: TableData<Result>) => {
     });
   });
   return Array.from(keys).map(key => {
-    return {key};
+    return { key };
   });
 };

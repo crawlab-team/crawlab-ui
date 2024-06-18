@@ -1,12 +1,12 @@
 <template>
   <div class="nav-action-group">
-    <div class="border"/>
+    <div class="border" />
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'NavActionGroup',

@@ -1,9 +1,9 @@
 <template>
-  <cl-detail-layout store-namespace="notification"/>
+  <cl-detail-layout store-namespace="notification" />
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
 export default defineComponent({
@@ -16,6 +16,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

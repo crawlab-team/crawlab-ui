@@ -1,10 +1,5 @@
 <template>
-  <cl-form
-    v-if="form"
-    ref="formRef"
-    :model="form"
-    :selective="isSelectiveForm"
-  >
+  <cl-form v-if="form" ref="formRef" :model="form" :selective="isSelectiveForm">
     <!--Row-->
     <cl-form-item
       :span="4"
@@ -22,7 +17,9 @@
         <cl-tag
           v-if="form.auth_type"
           type="primary"
-          :icon="form.auth_type === 'http' ? ['fa', 'fa-link'] : ['fa', 'fa-key']"
+          :icon="
+            form.auth_type === 'http' ? ['fa', 'fa-link'] : ['fa', 'fa-key']
+          "
           :label="form.auth_type?.toUpperCase()"
         />
       </div>
@@ -100,11 +97,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, watch} from 'vue';
-import {useStore} from 'vuex';
+import { computed, defineComponent, PropType, watch } from 'vue';
+import { useStore } from 'vuex';
 import useGit from '@/components/git/git';
-import {useI18n} from 'vue-i18n';
-import {emptyArrayFunc} from '@/utils';
+import { useI18n } from 'vue-i18n';
+import { emptyArrayFunc } from '@/utils';
 
 export default defineComponent({
   name: 'GitForm',
@@ -114,19 +111,15 @@ export default defineComponent({
       default: emptyArrayFunc,
     },
   },
-  emits: [
-    'change',
-  ],
-  setup(props: GitFormProps, {emit}) {
+  emits: ['change'],
+  setup(props: GitFormProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'git';
     const store = useStore();
-    const {
-      git: state,
-    } = store.state as RootStoreState;
+    const { git: state } = store.state as RootStoreState;
 
     const onUrlChange = (url: string) => {
       let authType;
@@ -177,15 +170,25 @@ export default defineComponent({
       emit('change', state.form);
     };
 
-    const gitBranchSelectOptions = computed<SelectOption[]>(() => store.getters['spider/gitBranchSelectOptions']);
+    const gitBranchSelectOptions = computed<SelectOption[]>(
+      () => store.getters['spider/gitBranchSelectOptions']
+    );
 
-    const isCurrentBranchDisabled = computed<boolean>(() => !gitBranchSelectOptions.value?.length);
+    const isCurrentBranchDisabled = computed<boolean>(
+      () => !gitBranchSelectOptions.value?.length
+    );
 
-    watch(() => JSON.stringify(gitBranchSelectOptions.value), () => {
-      if (!state.form.current_branch && gitBranchSelectOptions.value?.length > 0) {
-        onCurrentBranchChange(gitBranchSelectOptions.value[0].value);
+    watch(
+      () => JSON.stringify(gitBranchSelectOptions.value),
+      () => {
+        if (
+          !state.form.current_branch &&
+          gitBranchSelectOptions.value?.length > 0
+        ) {
+          onCurrentBranchChange(gitBranchSelectOptions.value[0].value);
+        }
       }
-    });
+    );
 
     return {
       ...useGit(store),
@@ -201,6 +204,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

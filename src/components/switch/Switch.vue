@@ -18,8 +18,17 @@
 </template>
 
 <script lang="ts">
-import {Component, computed, defineComponent, h, onBeforeMount, PropType, ref, watch} from 'vue';
-import Icon from "@/components/icon/Icon.vue";
+import {
+  Component,
+  computed,
+  defineComponent,
+  h,
+  onBeforeMount,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import Icon from '@/components/icon/Icon.vue';
 
 export default defineComponent({
   name: 'Switch',
@@ -70,15 +79,15 @@ export default defineComponent({
       type: String,
     },
   },
-  emits: [
-    'update:model-value',
-    'change',
-  ],
-  setup(props: SwitchProps, {emit}) {
+  emits: ['update:model-value', 'change'],
+  setup(props: SwitchProps, { emit }) {
     const internalValue = ref<boolean>(false);
-    watch(() => props.modelValue, () => {
-      internalValue.value = props.modelValue;
-    });
+    watch(
+      () => props.modelValue,
+      () => {
+        internalValue.value = props.modelValue;
+      }
+    );
 
     const onChange = (value: boolean) => {
       internalValue.value = value;
@@ -87,19 +96,19 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
-      const {modelValue} = props;
+      const { modelValue } = props;
       internalValue.value = modelValue;
     });
 
     const activeIconComp = computed(() => {
       if (props.activeIcon) {
-        return h(Icon, {icon: props.activeIcon});
+        return h(Icon, { icon: props.activeIcon });
       }
     });
 
     const inactiveIconComp = computed(() => {
       if (props.inactiveIcon) {
-        return h(Icon, {icon: props.inactiveIcon});
+        return h(Icon, { icon: props.inactiveIcon });
       }
     });
 
@@ -113,6 +122,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

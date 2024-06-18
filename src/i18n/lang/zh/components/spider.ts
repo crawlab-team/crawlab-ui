@@ -37,7 +37,7 @@ const spider: LComponentsSpider = {
           fields: '设置去重字段',
         },
       },
-    }
+    },
   },
   stat: {
     totalTasks: '总任务数',
@@ -49,13 +49,13 @@ const spider: LComponentsSpider = {
   dialog: {
     run: {
       title: '运行爬虫',
-    }
+    },
   },
   message: {
     success: {
       scheduleTask: '派发任务成功',
-    }
-  }
+    },
+  },
 };
 
 export default spider;

@@ -1,7 +1,7 @@
-import {plainClone} from '@/utils/object';
-import {normalizeTree} from '@/utils/tree';
-import {getDefaultMenuItems} from '@/router';
-import {computed} from "vue";
+import { plainClone } from '@/utils/object';
+import { normalizeTree } from '@/utils/tree';
+import { getDefaultMenuItems } from '@/router';
+import { computed } from 'vue';
 
 export default {
   namespaced: true,
@@ -29,7 +29,7 @@ export default {
   },
   getters: {
     tabs: state => {
-      const {draggingTab, targetTab, tabs} = state;
+      const { draggingTab, targetTab, tabs } = state;
       if (!draggingTab || !targetTab) return tabs;
       const orderedTabs = plainClone(state.tabs) as Tab[];
       const draggingIdx = orderedTabs.map(t => t.id).indexOf(draggingTab?.id);
@@ -40,7 +40,7 @@ export default {
       return orderedTabs;
     },
     activeTab: state => {
-      const {tabs, activeTabId} = state;
+      const { tabs, activeTabId } = state;
       if (activeTabId === undefined) return;
       return tabs.find(d => d.id === activeTabId);
     },
@@ -49,12 +49,12 @@ export default {
         .filter(d => !d.hidden)
         .filter(d => {
           if (!d.path) return false;
-          if ([
-            '/notifications',
-            '/environments',
-            '/system',
-            '/deps',
-          ].includes(d.path) && rootState.common.systemInfo?.edition !== 'global.edition.pro') {
+          if (
+            ['/notifications', '/environments', '/system', '/deps'].includes(
+              d.path
+            ) &&
+            rootState.common.systemInfo?.edition !== 'global.edition.pro'
+          ) {
             return false;
           }
           return true;
@@ -85,7 +85,7 @@ export default {
       state.tabs.push(tab);
     },
     updateTab(state: LayoutStoreState, tab: Tab) {
-      const {tabs} = state;
+      const { tabs } = state;
       const idx = tabs.findIndex(d => d.id === tab.id);
       if (idx !== -1) {
         state.tabs[idx] = tab;
@@ -123,12 +123,18 @@ export default {
     setNavVisibleFn(state: LayoutStoreState, fn: (path: string) => boolean) {
       state.navVisibleFn = fn;
     },
-    setDetailTabVisibleFn(state: LayoutStoreState, fn: (ns: StoreNamespace, tab: NavItem) => boolean) {
+    setDetailTabVisibleFn(
+      state: LayoutStoreState,
+      fn: (ns: StoreNamespace, tab: NavItem) => boolean
+    ) {
       state.detailTabVisibleFn = fn;
     },
-    setActionVisibleFn(state: LayoutStoreState, fn: (target: string, action: string) => boolean) {
+    setActionVisibleFn(
+      state: LayoutStoreState,
+      fn: (target: string, action: string) => boolean
+    ) {
       state.actionVisibleFn = fn;
     },
   },
-  actions: {}
+  actions: {},
 } as LayoutStoreModule;

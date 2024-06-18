@@ -7,15 +7,9 @@
     <!--      :value="triggersEnabled"-->
     <!--      @change="onTriggersChange"-->
     <!--    />-->
-    <el-form
-      label-width="150px"
-    >
-      <el-form-item
-        :label="t('views.notification.triggers.taskTrigger')"
-      >
-        <el-radio-group
-          v-model="form.task_trigger"
-        >
+    <el-form label-width="150px">
+      <el-form-item :label="t('views.notification.triggers.taskTrigger')">
+        <el-radio-group v-model="form.task_trigger">
           <el-radio label="task_finish">
             {{ t('views.notification.triggers.taskTriggerFinish') }}
           </el-radio>
@@ -35,9 +29,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
-import {translate} from "@/utils";
+import { translate } from '@/utils';
 
 const t = translate;
 
@@ -53,7 +47,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
 .notification-detail-tab-triggers {
   height: 100%;
   min-height: 100%;

@@ -7,7 +7,11 @@
     <cl-nav-action-item>
       <cl-fa-icon-button
         :icon="['fa', 'robot']"
-        :tooltip="systemInfo.edition !== 'global.edition.community' ? t('components.spider.actions.files.tooltip.createWithAi') : t('components.spider.actions.files.tooltip.createWithAiDisabled')"
+        :tooltip="
+          systemInfo.edition !== 'global.edition.community'
+            ? t('components.spider.actions.files.tooltip.createWithAi')
+            : t('components.spider.actions.files.tooltip.createWithAiDisabled')
+        "
         type="primary"
         id="create-with-ai-btn"
         class-name="create-with-ai-btn"
@@ -34,7 +38,9 @@
       />
       <cl-fa-icon-button
         :icon="['fa', 'cog']"
-        :tooltip="t('components.spider.actions.files.tooltip.fileEditorSettings')"
+        :tooltip="
+          t('components.spider.actions.files.tooltip.fileEditorSettings')
+        "
         type="info"
         id="open-settings-btn"
         class-name="open-settings-btn"
@@ -45,29 +51,25 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, computed} from 'vue';
-import {useStore} from 'vuex';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
-import useSpiderDetail from "@/views/spider/detail/useSpiderDetail";
-import {downloadData} from "@/utils";
+import { defineComponent, ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
+import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
+import { downloadData } from '@/utils';
 
 export default defineComponent({
   name: 'SpiderDetailActionsFiles',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'spider';
     const store = useStore();
-    const {
-      common: commonState,
-    } = store.state as RootStoreState;
+    const { common: commonState } = store.state as RootStoreState;
 
-    const {
-      activeId,
-    } = useSpiderDetail();
+    const { activeId } = useSpiderDetail();
 
     const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
@@ -92,7 +94,9 @@ export default defineComponent({
     const onClickExport = async () => {
       exportLoading.value = true;
       try {
-        const dataDownload = await store.dispatch(`${ns}/exportFiles`, {id: activeId.value})
+        const dataDownload = await store.dispatch(`${ns}/exportFiles`, {
+          id: activeId.value,
+        });
         downloadData(dataDownload, `${activeId.value}.zip`, 'zip');
       } finally {
         exportLoading.value = false;
@@ -113,6 +117,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

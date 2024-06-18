@@ -13,14 +13,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-user-dialog/>
+      <cl-create-edit-user-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useUserList from './useUserList';
 
 export default defineComponent({
@@ -33,7 +33,7 @@ export default defineComponent({
     embedded: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   setup() {
     const {
@@ -59,6 +59,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -2,7 +2,7 @@
   <div class="check-tag-group">
     <cl-check-tag
       v-for="op in options"
-      :key="{v: op.value, c: checkedMap[op.value]}"
+      :key="{ v: op.value, c: checkedMap[op.value] }"
       v-model="checkedMap[op.value]"
       :disabled="disabled"
       :label="op.label"
@@ -15,7 +15,14 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, PropType, reactive, watch} from 'vue';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  PropType,
+  reactive,
+  watch,
+} from 'vue';
 
 export default defineComponent({
   name: 'CheckTagGroup',
@@ -24,13 +31,13 @@ export default defineComponent({
       type: Array as PropType<string[]>,
       default: () => {
         return [];
-      }
+      },
     },
     options: {
       type: Array as PropType<SelectOption[]>,
       default: () => {
         return [];
-      }
+      },
     },
     disabled: {
       type: Boolean,
@@ -38,13 +45,10 @@ export default defineComponent({
     },
     className: {
       type: String,
-    }
+    },
   },
-  emits: [
-    'update:model-value',
-    'change',
-  ],
-  setup(props: CheckTagGroupProps, {emit}) {
+  emits: ['update:model-value', 'change'],
+  setup(props: CheckTagGroupProps, { emit }) {
     const checkedMap = reactive<{ [key: string]: boolean }>({});
 
     const checkedKeys = computed<string[]>(() => {

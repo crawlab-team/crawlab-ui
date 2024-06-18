@@ -1,4 +1,4 @@
-import {App} from 'vue';
+import { App } from 'vue';
 
 declare global {
   interface Window {
@@ -9,7 +9,7 @@ declare global {
     resetCanvas?: () => void;
     _hmt?: Array;
     'vue3-sfc-loader'?: { loadModule };
-    aplus_queue: { action: string, arguments: any[] }[];
+    aplus_queue: { action: string; arguments: any[] }[];
     _app?: App;
     _t?: (path: string, args?: any) => string;
     _tc?: (c: number, path: string) => string;

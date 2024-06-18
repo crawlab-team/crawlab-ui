@@ -64,22 +64,20 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, inject, PropType} from 'vue';
-import {ACTION_ADD, ACTION_DELETE, ACTION_EDIT,} from '@/constants/action';
-import {TABLE_ACTION_CUSTOMIZE_COLUMNS, TABLE_ACTION_EXPORT,} from '@/constants/table';
-import {useI18n} from 'vue-i18n';
-import {useStore} from 'vuex';
-import {useRoute} from 'vue-router';
-import {getPrimaryPath} from '@/utils';
+import { defineComponent, inject, PropType } from 'vue';
+import { ACTION_ADD, ACTION_DELETE, ACTION_EDIT } from '@/constants/action';
+import {
+  TABLE_ACTION_CUSTOMIZE_COLUMNS,
+  TABLE_ACTION_EXPORT,
+} from '@/constants/table';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { getPrimaryPath } from '@/utils';
 
 export default defineComponent({
   name: 'TableActions',
-  emits: [
-    'edit',
-    'delete',
-    'export',
-    'customize-columns'
-  ],
+  emits: ['edit', 'delete', 'export', 'customize-columns'],
   props: {
     selection: {
       type: Array as PropType<TableData>,
@@ -93,12 +91,12 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
-  setup(props: TableActionsProps, {emit}) {
+  setup(props: TableActionsProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const store = useStore();
@@ -127,12 +125,16 @@ export default defineComponent({
     };
 
     const showButton = (name: string): boolean => {
-      const {visibleButtons} = props;
-      if (visibleButtons && visibleButtons.length > 0 && !visibleButtons.includes(name)) {
+      const { visibleButtons } = props;
+      if (
+        visibleButtons &&
+        visibleButtons.length > 0 &&
+        !visibleButtons.includes(name)
+      ) {
         return false;
       }
       const currentRoutePath = route.path;
-      const {actionVisibleFn} = (store.state as RootStoreState).layout;
+      const { actionVisibleFn } = (store.state as RootStoreState).layout;
       if (!actionVisibleFn) return true;
       return actionVisibleFn(currentRoutePath, name);
     };

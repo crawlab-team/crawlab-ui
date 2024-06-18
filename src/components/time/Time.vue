@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import TimeAgo, { LocaleData } from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import zh from 'javascript-time-ago/locale/zh';
 import dayjs from 'dayjs';
-import {getI18n} from '@/i18n';
+import { getI18n } from '@/i18n';
 
 TimeAgo.addLocale(en as LocaleData);
 TimeAgo.addLocale(zh as LocaleData);
@@ -32,15 +32,17 @@ export default defineComponent({
       type: String,
       required: false,
       default: 'YYYY-MM-DD HH:mm:ssZ',
-    }
+    },
   },
-  setup(props: TimeProps, {emit}) {
+  setup(props: TimeProps, { emit }) {
     const label = computed<string | undefined>(() => {
-      const {time, ago, format} = props;
+      const { time, ago, format } = props;
       if (!time) return;
 
       if (ago) {
-        const timeAgo = new TimeAgo(getI18n().global.locale.value === 'zh' ? 'zh' : 'en');
+        const timeAgo = new TimeAgo(
+          getI18n().global.locale.value === 'zh' ? 'zh' : 'en'
+        );
         return timeAgo.format(new Date(time)) as string;
       } else {
         return dayjs(time).format(format);
@@ -54,6 +56,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

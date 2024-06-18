@@ -1,5 +1,10 @@
 <template>
-  <el-form ref="formRef" :model="form" :rules="computedFormRules" inline-message>
+  <el-form
+    ref="formRef"
+    :model="form"
+    :rules="computedFormRules"
+    inline-message
+  >
     <el-form-item ref="formItemRef" :prop="prop" :required="isRequired">
       <el-input
         v-if="fieldType === FORM_FIELD_TYPE_INPUT"
@@ -74,7 +79,7 @@ import {
   Ref,
   ref,
   SetupContext,
-  watch
+  watch,
 } from 'vue';
 import {
   FORM_FIELD_TYPE_CHECK_TAG_GROUP,
@@ -87,8 +92,8 @@ import {
   FORM_FIELD_TYPE_TAG_INPUT,
   FORM_FIELD_TYPE_TAG_SELECT,
 } from '@/constants/form';
-import {emptyArrayFunc, voidFunc} from '@/utils/func';
-import {useI18n} from 'vue-i18n';
+import { emptyArrayFunc, voidFunc } from '@/utils/func';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'FormTableField',
@@ -132,11 +137,11 @@ export default defineComponent({
     onRegister: {
       type: Function as PropType<(formRef: Ref) => void>,
       default: voidFunc,
-    }
+    },
   },
-  setup(props: FormTableFieldProps, {emit}: SetupContext) {
+  setup(props: FormTableFieldProps, { emit }: SetupContext) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // form ref
     const formRef = ref();
@@ -149,32 +154,37 @@ export default defineComponent({
 
     // computed field value
     const fieldValue = computed(() => {
-      const {form, prop} = props;
+      const { form, prop } = props;
       return form[prop];
     });
-    watch(() => fieldValue.value, () => {
-      if (internalValue.value !== fieldValue.value) {
-        internalValue.value = fieldValue.value;
+    watch(
+      () => fieldValue.value,
+      () => {
+        if (internalValue.value !== fieldValue.value) {
+          internalValue.value = fieldValue.value;
+        }
       }
-    });
+    );
 
     const onInputChange = (value: any) => {
-      const {onChange} = props;
+      const { onChange } = props;
       onChange?.(value);
     };
 
     const isEmptyForm = inject('fn:isEmptyForm') as (d: any) => boolean;
 
     const isRequired = computed<boolean>(() => {
-      const {form, required} = props;
+      const { form, required } = props;
       if (isEmptyForm(form)) return false;
       return required || false;
     });
 
-    const isErrorMessageVisible = computed<boolean>(() => !!formItemRef.value?.validateMessage);
+    const isErrorMessageVisible = computed<boolean>(
+      () => !!formItemRef.value?.validateMessage
+    );
 
     const computedFormRules = computed<FormRuleItem[]>(() => {
-      const {form, formRules} = props;
+      const { form, formRules } = props;
       if (isEmptyForm(form)) {
         return [];
       } else {
@@ -183,14 +193,14 @@ export default defineComponent({
     });
 
     onBeforeMount(() => {
-      const {form, prop} = props;
+      const { form, prop } = props;
 
       // initialize internal value
       internalValue.value = form[prop];
     });
 
     onMounted(() => {
-      const {onRegister} = props;
+      const { onRegister } = props;
 
       // register form ref
       onRegister?.(formRef);

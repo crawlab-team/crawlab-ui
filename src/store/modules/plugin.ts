@@ -2,20 +2,16 @@ import {
   getDefaultStoreActions,
   getDefaultStoreGetters,
   getDefaultStoreMutations,
-  getDefaultStoreState
+  getDefaultStoreState,
 } from '@/utils/store';
 import useRequest from '@/services/request';
-import {SETTING_PLUGIN} from '@/constants/setting';
-import {PLUGIN_INSTALL_TYPE_PUBLIC} from '@/constants/plugin';
-import {cloneArray, plainClone} from '@/utils/object';
+import { SETTING_PLUGIN } from '@/constants/setting';
+import { PLUGIN_INSTALL_TYPE_PUBLIC } from '@/constants/plugin';
+import { cloneArray, plainClone } from '@/utils/object';
 
 type Plugin = CPlugin;
 
-const {
-  get,
-  post,
-  getList,
-} = useRequest();
+const { get, post, getList } = useRequest();
 
 const state = {
   ...getDefaultStoreState<Plugin>('plugin'),
@@ -61,7 +57,10 @@ const mutations = {
   resetActivePublicPlugin: (state: PluginStoreState) => {
     state.activePublicPlugin = undefined;
   },
-  setActivePublicPluginInfo: (state: PluginStoreState, pluginInfo: PublicPluginInfo) => {
+  setActivePublicPluginInfo: (
+    state: PluginStoreState,
+    pluginInfo: PublicPluginInfo
+  ) => {
     state.activePublicPluginInfo = plainClone(pluginInfo);
   },
   resetActivePublicPluginInfo: (state: PluginStoreState) => {
@@ -77,7 +76,7 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<Plugin>('/plugins'),
-  getList: async ({state, commit}: StoreActionContext<PluginStoreState>) => {
+  getList: async ({ state, commit }: StoreActionContext<PluginStoreState>) => {
     const payload = {
       ...state.tablePagination,
       conditions: JSON.stringify(state.tableListFilter),
@@ -85,10 +84,13 @@ const actions = {
       status: true,
     };
     const res = await getList(`/plugins`, payload);
-    commit('setTableData', {data: res.data || [], total: res.total});
+    commit('setTableData', { data: res.data || [], total: res.total });
     return res;
   },
-  getAllList: async ({state, commit}: StoreActionContext<PluginStoreState>) => {
+  getAllList: async ({
+    state,
+    commit,
+  }: StoreActionContext<PluginStoreState>) => {
     const payload = {
       conditions: JSON.stringify(state.tableListFilter),
       sort: JSON.stringify(state.tableListSort),
@@ -99,21 +101,26 @@ const actions = {
     commit('setAllList', res.data || []);
     return res;
   },
-  getSettings: async ({commit}: StoreActionContext<PluginStoreState>) => {
+  getSettings: async ({ commit }: StoreActionContext<PluginStoreState>) => {
     const res = await get(`/settings/${SETTING_PLUGIN}`);
     if (!res?.data) return;
     commit('setSettings', res.data);
   },
-  saveSettings: async ({state}: StoreActionContext<PluginStoreState>) => {
+  saveSettings: async ({ state }: StoreActionContext<PluginStoreState>) => {
     await post(`/settings/${SETTING_PLUGIN}`, state.settings);
   },
-  getPublicPluginList: async ({commit}: StoreActionContext<PluginStoreState>) => {
+  getPublicPluginList: async ({
+    commit,
+  }: StoreActionContext<PluginStoreState>) => {
     const res = await get(`/plugins/public`);
     if (!res?.data) return;
     commit('setPublicPlugins', res.data);
   },
-  getPublicPluginInfo: async ({commit}: StoreActionContext<PluginStoreState>, fullName: string) => {
-    const res = await get(`/plugins/public/info`, {full_name: fullName});
+  getPublicPluginInfo: async (
+    { commit }: StoreActionContext<PluginStoreState>,
+    fullName: string
+  ) => {
+    const res = await get(`/plugins/public/info`, { full_name: fullName });
     if (!res?.data) return;
     commit('setActivePublicPluginInfo', res.data);
   },

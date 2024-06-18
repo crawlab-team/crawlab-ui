@@ -1,4 +1,4 @@
-import {Placement} from '@popperjs/core';
+import { Placement } from '@popperjs/core';
 
 declare global {
   interface FileEditorNavTabsShowMoreContextMenuProps {

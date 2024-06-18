@@ -2,7 +2,7 @@ import {
   getDefaultStoreActions,
   getDefaultStoreGetters,
   getDefaultStoreMutations,
-  getDefaultStoreState
+  getDefaultStoreState,
 } from '@/utils/store';
 
 const state = {

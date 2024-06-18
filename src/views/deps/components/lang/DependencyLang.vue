@@ -37,11 +37,14 @@
             @change="onInstalledChange"
           >
             <el-radio-button label="installed">
-              <font-awesome-icon :icon="['fa', 'check']" style="margin-right: 5px"/>
+              <font-awesome-icon
+                :icon="['fa', 'check']"
+                style="margin-right: 5px"
+              />
               {{ t('views.env.deps.common.status.installed') }}
             </el-radio-button>
             <el-radio-button label="installable">
-              <font-awesome-icon :icon="icon" style="margin-right: 5px"/>
+              <font-awesome-icon :icon="icon" style="margin-right: 5px" />
               {{ t('views.env.deps.common.status.installable') }}
             </el-radio-button>
           </el-radio-group>
@@ -51,12 +54,16 @@
             @click="() => onDialogOpen('tasks')"
           >
             <font-awesome-icon
-              :icon="runningTaskTotal === 0 ? ['fa', 'tasks'] : ['fa', 'spinner']"
+              :icon="
+                runningTaskTotal === 0 ? ['fa', 'tasks'] : ['fa', 'spinner']
+              "
               :spin="runningTaskTotal > 0"
               style="margin-right: 5px"
             />
             {{
-              runningTaskTotal === 0 ? t('views.env.deps.task.tasks') : `${t('views.env.deps.task.tasks')} (${runningTaskTotal})`
+              runningTaskTotal === 0
+                ? t('views.env.deps.task.tasks')
+                : `${t('views.env.deps.task.tasks')} (${runningTaskTotal})`
             }}
           </cl-button>
           <cl-fa-icon-button
@@ -94,21 +101,26 @@
         @confirm="() => onDialogClose('tasks')"
         @close="() => onDialogClose('tasks')"
       >
-        <cl-dependency-task-list
-          v-if="dialogVisible.tasks"
-          :type="lang"
-        />
+        <cl-dependency-task-list v-if="dialogVisible.tasks" :type="lang" />
       </cl-dialog>
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, h, onBeforeUnmount, onMounted, PropType, ref} from 'vue';
-import {ElMessage} from 'element-plus';
-import {Search} from '@element-plus/icons-vue';
-import {useStore} from 'vuex';
-import {translate} from '@/utils';
+import {
+  computed,
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  onMounted,
+  PropType,
+  ref,
+} from 'vue';
+import { ElMessage } from 'element-plus';
+import { Search } from '@element-plus/icons-vue';
+import { useStore } from 'vuex';
+import { translate } from '@/utils';
 import useRequest from '@/services/request';
 import NavLink from '@/components/nav/NavLink.vue';
 import NodeType from '@/components/node/NodeType.vue';
@@ -118,11 +130,7 @@ const t = translate;
 const endpointS = '/deps/settings';
 const endpointT = '/deps/tasks';
 
-const {
-  get,
-  getList: getList_,
-  post,
-} = useRequest();
+const { get, getList: getList_, post } = useRequest();
 
 const getDefaultForm = () => {
   return {
@@ -162,7 +170,9 @@ export default defineComponent({
 
     const installed = computed(() => viewMode.value === 'installed');
 
-    const allNodeListSelectOptions = computed(() => store.getters[`node/allListSelectOptions`]);
+    const allNodeListSelectOptions = computed(
+      () => store.getters[`node/allListSelectOptions`]
+    );
 
     const allNodeDict = computed(() => store.getters[`node/allDict`]);
 
@@ -185,9 +195,9 @@ export default defineComponent({
             op: 'eq',
             value: 'running',
           },
-        ]
+        ],
       });
-      const {data, total} = res;
+      const { data, total } = res;
       runningTaskList.value = data || [];
       runningTaskTotal.value = total || 0;
     };
@@ -207,13 +217,15 @@ export default defineComponent({
 
     const getSetting = async () => {
       const res = await get(`${endpointS}`, {
-        conditions: [{
-          key: 'key',
-          op: 'eq',
-          value: props.lang,
-        }],
+        conditions: [
+          {
+            key: 'key',
+            op: 'eq',
+            value: props.lang,
+          },
+        ],
       });
-      const {data} = res;
+      const { data } = res;
       if (data && data.length > 0) {
         setting.value = data[0];
       }
@@ -265,11 +277,12 @@ export default defineComponent({
           label: t('views.env.deps.dependency.form.name'),
           icon: ['fa', 'font'],
           width: '200',
-          value: (row: EnvDepsDependency) => h(NavLink, {
-            label: row.name,
-            path: props.pathFunc(row.name as string),
-            external: true,
-          }),
+          value: (row: EnvDepsDependency) =>
+            h(NavLink, {
+              label: row.name,
+              path: props.pathFunc(row.name as string),
+              external: true,
+            }),
         },
         {
           key: 'versions',
@@ -286,7 +299,9 @@ export default defineComponent({
               if (!row.result || !row.result.versions) return;
               versions = row.result.versions;
             }
-            res.push(h('span', {style: 'margin-right: 5px'}, versions.join(', ')));
+            res.push(
+              h('span', { style: 'margin-right: 5px' }, versions.join(', '))
+            );
             return res;
           },
         },
@@ -318,7 +333,7 @@ export default defineComponent({
               type: 'primary',
               icon: ['fa', 'download'],
               tooltip: t('common.actions.install'),
-              onClick: async (row) => {
+              onClick: async row => {
                 installForm.value.names = [row.name];
                 dialogVisible.value.install = true;
               },
@@ -327,8 +342,8 @@ export default defineComponent({
               type: 'danger',
               icon: ['fa', 'trash-alt'],
               tooltip: t('common.actions.uninstall'),
-              disabled: (row) => !isUninstallable(row),
-              onClick: async (row) => {
+              disabled: row => !isUninstallable(row),
+              onClick: async row => {
                 uninstallForm.value.nodes = getNodes(row);
                 uninstallForm.value.names = [row.name];
                 dialogVisible.value.uninstall = true;
@@ -371,7 +386,7 @@ export default defineComponent({
         onClick: () => {
           dialogVisible.value.uninstall = true;
         },
-      }
+      },
     ]);
 
     const loading = ref(false);
@@ -396,7 +411,7 @@ export default defineComponent({
           tableData.value = [];
           tableTotal.value = 0;
         }
-        const {data, total} = res;
+        const { data, total } = res;
         tableData.value = data || [];
         tableTotal.value = total;
       } catch (e) {
@@ -419,7 +434,7 @@ export default defineComponent({
     const actionFunctions = ref({
       getList,
       setPagination: (pagination: TablePagination) => {
-        tablePagination.value = {...pagination};
+        tablePagination.value = { ...pagination };
       },
     });
 
@@ -477,7 +492,15 @@ export default defineComponent({
       uninstallForm.value.names = rows.map(d => d.name || '');
     };
 
-    const onInstall = async ({mode, nodeIds, version}: { mode: string; nodeIds: string[]; version: string; }) => {
+    const onInstall = async ({
+      mode,
+      nodeIds,
+      version,
+    }: {
+      mode: string;
+      nodeIds: string[];
+      version: string;
+    }) => {
       const data = {
         mode,
         names: installForm.value.names,
@@ -493,7 +516,13 @@ export default defineComponent({
       onDialogClose('install');
     };
 
-    const onUninstall = async ({mode, nodeIds}: { mode: string; nodeIds: string[] }) => {
+    const onUninstall = async ({
+      mode,
+      nodeIds,
+    }: {
+      mode: string;
+      nodeIds: string[];
+    }) => {
       const data = {
         names: uninstallForm.value.names,
         mode,

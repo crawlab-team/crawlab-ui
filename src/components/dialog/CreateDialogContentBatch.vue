@@ -3,12 +3,12 @@
     <el-form class="control-panel" inline>
       <el-form-item>
         <cl-button type="primary" @click="onAdd">
-          <font-awesome-icon :icon="['fa', 'plus']"/>
+          <font-awesome-icon :icon="['fa', 'plus']" />
           {{ t('components.dialog.batch.add') }}
         </cl-button>
       </el-form-item>
       <el-form-item :label="t('components.dialog.batch.editAll')">
-        <cl-switch v-model="editAll"/>
+        <cl-switch v-model="editAll" />
       </el-form-item>
     </el-form>
     <cl-form-table
@@ -24,9 +24,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, inject, PropType, Ref, ref} from 'vue';
-import {emptyArrayFunc} from '@/utils/func';
-import {useI18n} from 'vue-i18n';
+import { defineComponent, inject, PropType, Ref, ref } from 'vue';
+import { emptyArrayFunc } from '@/utils/func';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'CreateDialogContentBatch',
@@ -40,15 +40,17 @@ export default defineComponent({
       type: Array as PropType<FormTableField[]>,
       required: true,
       default: emptyArrayFunc,
-    }
+    },
   },
   setup(props: CreateDialogContentBatchProps) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const editAll = ref<boolean>(false);
 
-    const actionFunctions = inject('action-functions') as CreateEditDialogActionFunctions;
+    const actionFunctions = inject(
+      'action-functions'
+    ) as CreateEditDialogActionFunctions;
 
     const onAdd = (rowIndex: number) => {
       actionFunctions?.onAdd?.(rowIndex);
@@ -98,5 +100,4 @@ export default defineComponent({
     }
   }
 }
-
 </style>

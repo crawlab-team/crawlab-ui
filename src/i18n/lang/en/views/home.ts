@@ -20,7 +20,7 @@ const home: LViewsHome = {
   },
   tasksBySpiderConfig: {
     title: 'Tasks by Spider',
-  }
+  },
 };
 
 export default home;

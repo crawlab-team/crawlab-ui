@@ -2,17 +2,19 @@
   <div class="nav-tabs">
     <el-tooltip
       v-if="toggle"
-      :content="collapsed ? t('components.nav.tabs.toggle.expand') : t('components.nav.tabs.toggle.collapse')"
+      :content="
+        collapsed
+          ? t('components.nav.tabs.toggle.expand')
+          : t('components.nav.tabs.toggle.collapse')
+      "
     >
       <div class="toggle" @click="onToggle">
-        <font-awesome-icon :icon="collapsed ? ['fa', 'indent'] : ['fa', 'outdent']"/>
+        <font-awesome-icon
+          :icon="collapsed ? ['fa', 'indent'] : ['fa', 'outdent']"
+        />
       </div>
     </el-tooltip>
-    <el-menu
-      :default-active="activeKey"
-      mode="horizontal"
-      @select="onSelect"
-    >
+    <el-menu :default-active="activeKey" mode="horizontal" @select="onSelect">
       <el-menu-item
         v-for="item in items"
         :key="item.id"
@@ -23,7 +25,7 @@
       >
         <el-tooltip :content="item.tooltip" :disabled="!item.tooltip">
           <template v-if="!!item.icon">
-            <font-awesome-icon :icon="item.icon"/>
+            <font-awesome-icon :icon="item.icon" />
           </template>
           <template v-else>
             {{ t(item.title) }}
@@ -32,15 +34,14 @@
       </el-menu-item>
     </el-menu>
     <div class="extra">
-      <slot name="extra">
-      </slot>
+      <slot name="extra"> </slot>
     </div>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {emptyArrayFunc} from '@/utils/func';
+import { defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { emptyArrayFunc } from '@/utils/func';
 
 export default defineComponent({
   name: 'NavTabs',
@@ -60,14 +61,11 @@ export default defineComponent({
     toggle: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-  emits: [
-    'select',
-    'toggle',
-  ],
-  setup(props: NavTabsProps, {emit}) {
-    const {t} = useI18n();
+  emits: ['select', 'toggle'],
+  setup(props: NavTabsProps, { emit }) {
+    const { t } = useI18n();
 
     const onSelect = (index: string) => {
       emit('select', index);

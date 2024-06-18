@@ -1,9 +1,87 @@
+<script setup lang="ts">
+import { computed, onBeforeMount, ref, watch } from 'vue';
+import { FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES } from '@/constants/file';
+import { ElUpload, UploadFile, UploadRawFile } from 'element-plus';
+import { plainClone } from '@/utils/object';
+import { useI18n } from 'vue-i18n';
+import { UploadFilled } from '@element-plus/icons-vue';
+import { sendEvent } from '@/admin/umeng';
+
+const props = defineProps<{
+  mode: FileUploadMode;
+  // getInputProps: () => void,
+  open: () => void;
+}>();
+const emit = defineEmits<{
+  (e: 'mode-change', mode: string): void;
+  (e: 'files-change', files: (UploadRawFile | undefined)[]): void;
+}>();
+
+const { t } = useI18n();
+
+const modeOptions = computed<FileUploadModeOption[]>(() => [
+  {
+    label: t('components.file.upload.mode.folder'),
+    value: FILE_UPLOAD_MODE_DIR,
+  },
+  {
+    label: t('components.file.upload.mode.files'),
+    value: FILE_UPLOAD_MODE_FILES,
+  },
+]);
+const internalMode = ref<string>();
+
+const uploadRef = ref<typeof ElUpload>();
+
+const dirInfo = ref<FileUploadInfo>();
+
+const setInfo = (info: FileUploadInfo) => {
+  dirInfo.value = plainClone(info);
+};
+
+const resetInfo = () => {
+  dirInfo.value = undefined;
+};
+
+watch(
+  () => props.mode,
+  () => {
+    internalMode.value = props.mode;
+    uploadRef.value?.clearFiles();
+  },
+);
+
+const onFileChange = (file: UploadFile, fileList: UploadFile[]) => {
+  emit(
+    'files-change',
+    fileList.map(f => f.raw),
+  );
+};
+
+const clearFiles = () => {
+  uploadRef.value?.clearFiles();
+  resetInfo();
+};
+
+const onModeChange = (mode: string) => {
+  emit('mode-change', mode);
+  resetInfo();
+
+  sendEvent('click_file_upload_mode_change', { mode });
+};
+
+onBeforeMount(() => {
+  const { mode } = props;
+  internalMode.value = mode;
+});
+</script>
+
 <template>
   <div class="file-upload">
     <div class="mode-select">
       <el-radio-group v-model="internalMode" @change="onModeChange">
         <el-radio
-          v-for="{value, label} in modeOptions"
+          v-for="{ value, label } in modeOptions"
           :key="value"
           :label="value"
           :class="value"
@@ -18,29 +96,30 @@
         ref="uploadRef"
         class="file-upload-action"
         :on-change="onFileChange"
-        :http-request="() => {}"
+        :http-request="async () => {}"
         drag
         multiple
         :show-file-list="false"
       >
         <el-icon class="el-icon--upload">
-          <upload-filled/>
+          <upload-filled />
         </el-icon>
-        <div class="el-upload__text">{{ t('components.file.upload.buttons.files.dragFilesHereOr') }}
+        <div class="el-upload__text">
+          {{ t('components.file.upload.buttons.files.dragFilesHereOr') }}
           <em>{{ t('components.file.upload.buttons.files.clickToUpload') }}</em>
         </div>
       </el-upload>
-      <input v-bind="getInputProps()" multiple>
+      <!--      <input v-bind="getInputProps()" multiple>-->
     </template>
     <template v-else-if="mode === FILE_UPLOAD_MODE_DIR">
       <div class="folder-upload-action-wrapper">
-        <cl-button
-          size="large"
-          class-name="file-upload-action"
-          @click="open"
-        >
+        <cl-button size="large" class-name="file-upload-action" @click="open">
           <i class="fa fa-folder"></i>
-          {{ t('components.file.upload.buttons.folder.clickToSelectFolderToUpload') }}
+          {{
+            t(
+              'components.file.upload.buttons.folder.clickToSelectFolderToUpload',
+            )
+          }}
         </cl-button>
         <template v-if="!!dirInfo?.dirName && dirInfo?.fileCount">
           <cl-tag
@@ -59,123 +138,24 @@
           />
         </template>
       </div>
-      <input v-bind="getInputProps()" webkitdirectory multiple>
+      <!--      <input v-bind="getInputProps()" webkitdirectory multiple>-->
     </template>
-    <div v-if="dirInfo?.filePaths?.length > 0" class="file-list-wrapper">
+    <div v-if="dirInfo?.filePaths?.length" class="file-list-wrapper">
       <h4 class="title">
         {{ t('components.file.upload.fileList.title') }}
       </h4>
       <ul class="file-list">
-        <li v-for="(path, $index) in dirInfo?.filePaths" :key="$index" class="file-item">
+        <li
+          v-for="(path, $index) in dirInfo?.filePaths"
+          :key="$index"
+          class="file-item"
+        >
           {{ path }}
         </li>
       </ul>
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import {computed, defineComponent, onBeforeMount, PropType, ref, watch} from 'vue';
-import {FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES} from '@/constants/file';
-import {ElUpload, UploadFile} from 'element-plus/lib/components/upload/src/upload.type';
-import {plainClone} from '@/utils/object';
-import {useI18n} from 'vue-i18n';
-import {UploadFilled} from '@element-plus/icons-vue';
-import {sendEvent} from '@/admin/umeng';
-
-export default defineComponent({
-  name: 'FileUpload',
-  components: {
-    UploadFilled,
-  },
-  props: {
-    mode: {
-      type: String as PropType<FileUploadMode>,
-    },
-    getInputProps: {
-      type: Function as PropType<() => void>,
-    },
-    open: {
-      type: Function as PropType<() => void>,
-    },
-  },
-  emits: [
-    'mode-change',
-    'files-change',
-  ],
-  setup(props: FileUploadProps, {emit}) {
-    const {t} = useI18n();
-
-    const modeOptions = computed<FileUploadModeOption[]>(() => [
-      {
-        label: t('components.file.upload.mode.folder'),
-        value: FILE_UPLOAD_MODE_DIR,
-      },
-      {
-        label: t('components.file.upload.mode.files'),
-        value: FILE_UPLOAD_MODE_FILES,
-      },
-    ]);
-    const internalMode = ref<string>();
-
-    const uploadRef = ref<ElUpload>();
-
-    const dirPath = ref<string>();
-
-    const dirInfo = ref<FileUploadInfo>();
-
-    const setInfo = (info: FileUploadInfo) => {
-      dirInfo.value = plainClone(info);
-    };
-
-    const resetInfo = () => {
-      dirInfo.value = undefined;
-    };
-
-    watch(() => props.mode, () => {
-      internalMode.value = props.mode;
-      uploadRef.value?.clearFiles();
-    });
-
-    const onFileChange = (file: UploadFile, fileList: UploadFile[]) => {
-      emit('files-change', fileList.map(f => f.raw));
-    };
-
-    const clearFiles = () => {
-      uploadRef.value?.clearFiles();
-      resetInfo();
-    };
-
-    const onModeChange = (mode: string) => {
-      emit('mode-change', mode);
-      resetInfo();
-
-      sendEvent('click_file_upload_mode_change', {mode});
-    };
-
-    onBeforeMount(() => {
-      const {mode} = props;
-      internalMode.value = mode;
-    });
-
-    return {
-      uploadRef,
-      FILE_UPLOAD_MODE_FILES,
-      FILE_UPLOAD_MODE_DIR,
-      modeOptions,
-      internalMode,
-      dirPath,
-      onFileChange,
-      clearFiles,
-      onModeChange,
-      dirInfo,
-      setInfo,
-      resetInfo,
-      t,
-    };
-  },
-});
-</script>
 
 <style scoped lang="scss">
 .file-upload {
@@ -190,7 +170,6 @@ export default defineComponent({
   .folder-upload {
     display: flex;
     align-items: center;
-
   }
 
   .file-list-wrapper {

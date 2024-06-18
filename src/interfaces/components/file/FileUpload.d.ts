@@ -1,4 +1,4 @@
-import {FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES} from '@/constants';
+import { FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES } from '@/constants';
 
 declare global {
   interface FileUploadProps {

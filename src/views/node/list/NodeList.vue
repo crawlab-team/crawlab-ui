@@ -11,14 +11,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-node-dialog/>
+      <cl-create-edit-node-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useNodeList from '@/views/node/list/useNodeList';
 
 export default defineComponent({
@@ -27,10 +27,8 @@ export default defineComponent({
     return {
       ...useNodeList(),
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

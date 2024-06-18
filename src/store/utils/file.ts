@@ -1,11 +1,7 @@
-import {FILE_UPLOAD_MODE_DIR} from "@/constants";
-import useRequest from "@/services/request";
+import { FILE_UPLOAD_MODE_DIR } from '@/constants';
+import useRequest from '@/services/request';
 
-const {
-  get,
-  post,
-  del,
-} = useRequest();
+const { get, post, del } = useRequest();
 
 export const getBaseFileStoreState = (): BaseFileStoreState => {
   return {
@@ -18,7 +14,9 @@ export const getBaseFileStoreState = (): BaseFileStoreState => {
   };
 };
 
-export const getBaseFileStoreMutations = <S extends BaseFileStoreState>(): BaseFileStoreMutations<S> => {
+export const getBaseFileStoreMutations = <
+  S extends BaseFileStoreState,
+>(): BaseFileStoreMutations<S> => {
   return {
     setFileNavItems: (state: S, navItems: FileNavItem[]) => {
       state.fileNavItems = navItems;
@@ -53,75 +51,104 @@ export const getBaseFileStoreMutations = <S extends BaseFileStoreState>(): BaseF
     resetDefaultFilePaths: (state: S) => {
       state.defaultFilePaths = [];
     },
-  }
+  };
 };
 
-export const getBaseFileStoreActions = <S extends BaseFileStoreState>(endpoint: string): BaseFileStoreActions<S> => {
+export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
+  endpoint: string
+): BaseFileStoreActions<S> => {
   return {
-    listDir: async ({commit}: StoreActionContext<BaseStoreState<Spider>>, {id, path}: FileRequestPayload) => {
-      const res = await get(`${endpoint}/${id}/files/list`, {path});
+    listDir: async (
+      { commit }: StoreActionContext<BaseStoreState<Spider>>,
+      { id, path }: FileRequestPayload
+    ) => {
+      const res = await get(`${endpoint}/${id}/files/list`, { path });
       console.debug(res);
       const navItems = res.data as FileNavItem[];
       commit('setFileNavItems', navItems);
       return res;
     },
-    getFile: async ({commit}: StoreActionContext<S>, {id, path}: FileRequestPayload) => {
-      const res = await get(`${endpoint}/${id}/files/get`, {path});
+    getFile: async (
+      { commit }: StoreActionContext<S>,
+      { id, path }: FileRequestPayload
+    ) => {
+      const res = await get(`${endpoint}/${id}/files/get`, { path });
       commit('setFileContent', res.data);
       return res;
     },
-    getFileInfo: async ({commit}: StoreActionContext<S>, {id, path}: FileRequestPayload) => {
-      return await get(`${endpoint}/${id}/files/info`, {path});
+    getFileInfo: async (
+      { commit }: StoreActionContext<S>,
+      { id, path }: FileRequestPayload
+    ) => {
+      return await get(`${endpoint}/${id}/files/info`, { path });
     },
-    saveFile: async ({commit}: StoreActionContext<S>, {id, path, data}: FileRequestPayload) => {
-      return await post(`${endpoint}/${id}/files/save`, {path, data});
+    saveFile: async (
+      { commit }: StoreActionContext<S>,
+      { id, path, data }: FileRequestPayload
+    ) => {
+      return await post(`${endpoint}/${id}/files/save`, { path, data });
     },
-    saveFileBinary: async ({commit}: StoreActionContext<S>, {
-      id,
-      path,
-      file
-    }: FileRequestPayload) => {
+    saveFileBinary: async (
+      { commit }: StoreActionContext<S>,
+      { id, path, file }: FileRequestPayload
+    ) => {
       const data = new FormData();
       data.set('path', path as string);
       data.set('file', file as File, file?.name);
       return await post(`${endpoint}/${id}/files/save`, data, null, {
         headers: {
           'Content-Type': 'multipart/form-data',
-        }
+        },
       });
     },
-    saveFilesBinary: async ({commit}: StoreActionContext<S>, {
-      id,
-      files,
-    }: SaveFilesRequestPayload) => {
+    saveFilesBinary: async (
+      { commit }: StoreActionContext<S>,
+      { id, files }: SaveFilesRequestPayload
+    ) => {
       const data = new FormData();
-      files.forEach(({path, file}) => {
+      files.forEach(({ path, file }) => {
         data.append(path, file as File);
       });
       return await post(`${endpoint}/${id}/files/save/batch`, data, null, {
         headers: {
           'Content-Type': 'multipart/form-data',
-        }
+        },
       });
     },
-    saveDir: async ({commit}: StoreActionContext<S>, {id, path}: FileRequestPayload) => {
-      return await post(`${endpoint}/${id}/files/save/dir`, {path});
+    saveDir: async (
+      { commit }: StoreActionContext<S>,
+      { id, path }: FileRequestPayload
+    ) => {
+      return await post(`${endpoint}/${id}/files/save/dir`, { path });
     },
-    renameFile: async ({commit}: StoreActionContext<S>, {
-      id,
-      path,
-      new_path
-    }: FileRequestPayload) => {
-      return await post(`${endpoint}/${id}/files/rename`, {path, new_path});
+    renameFile: async (
+      { commit }: StoreActionContext<S>,
+      { id, path, new_path }: FileRequestPayload
+    ) => {
+      return await post(`${endpoint}/${id}/files/rename`, { path, new_path });
     },
-    deleteFile: async ({commit}: StoreActionContext<S>, {id, path}: FileRequestPayload) => {
-      return await del(`${endpoint}/${id}/files`, {path});
+    deleteFile: async (
+      { commit }: StoreActionContext<S>,
+      { id, path }: FileRequestPayload
+    ) => {
+      return await del(`${endpoint}/${id}/files`, { path });
     },
-    copyFile: async ({commit}: StoreActionContext<S>, {id, path, new_path}: FileRequestPayload) => {
-      return await post(`${endpoint}/${id}/files/copy`, {path, new_path});
+    copyFile: async (
+      { commit }: StoreActionContext<S>,
+      { id, path, new_path }: FileRequestPayload
+    ) => {
+      return await post(`${endpoint}/${id}/files/copy`, { path, new_path });
     },
-    exportFiles: async ({commit}: StoreActionContext<S>, {id}: { id: string }) => {
-      return await post(`${endpoint}/${id}/files/export`, {}, {}, {responseType: 'arraybuffer'}) as any;
+    exportFiles: async (
+      { commit }: StoreActionContext<S>,
+      { id }: { id: string }
+    ) => {
+      return (await post(
+        `${endpoint}/${id}/files/export`,
+        {},
+        {},
+        { responseType: 'arraybuffer' }
+      )) as any;
     },
-  }
-}
+  };
+};

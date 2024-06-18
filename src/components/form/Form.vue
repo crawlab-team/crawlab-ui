@@ -1,22 +1,30 @@
 <template>
   <el-form
-      ref="formRef"
-      :inline="inline"
-      :label-width="labelWidth"
-      :size="size"
-      :model="model"
-      class="form"
-      :rules="rules"
-      hide-required-asterisk
-      @validate="$emit('validate')"
+    ref="formRef"
+    :inline="inline"
+    :label-width="labelWidth"
+    :size="size"
+    :model="model"
+    class="form"
+    :rules="rules"
+    hide-required-asterisk
+    @validate="$emit('validate')"
   >
     <slot></slot>
   </el-form>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, provide, reactive, ref, SetupContext} from 'vue';
-import {emptyObjectFunc} from '@/utils/func';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  provide,
+  reactive,
+  ref,
+  SetupContext,
+} from 'vue';
+import { emptyObjectFunc } from '@/utils/func';
 
 export default defineComponent({
   name: 'Form',
@@ -45,13 +53,11 @@ export default defineComponent({
       type: Object as PropType<FormRules>,
     },
   },
-  emits: [
-    'validate',
-  ],
-  setup(props: FormProps, {emit}: SetupContext) {
+  emits: ['validate'],
+  setup(props: FormProps, { emit }: SetupContext) {
     const form = computed<FormContext>(() => {
-      const {labelWidth, size, grid} = props;
-      return {labelWidth, size, grid};
+      const { labelWidth, size, grid } = props;
+      return { labelWidth, size, grid };
     });
 
     provide('form-context', reactive<FormContext>(form.value));

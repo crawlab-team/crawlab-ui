@@ -9,28 +9,28 @@ const spiders: LViewsSpiders = {
       createTs: '创建时间',
       updateTs: '更新时间',
       description: '描述',
-    }
+    },
   },
   navActions: {
     new: {
       label: '新建爬虫',
-      tooltip: '添加一个新爬虫'
+      tooltip: '添加一个新爬虫',
     },
     filter: {
       search: {
-        placeholder: '搜索爬虫'
-      }
-    }
+        placeholder: '搜索爬虫',
+      },
+    },
   },
   navActionsExtra: {
     filter: {
       select: {
         project: {
           label: '项目',
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 
 export default spiders;

@@ -25,7 +25,8 @@ const file: LComponentsFile = {
       },
     },
     empty: {
-      placeholder: 'You can edit or view a file by double-clicking one of the files on the left.'
+      placeholder:
+        'You can edit or view a file by double-clicking one of the files on the left.',
     },
     messageBox: {
       prompt: {
@@ -36,14 +37,15 @@ const file: LComponentsFile = {
       },
       validator: {
         errorMessage: {
-          newNameNotSameAsOldName: 'New name cannot be the same as the old name',
+          newNameNotSameAsOldName:
+            'New name cannot be the same as the old name',
         },
-      }
+      },
     },
     settings: {
       title: 'File Editor Settings',
       form: {
-        theme: 'Theme'
+        theme: 'Theme',
       },
     },
     createWithAi: {
@@ -66,7 +68,7 @@ const file: LComponentsFile = {
       },
       folder: {
         clickToSelectFolderToUpload: 'Click to select folder to upload',
-      }
+      },
     },
     tooltip: {
       folderName: 'Folder Name',
@@ -79,7 +81,7 @@ const file: LComponentsFile = {
     fileList: {
       title: 'Files to Upload',
     },
-  }
+  },
 };
 
 export default file;

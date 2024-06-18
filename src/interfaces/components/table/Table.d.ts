@@ -1,12 +1,21 @@
-import {Ref, VNode} from 'vue';
-import {AnyObject, Store, StoreMutations, TableColumnCtx} from 'element-plus/lib/components/table/src/table/defaults';
+import { Ref, VNode } from 'vue';
+import {
+  AnyObject,
+  Store,
+  StoreMutations,
+  TableColumnCtx,
+} from 'element-plus/lib/components/table/src/table/defaults';
 import {
   TABLE_ACTION_CUSTOMIZE_COLUMNS,
-  TABLE_ACTION_EXPORT, TABLE_PAGINATION_POSITION_ALL,
+  TABLE_ACTION_EXPORT,
+  TABLE_PAGINATION_POSITION_ALL,
   TABLE_PAGINATION_POSITION_BOTTOM,
   TABLE_PAGINATION_POSITION_TOP,
 } from '@/constants/table';
-import {FilterMethods, Filters} from 'element-plus/lib/components/table/src/table-column/defaults';
+import {
+  FilterMethods,
+  Filters,
+} from 'element-plus/lib/components/table/src/table-column/defaults';
 
 export declare global {
   interface TableProps {
@@ -93,7 +102,12 @@ export declare global {
     showTooltipWhenOverflow: boolean;
     showOverflowTooltip: boolean;
     fixed: boolean | string;
-    formatter: (row: T, column: TableColumnCtx<T>, cellValue: any, index: number) => VNode;
+    formatter: (
+      row: T,
+      column: TableColumnCtx<T>,
+      cellValue: any,
+      index: number
+    ) => VNode;
     selectable: (row: T, index: number) => boolean;
     reserveSelection: boolean;
     filterMethod: FilterMethods<T>;
@@ -136,12 +150,34 @@ export declare global {
 
   type TableColumnButtonsFunction<T = any> = (row?: T) => TableColumnButton[];
 
-  type TableValueFunction<T = any> = (row: T, rowIndex?: number, column?: TableColumn<T>) => VNode;
-  type TableButtonOnClickFunction<T = any> = (row: T, rowIndex?: number, column?: TableColumn<T>) => void;
-  type TableButtonTooltipFunction<T = any> = (row: T, rowIndex?: number, column?: TableColumn<T>) => string;
-  type TableButtonDisabledFunction<T = any> = (row: T, rowIndex?: number, column?: TableColumn<T>) => boolean;
-  type TableFilterItemsFunction<T = any> = (filter?: TableHeaderDialogFilterData, column?: TableColumn<T>) => SelectOption[];
-  type TableSelectableFunction<T = any> = (row: T, rowIndex?: number) => boolean;
+  type TableValueFunction<T = any> = (
+    row: T,
+    rowIndex?: number,
+    column?: TableColumn<T>
+  ) => VNode;
+  type TableButtonOnClickFunction<T = any> = (
+    row: T,
+    rowIndex?: number,
+    column?: TableColumn<T>
+  ) => void;
+  type TableButtonTooltipFunction<T = any> = (
+    row: T,
+    rowIndex?: number,
+    column?: TableColumn<T>
+  ) => string;
+  type TableButtonDisabledFunction<T = any> = (
+    row: T,
+    rowIndex?: number,
+    column?: TableColumn<T>
+  ) => boolean;
+  type TableFilterItemsFunction<T = any> = (
+    filter?: TableHeaderDialogFilterData,
+    column?: TableColumn<T>
+  ) => SelectOption[];
+  type TableSelectableFunction<T = any> = (
+    row: T,
+    rowIndex?: number
+  ) => boolean;
 
   interface TableStore extends Store {
     mutations: TableStoreMutations;
@@ -164,12 +200,12 @@ export declare global {
   }
 
   type TableActionName =
-    ActionName |
-    TABLE_ACTION_EXPORT |
-    TABLE_ACTION_CUSTOMIZE_COLUMNS;
+    | ActionName
+    | TABLE_ACTION_EXPORT
+    | TABLE_ACTION_CUSTOMIZE_COLUMNS;
 
   type TablePaginationPosition =
-    TABLE_PAGINATION_POSITION_TOP |
-    TABLE_PAGINATION_POSITION_BOTTOM |
-    TABLE_PAGINATION_POSITION_ALL;
+    | TABLE_PAGINATION_POSITION_TOP
+    | TABLE_PAGINATION_POSITION_BOTTOM
+    | TABLE_PAGINATION_POSITION_ALL;
 }

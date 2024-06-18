@@ -23,7 +23,11 @@
     <!--    </el-form>-->
     <div v-if="column.allowFilterItems" class="items">
       <template v-if="filteredItems.length > 0">
-        <el-checkbox-group v-model="internalItems" class="item-list" @change="onItemsChange">
+        <el-checkbox-group
+          v-model="internalItems"
+          class="item-list"
+          @change="onItemsChange"
+        >
           <el-checkbox
             v-for="(item, $index) in filteredItems"
             :key="$index"
@@ -35,18 +39,18 @@
         </el-checkbox-group>
       </template>
       <template v-else>
-        <cl-empty/>
+        <cl-empty />
       </template>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref, watch} from 'vue';
-import {getDefaultFilterCondition} from '@/components/filter/FilterCondition.vue';
-import {debounce} from '@/utils/debounce';
-import {useI18n} from 'vue-i18n';
-import {Search} from '@element-plus/icons-vue';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
+import { getDefaultFilterCondition } from '@/components/filter/FilterCondition.vue';
+import { debounce } from '@/utils/debounce';
+import { useI18n } from 'vue-i18n';
+import { Search } from '@element-plus/icons-vue';
 
 export default defineComponent({
   name: 'TableHeaderDialogFilter',
@@ -64,19 +68,17 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
   },
-  emits: [
-    'change',
-    'clear',
-    'enter',
-  ],
-  setup(props, {emit}) {
+  emits: ['change', 'clear', 'enter'],
+  setup(props, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
-    const internalConditions = ref<FilterConditionData[]>([getDefaultFilterCondition()]);
+    const internalConditions = ref<FilterConditionData[]>([
+      getDefaultFilterCondition(),
+    ]);
     const internalSearchString = ref<string>();
     const internalItems = ref<string[]>([]);
 
@@ -89,7 +91,7 @@ export default defineComponent({
     });
 
     const filteredItems = computed<SelectOption[]>(() => {
-      const {column} = props as TableHeaderDialogFilterProps;
+      const { column } = props as TableHeaderDialogFilterProps;
 
       const items = column?.filterItems;
 
@@ -107,7 +109,11 @@ export default defineComponent({
 
       // items as an array of SelectOption
       // console.log('items as an array of SelectOption');
-      return items.filter(d => filterData.value.searchString ? d.label?.toLowerCase()?.includes(filterData.value.searchString) : true);
+      return items.filter(d =>
+        filterData.value.searchString
+          ? d.label?.toLowerCase()?.includes(filterData.value.searchString)
+          : true
+      );
     });
 
     const onAddCondition = () => {
@@ -124,14 +130,17 @@ export default defineComponent({
       emit('change', filterData.value);
     };
 
-    const search = debounce(() => {
-      if (internalSearchString.value) {
-        internalItems.value = filteredItems.value.map(d => d.value);
-      } else {
-        internalItems.value = [];
-      }
-      emit('change', filterData.value);
-    }, {delay: 100});
+    const search = debounce(
+      () => {
+        if (internalSearchString.value) {
+          internalItems.value = filteredItems.value.map(d => d.value);
+        } else {
+          internalItems.value = [];
+        }
+        emit('change', filterData.value);
+      },
+      { delay: 100 }
+    );
 
     const onSearch = (value?: string) => {
       internalSearchString.value = value;
@@ -146,24 +155,30 @@ export default defineComponent({
       emit('enter');
     };
 
-    watch(() => {
-      const {searchString} = props as TableHeaderDialogFilterProps;
-      return searchString;
-    }, (value) => {
-      internalSearchString.value = value;
-    });
+    watch(
+      () => {
+        const { searchString } = props as TableHeaderDialogFilterProps;
+        return searchString;
+      },
+      value => {
+        internalSearchString.value = value;
+      }
+    );
 
-    watch(() => {
-      const {conditions} = props as TableHeaderDialogFilterProps;
-      return conditions;
-    }, (value) => {
-      if (value) {
-        internalConditions.value = value;
-        if (internalConditions.value.length === 0) {
-          internalConditions.value.push(getDefaultFilterCondition());
+    watch(
+      () => {
+        const { conditions } = props as TableHeaderDialogFilterProps;
+        return conditions;
+      },
+      value => {
+        if (value) {
+          internalConditions.value = value;
+          if (internalConditions.value.length === 0) {
+            internalConditions.value.push(getDefaultFilterCondition());
+          }
         }
       }
-    });
+    );
 
     return {
       internalSearchString,

@@ -13,14 +13,14 @@ const tokens: LViewsTokens = {
     filter: {
       search: {
         placeholder: '搜索令牌',
-      }
-    }
+      },
+    },
   },
   messageBox: {
     prompt: {
       create: '请输入令牌名称',
-    }
-  }
+    },
+  },
 };
 
 export default tokens;

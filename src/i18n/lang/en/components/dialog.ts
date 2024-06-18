@@ -4,7 +4,7 @@ const dialog: LComponentsDialog = {
   dialog: 'Dialog',
   type: {
     single: 'Single',
-    batch: 'Batch'
+    batch: 'Batch',
   },
   batch: {
     add: 'Add',

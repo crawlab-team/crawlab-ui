@@ -7,8 +7,8 @@ const notification: LViewsNotification = {
     filter: {
       search: {
         placeholder: '搜索通知',
-      }
-    }
+      },
+    },
   },
   settings: {
     form: {

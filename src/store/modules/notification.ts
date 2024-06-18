@@ -2,17 +2,19 @@ import {
   getDefaultStoreActions,
   getDefaultStoreGetters,
   getDefaultStoreMutations,
-  getDefaultStoreState
+  getDefaultStoreState,
 } from '@/utils/store';
-import {TAB_NAME_OVERVIEW, TAB_NAME_TEMPLATE, TAB_NAME_TRIGGERS} from '@/constants';
-import {translate} from '@/utils/i18n';
+import {
+  TAB_NAME_OVERVIEW,
+  TAB_NAME_TEMPLATE,
+  TAB_NAME_TRIGGERS,
+} from '@/constants';
+import { translate } from '@/utils/i18n';
 import useRequest from '@/services/request';
 
 const t = translate;
 
-const {
-  get,
-} = useRequest();
+const { get } = useRequest();
 
 const state = {
   ...getDefaultStoreState<NotificationSetting>('notification'),
@@ -42,9 +44,9 @@ const state = {
     };
   },
   tabs: [
-    {id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview')},
-    {id: TAB_NAME_TRIGGERS, title: t('common.tabs.triggers')},
-    {id: TAB_NAME_TEMPLATE, title: t('common.tabs.template')},
+    { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
+    { id: TAB_NAME_TRIGGERS, title: t('common.tabs.triggers') },
+    { id: TAB_NAME_TEMPLATE, title: t('common.tabs.template') },
   ],
   triggersList: [],
 } as NotificationStoreState;

@@ -1,5 +1,5 @@
 const tab: LComponentsTab = {
-  newTab: 'New Tab'
+  newTab: 'New Tab',
 };
 
 export default tab;

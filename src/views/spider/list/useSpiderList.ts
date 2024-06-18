@@ -1,24 +1,28 @@
-import {useRouter} from 'vue-router';
-import {useStore} from 'vuex';
-import {computed, h} from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { computed, h } from 'vue';
 import TaskStatus from '@/components/task/TaskStatus.vue';
-import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import useList from '@/layouts/content/list/list';
 import NavLink from '@/components/nav/NavLink.vue';
 import Time from '@/components/time/Time.vue';
 import SpiderStat from '@/components/spider/SpiderStat.vue';
-import {onListFilterChangeByKey, setupListComponent} from '@/utils/list';
+import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import useProject from '@/components/project/project';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
   ACTION_FILTER,
-  ACTION_FILTER_SEARCH, ACTION_FILTER_SELECT,
+  ACTION_FILTER_SEARCH,
+  ACTION_FILTER_SELECT,
   ACTION_RUN,
   ACTION_UPLOAD,
-  ACTION_VIEW, ACTION_VIEW_DATA, FILTER_OP_CONTAINS, FILTER_OP_EQUAL
+  ACTION_VIEW,
+  ACTION_VIEW_DATA,
+  FILTER_OP_CONTAINS,
+  FILTER_OP_EQUAL,
 } from '@/constants';
 
 const useSpiderList = () => {
@@ -31,25 +35,22 @@ const useSpiderList = () => {
   // store
   const ns = 'spider';
   const store = useStore<RootStoreState>();
-  const {commit} = store;
+  const { commit } = store;
 
   // use list
-  const {
-    actionFunctions,
-  } = useList<Task>(ns, store);
+  const { actionFunctions } = useList<Task>(ns, store);
 
   // action functions
-  const {
-    deleteByIdConfirm,
-  } = actionFunctions;
+  const { deleteByIdConfirm } = actionFunctions;
 
-  const {
-    allListSelectOptions: allProjectListSelectOptions,
-  } = useProject(store);
+  const { allListSelectOptions: allProjectListSelectOptions } =
+    useProject(store);
   // const allProjectList = computed<Project[]>(() => store.state.project.allList);
 
   // all project dict
-  const allProjectDict = computed<Map<string, Project>>(() => store.getters['project/allDict']);
+  const allProjectDict = computed<Map<string, Project>>(
+    () => store.getters['project/allDict']
+  );
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -71,8 +72,8 @@ const useSpiderList = () => {
 
             sendEvent('click_spider_list_new');
           },
-        }
-      ]
+        },
+      ],
     },
     {
       action: ACTION_FILTER,
@@ -83,7 +84,12 @@ const useSpiderList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t('views.spiders.navActions.filter.search.placeholder'),
-          onChange: onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'name',
+            FILTER_OP_CONTAINS
+          ),
         },
         {
           action: ACTION_FILTER_SELECT,
@@ -93,10 +99,15 @@ const useSpiderList = () => {
           optionsRemote: {
             colName: 'projects',
           },
-          onChange: onListFilterChangeByKey(store, ns, 'project_id', FILTER_OP_EQUAL),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'project_id',
+            FILTER_OP_EQUAL
+          ),
         },
-      ]
-    }
+      ],
+    },
   ]);
 
   // table columns
@@ -108,10 +119,11 @@ const useSpiderList = () => {
       icon: ['fa', 'font'],
       width: '160',
       align: 'left',
-      value: (row: Spider) => h(NavLink, {
-        path: `/spiders/${row._id}`,
-        label: row.name,
-      }),
+      value: (row: Spider) =>
+        h(NavLink, {
+          path: `/spiders/${row._id}`,
+          label: row.name,
+        }),
       hasSort: true,
       hasFilter: true,
       allowFilterSearch: true,
@@ -168,10 +180,10 @@ const useSpiderList = () => {
       icon: ['fa', 'heartbeat'],
       width: '120',
       value: (row: Spider) => {
-        const {error, status} = row.stat?.last_task || {};
+        const { error, status } = row.stat?.last_task || {};
         if (!status) return;
-        return h(TaskStatus, {status, error} as TaskStatusProps);
-      }
+        return h(TaskStatus, { status, error } as TaskStatusProps);
+      },
     },
     {
       key: 'last_run_ts',
@@ -182,7 +194,7 @@ const useSpiderList = () => {
       value: (row: Spider) => {
         const time = row.stat?.last_task?.stat?.start_ts;
         if (!time) return;
-        return h(Time, {time} as TaskStatusProps);
+        return h(Time, { time } as TaskStatusProps);
       },
     },
     {
@@ -200,7 +212,7 @@ const useSpiderList = () => {
           onResultsClick: () => router.push(`/spiders/${row._id}/data`),
           onDurationClick: () => router.push(`/spiders/${row._id}/tasks`),
         } as SpiderStatProps);
-      }
+      },
     },
     {
       key: 'create_ts',
@@ -246,7 +258,7 @@ const useSpiderList = () => {
           size: 'small',
           icon: ['fa', 'play'],
           tooltip: t('common.actions.run'),
-          onClick: (row) => {
+          onClick: row => {
             store.commit(`${ns}/setForm`, row);
             store.commit(`${ns}/showDialog`, 'run');
 
@@ -260,7 +272,7 @@ const useSpiderList = () => {
           size: 'small',
           icon: ['fa', 'search'],
           tooltip: t('common.actions.view'),
-          onClick: (row) => {
+          onClick: row => {
             router.push(`/spiders/${row._id}`);
 
             sendEvent('click_spider_list_actions_view');
@@ -273,7 +285,7 @@ const useSpiderList = () => {
           size: 'small',
           icon: ['fa', 'upload'],
           tooltip: t('common.actions.uploadFiles'),
-          onClick: (row) => {
+          onClick: row => {
             store.commit(`${ns}/setForm`, row);
             store.commit(`${ns}/showDialog`, 'uploadFiles');
 
@@ -287,7 +299,7 @@ const useSpiderList = () => {
           size: 'small',
           icon: ['fa', 'database'],
           tooltip: t('common.actions.viewData'),
-          onClick: (row) => {
+          onClick: row => {
             router.push(`/spiders/${row._id}/data`);
 
             sendEvent('click_spider_list_actions_view_data');

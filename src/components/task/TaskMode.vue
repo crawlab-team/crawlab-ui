@@ -1,21 +1,16 @@
 <template>
-  <cl-tag
-    :type="type"
-    :icon="icon"
-    :label="label"
-    :tooltip="tooltip"
-  />
+  <cl-tag :type="type" :icon="icon" :label="label" :tooltip="tooltip" />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import { computed, defineComponent } from 'vue';
 import {
   TASK_MODE_ALL_NODES,
   TASK_MODE_RANDOM,
   TASK_MODE_SELECTED_NODE_TAGS,
-  TASK_MODE_SELECTED_NODES
+  TASK_MODE_SELECTED_NODES,
 } from '@/constants/task';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TaskMode',
@@ -23,14 +18,14 @@ export default defineComponent({
     mode: {
       type: String,
       required: false,
-    }
+    },
   },
-  setup(props: TaskModeProps, {emit}) {
+  setup(props: TaskModeProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const type = computed<string>(() => {
-      const {mode} = props;
+      const { mode } = props;
       switch (mode) {
         case TASK_MODE_RANDOM:
           return 'warning';
@@ -46,7 +41,7 @@ export default defineComponent({
     });
 
     const label = computed<string>(() => {
-      const {mode} = props;
+      const { mode } = props;
       switch (mode) {
         case TASK_MODE_RANDOM:
           return t('components.task.mode.label.randomNode');
@@ -62,7 +57,7 @@ export default defineComponent({
     });
 
     const icon = computed<string[]>(() => {
-      const {mode} = props;
+      const { mode } = props;
       switch (mode) {
         case TASK_MODE_RANDOM:
           return ['fa', 'random'];
@@ -78,7 +73,7 @@ export default defineComponent({
     });
 
     const tooltip = computed<string>(() => {
-      const {mode} = props;
+      const { mode } = props;
       switch (mode) {
         case TASK_MODE_RANDOM:
           return t('components.task.mode.tooltip.randomNode');

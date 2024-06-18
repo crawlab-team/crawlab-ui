@@ -4,20 +4,20 @@ const projects: LViewProjects = {
       name: 'Name',
       spiders: 'Spiders',
       tags: 'Tags',
-      description: 'Description'
-    }
+      description: 'Description',
+    },
   },
   navActions: {
     new: {
       label: 'New Project',
-      tooltip: 'Create a new project'
+      tooltip: 'Create a new project',
     },
     filter: {
       search: {
-        placeholder: 'Search projects'
-      }
-    }
-  }
+        placeholder: 'Search projects',
+      },
+    },
+  },
 };
 
 export default projects;

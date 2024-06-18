@@ -14,12 +14,7 @@
           </cl-nav-action-item>
         </cl-nav-action-group>
       </cl-nav-actions>
-      <cl-form
-        ref="formRef"
-        :model="form"
-        :rules="formRules"
-        class="user-form"
-      >
+      <cl-form ref="formRef" :model="form" :rules="formRules" class="user-form">
         <!-- Row -->
         <cl-form-item
           :span="2"
@@ -39,7 +34,7 @@
           required
         >
           <cl-label-button
-            :icon="['fa','lock']"
+            :icon="['fa', 'lock']"
             :label="t('components.user.form.changePassword')"
             type="danger"
             @click="onChangePassword"
@@ -66,8 +61,14 @@
           required
         >
           <el-select v-model="form.role">
-            <el-option :value="ROLE_ADMIN" :label="t('components.user.role.admin')"/>
-            <el-option :value="ROLE_NORMAL" :label="t('components.user.role.normal')"/>
+            <el-option
+              :value="ROLE_ADMIN"
+              :label="t('components.user.role.admin')"
+            />
+            <el-option
+              :value="ROLE_NORMAL"
+              :label="t('components.user.role.normal')"
+            />
           </el-select>
         </cl-form-item>
         <!-- ./Row -->
@@ -77,28 +78,25 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onBeforeMount, ref} from 'vue';
-import {useStore} from 'vuex';
-import {plainClone} from '@/utils/object';
+import { defineComponent, onBeforeMount, ref } from 'vue';
+import { useStore } from 'vuex';
+import { plainClone } from '@/utils/object';
 import useUser from '@/components/user/user';
-import {ROLE_ADMIN, ROLE_NORMAL} from '@/constants/user';
-import {useI18n} from 'vue-i18n';
-import {ElMessage} from 'element-plus';
+import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
+import { useI18n } from 'vue-i18n';
+import { ElMessage } from 'element-plus';
 
 export default defineComponent({
   name: 'MySettings',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'user';
     const store = useStore();
 
-    const {
-      formRules,
-      onChangePasswordFunc,
-    } = useUser(store);
+    const { formRules, onChangePasswordFunc } = useUser(store);
 
     const form = ref<User>({});
 
@@ -123,9 +121,8 @@ export default defineComponent({
       onSave,
       t,
     };
-  }
+  },
 });
-
 </script>
 
 <style scoped lang="scss">

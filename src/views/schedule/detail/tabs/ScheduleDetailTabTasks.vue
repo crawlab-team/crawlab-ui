@@ -1,13 +1,19 @@
 <template>
   <div class="schedule-detail-tab-tasks">
-    <cl-task-list no-actions embedded/>
+    <cl-task-list no-actions embedded />
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, onBeforeUnmount, watch} from 'vue';
-import {useStore} from 'vuex';
-import {useRoute} from 'vue-router';
-import {FILTER_OP_EQUAL} from '@/constants/filter';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  watch,
+} from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { FILTER_OP_EQUAL } from '@/constants/filter';
 
 export default defineComponent({
   name: 'ScheduleDetailTabTasks',
@@ -23,11 +29,13 @@ export default defineComponent({
 
     const setTableListFilter = () => {
       // set filter
-      store.commit(`task/setTableListFilter`, [{
-        key: 'schedule_id',
-        op: FILTER_OP_EQUAL,
-        value: id.value,
-      }]);
+      store.commit(`task/setTableListFilter`, [
+        {
+          key: 'schedule_id',
+          op: FILTER_OP_EQUAL,
+          value: id.value,
+        },
+      ]);
     };
 
     const getData = async () => {
@@ -40,11 +48,13 @@ export default defineComponent({
     watch(() => id.value, getData);
     onBeforeMount(() => {
       // set filter
-      store.commit(`task/setTableListFilter`, [{
-        key: 'schedule_id',
-        op: FILTER_OP_EQUAL,
-        value: id.value,
-      }]);
+      store.commit(`task/setTableListFilter`, [
+        {
+          key: 'schedule_id',
+          op: FILTER_OP_EQUAL,
+          value: id.value,
+        },
+      ]);
     });
 
     onBeforeUnmount(() => {

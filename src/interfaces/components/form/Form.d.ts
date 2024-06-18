@@ -1,5 +1,5 @@
-import {RuleItem} from 'async-validator';
-import {Ref} from 'vue';
+import { RuleItem } from 'async-validator';
+import { Ref } from 'vue';
 import {
   FORM_FIELD_TYPE_CHECK_TAG_GROUP,
   FORM_FIELD_TYPE_INPUT,
@@ -49,10 +49,11 @@ declare global {
 
   type DefaultFormFunc<T> = () => T;
 
-  type FormFieldType = FORM_FIELD_TYPE_INPUT |
-    FORM_FIELD_TYPE_INPUT_TEXTAREA |
-    FORM_FIELD_TYPE_INPUT_WITH_BUTTON |
-    FORM_FIELD_TYPE_TAG_INPUT |
-    FORM_FIELD_TYPE_TAG_SELECT |
-    FORM_FIELD_TYPE_CHECK_TAG_GROUP;
+  type FormFieldType =
+    | FORM_FIELD_TYPE_INPUT
+    | FORM_FIELD_TYPE_INPUT_TEXTAREA
+    | FORM_FIELD_TYPE_INPUT_WITH_BUTTON
+    | FORM_FIELD_TYPE_TAG_INPUT
+    | FORM_FIELD_TYPE_TAG_SELECT
+    | FORM_FIELD_TYPE_CHECK_TAG_GROUP;
 }

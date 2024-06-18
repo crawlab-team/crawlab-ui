@@ -24,28 +24,26 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, onBeforeMount} from 'vue';
+import { defineComponent, ref, onBeforeMount } from 'vue';
 import useRequest from '@/services/request';
 import dayjs from 'dayjs';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
-const {
-  get,
-} = useRequest();
+const { get } = useRequest();
 
 export default defineComponent({
   name: 'DemoMetric',
   setup() {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const dateRange = ref<RangeItem>({
       key: 'past-1h',
       value: () => {
         return {
           start: dayjs().subtract(1, 'hour'),
-          end: dayjs()
+          end: dayjs(),
         };
-      }
+      },
     });
     const onDateRangeChange = (value: RangeItem) => {
       dateRange.value = value;
@@ -100,29 +98,34 @@ export default defineComponent({
       getMetrics();
     });
 
-    const metricListDataFunc = ref<MetricListDataFunc>(async (metric: string) => {
-      const dateRangeValue = typeof dateRange.value.value === 'function' ? dateRange.value.value() : dateRange.value.value;
-      const res = await get('/metrics/query-range', {
-        query: `avg(${metric})`,
-        start: dateRangeValue?.start?.unix(),
-        end: dateRangeValue?.end?.unix(),
-        duration: duration.value,
-      });
-      return res.data?.[0]?.values?.map((d: [number, string | number]) => {
-        return {
-          date: d[0] * 1e3,
-          value: Number(d[1]),
-        };
-      });
-      // const data = [] as StatsResult[];
-      // for (let i = 0, date = dayjs().subtract(30, 'minute'); i < 30; i++, date = date.add(1, 'minute')) {
-      //   data.push({
-      //     date: date.unix() * 1e3,
-      //     value: Math.random() * 100,
-      //   });
-      // }
-      // return data;
-    });
+    const metricListDataFunc = ref<MetricListDataFunc>(
+      async (metric: string) => {
+        const dateRangeValue =
+          typeof dateRange.value.value === 'function'
+            ? dateRange.value.value()
+            : dateRange.value.value;
+        const res = await get('/metrics/query-range', {
+          query: `avg(${metric})`,
+          start: dateRangeValue?.start?.unix(),
+          end: dateRangeValue?.end?.unix(),
+          duration: duration.value,
+        });
+        return res.data?.[0]?.values?.map((d: [number, string | number]) => {
+          return {
+            date: d[0] * 1e3,
+            value: Number(d[1]),
+          };
+        });
+        // const data = [] as StatsResult[];
+        // for (let i = 0, date = dayjs().subtract(30, 'minute'); i < 30; i++, date = date.add(1, 'minute')) {
+        //   data.push({
+        //     date: date.unix() * 1e3,
+        //     value: Math.random() * 100,
+        //   });
+        // }
+        // return data;
+      }
+    );
 
     const metricListTitleFunc = ref<MetricListTitleFunc>((metric: NavItem) => {
       return t(`components.metric.metrics.${metric.id}`);
@@ -160,12 +163,11 @@ export default defineComponent({
       activeTabName,
       onTabClick,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
 
 <style scoped>
 .demo-layout >>> .el-tabs {

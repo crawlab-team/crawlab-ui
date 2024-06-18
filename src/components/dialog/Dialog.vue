@@ -8,12 +8,12 @@
     :width="width"
     :z-index="zIndex"
   >
-    <slot/>
+    <slot />
     <template #title>
-      <div v-html="title"/>
+      <div v-html="title" />
     </template>
     <template #footer>
-      <slot name="prefix"/>
+      <slot name="prefix" />
       <cl-button
         id="cancel-btn"
         class-name="cancel-btn"
@@ -33,14 +33,14 @@
       >
         {{ t('common.actions.confirm') }}
       </cl-button>
-      <slot name="suffix"/>
+      <slot name="suffix" />
     </template>
   </el-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'Dialog',
@@ -60,7 +60,7 @@ export default defineComponent({
     top: {
       type: String,
       required: false,
-      default: '15vh'
+      default: '15vh',
     },
     width: {
       type: String,
@@ -82,13 +82,10 @@ export default defineComponent({
       type: String,
     },
   },
-  emits: [
-    'close',
-    'confirm',
-  ],
-  setup(props: DialogProps, {emit}) {
+  emits: ['close', 'confirm'],
+  setup(props: DialogProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const onClose = () => {
       emit('close');
@@ -107,6 +104,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

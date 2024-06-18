@@ -1,6 +1,6 @@
-import {Directive} from 'vue';
-import {getRouter} from '@/router';
-import {getStore} from '@/store';
+import { Directive } from 'vue';
+import { getRouter } from '@/router';
+import { getStore } from '@/store';
 
 const auth: Directive<HTMLElement, Auth> = {
   mounted(el, binding) {
@@ -30,12 +30,10 @@ const auth: Directive<HTMLElement, Auth> = {
 
     // store
     const store = getStore();
-    const {
-      layout: layoutState,
-    } = store.state as RootStoreState;
+    const { layout: layoutState } = store.state as RootStoreState;
 
     // action visible function
-    const {actionVisibleFn} = layoutState;
+    const { actionVisibleFn } = layoutState;
 
     // skip if action visible function is empty
     if (!actionVisibleFn) return;
@@ -44,7 +42,7 @@ const auth: Directive<HTMLElement, Auth> = {
     if (!actionVisibleFn(currentRoutePath, action)) {
       el.hidden = true;
     }
-  }
+  },
 };
 
 export default auth;

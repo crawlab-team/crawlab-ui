@@ -1,18 +1,16 @@
 <template>
-  <cl-detail-layout store-namespace="plugin"/>
+  <cl-detail-layout store-namespace="plugin" />
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'PluginDetail',
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     return {};
   },
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -1,6 +1,6 @@
-import {Store} from 'vuex';
+import { Store } from 'vuex';
 import useEnvironmentService from '@/services/environment/environmentService';
-import {getDefaultFormComponentData, translate} from "@/utils";
+import { getDefaultFormComponentData, translate } from '@/utils';
 import useForm from '@/components/form/useForm';
 
 // i18n

@@ -1,8 +1,8 @@
-import {computed, SetupContext} from 'vue';
+import { computed, SetupContext } from 'vue';
 
 const useData = (props: TableProps, ctx: SetupContext) => {
   const tableData = computed(() => {
-    const {data} = props;
+    const { data } = props;
     return data;
   });
 

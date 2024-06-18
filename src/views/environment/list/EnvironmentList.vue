@@ -10,14 +10,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-environment-dialog/>
+      <cl-create-edit-environment-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useEnvironmentList from '@/views/environment/list/useEnvironmentList';
 
 export default defineComponent({
@@ -26,9 +26,8 @@ export default defineComponent({
     return {
       ...useEnvironmentList(),
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

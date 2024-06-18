@@ -1,13 +1,9 @@
 <template>
-  <cl-tag
-      :type="type"
-      :label="actionName"
-      :icon="icon"
-  />
+  <cl-tag :type="type" :label="actionName" :icon="icon" />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'TaskAction',
@@ -16,7 +12,7 @@ export default defineComponent({
       type: String,
     },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const type = computed(() => {
       if (props.action === 'install') {
         return 'primary';
@@ -57,6 +53,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -25,7 +25,7 @@ const file: LComponentsFile = {
       },
     },
     empty: {
-      placeholder: '您可以通过双击左侧文件来编辑或查看文件.'
+      placeholder: '您可以通过双击左侧文件来编辑或查看文件.',
     },
     messageBox: {
       prompt: {
@@ -38,12 +38,12 @@ const file: LComponentsFile = {
         errorMessage: {
           newNameNotSameAsOldName: '新名称不能跟旧名称相同',
         },
-      }
+      },
     },
     settings: {
       title: '文件编辑器设置',
       form: {
-        theme: '主题'
+        theme: '主题',
       },
     },
     createWithAi: {
@@ -66,7 +66,7 @@ const file: LComponentsFile = {
       },
       folder: {
         clickToSelectFolderToUpload: '点击选择目录上传',
-      }
+      },
     },
     tooltip: {
       folderName: '目录名称',
@@ -79,7 +79,7 @@ const file: LComponentsFile = {
     fileList: {
       title: '带上传文件',
     },
-  }
+  },
 };
 
 export default file;

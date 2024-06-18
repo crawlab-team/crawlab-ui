@@ -1,7 +1,9 @@
-import {Store} from 'vuex';
-import {getDefaultService} from '@/utils/service';
+import { Store } from 'vuex';
+import { getDefaultService } from '@/utils/service';
 
-const useEnvironmentService = (store: Store<RootStoreState>): Services<Environment> => {
+const useEnvironmentService = (
+  store: Store<RootStoreState>
+): Services<Environment> => {
   const ns = 'environment';
 
   return {

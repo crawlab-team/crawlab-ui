@@ -1,8 +1,6 @@
 <template>
   <div class="metric-progress">
-    <el-popover
-      width="720px"
-    >
+    <el-popover width="720px">
       <template #reference>
         <el-progress
           :percentage="percentage"
@@ -11,19 +9,19 @@
           :format="format"
           :color="color"
         >
-          <template #default="{percentage}">
-            <div class="label" :style="{color}">
+          <template #default="{ percentage }">
+            <div class="label" :style="{ color }">
               <span class="label-icon">
-                <cl-icon :icon="labelIcon"/>
+                <cl-icon :icon="labelIcon" />
               </span>
               <span class="label-text">{{ label?.key }}</span>
             </div>
-            <div class="value" :style="{color}">
+            <div class="value" :style="{ color }">
               {{ format(percentage) }}
             </div>
-            <div class="status" :style="{color}">
+            <div class="status" :style="{ color }">
               <el-tooltip :content="computedStatus?.label">
-                <cl-icon :icon="computedStatus?.icon"/>
+                <cl-icon :icon="computedStatus?.icon" />
               </el-tooltip>
             </div>
           </template>
@@ -32,12 +30,10 @@
 
       <div class="detail-metrics">
         <div class="overview">
-          <span class="title">
-            {{ label?.title }}:
-          </span>
+          <span class="title"> {{ label?.title }}: </span>
           <el-tooltip :content="computedStatus?.label">
-            <span class="value" :style="{color}">
-              <cl-icon :icon="computedStatus?.icon"/>
+            <span class="value" :style="{ color }">
+              <cl-icon :icon="computedStatus?.icon" />
               {{ format(percentage) }}
             </span>
           </el-tooltip>
@@ -50,7 +46,7 @@
             :label="t('components.metric.progress.detail.name')"
             align="right"
           >
-            <template #default="{row}">
+            <template #default="{ row }">
               {{ t(`components.metric.metrics.${row.label}`) }}
             </template>
           </el-table-column>
@@ -60,7 +56,7 @@
             :label="t('components.metric.progress.detail.value')"
             align="right"
           >
-            <template #default="{row}">
+            <template #default="{ row }">
               {{ row.value }}
             </template>
           </el-table-column>
@@ -71,9 +67,9 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {emptyArrayFunc, emptyObjectFunc} from '@/utils/func';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, PropType } from 'vue';
+import { emptyArrayFunc, emptyObjectFunc } from '@/utils/func';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'MetricProgress',
@@ -123,22 +119,26 @@ export default defineComponent({
       type: [Object, Function] as PropType<MetricProgressStatus>,
     },
   },
-  setup(props: MetricProgressProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: MetricProgressProps, { emit }) {
+    const { t } = useI18n();
 
-    const computedStatus = computed<MetricProgressStatusData | undefined>(() => {
-      const {status} = props;
-      if (typeof status === 'function') {
-        return status(props.percentage || null);
-      } else {
-        return status;
+    const computedStatus = computed<MetricProgressStatusData | undefined>(
+      () => {
+        const { status } = props;
+        if (typeof status === 'function') {
+          return status(props.percentage || null);
+        } else {
+          return status;
+        }
       }
-    });
+    );
 
-    const color = computed<string | undefined>(() => computedStatus.value?.color);
+    const color = computed<string | undefined>(
+      () => computedStatus.value?.color
+    );
 
     const computedLabel = computed<MetricProgressLabel | undefined>(() => {
-      const {label} = props;
+      const { label } = props;
       if (typeof label === 'string') {
         return {
           title: label,
@@ -155,7 +155,7 @@ export default defineComponent({
       color,
       computedLabel,
     };
-  }
+  },
 });
 </script>
 

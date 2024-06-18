@@ -2,7 +2,7 @@
   <el-tooltip>
     <!--tooltip-->
     <template #content>
-      <div v-html="tooltip"/>
+      <div v-html="tooltip" />
     </template>
     <!--./tooltip-->
 
@@ -10,13 +10,13 @@
     <div :class="cls" @click="onClick">
       <template v-if="type === DATA_FIELD_TYPE_IMAGE">
         <a class="result-cell-image" :href="value" target="_blank">
-          <img :src="value"/>
+          <img :src="value" />
         </a>
       </template>
 
       <template v-else-if="type === DATA_FIELD_TYPE_URL">
         <div class="result-cell-url">
-          <font-awesome-icon class="icon" :icon="['fa', 'link']"/>
+          <font-awesome-icon class="icon" :icon="['fa', 'link']" />
           <a :href="value" target="_blank">
             {{ value }}
           </a>
@@ -24,7 +24,7 @@
       </template>
 
       <template v-else-if="type === DATA_FIELD_TYPE_HTML">
-        <div v-html="value"/>
+        <div v-html="value" />
       </template>
 
       <template v-else-if="type === DATA_FIELD_TYPE_LONG_TEXT">
@@ -38,23 +38,23 @@
       </template>
     </div>
     <!--./content-->
-
   </el-tooltip>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import {
   DATA_FIELD_TYPE_GENERAL,
   DATA_FIELD_TYPE_IMAGE,
   DATA_FIELD_TYPE_URL,
   DATA_FIELD_TYPE_HTML,
-  DATA_FIELD_TYPE_LONG_TEXT, DATA_FIELD_TYPE_TIME,
-} from "@/constants/dataFields";
-import {translate} from "@/utils";
-import {useStore} from 'vuex';
+  DATA_FIELD_TYPE_LONG_TEXT,
+  DATA_FIELD_TYPE_TIME,
+} from '@/constants/dataFields';
+import { translate } from '@/utils';
+import { useStore } from 'vuex';
 import dayjs from 'dayjs';
-import {getI18n} from "@/i18n";
+import { getI18n } from '@/i18n';
 import TimeAgo from 'javascript-time-ago';
 
 const t = translate;
@@ -74,7 +74,7 @@ export default defineComponent({
     },
   },
   emits: ['click'],
-  setup(props: ResultCellProps, {emit}) {
+  setup(props: ResultCellProps, { emit }) {
     // store
     const ns = 'dataCollection';
     const store = useStore();
@@ -85,18 +85,22 @@ export default defineComponent({
         case DATA_FIELD_TYPE_LONG_TEXT:
           return props.value.substring(0, 200) + '...';
         case DATA_FIELD_TYPE_TIME:
-          const time = dayjs(props.value)
-          const timeAgo = new TimeAgo(getI18n().global.locale.value === 'zh' ? 'zh' : 'en');
+          const time = dayjs(props.value);
+          const timeAgo = new TimeAgo(
+            getI18n().global.locale.value === 'zh' ? 'zh' : 'en'
+          );
           const ago = timeAgo.format(time.toDate()) as string;
           return `${time.format('YYYY-MM-DD HH:mm:ssZ')} (${ago})`;
         default:
-          return typeof props.value === 'string' ? props.value : JSON.stringify(props.value);
+          return typeof props.value === 'string'
+            ? props.value
+            : JSON.stringify(props.value);
       }
     });
     const tooltip = computed<string>(() => {
       return `
 <label style="margin-right: 5px;">${t('components.result.form.dataType')}:</label>
-<div style="color:var(--cl-primary-color);font-weight:600;display:inline-block;max-width:800px;">${t('components.result.types.' + props.type)}</div><br> ${tooltipValue.value}`
+<div style="color:var(--cl-primary-color);font-weight:600;display:inline-block;max-width:800px;">${t('components.result.types.' + props.type)}</div><br> ${tooltipValue.value}`;
     });
 
     const onClick = async () => {
@@ -116,7 +120,7 @@ export default defineComponent({
       const cls = ['result-cell'];
       cls.push(props.type);
       return cls.join(' ');
-    })
+    });
 
     return {
       tooltip,
@@ -128,7 +132,7 @@ export default defineComponent({
       DATA_FIELD_TYPE_LONG_TEXT,
       cls,
     };
-  }
+  },
 });
 </script>
 

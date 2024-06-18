@@ -10,7 +10,10 @@
       <template #label>
         <el-tooltip :content="labelTooltip" :disabled="!labelTooltip">
           <span class="form-item-label">
-            <span :class="showRequiredAsterisk ? 'required' : ''" class="form-item-label-text">
+            <span
+              :class="showRequiredAsterisk ? 'required' : ''"
+              class="form-item-label-text"
+            >
               {{ label }}
             </span>
             <el-tooltip v-if="isSelectiveForm" :content="editableTooltip">
@@ -32,9 +35,17 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, inject, onMounted, PropType, ref, watch} from 'vue';
-import {RuleItem} from 'async-validator';
-import {cloneArray} from '@/utils/object';
+import {
+  computed,
+  defineComponent,
+  inject,
+  onMounted,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import { RuleItem } from 'async-validator';
+import { cloneArray } from '@/utils/object';
 
 export default defineComponent({
   name: 'ClFormItem',
@@ -82,7 +93,7 @@ export default defineComponent({
       default: false,
     },
   },
-  setup(props: FormItemProps, {emit}) {
+  setup(props: FormItemProps, { emit }) {
     const formItem = ref<HTMLDivElement>();
 
     // form context
@@ -93,13 +104,21 @@ export default defineComponent({
     const ns = storeContext?.namespace;
     const store = storeContext?.store;
     const state = storeContext?.state;
-    const isSelectiveForm = computed<boolean | undefined>(() => state?.isSelectiveForm);
-    const selectedFormFields = computed<string[] | undefined>(() => state?.selectedFormFields);
-    const isBatchForm = computed<boolean>(() => store?.getters[`${ns}/isBatchForm`]);
-    const activeDialogKey = computed<DialogKey | undefined>(() => state?.activeDialogKey);
+    const isSelectiveForm = computed<boolean | undefined>(
+      () => state?.isSelectiveForm
+    );
+    const selectedFormFields = computed<string[] | undefined>(
+      () => state?.selectedFormFields
+    );
+    const isBatchForm = computed<boolean>(
+      () => store?.getters[`${ns}/isBatchForm`]
+    );
+    const activeDialogKey = computed<DialogKey | undefined>(
+      () => state?.activeDialogKey
+    );
 
     const style = computed<Partial<CSSStyleDeclaration>>(() => {
-      const {span, offset} = props;
+      const { span, offset } = props;
       return {
         flexBasis: `calc(100% / ${formContext.grid} * ${span})`,
         marginRight: `calc(100% / ${formContext.grid} * ${offset})`,
@@ -107,16 +126,21 @@ export default defineComponent({
     });
 
     const internalEditable = ref<boolean>(false);
-    watch(() => state?.activeDialogKey, () => internalEditable.value = false);
+    watch(
+      () => state?.activeDialogKey,
+      () => (internalEditable.value = false)
+    );
 
     const editableTooltip = computed<string>(() => {
-      const {notEditable} = props;
+      const { notEditable } = props;
       if (notEditable) return 'Unable to edit';
-      return internalEditable.value ? 'Uncheck to disable editing' : 'Check to enable editing';
+      return internalEditable.value
+        ? 'Uncheck to disable editing'
+        : 'Check to enable editing';
     });
 
     const onEditableChange = (value: boolean) => {
-      const {prop} = props;
+      const { prop } = props;
       if (!selectedFormFields.value || !prop) return;
       const fields = cloneArray<string>(selectedFormFields.value);
       if (value) {
@@ -141,20 +165,22 @@ export default defineComponent({
           break;
       }
 
-      const {required} = props;
+      const { required } = props;
       return required;
     });
 
     const showRequiredAsterisk = computed<boolean>(() => {
       if (isSelectiveForm.value) return false;
-      const {required} = props;
+      const { required } = props;
       return required;
     });
 
     onMounted(() => {
       if (formItem.value) {
-        const {labelWidth} = formContext;
-        const el = formItem.value?.querySelector('.el-form-item__content') as HTMLDivElement;
+        const { labelWidth } = formContext;
+        const el = formItem.value?.querySelector(
+          '.el-form-item__content'
+        ) as HTMLDivElement;
         if (labelWidth && el?.style) {
           el.style.width = `calc(100% - ${labelWidth})`;
         }
@@ -189,7 +215,7 @@ export default defineComponent({
 
       .form-item-label-text.required {
         &:before {
-          content: "*";
+          content: '*';
           color: var(--cl-red);
           margin-right: 4px;
         }

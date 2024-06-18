@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import humanizeDuration from 'humanize-duration';
-import {getLanguage} from '@/utils/i18n';
+import { getLanguage } from '@/utils/i18n';
 
 export default defineComponent({
   name: 'Duration',
@@ -39,16 +39,16 @@ export default defineComponent({
       type: [String, Array] as PropType<Icon>,
       default: () => {
         return ['fa', 'stopwatch'];
-      }
+      },
     },
     type: {
       type: String as PropType<BasicType>,
       default: 'primary',
-    }
+    },
   },
-  setup(props: DurationProps, {emit}) {
+  setup(props: DurationProps, { emit }) {
     const label = computed<string>(() => {
-      const {duration} = props;
+      const { duration } = props;
 
       const d = Math.ceil((duration as number) / 1000) * 1000;
 
@@ -67,6 +67,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

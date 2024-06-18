@@ -8,10 +8,17 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, PropType, ref, watch} from 'vue';
-import {init} from 'echarts';
-import {useI18n} from 'vue-i18n';
-import {plainClone} from '@/utils/object';
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import { init } from 'echarts';
+import { useI18n } from 'vue-i18n';
+import { plainClone } from '@/utils/object';
 
 export default defineComponent({
   name: 'PieChart',
@@ -39,11 +46,11 @@ export default defineComponent({
       type: String,
     },
   },
-  setup(props: PieChartProps, {emit}) {
-    const {t, locale} = useI18n();
+  setup(props: PieChartProps, { emit }) {
+    const { t, locale } = useI18n();
 
     const style = computed<Partial<CSSStyleDeclaration>>(() => {
-      const {width, height} = props;
+      const { width, height } = props;
       return {
         width,
         height,
@@ -54,15 +61,14 @@ export default defineComponent({
     const chart = ref<ECharts>();
 
     const isEmpty = computed<boolean>(() => {
-      const {config} = props;
-      const {data} = config;
+      const { config } = props;
+      const { data } = config;
       if (!data) return true;
       return data.length === 0;
-
     });
 
     const getSeriesData = (data: StatsResult[], key?: string) => {
-      const {valueKey, labelKey} = props;
+      const { valueKey, labelKey } = props;
       const _valueKey = !key ? valueKey : key;
 
       if (_valueKey) {
@@ -79,8 +85,8 @@ export default defineComponent({
     };
 
     const getSeries = (): EChartSeries[] => {
-      const {config} = props;
-      const {data, itemStyleColorFunc} = config;
+      const { config } = props;
+      const { data, itemStyleColorFunc } = config;
 
       const seriesItem = {
         type: 'pie',
@@ -91,14 +97,14 @@ export default defineComponent({
       };
 
       if (itemStyleColorFunc) {
-        seriesItem.itemStyle = {color: itemStyleColorFunc};
+        seriesItem.itemStyle = { color: itemStyleColorFunc };
       }
 
       return [seriesItem];
     };
 
     const render = () => {
-      const {config, theme} = props;
+      const { config, theme } = props;
       const option = plainClone(config.option);
 
       // dom

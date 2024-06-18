@@ -1,32 +1,31 @@
 <script setup lang="ts">
-import {computed, onBeforeMount, watch} from 'vue';
-import {useStore} from 'vuex';
-import {useI18n} from 'vue-i18n';
-import useGitDetail from "@/views/git/detail/useGitDetail";
+import { computed, onBeforeMount, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import useGitDetail from '@/views/git/detail/useGitDetail';
 
 // i18n
-const {t} = useI18n();
+const { t } = useI18n();
 
 // store
 const ns = 'spider';
 const store = useStore();
-const {
-  git: state,
-} = store.state as RootStoreState;
+const { git: state } = store.state as RootStoreState;
 
-const {
-  activeId,
-} = useGitDetail();
+const { activeId } = useGitDetail();
 
 // table data
-const tableData = computed<TableData<{ name: string; index: number }>>(() => state.gitData?.ignore
-  ?.filter(d => !!d.trim() && !d.trim().startsWith('#'))
-  ?.map((d, i) => {
-    return {
-      name: d,
-      index: i,
-    };
-  }) || []);
+const tableData = computed<TableData<{ name: string; index: number }>>(
+  () =>
+    state.gitData?.ignore
+      ?.filter(d => !!d.trim() && !d.trim().startsWith('#'))
+      ?.map((d, i) => {
+        return {
+          name: d,
+          index: i,
+        };
+      }) || []
+);
 
 // table columns
 const tableColumns = computed<TableColumns<string>>(() => {
@@ -39,8 +38,11 @@ const tableColumns = computed<TableColumns<string>>(() => {
   ] as TableColumns<string>;
 });
 
-watch(() => activeId.value, () => store.dispatch(`${ns}/getGit`, {id: activeId.value}));
-onBeforeMount(() => store.dispatch(`${ns}/getGit`, {id: activeId.value}));
+watch(
+  () => activeId.value,
+  () => store.dispatch(`${ns}/getGit`, { id: activeId.value })
+);
+onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </script>
 
 <template>

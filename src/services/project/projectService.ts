@@ -1,5 +1,5 @@
-import {Store} from 'vuex';
-import {getDefaultService} from '@/utils/service';
+import { Store } from 'vuex';
+import { getDefaultService } from '@/utils/service';
 
 const useProjectService = (store: Store<RootStoreState>): Services<Project> => {
   const ns = 'project';

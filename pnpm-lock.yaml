@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@element-plus/icons-vue':
-        specifier: latest
+        specifier: ^2.3.1
         version: 2.3.1(vue@https://registry.npmmirror.com/vue/-/vue-3.2.45.tgz)
       '@fortawesome/fontawesome-common-types':
         specifier: ^6.1.0
@@ -210,6 +210,9 @@ importers:
       node-sass:
         specifier: ^8.0.0
         version: https://registry.npmmirror.com/node-sass/-/node-sass-8.0.0.tgz
+      prettier:
+        specifier: ^3.3.2
+        version: 3.3.2
       rd:
         specifier: ^2.0.1
         version: https://registry.npmmirror.com/rd/-/rd-2.0.1.tgz
@@ -7183,6 +7186,11 @@ packages:
   prettier@2.8.0:
     resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
     engines: {node: '>=10.13.0'}
+    hasBin: true
+
+  prettier@3.3.2:
+    resolution: {integrity: sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==}
+    engines: {node: '>=14'}
     hasBin: true
 
   pretty-error@https://registry.npmmirror.com/pretty-error/-/pretty-error-2.1.2.tgz:
@@ -16089,6 +16097,8 @@ snapshots:
 
   prettier@2.8.0:
     optional: true
+
+  prettier@3.3.2: {}
 
   pretty-error@https://registry.npmmirror.com/pretty-error/-/pretty-error-2.1.2.tgz:
     dependencies:

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import {computed, onBeforeMount, onBeforeUnmount, ref, watch} from 'vue';
-import {useStore} from 'vuex';
+import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
+import { useStore } from 'vuex';
 import useSpiderService from '@/services/spider/spiderService';
-import {ElMessage} from 'element-plus';
-import {useI18n} from 'vue-i18n';
+import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 
 // i18n
-const {t} = useI18n();
+const { t } = useI18n();
 
 // store
 const ns = 'spider';
 const store = useStore();
-const {commit} = store;
-const {spider: state} = store.state as RootStoreState;
+const { commit } = store;
+const { spider: state } = store.state as RootStoreState;
 
 const {
   listRootDir,
@@ -27,9 +27,7 @@ const {
   copyFile,
 } = useSpiderService(store);
 
-const {
-  activeId,
-} = useSpiderDetail();
+const { activeId } = useSpiderDetail();
 
 // spider id
 const id = computed<string>(() => activeId.value);
@@ -41,7 +39,9 @@ const fileEditor = ref();
 const navItems = computed<FileNavItem[]>(() => state.fileNavItems);
 
 // active file nav item
-const activeNavItem = computed<FileNavItem | undefined>(() => state.activeNavItem);
+const activeNavItem = computed<FileNavItem | undefined>(
+  () => state.activeNavItem
+);
 
 // file content
 const content = computed<string>(() => state.fileContent);
@@ -94,7 +94,10 @@ const onNavItemDbClick = async (item: FileNavItem) => {
   await openFile(item.path as string);
 };
 
-const onNavItemDrop = async (draggingItem: FileNavItem, dropItem: FileNavItem) => {
+const onNavItemDrop = async (
+  draggingItem: FileNavItem,
+  dropItem: FileNavItem
+) => {
   const dirPath = dropItem.path !== '~' ? dropItem.path : '';
   const newPath = `${dirPath}${pathSep}${draggingItem.name}`;
   await renameFile(id.value, draggingItem.path as string, newPath);
@@ -147,13 +150,19 @@ const onContentChange = (value: string) => {
 };
 
 const onDropFiles = async (files: InputFile[]) => {
-  await Promise.all(files.map(f => {
-    return saveFileBinary(id.value, f.path as string, f as File);
-  }));
+  await Promise.all(
+    files.map(f => {
+      return saveFileBinary(id.value, f.path as string, f as File);
+    })
+  );
   await listRootDir(id.value);
 };
 
-const onCreateWithAi = async (name: string, sourceCode: string, item?: FileNavItem) => {
+const onCreateWithAi = async (
+  name: string,
+  sourceCode: string,
+  item?: FileNavItem
+) => {
   let path = `${pathSep}${name}`;
   if (item) {
     path = getPath(item, name);
@@ -187,7 +196,6 @@ onBeforeUnmount(() => {
   store.commit(`${ns}/resetFileContent`);
   store.commit(`${ns}/resetDefaultFilePaths`);
 });
-
 </script>
 
 <template>
@@ -214,5 +222,4 @@ onBeforeUnmount(() => {
   />
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

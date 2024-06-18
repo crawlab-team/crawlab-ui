@@ -1,10 +1,10 @@
 <template>
   <div class="schedule-detail-tab-overview">
-    <cl-schedule-form/>
+    <cl-schedule-form />
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ProjectDetailTabOverview',

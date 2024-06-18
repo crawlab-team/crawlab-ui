@@ -1,18 +1,20 @@
-import {computed, provide} from 'vue';
-import {Store} from 'vuex';
+import { computed, provide } from 'vue';
+import { Store } from 'vuex';
 import useFormTable from '@/components/form/formTable';
-import {EMPTY_OBJECT_ID} from '@/utils/mongo';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
+import { EMPTY_OBJECT_ID } from '@/utils/mongo';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
 
 // i18n
 const t = translate;
 
-export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, services: Services<BaseModel>, data: FormComponentData<BaseModel>) => {
-  const {
-    formRef,
-    formTableFieldRefsMap,
-  } = data;
+export const useForm = (
+  ns: ListStoreNamespace,
+  store: Store<RootStoreState>,
+  services: Services<BaseModel>,
+  data: FormComponentData<BaseModel>
+) => {
+  const { formRef, formTableFieldRefsMap } = data;
 
   // state
   const state = store.state[ns];
@@ -36,7 +38,9 @@ export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, se
   const formList = computed<BaseModel[]>(() => state.formList);
 
   // active dialog key
-  const activeDialogKey = computed<DialogKey | undefined>(() => state.activeDialogKey);
+  const activeDialogKey = computed<DialogKey | undefined>(
+    () => state.activeDialogKey
+  );
 
   // is selective form
   const isSelectiveForm = computed<boolean>(() => state.isSelectiveForm);
@@ -48,10 +52,14 @@ export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, se
   const readonlyFormFields = computed<string[]>(() => state.readonlyFormFields);
 
   // is batch form getters
-  const isBatchForm = computed<boolean>(() => store.getters[`${ns}/isBatchForm`]);
+  const isBatchForm = computed<boolean>(
+    () => store.getters[`${ns}/isBatchForm`]
+  );
 
   // form list ids getters
-  const formListIds = computed<string[]>(() => store.getters[`${ns}/formListIds`]);
+  const formListIds = computed<string[]>(
+    () => store.getters[`${ns}/formListIds`]
+  );
 
   const validateForm = async () => {
     if (isBatchForm.value && activeDialogKey.value === 'create') {
@@ -103,46 +111,48 @@ export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, se
   provide<(d: any) => boolean>('fn:isEmptyForm', isEmptyForm);
 
   // all list select options
-  const allListSelectOptions = computed<SelectOption[]>(() => store.getters[`${ns}/allListSelectOptions`]);
+  const allListSelectOptions = computed<SelectOption[]>(
+    () => store.getters[`${ns}/allListSelectOptions`]
+  );
 
   // all list select options with empty
-  const allListSelectOptionsWithEmpty = computed<SelectOption[]>(() => allListSelectOptions.value.concat({
-    label: t('common.status.unassigned'),
-    value: EMPTY_OBJECT_ID,
-  }));
+  const allListSelectOptionsWithEmpty = computed<SelectOption[]>(() =>
+    allListSelectOptions.value.concat({
+      label: t('common.status.unassigned'),
+      value: EMPTY_OBJECT_ID,
+    })
+  );
 
   // all dict
-  const allDict = computed<Map<string, BaseModel>>(() => store.getters[`${ns}/allDict`]);
+  const allDict = computed<Map<string, BaseModel>>(
+    () => store.getters[`${ns}/allDict`]
+  );
 
   // all tags
   const allTags = computed<string[]>(() => store.getters[`${ns}/allTags`]);
 
   // services
-  const {
-    getList,
-    create,
-    updateById,
-    createList,
-    updateList,
-  } = services;
+  const { getList, create, updateById, createList, updateList } = services;
 
   // dialog create edit
   const createEditDialogVisible = computed<boolean>(() => {
-    const {activeDialogKey} = state;
+    const { activeDialogKey } = state;
     if (!activeDialogKey) return false;
     return ['create', 'edit'].includes(activeDialogKey);
   });
 
   // dialog create edit tab name
-  const createEditDialogTabName = computed<CreateEditTabName>(() => state.createEditDialogTabName);
+  const createEditDialogTabName = computed<CreateEditTabName>(
+    () => state.createEditDialogTabName
+  );
 
   // dialog confirm
   const confirmDisabled = computed<boolean>(() => {
-    return isSelectiveForm.value &&
-      selectedFormFields.value.length === 0;
+    return isSelectiveForm.value && selectedFormFields.value.length === 0;
   });
   const confirmLoading = computed<boolean>(() => state.confirmLoading);
-  const setConfirmLoading = (value: boolean) => store.commit(`${ns}/setConfirmLoading`, value);
+  const setConfirmLoading = (value: boolean) =>
+    store.commit(`${ns}/setConfirmLoading`, value);
   const onConfirm = async () => {
     // validate
     try {
@@ -184,7 +194,11 @@ export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, se
           break;
         case 'edit':
           if (isBatchForm.value) {
-            res = await updateList(formListIds.value, form.value, selectedFormFields.value);
+            res = await updateList(
+              formListIds.value,
+              form.value,
+              selectedFormFields.value
+            );
           } else {
             res = await updateById(form.value._id as string, form.value);
           }
@@ -194,7 +208,9 @@ export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, se
           });
           break;
         default:
-          console.error(`activeDialogKey "${activeDialogKey.value}" is invalid`);
+          console.error(
+            `activeDialogKey "${activeDialogKey.value}" is invalid`
+          );
           return;
       }
       if (res.error) {
@@ -231,13 +247,8 @@ export const useForm = (ns: ListStoreNamespace, store: Store<RootStoreState>, se
 
   // use form table
   const formTable = useFormTable(ns, store, services, data);
-  const {
-    onAdd,
-    onClone,
-    onDelete,
-    onFieldChange,
-    onFieldRegister,
-  } = formTable;
+  const { onAdd, onClone, onDelete, onFieldChange, onFieldRegister } =
+    formTable;
 
   // action functions
   const actionFunctions = {

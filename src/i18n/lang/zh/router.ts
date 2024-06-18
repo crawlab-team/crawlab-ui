@@ -27,7 +27,7 @@ const router: LRouter = {
       disclaimer: '免责声明',
       mySettings: '我的设置',
     },
-  }
+  },
 };
 
 export default router;

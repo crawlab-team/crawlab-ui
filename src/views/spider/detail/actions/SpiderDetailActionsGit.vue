@@ -26,7 +26,7 @@
           type="warning"
           :label="t('components.git.common.status.loading.label')"
           :tooltip="t('components.git.common.status.loading.tooltip')"
-          :icon="['fa','spinner']"
+          :icon="['fa', 'spinner']"
           spinning
           size="large"
         />
@@ -34,16 +34,14 @@
           v-else
           class-name="current-branch"
           type="primary"
-          :icon="['fa','code-branch']"
+          :icon="['fa', 'code-branch']"
           size="large"
           :label="gitCurrentBranch"
           @click="onBranchClick"
         >
           <template #tooltip>
             <span>{{ t('components.git.common.currentBranch') }}:</span>
-            <span
-              style="color: #409eff; margin-left: 5px; font-weight: bolder"
-            >
+            <span style="color: #409eff; margin-left: 5px; font-weight: bolder">
               {{ gitCurrentBranch }}
             </span>
           </template>
@@ -60,44 +58,44 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, watch} from 'vue';
-import {useStore} from 'vuex';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, ref, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
-import {ElMessage} from 'element-plus';
+import { ElMessage } from 'element-plus';
 
 export default defineComponent({
   name: 'SpiderDetailActionsGit',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'spider';
     const store = useStore();
-    const {
-      spider: state,
-      git: gitState,
-    } = store.state as RootStoreState;
+    const { spider: state, git: gitState } = store.state as RootStoreState;
 
-    const {
-      gitCurrentBranch,
-    } = useSpiderDetail();
+    const { gitCurrentBranch } = useSpiderDetail();
 
     // git form
     const gitForm = computed<Git>(() => gitState.form);
 
     const internalBranch = ref<string>('');
 
-    watch(() => gitCurrentBranch.value, () => internalBranch.value = gitCurrentBranch.value || '');
+    watch(
+      () => gitCurrentBranch.value,
+      () => (internalBranch.value = gitCurrentBranch.value || '')
+    );
 
     const branches = computed<SelectOption[]>(() => {
-      return state.gitData.branches?.map(branch => {
-        return {
-          label: branch.name,
-          value: branch.name,
-        };
-      }) || [];
+      return (
+        state.gitData.branches?.map(branch => {
+          return {
+            label: branch.name,
+            value: branch.name,
+          };
+        }) || []
+      );
     });
 
     const isBranchClicked = ref<boolean>(false);
@@ -115,7 +113,10 @@ export default defineComponent({
     };
 
     const onAutoFillChange = async () => {
-      await store.dispatch(`git/updateById`, {id: gitForm.value._id, form: gitForm.value});
+      await store.dispatch(`git/updateById`, {
+        id: gitForm.value._id,
+        form: gitForm.value,
+      });
       await ElMessage.success(t('common.message.success.save'));
     };
 

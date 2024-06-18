@@ -1,4 +1,4 @@
-import {RouteRecordRaw} from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 import {
   TAB_NAME_DATA,
   TAB_NAME_DEPENDENCIES,
@@ -6,7 +6,7 @@ import {
   TAB_NAME_OVERVIEW,
   TAB_NAME_SCHEDULES,
   TAB_NAME_SETTINGS,
-  TAB_NAME_TASKS
+  TAB_NAME_TASKS,
 } from '@/constants/tab';
 
 export default [
@@ -14,46 +14,50 @@ export default [
     name: 'SpiderList',
     path: 'spiders',
     component: () => import('@/views/spider/list/SpiderList.vue'),
-
   },
   {
     name: 'SpiderDetail',
     path: 'spiders/:id',
     redirect: to => {
-      return {path: to.path + '/' + TAB_NAME_OVERVIEW};
+      return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
     component: () => import('@/views/spider/detail/SpiderDetail.vue'),
 
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => import('@/views/spider/detail/tabs/SpiderDetailTabOverview.vue'),
+        component: () =>
+          import('@/views/spider/detail/tabs/SpiderDetailTabOverview.vue'),
       },
       {
         path: TAB_NAME_FILES,
-        component: () => import('@/views/spider/detail/tabs/SpiderDetailTabFiles.vue'),
+        component: () =>
+          import('@/views/spider/detail/tabs/SpiderDetailTabFiles.vue'),
       },
       {
         path: TAB_NAME_TASKS,
-        component: () => import('@/views/spider/detail/tabs/SpiderDetailTabTasks.vue'),
+        component: () =>
+          import('@/views/spider/detail/tabs/SpiderDetailTabTasks.vue'),
       },
       {
         path: TAB_NAME_SCHEDULES,
-        component: () => import('@/views/spider/detail/tabs/SpiderDetailTabSchedules.vue'),
-
+        component: () =>
+          import('@/views/spider/detail/tabs/SpiderDetailTabSchedules.vue'),
       },
       {
         path: TAB_NAME_DATA,
-        component: () => import('@/views/spider/detail/tabs/SpiderDetailTabData.vue'),
+        component: () =>
+          import('@/views/spider/detail/tabs/SpiderDetailTabData.vue'),
       },
       {
         path: TAB_NAME_SETTINGS,
-        component: () => import('@/views/spider/detail/tabs/SpiderDetailTabSettings.vue'),
+        component: () =>
+          import('@/views/spider/detail/tabs/SpiderDetailTabSettings.vue'),
       },
       {
         path: TAB_NAME_DEPENDENCIES,
         component: () => import('@/views/deps/spider/DependencySpiderTab.vue'),
       },
-    ]
+    ],
   },
 ] as Array<RouteRecordRaw>;

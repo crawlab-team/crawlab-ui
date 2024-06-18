@@ -53,31 +53,29 @@
         :disabled="isFormItemDisabled('connect_type')"
         @change="onConnectTypeChange"
       >
-        <el-radio label="standard">{{ t('components.ds.connectType.label.standard') }}</el-radio>
-        <el-radio label="url">{{ t('components.ds.connectType.label.url') }}</el-radio>
-        <el-radio label="hosts">{{ t('components.ds.connectType.label.hosts') }}</el-radio>
+        <el-radio label="standard">{{
+          t('components.ds.connectType.label.standard')
+        }}</el-radio>
+        <el-radio label="url">{{
+          t('components.ds.connectType.label.url')
+        }}</el-radio>
+        <el-radio label="hosts">{{
+          t('components.ds.connectType.label.hosts')
+        }}</el-radio>
       </el-radio-group>
     </cl-form-item>
     <!--./Row-->
 
     <!--Row-->
     <template v-if="form.connect_type === DATA_SOURCE_CONNECT_TYPE_STANDARD">
-      <cl-form-item
-        :span="2"
-        :label="t('components.ds.form.host')"
-        prop="host"
-      >
+      <cl-form-item :span="2" :label="t('components.ds.form.host')" prop="host">
         <el-input
           v-model="form.host"
           :disabled="isFormItemDisabled('host')"
           :placeholder="t('components.ds.form.default.host')"
         />
       </cl-form-item>
-      <cl-form-item
-        :span="2"
-        :label="t('components.ds.form.port')"
-        prop="port"
-      >
+      <cl-form-item :span="2" :label="t('components.ds.form.port')" prop="port">
         <el-input
           v-model="form.port"
           :disabled="isFormItemDisabled('port')"
@@ -86,11 +84,7 @@
       </cl-form-item>
     </template>
     <template v-else-if="form.connect_type === DATA_SOURCE_CONNECT_TYPE_URL">
-      <cl-form-item
-        :span="4"
-        :label="t('components.ds.form.url')"
-        prop="url"
-      >
+      <cl-form-item :span="4" :label="t('components.ds.form.url')" prop="url">
         <el-input
           v-model="form.url"
           :disabled="isFormItemDisabled('url')"
@@ -105,10 +99,7 @@
         :label="t('components.ds.form.hosts')"
         prop="hosts"
       >
-        <el-row
-          v-for="(h, $index) in form.hosts"
-          :key="$index"
-        >
+        <el-row v-for="(h, $index) in form.hosts" :key="$index">
           <el-input
             class="hosts-item-input"
             v-model="form.hosts[$index]"
@@ -166,7 +157,7 @@
       prop="password"
     >
       <el-input
-        v-if="(isSelectiveForm || !isDetail)"
+        v-if="isSelectiveForm || !isDetail"
         v-model="form.password"
         :disabled="isFormItemDisabled('password')"
         :placeholder="t('components.ds.form.password')"
@@ -174,7 +165,7 @@
       />
       <cl-label-button
         v-else
-        :icon="['fa','lock']"
+        :icon="['fa', 'lock']"
         :label="t('components.ds.form.changePassword')"
         type="danger"
         @click="onChangePassword"
@@ -200,10 +191,10 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {getStore} from '@/store';
+import { computed, defineComponent } from 'vue';
+import { getStore } from '@/store';
 import useDataSource from '@/components/ds/useDataSource';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 import useDataSourceDetail from '@/views/ds/detail/useDataSourceDetail';
 import {
   DATA_SOURCE_CONNECT_TYPE_STANDARD,
@@ -216,23 +207,18 @@ export default defineComponent({
   props: {
     readonly: {
       type: Boolean,
-    }
+    },
   },
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const store = getStore();
 
-    const {
-      activeId,
-    } = useDataSourceDetail();
+    const { activeId } = useDataSourceDetail();
 
-
-    const {
-      onChangePasswordFunc,
-    } = useDataSource(store);
+    const { onChangePasswordFunc } = useDataSource(store);
 
     const onChangePassword = () => onChangePasswordFunc(activeId.value);
 

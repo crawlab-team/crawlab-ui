@@ -16,7 +16,7 @@ const git: LComponentsGit = {
         checkout: '成功签出',
         pull: '成功拉取代码',
         commit: '成功提交代码',
-      }
+      },
     },
     messageBox: {
       confirm: {
@@ -26,8 +26,8 @@ const git: LComponentsGit = {
         commit: {
           label: '确定提交代码?',
           placeholder: '提交信息',
-        }
-      }
+        },
+      },
     },
     actions: {
       pull: '拉取代码',
@@ -72,8 +72,8 @@ const git: LComponentsGit = {
     table: {
       columns: {
         timestamp: '时间戳',
-      }
-    }
+      },
+    },
   },
   logs: {
     table: {
@@ -82,8 +82,8 @@ const git: LComponentsGit = {
         commitMessage: '提交信息',
         author: '作者',
         timestamp: '时间戳',
-      }
-    }
+      },
+    },
   },
   changes: {
     status: {
@@ -99,16 +99,16 @@ const git: LComponentsGit = {
       columns: {
         changedFile: '变更文件',
         status: '状态',
-      }
-    }
+      },
+    },
   },
   ignore: {
     table: {
       columns: {
         file: '文件',
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export default git;

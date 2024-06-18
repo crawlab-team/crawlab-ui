@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useTokenList from '@/views/token/list/useTokenList';
 
 export default defineComponent({
@@ -31,7 +31,7 @@ export default defineComponent({
     embedded: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   setup() {
     return {
@@ -41,6 +41,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

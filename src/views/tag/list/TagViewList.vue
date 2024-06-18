@@ -10,14 +10,14 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-tag-dialog/>
+      <cl-create-edit-tag-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useTagList from '@/views/tag/list/useTagList';
 
 export default defineComponent({
@@ -45,7 +45,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
 .tag-list {
   .nav-actions {
     border-bottom: none;

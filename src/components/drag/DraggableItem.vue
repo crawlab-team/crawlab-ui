@@ -8,12 +8,12 @@
     @dragenter="$emit('d-enter', item)"
     @dragleave="$emit('d-leave', item)"
   >
-    <cl-draggable-item-content :item="item"/>
+    <cl-draggable-item-content :item="item" />
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'DraggableItem',
@@ -25,17 +25,12 @@ export default defineComponent({
     dragging: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-  emits: [
-    'd-start',
-    'd-end',
-    'd-enter',
-    'd-leave',
-  ],
+  emits: ['d-start', 'd-end', 'd-enter', 'd-leave'],
   setup(props: DraggableItemProps) {
     const dragging = computed(() => {
-      const {item} = props;
+      const { item } = props;
       return item.dragging;
     });
 

@@ -30,40 +30,34 @@
     <cl-install-public-plugin
       v-if="installType === PLUGIN_INSTALL_TYPE_PUBLIC"
     />
-    <cl-plugin-form
-      v-else
-    />
+    <cl-plugin-form v-else />
   </cl-dialog>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeUnmount, ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useStore} from 'vuex';
+import { computed, defineComponent, onBeforeUnmount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
 import usePlugin from '@/components/plugin/plugin';
 import {
   PLUGIN_INSTALL_TYPE_PUBLIC,
   PLUGIN_INSTALL_TYPE_GIT,
   PLUGIN_INSTALL_TYPE_LOCAL,
 } from '@/constants/plugin';
-import {sendEvent} from '@/admin/umeng';
+import { sendEvent } from '@/admin/umeng';
 
 export default defineComponent({
   name: 'InstallPluginDialog',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'plugin';
     const store = useStore();
-    const {
-      plugin: pluginState,
-    } = store.state as RootStoreState;
+    const { plugin: pluginState } = store.state as RootStoreState;
 
-    const {
-      installType,
-    } = usePlugin(store);
+    const { installType } = usePlugin(store);
 
     const onClose = () => {
       store.commit(`${ns}/hideDialog`, 'install');

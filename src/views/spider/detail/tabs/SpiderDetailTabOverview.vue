@@ -1,12 +1,12 @@
 <template>
   <div class="spider-detail-tab-overview">
     <!-- Spider Form (handled by store) -->
-    <cl-spider-form/>
+    <cl-spider-form />
     <!-- ./Spider Form -->
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'SpiderDetailTabOverview',

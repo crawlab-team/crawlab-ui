@@ -2,40 +2,40 @@ const ds: LViewsDataSource = {
   navActions: {
     new: {
       label: 'New Data Source',
-      tooltip: 'Create a new data source'
+      tooltip: 'Create a new data source',
     },
     filter: {
       search: {
-        placeholder: 'Search Data Source'
-      }
-    }
+        placeholder: 'Search Data Source',
+      },
+    },
   },
   navActionsExtra: {
     filter: {
       select: {
         type: {
-          label: 'Type'
+          label: 'Type',
         },
         status: {
-          label: 'Status'
+          label: 'Status',
         },
         connectType: {
-          label: 'Connect Type'
+          label: 'Connect Type',
         },
         database: {
-          label: 'Database'
+          label: 'Database',
         },
         username: {
-          label: 'Username'
-        }
+          label: 'Username',
+        },
       },
       search: {
         connectSettings: {
-          placeholder: 'Search Connect Settings'
-        }
-      }
-    }
-  }
+          placeholder: 'Search Connect Settings',
+        },
+      },
+    },
+  },
 };
 
 export default ds;

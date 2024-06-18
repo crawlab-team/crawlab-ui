@@ -6,12 +6,17 @@ export const sendPv = (page: any) => {
     // umeng
     window.aplus_queue?.push({
       action: 'aplus.sendPV',
-      arguments: [{is_auto: true}, {}]
+      arguments: [{ is_auto: true }, {}],
     });
   }
 };
 
-export const sendEv = (category: string, eventName: string, optLabel: string, optValue: string) => {
+export const sendEv = (
+  category: string,
+  eventName: string,
+  optLabel: string,
+  optValue: string
+) => {
   if (localStorage.getItem('useStats') !== '0') {
     window._hmt?.push(['_trackEvent', category, eventName, optLabel, optValue]);
   }

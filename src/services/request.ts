@@ -1,8 +1,11 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {ElNotification} from 'element-plus';
-import {getEmptyResponseWithListData, getRequestBaseUrl} from '@/utils/request';
-import {Router} from 'vue-router';
-import {translate} from '@/utils/i18n';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { ElNotification } from 'element-plus';
+import {
+  getEmptyResponseWithListData,
+  getRequestBaseUrl,
+} from '@/utils/request';
+import { Router } from 'vue-router';
+import { translate } from '@/utils/i18n';
 
 const t = translate;
 
@@ -12,34 +15,37 @@ export const initRequest = (router?: Router) => {
 
   // response interception
   let msgBoxVisible = false;
-  axios.interceptors.response.use(res => {
-    return res;
-  }, async err => {
-    // status code
-    const status = err?.response?.status;
+  axios.interceptors.response.use(
+    res => {
+      return res;
+    },
+    async err => {
+      // status code
+      const status = err?.response?.status;
 
-    if (status === 401) {
-      // 401 error
-      if (window.localStorage.getItem('token')) {
-        // token expired, popup logout warning
-        if (msgBoxVisible) return;
-        msgBoxVisible = true;
-        setTimeout(() => msgBoxVisible = false, 5000);
-        router?.push('/login');
-        await ElNotification({
-          title: t('common.status.unauthorized'),
-          message: t('common.notification.loggedOut'),
-          type: 'warning',
-        });
+      if (status === 401) {
+        // 401 error
+        if (window.localStorage.getItem('token')) {
+          // token expired, popup logout warning
+          if (msgBoxVisible) return;
+          msgBoxVisible = true;
+          setTimeout(() => (msgBoxVisible = false), 5000);
+          router?.push('/login');
+          await ElNotification({
+            title: t('common.status.unauthorized'),
+            message: t('common.notification.loggedOut'),
+            type: 'warning',
+          });
+        } else {
+          // token not exists, redirect to login page
+          router?.push('/login');
+        }
       } else {
-        // token not exists, redirect to login page
-        router?.push('/login');
+        // other errors
+        console.error(err);
       }
-    } else {
-      // other errors
-      console.error(err);
     }
-  });
+  );
 };
 
 const useRequest = () => {
@@ -74,7 +80,11 @@ const useRequest = () => {
     return res?.data;
   };
 
-  const get = async <T = any, R = ResponseWithData<T>, PM = any>(url: string, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
+  const get = async <T = any, R = ResponseWithData<T>, PM = any>(
+    url: string,
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<R> => {
     opts = {
       ...opts,
       method: 'GET',
@@ -84,7 +94,12 @@ const useRequest = () => {
     return await request<R>(opts);
   };
 
-  const post = async <T = any, R = ResponseWithData<T>, PM = any>(url: string, data?: T, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
+  const post = async <T = any, R = ResponseWithData<T>, PM = any>(
+    url: string,
+    data?: T,
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<R> => {
     opts = {
       ...opts,
       method: 'POST',
@@ -95,7 +110,12 @@ const useRequest = () => {
     return await request<R>(opts);
   };
 
-  const put = async <T = any, R = ResponseWithData<T>, PM = any>(url: string, data?: T, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
+  const put = async <T = any, R = ResponseWithData<T>, PM = any>(
+    url: string,
+    data?: T,
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<R> => {
     opts = {
       ...opts,
       method: 'PUT',
@@ -106,7 +126,12 @@ const useRequest = () => {
     return await request<R>(opts);
   };
 
-  const del = async <T = any, R = ResponseWithData<T>, PM = any>(url: string, data?: T, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
+  const del = async <T = any, R = ResponseWithData<T>, PM = any>(
+    url: string,
+    data?: T,
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<R> => {
     opts = {
       ...opts,
       method: 'DELETE',
@@ -117,14 +142,22 @@ const useRequest = () => {
     return await request<R>(opts);
   };
 
-  const getList = async <T = any>(url: string, params?: ListRequestParams, opts?: AxiosRequestConfig) => {
+  const getList = async <T = any>(
+    url: string,
+    params?: ListRequestParams,
+    opts?: AxiosRequestConfig
+  ) => {
     // normalize conditions
     if (params && Array.isArray(params.conditions)) {
       params.conditions = JSON.stringify(params.conditions);
     }
 
     // get request
-    const res = await get<T, ResponseWithListData<T>, ListRequestParams>(url, params, opts);
+    const res = await get<T, ResponseWithListData<T>, ListRequestParams>(
+      url,
+      params,
+      opts
+    );
 
     // if no response, return empty
     if (!res) {
@@ -140,22 +173,44 @@ const useRequest = () => {
   };
 
   const getAll = async <T = any>(url: string, opts?: AxiosRequestConfig) => {
-    return await getList(url, {all: true}, opts);
+    return await getList(url, { all: true }, opts);
   };
 
-  const postList = async <T = any, R = ResponseWithListData, PM = any>(url: string, data?: T[], params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
+  const postList = async <T = any, R = ResponseWithListData, PM = any>(
+    url: string,
+    data?: T[],
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<R> => {
     return await post<T[], R, PM>(url, data, params, opts);
   };
 
-  const putList = async <T = any, R = Response, PM = any>(url: string, data?: BatchRequestPayloadWithJsonStringData, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
-    return await put<BatchRequestPayloadWithJsonStringData, R, PM>(url, data, params, opts);
+  const putList = async <T = any, R = Response, PM = any>(
+    url: string,
+    data?: BatchRequestPayloadWithJsonStringData,
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<R> => {
+    return await put<BatchRequestPayloadWithJsonStringData, R, PM>(
+      url,
+      data,
+      params,
+      opts
+    );
   };
 
-  const delList = async <T = any, R = Response, PM = any>(url: string, data?: BatchRequestPayload, params?: PM, opts?: AxiosRequestConfig): Promise<R> => {
+  const delList = async <T = any, R = Response, PM = any>(
+    url: string,
+    data?: BatchRequestPayload,
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<R> => {
     return await del<BatchRequestPayload, R, PM>(url, data, params, opts);
   };
 
-  const requestRaw = async <R = any>(opts: AxiosRequestConfig): Promise<AxiosResponse> => {
+  const requestRaw = async <R = any>(
+    opts: AxiosRequestConfig
+  ): Promise<AxiosResponse> => {
     // base url
     const baseURL = getRequestBaseUrl();
 
@@ -170,7 +225,11 @@ const useRequest = () => {
     });
   };
 
-  const getRaw = async <T = any, PM = any>(url: string, params?: PM, opts?: AxiosRequestConfig): Promise<AxiosResponse> => {
+  const getRaw = async <T = any, PM = any>(
+    url: string,
+    params?: PM,
+    opts?: AxiosRequestConfig
+  ): Promise<AxiosResponse> => {
     opts = {
       ...opts,
       method: 'GET',

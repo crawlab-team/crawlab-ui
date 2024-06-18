@@ -32,7 +32,7 @@
             @change="onCheck"
           >
             <cl-draggable-list :items="items" @d-end="onDragEnd">
-              <template #default="{item}">
+              <template #default="{ item }">
                 <el-checkbox
                   :label="item.key"
                   class="check-item"
@@ -46,7 +46,7 @@
         </template>
         <template v-else>
           <div class="empty-wrapper">
-            <cl-empty class="empty"/>
+            <cl-empty class="empty" />
           </div>
         </template>
       </div>
@@ -55,10 +55,10 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, watch} from 'vue';
-import {DataItem, Key} from 'element-plus';
-import {Search} from '@element-plus/icons-vue';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, ref, watch } from 'vue';
+import { DataItem, Key } from 'element-plus';
+import { Search } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TransferPanel',
@@ -73,7 +73,7 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
     data: {
       type: Array,
@@ -81,14 +81,11 @@ export default defineComponent({
       default: () => {
         return [];
       },
-    }
+    },
   },
-  emits: [
-    'check',
-    'drag',
-  ],
-  setup(props, {emit}) {
-    const {t} = useI18n();
+  emits: ['check', 'drag'],
+  setup(props, { emit }) {
+    const { t } = useI18n();
 
     const searchString = ref<string>('');
 
@@ -97,15 +94,17 @@ export default defineComponent({
     const isIntermediate = ref<boolean>(false);
 
     const items = computed<DataItem[]>(() => {
-      const {data} = props as TransferPanelProps;
+      const { data } = props as TransferPanelProps;
       if (!searchString.value) {
         return data;
       }
-      return data.filter(d => d.label.toLowerCase().includes(searchString.value.toLowerCase()));
+      return data.filter(d =>
+        d.label.toLowerCase().includes(searchString.value.toLowerCase())
+      );
     });
 
     const summary = computed<string>(() => {
-      const {checked, data} = props as TransferPanelProps;
+      const { checked, data } = props as TransferPanelProps;
       return `${checked.length}/${data.length}`;
     });
 
@@ -114,7 +113,7 @@ export default defineComponent({
     };
 
     const onCheckAll = (value: boolean) => {
-      const {data} = props as TransferPanelProps;
+      const { data } = props as TransferPanelProps;
       emit('check', value ? data.map(d => d.key) : []);
     };
 
@@ -122,14 +121,19 @@ export default defineComponent({
       emit('drag', items);
     };
 
-    watch(() => {
-      const {checked} = props as TransferPanelProps;
-      return checked;
-    }, () => {
-      const {checked, data} = props as TransferPanelProps;
-      isCheckedAll.value = checked.length > 0 && checked.length === data.length;
-      isIntermediate.value = checked.length > 0 && checked.length < data.length;
-    });
+    watch(
+      () => {
+        const { checked } = props as TransferPanelProps;
+        return checked;
+      },
+      () => {
+        const { checked, data } = props as TransferPanelProps;
+        isCheckedAll.value =
+          checked.length > 0 && checked.length === data.length;
+        isIntermediate.value =
+          checked.length > 0 && checked.length < data.length;
+      }
+    );
 
     return {
       searchString,

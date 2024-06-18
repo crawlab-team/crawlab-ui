@@ -12,7 +12,7 @@ const misc: LViewsMisc = {
 7. Copyright of the system: Crawlab development team owns the intellectual property rights, copyrights, copyrights and use rights for all developed or jointly developed products, which are protected by applicable intellectual property rights, copyrights, trademarks, service trademarks, patents or other laws.
 8. Communication: any company or individual who publishes or disseminates our software on the Internet is allowed, but the crawlab development team shall not be responsible for any legal and criminal events that may be caused by the company or individual disseminating the software.
 `,
-  }
+  },
 };
 
 export default misc;

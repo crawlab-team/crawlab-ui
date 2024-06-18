@@ -1,4 +1,4 @@
-import {Module, GetterTree, MutationTree, ActionTree} from 'vuex';
+import { Module, GetterTree, MutationTree, ActionTree } from 'vuex';
 
 declare global {
   interface CommonStoreModule extends Module<CommonStoreState, RootStoreState> {
@@ -19,7 +19,8 @@ declare global {
     setSystemInfo: StoreMutation<CommonStoreState, SystemInfo>;
   }
 
-  interface CommonStoreActions extends ActionTree<CommonStoreState, RootStoreState> {
+  interface CommonStoreActions
+    extends ActionTree<CommonStoreState, RootStoreState> {
     getSystemInfo: StoreAction<CommonStoreState>;
   }
 }

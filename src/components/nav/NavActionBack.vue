@@ -1,20 +1,20 @@
 <template>
   <cl-nav-action-group>
     <cl-nav-action-button
-        :button-type="buttonType"
-        :disabled="disabled"
-        :icon="icon"
-        :label="t(label)"
-        :tooltip="tooltip"
-        type="primary"
-        @click="() => $emit('click')"
+      :button-type="buttonType"
+      :disabled="disabled"
+      :icon="icon"
+      :label="t(label)"
+      :tooltip="tooltip"
+      type="primary"
+      @click="() => $emit('click')"
     />
   </cl-nav-action-group>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'NavActionBack',
@@ -25,7 +25,7 @@ export default defineComponent({
     },
     label: {
       type: String,
-      default: 'components.nav.actions.back'
+      default: 'components.nav.actions.back',
     },
     tooltip: {
       type: String,
@@ -34,26 +34,24 @@ export default defineComponent({
       type: [String, Array] as PropType<Icon>,
       default: () => {
         return ['fa', 'undo'];
-      }
+      },
     },
     type: {
       type: String as PropType<BasicType>,
-      default: 'primary'
+      default: 'primary',
     },
     size: {
       type: String as PropType<BasicSize>,
-      default: 'default'
+      default: 'default',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: [
-    'click',
-  ],
+  emits: ['click'],
   setup() {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     return {
       t,
@@ -62,6 +60,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

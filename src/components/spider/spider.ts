@@ -1,24 +1,22 @@
-import {useRoute} from 'vue-router';
-import {computed} from 'vue';
-import {Store} from 'vuex';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useSpiderService from '@/services/spider/spiderService';
-import {getDefaultFormComponentData} from '@/utils/form';
+import { getDefaultFormComponentData } from '@/utils/form';
 import {
   FORM_FIELD_TYPE_INPUT,
   FORM_FIELD_TYPE_INPUT_TEXTAREA,
   FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
-  FORM_FIELD_TYPE_SELECT
+  FORM_FIELD_TYPE_SELECT,
 } from '@/constants/form';
 import useProject from '@/components/project/project';
 import useRequest from '@/services/request';
-import {FILTER_OP_CONTAINS} from '@/constants/filter';
-import {getModeOptions} from '@/utils/task';
-import {translate} from '@/utils/i18n';
+import { FILTER_OP_CONTAINS } from '@/constants/filter';
+import { getModeOptions } from '@/utils/task';
+import { translate } from '@/utils/i18n';
 
-const {
-  getList,
-} = useRequest();
+const { getList } = useRequest();
 
 // form component data
 const formComponentData = getDefaultFormComponentData<Spider>();
@@ -31,9 +29,7 @@ const useSpider = (store: Store<RootStoreState>) => {
   const modeOptions = getModeOptions();
 
   // use project
-  const {
-    allProjectSelectOptions,
-  } = useProject(store);
+  const { allProjectSelectOptions } = useProject(store);
 
   // batch form fields
   const batchFormFields = computed<FormTableField[]>(() => [
@@ -91,26 +87,29 @@ const useSpider = (store: Store<RootStoreState>) => {
 
   // fetch data collections
   const fetchDataCollection = async (query: string) => {
-    const conditions = [{
-      key: 'name',
-      op: FILTER_OP_CONTAINS,
-      value: query,
-    }] as FilterConditionData[];
-    const res = await getList(`/data/collections`, {conditions});
+    const conditions = [
+      {
+        key: 'name',
+        op: FILTER_OP_CONTAINS,
+        value: query,
+      },
+    ] as FilterConditionData[];
+    const res = await getList(`/data/collections`, { conditions });
     return res.data;
   };
 
   // fetch data collection suggestions
   const fetchDataCollectionSuggestions = (query: string, cb: Function) => {
-    fetchDataCollection(query)
-      .then(data => {
-        cb(data?.map((d: DataCollection) => {
+    fetchDataCollection(query).then(data => {
+      cb(
+        data?.map((d: DataCollection) => {
           return {
             _id: d._id,
             value: d.name,
           };
-        }));
-      });
+        })
+      );
+    });
   };
 
   return {

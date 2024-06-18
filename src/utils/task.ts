@@ -2,11 +2,14 @@ import {
   TASK_MODE_ALL_NODES,
   TASK_MODE_RANDOM,
   TASK_MODE_SELECTED_NODE_TAGS,
-  TASK_MODE_SELECTED_NODES, TASK_STATUS_CANCELLED, TASK_STATUS_ERROR, TASK_STATUS_FINISHED,
+  TASK_MODE_SELECTED_NODES,
+  TASK_STATUS_CANCELLED,
+  TASK_STATUS_ERROR,
+  TASK_STATUS_FINISHED,
   TASK_STATUS_PENDING,
-  TASK_STATUS_RUNNING
+  TASK_STATUS_RUNNING,
 } from '@/constants/task';
-import {translate} from '@/utils/i18n';
+import { translate } from '@/utils/i18n';
 
 const t = translate;
 
@@ -36,9 +39,18 @@ export const isCancellable = (status: TaskStatus): boolean => {
 
 export const getModeOptions = (): SelectOption[] => {
   return [
-    {value: TASK_MODE_RANDOM, label: t('components.task.mode.label.randomNode')},
-    {value: TASK_MODE_ALL_NODES, label: t('components.task.mode.label.allNodes')},
-    {value: TASK_MODE_SELECTED_NODES, label: t('components.task.mode.label.selectedNodes')},
+    {
+      value: TASK_MODE_RANDOM,
+      label: t('components.task.mode.label.randomNode'),
+    },
+    {
+      value: TASK_MODE_ALL_NODES,
+      label: t('components.task.mode.label.allNodes'),
+    },
+    {
+      value: TASK_MODE_SELECTED_NODES,
+      label: t('components.task.mode.label.selectedNodes'),
+    },
     // {value: TASK_MODE_SELECTED_NODE_TAGS, label: t('components.task.mode.label.selectedTags')},
   ];
 };
@@ -52,11 +64,26 @@ export const getModeOptionsDict = (): Map<string, SelectOption> => {
 
 export const getStatusOptions = (): SelectOption[] => {
   return [
-    {label: t('components.task.status.label.pending'), value: TASK_STATUS_PENDING},
-    {label: t('components.task.status.label.running'), value: TASK_STATUS_RUNNING},
-    {label: t('components.task.status.label.finished'), value: TASK_STATUS_FINISHED},
-    {label: t('components.task.status.label.error'), value: TASK_STATUS_ERROR},
-    {label: t('components.task.status.label.cancelled'), value: TASK_STATUS_CANCELLED},
+    {
+      label: t('components.task.status.label.pending'),
+      value: TASK_STATUS_PENDING,
+    },
+    {
+      label: t('components.task.status.label.running'),
+      value: TASK_STATUS_RUNNING,
+    },
+    {
+      label: t('components.task.status.label.finished'),
+      value: TASK_STATUS_FINISHED,
+    },
+    {
+      label: t('components.task.status.label.error'),
+      value: TASK_STATUS_ERROR,
+    },
+    {
+      label: t('components.task.status.label.cancelled'),
+      value: TASK_STATUS_CANCELLED,
+    },
   ];
 };
 

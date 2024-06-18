@@ -1,4 +1,9 @@
-type NotificationStoreModule = BaseModule<NotificationStoreState, NotificationStoreGetters, NotificationStoreMutations, NotificationStoreActions>;
+type NotificationStoreModule = BaseModule<
+  NotificationStoreState,
+  NotificationStoreGetters,
+  NotificationStoreMutations,
+  NotificationStoreActions
+>;
 
 interface NotificationStoreState extends BaseStoreState<NotificationSetting> {
   triggersList: string[];
@@ -6,7 +11,8 @@ interface NotificationStoreState extends BaseStoreState<NotificationSetting> {
 
 type NotificationStoreGetters = BaseStoreGetters<NotificationSetting>;
 
-interface NotificationStoreMutations extends BaseStoreMutations<NotificationSetting> {
+interface NotificationStoreMutations
+  extends BaseStoreMutations<NotificationSetting> {
   setTriggersList: StoreMutation<NotificationStoreState, string[]>;
   resetTriggersList: StoreMutation<NotificationStoreState>;
   setTriggersEnabled: StoreMutation<NotificationStoreState, string[]>;
@@ -17,5 +23,5 @@ interface NotificationStoreMutations extends BaseStoreMutations<NotificationSett
   resetTemplateContent: StoreMutation<NotificationStoreState>;
 }
 
-interface NotificationStoreActions extends BaseStoreActions<NotificationSetting> {
-}
+interface NotificationStoreActions
+  extends BaseStoreActions<NotificationSetting> {}

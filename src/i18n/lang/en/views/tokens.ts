@@ -13,14 +13,14 @@ const tokens: LViewsTokens = {
     filter: {
       search: {
         placeholder: 'Search tokens',
-      }
-    }
+      },
+    },
   },
   messageBox: {
     prompt: {
       create: 'Please enter the name of token',
-    }
-  }
+    },
+  },
 };
 
 export default tokens;

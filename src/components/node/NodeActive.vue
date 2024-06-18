@@ -1,12 +1,12 @@
 <template>
   <el-tag :type="type" class="node-active">
-    <font-awesome-icon :icon="icon" class="icon"/>
+    <font-awesome-icon :icon="icon" class="icon" />
     <span>{{ label }}</span>
   </el-tag>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'NodeActive',
@@ -14,21 +14,21 @@ export default defineComponent({
     active: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-  setup(props: NodeActiveProps, {emit}) {
+  setup(props: NodeActiveProps, { emit }) {
     const type = computed<string>(() => {
-      const {active} = props;
+      const { active } = props;
       return active ? 'success' : 'info';
     });
 
     const label = computed<string>(() => {
-      const {active} = props;
+      const { active } = props;
       return active ? 'Online' : 'Offline';
     });
 
     const icon = computed<string[]>(() => {
-      const {active} = props;
+      const { active } = props;
       return active ? ['fa', 'check-circle'] : ['fa', 'times-circle'];
     });
 

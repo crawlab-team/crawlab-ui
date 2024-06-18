@@ -11,16 +11,23 @@
     class="result-list"
   />
 
-  <cl-result-cell-dialog/>
+  <cl-result-cell-dialog />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, h, onBeforeUnmount, PropType, watch} from 'vue';
-import {useStore} from 'vuex';
-import {TABLE_ACTION_CUSTOMIZE_COLUMNS} from '@/constants';
-import {emptyArrayFunc} from "@/utils";
-import ResultCell from "@/components/result/ResultCell.vue";
-import {getDataFieldIconByType} from "@/utils/dataFields";
+import {
+  computed,
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  PropType,
+  watch,
+} from 'vue';
+import { useStore } from 'vuex';
+import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants';
+import { emptyArrayFunc } from '@/utils';
+import ResultCell from '@/components/result/ResultCell.vue';
+import { getDataFieldIconByType } from '@/utils/dataFields';
 
 export default defineComponent({
   name: 'ResultList',
@@ -44,13 +51,13 @@ export default defineComponent({
     visibleButtons: {
       type: Array as PropType<BuiltInTableActionButtonName[]>,
       default: () => {
-        return [
-          TABLE_ACTION_CUSTOMIZE_COLUMNS,
-        ];
-      }
+        return [TABLE_ACTION_CUSTOMIZE_COLUMNS];
+      },
     },
     filter: {
-      type: [Array, Function] as PropType<FilterConditionData[] | (() => FilterConditionData[])>,
+      type: [Array, Function] as PropType<
+        FilterConditionData[] | (() => FilterConditionData[])
+      >,
       default: emptyArrayFunc,
     },
     displayAllFields: {
@@ -61,9 +68,7 @@ export default defineComponent({
     // store
     const ns = 'dataCollection';
     const store = useStore();
-    const {
-      dataCollection: state,
-    } = store.state as RootStoreState;
+    const { dataCollection: state } = store.state as RootStoreState;
 
     // data
     const tableData = computed<TableData<Result>>(() => state.resultTableData);
@@ -72,14 +77,12 @@ export default defineComponent({
     const tableTotal = computed<number>(() => state.resultTableTotal);
 
     // pagination
-    const tablePagination = computed<TablePagination>(() => state.resultTablePagination);
+    const tablePagination = computed<TablePagination>(
+      () => state.resultTablePagination
+    );
 
     // default fields
-    const defaultFields = [
-      '_id',
-      '_tid',
-      '_h',
-    ];
+    const defaultFields = ['_id', '_tid', '_h'];
 
     // data fields
     const dataFields = computed<DataField[]>(() => state.form?.fields || []);
@@ -102,9 +105,13 @@ export default defineComponent({
     const tableColumns = computed<TableColumns<Result>>(() => {
       const fields = store.getters[`${ns}/resultFields`] as DataField[];
       return fields
-        .filter(f => props.displayAllFields ? true : !defaultFields.includes(f.key as string))
+        .filter(f =>
+          props.displayAllFields
+            ? true
+            : !defaultFields.includes(f.key as string)
+        )
         .map(f => {
-          const {key} = f;
+          const { key } = f;
           return {
             key,
             label: key,
@@ -128,14 +135,15 @@ export default defineComponent({
       if (typeof props.filter === 'function') {
         return props.filter() as FilterConditionData[];
       }
-      return props.filter || [] as FilterConditionData[];
+      return props.filter || ([] as FilterConditionData[]);
     });
 
     // action functions
     const actionFunctions = {
-      setPagination: (pagination) => store.commit(`${ns}/setResultTablePagination`, pagination),
+      setPagination: pagination =>
+        store.commit(`${ns}/setResultTablePagination`, pagination),
       getList: async () => {
-        const {id} = props;
+        const { id } = props;
         if (!id) return;
         return store.dispatch(`${ns}/getResultData`, {
           id,
@@ -157,9 +165,7 @@ export default defineComponent({
       },
     } as ListLayoutActionFunctions;
 
-    const {
-      getList,
-    } = actionFunctions;
+    const { getList } = actionFunctions;
 
     watch(() => props.id, getList);
 

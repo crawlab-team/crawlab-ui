@@ -12,16 +12,16 @@
     :class-name="cls"
     @click="() => $emit('click')"
   >
-    <font-awesome-icon :icon="icon" :spin="spin"/>
+    <font-awesome-icon :icon="icon" :spin="spin" />
     <div v-if="badgeIcon" class="badge-icon">
-      <font-awesome-icon :icon="badgeIcon"/>
+      <font-awesome-icon :icon="badgeIcon" />
     </div>
   </cl-button>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {buttonProps} from './Button.vue';
+import { computed, defineComponent, PropType } from 'vue';
+import { buttonProps } from './Button.vue';
 
 export const faIconButtonProps = {
   icon: {
@@ -42,15 +42,11 @@ export const faIconButtonProps = {
 export default defineComponent({
   name: 'FaIconButton',
   props: faIconButtonProps,
-  emits: [
-    'click',
-  ],
+  emits: ['click'],
   setup(props: FaIconButtonProps) {
     const cls = computed<string>(() => {
-      const {className} = props;
-      const classes = [
-        'fa-icon-button',
-      ];
+      const { className } = props;
+      const classes = ['fa-icon-button'];
       if (className) classes.push(className);
       return classes.join(' ');
     });

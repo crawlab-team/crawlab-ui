@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref, watch, defineProps, defineEmits} from 'vue';
-import {useStore} from 'vuex';
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  defineProps,
+  defineEmits,
+} from 'vue';
+import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
-import {FILE_ROOT} from '@/constants/file';
+import { FILE_ROOT } from '@/constants/file';
 
 // components
 import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
-import {getLanguageByFileName} from "@/utils";
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
+import { getLanguageByFileName } from '@/utils';
 
 // tab content cache
 const editorTabContentCache = new Map<string, string>();
@@ -34,18 +42,21 @@ const emit = defineEmits<{
   (e: 'tab-click', tab: FileNavItem): void;
   (e: 'save-file', item: FileNavItem): void;
   (e: 'drop-files', files: InputFile[]): void;
-  (e: 'create-with-ai', name: string, sourceCode: string, item?: FileNavItem): void;
+  (
+    e: 'create-with-ai',
+    name: string,
+    sourceCode: string,
+    item?: FileNavItem
+  ): void;
 }>();
 
 // i18n
-const {t} = useI18n();
+const { t } = useI18n();
 
 // store
 const ns = props.ns;
 const store = useStore();
-const {
-  file: fileState
-} = store.state as RootStoreState;
+const { file: fileState } = store.state as RootStoreState;
 
 const fileEditor = ref<HTMLDivElement>();
 
@@ -57,7 +68,9 @@ const resizeObserver = new ResizeObserver(() => {
 
 const tabs = ref<FileNavItem[]>([]);
 
-const activeFileItem = computed<FileNavItem | undefined>(() => props.activeNavItem);
+const activeFileItem = computed<FileNavItem | undefined>(
+  () => props.activeNavItem
+);
 
 const themeColors = ref<monaco.editor.IColors>({});
 
@@ -96,7 +109,7 @@ const language = computed<string>(() => {
 });
 
 const content = computed<string>(() => {
-  const {content} = props;
+  const { content } = props;
   return content || '';
 });
 
@@ -147,7 +160,9 @@ const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
     .filter(d => {
       if (!fileSearchString.value) return true;
       if (!d.is_dir) {
-        return d.name?.toLowerCase().includes(fileSearchString.value.toLowerCase());
+        return d.name
+          ?.toLowerCase()
+          .includes(fileSearchString.value.toLowerCase());
       }
       if (d.children) {
         const children = getFilteredFiles(d.children);
@@ -170,7 +185,7 @@ const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
 };
 
 const files = computed<FileNavItem[]>(() => {
-  const {navItems} = props as FileEditorProps;
+  const { navItems } = props as FileEditorProps;
   const root: FileNavItem = {
     path: FILE_ROOT,
     name: FILE_ROOT,
@@ -357,7 +372,9 @@ const addSaveKeyMap = () => {
 const onToggleNavMenu = () => {
   navMenuCollapsed.value = !navMenuCollapsed.value;
 
-  sendEvent('click_file_editor_nav_menu_toggle', {collapse: !navMenuCollapsed.value});
+  sendEvent('click_file_editor_nav_menu_toggle', {
+    collapse: !navMenuCollapsed.value,
+  });
 };
 
 const update = async () => {
@@ -403,7 +420,11 @@ const initEditor = async () => {
   updateEditorContent();
 };
 
-const onCreateWithAi = (name: string, sourceCode: string, item?: FileNavItem) => {
+const onCreateWithAi = (
+  name: string,
+  sourceCode: string,
+  item?: FileNavItem
+) => {
   emit('create-with-ai', name, sourceCode, item);
 };
 
@@ -415,16 +436,12 @@ onUnmounted(() => {
   }
   editor?.dispose();
 });
-
 </script>
 
 <template>
   <div ref="fileEditor" class="file-editor">
     <div :class="navMenuCollapsed ? 'collapsed' : ''" class="nav-menu">
-      <div
-        :style="{...styles.default}"
-        class="nav-menu-top-bar"
-      >
+      <div :style="{ ...styles.default }" class="nav-menu-top-bar">
         <div class="left">
           <el-input
             v-model="fileSearchString"
@@ -433,27 +450,34 @@ onUnmounted(() => {
             }"
             class="search"
             clearable
-            :placeholder="t('components.file.editor.sidebar.search.placeholder')"
+            :placeholder="
+              t('components.file.editor.sidebar.search.placeholder')
+            "
             @change="onFileSearch"
           >
             <template #prefix>
               <el-icon class="el-input__icon">
-                <font-awesome-icon :icon="['fa', 'search']"/>
+                <font-awesome-icon :icon="['fa', 'search']" />
               </el-icon>
             </template>
           </el-input>
         </div>
         <div class="right">
-          <el-tooltip v-if="false" :content="t('components.file.editor.sidebar.settings')">
+          <el-tooltip
+            v-if="false"
+            :content="t('components.file.editor.sidebar.settings')"
+          >
             <span class="action-icon" @click="showSettings = true">
-              <div class="background"/>
-              <font-awesome-icon :icon="['fa', 'cog']"/>
+              <div class="background" />
+              <font-awesome-icon :icon="['fa', 'cog']" />
             </span>
           </el-tooltip>
-          <el-tooltip :content="t('components.file.editor.sidebar.toggle.hideFiles')">
+          <el-tooltip
+            :content="t('components.file.editor.sidebar.toggle.hideFiles')"
+          >
             <span class="action-icon" @click="onToggleNavMenu">
-              <div class="background"/>
-              <font-awesome-icon :icon="['fa', 'minus']"/>
+              <div class="background" />
+              <font-awesome-icon :icon="['fa', 'minus']" />
             </span>
           </el-tooltip>
         </div>
@@ -489,10 +513,12 @@ onUnmounted(() => {
         @tab-dragend="onTabDragEnd"
       >
         <template v-if="navMenuCollapsed" #prefix>
-          <el-tooltip :content="t('components.file.editor.sidebar.toggle.showFiles')">
+          <el-tooltip
+            :content="t('components.file.editor.sidebar.toggle.showFiles')"
+          >
             <span class="action-icon expand-files" @click="onToggleNavMenu">
-              <div class="background"/>
-              <font-awesome-icon :icon="['fa', 'bars']"/>
+              <div class="background" />
+              <font-awesome-icon :icon="['fa', 'bars']" />
             </span>
           </el-tooltip>
         </template>
@@ -501,12 +527,12 @@ onUnmounted(() => {
         ref="editorRef"
         :class="showEditor ? '' : 'hidden'"
         class="editor"
-        :style="{...styles.default}"
+        :style="{ ...styles.default }"
       />
       <div
         v-show="!showEditor"
         class="empty-content"
-        :style="{...styles.default}"
+        :style="{ ...styles.default }"
       >
         {{ t('components.file.editor.empty.placeholder') }}
       </div>
@@ -517,14 +543,11 @@ onUnmounted(() => {
           @hide="onShowMoreHide"
           @tab-click="onClickShowMoreContextMenuItem"
         >
-          <div
-            :style="{...styles.default}"
-            class="nav-tabs-suffix"
-          >
+          <div :style="{ ...styles.default }" class="nav-tabs-suffix">
             <el-tooltip :content="t('components.file.editor.sidebar.showMore')">
               <span class="action-icon" @click.prevent="onShowMoreShow">
-                <div class="background"/>
-                <font-awesome-icon :icon="['fa', 'angle-down']"/>
+                <div class="background" />
+                <font-awesome-icon :icon="['fa', 'angle-down']" />
               </span>
             </el-tooltip>
           </div>
@@ -533,10 +556,8 @@ onUnmounted(() => {
     </div>
   </div>
 
-  <cl-file-editor-settings-dialog/>
-  <cl-file-editor-create-with-ai-dialog
-    @create="onCreateWithAi"
-  />
+  <cl-file-editor-settings-dialog />
+  <cl-file-editor-create-with-ai-dialog @create="onCreateWithAi" />
 </template>
 
 <style lang="scss" scoped>

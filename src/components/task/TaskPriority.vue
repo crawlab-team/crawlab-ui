@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {getPriorityLabel} from '@/utils/task';
+import { computed, defineComponent, PropType } from 'vue';
+import { getPriorityLabel } from '@/utils/task';
 
 export default defineComponent({
   name: 'TaskPriority',
@@ -32,7 +32,7 @@ export default defineComponent({
     },
   },
   emits: ['click'],
-  setup(props: TaskPriorityProps, {emit}) {
+  setup(props: TaskPriorityProps, { emit }) {
     const data = computed<TagData>(() => {
       const priority = props.priority as number;
 
@@ -71,6 +71,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

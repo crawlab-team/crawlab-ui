@@ -1,4 +1,4 @@
-import {ComputedRef, Ref} from 'vue';
+import { ComputedRef, Ref } from 'vue';
 import Table from '@/components/table/Table.vue';
 
 declare global {
@@ -73,7 +73,11 @@ declare global {
     getAll: () => Promise<void>;
     deleteList: (ids: string[]) => Promise<Response | void>;
     deleteByIdConfirm: (row: BaseModel) => Promise<void>;
-    onHeaderChange?: (column: TableColumn, sort: SortData, filter: TableHeaderDialogFilterData) => Promise<void>;
+    onHeaderChange?: (
+      column: TableColumn,
+      sort: SortData,
+      filter: TableHeaderDialogFilterData
+    ) => Promise<void>;
   }
 
   type ListActionButtonDisabledFunc = (table: typeof Table) => boolean;

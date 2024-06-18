@@ -63,7 +63,7 @@
       :label="t('components.schedule.form.cronInfo')"
     >
       <div class="nav-btn">
-        <cl-schedule-cron :cron="form.cron" icon-only/>
+        <cl-schedule-cron :cron="form.cron" icon-only />
       </div>
     </cl-form-item>
     <!-- ./Row -->
@@ -146,7 +146,8 @@
     >
       <cl-switch
         v-locate="'enabled'"
-        v-model="form.enabled" @change="onEnabledChange"
+        v-model="form.enabled"
+        @change="onEnabledChange"
       />
     </cl-form-item>
     <!-- ./Row -->
@@ -184,47 +185,42 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useSchedule from '@/components/schedule/schedule';
 import useSpider from '@/components/spider/spider';
-import {TASK_MODE_SELECTED_NODE_TAGS, TASK_MODE_SELECTED_NODES} from '@/constants/task';
+import {
+  TASK_MODE_SELECTED_NODE_TAGS,
+  TASK_MODE_SELECTED_NODES,
+} from '@/constants/task';
 import useNode from '@/components/node/node';
-import {ElMessage} from 'element-plus';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
-import useTask from "@/components/task/task";
+import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
+import useTask from '@/components/task/task';
 
 export default defineComponent({
   name: 'ScheduleForm',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'schedule';
     const store = useStore();
 
     // use node
-    const {
-      allListSelectOptions: allNodeSelectOptions,
-      allTags: allNodeTags,
-    } = useNode(store);
+    const { allListSelectOptions: allNodeSelectOptions, allTags: allNodeTags } =
+      useNode(store);
 
     // use spider
-    const {
-      allListSelectOptions: allSpiderSelectOptions,
-    } = useSpider(store);
+    const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
 
     // use task
-    const {
-      priorityOptions,
-    } = useTask(store);
+    const { priorityOptions } = useTask(store);
 
     // use schedule
-    const {
-      form,
-    } = useSchedule(store);
+    const { form } = useSchedule(store);
 
     // on enabled change
     const onEnabledChange = async (value: boolean) => {
@@ -236,7 +232,9 @@ export default defineComponent({
         ElMessage.success(t('components.schedule.message.success.disable'));
       }
 
-      value ? sendEvent('click_schedule_form_enable') : sendEvent('click_schedule_form_disable');
+      value
+        ? sendEvent('click_schedule_form_enable')
+        : sendEvent('click_schedule_form_disable');
 
       await store.dispatch(`${ns}/getList`);
     };
@@ -256,5 +254,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

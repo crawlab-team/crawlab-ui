@@ -20,13 +20,32 @@
       </cl-form-item>
       <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.mode')">
         <el-select v-model="mode">
-          <el-option value="all" :label="t('views.env.deps.dependency.form.allNodes')"/>
-          <el-option value="selected-nodes" :label="t('views.env.deps.dependency.form.selectedNodes')"/>
+          <el-option
+            value="all"
+            :label="t('views.env.deps.dependency.form.allNodes')"
+          />
+          <el-option
+            value="selected-nodes"
+            :label="t('views.env.deps.dependency.form.selectedNodes')"
+          />
         </el-select>
       </cl-form-item>
-      <cl-form-item v-if="mode === 'selected-nodes'" :span="4" :label="t('views.env.deps.dependency.form.selectedNodes')">
-        <el-select v-model="nodeIds" multiple :placeholder="t('views.env.deps.dependency.form.selectedNodes')">
-          <el-option v-for="n in nodes" :key="n.key" :value="n._id" :label="n.name"/>
+      <cl-form-item
+        v-if="mode === 'selected-nodes'"
+        :span="4"
+        :label="t('views.env.deps.dependency.form.selectedNodes')"
+      >
+        <el-select
+          v-model="nodeIds"
+          multiple
+          :placeholder="t('views.env.deps.dependency.form.selectedNodes')"
+        >
+          <el-option
+            v-for="n in nodes"
+            :key="n.key"
+            :value="n._id"
+            :label="n.name"
+          />
         </el-select>
       </cl-form-item>
     </cl-form>
@@ -34,8 +53,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
-import {translate} from '@/utils';
+import { defineComponent, ref } from 'vue';
+import { translate } from '@/utils';
 
 const t = translate;
 
@@ -55,17 +74,14 @@ export default defineComponent({
       type: Array,
       default: () => {
         return [];
-      }
+      },
     },
     loading: {
       type: Boolean,
     },
   },
-  emits: [
-    'confirm',
-    'close',
-  ],
-  setup(props, {emit}) {
+  emits: ['confirm', 'close'],
+  setup(props, { emit }) {
     const mode = ref('all');
     const nodeIds = ref([]);
 

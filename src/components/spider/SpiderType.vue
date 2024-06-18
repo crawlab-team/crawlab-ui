@@ -1,17 +1,20 @@
 <template>
   <cl-tag
-      :icon="data.icon"
-      :label="data.label"
-      :tooltip="data.tooltip"
-      :type="data.type"
-      width="100px"
-      @click="$emit('click')"
+    :icon="data.icon"
+    :label="data.label"
+    :tooltip="data.tooltip"
+    :type="data.type"
+    width="100px"
+    @click="$emit('click')"
   />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {SPIDER_TYPE_CONFIGURABLE, SPIDER_TYPE_CUSTOMIZED} from '@/constants/spider';
+import { computed, defineComponent, PropType } from 'vue';
+import {
+  SPIDER_TYPE_CONFIGURABLE,
+  SPIDER_TYPE_CUSTOMIZED,
+} from '@/constants/spider';
 
 export default defineComponent({
   name: 'SpiderType',
@@ -19,12 +22,12 @@ export default defineComponent({
     type: {
       type: String as PropType<SpiderType>,
       default: SPIDER_TYPE_CUSTOMIZED,
-    }
+    },
   },
   emits: ['click'],
-  setup(props: SpiderTypeProps, {emit}) {
+  setup(props: SpiderTypeProps, { emit }) {
     const data = computed<TagData>(() => {
-      const {type} = props;
+      const { type } = props;
       switch (type) {
         case SPIDER_TYPE_CUSTOMIZED:
           return {
@@ -57,6 +60,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -76,9 +76,11 @@ const ds: LComponentsDataSource = {
       hosts: 'Hosts',
     },
     tips: {
-      standard: 'Standard connect settings, normally used for single instance configurations',
+      standard:
+        'Standard connect settings, normally used for single instance configurations',
       url: 'Connect settings with URL, suitable for more complex connect settings',
-      hosts: 'Hosts connect settings, normally used for multiple instances or cluster configurations',
+      hosts:
+        'Hosts connect settings, normally used for multiple instances or cluster configurations',
     },
   },
 };

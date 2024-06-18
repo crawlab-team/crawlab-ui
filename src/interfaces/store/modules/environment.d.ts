@@ -1,5 +1,10 @@
 export declare global {
-  type EnvironmentStoreModule = BaseModule<EnvironmentStoreState, EnvironmentStoreGetters, EnvironmentStoreMutations, EnvironmentStoreActions>;
+  type EnvironmentStoreModule = BaseModule<
+    EnvironmentStoreState,
+    EnvironmentStoreGetters,
+    EnvironmentStoreMutations,
+    EnvironmentStoreActions
+  >;
 
   type EnvironmentStoreState = BaseStoreState<Environment>;
 

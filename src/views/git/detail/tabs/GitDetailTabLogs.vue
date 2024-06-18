@@ -13,27 +13,23 @@
 </template>
 
 <script setup lang="ts">
-import {computed, h, onBeforeMount, ref, watch} from 'vue';
-import {useStore} from 'vuex';
+import { computed, h, onBeforeMount, ref, watch } from 'vue';
+import { useStore } from 'vuex';
 import Time from '@/components/time/Time.vue';
 import Tag from '@/components/tag/Tag.vue';
-import {GIT_REF_TYPE_BRANCH} from '@/constants/git';
-import {TABLE_ACTION_CUSTOMIZE_COLUMNS} from '@/constants/table';
-import {useI18n} from 'vue-i18n';
-import useGitDetail from "@/views/git/detail/useGitDetail";
+import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
+import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants/table';
+import { useI18n } from 'vue-i18n';
+import useGitDetail from '@/views/git/detail/useGitDetail';
 // i18n
-const {t} = useI18n();
+const { t } = useI18n();
 
 // store
 const ns = 'git';
 const store = useStore();
-const {
-  git: state,
-} = store.state as RootStoreState;
+const { git: state } = store.state as RootStoreState;
 
-const {
-  activeId,
-} = useGitDetail();
+const { activeId } = useGitDetail();
 
 // table pagination
 const tablePagination = ref<TablePagination>({
@@ -42,16 +38,20 @@ const tablePagination = ref<TablePagination>({
 });
 
 const onPaginationChange = (pagination: TablePagination) => {
-  tablePagination.value = {...pagination};
+  tablePagination.value = { ...pagination };
 };
 
 // all table data
-const allTableData = computed<TableData<GitRef>>(() => state.gitData?.logs || []);
+const allTableData = computed<TableData<GitRef>>(
+  () => state.gitData?.logs || []
+);
 
 // table data
 const tableData = computed<TableData<GitLog>>(() => {
-  const {page, size} = tablePagination.value;
-  return allTableData.value.filter((_, i) => (i >= (page - 1) * size) && (i < page * size));
+  const { page, size } = tablePagination.value;
+  return allTableData.value.filter(
+    (_, i) => i >= (page - 1) * size && i < page * size
+  );
 });
 
 // table columns
@@ -63,13 +63,18 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
       width: '120',
       icon: ['fa', 'tags'],
       value: (row: GitLog) => {
-        return row.refs?.map(r => h(Tag, {
-          label: r.name,
-          icon: r.type === GIT_REF_TYPE_BRANCH ? ['fa', 'code-branch'] : ['fa', 'tag'],
-          effect: r.type === GIT_REF_TYPE_BRANCH ? 'dark' : 'light',
-          type: r.type === GIT_REF_TYPE_BRANCH ? 'primary' : 'success',
-          tooltip: `${r.type}: ${r.name}`
-        } as TagProps));
+        return row.refs?.map(r =>
+          h(Tag, {
+            label: r.name,
+            icon:
+              r.type === GIT_REF_TYPE_BRANCH
+                ? ['fa', 'code-branch']
+                : ['fa', 'tag'],
+            effect: r.type === GIT_REF_TYPE_BRANCH ? 'dark' : 'light',
+            type: r.type === GIT_REF_TYPE_BRANCH ? 'primary' : 'success',
+            tooltip: `${r.type}: ${r.name}`,
+          } as TagProps)
+        );
       },
     },
     {
@@ -84,7 +89,7 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
       width: '250',
       icon: ['fa', 'user'],
       value: (row: GitLog) => {
-        return `${row.author_name}${row.author_email ? (' (' + row.author_email + ')') : ''}`;
+        return `${row.author_name}${row.author_email ? ' (' + row.author_email + ')' : ''}`;
       },
     },
     {
@@ -94,14 +99,21 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
       icon: ['fa', 'clock'],
       fixed: 'right',
       value: (row: GitLog) => {
-        return h(Time, {time: row.timestamp, ago: false, format: 'YYYY-MM-DD hh:mm:ss A'});
-      }
-    }
+        return h(Time, {
+          time: row.timestamp,
+          ago: false,
+          format: 'YYYY-MM-DD hh:mm:ss A',
+        });
+      },
+    },
   ] as TableColumns<GitLog>;
 });
 
-watch(() => activeId.value, () => store.dispatch(`${ns}/getGit`, {id: activeId.value}));
-onBeforeMount(() => store.dispatch(`${ns}/getGit`, {id: activeId.value}));
+watch(
+  () => activeId.value,
+  () => store.dispatch(`${ns}/getGit`, { id: activeId.value })
+);
+onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </script>
 
 <style scoped lang="scss">

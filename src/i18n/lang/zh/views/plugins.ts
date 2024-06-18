@@ -15,7 +15,7 @@ const plugins: LViewsPlugins = {
     filter: {
       search: {
         placeholder: '搜索插件',
-      }
+      },
     },
     install: {
       label: '安装插件',
@@ -24,8 +24,8 @@ const plugins: LViewsPlugins = {
     settings: {
       label: '设置',
       tooltip: '查看或更新全局插件设置',
-    }
-  }
+    },
+  },
 };
 
 export default plugins;

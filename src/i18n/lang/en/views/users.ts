@@ -4,7 +4,7 @@ const users: LViewsUsers = {
       username: 'Username',
       email: 'Email',
       role: 'Role',
-    }
+    },
   },
   navActions: {
     new: {
@@ -14,23 +14,23 @@ const users: LViewsUsers = {
     filter: {
       search: {
         placeholder: 'Search users',
-      }
-    }
+      },
+    },
   },
   navActionsExtra: {
     filter: {
       select: {
         role: {
           label: 'Role',
-        }
+        },
       },
       search: {
         email: {
           placeholder: 'Search email',
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 
 export default users;

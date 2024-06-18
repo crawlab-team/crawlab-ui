@@ -23,7 +23,7 @@ const spider: LComponentsSpider = {
         export: 'Export Files',
         createWithAi: 'Create with AI',
         createWithAiDisabled: 'Create with AI (available in Crawlab Pro)',
-      }
+      },
     },
     data: {
       tooltip: {
@@ -37,7 +37,7 @@ const spider: LComponentsSpider = {
           fields: 'Configure Deduplication Fields',
         },
       },
-    }
+    },
   },
   stat: {
     totalTasks: 'Total Tasks',
@@ -49,13 +49,13 @@ const spider: LComponentsSpider = {
   dialog: {
     run: {
       title: 'Run Spider',
-    }
+    },
   },
   message: {
     success: {
       scheduleTask: 'Scheduled task successfully',
-    }
-  }
+    },
+  },
 };
 
 export default spider;

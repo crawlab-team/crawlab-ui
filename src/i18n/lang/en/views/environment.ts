@@ -13,14 +13,14 @@ const environments: LViewsEnvironments = {
     filter: {
       search: {
         placeholder: 'Search environment variables',
-      }
-    }
+      },
+    },
   },
   messageBox: {
     prompt: {
       create: 'Please enter the key of environment variable',
-    }
-  }
+    },
+  },
 };
 
 export default environments;

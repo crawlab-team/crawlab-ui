@@ -5,14 +5,14 @@
         {{ title }}
       </div>
     </div>
-    <cl-line-chart :config="config"/>
+    <cl-line-chart :config="config" />
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {lineChartProps} from './LineChart.vue';
-import {plainClone} from '@/utils/object';
+import { computed, defineComponent } from 'vue';
+import { lineChartProps } from './LineChart.vue';
+import { plainClone } from '@/utils/object';
 
 export default defineComponent({
   name: 'MetricLineChart',
@@ -20,9 +20,9 @@ export default defineComponent({
     ...lineChartProps,
     metric: {
       type: String,
-    }
+    },
   },
-  setup(props: MetricLineChartProps, {emit}) {
+  setup(props: MetricLineChartProps, { emit }) {
     const config = computed<EChartsConfig>(() => {
       const config = plainClone(props.config);
       return Object.assign(config || {}, {
@@ -37,8 +37,8 @@ export default defineComponent({
           },
           yAxis: {
             scale: true,
-          }
-        }
+          },
+        },
       }) as EChartsConfig;
     });
 
@@ -48,7 +48,7 @@ export default defineComponent({
       config,
       title,
     };
-  }
+  },
 });
 </script>
 

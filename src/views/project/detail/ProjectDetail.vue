@@ -1,9 +1,9 @@
 <template>
-  <cl-detail-layout store-namespace="project"/>
+  <cl-detail-layout store-namespace="project" />
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ProjectDetail',
@@ -13,6 +13,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -12,8 +12,8 @@ const table: LComponentsTable = {
     title: '表格列自定义',
     titles: {
       left: '可用',
-      right: '已选'
-    }
+      right: '已选',
+    },
   },
   header: {
     sort: {

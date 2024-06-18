@@ -1,11 +1,14 @@
-import {Store} from 'vuex';
-import {plainClone} from '@/utils/object';
-import {computed, Ref} from 'vue';
+import { Store } from 'vuex';
+import { plainClone } from '@/utils/object';
+import { computed, Ref } from 'vue';
 
-export const useFormTable = (ns: ListStoreNamespace, store: Store<RootStoreState>, services: Services<BaseModel>, data: FormComponentData<BaseModel>) => {
-  const {
-    formTableFieldRefsMap,
-  } = data;
+export const useFormTable = (
+  ns: ListStoreNamespace,
+  store: Store<RootStoreState>,
+  services: Services<BaseModel>,
+  data: FormComponentData<BaseModel>
+) => {
+  const { formTableFieldRefsMap } = data;
 
   // state
   const state = store.state[ns];

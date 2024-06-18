@@ -1,17 +1,8 @@
 import useRequest from '@/services/request';
-import {debounce} from "@/utils";
+import { debounce } from '@/utils';
 
-const {
-  get,
-  put,
-  post,
-  del,
-  getList,
-  getAll,
-  putList,
-  postList,
-  delList,
-} = useRequest();
+const { get, put, post, del, getList, getAll, putList, postList, delList } =
+  useRequest();
 
 export const useService = <T = any>(endpoint: string): Services<T> => {
   return {
@@ -37,10 +28,14 @@ export const useService = <T = any>(endpoint: string): Services<T> => {
       return await postList<T>(`${endpoint}/batch`, data);
     },
     updateList: async (ids: string[], data: T, fields: string[]) => {
-      return await putList<T>(`${endpoint}`, {ids, data: JSON.stringify(data), fields});
+      return await putList<T>(`${endpoint}`, {
+        ids,
+        data: JSON.stringify(data),
+        fields,
+      });
     },
     deleteList: async (ids: string[]) => {
-      return await delList(`${endpoint}`, {ids});
+      return await delList(`${endpoint}`, { ids });
     },
   };
 };

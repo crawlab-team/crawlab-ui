@@ -11,16 +11,16 @@
     no-batch
   >
     <template #default>
-      <cl-data-source-form/>
+      <cl-data-source-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import DataSourceForm from '@/components/ds/DataSourceForm.vue';
 import useDataSource from '@/components/ds/useDataSource';
-import {getStore} from "@/store";
+import { getStore } from '@/store';
 
 export default defineComponent({
   name: 'CreateEditDataSourceDialog',
@@ -35,6 +35,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

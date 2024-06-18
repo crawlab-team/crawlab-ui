@@ -27,7 +27,10 @@
       :label="t('components.project.form.tags')"
       prop="tags"
     >
-      <cl-tag-input v-model="form.tags" :disabled="isFormItemDisabled('tags')"/>
+      <cl-tag-input
+        v-model="form.tags"
+        :disabled="isFormItemDisabled('tags')"
+      />
     </cl-form-item>
     <cl-form-item
       :span="4"
@@ -46,16 +49,16 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useProject from '@/components/project/project';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'ProjectForm',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const store = useStore();
@@ -68,6 +71,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

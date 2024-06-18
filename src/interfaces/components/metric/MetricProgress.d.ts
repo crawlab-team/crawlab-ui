@@ -19,7 +19,7 @@ type MetricProgressType = 'line' | 'circle' | 'dashboard';
 type MetricProgressStrokeLinecap = 'butt' | 'round' | 'square';
 type MetricProgressFormat = (percentage: number | null) => string;
 type MetricProgressStatus =
-  MetricProgressStatusData
+  | MetricProgressStatusData
   | ((percentage: number | null) => MetricProgressStatusData | undefined);
 
 interface MetricProgressLabel {

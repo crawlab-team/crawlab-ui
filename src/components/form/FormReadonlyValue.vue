@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'FormReadonlyValue',
@@ -15,7 +15,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props: FormReadonlyValueProps, {emit}) {
+  setup(props: FormReadonlyValueProps, { emit }) {
     return {};
   },
 });

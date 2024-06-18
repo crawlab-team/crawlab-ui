@@ -1,13 +1,18 @@
-import {inject, Ref, ref, SetupContext} from 'vue';
-import {ElMessageBox} from 'element-plus';
-import {voidAsyncFunc} from '@/utils/func';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
+import { inject, Ref, ref, SetupContext } from 'vue';
+import { ElMessageBox } from 'element-plus';
+import { voidAsyncFunc } from '@/utils/func';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
 
 const t = translate;
 
-const useAction = (props: TableProps, ctx: SetupContext, table: Ref, actionFunctions?: ListLayoutActionFunctions) => {
-  const {emit} = ctx;
+const useAction = (
+  props: TableProps,
+  ctx: SetupContext,
+  table: Ref,
+  actionFunctions?: ListLayoutActionFunctions
+) => {
+  const { emit } = ctx;
 
   // store context
   const storeContext = inject<ListStoreContext<BaseModel>>('store-context');
@@ -52,7 +57,8 @@ const useAction = (props: TableProps, ctx: SetupContext, table: Ref, actionFunct
         type: 'warning',
         confirmButtonText: t('common.actions.delete'),
         confirmButtonClass: 'el-button--danger',
-      });
+      }
+    );
     if (!res) return;
     const ids = selection.value.map(d => d._id as string);
     await deleteList(ids);

@@ -10,13 +10,13 @@
     :batch-form-fields="batchFormFields"
   >
     <template #default>
-      <cl-project-form/>
+      <cl-project-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
 <script lang="ts" setup>
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 import useProject from '@/components/project/project';
 
 // store
@@ -34,6 +34,4 @@ const {
 } = useProject(store);
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

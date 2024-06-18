@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, inject} from 'vue';
+import { defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'DraggableItemContent',
@@ -11,10 +11,16 @@ export default defineComponent({
   },
   setup(props) {
     return () => {
-      const {item} = props;
+      const { item } = props;
       const content = inject<DraggableListContext>('list');
-      if (!content || !content.ctx || !content.ctx.slots || !content.ctx.slots.default) return '';
-      return content.ctx.slots.default({item});
+      if (
+        !content ||
+        !content.ctx ||
+        !content.ctx.slots ||
+        !content.ctx.slots.default
+      )
+        return '';
+      return content.ctx.slots.default({ item });
     };
   },
 });

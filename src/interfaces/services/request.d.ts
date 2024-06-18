@@ -15,7 +15,8 @@ export declare global {
     fields: string[];
   }
 
-  type BatchRequestPayloadWithJsonStringData = BatchRequestPayloadWithData<string>;
+  type BatchRequestPayloadWithJsonStringData =
+    BatchRequestPayloadWithData<string>;
 
   interface FileRequestPayload {
     id?: string;
@@ -27,7 +28,7 @@ export declare global {
 
   interface SaveFilesRequestPayload {
     id: string;
-    files: { path: string, file: File }[];
+    files: { path: string; file: File }[];
   }
 
   interface Response {

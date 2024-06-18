@@ -1,10 +1,10 @@
 <template>
   <div class="tag-detail-tab-overview">
-    <cl-tag-form/>
+    <cl-tag-form />
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'TagDetailTabOverview',

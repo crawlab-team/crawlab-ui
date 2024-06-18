@@ -1,13 +1,11 @@
-import {Router} from 'vue-router';
-import {getToken} from '@/utils/auth';
-import {ElNotification} from 'element-plus';
-import {translate} from '@/utils';
+import { Router } from 'vue-router';
+import { getToken } from '@/utils/auth';
+import { ElNotification } from 'element-plus';
+import { translate } from '@/utils';
 
 const t = translate;
 
-export const ANOMALOUS_ROUTES = [
-  '/login',
-];
+export const ANOMALOUS_ROUTES = ['/login'];
 
 export const initRouterAuth = (router: Router, options?: RouterAuthOptions) => {
   router.beforeEach((to, from, next) => {
@@ -20,8 +18,10 @@ export const initRouterAuth = (router: Router, options?: RouterAuthOptions) => {
     }
 
     // validate
-    if (!getToken() ||
-      (options?.validateFn && !options?.validateFn?.(to, from))) {
+    if (
+      !getToken() ||
+      (options?.validateFn && !options?.validateFn?.(to, from))
+    ) {
       ElNotification({
         title: t('common.status.unauthorized'),
         message: t('common.notification.loggedOut'),

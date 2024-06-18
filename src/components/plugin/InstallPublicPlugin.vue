@@ -27,31 +27,30 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onBeforeMount, onBeforeUnmount, ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useStore} from 'vuex';
+import { defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
 import usePlugin from '@/components/plugin/plugin';
-import {ElMessageBox} from 'element-plus';
+import { ElMessageBox } from 'element-plus';
 import {
-  PLUGIN_INSTALL_TYPE_PUBLIC, PLUGIN_STATUS_ERROR,
+  PLUGIN_INSTALL_TYPE_PUBLIC,
+  PLUGIN_STATUS_ERROR,
   PLUGIN_STATUS_INSTALLING,
   PLUGIN_STATUS_RUNNING,
-  PLUGIN_STATUS_STOPPED
+  PLUGIN_STATUS_STOPPED,
 } from '@/constants/plugin';
 
 export default defineComponent({
   name: 'InstallPublicPlugin',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'plugin';
     const store = useStore();
 
-    const {
-      allPluginDictByFullName,
-    } = usePlugin(store);
+    const { allPluginDictByFullName } = usePlugin(store);
 
     const loadingPublicPlugins = ref(false);
     const loadingActivePublicPluginInfo = ref(false);
@@ -72,7 +71,7 @@ export default defineComponent({
 
     const onInstallPlugin = async (p: PublicPlugin) => {
       isClickingInstall.value = true;
-      setTimeout(() => isClickingInstall.value = false, 100);
+      setTimeout(() => (isClickingInstall.value = false), 100);
 
       await ElMessageBox.confirm(
         t('common.messageBox.confirm.install'),

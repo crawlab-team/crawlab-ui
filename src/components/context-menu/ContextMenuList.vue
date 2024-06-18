@@ -8,8 +8,15 @@
     >
       <span class="prefix">
         <template v-if="item.icon">
-          <font-awesome-icon v-if="Array.isArray(item.icon)" :icon="item.icon"/>
-          <cl-atom-material-icon v-else-if="typeof item.icon === 'string'" :is-dir="false" :name="item.icon"/>
+          <font-awesome-icon
+            v-if="Array.isArray(item.icon)"
+            :icon="item.icon"
+          />
+          <cl-atom-material-icon
+            v-else-if="typeof item.icon === 'string'"
+            :is-dir="false"
+            :name="item.icon"
+          />
         </template>
       </span>
       <span class="title">
@@ -20,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'ContextMenuList',
@@ -32,7 +39,7 @@ export default defineComponent({
       },
     },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const onClick = (item: ContextMenuItem) => {
       if (!item.action) return;
       item.action();

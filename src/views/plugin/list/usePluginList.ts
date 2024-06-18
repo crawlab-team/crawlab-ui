@@ -1,35 +1,40 @@
 import useList from '@/layouts/content/list/list';
-import {useStore} from 'vuex';
-import {getDefaultUseListOptions, setupListComponent} from '@/utils/list';
-import {computed, h, onBeforeMount} from 'vue';
-import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
-import {ElMessage, ElMessageBox} from 'element-plus';
+import { useStore } from 'vuex';
+import { getDefaultUseListOptions, setupListComponent } from '@/utils/list';
+import { computed, h, onBeforeMount } from 'vue';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import NavLink from '@/components/nav/NavLink.vue';
-import {useRouter} from 'vue-router';
+import { useRouter } from 'vue-router';
 import useRequest from '@/services/request';
 import {
   PLUGIN_DEPLOY_MODE_ALL,
-  PLUGIN_DEPLOY_MODE_MASTER, PLUGIN_STATUS_ERROR,
+  PLUGIN_DEPLOY_MODE_MASTER,
+  PLUGIN_STATUS_ERROR,
   PLUGIN_STATUS_INSTALL_ERROR,
   PLUGIN_STATUS_INSTALLING,
   PLUGIN_STATUS_RUNNING,
-  PLUGIN_STATUS_STOPPED
+  PLUGIN_STATUS_STOPPED,
 } from '@/constants/plugin';
 import PluginStatus from '@/components/plugin/PluginStatus.vue';
 import PluginStatusMultiNode from '@/components/plugin/PluginStatusMultiNode.vue';
 import PluginPid from '@/components/plugin/PluginPid.vue';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
-import {ACTION_ADD, ACTION_DELETE, ACTION_START, ACTION_STOP, ACTION_VIEW} from '@/constants';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
+import {
+  ACTION_ADD,
+  ACTION_DELETE,
+  ACTION_START,
+  ACTION_STOP,
+  ACTION_VIEW,
+} from '@/constants';
 
 type Plugin = CPlugin;
 
 // i18n
 const t = translate;
 
-const {
-  post,
-} = useRequest();
+const { post } = useRequest();
 
 const usePluginList = () => {
   // router
@@ -38,20 +43,14 @@ const usePluginList = () => {
   // store
   const ns = 'plugin';
   const store = useStore<RootStoreState>();
-  const {commit} = store;
-  const {
-    plugin: state,
-  } = store.state;
+  const { commit } = store;
+  const { plugin: state } = store.state;
 
   // use list
-  const {
-    actionFunctions,
-  } = useList<Plugin>(ns, store);
+  const { actionFunctions } = useList<Plugin>(ns, store);
 
   // action functions
-  const {
-    deleteByIdConfirm,
-  } = actionFunctions;
+  const { deleteByIdConfirm } = actionFunctions;
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -71,9 +70,9 @@ const usePluginList = () => {
             commit(`${ns}/showDialog`, 'install');
 
             sendEvent('click_plugin_list_install');
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       name: 'settings',
@@ -90,10 +89,10 @@ const usePluginList = () => {
             commit(`${ns}/showDialog`, 'settings');
 
             sendEvent('click_plugin_list_settings');
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    },
   ]);
 
   // table columns
@@ -103,10 +102,11 @@ const usePluginList = () => {
       label: t('views.plugins.table.columns.name'),
       icon: ['fa', 'font'],
       width: '250',
-      value: (row: Plugin) => h(NavLink, {
-        path: `/plugins/${row._id}`,
-        label: row.name || row.full_name || row._id,
-      }),
+      value: (row: Plugin) =>
+        h(NavLink, {
+          path: `/plugins/${row._id}`,
+          label: row.name || row.full_name || row._id,
+        }),
       hasSort: true,
       hasFilter: true,
       allowFilterSearch: true,
@@ -117,11 +117,16 @@ const usePluginList = () => {
       icon: ['fa', 'check-square'],
       width: '120',
       value: (row: Plugin) => {
-        if (row.deploy_mode === PLUGIN_DEPLOY_MODE_MASTER || row.status?.length === 1) {
+        if (
+          row.deploy_mode === PLUGIN_DEPLOY_MODE_MASTER ||
+          row.status?.length === 1
+        ) {
           const status = row.status?.[0];
-          return h(PluginStatus, {...status} as PluginStatusProps);
+          return h(PluginStatus, { ...status } as PluginStatusProps);
         } else if (row.deploy_mode === PLUGIN_DEPLOY_MODE_ALL) {
-          return h(PluginStatusMultiNode, {status: row.status} as PluginStatusMultiNodeProps);
+          return h(PluginStatusMultiNode, {
+            status: row.status,
+          } as PluginStatusMultiNodeProps);
         }
       },
     },
@@ -131,7 +136,7 @@ const usePluginList = () => {
       icon: ['fa', 'microchip'],
       width: '120',
       value: (row: Plugin) => {
-        return h(PluginPid, {status: row.status} as PluginPidProps);
+        return h(PluginPid, { status: row.status } as PluginPidProps);
       },
     },
     {
@@ -156,7 +161,7 @@ const usePluginList = () => {
             type: 'success',
             icon: ['fa', 'play'],
             tooltip: t('common.actions.start'),
-            onClick: async (row) => {
+            onClick: async row => {
               sendEvent('click_plugin_list_actions_start');
 
               await ElMessageBox.confirm(
@@ -166,7 +171,7 @@ const usePluginList = () => {
                   type: 'warning',
                   confirmButtonClass: 'start-plugin-confirm-btn',
                   cancelButtonClass: 'start-plugin-cancel-btn',
-                },
+                }
               );
 
               sendEvent('click_plugin_list_actions_start_confirm');
@@ -183,11 +188,13 @@ const usePluginList = () => {
                 ].includes(row.status[0].status);
               } else if (row.status) {
                 for (const s of row.status) {
-                  if ([
-                    PLUGIN_STATUS_INSTALL_ERROR,
-                    PLUGIN_STATUS_STOPPED,
-                    PLUGIN_STATUS_ERROR,
-                  ].includes(s.status)) {
+                  if (
+                    [
+                      PLUGIN_STATUS_INSTALL_ERROR,
+                      PLUGIN_STATUS_STOPPED,
+                      PLUGIN_STATUS_ERROR,
+                    ].includes(s.status)
+                  ) {
                     return false;
                   }
                 }
@@ -204,7 +211,7 @@ const usePluginList = () => {
             size: 'small',
             icon: ['fa', 'stop'],
             tooltip: t('common.actions.stop'),
-            onClick: async (row) => {
+            onClick: async row => {
               sendEvent('click_plugin_list_actions_stop');
 
               await ElMessageBox.confirm(
@@ -214,7 +221,7 @@ const usePluginList = () => {
                   type: 'warning',
                   confirmButtonClass: 'stop-plugin-confirm-btn',
                   cancelButtonClass: 'stop-plugin-cancel-btn',
-                },
+                }
               );
 
               sendEvent('click_plugin_list_actions_stop_confirm');
@@ -222,7 +229,8 @@ const usePluginList = () => {
               await ElMessage.info(t('common.message.info.stop'));
               await post(`/plugins/${row._id}/stop`);
               await store.dispatch(`${ns}/getList`);
-            }, disabled: (row: Plugin) => {
+            },
+            disabled: (row: Plugin) => {
               if (row.status?.length === 1) {
                 return [
                   PLUGIN_STATUS_INSTALL_ERROR,
@@ -231,10 +239,11 @@ const usePluginList = () => {
                 ].includes(row.status[0].status);
               } else if (row.status) {
                 for (const s of row.status) {
-                  if ([
-                    PLUGIN_STATUS_INSTALLING,
-                    PLUGIN_STATUS_RUNNING,
-                  ].includes(s.status)) {
+                  if (
+                    [PLUGIN_STATUS_INSTALLING, PLUGIN_STATUS_RUNNING].includes(
+                      s.status
+                    )
+                  ) {
                     return false;
                   }
                 }
@@ -254,7 +263,7 @@ const usePluginList = () => {
             type: 'primary',
             icon: ['fa', 'search'],
             tooltip: t('common.actions.view'),
-            onClick: (row) => {
+            onClick: row => {
               router.push(`/plugins/${row._id}`);
 
               sendEvent('click_plugin_list_actions_view');
@@ -275,7 +284,7 @@ const usePluginList = () => {
         return buttons;
       },
       disableTransfer: true,
-    }
+    },
   ]);
 
   // options

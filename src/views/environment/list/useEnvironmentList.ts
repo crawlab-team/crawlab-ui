@@ -1,18 +1,18 @@
-import {computed} from 'vue';
-import {ElMessageBox} from 'element-plus';
+import { computed } from 'vue';
+import { ElMessageBox } from 'element-plus';
 import useEnvironmentService from '@/services/environment/environmentService';
-import {getStore} from '@/store';
-import {onListFilterChangeByKey, translate} from "@/utils";
-import {getRouter} from "@/router";
+import { getStore } from '@/store';
+import { onListFilterChangeByKey, translate } from '@/utils';
+import { getRouter } from '@/router';
 import {
   ACTION_COPY,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   FILTER_OP_CONTAINS,
-  TABLE_COLUMN_NAME_ACTIONS
-} from "@/constants";
-import {useList} from "@/layouts/content";
-import {sendEvent} from "@/admin/umeng";
+  TABLE_COLUMN_NAME_ACTIONS,
+} from '@/constants';
+import { useList } from '@/layouts/content';
+import { sendEvent } from '@/admin/umeng';
 
 // i18n
 const t = translate;
@@ -21,13 +21,10 @@ const useEnvironmentList = () => {
   // store
   const ns = 'environment';
   const store = getStore<RootStoreState>();
-  const {commit} = store;
+  const { commit } = store;
 
   // services
-  const {
-    getList,
-    deleteById,
-  } = useEnvironmentService(store);
+  const { getList, deleteById } = useEnvironmentService(store);
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -43,8 +40,8 @@ const useEnvironmentList = () => {
           onClick: async () => {
             commit(`${ns}/showDialog`, 'create');
           },
-        }
-      ]
+        },
+      ],
     },
     {
       action: ACTION_FILTER,
@@ -54,11 +51,18 @@ const useEnvironmentList = () => {
           action: ACTION_FILTER_SEARCH,
           id: 'filter-search',
           className: 'search',
-          placeholder: t('views.environment.navActions.filter.search.placeholder'),
-          onChange: onListFilterChangeByKey(store, ns as any, 'key', FILTER_OP_CONTAINS),
+          placeholder: t(
+            'views.environment.navActions.filter.search.placeholder'
+          ),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns as any,
+            'key',
+            FILTER_OP_CONTAINS
+          ),
         },
       ],
-    }
+    },
   ]);
 
   // table columns
@@ -106,7 +110,7 @@ const useEnvironmentList = () => {
               t('common.actions.delete'),
               {
                 type: 'warning',
-                confirmButtonClass: 'el-button--danger'
+                confirmButtonClass: 'el-button--danger',
               }
             );
 
@@ -118,7 +122,7 @@ const useEnvironmentList = () => {
         },
       ],
       disableTransfer: true,
-    }
+    },
   ]);
 
   // options

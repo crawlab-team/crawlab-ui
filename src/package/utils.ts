@@ -1,7 +1,9 @@
-import {ComponentOptionsMixin} from 'vue';
+import { ComponentOptionsMixin } from 'vue';
 
 export const mapElements = (elements: any) => {
-  return Object.keys(elements).map((name) => [name, elements[name]] as [string, ComponentOptionsMixin]);
+  return Object.keys(elements).map(
+    name => [name, elements[name]] as [string, ComponentOptionsMixin]
+  );
 };
 
 export const importStylesheets = () => {

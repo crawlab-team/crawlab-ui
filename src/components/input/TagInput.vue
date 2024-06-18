@@ -40,11 +40,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, ref, watch} from 'vue';
+import { computed, defineComponent, PropType, ref, watch } from 'vue';
 import TagInputItem from '@/components/input/TagInputItem.vue';
-import {cloneArray} from '@/utils/object';
-import {useStore} from 'vuex';
-import {useI18n} from 'vue-i18n';
+import { cloneArray } from '@/utils/object';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TagInput',
@@ -53,20 +53,17 @@ export default defineComponent({
       type: Array as PropType<Tag[]>,
       default: () => {
         return [];
-      }
+      },
     },
     disabled: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-  emits: [
-    'change',
-    'update:model-value',
-  ],
-  setup(props: TagInputProps, {emit}) {
+  emits: ['change', 'update:model-value'],
+  setup(props: TagInputProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'tag';
@@ -89,18 +86,23 @@ export default defineComponent({
 
     const emitValue = () => {
       emit('change', selectedValue.value);
-      emit('update:model-value', selectedValue.value.map(d => {
-        return {
-          _id: d._id,
-          name: d.name,
-          color: d.color,
-        } as Tag;
-      }));
+      emit(
+        'update:model-value',
+        selectedValue.value.map(d => {
+          return {
+            _id: d._id,
+            name: d.name,
+            color: d.color,
+          } as Tag;
+        })
+      );
     };
 
     const disabled = computed<boolean>(() => props.disabled);
 
-    const addButtonTooltip = computed<string>(() => disabled.value ? '' : t('components.input.tagInput.addTag'));
+    const addButtonTooltip = computed<string>(() =>
+      disabled.value ? '' : t('components.input.tagInput.addTag')
+    );
 
     const onEdit = (index: number, ev?: Event) => {
       // check disabled
@@ -141,7 +143,7 @@ export default defineComponent({
       if (!item) return;
       item.isEdit = false;
       if (!value) return;
-      const {name, hex} = value;
+      const { name, hex } = value;
       item.name = name;
       item.hex = hex;
 
@@ -173,10 +175,13 @@ export default defineComponent({
       setTimeout(() => inputItemRef.value?.focus(), 0);
     };
 
-    watch(() => props.modelValue, () => {
-      const modelValue = props.modelValue || [];
-      selectedValue.value = cloneArray(modelValue);
-    });
+    watch(
+      () => props.modelValue,
+      () => {
+        const modelValue = props.modelValue || [];
+        selectedValue.value = cloneArray(modelValue);
+      }
+    );
 
     return {
       inputItemRef,

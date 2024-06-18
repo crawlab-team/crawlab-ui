@@ -9,13 +9,13 @@ const node: LComponentsNode = {
     hostname: 'Hostname',
     enabled: 'Enabled',
     max_runners: 'Max Runners',
-    description: 'Description'
+    description: 'Description',
   },
   nodeType: {
     label: {
       master: 'Master',
-      worker: 'Worker'
-    }
+      worker: 'Worker',
+    },
   },
   nodeStatus: {
     label: {
@@ -31,7 +31,7 @@ const node: LComponentsNode = {
       online: 'Node is currently online',
       offline: 'Node is currently offline',
       unknown: 'Unknown node status',
-    }
+    },
   },
   nodeRunners: {
     tooltip: {

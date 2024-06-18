@@ -14,7 +14,7 @@
             <template v-if="item.action === ACTION_FILTER_SEARCH">
               <cl-filter-input
                 :placeholder="item.placeholder"
-                @change="(value) => item?.onChange(value)"
+                @change="value => item?.onChange(value)"
               />
             </template>
             <template v-else-if="item.action === ACTION_FILTER_SELECT">
@@ -23,7 +23,7 @@
                 :placeholder="item.placeholder"
                 :options="item.options"
                 :options-remote="item.optionsRemote"
-                @change="(value) => item?.onChange(value)"
+                @change="value => item?.onChange(value)"
               />
             </template>
             <template v-else>
@@ -100,7 +100,7 @@
       <!-- ./Table -->
     </div>
 
-    <slot name="extra"/>
+    <slot name="extra" />
   </div>
 </template>
 
@@ -115,11 +115,15 @@ import {
   ref,
   SetupContext,
   toRefs,
-  watch
+  watch,
 } from 'vue';
-import {emptyArrayFunc, emptyObjectFunc} from '@/utils/func';
-import {getMd5} from '@/utils/hash';
-import {ACTION_ADD, ACTION_FILTER_SEARCH, ACTION_FILTER_SELECT} from '@/constants/action';
+import { emptyArrayFunc, emptyObjectFunc } from '@/utils/func';
+import { getMd5 } from '@/utils/hash';
+import {
+  ACTION_ADD,
+  ACTION_FILTER_SEARCH,
+  ACTION_FILTER_SELECT,
+} from '@/constants/action';
 
 export default defineComponent({
   name: 'ListLayout',
@@ -128,19 +132,19 @@ export default defineComponent({
       type: Array as PropType<ListActionGroup[]>,
       default: () => {
         return [];
-      }
+      },
     },
     tableColumns: {
       type: Array as PropType<TableColumns>,
       default: () => {
         return [];
-      }
+      },
     },
     tableData: {
       type: Array as PropType<TableData>,
       default: () => {
         return [];
-      }
+      },
     },
     tableTotal: {
       type: Number,
@@ -153,7 +157,7 @@ export default defineComponent({
           page: 1,
           size: 10,
         };
-      }
+      },
     },
     tableListFilter: {
       type: Array as PropType<FilterConditionData[]>,
@@ -167,13 +171,13 @@ export default defineComponent({
       type: Array as PropType<ListActionButton[]>,
       default: () => {
         return [];
-      }
+      },
     },
     tableActionsSuffix: {
       type: Array as PropType<ListActionButton[]>,
       default: () => {
         return [];
-      }
+      },
     },
     tableFilter: {},
     actionFunctions: {
@@ -193,7 +197,7 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
     tablePaginationLayout: {
       type: String,
@@ -212,12 +216,8 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: [
-    'select',
-    'edit',
-    'delete',
-  ],
-  setup(props: ListLayoutProps, {emit}: SetupContext) {
+  emits: ['select', 'edit', 'delete'],
+  setup(props: ListLayoutProps, { emit }: SetupContext) {
     const tableRef = ref();
 
     const computedTableRef = computed(() => tableRef.value);
@@ -246,7 +246,10 @@ export default defineComponent({
       props.actionFunctions?.getList();
     });
 
-    provide<ListLayoutActionFunctions>('action-functions', props.actionFunctions);
+    provide<ListLayoutActionFunctions>(
+      'action-functions',
+      props.actionFunctions
+    );
 
     const getNavActionButtonDisabled = (btn: ListActionButton) => {
       if (typeof btn.disabled === 'boolean') {
@@ -259,7 +262,7 @@ export default defineComponent({
     };
 
     const tableColumnsHash = computed<string>(() => {
-      const {tableColumns} = props;
+      const { tableColumns } = props;
       return getMd5(JSON.stringify(tableColumns));
     });
 
@@ -304,5 +307,4 @@ export default defineComponent({
 .list-layout >>> .tag {
   margin-right: 10px;
 }
-
 </style>

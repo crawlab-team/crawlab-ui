@@ -15,7 +15,7 @@ const env: LViewsEnv = {
         },
         node: {
           description: 'Node.js dependencies',
-        }
+        },
       },
     },
     dependency: {
@@ -64,7 +64,7 @@ const env: LViewsEnv = {
         installAndDowngrade: 'Install and downgrade',
         searchDependencies: 'Search dependencies',
       },
-    }
+    },
   },
 };
 

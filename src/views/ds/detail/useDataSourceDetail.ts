@@ -1,4 +1,4 @@
-import {useDetail} from "@/layouts/content";
+import { useDetail } from '@/layouts/content';
 
 const useDataSourceDetail = () => {
   return {

@@ -1,6 +1,6 @@
 export declare global {
   type Color =
-    'red'
+    | 'red'
     | 'magenta'
     | 'purple'
     | 'geekBlue'

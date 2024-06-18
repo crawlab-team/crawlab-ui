@@ -1,12 +1,12 @@
 <template>
   <div class="notification-detail-tab-overview">
     <!-- Notification Form (handled by store) -->
-    <cl-notification-form/>
+    <cl-notification-form />
     <!-- ./Notification Form -->
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'NotificationDetailTabOverview',

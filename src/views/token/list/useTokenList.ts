@@ -1,11 +1,11 @@
 import useList from '@/layouts/content/list/list';
-import {useStore} from 'vuex';
-import {computed} from 'vue';
-import {TABLE_COLUMN_NAME_ACTIONS} from '@/constants/table';
-import {ElMessage, ElMessageBox} from 'element-plus';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import useClipboard from 'vue-clipboard3';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_COPY,
@@ -13,9 +13,9 @@ import {
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
-  FILTER_OP_CONTAINS
+  FILTER_OP_CONTAINS,
 } from '@/constants';
-import {onListFilterChangeByKey} from '@/utils';
+import { onListFilterChangeByKey } from '@/utils';
 
 // i18n
 const t = translate;
@@ -25,17 +25,13 @@ const useTokenList = () => {
   const store = useStore<RootStoreState>();
 
   // use list
-  const {
-    actionFunctions,
-  } = useList<Token>(ns, store);
+  const { actionFunctions } = useList<Token>(ns, store);
 
   // action functions
-  const {
-    deleteByIdConfirm,
-  } = actionFunctions;
+  const { deleteByIdConfirm } = actionFunctions;
 
   // clipboard
-  const {toClipboard} = useClipboard();
+  const { toClipboard } = useClipboard();
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -56,7 +52,7 @@ const useTokenList = () => {
 
             const res = await ElMessageBox.prompt(
               t('views.tokens.messageBox.prompt.create'),
-              t('common.actions.create'),
+              t('common.actions.create')
             );
 
             sendEvent('click_token_list_new_confirm');
@@ -68,8 +64,8 @@ const useTokenList = () => {
             await store.dispatch(`${ns}/create`, token);
             await store.dispatch(`${ns}/getList`);
           },
-        }
-      ]
+        },
+      ],
     },
     {
       action: ACTION_FILTER,
@@ -80,10 +76,15 @@ const useTokenList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t('views.tokens.navActions.filter.search.placeholder'),
-          onChange: onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'name',
+            FILTER_OP_CONTAINS
+          ),
         },
-      ]
-    }
+      ],
+    },
   ]);
 
   // table columns
@@ -121,16 +122,20 @@ const useTokenList = () => {
       icon: ['fa', 'tools'],
       width: '180',
       fixed: 'right',
-      buttons: (row) => [
+      buttons: row => [
         {
           type: 'primary',
           size: 'small',
           icon: !row._visible ? ['fa', 'eye'] : ['fa', 'eye-slash'],
-          tooltip: !row._visible ? t('common.actions.view') : t('common.actions.hide'),
+          tooltip: !row._visible
+            ? t('common.actions.view')
+            : t('common.actions.hide'),
           onClick: async (row: Token) => {
             row._visible = !row._visible;
 
-            row._visible ? sendEvent('click_token_list_actions_hide') : sendEvent('click_token_list_actions_show');
+            row._visible
+              ? sendEvent('click_token_list_actions_hide')
+              : sendEvent('click_token_list_actions_show');
           },
           action: ACTION_VIEW,
         },

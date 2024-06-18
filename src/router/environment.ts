@@ -1,4 +1,4 @@
-import {RouteRecordRaw} from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 import EnvironmentList from '@/views/environment/list/EnvironmentList.vue';
 
 const endpoint = 'environments';

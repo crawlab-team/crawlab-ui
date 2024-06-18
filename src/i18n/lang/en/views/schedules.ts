@@ -8,7 +8,7 @@ const schedules: LViewsSchedules = {
       enabled: 'Enabled',
       entryId: 'Entry ID',
       description: 'Description',
-    }
+    },
   },
   navActions: {
     new: {
@@ -18,8 +18,8 @@ const schedules: LViewsSchedules = {
     filter: {
       search: {
         placeholder: 'Search schedules',
-      }
-    }
+      },
+    },
   },
   navActionsExtra: {
     filter: {
@@ -32,15 +32,15 @@ const schedules: LViewsSchedules = {
         },
         enabled: {
           label: 'Enabled',
-        }
+        },
       },
       search: {
         cron: {
           placeholder: 'Search cron expression',
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 
 export default schedules;

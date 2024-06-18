@@ -15,8 +15,8 @@ const tags: LViewsTags = {
     filter: {
       search: {
         placeholder: '搜索标签',
-      }
-    }
+      },
+    },
   },
 };
 

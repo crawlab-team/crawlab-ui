@@ -1,4 +1,9 @@
-type ScheduleStoreModule = BaseModule<ScheduleStoreState, ScheduleStoreGetters, ScheduleStoreMutations, ScheduleStoreActions>;
+type ScheduleStoreModule = BaseModule<
+  ScheduleStoreState,
+  ScheduleStoreGetters,
+  ScheduleStoreMutations,
+  ScheduleStoreActions
+>;
 
 type ScheduleStoreState = BaseStoreState<Schedule>;
 

@@ -1,4 +1,4 @@
-import {SetupContext} from 'vue';
+import { SetupContext } from 'vue';
 
 declare global {
   interface DraggableListProps {

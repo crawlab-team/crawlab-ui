@@ -1,18 +1,20 @@
-import {computed, h} from 'vue';
-import {useStore} from 'vuex';
-import {useRouter} from "vue-router";
+import { computed, h } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import {
   ACTION_ADD,
   ACTION_DELETE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
-  ACTION_VIEW, FILTER_OP_CONTAINS, TAB_NAME_SPIDERS,
-  TABLE_COLUMN_NAME_ACTIONS
-} from "@/constants";
-import {sendEvent} from "@/admin/umeng";
-import {useList} from "@/layouts/content";
-import {onListFilterChangeByKey, translate} from "@/utils";
-import NavLink from "@/components/nav/NavLink.vue";
+  ACTION_VIEW,
+  FILTER_OP_CONTAINS,
+  TAB_NAME_SPIDERS,
+  TABLE_COLUMN_NAME_ACTIONS,
+} from '@/constants';
+import { sendEvent } from '@/admin/umeng';
+import { useList } from '@/layouts/content';
+import { onListFilterChangeByKey, translate } from '@/utils';
+import NavLink from '@/components/nav/NavLink.vue';
 
 const useGitList = () => {
   // router
@@ -21,20 +23,16 @@ const useGitList = () => {
   // store
   const ns = 'git';
   const store = useStore<RootStoreState>();
-  const {commit} = store;
+  const { commit } = store;
 
   // i18n
   const t = translate;
 
   // use list
-  const {
-    actionFunctions,
-  } = useList<Git>(ns, store);
+  const { actionFunctions } = useList<Git>(ns, store);
 
   // action functions
-  const {
-    deleteByIdConfirm,
-  } = actionFunctions;
+  const { deleteByIdConfirm } = actionFunctions;
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -52,9 +50,9 @@ const useGitList = () => {
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       action: ACTION_FILTER,
@@ -65,9 +63,14 @@ const useGitList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t('views.gits.navActions.filter.search.placeholder'),
-          onChange: onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'name',
+            FILTER_OP_CONTAINS
+          ),
         },
-      ]
+      ],
     },
   ]);
 
@@ -79,10 +82,11 @@ const useGitList = () => {
       label: t('views.gits.table.columns.name'),
       icon: ['fa', 'font'],
       width: '240',
-      value: (row: Git) => h(NavLink, {
-        path: `/gits/${row._id}`,
-        label: row.name,
-      }),
+      value: (row: Git) =>
+        h(NavLink, {
+          path: `/gits/${row._id}`,
+          label: row.name,
+        }),
       hasSort: true,
       hasFilter: true,
       allowFilterSearch: true,
@@ -116,7 +120,7 @@ const useGitList = () => {
         },
       ],
       disableTransfer: true,
-    }
+    },
   ]);
 
   // options

@@ -34,7 +34,7 @@
           {{ t('components.plugin.install.pushedAt') }}:
         </span>
         <span class="value">
-          <cl-time :time="info.repo?.pushed_at"/>
+          <cl-time :time="info.repo?.pushed_at" />
         </span>
       </div>
       <div class="info">
@@ -42,18 +42,18 @@
           {{ t('components.plugin.install.updatedAt') }}:
         </span>
         <span class="value">
-          <cl-time :time="info.repo?.updated_at"/>
+          <cl-time :time="info.repo?.updated_at" />
         </span>
       </div>
-      <div class="readme" v-html="readme"/>
+      <div class="readme" v-html="readme" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {Converter} from 'showdown';
+import { computed, defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { Converter } from 'showdown';
 
 export default defineComponent({
   name: 'PublicPluginContent',
@@ -72,12 +72,10 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: [
-    'install',
-  ],
-  setup(props: PublicPluginContentProps, {emit}) {
+  emits: ['install'],
+  setup(props: PublicPluginContentProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // markdown-to-text converter
     const converter = new Converter();

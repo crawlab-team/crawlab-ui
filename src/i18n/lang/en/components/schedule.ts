@@ -14,14 +14,15 @@ const schedule: LComponentsSchedule = {
   },
   rules: {
     message: {
-      invalidCronExpression: 'Invalid cron expression. [min] [hour] [day of month] [month] [day of week]',
-    }
+      invalidCronExpression:
+        'Invalid cron expression. [min] [hour] [day of month] [month] [day of week]',
+    },
   },
   message: {
     success: {
       enable: 'Enabled successfully',
       disable: 'Disabled successfully',
-    }
+    },
   },
   cron: {
     title: {
@@ -31,7 +32,7 @@ const schedule: LComponentsSchedule = {
       description: 'Description',
       next: 'Next',
     },
-  }
+  },
 };
 
 export default schedule;

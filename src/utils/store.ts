@@ -1,14 +1,16 @@
-import {getDefaultPagination} from '@/utils/pagination';
-import {useService} from '@/services';
-import {plainClone} from '@/utils/object';
-import {useRouter} from 'vue-router';
-import {emptyObjectFunc} from '@/utils/func';
-import {translate} from '@/utils/i18n';
+import { getDefaultPagination } from '@/utils/pagination';
+import { useService } from '@/services';
+import { plainClone } from '@/utils/object';
+import { useRouter } from 'vue-router';
+import { emptyObjectFunc } from '@/utils/func';
+import { translate } from '@/utils/i18n';
 
 // i18n
 const t = translate;
 
-export const getDefaultStoreState = <T = any>(ns: StoreNamespace): BaseStoreState<T> => {
+export const getDefaultStoreState = <T = any>(
+  ns: StoreNamespace
+): BaseStoreState<T> => {
   return {
     ns,
     dialogVisible: {
@@ -31,33 +33,40 @@ export const getDefaultStoreState = <T = any>(ns: StoreNamespace): BaseStoreStat
     allList: [],
     sidebarCollapsed: false,
     actionsCollapsed: false,
-    tabs: [{id: 'overview', title: t('common.tabs.overview')}],
+    tabs: [{ id: 'overview', title: t('common.tabs.overview') }],
     afterSave: [],
   };
 };
 
-export const getDefaultStoreGetters = <T = any>(opts?: GetDefaultStoreGettersOptions): BaseStoreGetters<BaseStoreState<T>> => {
+export const getDefaultStoreGetters = <T = any>(
+  opts?: GetDefaultStoreGettersOptions
+): BaseStoreGetters<BaseStoreState<T>> => {
   if (!opts) opts = {};
   if (!opts.selectOptionValueKey) opts.selectOptionValueKey = '_id';
   if (!opts.selectOptionLabelKey) opts.selectOptionLabelKey = 'name';
 
   return {
-    dialogVisible: (state: BaseStoreState<T>) => state.activeDialogKey !== undefined,
+    dialogVisible: (state: BaseStoreState<T>) =>
+      state.activeDialogKey !== undefined,
     // isBatchForm: (state: BaseStoreState<T>) => state.isSelectiveForm || state.createEditDialogTabName === 'batch',
     isBatchForm: (state: BaseStoreState<T>) => {
       return state.isSelectiveForm || state.createEditDialogTabName === 'batch';
     },
-    formListIds: (state: BaseStoreState<T>) => state.formList.map(d => (d as BaseModel)._id as string),
-    allListSelectOptions: (state: BaseStoreState<T>) => state.allList.map(d => {
-      const _d = d as BaseModel;
-      return {
-        value: _d[opts?.selectOptionValueKey as string],
-        label: _d[opts?.selectOptionLabelKey as string],
-      };
-    }),
+    formListIds: (state: BaseStoreState<T>) =>
+      state.formList.map(d => (d as BaseModel)._id as string),
+    allListSelectOptions: (state: BaseStoreState<T>) =>
+      state.allList.map(d => {
+        const _d = d as BaseModel;
+        return {
+          value: _d[opts?.selectOptionValueKey as string],
+          label: _d[opts?.selectOptionLabelKey as string],
+        };
+      }),
     allDict: (state: BaseStoreState<T>) => {
       const dict = new Map<string, T>();
-      state.allList.forEach(d => dict.set((d as BaseModel)._id as string, d as any));
+      state.allList.forEach(d =>
+        dict.set((d as BaseModel)._id as string, d as any)
+      );
       return dict;
     },
     /**
@@ -74,7 +83,9 @@ export const getDefaultStoreGetters = <T = any>(opts?: GetDefaultStoreGettersOpt
       return rootState.tag.allList.filter(d => d.col === `${state.ns}s`);
     },
     tabs: (state: BaseStoreState<T>, getters, rootState) => {
-      return state.tabs.filter(t => rootState.layout.detailTabVisibleFn(state.ns, t));
+      return state.tabs.filter(t =>
+        rootState.layout.detailTabVisibleFn(state.ns, t)
+      );
     },
   };
 };
@@ -95,7 +106,10 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
       // set active dialog key as undefined
       state.activeDialogKey = undefined;
     },
-    setCreateEditDialogTabName: (state: BaseStoreState<T>, tabName: CreateEditTabName) => {
+    setCreateEditDialogTabName: (
+      state: BaseStoreState<T>,
+      tabName: CreateEditTabName
+    ) => {
       state.createEditDialogTabName = tabName;
     },
     resetCreateEditDialogTabName: (state: BaseStoreState<T>) => {
@@ -134,24 +148,36 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
     resetTableData: (state: BaseStoreState<T>) => {
       state.tableData = [];
     },
-    setTableData: (state: BaseStoreState<T>, payload: TableDataWithTotal<T>) => {
-      const {data, total} = payload;
+    setTableData: (
+      state: BaseStoreState<T>,
+      payload: TableDataWithTotal<T>
+    ) => {
+      const { data, total } = payload;
       state.tableData = data;
       state.tableTotal = total;
     },
-    setTablePagination: (state: BaseStoreState<T>, pagination: TablePagination) => {
+    setTablePagination: (
+      state: BaseStoreState<T>,
+      pagination: TablePagination
+    ) => {
       state.tablePagination = pagination;
     },
     resetTablePagination: (state: BaseStoreState<T>) => {
       state.tablePagination = getDefaultPagination();
     },
-    setTableListFilter: (state: BaseStoreState<T>, filter: FilterConditionData[]) => {
+    setTableListFilter: (
+      state: BaseStoreState<T>,
+      filter: FilterConditionData[]
+    ) => {
       state.tableListFilter = filter;
     },
     resetTableListFilter: (state: BaseStoreState<T>) => {
       state.tableListFilter = [];
     },
-    setTableListFilterByKey: (state: BaseStoreState<T>, {key, conditions}) => {
+    setTableListFilterByKey: (
+      state: BaseStoreState<T>,
+      { key, conditions }
+    ) => {
       const filter = state.tableListFilter.filter(d => d.key !== key);
       conditions.forEach(d => {
         d.key = key;
@@ -168,7 +194,7 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
     resetTableListSort: (state: BaseStoreState<T>) => {
       state.tableListSort = [];
     },
-    setTableListSortByKey: (state: BaseStoreState<T>, {key, sort}) => {
+    setTableListSortByKey: (state: BaseStoreState<T>, { key, sort }) => {
       const idx = state.tableListSort.findIndex(d => d.key === key);
       if (idx === -1) {
         if (sort) {
@@ -212,7 +238,9 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
   };
 };
 
-export const getDefaultStoreActions = <T = any>(endpoint: string): BaseStoreActions<T> => {
+export const getDefaultStoreActions = <T = any>(
+  endpoint: string
+): BaseStoreActions<T> => {
   const {
     getById,
     create,
@@ -226,55 +254,78 @@ export const getDefaultStoreActions = <T = any>(endpoint: string): BaseStoreActi
   } = useService<T>(endpoint);
 
   return {
-    getById: async ({commit}: StoreActionContext<BaseStoreState<T>>, id: string) => {
+    getById: async (
+      { commit }: StoreActionContext<BaseStoreState<T>>,
+      id: string
+    ) => {
       const res = await getById(id);
       commit('setForm', res.data);
       return res;
     },
-    create: async ({commit}: StoreActionContext<BaseStoreState<T>>, form: T) => {
+    create: async (
+      { commit }: StoreActionContext<BaseStoreState<T>>,
+      form: T
+    ) => {
       const res = await create(form);
       return res;
     },
-    updateById: async ({commit}: StoreActionContext<BaseStoreState<T>>, {id, form}: { id: string; form: T }) => {
+    updateById: async (
+      { commit }: StoreActionContext<BaseStoreState<T>>,
+      { id, form }: { id: string; form: T }
+    ) => {
       const res = await updateById(id, form);
       return res;
     },
-    deleteById: async ({commit}: StoreActionContext<BaseStoreState<T>>, id: string) => {
+    deleteById: async (
+      { commit }: StoreActionContext<BaseStoreState<T>>,
+      id: string
+    ) => {
       const res = await deleteById(id);
       return res;
     },
-    getList: async ({state, commit}: StoreActionContext<BaseStoreState<T>>) => {
-      const {page, size} = state.tablePagination;
+    getList: async ({
+      state,
+      commit,
+    }: StoreActionContext<BaseStoreState<T>>) => {
+      const { page, size } = state.tablePagination;
       const res = await getList({
         page,
         size,
         conditions: JSON.stringify(state.tableListFilter),
         sort: JSON.stringify(state.tableListSort),
       } as ListRequestParams);
-      commit('setTableData', {data: res.data || [], total: res.total});
+      commit('setTableData', { data: res.data || [], total: res.total });
       return res;
     },
-    getListWithParams: async (_: StoreActionContext<BaseStoreState<T>>, params?: ListRequestParams) => {
+    getListWithParams: async (
+      _: StoreActionContext<BaseStoreState<T>>,
+      params?: ListRequestParams
+    ) => {
       return await getList(params);
     },
-    getAllList: async ({commit}: StoreActionContext<BaseStoreState<T>>) => {
+    getAllList: async ({ commit }: StoreActionContext<BaseStoreState<T>>) => {
       const res = await getAll();
       commit('setAllList', res.data || []);
       return res;
     },
-    createList: async ({state, commit}: StoreActionContext<BaseStoreState<T>>, data: T[]) => {
+    createList: async (
+      { state, commit }: StoreActionContext<BaseStoreState<T>>,
+      data: T[]
+    ) => {
       const res = await createList(data);
       return res;
     },
-    updateList: async ({state, commit}: StoreActionContext<BaseStoreState<T>>, {
-      ids,
-      data,
-      fields,
-    }: BatchRequestPayloadWithData) => {
+    updateList: async (
+      { state, commit }: StoreActionContext<BaseStoreState<T>>,
+      { ids, data, fields }: BatchRequestPayloadWithData
+    ) => {
       const res = await updateList(ids, data, fields);
       return res;
     },
-    deleteList: async ({commit}: StoreActionContext<BaseStoreState<T>>, ids: string[]) => {
+    deleteList: async (
+      { commit }: StoreActionContext<BaseStoreState<T>>,
+      ids: string[]
+    ) => {
       return await deleteList(ids);
     },
   };

@@ -1,4 +1,4 @@
-import {Directive} from 'vue';
+import { Directive } from 'vue';
 
 const locate: Directive<HTMLElement, Locate> = {
   mounted(el, binding) {
@@ -16,7 +16,7 @@ const locate: Directive<HTMLElement, Locate> = {
       el.setAttribute('class', className + ' name');
     }
     el.setAttribute('id', name);
-  }
+  },
 };
 
 export default locate;

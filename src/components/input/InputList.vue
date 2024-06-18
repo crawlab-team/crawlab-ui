@@ -39,8 +39,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType, ref, watch} from 'vue';
-import {cloneArray, translate} from '@/utils';
+import { defineComponent, PropType, ref, watch } from 'vue';
+import { cloneArray, translate } from '@/utils';
 
 // i18n
 const t = translate;
@@ -70,10 +70,8 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: [
-    'update:model-value'
-  ],
-  setup(props: InputListProps, {emit}) {
+  emits: ['update:model-value'],
+  setup(props: InputListProps, { emit }) {
     const internalModelValue = ref(props.modelValue);
 
     const getOnChangeFn = (index: number) => {
@@ -101,9 +99,12 @@ export default defineComponent({
       emit('update:model-value', newModelValue);
     };
 
-    watch(() => props.modelValue, () => {
-      internalModelValue.value = props.modelValue || [''];
-    });
+    watch(
+      () => props.modelValue,
+      () => {
+        internalModelValue.value = props.modelValue || [''];
+      }
+    );
 
     return {
       internalModelValue,
@@ -112,7 +113,7 @@ export default defineComponent({
       onDelete,
       t,
     };
-  }
+  },
 });
 </script>
 

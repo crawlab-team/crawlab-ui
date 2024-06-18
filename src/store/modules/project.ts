@@ -2,10 +2,10 @@ import {
   getDefaultStoreActions,
   getDefaultStoreGetters,
   getDefaultStoreMutations,
-  getDefaultStoreState
+  getDefaultStoreState,
 } from '@/utils/store';
-import {TAB_NAME_OVERVIEW, TAB_NAME_SPIDERS} from '@/constants/tab';
-import {translate} from '@/utils/i18n';
+import { TAB_NAME_OVERVIEW, TAB_NAME_SPIDERS } from '@/constants/tab';
+import { translate } from '@/utils/i18n';
 
 // i18n
 const t = translate;
@@ -18,8 +18,8 @@ const state = {
     } as Project;
   },
   tabs: [
-    {id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview')},
-    {id: TAB_NAME_SPIDERS, title: t('common.tabs.spiders')},
+    { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
+    { id: TAB_NAME_SPIDERS, title: t('common.tabs.spiders') },
   ],
 } as ProjectStoreState;
 
@@ -29,7 +29,10 @@ const getters = {
 
 const mutations = {
   ...getDefaultStoreMutations<Project>(),
-  setAllProjectSelectOptions: (state: ProjectStoreState, options: SelectOption[]) => {
+  setAllProjectSelectOptions: (
+    state: ProjectStoreState,
+    options: SelectOption[]
+  ) => {
     state.allProjectSelectOptions = options;
   },
   setAllProjectTags: (state: ProjectStoreState, tags: string[]) => {

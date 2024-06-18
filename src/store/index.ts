@@ -1,4 +1,4 @@
-import {createStore as createVuexStore, Store} from 'vuex';
+import { createStore as createVuexStore, Store } from 'vuex';
 import common from '@/store/modules/common';
 import layout from '@/store/modules/layout';
 import node from '@/store/modules/node';
@@ -56,7 +56,11 @@ export const getStore = <T>(): Store<T | RootStoreState> => {
   return _store;
 };
 
-export const addStoreModule = <M>(path: string, module: M, store?: Store<RootStoreState>) => {
+export const addStoreModule = <M>(
+  path: string,
+  module: M,
+  store?: Store<RootStoreState>
+) => {
   if (!store) {
     store = getStore();
   }

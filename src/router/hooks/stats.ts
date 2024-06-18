@@ -1,7 +1,10 @@
-import {Router} from 'vue-router';
-import {sendPv} from '@/utils/admin';
+import { Router } from 'vue-router';
+import { sendPv } from '@/utils/admin';
 
-export const initRouterStats = (router: Router, options?: RouterStatsOptions) => {
+export const initRouterStats = (
+  router: Router,
+  options?: RouterStatsOptions
+) => {
   router.afterEach(async (to, from, next) => {
     // before each
     options?.beforeEachFn?.();

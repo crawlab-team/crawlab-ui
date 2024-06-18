@@ -6,7 +6,7 @@ type NavSidebarType = 'list' | 'tree';
 
 interface NavSidebarContent {
   activeKey?: string;
-  items: NavItem[],
+  items: NavItem[];
   showCheckBox?: boolean;
 }
 

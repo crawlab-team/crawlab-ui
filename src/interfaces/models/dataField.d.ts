@@ -9,7 +9,7 @@ import {
   DATA_FIELD_TYPE_VIDEO,
   DATA_FIELD_TYPE_HTML,
   DATA_FIELD_TYPE_LONG_TEXT,
-} from "@/constants/dataFields";
+} from '@/constants/dataFields';
 
 export declare global {
   interface DataField {
@@ -17,14 +17,15 @@ export declare global {
     type?: DataFieldType;
   }
 
-  type DataFieldType = DATA_FIELD_TYPE_GENERAL |
-    DATA_FIELD_TYPE_NUMERIC |
-    DATA_FIELD_TYPE_TIME |
-    DATA_FIELD_TYPE_CURRENCY |
-    DATA_FIELD_TYPE_URL |
-    DATA_FIELD_TYPE_IMAGE |
-    DATA_FIELD_TYPE_AUDIO |
-    DATA_FIELD_TYPE_VIDEO |
-    DATA_FIELD_TYPE_HTML |
-    DATA_FIELD_TYPE_LONG_TEXT;
+  type DataFieldType =
+    | DATA_FIELD_TYPE_GENERAL
+    | DATA_FIELD_TYPE_NUMERIC
+    | DATA_FIELD_TYPE_TIME
+    | DATA_FIELD_TYPE_CURRENCY
+    | DATA_FIELD_TYPE_URL
+    | DATA_FIELD_TYPE_IMAGE
+    | DATA_FIELD_TYPE_AUDIO
+    | DATA_FIELD_TYPE_VIDEO
+    | DATA_FIELD_TYPE_HTML
+    | DATA_FIELD_TYPE_LONG_TEXT;
 }

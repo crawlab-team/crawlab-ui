@@ -1,7 +1,8 @@
 <template>
-  <div class="nav-menu" :class="[
-    showCheckbox ? 'show-checkbox' : '',
-  ].join(' ')">
+  <div
+    class="nav-menu"
+    :class="[showCheckbox ? 'show-checkbox' : ''].join(' ')"
+  >
     <el-tree
       ref="treeRef"
       :data="items"
@@ -17,7 +18,7 @@
       @node-click="onNodeClick"
       @check-change="onCheckChange"
     >
-      <template #default="{data}">
+      <template #default="{ data }">
         <span class="title">
           {{ data.title }}
         </span>
@@ -27,8 +28,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType, ref} from 'vue';
-import {emptyArrayFunc} from '@/utils/func';
+import { defineComponent, PropType, ref } from 'vue';
+import { emptyArrayFunc } from '@/utils/func';
 
 export default defineComponent({
   name: 'NavSidebarTree',
@@ -57,11 +58,8 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: [
-    'select',
-    'check',
-  ],
-  setup(props: NavSidebarTreeProps, {emit}) {
+  emits: ['select', 'check'],
+  setup(props: NavSidebarTreeProps, { emit }) {
     const treeRef = ref();
 
     const onNodeClick = (item: NavItem) => {

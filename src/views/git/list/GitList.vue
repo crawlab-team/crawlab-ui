@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useGitList from "@/views/git/list/useGitList";
+import useGitList from '@/views/git/list/useGitList';
 
 const {
   actionFunctions,
@@ -9,7 +9,6 @@ const {
   tableData,
   tableTotal,
 } = useGitList();
-
 </script>
 
 <template>
@@ -24,12 +23,10 @@ const {
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-git-dialog/>
+      <cl-create-edit-git-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

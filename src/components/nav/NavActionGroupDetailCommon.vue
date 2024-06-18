@@ -30,31 +30,29 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {ACTION_BACK, ACTION_SAVE} from '@/constants';
+import { defineComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { ACTION_BACK, ACTION_SAVE } from '@/constants';
 
 export default defineComponent({
   name: 'NavActionGroupDetailCommon',
   props: {
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showBackButton: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showSaveButton: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
-  emits: [
-    'back',
-  ],
+  emits: ['back'],
   setup() {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     return {
       t,
@@ -65,6 +63,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

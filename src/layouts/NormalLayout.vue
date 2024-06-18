@@ -1,32 +1,35 @@
 <template>
   <el-container class="basic-layout">
-    <cl-sidebar/>
-    <el-container :class="sidebarCollapsed ? 'collapsed' : ''" class="container">
-      <cl-header/>
-      <cl-tabs-view/>
+    <cl-sidebar />
+    <el-container
+      :class="sidebarCollapsed ? 'collapsed' : ''"
+      class="container"
+    >
+      <cl-header />
+      <cl-tabs-view />
       <div class="container-body">
-        <router-view/>
+        <router-view />
       </div>
     </el-container>
   </el-container>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'NormalLayout',
   setup() {
     const store = useStore();
-    const {layout} = store.state as RootStoreState;
+    const { layout } = store.state as RootStoreState;
 
     const sidebarCollapsed = computed<boolean>(() => layout.sidebarCollapsed);
 
     return {
       sidebarCollapsed,
     };
-  }
+  },
 });
 </script>
 
@@ -51,7 +54,9 @@ export default defineComponent({
 
     .container-body {
       background-color: var(--cl-container-bg);
-      height: calc(100vh - var(--cl-header-height) - var(--cl-tabs-view-height));
+      height: calc(
+        100vh - var(--cl-header-height) - var(--cl-tabs-view-height)
+      );
       overflow: auto;
     }
   }

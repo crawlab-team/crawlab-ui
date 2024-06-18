@@ -7,13 +7,13 @@ import {
   ref,
   watch,
   defineProps,
-  defineEmits
+  defineEmits,
 } from 'vue';
 import Node from 'element-plus/lib/components/tree/src/model/node';
-import {KEY_CONTROL, KEY_META} from '@/constants/keyboard';
-import {ElMessageBox, ElTree} from 'element-plus';
-import {useDropzone} from 'crawlab-vue3-dropzone';
-import {useI18n} from 'vue-i18n';
+import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
+import { ElMessageBox, ElTree } from 'element-plus';
+import { useDropzone } from 'crawlab-vue3-dropzone';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   activeItem?: FileNavItem;
@@ -36,7 +36,7 @@ const emit = defineEmits<{
   (e: 'drop-files', files: InputFile[]): void;
 }>();
 
-const {t} = useI18n();
+const { t } = useI18n();
 
 const tree = ref<typeof ElTree>();
 
@@ -96,9 +96,11 @@ const updateSelectedMap = (item: FileNavItem) => {
 
   // if Ctrl key is not pressed, clear other selection
   if (!isCtrlKeyPressed.value) {
-    Object.keys(selectedCache).filter(k => k !== key).forEach(k => {
-      selectedCache[k] = false;
-    });
+    Object.keys(selectedCache)
+      .filter(k => k !== key)
+      .forEach(k => {
+        selectedCache[k] = false;
+      });
   }
 };
 
@@ -155,7 +157,9 @@ const onNodeContextMenuNewDirectory = async (item: FileNavItem) => {
     t('components.file.editor.messageBox.prompt.newDirectory'),
     t('components.file.editor.navMenu.newDirectory'),
     {
-      inputPlaceholder: t('components.file.editor.messageBox.prompt.newDirectory'),
+      inputPlaceholder: t(
+        'components.file.editor.messageBox.prompt.newDirectory'
+      ),
       confirmButtonClass: 'confirm-btn',
     }
   );
@@ -170,7 +174,9 @@ const onNodeContextMenuRename = async (item: FileNavItem) => {
       inputValue: item.name,
       inputPlaceholder: t('components.file.editor.messageBox.prompt.rename'),
       inputValidator: (value: string) => value !== item.name,
-      inputErrorMessage: t('components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName'),
+      inputErrorMessage: t(
+        'components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName'
+      ),
       confirmButtonClass: 'confirm-btn',
     }
   );
@@ -185,7 +191,9 @@ const onNodeContextMenuClone = async (item: FileNavItem) => {
       inputValue: `${item.name}`,
       inputPlaceholder: t('components.file.editor.messageBox.prompt.newFile'),
       inputValidator: (value: string) => value !== item.name,
-      inputErrorMessage: t('components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName'),
+      inputErrorMessage: t(
+        'components.file.editor.messageBox.validator.errorMessage.newNameNotSameAsOldName'
+      ),
       confirmButtonClass: 'confirm-btn',
     }
   );
@@ -264,31 +272,30 @@ const getItemClass = (item: FileNavItem): string[] => {
   return cls;
 };
 
-const {
-  getRootProps,
-} = useDropzone({
+const { getRootProps } = useDropzone({
   onDrop: (files: InputFile[]) => {
     emit('drop-files', files);
   },
 });
 
-const getBindDir = (item: FileNavItem) => getRootProps({
-  onDragEnter: (ev: DragEvent) => {
-    ev.stopPropagation();
-    if (!item.is_dir || !item.path) return;
-    dragCache[item.path] = true;
-  },
-  onDragLeave: (ev: DragEvent) => {
-    ev.stopPropagation();
-    if (!item.is_dir || !item.path) return;
-    dragCache[item.path] = false;
-  },
-  onDrop: () => {
-    for (const key in dragCache) {
-      dragCache[key] = false;
-    }
-  },
-});
+const getBindDir = (item: FileNavItem) =>
+  getRootProps({
+    onDragEnter: (ev: DragEvent) => {
+      ev.stopPropagation();
+      if (!item.is_dir || !item.path) return;
+      dragCache[item.path] = true;
+    },
+    onDragLeave: (ev: DragEvent) => {
+      ev.stopPropagation();
+      if (!item.is_dir || !item.path) return;
+      dragCache[item.path] = false;
+    },
+    onDrop: () => {
+      for (const key in dragCache) {
+        dragCache[key] = false;
+      }
+    },
+  });
 
 onMounted(() => {
   // listen to keyboard events
@@ -312,20 +319,23 @@ onUnmounted(() => {
   document.onkeyup = null;
 });
 
-watch(() => props.defaultExpandedKeys, () => {
-  expandedKeys.value = props.defaultExpandedKeys;
+watch(
+  () => props.defaultExpandedKeys,
+  () => {
+    expandedKeys.value = props.defaultExpandedKeys;
 
-  expandedKeys.value.forEach(key => {
-    const n = tree.value?.getNode(key);
-    if (!n?.data) return;
-    emit('node-db-click', n.data);
-  });
-});
+    expandedKeys.value.forEach(key => {
+      const n = tree.value?.getNode(key);
+      if (!n?.data) return;
+      emit('node-db-click', n.data);
+    });
+  }
+);
 </script>
 
 <template>
   <div
-    :style="{...styles?.default}"
+    :style="{ ...styles?.default }"
     ref="fileEditorNavMenu"
     class="file-editor-nav-menu"
   >
@@ -338,7 +348,7 @@ watch(() => props.defaultExpandedKeys, () => {
       :allow-drop="allowDrop"
       empty-text="No files available"
       icon-class="fa fa-angle-right"
-      :style="{...styles?.default}"
+      :style="{ ...styles?.default }"
       node-key="path"
       :default-expanded-keys="computedDefaultExpandedKeys"
       draggable
@@ -370,11 +380,18 @@ watch(() => props.defaultExpandedKeys, () => {
           >
             <div
               class="background"
-              :style="{backgroundColor: isSelected(data) ? styles?.active.backgroundColor : ''}"
+              :style="{
+                backgroundColor: isSelected(data)
+                  ? styles?.active.backgroundColor
+                  : '',
+              }"
             />
             <div class="nav-item">
               <span class="icon">
-                <cl-atom-material-icon :is-dir="data.is_dir" :name="data.name"/>
+                <cl-atom-material-icon
+                  :is-dir="data.is_dir"
+                  :name="data.name"
+                />
               </span>
               <span class="title">
                 {{ data.name }}
@@ -412,7 +429,8 @@ watch(() => props.defaultExpandedKeys, () => {
           }
 
           .nav-item {
-            border: 1px dashed var(--cl-file-editor-nav-menu-item-drag-target-border-color);
+            border: 1px dashed
+              var(--cl-file-editor-nav-menu-item-drag-target-border-color);
           }
         }
 
@@ -452,7 +470,11 @@ watch(() => props.defaultExpandedKeys, () => {
   z-index: 0;
 }
 
-.file-editor-nav-menu >>> .el-tree .el-tree-node > .el-tree-node__content .el-tree-node__expand-icon {
+.file-editor-nav-menu
+  >>> .el-tree
+  .el-tree-node
+  > .el-tree-node__content
+  .el-tree-node__expand-icon {
   display: flex;
   align-items: center;
   justify-content: center;

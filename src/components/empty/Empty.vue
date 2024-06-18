@@ -1,6 +1,6 @@
 <template>
   <div class="empty">
-    <cl-img-empty/>
+    <cl-img-empty />
     <div class="description">
       {{ t(description) }}
     </div>
@@ -8,9 +8,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import ImgEmpty from '@/components/empty/ImgEmpty.vue';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'Empty',
@@ -18,11 +18,11 @@ export default defineComponent({
     description: {
       type: String,
       required: false,
-      default: 'components.empty.noDataAvailable'
-    }
+      default: 'components.empty.noDataAvailable',
+    },
   },
   setup() {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     return {
       t,

@@ -1,4 +1,9 @@
-type UserStoreModule = BaseModule<UserStoreState, UserStoreGetters, UserStoreMutations, UserStoreActions>;
+type UserStoreModule = BaseModule<
+  UserStoreState,
+  UserStoreGetters,
+  UserStoreMutations,
+  UserStoreActions
+>;
 
 interface UserStoreState extends BaseStoreState<User> {
   me?: User;

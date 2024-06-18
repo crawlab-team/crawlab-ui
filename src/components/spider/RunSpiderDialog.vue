@@ -6,10 +6,7 @@
     @close="onClose"
     @confirm="onConfirm"
   >
-    <cl-form
-      ref="formRef"
-      :model="options"
-    >
+    <cl-form ref="formRef" :model="options">
       <!-- Row -->
       <cl-form-item
         :span="2"
@@ -41,9 +38,7 @@
         prop="mode"
         required
       >
-        <el-select
-          v-model="options.mode"
-        >
+        <el-select v-model="options.mode">
           <el-option
             v-for="op in modeOptions"
             :key="op.value"
@@ -58,9 +53,7 @@
         prop="priority"
         required
       >
-        <el-select
-          v-model="options.priority"
-        >
+        <el-select v-model="options.priority">
           <el-option
             v-for="op in priorityOptions"
             :key="op.value"
@@ -85,7 +78,11 @@
       </cl-form-item>
 
       <cl-form-item
-        v-if="[TASK_MODE_SELECTED_NODES, TASK_MODE_SELECTED_NODE_TAGS].includes(options.mode)"
+        v-if="
+          [TASK_MODE_SELECTED_NODES, TASK_MODE_SELECTED_NODE_TAGS].includes(
+            options.mode
+          )
+        "
         :span="4"
         :label="t('components.task.form.selectedNodes')"
         required
@@ -100,42 +97,37 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, ref, watch} from 'vue';
-import {useStore} from 'vuex';
+import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue';
+import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';
 import useNode from '@/components/node/node';
-import {TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODE_TAGS, TASK_MODE_SELECTED_NODES} from '@/constants/task';
+import {
+  TASK_MODE_RANDOM,
+  TASK_MODE_SELECTED_NODE_TAGS,
+  TASK_MODE_SELECTED_NODES,
+} from '@/constants/task';
 import useTask from '@/components/task/task';
-import {ElMessage} from 'element-plus';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
+import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
 
 export default defineComponent({
   name: 'RunSpiderDialog',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const ns = 'spider';
     const store = useStore();
-    const {
-      spider: state,
-    } = store.state as RootStoreState;
+    const { spider: state } = store.state as RootStoreState;
 
-    const {
-      allListSelectOptions: allNodeSelectOptions,
-      allTags: allNodeTags,
-    } = useNode(store);
+    const { allListSelectOptions: allNodeSelectOptions, allTags: allNodeTags } =
+      useNode(store);
 
-    const {
-      modeOptions,
-      form,
-    } = useSpider(store);
+    const { modeOptions, form } = useSpider(store);
 
-    const {
-      priorityOptions,
-    } = useTask(store);
+    const { priorityOptions } = useTask(store);
 
     // spider
     const spider = computed<Spider>(() => form.value);
@@ -173,9 +165,14 @@ export default defineComponent({
 
     const onConfirm = async () => {
       await formRef.value?.validate();
-      await store.dispatch(`${ns}/runById`, {id: spider.value?._id, options: options.value});
+      await store.dispatch(`${ns}/runById`, {
+        id: spider.value?._id,
+        options: options.value,
+      });
       store.commit(`${ns}/hideDialog`);
-      await ElMessage.success(t('components.spider.message.success.scheduleTask'));
+      await ElMessage.success(
+        t('components.spider.message.success.scheduleTask')
+      );
       await store.dispatch(`${ns}/getList`);
 
       sendEvent('click_run_spider_dialog_confirm', {
@@ -210,6 +207,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

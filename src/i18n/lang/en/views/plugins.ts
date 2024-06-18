@@ -15,7 +15,7 @@ const plugins: LViewsPlugins = {
     filter: {
       search: {
         placeholder: 'Search plugins',
-      }
+      },
     },
     install: {
       label: 'Install Plugin',
@@ -24,8 +24,8 @@ const plugins: LViewsPlugins = {
     settings: {
       label: 'Settings',
       tooltip: 'View or update global plugin settings',
-    }
-  }
+    },
+  },
 };
 
 export default plugins;

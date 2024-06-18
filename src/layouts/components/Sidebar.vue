@@ -4,24 +4,31 @@
     class="sidebar-toggle"
     @click="toggleSidebar"
     v-track="{
-        code: 'click_sidebar_toggle',
-        params: {
-          collapse: () => sidebarCollapsed,
-        }
-      }"
+      code: 'click_sidebar_toggle',
+      params: {
+        collapse: () => sidebarCollapsed,
+      },
+    }"
   >
-    <font-awesome-icon v-if="!sidebarCollapsed" :icon="['fas', 'outdent']"/>
-    <font-awesome-icon v-else :icon="['fas', 'indent']"/>
+    <font-awesome-icon v-if="!sidebarCollapsed" :icon="['fas', 'outdent']" />
+    <font-awesome-icon v-else :icon="['fas', 'indent']" />
   </span>
-  <el-aside :class="sidebarCollapsed ? 'collapsed' : ''" class="sidebar" width="inherit">
+  <el-aside
+    :class="sidebarCollapsed ? 'collapsed' : ''"
+    class="sidebar"
+    width="inherit"
+  >
     <!-- Logo -->
     <div class="logo-container">
       <div v-if="!sidebarCollapsed" class="logo">
         <div
-          v-if="!siteTitle.value?.customize_site_title || !siteTitle.value?.site_title"
+          v-if="
+            !siteTitle.value?.customize_site_title ||
+            !siteTitle.value?.site_title
+          "
           class="logo"
         >
-          <img class="logo-img" alt="logo-img" :src="logo"/>
+          <img class="logo-img" alt="logo-img" :src="logo" />
           <span class="logo-sub-title">
             <div class="logo-sub-title-block">
               {{ t(systemInfo.edition || '') }}
@@ -36,11 +43,7 @@
         </div>
       </div>
       <div v-else class="logo">
-        <img
-          class="logo-img"
-          alt="logo-img"
-          :src="logoIcon"
-        />
+        <img class="logo-img" alt="logo-img" :src="logoIcon" />
       </div>
     </div>
     <!-- ./Logo -->
@@ -57,24 +60,24 @@
         @select="onMenuItemClick"
       >
         <template v-for="(item, $index) in menuItems" :key="$index">
-          <cl-sidebar-item :item="item"/>
+          <cl-sidebar-item :item="item" />
         </template>
-        <div class="plugin-anchor"/>
+        <div class="plugin-anchor" />
       </el-menu>
     </div>
     <!-- ./Sidebar Menu -->
   </el-aside>
-  <div class="script-anchor"/>
+  <div class="script-anchor" />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {useStore} from 'vuex';
-import {useRoute, useRouter} from 'vue-router';
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
 import logo from '@/assets/svg/logo-white.svg';
 import logoIcon from '@/assets/svg/logo-icon-white.svg';
-import {getPrimaryPath} from '@/utils/path';
-import {useI18n} from 'vue-i18n';
+import { getPrimaryPath } from '@/utils/path';
+import { useI18n } from 'vue-i18n';
 import urljoin from 'url-join';
 
 export default defineComponent({
@@ -84,7 +87,7 @@ export default defineComponent({
 
     const route = useRoute();
 
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const store = useStore();
 
@@ -96,13 +99,22 @@ export default defineComponent({
 
     const storeNamespace = 'layout';
 
-    const sidebarCollapsed = computed<boolean>(() => layoutState.sidebarCollapsed);
+    const sidebarCollapsed = computed<boolean>(
+      () => layoutState.sidebarCollapsed
+    );
 
-    const menuItems = computed<MenuItem[]>(() => store.getters['layout/sidebarMenuItems']);
+    const menuItems = computed<MenuItem[]>(
+      () => store.getters['layout/sidebarMenuItems']
+    );
 
-    const getMenuItemPathMap = (rootPath: string, item: MenuItem): Map<string, string> => {
+    const getMenuItemPathMap = (
+      rootPath: string,
+      item: MenuItem
+    ): Map<string, string> => {
       const paths = new Map<string, string>();
-      const itemPath = item.path?.startsWith('/') ? item.path : urljoin(rootPath, item.path || '');
+      const itemPath = item.path?.startsWith('/')
+        ? item.path
+        : urljoin(rootPath, item.path || '');
       paths.set(itemPath, rootPath);
       if (item.children && item.children.length > 0) {
         for (const subItem of item.children) {
@@ -150,7 +162,10 @@ export default defineComponent({
     };
 
     const toggleSidebar = () => {
-      store.commit(`${storeNamespace}/setSideBarCollapsed`, !sidebarCollapsed.value);
+      store.commit(
+        `${storeNamespace}/setSideBarCollapsed`,
+        !sidebarCollapsed.value
+      );
     };
 
     const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
@@ -214,7 +229,20 @@ export default defineComponent({
       }
 
       .logo-title {
-        font-family: BlinkMacSystemFont, -apple-system, segoe ui, roboto, oxygen, ubuntu, cantarell, fira sans, droid sans, helvetica neue, helvetica, arial, sans-serif;
+        font-family:
+          BlinkMacSystemFont,
+          -apple-system,
+          segoe ui,
+          roboto,
+          oxygen,
+          ubuntu,
+          cantarell,
+          fira sans,
+          droid sans,
+          helvetica neue,
+          helvetica,
+          arial,
+          sans-serif;
         font-size: 20px;
         font-weight: 600;
         margin-left: 12px;
@@ -222,7 +250,20 @@ export default defineComponent({
       }
 
       .logo-sub-title {
-        font-family: BlinkMacSystemFont, -apple-system, segoe ui, roboto, oxygen, ubuntu, cantarell, fira sans, droid sans, helvetica neue, helvetica, arial, sans-serif;
+        font-family:
+          BlinkMacSystemFont,
+          -apple-system,
+          segoe ui,
+          roboto,
+          oxygen,
+          ubuntu,
+          cantarell,
+          fira sans,
+          droid sans,
+          helvetica neue,
+          helvetica,
+          arial,
+          sans-serif;
         font-size: 10px;
         height: 24px;
         line-height: 24px;

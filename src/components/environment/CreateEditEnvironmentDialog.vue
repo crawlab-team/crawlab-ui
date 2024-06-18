@@ -11,15 +11,15 @@
     no-batch
   >
     <template #default>
-      <cl-environment-form/>
+      <cl-environment-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useEnvironment from '@/components/environment/useEnvironment';
-import {getStore} from "@/store";
+import { getStore } from '@/store';
 
 export default defineComponent({
   name: 'CreateEditEnvironmentDialog',
@@ -34,6 +34,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

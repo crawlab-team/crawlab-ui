@@ -15,13 +15,13 @@ const schedule: LComponentsSchedule = {
   rules: {
     message: {
       invalidCronExpression: '无效 Cron 表达式. [分] [时] [日] [月] [星期几]',
-    }
+    },
   },
   message: {
     success: {
       enable: '启用成功',
       disable: '禁用成功',
-    }
+    },
   },
   cron: {
     title: {
@@ -31,7 +31,7 @@ const schedule: LComponentsSchedule = {
       description: '描述',
       next: '下一时刻',
     },
-  }
+  },
 };
 
 export default schedule;

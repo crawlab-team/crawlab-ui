@@ -1,20 +1,20 @@
 <template>
   <cl-tag
-      :key="data"
-      :icon="data.icon"
-      :label="data.label"
-      :size="size"
-      :spinning="data.spinning"
-      :tooltip="data.tooltip"
-      :type="data.type"
-      @click="$emit('click')"
+    :key="data"
+    :icon="data.icon"
+    :label="data.label"
+    :size="size"
+    :spinning="data.spinning"
+    :tooltip="data.tooltip"
+    :type="data.type"
+    @click="$emit('click')"
   />
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import Tag from '@/components/tag/Tag.vue';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'NodeRunners',
@@ -31,18 +31,19 @@ export default defineComponent({
       type: String as PropType<BasicSize>,
       required: false,
       default: 'default',
-    }
+    },
   },
   emits: ['click'],
-  setup(props: NodeRunnersProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: NodeRunnersProps, { emit }) {
+    const { t } = useI18n();
 
     const running = computed<number>(() => {
-      const {available, max} = props;
-      if (available === undefined ||
-          max === undefined ||
-          isNaN(available) ||
-          isNaN(max)
+      const { available, max } = props;
+      if (
+        available === undefined ||
+        max === undefined ||
+        isNaN(available) ||
+        isNaN(max)
       ) {
         return 0;
       }
@@ -50,7 +51,7 @@ export default defineComponent({
     });
 
     const label = computed<string>(() => {
-      const {max} = props;
+      const { max } = props;
       return `${running.value} / ${max}`;
     });
 

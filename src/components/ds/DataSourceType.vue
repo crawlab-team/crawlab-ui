@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import {
   DATA_SOURCE_TYPE_MONGO,
   DATA_SOURCE_TYPE_MYSQL,
@@ -20,24 +20,22 @@ import {
   DATA_SOURCE_TYPE_ELASTICSEARCH,
   DATA_SOURCE_TYPE_KAFKA,
 } from '@/constants/ds';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'DataSourceType',
   props: {
     dataSource: {
       type: Object as PropType<DataSource>,
-    }
+    },
   },
-  emits: [
-    'click',
-  ],
+  emits: ['click'],
   setup(props: DataSourceTypeProps) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const data = computed<TagData>(() => {
-      const {dataSource} = props;
+      const { dataSource } = props;
       switch (dataSource?.type) {
         case DATA_SOURCE_TYPE_MONGO:
           return {
@@ -99,9 +97,8 @@ export default defineComponent({
     return {
       data,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

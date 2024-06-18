@@ -90,7 +90,7 @@ export declare global {
     };
     notification: {
       loggedOut: string;
-    },
+    };
     tabs: {
       overview: string;
       spiders: string;

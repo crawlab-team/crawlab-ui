@@ -12,8 +12,8 @@ const table: LComponentsTable = {
     title: 'Table Columns Customization',
     titles: {
       left: 'Available',
-      right: 'Selected'
-    }
+      right: 'Selected',
+    },
   },
   header: {
     sort: {

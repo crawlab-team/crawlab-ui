@@ -1,15 +1,12 @@
 <template>
   <div
     class="public-plugin-item"
-    :class="[
-        active ? 'active' : '',
-        clickable ? 'clickable' : '',
-      ]"
+    :class="[active ? 'active' : '', clickable ? 'clickable' : '']"
     @click="onClick"
   >
     <div class="container">
       <div class="image-wrapper">
-        <img class="image" :src="defaultLogo"/>
+        <img class="image" :src="defaultLogo" />
       </div>
       <div class="content-wrapper">
         <div class="content">
@@ -33,12 +30,10 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import defaultLogo from '@/assets/svg/logo';
-import {useI18n} from 'vue-i18n';
-import {
-  PLUGIN_STATUS_INSTALLING,
-} from '@/constants/plugin';
+import { useI18n } from 'vue-i18n';
+import { PLUGIN_STATUS_INSTALLING } from '@/constants/plugin';
 
 export default defineComponent({
   name: 'PublicPluginItem',
@@ -62,15 +57,12 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: [
-    'click',
-    'install',
-  ],
-  setup(props: PublicPluginItemProps, {emit}) {
-    const {t} = useI18n();
+  emits: ['click', 'install'],
+  setup(props: PublicPluginItemProps, { emit }) {
+    const { t } = useI18n();
 
     const type = computed<string>(() => {
-      const {status, installed} = props;
+      const { status, installed } = props;
       if (installed) {
         return 'success';
       } else if (status === PLUGIN_STATUS_INSTALLING) {
@@ -81,7 +73,7 @@ export default defineComponent({
     });
 
     const icon = computed<Icon | undefined>(() => {
-      const {status, installed} = props;
+      const { status, installed } = props;
       if (installed) {
         return ['fa', 'check'];
       } else if (status === PLUGIN_STATUS_INSTALLING) {
@@ -92,12 +84,12 @@ export default defineComponent({
     });
 
     const loading = computed<boolean>(() => {
-      const {status} = props;
+      const { status } = props;
       return status === PLUGIN_STATUS_INSTALLING;
     });
 
     const label = computed<string>(() => {
-      const {status, installed} = props;
+      const { status, installed } = props;
       if (installed) {
         return t('components.plugin.status.label.installed');
       } else if (status === PLUGIN_STATUS_INSTALLING) {
@@ -108,7 +100,7 @@ export default defineComponent({
     });
 
     const disabled = computed<boolean>(() => {
-      const {status, installed} = props;
+      const { status, installed } = props;
       if (installed) {
         return true;
       } else if (status === PLUGIN_STATUS_INSTALLING) {
@@ -119,7 +111,7 @@ export default defineComponent({
     });
 
     const onClick = () => {
-      const {clickable} = props;
+      const { clickable } = props;
       if (!clickable) return;
       emit('click');
     };

@@ -65,7 +65,7 @@ interface LComponentsPlugin {
         running: string;
         error: string;
         unknown: string;
-      }
-    }
+      };
+    };
   };
 }

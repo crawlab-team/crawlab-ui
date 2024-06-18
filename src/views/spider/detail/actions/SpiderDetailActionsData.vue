@@ -5,7 +5,9 @@
       :label="t('components.spider.actions.data.tooltip.dataActions')"
     />
     <cl-nav-action-item>
-      <el-tooltip :content="t('components.spider.actions.data.tooltip.displayAllFields')">
+      <el-tooltip
+        :content="t('components.spider.actions.data.tooltip.displayAllFields')"
+      >
         <cl-switch
           class="display-all-fields"
           :active-icon="['fa', 'eye']"
@@ -16,9 +18,7 @@
         />
       </el-tooltip>
     </cl-nav-action-item>
-    <cl-nav-action-item
-      v-export="colName"
-    >
+    <cl-nav-action-item v-export="colName">
       <cl-fa-icon-button
         :icon="['fa', 'download']"
         :tooltip="t('components.spider.actions.data.tooltip.export')"
@@ -30,7 +30,9 @@
     <cl-nav-action-item>
       <cl-fa-icon-button
         :icon="['fa', 'lightbulb']"
-        :tooltip="t('components.spider.actions.data.tooltip.inferDataFieldsTypes')"
+        :tooltip="
+          t('components.spider.actions.data.tooltip.inferDataFieldsTypes')
+        "
         type="primary"
         class-name="infer-data-fields-types-btn"
         @click="onClickInferDataFieldsTypes"
@@ -38,7 +40,11 @@
     </cl-nav-action-item>
     <cl-nav-action-item>
       <el-tooltip
-        :content="dedupEnabled ? t('components.spider.actions.data.tooltip.dedup.enabled') : t('components.spider.actions.data.tooltip.dedup.disabled')"
+        :content="
+          dedupEnabled
+            ? t('components.spider.actions.data.tooltip.dedup.enabled')
+            : t('components.spider.actions.data.tooltip.dedup.disabled')
+        "
       >
         <cl-switch
           class="dedup"
@@ -67,8 +73,14 @@
           @change="onDedupTypeChange"
           style="margin-right: 10px"
         >
-          <el-option :value="DEDUP_TYPE_IGNORE" :label="t('components.result.dedup.types.ignore')"/>
-          <el-option :value="DEDUP_TYPE_OVERWRITE" :label="t('components.result.dedup.types.overwrite')"/>
+          <el-option
+            :value="DEDUP_TYPE_IGNORE"
+            :label="t('components.result.dedup.types.ignore')"
+          />
+          <el-option
+            :value="DEDUP_TYPE_OVERWRITE"
+            :label="t('components.result.dedup.types.overwrite')"
+          />
         </el-select>
       </el-tooltip>
     </cl-nav-action-item>
@@ -76,13 +88,13 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch} from 'vue';
-import {ExportTypeCsv} from '@/constants/export';
-import {useStore} from 'vuex';
-import {translate} from "@/utils";
-import {inferDataFieldTypes} from "@/utils/dataFields";
-import {ElMessage, ElMessageBox} from "element-plus";
-import {DEDUP_TYPE_IGNORE, DEDUP_TYPE_OVERWRITE} from "@/constants/dedup";
+import { ref, watch } from 'vue';
+import { ExportTypeCsv } from '@/constants/export';
+import { useStore } from 'vuex';
+import { translate } from '@/utils';
+import { inferDataFieldTypes } from '@/utils/dataFields';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { DEDUP_TYPE_IGNORE, DEDUP_TYPE_OVERWRITE } from '@/constants/dedup';
 
 const t = translate;
 
@@ -90,10 +102,8 @@ const t = translate;
 const ns = 'spider';
 const nsDc = 'dataCollection';
 const store = useStore();
-const {
-  spider: spiderState,
-  dataCollection: dataCollectionState,
-} = store.state as RootStoreState;
+const { spider: spiderState, dataCollection: dataCollectionState } =
+  store.state as RootStoreState;
 
 // spider col name
 const colName = () => spiderState.form.col_name as string;
@@ -124,21 +134,36 @@ const inferFields = async () => {
 };
 
 const onClickInferDataFieldsTypes = async () => {
-  await ElMessageBox.confirm(t('common.messageBox.confirm.proceed'), t('common.actions.inferDataFieldsTypes'), {type: 'warning'});
+  await ElMessageBox.confirm(
+    t('common.messageBox.confirm.proceed'),
+    t('common.actions.inferDataFieldsTypes'),
+    { type: 'warning' }
+  );
   await inferFields();
   await ElMessage.success(t('common.message.success.action'));
 };
 
-watch(() => JSON.stringify(dataCollectionState.resultTableData), async () => {
-  if (!dataCollectionState.form?.fields?.length && dataCollectionState.resultTableData?.length) {
-    await inferFields();
+watch(
+  () => JSON.stringify(dataCollectionState.resultTableData),
+  async () => {
+    if (
+      !dataCollectionState.form?.fields?.length &&
+      dataCollectionState.resultTableData?.length
+    ) {
+      await inferFields();
+    }
   }
-});
+);
 
-const dedupEnabled = ref<boolean>(dataCollectionState.form?.dedup?.enabled as boolean);
-watch(() => dataCollectionState.form?.dedup?.enabled, async (val) => {
-  dedupEnabled.value = val as boolean;
-});
+const dedupEnabled = ref<boolean>(
+  dataCollectionState.form?.dedup?.enabled as boolean
+);
+watch(
+  () => dataCollectionState.form?.dedup?.enabled,
+  async val => {
+    dedupEnabled.value = val as boolean;
+  }
+);
 const onDedupEnabledChange = async (val: boolean) => {
   store.commit(`${nsDc}/setForm`, {
     ...dataCollectionState.form,
@@ -151,13 +176,22 @@ const onDedupEnabledChange = async (val: boolean) => {
     id: dataCollectionState.form._id,
     form: dataCollectionState.form,
   });
-  await ElMessage.success(val ? t('common.message.success.enabled') : t('common.message.success.disabled'));
+  await ElMessage.success(
+    val
+      ? t('common.message.success.enabled')
+      : t('common.message.success.disabled')
+  );
 };
 
-const dedupType = ref<string>(dataCollectionState.form?.dedup?.type as string || DEDUP_TYPE_IGNORE);
-watch(() => dataCollectionState.form?.dedup?.type, async (val) => {
-  dedupType.value = val || DEDUP_TYPE_IGNORE;
-});
+const dedupType = ref<string>(
+  (dataCollectionState.form?.dedup?.type as string) || DEDUP_TYPE_IGNORE
+);
+watch(
+  () => dataCollectionState.form?.dedup?.type,
+  async val => {
+    dedupType.value = val || DEDUP_TYPE_IGNORE;
+  }
+);
 const onDedupTypeChange = async (val: string) => {
   store.commit(`${nsDc}/setForm`, {
     ...dataCollectionState.form,

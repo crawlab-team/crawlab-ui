@@ -5,19 +5,15 @@
     :default-active="activeKey"
     @select="onSelect"
   >
-    <el-menu-item
-      v-for="item in items"
-      :key="item.id"
-      :index="item.id"
-    >
+    <el-menu-item v-for="item in items" :key="item.id" :index="item.id">
       <span class="title">{{ item.title }}</span>
     </el-menu-item>
   </el-menu>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {emptyArrayFunc} from '@/utils/func';
+import { defineComponent, PropType } from 'vue';
+import { emptyArrayFunc } from '@/utils/func';
 
 export default defineComponent({
   name: 'NavSidebarList',
@@ -28,20 +24,21 @@ export default defineComponent({
     items: {
       type: Array as PropType<NavItem[]>,
       default: emptyArrayFunc,
-    }
+    },
   },
-  emits: [
-    'select',
-  ],
-  setup(props: NavSidebarListProps, {emit}) {
+  emits: ['select'],
+  setup(props: NavSidebarListProps, { emit }) {
     const onSelect = (id: string) => {
-      emit('select', props.items?.findIndex(item => item.id === id));
+      emit(
+        'select',
+        props.items?.findIndex(item => item.id === id)
+      );
     };
 
     return {
       onSelect,
     };
-  }
+  },
 });
 </script>
 

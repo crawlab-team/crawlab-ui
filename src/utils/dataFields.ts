@@ -2,32 +2,47 @@ import dayjs from 'dayjs';
 import {
   DATA_FIELD_TYPE_CURRENCY,
   DATA_FIELD_TYPE_TIME,
-  DATA_FIELD_TYPE_GENERAL, DATA_FIELD_TYPE_IMAGE,
-  DATA_FIELD_TYPE_NUMERIC, DATA_FIELD_TYPE_URL, DATA_FIELD_TYPE_HTML, DATA_FIELD_TYPE_LONG_TEXT
-} from "@/constants/dataFields";
+  DATA_FIELD_TYPE_GENERAL,
+  DATA_FIELD_TYPE_IMAGE,
+  DATA_FIELD_TYPE_NUMERIC,
+  DATA_FIELD_TYPE_URL,
+  DATA_FIELD_TYPE_HTML,
+  DATA_FIELD_TYPE_LONG_TEXT,
+} from '@/constants/dataFields';
 
-export const inferDataFieldTypes = (fields: DataField[], data: Result[]): DataField[] => {
+export const inferDataFieldTypes = (
+  fields: DataField[],
+  data: Result[]
+): DataField[] => {
   const fieldTypesMap = new Map<string, Map<DataFieldType, number>>();
   fields.forEach(f => {
     fieldTypesMap.set(f.key as string, new Map<DataFieldType, number>());
   });
 
-  data.forEach((d) => {
-    fields.forEach((f) => {
+  data.forEach(d => {
+    fields.forEach(f => {
       const type = inferDataFieldType(d[f.key as string]);
-      const typeCountMap = fieldTypesMap.get(f.key as string) as Map<DataFieldType, number>;
+      const typeCountMap = fieldTypesMap.get(f.key as string) as Map<
+        DataFieldType,
+        number
+      >;
       typeCountMap.set(type, (typeCountMap.get(type) || 0) + 1);
     });
   });
 
-  return fields.map((f) => {
-    const typeCountMap = fieldTypesMap.get(f.key as string) as Map<DataFieldType, number>;
-    const type = Array.from(typeCountMap.entries()).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+  return fields.map(f => {
+    const typeCountMap = fieldTypesMap.get(f.key as string) as Map<
+      DataFieldType,
+      number
+    >;
+    const type = Array.from(typeCountMap.entries()).reduce((a, b) =>
+      a[1] > b[1] ? a : b
+    )[0];
     return {
       ...f,
       type,
     };
-  })
+  });
 };
 
 export const inferDataFieldType = (value: any): DataFieldType => {
@@ -93,7 +108,9 @@ export const getDataFieldIconByType = (type: DataFieldType): Icon => {
   }
 };
 
-export const getDataFieldIconClassNameByType = (type: DataFieldType): string => {
+export const getDataFieldIconClassNameByType = (
+  type: DataFieldType
+): string => {
   const icon = getDataFieldIconByType(type);
   return `${icon[0]} fa-${icon[1]}`;
-}
+};

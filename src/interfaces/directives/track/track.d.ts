@@ -10,7 +10,9 @@ export declare global {
 
   type TrackEventParamsWrapped = { [key: string]: any };
 
-  type TrackEventParams = { [key: string]: string | number | boolean | Function | undefined };
+  type TrackEventParams = {
+    [key: string]: string | number | boolean | Function | undefined;
+  };
 
   type TrackEventListenerDict = { [key: string]: EventListener };
 

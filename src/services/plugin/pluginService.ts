@@ -1,5 +1,5 @@
-import {Store} from 'vuex';
-import {getDefaultService} from '@/utils/service';
+import { Store } from 'vuex';
+import { getDefaultService } from '@/utils/service';
 
 type Plugin = CPlugin;
 

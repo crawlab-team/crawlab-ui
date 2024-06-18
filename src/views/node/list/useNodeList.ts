@@ -1,18 +1,22 @@
 import useList from '@/layouts/content/list/list';
-import {useStore} from 'vuex';
-import {getDefaultUseListOptions, onListFilterChangeByKey, setupListComponent} from '@/utils/list';
-import {computed, h} from 'vue';
+import { useStore } from 'vuex';
+import {
+  getDefaultUseListOptions,
+  onListFilterChangeByKey,
+  setupListComponent,
+} from '@/utils/list';
+import { computed, h } from 'vue';
 import NodeType from '@/components/node/NodeType.vue';
 import {
   TABLE_COLUMN_NAME_ACTIONS,
   TABLE_ACTION_EDIT,
   TABLE_ACTION_CUSTOMIZE_COLUMNS,
-  TABLE_ACTION_EXPORT
+  TABLE_ACTION_EXPORT,
 } from '@/constants/table';
-import {ElMessageBox} from 'element-plus';
+import { ElMessageBox } from 'element-plus';
 import useNodeService from '@/services/node/nodeService';
 import NavLink from '@/components/nav/NavLink.vue';
-import {useRouter} from 'vue-router';
+import { useRouter } from 'vue-router';
 import NodeRunners from '@/components/node/NodeRunners.vue';
 import Switch from '@/components/switch/Switch.vue';
 import NodeStatus from '@/components/node/NodeStatus.vue';
@@ -20,20 +24,22 @@ import {
   NODE_STATUS_OFFLINE,
   NODE_STATUS_ONLINE,
   NODE_STATUS_REGISTERED,
-  NODE_STATUS_UNREGISTERED
+  NODE_STATUS_UNREGISTERED,
 } from '@/constants/node';
-import {translate} from '@/utils/i18n';
-import {sendEvent} from '@/admin/umeng';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
   ACTION_ENABLE,
   ACTION_FILTER,
-  ACTION_FILTER_SEARCH, ACTION_FILTER_SELECT,
+  ACTION_FILTER_SEARCH,
+  ACTION_FILTER_SELECT,
   ACTION_VIEW,
-  FILTER_OP_CONTAINS, FILTER_OP_EQUAL
+  FILTER_OP_CONTAINS,
+  FILTER_OP_EQUAL,
 } from '@/constants';
-import {isAllowedAction} from '@/utils';
+import { isAllowedAction } from '@/utils';
 
 type Node = CNode;
 
@@ -49,10 +55,7 @@ const useNodeList = () => {
   const t = translate;
 
   // services
-  const {
-    getList,
-    deleteById,
-  } = useNodeService(store);
+  const { getList, deleteById } = useNodeService(store);
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -70,22 +73,30 @@ const useNodeList = () => {
           type: 'success',
           onClick: async () => {
             const message = h('div', [
-              h('div', {
-                style: {
-                  fontSize: '16px',
-                  marginBottom: '10px',
-                  lineHeight: '1.5',
+              h(
+                'div',
+                {
+                  style: {
+                    fontSize: '16px',
+                    marginBottom: '10px',
+                    lineHeight: '1.5',
+                  },
                 },
-              }, [t('views.nodes.notice.create.content')]),
-              h('a', {
-                href: t('views.nodes.notice.create.link.url'),
-                style: {
-                  color: '#409eff',
-                  fontSize: '16px',
-                  fontWeight: '600',
+                [t('views.nodes.notice.create.content')]
+              ),
+              h(
+                'a',
+                {
+                  href: t('views.nodes.notice.create.link.url'),
+                  style: {
+                    color: '#409eff',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                  },
+                  target: '_blank',
                 },
-                target: '_blank',
-              }, [t('views.nodes.notice.create.link.label')]),
+                [t('views.nodes.notice.create.link.label')]
+              ),
             ]);
             const title = t('views.nodes.notice.create.title');
             await ElMessageBox({
@@ -97,9 +108,9 @@ const useNodeList = () => {
             // commit(`${ns}/showDialog`, 'create');
 
             sendEvent('click_node_list_new');
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       action: ACTION_FILTER,
@@ -110,7 +121,12 @@ const useNodeList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t('views.nodes.navActions.filter.search.placeholder'),
-          onChange: onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'name',
+            FILTER_OP_CONTAINS
+          ),
         },
         {
           action: ACTION_FILTER_SELECT,
@@ -118,10 +134,15 @@ const useNodeList = () => {
           className: 'filter-select-type',
           label: t('views.nodes.navActionsExtra.filter.select.type.label'),
           options: [
-            {label: t('components.node.nodeType.label.master'), value: true},
-            {label: t('components.node.nodeType.label.worker'), value: false},
+            { label: t('components.node.nodeType.label.master'), value: true },
+            { label: t('components.node.nodeType.label.worker'), value: false },
           ],
-          onChange: onListFilterChangeByKey(store, ns, 'is_master', FILTER_OP_EQUAL),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'is_master',
+            FILTER_OP_EQUAL
+          ),
         },
         {
           action: ACTION_FILTER_SELECT,
@@ -129,12 +150,29 @@ const useNodeList = () => {
           className: 'filter-select-status',
           label: t('views.nodes.navActionsExtra.filter.select.status.label'),
           options: [
-            {label: t('components.node.nodeStatus.label.unregistered'), value: NODE_STATUS_UNREGISTERED},
-            {label: t('components.node.nodeStatus.label.registered'), value: NODE_STATUS_REGISTERED},
-            {label: t('components.node.nodeStatus.label.online'), value: NODE_STATUS_ONLINE},
-            {label: t('components.node.nodeStatus.label.offline'), value: NODE_STATUS_OFFLINE},
+            {
+              label: t('components.node.nodeStatus.label.unregistered'),
+              value: NODE_STATUS_UNREGISTERED,
+            },
+            {
+              label: t('components.node.nodeStatus.label.registered'),
+              value: NODE_STATUS_REGISTERED,
+            },
+            {
+              label: t('components.node.nodeStatus.label.online'),
+              value: NODE_STATUS_ONLINE,
+            },
+            {
+              label: t('components.node.nodeStatus.label.offline'),
+              value: NODE_STATUS_OFFLINE,
+            },
           ],
-          onChange: onListFilterChangeByKey(store, ns, 'status', FILTER_OP_EQUAL),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'status',
+            FILTER_OP_EQUAL
+          ),
         },
         {
           action: ACTION_FILTER_SELECT,
@@ -142,13 +180,18 @@ const useNodeList = () => {
           className: 'filter-select-enabled',
           label: t('views.nodes.navActionsExtra.filter.select.enabled.label'),
           options: [
-            {label: t('common.control.enabled'), value: true},
-            {label: t('common.control.disabled'), value: false},
+            { label: t('common.control.enabled'), value: true },
+            { label: t('common.control.disabled'), value: false },
           ],
-          onChange: onListFilterChangeByKey(store, ns, 'enabled', FILTER_OP_EQUAL),
+          onChange: onListFilterChangeByKey(
+            store,
+            ns,
+            'enabled',
+            FILTER_OP_EQUAL
+          ),
         },
-      ]
-    }
+      ],
+    },
   ]);
 
   // table columns
@@ -159,10 +202,11 @@ const useNodeList = () => {
       label: t('views.nodes.table.columns.name'),
       icon: ['fa', 'font'],
       width: '150',
-      value: (row: Node) => h(NavLink, {
-        path: `/nodes/${row._id}`,
-        label: row.name,
-      }),
+      value: (row: Node) =>
+        h(NavLink, {
+          path: `/nodes/${row._id}`,
+          label: row.name,
+        }),
       hasSort: true,
       hasFilter: true,
       allowFilterSearch: true,
@@ -174,13 +218,13 @@ const useNodeList = () => {
       icon: ['fa', 'list'],
       width: '150',
       value: (row: Node) => {
-        return h(NodeType, {isMaster: row.is_master} as NodeTypeProps);
+        return h(NodeType, { isMaster: row.is_master } as NodeTypeProps);
       },
       hasFilter: true,
       allowFilterItems: true,
       filterItems: [
-        {label: t('components.node.nodeType.label.master'), value: true},
-        {label: t('components.node.nodeType.label.worker'), value: false},
+        { label: t('components.node.nodeType.label.master'), value: true },
+        { label: t('components.node.nodeType.label.worker'), value: false },
       ],
     },
     {
@@ -190,15 +234,27 @@ const useNodeList = () => {
       icon: ['fa', 'heartbeat'],
       width: '150',
       value: (row: Node) => {
-        return h(NodeStatus, {status: row.status} as NodeStatusProps);
+        return h(NodeStatus, { status: row.status } as NodeStatusProps);
       },
       hasFilter: true,
       allowFilterItems: true,
       filterItems: [
-        {label: t('components.node.nodeStatus.label.unregistered'), value: NODE_STATUS_UNREGISTERED},
-        {label: t('components.node.nodeStatus.label.registered'), value: NODE_STATUS_REGISTERED},
-        {label: t('components.node.nodeStatus.label.online'), value: NODE_STATUS_ONLINE},
-        {label: t('components.node.nodeStatus.label.offline'), value: NODE_STATUS_OFFLINE},
+        {
+          label: t('components.node.nodeStatus.label.unregistered'),
+          value: NODE_STATUS_UNREGISTERED,
+        },
+        {
+          label: t('components.node.nodeStatus.label.registered'),
+          value: NODE_STATUS_REGISTERED,
+        },
+        {
+          label: t('components.node.nodeStatus.label.online'),
+          value: NODE_STATUS_ONLINE,
+        },
+        {
+          label: t('components.node.nodeStatus.label.offline'),
+          value: NODE_STATUS_OFFLINE,
+        },
       ],
     },
     {
@@ -232,11 +288,16 @@ const useNodeList = () => {
       icon: ['fa', 'play'],
       width: '160',
       value: (row: Node) => {
-        if (row.max_runners === undefined ||
+        if (
+          row.max_runners === undefined ||
           !row.status ||
           ![NODE_STATUS_ONLINE, NODE_STATUS_OFFLINE].includes(row.status)
-        ) return;
-        return h(NodeRunners, {available: row.available_runners, max: row.max_runners} as NodeRunnersProps);
+        )
+          return;
+        return h(NodeRunners, {
+          available: row.available_runners,
+          max: row.max_runners,
+        } as NodeRunnersProps);
       },
     },
     {
@@ -248,21 +309,29 @@ const useNodeList = () => {
       value: (row: Node) => {
         return h(Switch, {
           modelValue: row.enabled,
-          disabled: !isAllowedAction(router.currentRoute.value.path, ACTION_ENABLE),
+          disabled: !isAllowedAction(
+            router.currentRoute.value.path,
+            ACTION_ENABLE
+          ),
           'onUpdate:modelValue': async (value: boolean) => {
             row.enabled = value;
-            await store.dispatch(`${ns}/updateById`, {id: row._id, form: row});
+            await store.dispatch(`${ns}/updateById`, {
+              id: row._id,
+              form: row,
+            });
 
-            value ? sendEvent('click_node_list_enable') : sendEvent('click_node_list_disable');
+            value
+              ? sendEvent('click_node_list_enable')
+              : sendEvent('click_node_list_disable');
           },
         } as SwitchProps);
       },
       hasFilter: true,
       allowFilterItems: true,
       filterItems: [
-        {label: t('common.control.enabled'), value: true},
-        {label: t('common.control.disabled'), value: false},
-      ]
+        { label: t('common.control.enabled'), value: true },
+        { label: t('common.control.disabled'), value: false },
+      ],
     },
     // {
     //   key: 'tags',
@@ -294,7 +363,7 @@ const useNodeList = () => {
           type: 'primary',
           icon: ['fa', 'search'],
           tooltip: t('common.actions.view'),
-          onClick: (row) => {
+          onClick: row => {
             router.push(`/nodes/${row._id}`);
 
             sendEvent('click_node_list_actions_view');
@@ -324,7 +393,7 @@ const useNodeList = () => {
               t('common.actions.delete'),
               {
                 type: 'warning',
-                confirmButtonClass: 'el-button--danger'
+                confirmButtonClass: 'el-button--danger',
               }
             );
 
@@ -339,7 +408,7 @@ const useNodeList = () => {
         },
       ],
       disableTransfer: true,
-    }
+    },
   ]);
 
   // options

@@ -1,9 +1,6 @@
 <template>
   <div class="nav-sidebar" :class="classes">
-    <div
-      v-if="!noSearch"
-      class="search"
-    >
+    <div v-if="!noSearch" class="search">
       <el-input
         v-model="searchString"
         class="search-input"
@@ -12,14 +9,12 @@
       >
         <template #prefix>
           <el-icon v-if="!collapsed" class="el-input__icon">
-            <font-awesome-icon :icon="['fa', 'search']"/>
+            <font-awesome-icon :icon="['fa', 'search']" />
           </el-icon>
         </template>
       </el-input>
     </div>
-    <template
-      v-if="filteredItems.length > 0"
-    >
+    <template v-if="filteredItems.length > 0">
       <cl-nav-sidebar-list
         v-if="type === 'list'"
         :active-key="activeKey"
@@ -38,16 +33,14 @@
         @check="onCheckTree"
       />
     </template>
-    <cl-empty
-      v-else
-    />
+    <cl-empty v-else />
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType, ref} from 'vue';
-import {ElMenu} from 'element-plus';
-import {useI18n} from 'vue-i18n';
-import {emptyArrayFunc} from '@/utils/func';
+import { computed, defineComponent, PropType, ref } from 'vue';
+import { ElMenu } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+import { emptyArrayFunc } from '@/utils/func';
 
 export const navSidebarContentProps = {
   items: {
@@ -92,15 +85,12 @@ export default defineComponent({
     noSearch: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-  emits: [
-    'select',
-    'check',
-  ],
-  setup(props: NavSidebarProps, {emit}) {
+  emits: ['select', 'check'],
+  setup(props: NavSidebarProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const toggling = ref(false);
     const searchString = ref('');
@@ -110,11 +100,15 @@ export default defineComponent({
     const filteredItems = computed<NavItem[]>(() => {
       const items = props.items as NavItem[];
       if (!searchString.value) return items;
-      return items.filter(d => d.title?.toLocaleLowerCase().includes(searchString.value.toLocaleLowerCase()));
+      return items.filter(d =>
+        d.title
+          ?.toLocaleLowerCase()
+          .includes(searchString.value.toLocaleLowerCase())
+      );
     });
 
     const classes = computed(() => {
-      const {collapsed} = props;
+      const { collapsed } = props;
       const cls = [];
       if (collapsed) cls.push('collapsed');
       return cls;

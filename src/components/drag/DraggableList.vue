@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, provide, reactive, ref} from 'vue';
-import {plainClone} from '@/utils/object';
+import { computed, defineComponent, provide, reactive, ref } from 'vue';
+import { plainClone } from '@/utils/object';
 
 export default defineComponent({
   name: 'DraggableList',
@@ -28,21 +28,23 @@ export default defineComponent({
       default: 'key',
     },
   },
-  emits: [
-    'd-end',
-  ],
+  emits: ['d-end'],
   setup(props, ctx) {
-    const {emit} = ctx;
+    const { emit } = ctx;
     const internalItems = reactive<DraggableListInternalItems>({});
     const isDragging = ref(false);
 
     const orderedItems = computed(() => {
-      const {items, itemKey} = props as DraggableListProps;
-      const {draggingItem, targetItem} = internalItems;
+      const { items, itemKey } = props as DraggableListProps;
+      const { draggingItem, targetItem } = internalItems;
       if (!draggingItem || !targetItem) return items;
       const orderedItems = plainClone(items) as DraggableItemData[];
-      const draggingIdx = orderedItems.map(t => t[itemKey]).indexOf(draggingItem[itemKey]);
-      const targetIdx = orderedItems.map(t => t[itemKey]).indexOf(targetItem[itemKey]);
+      const draggingIdx = orderedItems
+        .map(t => t[itemKey])
+        .indexOf(draggingItem[itemKey]);
+      const targetIdx = orderedItems
+        .map(t => t[itemKey])
+        .indexOf(targetItem[itemKey]);
       if (draggingIdx === -1 || targetIdx === -1) return items;
       orderedItems.splice(draggingIdx, 1);
       orderedItems.splice(targetIdx, 0, plainClone(draggingItem));
@@ -67,18 +69,27 @@ export default defineComponent({
     };
 
     const onTabDragEnter = (item: DraggableItemData) => {
-      const {itemKey} = props as DraggableListProps;
-      const {draggingItem} = internalItems;
-      if (!draggingItem || (draggingItem ? draggingItem[itemKey] : undefined) === item[itemKey]) return;
+      const { itemKey } = props as DraggableListProps;
+      const { draggingItem } = internalItems;
+      if (
+        !draggingItem ||
+        (draggingItem ? draggingItem[itemKey] : undefined) === item[itemKey]
+      )
+        return;
       const _item = plainClone(item) as DraggableItemData;
       _item.dragging = true;
       internalItems.targetItem = _item;
     };
 
     const onTabDragLeave = (item: DraggableItemData) => {
-      const {itemKey} = props as DraggableListProps;
-      const {draggingItem, targetItem} = internalItems;
-      if (!!targetItem || !draggingItem || (draggingItem ? draggingItem[itemKey] : undefined) === item[itemKey]) return;
+      const { itemKey } = props as DraggableListProps;
+      const { draggingItem, targetItem } = internalItems;
+      if (
+        !!targetItem ||
+        !draggingItem ||
+        (draggingItem ? draggingItem[itemKey] : undefined) === item[itemKey]
+      )
+        return;
       internalItems.targetItem = undefined;
     };
 

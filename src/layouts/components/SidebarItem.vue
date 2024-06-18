@@ -6,12 +6,12 @@
       code: 'click_sidebar_menu_item',
       params: {
         path: item.path,
-      }
+      },
     }"
     :index="item.path"
     @click="onMenuItemClick(item)"
   >
-    <cl-menu-item-icon :item="item" size="normal"/>
+    <cl-menu-item-icon :item="item" size="normal" />
     <template #title>
       <span class="menu-item-title">{{ t(item.title) }}</span>
     </template>
@@ -19,12 +19,9 @@
   <!-- ./no sub menu items -->
 
   <!-- has sub menu items -->
-  <el-sub-menu
-    v-else
-    :index="item.path"
-  >
+  <el-sub-menu v-else :index="item.path">
     <template #title>
-      <cl-menu-item-icon :item="item" size="normal"/>
+      <cl-menu-item-icon :item="item" size="normal" />
       <span class="menu-item-title">{{ t(item.title) }}</span>
     </template>
     <SidebarItem
@@ -39,9 +36,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {emptyObjectFunc} from '@/utils/func';
-import {useI18n} from 'vue-i18n';
+import { defineComponent, PropType } from 'vue';
+import { emptyObjectFunc } from '@/utils/func';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'SidebarItem',
@@ -49,13 +46,11 @@ export default defineComponent({
     item: {
       type: Object as PropType<MenuItem>,
       default: emptyObjectFunc,
-    }
+    },
   },
-  emits: [
-    'click',
-  ],
-  setup(props: SidebarItemProps, {emit}) {
-    const {t} = useI18n();
+  emits: ['click'],
+  setup(props: SidebarItemProps, { emit }) {
+    const { t } = useI18n();
 
     const onMenuItemClick = (item: MenuItem) => {
       emit('click', item);
@@ -65,7 +60,7 @@ export default defineComponent({
       onMenuItemClick,
       t,
     };
-  }
+  },
 });
 </script>
 

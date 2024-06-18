@@ -1,9 +1,13 @@
-import {readonly} from 'vue';
-import {Store} from 'vuex';
+import { readonly } from 'vue';
+import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useNodeService from '@/services/node/nodeService';
-import {getDefaultFormComponentData} from '@/utils/form';
-import {FORM_FIELD_TYPE_INPUT, FORM_FIELD_TYPE_INPUT_TEXTAREA, FORM_FIELD_TYPE_SWITCH} from '@/constants/form';
+import { getDefaultFormComponentData } from '@/utils/form';
+import {
+  FORM_FIELD_TYPE_INPUT,
+  FORM_FIELD_TYPE_INPUT_TEXTAREA,
+  FORM_FIELD_TYPE_SWITCH,
+} from '@/constants/form';
 
 type Node = CNode;
 
@@ -13,7 +17,7 @@ const formComponentData = getDefaultFormComponentData<Node>();
 const useNode = (store: Store<RootStoreState>) => {
   // store
   const ns = 'node';
-  const {node: state} = store.state as RootStoreState;
+  const { node: state } = store.state as RootStoreState;
 
   // batch form fields
   const batchFormFields: FormTableField[] = [

@@ -1,31 +1,31 @@
 <template>
   <div class="plugin-status">
     <cl-tag
-        :key="data"
-        :icon="data.icon"
-        :label="data.label"
-        :spinning="data.spinning"
-        :type="data.type"
-        :size="size"
-        @click="$emit('click')"
+      :key="data"
+      :icon="data.icon"
+      :label="data.label"
+      :spinning="data.spinning"
+      :type="data.type"
+      :size="size"
+      @click="$emit('click')"
     >
       <template #tooltip>
-        <div v-html="data.tooltip"/>
+        <div v-html="data.tooltip" />
       </template>
     </cl-tag>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import {
   PLUGIN_STATUS_INSTALLING,
   PLUGIN_STATUS_STOPPED,
   PLUGIN_STATUS_RUNNING,
   PLUGIN_STATUS_ERROR,
 } from '@/constants/plugin';
-import {emptyArrayFunc} from '@/utils/func';
-import {useI18n} from 'vue-i18n';
+import { emptyArrayFunc } from '@/utils/func';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'PluginStatus',
@@ -46,12 +46,12 @@ export default defineComponent({
     },
   },
   emits: ['click'],
-  setup(props: PluginStatusProps, {emit}) {
+  setup(props: PluginStatusProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const data = computed<TagData>(() => {
-      const {status, error} = props;
+      const { status, error } = props;
       switch (status) {
         case PLUGIN_STATUS_INSTALLING:
           return {

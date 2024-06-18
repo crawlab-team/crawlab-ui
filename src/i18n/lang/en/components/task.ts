@@ -24,8 +24,8 @@ const task: LComponentsTask = {
         export: 'Export',
         displayAllFields: 'Display All Fields',
         inferDataFieldsTypes: 'Infer Data Fields Types',
-      }
-    }
+      },
+    },
   },
   status: {
     label: {

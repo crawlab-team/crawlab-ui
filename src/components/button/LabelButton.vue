@@ -13,14 +13,14 @@
     :loading="loading"
     @click="() => $emit('click')"
   >
-    <font-awesome-icon v-if="icon" :icon="icon" class="icon"/>
+    <font-awesome-icon v-if="icon" :icon="icon" class="icon" />
     {{ label }}
   </cl-button>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {buttonProps} from '@/components/button/Button.vue';
+import { defineComponent, PropType } from 'vue';
+import { buttonProps } from '@/components/button/Button.vue';
 
 export default defineComponent({
   name: 'LabelButton',
@@ -32,16 +32,13 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    ...buttonProps
+    ...buttonProps,
   },
-  emits: [
-    'click',
-  ],
-  setup(props: LabelButtonProps, {emit}) {
+  emits: ['click'],
+  setup(props: LabelButtonProps, { emit }) {
     return {};
   },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -57,7 +57,7 @@
       :label="t('components.task.form.status')"
       prop="status"
     >
-      <cl-task-status :status="form.status" :error="form.error"/>
+      <cl-task-status :status="form.status" :error="form.error" />
       <cl-tag
         v-if="form.status === 'error'"
         :icon="['fa', 'exclamation']"
@@ -92,12 +92,7 @@
         v-model="form.cmd"
         :placeholder="t('components.task.form.command')"
       />
-      <cl-tag
-        v-else
-        type="plain"
-        size="large"
-        :label="form.cmd || '-'"
-      />
+      <cl-tag v-else type="plain" size="large" :label="form.cmd || '-'" />
     </cl-form-item>
     <cl-form-item
       :span="2"
@@ -110,12 +105,7 @@
         v-model="form.param"
         :placeholder="t('components.task.form.param')"
       />
-      <cl-tag
-        v-else
-        type="plain"
-        size="large"
-        :label="form.param || '-'"
-      />
+      <cl-tag v-else type="plain" size="large" :label="form.param || '-'" />
     </cl-form-item>
     <!-- ./Row -->
 
@@ -163,11 +153,7 @@
           :value="op.value"
         />
       </el-select>
-      <cl-task-priority
-        v-else
-        :priority="form.priority"
-        size="large"
-      />
+      <cl-task-priority v-else :priority="form.priority" size="large" />
     </cl-form-item>
     <!-- ./Row -->
 
@@ -187,7 +173,11 @@
     </cl-form-item>
 
     <cl-form-item
-      v-if="[TASK_MODE_SELECTED_NODES, TASK_MODE_SELECTED_NODE_TAGS].includes(form.mode)"
+      v-if="
+        [TASK_MODE_SELECTED_NODES, TASK_MODE_SELECTED_NODE_TAGS].includes(
+          form.mode
+        )
+      "
       :span="4"
       :label="t('components.task.form.selectedNodes')"
       required
@@ -195,7 +185,11 @@
       <cl-check-tag-group
         v-locate="'node_ids'"
         v-model="form.node_ids"
-        :disabled="(form.mode === TASK_MODE_SELECTED_NODE_TAGS && isFormItemDisabled('node_ids')) || readonly"
+        :disabled="
+          (form.mode === TASK_MODE_SELECTED_NODE_TAGS &&
+            isFormItemDisabled('node_ids')) ||
+          readonly
+        "
         :options="allNodeSelectOptions"
       />
     </cl-form-item>
@@ -203,23 +197,24 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, watch} from 'vue';
-import {useStore} from 'vuex';
+import { computed, defineComponent, watch } from 'vue';
+import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';
 import useNode from '@/components/node/node';
-import {TASK_MODE_SELECTED_NODE_TAGS, TASK_MODE_SELECTED_NODES} from '@/constants/task';
+import {
+  TASK_MODE_SELECTED_NODE_TAGS,
+  TASK_MODE_SELECTED_NODES,
+} from '@/constants/task';
 import useRequest from '@/services/request';
 import useTask from '@/components/task/task';
-import {useRouter} from 'vue-router';
-import {isCancellable} from '@/utils/task';
-import {ElMessage, ElMessageBox} from 'element-plus';
-import {isZeroObjectId} from '@/utils/mongo';
+import { useRouter } from 'vue-router';
+import { isCancellable } from '@/utils/task';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { isZeroObjectId } from '@/utils/mongo';
 import useTaskDetail from '@/views/task/detail/useTaskDetail';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
-const {
-  post,
-} = useRequest();
+const { post } = useRequest();
 
 export default defineComponent({
   name: 'TaskForm',
@@ -231,7 +226,7 @@ export default defineComponent({
   },
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // router
     const router = useRouter();
@@ -248,38 +243,31 @@ export default defineComponent({
     } = useNode(store);
 
     // use spider
-    const {
-      allListSelectOptions: allSpiderSelectOptions,
-    } = useSpider(store);
+    const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
 
     // use task
-    const {
-      form,
-      allSpiderDict,
-      modeOptionsDict,
-    } = useTask(store);
+    const { form, allSpiderDict, modeOptionsDict } = useTask(store);
 
     // use task detail
-    const {
-      activeId,
-    } = useTaskDetail();
+    const { activeId } = useTaskDetail();
 
     // use request
-    const {
-      get,
-    } = useRequest();
+    const { get } = useRequest();
 
     // watch spider id
-    watch(() => {
-      const task = form.value as Task;
-      return task.spider_id;
-    }, async () => {
-      const task = form.value as Task;
-      if (!task.spider_id) return;
-      const res = await get<any, Spider>(`/spiders/${task.spider_id}`);
-      task.cmd = res.data.cmd;
-      task.param = res.data.param;
-    });
+    watch(
+      () => {
+        const task = form.value as Task;
+        return task.spider_id;
+      },
+      async () => {
+        const task = form.value as Task;
+        if (!task.spider_id) return;
+        const res = await get<any, Spider>(`/spiders/${task.spider_id}`);
+        task.cmd = res.data.cmd;
+        task.param = res.data.param;
+      }
+    );
 
     const getSpiderName = (id: string) => {
       const spider = allSpiderDict.value.get(id) as Spider;
@@ -296,10 +284,16 @@ export default defineComponent({
       return op?.label;
     };
 
-    const cancellable = computed<boolean>(() => isCancellable(form.value.status));
+    const cancellable = computed<boolean>(() =>
+      isCancellable(form.value.status)
+    );
 
     const onCancel = async () => {
-      await ElMessageBox.confirm(t('common.messageBox.confirm.cancel'), t('common.actions.cancel'), {type: 'warning'});
+      await ElMessageBox.confirm(
+        t('common.messageBox.confirm.cancel'),
+        t('common.actions.cancel'),
+        { type: 'warning' }
+      );
       await ElMessage.info('common.message.info.cancel');
       try {
         await post(`/tasks/${activeId.value}/cancel`);
@@ -308,7 +302,9 @@ export default defineComponent({
       }
     };
 
-    const noNodeId = computed<boolean>(() => isZeroObjectId(form.value.node_id));
+    const noNodeId = computed<boolean>(() =>
+      isZeroObjectId(form.value.node_id)
+    );
 
     return {
       ...useTask(store),

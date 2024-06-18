@@ -1,20 +1,20 @@
 <template>
   <el-tooltip :content="t('components.tab.newTab')">
     <cl-tab
-        v-track="{code: 'click_tabs_view_add_tab'}"
-        :icon="icon"
-        :show-close="false"
-        :show-title="false"
-        class="action-tab"
-        @click="onClick"
+      v-track="{ code: 'click_tabs_view_add_tab' }"
+      :icon="icon"
+      :show-close="false"
+      :show-title="false"
+      class="action-tab"
+      @click="onClick"
     />
   </el-tooltip>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
+import { defineComponent, PropType } from 'vue';
 import Icon from '@/components/icon/Icon.vue';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'ActionTab',
@@ -24,13 +24,11 @@ export default defineComponent({
     },
     title: {
       type: String,
-    }
+    },
   },
-  emits: [
-    'click',
-  ],
-  setup(props: ActionTabProps, {emit}) {
-    const {t} = useI18n();
+  emits: ['click'],
+  setup(props: ActionTabProps, { emit }) {
+    const { t } = useI18n();
 
     const onClick = () => {
       emit('click');

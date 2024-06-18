@@ -1,13 +1,19 @@
 <template>
   <div class="spider-detail-tab-tasks">
-    <cl-task-list no-actions embedded/>
+    <cl-task-list no-actions embedded />
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, onBeforeUnmount, watch} from 'vue';
-import {useRoute} from 'vue-router';
-import {useStore} from 'vuex';
-import {FILTER_OP_EQUAL} from '@/constants/filter';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  watch,
+} from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { FILTER_OP_EQUAL } from '@/constants/filter';
 
 export default defineComponent({
   name: 'SpiderDetailTabTasks',
@@ -23,11 +29,13 @@ export default defineComponent({
 
     const setTableListFilter = () => {
       // set filter
-      store.commit(`task/setTableListFilter`, [{
-        key: 'spider_id',
-        op: FILTER_OP_EQUAL,
-        value: id.value,
-      }]);
+      store.commit(`task/setTableListFilter`, [
+        {
+          key: 'spider_id',
+          op: FILTER_OP_EQUAL,
+          value: id.value,
+        },
+      ]);
     };
 
     const getData = async () => {

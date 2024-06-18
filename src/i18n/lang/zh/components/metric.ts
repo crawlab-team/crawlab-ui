@@ -21,7 +21,7 @@ const metric: LComponentsMetric = {
           net: '网络',
         },
         mongo: {},
-      }
+      },
     },
   },
   type: {
@@ -82,7 +82,8 @@ const metric: LComponentsMetric = {
     'performance:node:net:io_errin': '网络接收总错误数',
     'performance:node:net:io_errout': '网络发送总错误数',
     'performance:node:net:io_dropin': '网络传入数据包总丢弃数',
-    'performance:node:net:io_dropout': '网络传出数据包总丢弃数 (OSX/BSD 始终为0)',
+    'performance:node:net:io_dropout':
+      '网络传出数据包总丢弃数 (OSX/BSD 始终为0)',
     'performance:node:net:io_fifoin': '网络接收 FIFO 缓冲区总错误数',
     'performance:node:net:io_fifoout': '网络发送 FIFO 缓冲区总错误数',
     'performance:node:net:io_bytes_sent_rate': '每秒网络 IO 发送字节数',
@@ -92,26 +93,35 @@ const metric: LComponentsMetric = {
     'performance:node:net:io_errin_rate': '每秒网络接收错误数',
     'performance:node:net:io_errout_rate': '每秒网络发送错误数',
     'performance:node:net:io_dropin_rate': '每秒网络传入数据包丢弃数',
-    'performance:node:net:io_dropout_rate': '每秒网络传出数据包丢弃数 (OSX/BSD 始终为0)',
+    'performance:node:net:io_dropout_rate':
+      '每秒网络传出数据包丢弃数 (OSX/BSD 始终为0)',
     'performance:node:net:io_fifoin_rate': '每秒网络接收 FIFO 缓冲区错误数',
     'performance:node:net:io_fifoout_rate': '每秒网络发送 FIFO 缓冲区错误数',
-    'performance:mongo:size:fs_total_size': 'MongoDB 所在文件系统总磁盘空间字节数',
-    'performance:mongo:size:fs_used_size': 'MongoDB 所在文件系统已用磁盘空间字节数',
+    'performance:mongo:size:fs_total_size':
+      'MongoDB 所在文件系统总磁盘空间字节数',
+    'performance:mongo:size:fs_used_size':
+      'MongoDB 所在文件系统已用磁盘空间字节数',
     'performance:mongo:size:total_size': 'MongoDB 总大小字节数',
-    'performance:mongo:size:total_free_storage_size': 'MongoDB 总可用储存大小字节数',
+    'performance:mongo:size:total_free_storage_size':
+      'MongoDB 总可用储存大小字节数',
     'performance:mongo:size:storage_size': 'MongoDB 储存大小字节数',
     'performance:mongo:size:data_size': 'MongoDB 数据大小字节数',
     'performance:mongo:size:free_storage_size': 'MongoDB 可用储存大小字节数',
-    'performance:mongo:size:index_free_storage_size': 'MongoDB 索引可用储存大小字节数',
+    'performance:mongo:size:index_free_storage_size':
+      'MongoDB 索引可用储存大小字节数',
     'performance:mongo:size:index_size': 'MongoDB 索引大小字节数',
     'performance:mongo:size:avg_obj_size': 'MongoDB 平均对象大小字节数',
-    'performance:mongo:size:fs_used_size_percent': 'MongoDB 所在文件系统已用磁盘空间百分比',
+    'performance:mongo:size:fs_used_size_percent':
+      'MongoDB 所在文件系统已用磁盘空间百分比',
     'performance:mongo:size:total_size_percent': 'MongoDB 总大小百分比',
-    'performance:mongo:size:total_free_storage_size_percent': 'MongoDB 总可用储存大小百分比',
+    'performance:mongo:size:total_free_storage_size_percent':
+      'MongoDB 总可用储存大小百分比',
     'performance:mongo:size:storage_size_percent': 'MongoDB 储存大小百分比',
     'performance:mongo:size:data_size_percent': 'MongoDB 数据大小百分比',
-    'performance:mongo:size:free_storage_size_percent': 'MongoDB 可用储存大小百分比',
-    'performance:mongo:size:index_free_storage_size_percent': 'MongoDB 索引可用储存大小百分比',
+    'performance:mongo:size:free_storage_size_percent':
+      'MongoDB 可用储存大小百分比',
+    'performance:mongo:size:index_free_storage_size_percent':
+      'MongoDB 索引可用储存大小百分比',
     'performance:mongo:size:index_size_percent': 'MongoDB 索引大小百分比',
     'performance:mongo:count:collections': 'MongoDB 集合数',
     'performance:mongo:count:objects': 'MongoDB 对象数',

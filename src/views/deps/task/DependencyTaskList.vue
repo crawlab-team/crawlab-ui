@@ -15,14 +15,22 @@
     @confirm="onLogsClose"
     @close="onLogsClose"
   >
-    <cl-logs-view :logs="logs"/>
+    <cl-logs-view :logs="logs" />
   </cl-dialog>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, h, onBeforeUnmount, onMounted, ref, watch} from 'vue';
-import {useStore} from 'vuex';
-import {translate} from '@/utils';
+import {
+  computed,
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from 'vue';
+import { useStore } from 'vuex';
+import { translate } from '@/utils';
 import useRequest from '@/services/request';
 import TaskAction from '@/views/deps/task/TaskAction.vue';
 import NodeType from '@/components/node/NodeType.vue';
@@ -34,9 +42,7 @@ const t = translate;
 
 const endpoint = '/deps/tasks';
 
-const {
-  getList: getList_,
-} = useRequest();
+const { getList: getList_ } = useRequest();
 
 export default defineComponent({
   name: 'DependencyTaskList',
@@ -45,7 +51,7 @@ export default defineComponent({
       type: String,
     },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const store = useStore();
 
     const dialogVisible = ref({
@@ -56,7 +62,7 @@ export default defineComponent({
 
     const getLogs = async (id: string) => {
       const res = await getList_(`${endpoint}/${id}/logs`);
-      const {data} = res;
+      const { data } = res;
       logs.value = data?.map(d => d.content) || [];
     };
 
@@ -82,7 +88,7 @@ export default defineComponent({
         icon: ['fa', 'hammer'],
         width: '120',
         value: (row: EnvDepsTask) => {
-          return h(TaskAction, {action: row.action});
+          return h(TaskAction, { action: row.action });
         },
       },
       {
@@ -105,7 +111,7 @@ export default defineComponent({
         icon: ['fa', 'check-square'],
         width: '120',
         value: (row: EnvDepsTask) => {
-          return h(TaskStatus, {status: row.status, error: row.error});
+          return h(TaskStatus, { status: row.status, error: row.error });
         },
       },
       {
@@ -116,7 +122,7 @@ export default defineComponent({
         value: (row: EnvDepsTask) => {
           if (!row.dep_names) return [];
           return row.dep_names.map(depName => {
-            return h(Tag, {label: depName});
+            return h(Tag, { label: depName });
           });
         },
       },
@@ -126,7 +132,7 @@ export default defineComponent({
         icon: ['fa', 'clock'],
         width: '150',
         value: (row: EnvDepsTask) => {
-          return h(Time, {time: row.update_ts});
+          return h(Time, { time: row.update_ts });
         },
       },
       {
@@ -160,19 +166,21 @@ export default defineComponent({
     const tableTotal = ref(0);
 
     const onPaginationChange = (pagination: TablePagination) => {
-      tablePagination.value = {...pagination};
+      tablePagination.value = { ...pagination };
     };
 
     const getList = async () => {
       const res = await getList_(`${endpoint}`, {
         ...tablePagination.value,
-        conditions: [{
-          key: 'type',
-          op: 'eq',
-          value: props.type,
-        }]
+        conditions: [
+          {
+            key: 'type',
+            op: 'eq',
+            value: props.type,
+          },
+        ],
       });
-      const {data, total} = res;
+      const { data, total } = res;
       tableData.value = data || [];
       tableTotal.value = total || 0;
     };
@@ -208,6 +216,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

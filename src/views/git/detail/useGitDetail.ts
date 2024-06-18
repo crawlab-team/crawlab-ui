@@ -1,13 +1,13 @@
-import {computed, ref, onBeforeMount, onBeforeUnmount} from 'vue';
-import {useStore} from 'vuex';
-import {useRoute, useRouter} from 'vue-router';
+import { computed, ref, onBeforeMount, onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
 import useGitService from '@/services/git/gitService';
-import {getTabName} from '@/utils/route';
-import {ElMessage, ElMessageBox} from 'element-plus';
-import {sendEvent} from '@/admin/umeng';
-import {translate} from '@/utils/i18n';
+import { getTabName } from '@/utils/route';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { sendEvent } from '@/admin/umeng';
+import { translate } from '@/utils/i18n';
 import Form from '@/components/form/Form.vue';
-import {GIT_REF_TYPE_BRANCH} from '@/constants/git';
+import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
 import useDetail from '@/layouts/content/detail/useDetail';
 
 // i18n
@@ -33,9 +33,7 @@ const gitLoading = ref({
 const useGitDetail = () => {
   const ns = 'git';
   const store = useStore();
-  const {
-    git: state,
-  } = store.state as RootStoreState;
+  const { git: state } = store.state as RootStoreState;
 
   const router = useRouter();
 
@@ -43,10 +41,8 @@ const useGitDetail = () => {
 
   const id = computed(() => route.params.id as string);
 
-  const {
-    create: createGitForm,
-    updateById: updateGitFormById,
-  } = useGitService(store);
+  const { create: createGitForm, updateById: updateGitFormById } =
+    useGitService(store);
 
   const activeTabName = computed<string>(() => getTabName(router));
 
@@ -61,7 +57,7 @@ const useGitDetail = () => {
       });
       await store.dispatch(`git/getById`, res.data?._id);
     }
-    await store.dispatch(`${ns}/getGit`, {id: id.value});
+    await store.dispatch(`${ns}/getGit`, { id: id.value });
   };
 
   const gitActions = {
@@ -76,11 +72,13 @@ const useGitDetail = () => {
       gitLoading.value.pull = true;
       await saveGit();
       try {
-        const res = await store.dispatch(`${ns}/gitPull`, {id: id.value});
+        const res = await store.dispatch(`${ns}/gitPull`, { id: id.value });
         if (res) {
-          await ElMessage.success(t('components.git.common.message.success.pull'));
+          await ElMessage.success(
+            t('components.git.common.message.success.pull')
+          );
         }
-        await store.dispatch(`${ns}/getGit`, {id: id.value});
+        await store.dispatch(`${ns}/getGit`, { id: id.value });
       } finally {
         gitLoading.value.pull = false;
       }
@@ -93,19 +91,26 @@ const useGitDetail = () => {
         t('components.git.common.actions.commit'),
         {
           type: 'warning',
-          inputPlaceholder: t('components.git.common.messageBox.prompt.commit.placeholder'),
+          inputPlaceholder: t(
+            'components.git.common.messageBox.prompt.commit.placeholder'
+          ),
         }
       );
       const commitMessage = res.value;
       gitLoading.value.commit = true;
       // await saveGit();
       try {
-        const res = await store.dispatch(`${ns}/gitCommit`, {id: id.value, commit_message: commitMessage});
+        const res = await store.dispatch(`${ns}/gitCommit`, {
+          id: id.value,
+          commit_message: commitMessage,
+        });
         store.commit(`${ns}/resetGitChangeSelection`);
         if (res) {
-          await ElMessage.success(t('components.git.common.message.success.commit'));
+          await ElMessage.success(
+            t('components.git.common.message.success.commit')
+          );
         }
-        await store.dispatch(`${ns}/getGit`, {id: id.value});
+        await store.dispatch(`${ns}/getGit`, { id: id.value });
       } finally {
         gitLoading.value.commit = false;
       }
@@ -117,9 +122,14 @@ const useGitDetail = () => {
       gitDialogVisible.value.checkout = false;
       gitLoading.value.checkout = true;
       try {
-        await store.dispatch(`${ns}/gitCheckout`, {id: id.value, branch: gitCheckoutForm.value.name});
-        await ElMessage.success(t('components.git.common.message.success.checkout'));
-        await store.dispatch(`${ns}/getGit`, {id: id.value});
+        await store.dispatch(`${ns}/gitCheckout`, {
+          id: id.value,
+          branch: gitCheckoutForm.value.name,
+        });
+        await ElMessage.success(
+          t('components.git.common.message.success.checkout')
+        );
+        await store.dispatch(`${ns}/getGit`, { id: id.value });
       } finally {
         gitLoading.value.checkout = false;
       }
@@ -128,9 +138,13 @@ const useGitDetail = () => {
     },
   };
 
-  const gitCurrentBranch = computed<string | undefined>(() => state.gitData?.current_branch);
+  const gitCurrentBranch = computed<string | undefined>(
+    () => state.gitData?.current_branch
+  );
 
-  const gitCurrentBranchLoading = computed<boolean>(() => state.gitCurrentBranchLoading);
+  const gitCurrentBranchLoading = computed<boolean>(
+    () => state.gitCurrentBranchLoading
+  );
 
   onBeforeMount(() => store.dispatch(`node/getAllList`));
   onBeforeUnmount(() => store.commit(`${ns}/resetAll`));

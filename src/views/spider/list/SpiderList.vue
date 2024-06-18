@@ -15,16 +15,16 @@
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-spider-dialog/>
-      <cl-run-spider-dialog/>
-      <cl-upload-spider-files-dialog/>
+      <cl-create-edit-spider-dialog />
+      <cl-run-spider-dialog />
+      <cl-upload-spider-files-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import useSpiderList from '@/views/spider/list/useSpiderList';
 
 export default defineComponent({
@@ -32,12 +32,12 @@ export default defineComponent({
   props: {
     noActions: {
       type: Boolean,
-      required: false
+      required: false,
     },
     embedded: {
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   setup() {
     const {

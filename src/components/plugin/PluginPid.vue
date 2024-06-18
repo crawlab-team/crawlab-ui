@@ -11,8 +11,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {emptyArrayFunc} from '@/utils/func';
+import { computed, defineComponent, PropType } from 'vue';
+import { emptyArrayFunc } from '@/utils/func';
 
 export default defineComponent({
   name: 'PluginPid',
@@ -23,13 +23,13 @@ export default defineComponent({
       default: emptyArrayFunc,
     },
   },
-  setup(props: PluginPidProps, {emit}) {
+  setup(props: PluginPidProps, { emit }) {
     const getType = (s: PluginStatus): BasicType => {
       return s.node?.is_master ? 'primary' : 'warning';
     };
 
     const statusWithPid = computed<PluginStatus[]>(() => {
-      const {status} = props;
+      const { status } = props;
       if (!status) return [];
       return status.filter(s => !!s.pid);
     });
@@ -42,6 +42,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

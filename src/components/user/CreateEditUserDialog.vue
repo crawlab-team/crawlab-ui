@@ -11,14 +11,14 @@
     :visible="createEditDialogVisible"
   >
     <template #default>
-      <cl-user-form/>
+      <cl-user-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useUser from '@/components/user/user';
 
 export default defineComponent({
@@ -34,6 +34,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

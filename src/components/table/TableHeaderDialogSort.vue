@@ -7,17 +7,17 @@
         :content="t('components.table.header.dialog.sort.clearSort')"
       >
         <span class="icon" @click="onClear">
-          <el-icon name="circle-close"/>
+          <el-icon name="circle-close" />
         </span>
       </el-tooltip>
     </div>
     <el-radio-group :model-value="value" type="primary" @change="onChange">
       <el-radio-button :label="ASCENDING" class="sort-btn">
-        <font-awesome-icon :icon="['fa', 'sort-amount-up']"/>
+        <font-awesome-icon :icon="['fa', 'sort-amount-up']" />
         {{ t('components.table.header.dialog.sort.ascending') }}
       </el-radio-button>
       <el-radio-button :label="DESCENDING" class="sort-btn">
-        <font-awesome-icon :icon="['fa', 'sort-amount-down-alt']"/>
+        <font-awesome-icon :icon="['fa', 'sort-amount-down-alt']" />
         {{ t('components.table.header.dialog.sort.descending') }}
       </el-radio-button>
     </el-radio-group>
@@ -25,9 +25,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {ASCENDING, DESCENDING, UNSORTED} from '@/constants/sort';
-import {useI18n} from 'vue-i18n';
+import { defineComponent } from 'vue';
+import { ASCENDING, DESCENDING, UNSORTED } from '@/constants/sort';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TableHeaderDialogSort',
@@ -37,12 +37,10 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: [
-    'change'
-  ],
-  setup(props, {emit}) {
+  emits: ['change'],
+  setup(props, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const onChange = (value: SortDirection) => {
       if (value === UNSORTED) {
@@ -101,7 +99,10 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.table-header-dialog-sort >>> .el-radio-group .el-radio-button .el-radio-button__inner {
+.table-header-dialog-sort
+  >>> .el-radio-group
+  .el-radio-button
+  .el-radio-button__inner {
   width: 100%;
 }
 </style>

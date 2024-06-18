@@ -6,7 +6,12 @@
       class="filter-condition-type"
       @change="onTypeChange"
     >
-      <el-option v-for="op in conditionTypesOptions" :key="op.value" :label="op.label" :value="op.value"/>
+      <el-option
+        v-for="op in conditionTypesOptions"
+        :key="op.value"
+        :label="op.label"
+        :value="op.value"
+      />
     </el-select>
     <el-input
       :model-value="condition.value"
@@ -17,13 +22,13 @@
       @input="onValueChange"
     />
     <el-tooltip content="Delete Condition">
-      <el-icon class="icon" name="circle-close" @click="onDelete"/>
+      <el-icon class="icon" name="circle-close" @click="onDelete" />
     </el-tooltip>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import { computed, defineComponent } from 'vue';
 import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
@@ -36,7 +41,7 @@ import {
   FILTER_OP_NOT_SET,
   FILTER_OP_REGEX,
 } from '@/constants/filter';
-import {plainClone} from '@/utils/object';
+import { plainClone } from '@/utils/object';
 
 export const defaultFilterCondition: FilterConditionData = {
   op: FILTER_OP_NOT_SET,
@@ -48,16 +53,16 @@ export const getDefaultFilterCondition = () => {
 };
 
 export const conditionTypesOptions: SelectOption[] = [
-  {value: FILTER_OP_NOT_SET, label: 'Not Set'},
-  {value: FILTER_OP_CONTAINS, label: 'Contains'},
-  {value: FILTER_OP_NOT_CONTAINS, label: 'Not Contains'},
-  {value: FILTER_OP_REGEX, label: 'Regex'},
-  {value: FILTER_OP_EQUAL, label: 'Equal to'},
-  {value: FILTER_OP_NOT_EQUAL, label: 'Not Equal to'},
-  {value: FILTER_OP_GREATER_THAN, label: 'Greater than'},
-  {value: FILTER_OP_LESS_THAN, label: 'Less than'},
-  {value: FILTER_OP_GREATER_THAN_EQUAL, label: 'Greater than or Equal to'},
-  {value: FILTER_OP_LESS_THAN_EQUAL, label: 'Less than or Equal to'},
+  { value: FILTER_OP_NOT_SET, label: 'Not Set' },
+  { value: FILTER_OP_CONTAINS, label: 'Contains' },
+  { value: FILTER_OP_NOT_CONTAINS, label: 'Not Contains' },
+  { value: FILTER_OP_REGEX, label: 'Regex' },
+  { value: FILTER_OP_EQUAL, label: 'Equal to' },
+  { value: FILTER_OP_NOT_EQUAL, label: 'Not Equal to' },
+  { value: FILTER_OP_GREATER_THAN, label: 'Greater than' },
+  { value: FILTER_OP_LESS_THAN, label: 'Less than' },
+  { value: FILTER_OP_GREATER_THAN_EQUAL, label: 'Greater than or Equal to' },
+  { value: FILTER_OP_LESS_THAN_EQUAL, label: 'Less than or Equal to' },
 ];
 
 export const conditionTypesMap: { [key: string]: string } = (() => {
@@ -76,13 +81,10 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: [
-    'change',
-    'delete',
-  ],
-  setup(props, {emit}) {
+  emits: ['change', 'delete'],
+  setup(props, { emit }) {
     const isInvalidValue = computed<boolean>(() => {
-      const {condition} = props as FilterConditionProps;
+      const { condition } = props as FilterConditionProps;
       if (condition?.op === FILTER_OP_NOT_SET) {
         return false;
       }
@@ -90,7 +92,7 @@ export default defineComponent({
     });
 
     const onTypeChange = (conditionType: string) => {
-      const {condition} = props as FilterConditionProps;
+      const { condition } = props as FilterConditionProps;
       if (condition) {
         condition.op = conditionType;
         if (condition.op === FILTER_OP_NOT_SET) {
@@ -101,7 +103,7 @@ export default defineComponent({
     };
 
     const onValueChange = (conditionValue: string) => {
-      const {condition} = props as FilterConditionProps;
+      const { condition } = props as FilterConditionProps;
       if (condition) {
         condition.value = conditionValue;
       }
@@ -145,7 +147,7 @@ export default defineComponent({
 </style>
 <style scoped>
 .filter-condition >>> .filter-condition-type.el-select .el-input__inner {
-  border-color: #DCDFE6 !important;
+  border-color: #dcdfe6 !important;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right: none;
@@ -156,7 +158,9 @@ export default defineComponent({
   border-bottom-left-radius: 0;
 }
 
-.filter-condition >>> .filter-condition-value.el-input.invalid .el-input__inner {
-  border-color: #F56C6C;
+.filter-condition
+  >>> .filter-condition-value.el-input.invalid
+  .el-input__inner {
+  border-color: #f56c6c;
 }
 </style>

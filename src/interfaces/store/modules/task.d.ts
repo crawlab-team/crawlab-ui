@@ -1,4 +1,9 @@
-type TaskStoreModule = BaseModule<TaskStoreState, TaskStoreGetters, TaskStoreMutations, TaskStoreActions>;
+type TaskStoreModule = BaseModule<
+  TaskStoreState,
+  TaskStoreGetters,
+  TaskStoreMutations,
+  TaskStoreActions
+>;
 
 interface TaskStoreState extends BaseStoreState<Task> {
   logContent: string;
@@ -8,8 +13,7 @@ interface TaskStoreState extends BaseStoreState<Task> {
   dataDisplayAllFields: boolean;
 }
 
-interface TaskStoreGetters extends BaseStoreGetters<TaskStoreState> {
-}
+interface TaskStoreGetters extends BaseStoreGetters<TaskStoreState> {}
 
 interface TaskStoreMutations extends BaseStoreMutations<Task> {
   setLogContent: StoreMutation<TaskStoreState, string>;

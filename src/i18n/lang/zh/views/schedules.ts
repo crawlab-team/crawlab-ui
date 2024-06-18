@@ -8,7 +8,7 @@ const schedules: LViewsSchedules = {
       enabled: '是否启用',
       entryId: 'Entry ID',
       description: '描述',
-    }
+    },
   },
   navActions: {
     new: {
@@ -18,8 +18,8 @@ const schedules: LViewsSchedules = {
     filter: {
       search: {
         placeholder: '搜索定时任务',
-      }
-    }
+      },
+    },
   },
   navActionsExtra: {
     filter: {
@@ -32,15 +32,15 @@ const schedules: LViewsSchedules = {
         },
         enabled: {
           label: '是否启用',
-        }
+        },
       },
       search: {
         cron: {
           placeholder: '搜索 Cron 表达式',
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 
 export default schedules;

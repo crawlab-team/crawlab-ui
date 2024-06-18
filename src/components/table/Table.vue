@@ -1,9 +1,18 @@
 <template>
-  <div v-loading="loading" ref="tableWrapperRef" :class="['table', embedded ? 'embedded': ''].join(' ')">
+  <div
+    v-loading="loading"
+    ref="tableWrapperRef"
+    :class="['table', embedded ? 'embedded' : ''].join(' ')"
+  >
     <!-- Table Header -->
     <div class="table-header">
       <el-pagination
-        v-if="[TABLE_PAGINATION_POSITION_ALL, TABLE_PAGINATION_POSITION_TOP].includes(paginationPosition)"
+        v-if="
+          [
+            TABLE_PAGINATION_POSITION_ALL,
+            TABLE_PAGINATION_POSITION_TOP,
+          ].includes(paginationPosition)
+        "
         :current-page="page"
         :page-size="pageSize"
         :total="total"
@@ -51,10 +60,18 @@
         :class-name="c.className || c.key"
       >
         <template #header="scope">
-          <cl-table-header :column="c" :index="scope.$index" @change="onHeaderChange"/>
+          <cl-table-header
+            :column="c"
+            :index="scope.$index"
+            @change="onHeaderChange"
+          />
         </template>
         <template #default="scope">
-          <cl-table-cell :column="c" :row="scope.row" :row-index="scope.$index"/>
+          <cl-table-cell
+            :column="c"
+            :row="scope.row"
+            :row-index="scope.$index"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +95,12 @@
         </template>
       </cl-table-actions>
       <el-pagination
-        v-if="[TABLE_PAGINATION_POSITION_ALL, TABLE_PAGINATION_POSITION_BOTTOM].includes(paginationPosition)"
+        v-if="
+          [
+            TABLE_PAGINATION_POSITION_ALL,
+            TABLE_PAGINATION_POSITION_BOTTOM,
+          ].includes(paginationPosition)
+        "
         :current-page="page"
         :page-size="pageSize"
         :total="total"
@@ -103,7 +125,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, inject, PropType, ref, SetupContext} from 'vue';
+import { defineComponent, inject, PropType, ref, SetupContext } from 'vue';
 import useColumn from '@/components/table/column';
 import useHeader from '@/components/table/header';
 import useData from '@/components/table/data';
@@ -112,7 +134,7 @@ import usePagination from '@/components/table/pagination';
 import {
   TABLE_PAGINATION_POSITION_ALL,
   TABLE_PAGINATION_POSITION_BOTTOM,
-  TABLE_PAGINATION_POSITION_TOP
+  TABLE_PAGINATION_POSITION_TOP,
 } from '@/constants/table';
 
 export default defineComponent({
@@ -164,7 +186,7 @@ export default defineComponent({
       required: false,
       default: () => {
         return [];
-      }
+      },
     },
     hideFooter: {
       type: Boolean,
@@ -209,9 +231,7 @@ export default defineComponent({
     const tableWrapperRef = ref();
     const tableRef = ref();
 
-    const {
-      tableData,
-    } = useData(props, ctx);
+    const { tableData } = useData(props, ctx);
 
     const {
       internalSelectedColumnKeys,
@@ -222,12 +242,11 @@ export default defineComponent({
       onColumnsChange,
     } = useColumn(props, ctx, tableRef, tableWrapperRef);
 
-    const {
-      onHeaderChange,
-    } = useHeader(props, ctx);
+    const { onHeaderChange } = useHeader(props, ctx);
 
     // inject action functions
-    const actionFunctions = inject<ListLayoutActionFunctions>('action-functions');
+    const actionFunctions =
+      inject<ListLayoutActionFunctions>('action-functions');
 
     const {
       selection: internalSelection,
@@ -237,12 +256,14 @@ export default defineComponent({
       onDelete,
       onExport,
       clearSelection,
-    } = useAction(props, ctx, tableRef, actionFunctions as ListLayoutActionFunctions);
+    } = useAction(
+      props,
+      ctx,
+      tableRef,
+      actionFunctions as ListLayoutActionFunctions
+    );
 
-    const {
-      onCurrentChange,
-      onSizeChange,
-    } = usePagination(props, ctx);
+    const { onCurrentChange, onSizeChange } = usePagination(props, ctx);
 
     return {
       tableWrapperRef,
@@ -311,9 +332,20 @@ export default defineComponent({
   width: 0;
 }
 
-.table.embedded >>> .el-table--border .el-table__inner-wrapper tr:first-child td:first-child,
-.table.embedded >>> .el-table.is-scrolling-left.el-table--border tr:first-child td:first-child,
-.table.embedded >>> .el-table--border .el-table__inner-wrapper tr:first-child th:first-child {
+.table.embedded
+  >>> .el-table--border
+  .el-table__inner-wrapper
+  tr:first-child
+  td:first-child,
+.table.embedded
+  >>> .el-table.is-scrolling-left.el-table--border
+  tr:first-child
+  td:first-child,
+.table.embedded
+  >>> .el-table--border
+  .el-table__inner-wrapper
+  tr:first-child
+  th:first-child {
   border-left: none;
 }
 </style>

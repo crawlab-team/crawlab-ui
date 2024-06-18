@@ -11,38 +11,39 @@ const nodes: LViewsNodes = {
       enabled: 'Enabled',
       tags: 'Tags',
       description: 'Description',
-    }
+    },
   },
   navActions: {
     new: {
       label: 'New Node',
-      tooltip: 'Create a new node'
+      tooltip: 'Create a new node',
     },
     filter: {
       search: {
-        placeholder: 'Search nodes'
-      }
-    }
+        placeholder: 'Search nodes',
+      },
+    },
   },
   navActionsExtra: {
     filter: {
       select: {
         type: {
-          label: 'Node Type'
+          label: 'Node Type',
         },
         status: {
-          label: 'Status'
+          label: 'Status',
         },
         enabled: {
-          label: 'Enabled'
+          label: 'Enabled',
         },
-      }
-    }
+      },
+    },
   },
   notice: {
     create: {
       title: 'Create Node',
-      content: 'Nodes can only be created via manual installation at this moment. You can refer to the link below for more details.',
+      content:
+        'Nodes can only be created via manual installation at this moment. You can refer to the link below for more details.',
       link: {
         label: 'Node Installation',
         url: 'https://docs-next.crawlab.cn/en/guide/installation/',

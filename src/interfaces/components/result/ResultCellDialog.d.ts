@@ -1,4 +1,3 @@
 export declare global {
-  interface ResultCellDialogProps {
-  }
+  interface ResultCellDialogProps {}
 }

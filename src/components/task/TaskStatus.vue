@@ -10,22 +10,22 @@
     @click="$emit('click')"
   >
     <template #tooltip>
-      <div v-html="data.tooltip"/>
+      <div v-html="data.tooltip" />
     </template>
   </cl-tag>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import {
   TASK_STATUS_ABNORMAL,
   TASK_STATUS_CANCELLED,
   TASK_STATUS_ERROR,
   TASK_STATUS_FINISHED,
   TASK_STATUS_PENDING,
-  TASK_STATUS_RUNNING
+  TASK_STATUS_RUNNING,
 } from '@/constants/task';
-import {useI18n} from 'vue-i18n';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TaskStatus',
@@ -42,15 +42,15 @@ export default defineComponent({
     error: {
       type: String,
       required: false,
-    }
+    },
   },
   emits: ['click'],
-  setup(props: TaskStatusProps, {emit}) {
+  setup(props: TaskStatusProps, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const data = computed<TagData>(() => {
-      const {status, error} = props;
+      const { status, error } = props;
       switch (status) {
         case TASK_STATUS_PENDING:
           return {

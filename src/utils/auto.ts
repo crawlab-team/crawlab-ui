@@ -1,6 +1,10 @@
-import {onBeforeUnmount, onMounted} from 'vue';
+import { onBeforeUnmount, onMounted } from 'vue';
 
-export const setupAutoUpdate = (fn: Function, interval?: number, handle?: number) => {
+export const setupAutoUpdate = (
+  fn: Function,
+  interval?: number,
+  handle?: number
+) => {
   if (!interval) interval = 5000;
   onMounted(() => {
     handle = setInterval(fn, interval);

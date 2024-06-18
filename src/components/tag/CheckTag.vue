@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref} from 'vue';
-import {tagProps} from '@/components/tag/Tag.vue';
+import { computed, defineComponent, ref } from 'vue';
+import { tagProps } from '@/components/tag/Tag.vue';
 
 const checkTagProps = {
   modelValue: {
@@ -30,15 +30,12 @@ const checkTagProps = {
 export default defineComponent({
   name: 'CheckTag',
   props: checkTagProps,
-  emits: [
-    'update:model-value',
-    'change',
-  ],
-  setup(props: CheckTagProps, {emit}) {
+  emits: ['update:model-value', 'change'],
+  setup(props: CheckTagProps, { emit }) {
     const isHover = ref<boolean>(false);
 
     const computedType = computed<BasicType | undefined>(() => {
-      const {modelValue, type, disabled} = props;
+      const { modelValue, type, disabled } = props;
       if (modelValue) {
         return 'primary';
       }
@@ -46,12 +43,12 @@ export default defineComponent({
     });
 
     const computedIcon = computed<Icon>(() => {
-      const {modelValue} = props;
+      const { modelValue } = props;
       return modelValue ? ['far', 'check-square'] : ['far', 'square'];
     });
 
     const computedClickable = computed<boolean>(() => {
-      const {clickable, disabled} = props;
+      const { clickable, disabled } = props;
       if (disabled) {
         return false;
       }
@@ -62,7 +59,7 @@ export default defineComponent({
     });
 
     const computedEffect = computed<BasicEffect>(() => {
-      const {modelValue} = props;
+      const { modelValue } = props;
       if (modelValue) {
         return 'dark';
       }
@@ -73,7 +70,7 @@ export default defineComponent({
     });
 
     const onClick = () => {
-      const {modelValue} = props;
+      const { modelValue } = props;
       const newValue = !modelValue;
       emit('update:model-value', newValue);
       emit('change', newValue);
@@ -101,5 +98,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

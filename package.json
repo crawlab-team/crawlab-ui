@@ -129,6 +129,7 @@
     "jest": "^28.1.1",
     "klaw-sync": "^6.0.0",
     "node-sass": "^8.0.0",
+    "prettier": "^3.3.2",
     "rd": "^2.0.1",
     "rollup-plugin-external-globals": "^0.8.0",
     "rollup-plugin-visualizer": "^5.9.2",

@@ -1,4 +1,9 @@
-type NodeStoreModule = BaseModule<NodeStoreState, NodeStoreGetters, NodeStoreMutations, NodeStoreActions>;
+type NodeStoreModule = BaseModule<
+  NodeStoreState,
+  NodeStoreGetters,
+  NodeStoreMutations,
+  NodeStoreActions
+>;
 
 type NodeStoreState = BaseStoreState<CNode>;
 

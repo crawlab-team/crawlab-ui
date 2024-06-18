@@ -1,4 +1,4 @@
-import {RuleItem} from 'async-validator';
+import { RuleItem } from 'async-validator';
 
 declare global {
   interface FormItemProps {

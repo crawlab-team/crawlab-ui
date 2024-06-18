@@ -16,35 +16,28 @@
         @confirm="onDialogConfirm"
         @close="onDialogClose"
       >
-        <cl-dependency-setting-form
-          :form="form"
-          @change="onFormChange"
-        />
+        <cl-dependency-setting-form :form="form" @change="onFormChange" />
       </cl-dialog>
     </template>
   </cl-list-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent, computed, ref, h} from 'vue';
-import {ElMessage} from 'element-plus';
+import { defineComponent, computed, ref, h } from 'vue';
+import { ElMessage } from 'element-plus';
 import useRequest from '@/services/request';
-import {translate} from '@/utils';
+import { translate } from '@/utils';
 import ClNavLink from '@/components/nav/NavLink.vue';
 
 const t = translate;
 
 const endpoint = '/deps/settings';
 
-const {
-  getList,
-  post,
-  put,
-} = useRequest();
+const { getList, post, put } = useRequest();
 
 export default defineComponent({
   name: 'DependencySettings',
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const form = ref<any>({});
 
     const dialogVisible = ref(false);
@@ -55,10 +48,11 @@ export default defineComponent({
         label: t('views.env.deps.settings.form.name'),
         icon: ['fa', 'font'],
         width: '150',
-        value: (row: any) => h(ClNavLink, {
-          label: row.name,
-          path: `/deps/${row.key}`,
-        }),
+        value: (row: any) =>
+          h(ClNavLink, {
+            label: row.name,
+            path: `/deps/${row.key}`,
+          }),
       },
       // {
       //   key: 'enabled',
@@ -109,7 +103,7 @@ export default defineComponent({
             icon: ['fa', 'cog'],
             tooltip: t('common.actions.manage'),
             onClick: (row: any) => {
-              form.value = {...row};
+              form.value = { ...row };
               dialogVisible.value = true;
             },
           },
@@ -136,7 +130,7 @@ export default defineComponent({
           tableData.value = [];
           tableTotal.value = 0;
         }
-        const {data, total} = res;
+        const { data, total } = res;
         tableData.value = data as any;
         tableTotal.value = total;
       },
@@ -157,7 +151,7 @@ export default defineComponent({
     };
 
     const onFormChange = (value: any) => {
-      form.value = {...value};
+      form.value = { ...value };
     };
 
     return {
@@ -177,6 +171,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

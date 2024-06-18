@@ -1,10 +1,10 @@
 <template>
   <cl-dialog
-      :confirm-loading="confirmLoading"
-      :title="title"
-      :visible="visible"
-      @cancel="onCancel"
-      @confirm="onConfirm"
+    :confirm-loading="confirmLoading"
+    :title="title"
+    :visible="visible"
+    @cancel="onCancel"
+    @confirm="onConfirm"
   >
     <template v-if="content">
       {{ content }}
@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType, ref} from 'vue';
-import {voidFunc} from '@/utils/func';
+import { defineComponent, PropType, ref } from 'vue';
+import { voidFunc } from '@/utils/func';
 
 export default defineComponent({
   name: 'ConfirmDialog',
@@ -32,13 +32,10 @@ export default defineComponent({
     },
     content: {
       type: String,
-    }
+    },
   },
-  emits: [
-    'confirm',
-    'cancel',
-  ],
-  setup(props: ConfirmDialogProps, {emit}) {
+  emits: ['confirm', 'cancel'],
+  setup(props: ConfirmDialogProps, { emit }) {
     const visible = ref<boolean>(false);
 
     const confirmLoading = ref<boolean>(false);
@@ -49,7 +46,7 @@ export default defineComponent({
     };
 
     const onConfirm = async () => {
-      const {confirmFunc} = props;
+      const { confirmFunc } = props;
       confirmLoading.value = true;
       await confirmFunc();
       confirmLoading.value = false;
@@ -67,6 +64,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

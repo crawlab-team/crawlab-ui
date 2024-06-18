@@ -1,4 +1,4 @@
-import {RouteRecordRaw} from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 import DemoLineChart from '@/demo/views/chart/DemoLineChart.vue';
 import DemoMetric from '@/demo/views/chart/DemoMetric.vue';
 
@@ -12,5 +12,5 @@ export default [
   {
     path: `${endpoint}/metric`,
     component: DemoMetric,
-  }
+  },
 ] as Array<RouteRecordRaw>;

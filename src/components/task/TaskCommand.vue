@@ -10,21 +10,19 @@
     @click="$emit('click')"
   >
     <template #tooltip>
-      <div class="tooltip" v-html="data.tooltip"/>
+      <div class="tooltip" v-html="data.tooltip" />
     </template>
   </cl-tag>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {emptyObjectFunc} from '@/utils';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, PropType } from 'vue';
+import { emptyObjectFunc } from '@/utils';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TaskCommand',
-  emits: [
-    'click',
-  ],
+  emits: ['click'],
   props: {
     task: {
       type: Object as PropType<Task>,
@@ -40,8 +38,8 @@ export default defineComponent({
       default: 'default',
     },
   },
-  setup(props: TaskConfigProps, {emit}) {
-    const {t} = useI18n();
+  setup(props: TaskConfigProps, { emit }) {
+    const { t } = useI18n();
 
     const getLabel = (s?: string, n = 12) => {
       if (!s) return;
@@ -49,7 +47,7 @@ export default defineComponent({
     };
 
     const cmd = computed<string>(() => {
-      const {task} = props;
+      const { task } = props;
       const arr = [];
       arr.push(task.cmd);
       if (task.param) arr.push(task.param);
@@ -57,10 +55,11 @@ export default defineComponent({
     });
 
     const type = computed<BasicType>(() => {
-      const {task, spider} = props;
+      const { task, spider } = props;
       if (!task.cmd) return 'info';
       if (!spider) return 'primary';
-      if (spider.cmd === task.cmd && spider.param === task.param) return 'primary';
+      if (spider.cmd === task.cmd && spider.param === task.param)
+        return 'primary';
       return 'warning';
     });
 
@@ -91,9 +90,8 @@ export default defineComponent({
     return {
       data,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

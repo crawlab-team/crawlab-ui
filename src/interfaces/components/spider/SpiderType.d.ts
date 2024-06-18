@@ -1,4 +1,7 @@
-import {SPIDER_TYPE_CONFIGURABLE, SPIDER_TYPE_CUSTOMIZED,} from '@/constants/spider';
+import {
+  SPIDER_TYPE_CONFIGURABLE,
+  SPIDER_TYPE_CUSTOMIZED,
+} from '@/constants/spider';
 
 declare global {
   interface SpiderTypeProps {

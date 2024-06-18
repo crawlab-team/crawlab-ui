@@ -1,13 +1,13 @@
 <template>
   <div class="node-detail-tab-tasks">
-    <cl-task-list no-actions embedded/>
+    <cl-task-list no-actions embedded />
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, onBeforeUnmount} from 'vue';
-import {useStore} from 'vuex';
-import {useRoute} from 'vue-router';
-import {FILTER_OP_EQUAL} from '@/constants/filter';
+import { computed, defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import { FILTER_OP_EQUAL } from '@/constants/filter';
 
 export default defineComponent({
   name: 'NodeDetailTabTasks',
@@ -23,11 +23,13 @@ export default defineComponent({
 
     onBeforeMount(() => {
       // set filter
-      store.commit(`task/setTableListFilter`, [{
-        key: 'node_id',
-        op: FILTER_OP_EQUAL,
-        value: id.value,
-      }]);
+      store.commit(`task/setTableListFilter`, [
+        {
+          key: 'node_id',
+          op: FILTER_OP_EQUAL,
+          value: id.value,
+        },
+      ]);
     });
 
     onBeforeUnmount(() => {

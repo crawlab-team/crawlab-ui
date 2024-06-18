@@ -1,23 +1,23 @@
 <template>
   <cl-create-edit-dialog
-      :action-functions="actionFunctions"
-      :batch-form-data="formList"
-      :batch-form-fields="batchFormFields"
-      :confirm-disabled="confirmDisabled"
-      :confirm-loading="confirmLoading"
-      :tab-name="createEditDialogTabName"
-      :type="activeDialogKey"
-      :visible="createEditDialogVisible"
+    :action-functions="actionFunctions"
+    :batch-form-data="formList"
+    :batch-form-fields="batchFormFields"
+    :confirm-disabled="confirmDisabled"
+    :confirm-loading="confirmLoading"
+    :tab-name="createEditDialogTabName"
+    :type="activeDialogKey"
+    :visible="createEditDialogVisible"
   >
     <template #default>
-      <cl-tag-form/>
+      <cl-tag-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useTag from '@/components/tag/tag';
 
 export default defineComponent({
@@ -33,6 +33,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

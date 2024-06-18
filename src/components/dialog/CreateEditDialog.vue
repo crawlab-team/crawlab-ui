@@ -9,16 +9,24 @@
     @close="onClose"
     @confirm="onConfirm"
   >
-    <slot/>
+    <slot />
   </cl-dialog>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType, provide, ref, SetupContext, watch} from 'vue';
-import {emptyArrayFunc, emptyObjectFunc} from '@/utils/func';
-import {TabsPaneContext} from 'element-plus/lib/tokens/tabs.d';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  provide,
+  ref,
+  SetupContext,
+  watch,
+} from 'vue';
+import { emptyArrayFunc, emptyObjectFunc } from '@/utils/func';
+import { TabsPaneContext } from 'element-plus/lib/tokens/tabs.d';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
 
 export default defineComponent({
   name: 'CreateEditDialog',
@@ -74,10 +82,10 @@ export default defineComponent({
   },
   setup(props: CreateEditDialogProps, ctx: SetupContext) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const computedTitle = computed<string>(() => {
-      const {visible, type, title} = props;
+      const { visible, type, title } = props;
       if (title) return title;
       if (!visible) return '';
       switch (type) {
@@ -91,14 +99,14 @@ export default defineComponent({
     });
 
     const onClose = () => {
-      const {actionFunctions} = props;
+      const { actionFunctions } = props;
       actionFunctions?.onClose?.();
 
       sendEvent('click_create_edit_dialog_close');
     };
 
     const onConfirm = () => {
-      const {actionFunctions, tabName} = props;
+      const { actionFunctions, tabName } = props;
       actionFunctions?.onConfirm?.();
 
       sendEvent('click_create_edit_dialog_confirm', {
@@ -109,16 +117,22 @@ export default defineComponent({
     const internalTabName = ref<CreateEditTabName>('single');
     const onTabChange = (tab: TabsPaneContext) => {
       const tabName = tab.paneName as CreateEditTabName;
-      const {actionFunctions} = props;
+      const { actionFunctions } = props;
       actionFunctions?.onTabChange?.(tabName);
 
-      sendEvent('click_create_edit_dialog_tab_change', {tabName});
+      sendEvent('click_create_edit_dialog_tab_change', { tabName });
     };
-    watch(() => props.tabName, () => {
-      internalTabName.value = props.tabName as CreateEditTabName;
-    });
+    watch(
+      () => props.tabName,
+      () => {
+        internalTabName.value = props.tabName as CreateEditTabName;
+      }
+    );
 
-    provide<CreateEditDialogActionFunctions | undefined>('action-functions', props.actionFunctions);
+    provide<CreateEditDialogActionFunctions | undefined>(
+      'action-functions',
+      props.actionFunctions
+    );
     provide<FormRuleItem[] | undefined>('form-rules', props.formRules);
 
     return {

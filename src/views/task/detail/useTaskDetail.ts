@@ -1,17 +1,15 @@
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 import useDetail from '@/layouts/content/detail/useDetail';
-import {setupGetAllList} from '@/utils/list';
+import { setupGetAllList } from '@/utils/list';
 import useTask from '@/components/task/task';
-import {onBeforeUnmount} from 'vue';
+import { onBeforeUnmount } from 'vue';
 
 const useTaskDetail = () => {
   // store
   const ns = 'task';
   const store = useStore();
 
-  const {
-    form,
-  } = useTask(store);
+  const { form } = useTask(store);
 
   // dispose
   onBeforeUnmount(() => {
@@ -21,10 +19,7 @@ const useTaskDetail = () => {
     store.commit(`${ns}/disableLogAutoUpdate`);
   });
 
-  setupGetAllList(store, [
-    'node',
-    'spider',
-  ]);
+  setupGetAllList(store, ['node', 'spider']);
 
   return {
     ...useDetail('task'),

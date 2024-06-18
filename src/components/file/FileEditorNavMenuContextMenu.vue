@@ -1,7 +1,12 @@
 <template>
-  <cl-context-menu :clicking="clicking" :placement="placement" :visible="visible" @hide="$emit('hide')">
+  <cl-context-menu
+    :clicking="clicking"
+    :placement="placement"
+    :visible="visible"
+    @hide="$emit('hide')"
+  >
     <template #default>
-      <cl-context-menu-list :items="items" @hide="$emit('hide')"/>
+      <cl-context-menu-list :items="items" @hide="$emit('hide')" />
     </template>
     <template #reference>
       <slot></slot>
@@ -10,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {contextMenuDefaultProps} from '@/components/context-menu/ContextMenu.vue';
-import {useI18n} from 'vue-i18n';
-import {useStore} from "vuex";
+import { computed, defineComponent } from 'vue';
+import { contextMenuDefaultProps } from '@/components/context-menu/ContextMenu.vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'FileEditorNavMenuContextMenu',
@@ -27,13 +32,11 @@ export default defineComponent({
     'clone',
     'delete',
   ],
-  setup(_, {emit}) {
-    const {t} = useI18n();
+  setup(_, { emit }) {
+    const { t } = useI18n();
 
     const store = useStore();
-    const {
-      common: commonState
-    } = store.state as RootStoreState;
+    const { common: commonState } = store.state as RootStoreState;
 
     const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
@@ -47,7 +50,11 @@ export default defineComponent({
       {
         title: t('components.file.editor.navMenu.newFileWithAi'),
         icon: ['fa', 'robot'],
-        className: 'new-file-with-ai' + (systemInfo.value.edition === 'global.edition.community' ? ' disabled' : ''),
+        className:
+          'new-file-with-ai' +
+          (systemInfo.value.edition === 'global.edition.community'
+            ? ' disabled'
+            : ''),
         action: () => emit('new-file-with-ai'),
       },
       {
@@ -84,6 +91,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

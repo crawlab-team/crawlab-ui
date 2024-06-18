@@ -1,11 +1,12 @@
 const getDefaultEditorOptions = (): FileEditorOptions => {
   try {
-    const options = JSON.parse(localStorage.getItem('fileEditorOptions') || 'null');
+    const options = JSON.parse(
+      localStorage.getItem('fileEditorOptions') || 'null'
+    );
     if (options) {
       return options;
     }
-  } catch (e) {
-  }
+  } catch (e) {}
   const options: FileEditorOptions = {
     theme: 'vs-dark',
   };
@@ -27,7 +28,10 @@ export default {
         const key = k as keyof FileEditorOptions;
         state.editorOptions[key] = options[key];
       }
-      localStorage.setItem('fileEditorOptions', JSON.stringify(state.editorOptions));
+      localStorage.setItem(
+        'fileEditorOptions',
+        JSON.stringify(state.editorOptions)
+      );
     },
     resetEditorOptions: (state: FileStoreState) => {
       state.editorOptions = getDefaultEditorOptions();
@@ -35,7 +39,10 @@ export default {
     setEditorSettingsDialogVisible: (state: FileStoreState, value: boolean) => {
       state.editorSettingsDialogVisible = value;
     },
-    setEditorCreateWithAiDialogVisible: (state: FileStoreState, value: boolean) => {
+    setEditorCreateWithAiDialogVisible: (
+      state: FileStoreState,
+      value: boolean
+    ) => {
       state.editorCreateWithAiDialogVisible = value;
     },
     resetEditorFileNavItem: (state: FileStoreState) => {
@@ -45,5 +52,5 @@ export default {
       state.editorFileNavItem = value;
     },
   },
-  actions: {}
+  actions: {},
 } as FileStoreModule;

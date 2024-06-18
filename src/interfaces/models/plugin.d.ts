@@ -76,10 +76,16 @@ export declare global {
     plugin_id?: string;
     node_id?: string;
     node?: CNode;
-    status?: PLUGIN_STATUS_STOPPED | PLUGIN_STATUS_RUNNING | PLUGIN_STATUS_ERROR;
+    status?:
+      | PLUGIN_STATUS_STOPPED
+      | PLUGIN_STATUS_RUNNING
+      | PLUGIN_STATUS_ERROR;
     pid?: number;
     error?: string;
   }
 
-  type PluginInstallType = PLUGIN_INSTALL_TYPE_PUBLIC | PLUGIN_INSTALL_TYPE_GIT | PLUGIN_INSTALL_TYPE_LOCAL;
+  type PluginInstallType =
+    | PLUGIN_INSTALL_TYPE_PUBLIC
+    | PLUGIN_INSTALL_TYPE_GIT
+    | PLUGIN_INSTALL_TYPE_LOCAL;
 }

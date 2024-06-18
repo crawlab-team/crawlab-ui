@@ -1,13 +1,13 @@
 <template>
   <div class="project-detail-tab-spiders">
-    <cl-spider-list no-actions embedded/>
+    <cl-spider-list no-actions embedded />
   </div>
 </template>
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, onBeforeUnmount} from 'vue';
-import {useRoute} from 'vue-router';
-import {useStore} from 'vuex';
-import {FILTER_OP_EQUAL} from '@/constants/filter';
+import { computed, defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { FILTER_OP_EQUAL } from '@/constants/filter';
 
 export default defineComponent({
   name: 'ProjectDetailTabSpiders',
@@ -23,11 +23,13 @@ export default defineComponent({
     const id = computed<string>(() => route.params.id as string);
 
     onBeforeMount(() => {
-      store.commit(`spider/setTableListFilter`, [{
-        key: 'project_id',
-        op: FILTER_OP_EQUAL,
-        value: id.value,
-      } as FilterConditionData]);
+      store.commit(`spider/setTableListFilter`, [
+        {
+          key: 'project_id',
+          op: FILTER_OP_EQUAL,
+          value: id.value,
+        } as FilterConditionData,
+      ]);
     });
 
     onBeforeUnmount(() => {

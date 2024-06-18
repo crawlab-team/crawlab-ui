@@ -1,4 +1,9 @@
-type TokenStoreModule = BaseModule<TokenStoreState, TokenStoreGetters, TokenStoreMutations, TokenStoreActions>;
+type TokenStoreModule = BaseModule<
+  TokenStoreState,
+  TokenStoreGetters,
+  TokenStoreMutations,
+  TokenStoreActions
+>;
 
 type TokenStoreState = BaseStoreState<Token>;
 

@@ -1,4 +1,4 @@
-import {FileWithPath} from 'file-selector';
+import { FileWithPath } from 'file-selector';
 
 declare global {
   interface BaseFileStoreState {

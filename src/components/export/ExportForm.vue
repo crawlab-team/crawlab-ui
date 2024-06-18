@@ -2,18 +2,24 @@
   <el-form inline label-width="100px">
     <el-form-item :label="t('components.export.type')">
       <el-select v-model="exportType" @change="onExportTypeChange">
-        <el-option :value="ExportTypeCsv" :label="t('components.export.types.csv')"/>
-        <el-option :value="ExportTypeJson" :label="t('components.export.types.json')"/>
+        <el-option
+          :value="ExportTypeCsv"
+          :label="t('components.export.types.csv')"
+        />
+        <el-option
+          :value="ExportTypeJson"
+          :label="t('components.export.types.json')"
+        />
       </el-select>
     </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts">
-import {defineComponent, onBeforeMount, PropType, ref} from 'vue';
-import {ExportTypeCsv, ExportTypeJson} from '@/constants/export';
-import {translate} from '@/utils';
-import {ElForm, ElFormItem, ElOption, ElSelect} from 'element-plus';
+import { defineComponent, onBeforeMount, PropType, ref } from 'vue';
+import { ExportTypeCsv, ExportTypeJson } from '@/constants/export';
+import { translate } from '@/utils';
+import { ElForm, ElFormItem, ElOption, ElSelect } from 'element-plus';
 
 // i18n
 const t = translate;
@@ -35,10 +41,8 @@ export default defineComponent({
       type: String,
     },
   },
-  emits: [
-    'export-type-change',
-  ],
-  setup(props: ExportFormProps, {emit}) {
+  emits: ['export-type-change'],
+  setup(props: ExportFormProps, { emit }) {
     const exportType = ref<ExportType>();
 
     const onExportTypeChange = (value: string) => {
@@ -56,7 +60,7 @@ export default defineComponent({
       onExportTypeChange,
       t,
     };
-  }
+  },
 });
 </script>
 

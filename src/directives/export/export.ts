@@ -1,21 +1,17 @@
-import {Directive, ref, h} from 'vue';
-import {ExportTypeCsv} from '@/constants/export';
+import { Directive, ref, h } from 'vue';
+import { ExportTypeCsv } from '@/constants/export';
 import ExportForm from '@/components/export/ExportForm.vue';
-import {sendEvent} from '@/admin/umeng';
-import {downloadData, translate} from '@/utils';
-import {ElMessageBox, ElNotification, NotificationHandle} from 'element-plus';
+import { sendEvent } from '@/admin/umeng';
+import { downloadData, translate } from '@/utils';
+import { ElMessageBox, ElNotification, NotificationHandle } from 'element-plus';
 import useExportService from '@/services/export/exportService';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // i18n
 const t = translate;
 
 // export service
-const {
-  postExport,
-  getExport,
-  getExportDownload,
-} = useExportService();
+const { postExport, getExport, getExportDownload } = useExportService();
 
 const getTargetFromBinding = (value: string | Function): string => {
   let target: string;
@@ -29,7 +25,9 @@ const getTargetFromBinding = (value: string | Function): string => {
   return target;
 };
 
-const getConditionsFromBinding = (value?: FilterConditionData[] | Function): FilterConditionData[] => {
+const getConditionsFromBinding = (
+  value?: FilterConditionData[] | Function
+): FilterConditionData[] => {
   let conditions: FilterConditionData[];
   if (Array.isArray(value)) {
     conditions = value;
@@ -45,7 +43,10 @@ const export_: Directive<HTMLElement, ExportDirective> = {
   mounted(el, binding) {
     const getTarget = (): string => {
       let target: string;
-      if (typeof binding.value === 'string' || typeof binding.value === 'function') {
+      if (
+        typeof binding.value === 'string' ||
+        typeof binding.value === 'function'
+      ) {
         target = getTargetFromBinding(binding.value);
       } else if (typeof binding.value === 'object') {
         target = getTargetFromBinding(binding.value.target);
@@ -90,7 +91,10 @@ const export_: Directive<HTMLElement, ExportDirective> = {
         await pollAndDownload(exportId);
       } else {
         const n = notifications.get(exportId);
-        const dataDownload = await getExportDownload(exportType.value, exportId);
+        const dataDownload = await getExportDownload(
+          exportType.value,
+          exportId
+        );
         downloadData(dataDownload, exp?.file_name as string, exp?.type);
         n?.close();
         return;
@@ -116,7 +120,11 @@ const export_: Directive<HTMLElement, ExportDirective> = {
       });
 
       // perform export
-      const res = await postExport(exportType.value, getTarget(), getConditions());
+      const res = await postExport(
+        exportType.value,
+        getTarget(),
+        getConditions()
+      );
       const exportId = res.data;
       if (!exportId) return;
       exportCache.set(exportId, {
@@ -128,7 +136,8 @@ const export_: Directive<HTMLElement, ExportDirective> = {
       // notification
       const notification = ElNotification({
         title: t('components.export.status.exporting'),
-        message: h('div',
+        message: h(
+          'div',
           {
             style: {
               display: 'flex',
@@ -144,10 +153,10 @@ const export_: Directive<HTMLElement, ExportDirective> = {
                 width: '14px',
                 height: '14px',
                 marginRight: '8px',
-              }
+              },
             }),
             t('span', t(`components.export.exporting.${exportType.value}`)),
-          ],
+          ]
         ),
         duration: 0,
         showClose: false,
@@ -161,7 +170,7 @@ const export_: Directive<HTMLElement, ExportDirective> = {
     };
 
     el.addEventListener('click', onClickExport);
-  }
+  },
 };
 
 export default export_;

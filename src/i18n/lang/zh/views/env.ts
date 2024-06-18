@@ -15,7 +15,7 @@ const env: LViewsEnv = {
         },
         node: {
           description: 'Node.js 环境依赖',
-        }
+        },
       },
     },
     dependency: {
@@ -64,7 +64,7 @@ const env: LViewsEnv = {
         installAndDowngrade: '安装并降级',
         searchDependencies: '搜索依赖',
       },
-    }
+    },
   },
 };
 

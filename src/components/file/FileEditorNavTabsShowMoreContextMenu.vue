@@ -1,7 +1,11 @@
 <template>
-  <cl-context-menu :placement="placement" :visible="visible" @hide="$emit('hide')">
+  <cl-context-menu
+    :placement="placement"
+    :visible="visible"
+    @hide="$emit('hide')"
+  >
     <template #default>
-      <cl-context-menu-list :items="items" @hide="$emit('hide')"/>
+      <cl-context-menu-list :items="items" @hide="$emit('hide')" />
     </template>
     <template #reference>
       <slot></slot>
@@ -10,8 +14,8 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {contextMenuDefaultProps} from '@/components/context-menu/ContextMenu.vue';
+import { computed, defineComponent } from 'vue';
+import { contextMenuDefaultProps } from '@/components/context-menu/ContextMenu.vue';
 
 export default defineComponent({
   name: 'FileEditorNavTabsShowMoreContextMenu',
@@ -24,12 +28,10 @@ export default defineComponent({
     },
     ...contextMenuDefaultProps,
   },
-  emits: [
-    'tab-click',
-  ],
-  setup(props, {emit}) {
+  emits: ['tab-click'],
+  setup(props, { emit }) {
     const items = computed<ContextMenuItem[]>(() => {
-      const {tabs} = props as FileEditorNavTabsShowMoreContextMenuProps;
+      const { tabs } = props as FileEditorNavTabsShowMoreContextMenuProps;
       const contextMenuItems: ContextMenuItem[] = tabs.map(t => {
         return {
           title: t.path || '',
@@ -47,6 +49,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

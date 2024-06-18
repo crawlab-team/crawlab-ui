@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 import useGit from '@/components/git/git';
 
 // store
@@ -27,11 +27,9 @@ const {
     :confirm-loading="confirmLoading"
   >
     <template #default>
-      <cl-git-form/>
+      <cl-git-form />
     </template>
   </cl-create-edit-dialog>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -15,8 +15,8 @@
     <div class="content">
       <!--Top-->
       <div class="top">
-        <cl-nav-action-back @click="() => $emit('back')"/>
-        <slot name="top-prefix"/>
+        <cl-nav-action-back @click="() => $emit('back')" />
+        <slot name="top-prefix" />
         <cl-form label-width="120px">
           <cl-form-item :label="t('components.metric.filters.metricSource')">
             <el-select
@@ -47,25 +47,19 @@
               />
             </el-select>
           </cl-form-item>
-          <slot name="top-suffix"/>
+          <slot name="top-suffix" />
         </cl-form>
       </div>
       <!--./Top-->
 
       <!--Chart List-->
-      <div
-        v-if="checkedNormalizedMetrics.length > 0"
-        class="chart-list"
-      >
+      <div v-if="checkedNormalizedMetrics.length > 0" class="chart-list">
         <div
           v-for="(metric, $index) in checkedNormalizedMetrics"
           :key="$index"
           class="metric-chart"
         >
-          <cl-line-chart
-            height="240px"
-            :config="getChartConfig(metric)"
-          />
+          <cl-line-chart height="240px" :config="getChartConfig(metric)" />
         </div>
       </div>
       <cl-empty
@@ -78,12 +72,20 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onBeforeMount, onBeforeUnmount, PropType, ref, watch} from 'vue';
-import {emptyArrayFunc, voidFunc} from '@/utils/func';
-import {cloneArray} from '@/utils/object';
-import {translate} from '@/utils/i18n';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import { emptyArrayFunc, voidFunc } from '@/utils/func';
+import { cloneArray } from '@/utils/object';
+import { translate } from '@/utils/i18n';
 import dayjs from 'dayjs';
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 
 const t = translate;
 
@@ -115,7 +117,7 @@ export default defineComponent({
         return {
           key: 'past-1h',
         } as RangeItem;
-      }
+      },
     },
     duration: {
       type: String,
@@ -125,14 +127,14 @@ export default defineComponent({
       type: Array as PropType<SelectOption[]>,
       default: () => {
         return [
-          {label: t('components.date.units.second', {n: 15}), value: '15s'},
-          {label: t('components.date.units.second', {n: 30}), value: '30s'},
-          {label: t('components.date.units.minute', {n: 1}), value: '1m'},
-          {label: t('components.date.units.minute', {n: 5}), value: '5m'},
-          {label: t('components.date.units.minute', {n: 15}), value: '15m'},
-          {label: t('components.date.units.hour', {n: 1}), value: '1h'},
+          { label: t('components.date.units.second', { n: 15 }), value: '15s' },
+          { label: t('components.date.units.second', { n: 30 }), value: '30s' },
+          { label: t('components.date.units.minute', { n: 1 }), value: '1m' },
+          { label: t('components.date.units.minute', { n: 5 }), value: '5m' },
+          { label: t('components.date.units.minute', { n: 15 }), value: '15m' },
+          { label: t('components.date.units.hour', { n: 1 }), value: '1h' },
         ];
-      }
+      },
     },
     defaultCheckedAll: {
       type: Boolean,
@@ -145,11 +147,9 @@ export default defineComponent({
     'metric-snapshot-change',
     'back',
   ],
-  setup(props: MetricListProps, {emit}) {
+  setup(props: MetricListProps, { emit }) {
     const store = useStore();
-    const {
-      common: commonState,
-    } = store.state as RootStoreState;
+    const { common: commonState } = store.state as RootStoreState;
 
     const navSidebarRef = ref();
 
@@ -162,7 +162,9 @@ export default defineComponent({
 
       items.forEach(item => {
         if (item.children) {
-          normalizedItems = normalizedItems.concat(getNormalizedMetrics(item.children));
+          normalizedItems = normalizedItems.concat(
+            getNormalizedMetrics(item.children)
+          );
         } else {
           normalizedItems.push(item);
         }
@@ -175,7 +177,9 @@ export default defineComponent({
 
     const checkedKeys = ref<string[]>([]);
 
-    const checkedNormalizedMetrics = computed<NavItem[]>(() => normalizedMetrics.value.filter(m => checkedKeys.value.includes(m.id)));
+    const checkedNormalizedMetrics = computed<NavItem[]>(() =>
+      normalizedMetrics.value.filter(m => checkedKeys.value.includes(m.id))
+    );
 
     const chartConfigMap = ref<{ [key: string]: EChartsConfig }>({});
 
@@ -187,8 +191,13 @@ export default defineComponent({
               text: props.metricTitleFunc?.(metric),
             },
             tooltip: {
-              formatter: (params: { marker: string; value: [number, number] }) => {
-                const time = dayjs.unix(params.value[0] / 1e3).format('YYYY-MM-DD HH:mm:ss');
+              formatter: (params: {
+                marker: string;
+                value: [number, number];
+              }) => {
+                const time = dayjs
+                  .unix(params.value[0] / 1e3)
+                  .format('YYYY-MM-DD HH:mm:ss');
                 return `${time}<br>${params.marker} ${params.value?.[1]?.toLocaleString()}`;
               },
             },
@@ -199,7 +208,7 @@ export default defineComponent({
             },
             yAxis: {
               scale: true,
-            }
+            },
           },
         } as EChartsConfig;
       }
@@ -211,22 +220,28 @@ export default defineComponent({
     };
 
     const updateAllChartData = async () => {
-      await Promise.all(checkedNormalizedMetrics.value.map(metric => updateChartData(metric)));
+      await Promise.all(
+        checkedNormalizedMetrics.value.map(metric => updateChartData(metric))
+      );
     };
 
     const updateChartData = async (metric: NavItem) => {
       initChartConfig(metric);
-      chartConfigMap.value[metric.id].data = await props.metricDataFunc?.(metric.id) || [];
+      chartConfigMap.value[metric.id].data =
+        (await props.metricDataFunc?.(metric.id)) || [];
     };
 
     const updateAllChartTitle = async () => {
-      await Promise.all(checkedNormalizedMetrics.value.map(metric => updateChartTitle(metric)));
+      await Promise.all(
+        checkedNormalizedMetrics.value.map(metric => updateChartTitle(metric))
+      );
     };
 
     const updateChartTitle = async (metric: NavItem) => {
       initChartConfig(metric);
       if (chartConfigMap.value[metric.id].option) {
-        chartConfigMap.value[metric.id].option.title = props.metricTitleFunc?.(metric);
+        chartConfigMap.value[metric.id].option.title =
+          props.metricTitleFunc?.(metric);
       }
     };
 
@@ -239,7 +254,10 @@ export default defineComponent({
       return commonState.lang || 'en';
     });
 
-    watch(() => checkedNormalizedMetrics.value.map(m => m.value), updateAllChartData);
+    watch(
+      () => checkedNormalizedMetrics.value.map(m => m.value),
+      updateAllChartData
+    );
     watch(() => props.dateRange, updateAllChartData);
     watch(() => props.duration, updateAllChartData);
     watch(lang, updateAllChartTitle);
@@ -261,14 +279,21 @@ export default defineComponent({
       emit('duration-change', value);
     };
 
-    watch(() => props.metrics, () => {
-      if (props.defaultCheckedAll) {
-        checkedKeys.value = getNormalizedMetrics(props.metrics).map(m => m.id);
+    watch(
+      () => props.metrics,
+      () => {
+        if (props.defaultCheckedAll) {
+          checkedKeys.value = getNormalizedMetrics(props.metrics).map(
+            m => m.id
+          );
+        }
       }
-    });
+    );
 
     const activeMetricSnapshot = computed<MetricSnapshot | undefined>(() => {
-      return props.metricSnapshots?.find(ms => ms.key === props.activeMetricSnapshotKey);
+      return props.metricSnapshots?.find(
+        ms => ms.key === props.activeMetricSnapshotKey
+      );
     });
     const onMetricSnapshotChange = (value: string) => {
       emit('metric-snapshot-change', value);
@@ -289,7 +314,7 @@ export default defineComponent({
       onMetricSnapshotChange,
       t,
     };
-  }
+  },
 });
 </script>
 

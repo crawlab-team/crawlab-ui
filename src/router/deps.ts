@@ -1,4 +1,4 @@
-import {RouteRecordRaw} from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 
 const endpoint = 'deps';
 
@@ -7,8 +7,8 @@ export default [
     name: 'Deps',
     path: `${endpoint}`,
     redirect: to => {
-      return {path: to.path + '/settings'};
-    }
+      return { path: to.path + '/settings' };
+    },
   },
   {
     name: 'DepsSettings',
@@ -24,5 +24,5 @@ export default [
     name: 'DepsNode',
     path: `${endpoint}/node`,
     component: () => import('@/views/deps/node/DependencyNode.vue'),
-  }
+  },
 ] as Array<RouteRecordRaw>;

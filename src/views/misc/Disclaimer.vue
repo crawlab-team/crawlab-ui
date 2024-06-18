@@ -5,22 +5,22 @@
         <h1 class="title">
           {{ title }}
         </h1>
-        <div class="content" v-html="content"/>
+        <div class="content" v-html="content" />
       </div>
     </div>
   </cl-simple-layout>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
-import {Converter} from 'showdown';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent } from 'vue';
+import { Converter } from 'showdown';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'Disclaimer',
   setup() {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // markdown-to-text converter
     const converter = new Converter();

@@ -13,14 +13,14 @@ const environments: LViewsEnvironments = {
     filter: {
       search: {
         placeholder: '搜索环境变量',
-      }
-    }
+      },
+    },
   },
   messageBox: {
     prompt: {
       create: '请输入环境变量值',
-    }
-  }
+    },
+  },
 };
 
 export default environments;

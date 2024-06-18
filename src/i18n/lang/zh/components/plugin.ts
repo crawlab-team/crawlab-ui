@@ -12,7 +12,7 @@ const plugin: LComponentsPlugin = {
     label: {
       public: '公共',
       git: 'Git',
-      local: '本地'
+      local: '本地',
     },
     notice: {
       public: '安装 Crawlab 团队维护的官方公共插件',
@@ -34,7 +34,8 @@ const plugin: LComponentsPlugin = {
       goProxy: 'Go 代理',
     },
     tips: {
-      installSource: '如果您在中国内地，您可以选择安装源为 "Gitee" 来加速插件安装过程',
+      installSource:
+        '如果您在中国内地，您可以选择安装源为 "Gitee" 来加速插件安装过程',
       goProxy: '如果您在中国内地，您可以设置 Go 代理 来加速插件编译过程',
     },
     goProxy: {
@@ -65,8 +66,8 @@ const plugin: LComponentsPlugin = {
         running: '运行中节点',
         error: '错误节点',
         unknown: '未知节点',
-      }
-    }
+      },
+    },
   },
 };
 

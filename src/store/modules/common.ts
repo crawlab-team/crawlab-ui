@@ -1,9 +1,7 @@
-import {plainClone} from '@/utils/object';
+import { plainClone } from '@/utils/object';
 import useRequest from '@/services/request';
 
-const {
-  get,
-} = useRequest();
+const { get } = useRequest();
 
 export default {
   namespaced: true,
@@ -20,9 +18,9 @@ export default {
     },
   },
   actions: {
-    getSystemInfo: async ({commit}: StoreActionContext) => {
+    getSystemInfo: async ({ commit }: StoreActionContext) => {
       const res = await get('/system-info');
       commit('setSystemInfo', res.data);
-    }
+    },
   },
 } as CommonStoreModule;

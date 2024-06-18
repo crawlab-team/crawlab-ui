@@ -1,31 +1,26 @@
 <template>
   <div class="metric-target-name">
-    <cl-nav-link
-      :label="computedName"
-      @click="onClick"
-    />
+    <cl-nav-link :label="computedName" @click="onClick" />
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, PropType} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { computed, defineComponent, PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'MetricTargetName',
   props: {
     name: {
-      type: String
+      type: String,
     },
     type: {
       type: String as PropType<MetricTargetType>,
     },
   },
-  emits: [
-    'click',
-  ],
-  setup(props: MetricTargetNameProps, {emit}) {
-    const {t} = useI18n();
+  emits: ['click'],
+  setup(props: MetricTargetNameProps, { emit }) {
+    const { t } = useI18n();
 
     const computedName = computed<string | undefined>(() => {
       switch (props.type) {
@@ -46,9 +41,8 @@ export default defineComponent({
       computedName,
       onClick,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

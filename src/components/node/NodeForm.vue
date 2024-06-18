@@ -1,10 +1,5 @@
 <template>
-  <cl-form
-    v-if="form"
-    ref="formRef"
-    :model="form"
-    :selective="isSelectiveForm"
-  >
+  <cl-form v-if="form" ref="formRef" :model="form" :selective="isSelectiveForm">
     <!--Row-->
     <cl-form-item
       :span="2"
@@ -27,11 +22,7 @@
       not-editable
       prop="key"
     >
-      <el-input
-        v-locate="'key'"
-        :model-value="form.key"
-        disabled
-      />
+      <el-input v-locate="'key'" :model-value="form.key" disabled />
     </cl-form-item>
     <!--./Row-->
 
@@ -43,7 +34,11 @@
       :label="t('components.node.form.tags')"
       prop="tags"
     >
-      <cl-tag-input v-locate="'tags'" v-model="form.tags" :disabled="isFormItemDisabled('tags')"/>
+      <cl-tag-input
+        v-locate="'tags'"
+        v-model="form.tags"
+        :disabled="isFormItemDisabled('tags')"
+      />
     </cl-form-item>
     <!--./Row-->
 
@@ -54,16 +49,9 @@
       not-editable
       prop="type"
     >
-      <cl-node-type
-        v-locate="'type'"
-        :is-master="form.is_master"
-      />
+      <cl-node-type v-locate="'type'" :is-master="form.is_master" />
     </cl-form-item>
-    <cl-form-item
-      :span="2"
-      :label="t('components.node.form.ip')"
-      prop="ip"
-    >
+    <cl-form-item :span="2" :label="t('components.node.form.ip')" prop="ip">
       <el-input
         v-locate="'ip'"
         v-model="form.ip"
@@ -74,11 +62,7 @@
     <!--./Row-->
 
     <!--Row-->
-    <cl-form-item
-      :span="2"
-      :label="t('components.node.form.mac')"
-      prop="mac"
-    >
+    <cl-form-item :span="2" :label="t('components.node.form.mac')" prop="mac">
       <el-input
         v-locate="'mac'"
         v-model="form.mac"
@@ -147,22 +131,22 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useStore} from 'vuex';
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import useNode from '@/components/node/node';
-import {useI18n} from 'vue-i18n';
-import {sendEvent} from '@/admin/umeng';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
 
 export default defineComponent({
   name: 'NodeForm',
   props: {
     readonly: {
       type: Boolean,
-    }
+    },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     // i18n
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     // store
     const store = useStore();
@@ -180,6 +164,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
