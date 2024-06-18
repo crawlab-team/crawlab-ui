@@ -82,6 +82,16 @@ const file: LComponentsFile = {
       title: 'Files to Upload',
     },
   },
+  actions: {
+    tooltip: {
+      fileEditorActions: 'File Editor Actions',
+      uploadFiles: 'Upload Files',
+      fileEditorSettings: 'File Editor Settings',
+      export: 'Export Files',
+      createWithAi: 'Create with AI',
+      createWithAiDisabled: 'Create with AI (available in Crawlab Pro)',
+    },
+  },
 };
 
 export default file;

@@ -29,6 +29,7 @@ import ImgEmpty from './empty/ImgEmpty.vue';
 import CreateEditEnvironmentDialog from './environment/CreateEditEnvironmentDialog.vue';
 import EnvironmentForm from './environment/EnvironmentForm.vue';
 import ExportForm from './export/ExportForm.vue';
+import FileActions from './file/FileActions.vue';
 import FileEditor from './file/FileEditor.vue';
 import FileEditorCreateWithAiDialog from './file/FileEditorCreateWithAiDialog.vue';
 import FileEditorNavMenu from './file/FileEditorNavMenu.vue';
@@ -37,6 +38,7 @@ import FileEditorNavTabs from './file/FileEditorNavTabs.vue';
 import FileEditorNavTabsContextMenu from './file/FileEditorNavTabsContextMenu.vue';
 import FileEditorNavTabsShowMoreContextMenu from './file/FileEditorNavTabsShowMoreContextMenu.vue';
 import FileEditorSettingsDialog from './file/FileEditorSettingsDialog.vue';
+import FileTab from './file/FileTab.vue';
 import FileUpload from './file/FileUpload.vue';
 import FilterCondition from './filter/FilterCondition.vue';
 import FilterConditionList from './filter/FilterConditionList.vue';
@@ -175,6 +177,7 @@ export {
   CreateEditEnvironmentDialog as ClCreateEditEnvironmentDialog,
   EnvironmentForm as ClEnvironmentForm,
   ExportForm as ClExportForm,
+  FileActions as ClFileActions,
   FileEditor as ClFileEditor,
   FileEditorCreateWithAiDialog as ClFileEditorCreateWithAiDialog,
   FileEditorNavMenu as ClFileEditorNavMenu,
@@ -183,6 +186,7 @@ export {
   FileEditorNavTabsContextMenu as ClFileEditorNavTabsContextMenu,
   FileEditorNavTabsShowMoreContextMenu as ClFileEditorNavTabsShowMoreContextMenu,
   FileEditorSettingsDialog as ClFileEditorSettingsDialog,
+  FileTab as ClFileTab,
   FileUpload as ClFileUpload,
   FilterCondition as ClFilterCondition,
   FilterConditionList as ClFilterConditionList,

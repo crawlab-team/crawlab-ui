@@ -80,4 +80,14 @@ interface LComponentsFile {
       title: string;
     };
   };
+  actions: {
+    tooltip: {
+      fileEditorActions: string;
+      createWithAi: string;
+      createWithAiDisabled: string;
+      uploadFiles: string;
+      export: string;
+      fileEditorSettings: string;
+    };
+  };
 }

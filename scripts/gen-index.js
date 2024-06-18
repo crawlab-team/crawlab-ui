@@ -1,11 +1,15 @@
-import path from 'path'
-import fs from 'fs'
-import rd from 'rd'
+import path from 'path';
+import fs from 'fs';
+import rd from 'rd';
+import os from 'os';
 
-const INDEX_COMP_NAME = 'index'
+function isWindows() {
+  return os.platform() === 'win32';
+}
 
-const IGNORE_COMPONENTS_SUB_MODULES = [
-  // 'node',
+const INDEX_COMP_NAME = 'index';
+
+const IGNORE_COMPONENTS_SUB_MODULES = [// 'node',
   // 'project',
   // 'spider',
   // 'task',
@@ -17,70 +21,68 @@ const IGNORE_COMPONENTS_SUB_MODULES = [
   // 'plugin',
   // 'git',
   // 'file',
-]
+];
 
-const EXPORT_MODULES = [
-  'components',
-  // 'constants',
-  'directives',
-  'layouts',
-  // 'services',
+const EXPORT_MODULES = ['components', // 'constants',
+  'directives', 'layouts', // 'services',
   // 'store',
   // 'utils',
-  'views',
-]
+  'views'];
 
-const COMPONENT_PREFIX = 'Cl'
+const COMPONENT_PREFIX = 'Cl';
 
 const genIndex = (moduleName) => {
   // import/export lines
-  const importLines = []
-  const exportLines = []
+  const importLines = [];
+  const exportLines = [];
 
   // module path
-  const modulePath = path.resolve(`./src/${moduleName}`)
+  let modulePath = path.resolve(`./src/${moduleName}`);
+  if (isWindows()) {
+    modulePath = modulePath.replace(/\\/g, '/');
+  }
 
   // read each file
   rd.eachSync(modulePath, (f, s) => {
+    if (isWindows()) {
+      f = f.replace(/\\/g, '/');
+    }
+
     // relative path
-    const relPath = `.${f.replace(modulePath, '')}`
+    const relPath = `.${f.replace(modulePath, '')}`;
 
     // file name
-    const fileName = path.basename(f)
+    const fileName = path.basename(f);
 
     // vue
     if (f.endsWith('.vue')) {
       // component name
-      const compName = fileName.replace('.vue', '')
+      const compName = fileName.replace('.vue', '');
 
       // skip ignored components sub-modules
       if (moduleName === 'components') {
-        const subModuleName = relPath.split('/')[1]
-        if (IGNORE_COMPONENTS_SUB_MODULES.includes(subModuleName)) return
+        const subModuleName = relPath.split('/')[1];
+        if (IGNORE_COMPONENTS_SUB_MODULES.includes(subModuleName)) return;
       }
 
       // import line
-      const importLine = `import ${compName} from '${relPath}';`
+      const importLine = `import ${compName} from '${relPath}';`;
 
       // export line
-      const exportLine = `${compName} as ${COMPONENT_PREFIX}${compName},`
+      const exportLine = `${compName} as ${COMPONENT_PREFIX}${compName},`;
 
       // add to importLines/exportLines
-      importLines.push(importLine)
-      exportLines.push(exportLine)
+      importLines.push(importLine);
+      exportLines.push(exportLine);
     } else if (f.endsWith('.ts')) {
       // skip components, layouts
-      if ([
-        'components',
-        'layouts',
-        'views',
-      ].includes(moduleName)) return;
+      if (['components', 'layouts', 'views'].includes(moduleName)) return;
 
       // component name
-      let compName = fileName.replace('.ts', '')
+      let compName = fileName.replace('.ts', '');
 
       // skip index
-      if (compName === INDEX_COMP_NAME) return
+      if (compName === INDEX_COMP_NAME) return;
 
       // add suffix to component name
       if (compName === 'export') {
@@ -88,33 +90,33 @@ const genIndex = (moduleName) => {
       }
 
       // relative component name
-      const relCompName = relPath.replace('.ts', '')
+      const relCompName = relPath.replace('.ts', '');
 
       // import line
-      const importLine = `import ${compName} from '${relCompName}';`
+      const importLine = `import ${compName} from '${relCompName}';`;
 
       // export line
-      const exportLine = `${compName} as ${compName},`
+      const exportLine = `${compName} as ${compName},`;
 
       // add to importLines/exportLines
-      importLines.push(importLine)
-      exportLines.push(exportLine)
+      importLines.push(importLine);
+      exportLines.push(exportLine);
     }
-  })
+  });
 
   // write to index.ts
-  let content = ''
-  importLines.forEach(l => content += l + '\n')
+  let content = '';
+  importLines.forEach(l => content += l + '\n');
   content += `
 export {
 ${exportLines.map(l => '  ' + l).join('\n')}
 };
-`
-  fs.writeFileSync(`${modulePath}/index.ts`, content)
-}
+`;
+  fs.writeFileSync(`${modulePath}/index.ts`, content);
+};
 
 const genRootIndex = () => {
-  const exportLines = EXPORT_MODULES.map(m => `export * from './${m}';`)
+  const exportLines = EXPORT_MODULES.map(m => `export * from './${m}';`);
   const content = `${exportLines.join('\n')}
 export * from './router';
 export * from './store';
@@ -130,12 +132,12 @@ export {
 } from './views';
 export {installer as default} from './package';
 export {default as useRequest} from './services/request';
-`
-  fs.writeFileSync('./src/index.ts', content)
-}
+`;
+  fs.writeFileSync('./src/index.ts', content);
+};
 
 // gen module index.ts
-EXPORT_MODULES.forEach(m => genIndex(m))
+EXPORT_MODULES.forEach(m => genIndex(m));
 
 // gen root index.ts
-genRootIndex()
+genRootIndex();

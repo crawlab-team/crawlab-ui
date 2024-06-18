@@ -35,7 +35,6 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
-      store.commit(`${ns}/resetGitData`);
       store.commit(`${nsGit}/resetForm`);
     });
 

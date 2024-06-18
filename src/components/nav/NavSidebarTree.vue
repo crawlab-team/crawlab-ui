@@ -1,3 +1,39 @@
+<script setup lang="ts">
+import { defineComponent, PropType, ref } from 'vue';
+import { emptyArrayFunc } from '@/utils/func';
+
+const props = defineProps<{
+  activeKey: string;
+  items: NavItem[];
+  showCheckbox: boolean;
+  defaultCheckedKeys: string[];
+  defaultExpandedKeys: string[];
+  defaultExpandAll: boolean;
+}>();
+const emit = defineEmits<{
+  (event: 'select', item: NavItem): void;
+  (event: 'check', item: NavItem, checked: boolean, checkedNodes: NavItem[]): void;
+}>();
+
+const treeRef = ref();
+
+const onNodeClick = (item: NavItem) => {
+  emit('select', item);
+};
+
+const onCheckChange = (item: NavItem, checked: boolean) => {
+  emit('check', item, checked, treeRef.value?.getCheckedNodes());
+};
+
+const getClass = (item: NavItem): string | undefined => {
+  if (item.id === props.activeKey) {
+    return 'active';
+  } else {
+    return;
+  }
+};
+</script>
+
 <template>
   <div
     class="nav-menu"
@@ -26,67 +62,6 @@
     </el-tree>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
-import { emptyArrayFunc } from '@/utils/func';
-
-export default defineComponent({
-  name: 'NavSidebarTree',
-  props: {
-    activeKey: {
-      type: String,
-    },
-    items: {
-      type: Array as PropType<NavItem[]>,
-      default: emptyArrayFunc,
-    },
-    showCheckbox: {
-      type: Boolean,
-      default: false,
-    },
-    defaultCheckedKeys: {
-      type: Array as PropType<string[]>,
-      default: emptyArrayFunc,
-    },
-    defaultExpandedKeys: {
-      type: Array as PropType<string[]>,
-      default: emptyArrayFunc,
-    },
-    defaultExpandAll: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['select', 'check'],
-  setup(props: NavSidebarTreeProps, { emit }) {
-    const treeRef = ref();
-
-    const onNodeClick = (item: NavItem) => {
-      emit('select', item);
-    };
-
-    const onCheckChange = (item: NavItem, checked: boolean) => {
-      emit('check', item, checked, treeRef.value?.getCheckedNodes());
-    };
-
-    const getClass = (item: NavItem): string | undefined => {
-      if (item.id === props.activeKey) {
-        return 'active';
-      } else {
-        return;
-      }
-    };
-
-    return {
-      treeRef,
-      onNodeClick,
-      onCheckChange,
-      getClass,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .nav-menu {

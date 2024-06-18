@@ -1,3 +1,21 @@
+<script setup lang="ts">
+const props = defineProps<{
+  activeKey: string;
+  items: NavItem[];
+}>();
+
+const emit = defineEmits<{
+  (event: 'select', index: number): void;
+}>();
+
+const onSelect = (id: string) => {
+  emit(
+    'select',
+    props.items?.findIndex(item => item.id === id),
+  );
+};
+</script>
+
 <template>
   <el-menu
     ref="navMenu"
@@ -10,37 +28,6 @@
     </el-menu-item>
   </el-menu>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { emptyArrayFunc } from '@/utils/func';
-
-export default defineComponent({
-  name: 'NavSidebarList',
-  props: {
-    activeKey: {
-      type: String,
-    },
-    items: {
-      type: Array as PropType<NavItem[]>,
-      default: emptyArrayFunc,
-    },
-  },
-  emits: ['select'],
-  setup(props: NavSidebarListProps, { emit }) {
-    const onSelect = (id: string) => {
-      emit(
-        'select',
-        props.items?.findIndex(item => item.id === id)
-      );
-    };
-
-    return {
-      onSelect,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .nav-menu {
@@ -60,41 +47,10 @@ export default defineComponent({
     font-size: 14px;
   }
 
-  .nav-menu-item {
-    position: relative;
-    height: var(--cl-nav-sidebar-item-height);
-    line-height: var(--cl-nav-sidebar-item-height);
-    padding-left: 24px !important;
-
+  .el-menu-item {
     &:hover {
-      .actions {
-        display: inherit;
-      }
-    }
-
-    .title {
-      font-size: 14px;
-      //margin-bottom: 3px;
-    }
-
-    .subtitle {
-      font-size: 12px;
-    }
-
-    .actions {
-      display: none;
-      position: absolute;
-      top: 0;
-      right: 10px;
-
-      .icon {
-        color: var(--cl-nav-sidebar-item-action-color);
-        margin-left: 3px;
-
-        &:hover {
-          color: var(--cl-primary-color);
-        }
-      }
+      color: var(--cl-menu-active-text);
+      background-color: transparent !important;
     }
   }
 }

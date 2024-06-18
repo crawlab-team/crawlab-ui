@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import Node from 'element-plus/es/components/tree/src/model/node';
 import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
 import { ElMessageBox, ElTree } from 'element-plus';
@@ -323,6 +323,7 @@ watch(
   },
 );
 
+// resize tree height
 const treeHeight = ref<number>();
 const treeHeightObserver = new ResizeObserver(() => {
   treeHeight.value = fileEditorNavMenu.value?.clientHeight;
@@ -331,7 +332,7 @@ onMounted(() => {
   treeHeight.value = fileEditorNavMenu.value?.clientHeight;
   treeHeightObserver.observe(fileEditorNavMenu.value as Element);
 });
-onUnmounted(() => {
+onBeforeUnmount(() => {
   treeHeightObserver.unobserve(fileEditorNavMenu.value as Element);
 });
 </script>

@@ -429,7 +429,7 @@ onUnmounted(() => {
     resizeObserver.unobserve(editorRef.value);
   }
   editor?.dispose();
-  store.commit(`${ns}resetActiveFileNavItem`);
+  store.commit(`${ns}/resetActiveFileNavItem`);
 });
 </script>
 

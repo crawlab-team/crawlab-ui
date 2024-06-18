@@ -1,224 +1,25 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderService from '@/services/spider/spiderService';
-import { ElMessage } from 'element-plus';
-import { useI18n } from 'vue-i18n';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
-
-// i18n
-const { t } = useI18n();
 
 // store
 const ns = 'spider';
 const store = useStore();
-const { commit } = store;
 const { spider: state } = store.state as RootStoreState;
 
-const {
-  listRootDir,
-  getFile,
-  getFileInfo,
-  saveFile,
-  saveFileBinary,
-  saveDir,
-  renameFile,
-  deleteFile,
-  copyFile,
-} = useSpiderService(store);
-
 const { activeId } = useSpiderDetail();
-
-// spider id
-const id = computed<string>(() => activeId.value);
-
-// file editor
-const fileEditor = ref();
-
-// file nav items
-const navItems = computed<FileNavItem[]>(() => state.fileNavItems);
-
-// active file nav item
-const activeNavItem = computed<FileNavItem | undefined>(
-  () => state.activeNavItem
-);
-
-// file content
-const content = computed<string>(() => state.fileContent);
-
-// os path sep (server side)
-const pathSep = '/';
-
-const isRoot = (item: FileNavItem): boolean => {
-  return item.path === '~';
-};
-
-const getDirPath = (path: string): string => {
-  const arr = path?.split(pathSep) as string[];
-  arr.splice(arr.length - 1, 1);
-  return arr.join(pathSep);
-};
-
-const getPath = (item: FileNavItem, name: string): string => {
-  let path;
-  if (item.is_dir) {
-    if (isRoot(item)) {
-      path = `${pathSep}${name}`;
-    } else {
-      const itemDirPath = item.path || '';
-      path = `${itemDirPath}${pathSep}${name}`;
-    }
-  } else {
-    const dirPath = getDirPath(item.path as string);
-    path = `${dirPath}${pathSep}${name}`;
-  }
-  return path;
-};
-
-const openFile = async (path: string) => {
-  const res = await getFileInfo(id.value, path);
-  if (!res.data) return;
-  const item = res.data;
-  await getFile(id.value, path);
-  fileEditor.value?.updateTabs(item);
-  fileEditor.value?.updateContentCache(item, content.value);
-};
-
-const onSaveFile = async (item: FileNavItem) => {
-  if (!item.path) return;
-  await saveFile(id.value, item.path, content.value);
-  ElMessage.success(t('common.message.success.save'));
-};
-
-const onNavItemDbClick = async (item: FileNavItem) => {
-  await openFile(item.path as string);
-};
-
-const onNavItemDrop = async (
-  draggingItem: FileNavItem,
-  dropItem: FileNavItem
-) => {
-  const dirPath = dropItem.path !== '~' ? dropItem.path : '';
-  const newPath = `${dirPath}${pathSep}${draggingItem.name}`;
-  await renameFile(id.value, draggingItem.path as string, newPath);
-  await listRootDir(id.value);
-};
-
-const onContextMenuNewFile = async (item: FileNavItem, name: string) => {
-  if (!item.path) return;
-  const path = getPath(item, name);
-  await saveFile(id.value, path, '');
-  await listRootDir(id.value);
-  await openFile(path);
-};
-
-const onContextMenuNewFileWithAi = async (item: FileNavItem) => {
-  store.commit('file/setEditorFileNavItem', item);
-  store.commit(`file/setEditorCreateWithAiDialogVisible`, true);
-};
-
-const onContextMenuNewDirectory = async (item: FileNavItem, name: string) => {
-  if (!item.path) return;
-  const path = getPath(item, name);
-  await saveDir(id.value, path);
-  await listRootDir(id.value);
-};
-
-const onContextMenuRename = async (item: FileNavItem, name: string) => {
-  if (!item.path) return;
-  const path = getPath(item, name);
-  await renameFile(id.value, item.path, path);
-  await listRootDir(id.value);
-};
-
-const onContextMenuClone = async (item: FileNavItem, name: string) => {
-  if (!item.path) return;
-  const dirPath = getDirPath(item.path);
-  const path = `${dirPath}${pathSep}${name}`;
-  await copyFile(id.value, item.path, path);
-  await listRootDir(id.value);
-};
-
-const onContextMenuDelete = async (item: FileNavItem) => {
-  if (!item.path) return;
-  await deleteFile(id.value, item.path);
-  await listRootDir(id.value);
-};
-
-const onContentChange = (value: string) => {
-  commit(`${ns}/setFileContent`, value);
-};
-
-const onDropFiles = async (files: InputFile[]) => {
-  await Promise.all(
-    files.map(f => {
-      return saveFileBinary(id.value, f.path as string, f as File);
-    })
-  );
-  await listRootDir(id.value);
-};
-
-const onCreateWithAi = async (
-  name: string,
-  sourceCode: string,
-  item?: FileNavItem
-) => {
-  let path = `${pathSep}${name}`;
-  if (item) {
-    path = getPath(item, name);
-  }
-  await saveFile(id.value, path, sourceCode);
-  await listRootDir(id.value);
-  await openFile(path);
-};
-
-const onTabClick = async (tab: FileNavItem) => {
-  await getFile(id.value, tab.path as string);
-};
-
-const getData = async () => {
-  await listRootDir(id.value);
-
-  if (state.defaultFilePaths.length > 0) {
-    defaultExpandedKeys.value = state.defaultFilePaths as string[];
-  }
-};
-
-const defaultExpandedKeys = ref<string[]>([]);
-
-// get data before mount
-onBeforeMount(getData);
-
-// get data when id changes
-watch(() => id.value, getData);
-
-onBeforeUnmount(() => {
-  store.commit(`${ns}/resetFileContent`);
-  store.commit(`${ns}/resetDefaultFilePaths`);
-});
 </script>
 
 <template>
-  <cl-file-editor
-    ref="fileEditor"
+  <cl-file-tab
     :ns="ns"
-    :nav-items="navItems"
-    :active-nav-item="activeNavItem"
-    :default-expanded-keys="defaultExpandedKeys"
-    :content="content"
-    @content-change="onContentChange"
-    @save-file="onSaveFile"
-    @node-db-click="onNavItemDbClick"
-    @node-drop="onNavItemDrop"
-    @ctx-menu-new-file="onContextMenuNewFile"
-    @ctx-menu-new-file-with-ai="onContextMenuNewFileWithAi"
-    @ctx-menu-new-directory="onContextMenuNewDirectory"
-    @ctx-menu-rename="onContextMenuRename"
-    @ctx-menu-clone="onContextMenuClone"
-    @ctx-menu-delete="onContextMenuDelete"
-    @drop-files="onDropFiles"
-    @create-with-ai="onCreateWithAi"
-    @tab-click="onTabClick"
+    :active-id="activeId"
+    :content="state.fileContent"
+    :nav-items="state.fileNavItems"
+    :active-nav-item="state.activeNavItem"
+    :services="useSpiderService(store)"
+    :default-file-paths="state.defaultFilePaths"
   />
 </template>
 

@@ -103,7 +103,7 @@ export default defineComponent({
       return items.filter(d =>
         d.title
           ?.toLocaleLowerCase()
-          .includes(searchString.value.toLocaleLowerCase())
+          .includes(searchString.value.toLocaleLowerCase()),
       );
     });
 
