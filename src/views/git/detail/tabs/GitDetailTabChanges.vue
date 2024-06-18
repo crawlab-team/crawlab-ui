@@ -11,7 +11,7 @@ import Table from '@/components/table/Table.vue';
 const { t } = useI18n();
 
 // store
-const ns = 'spider';
+const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
 

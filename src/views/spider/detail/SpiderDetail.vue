@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
+import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
+
+const ns = 'spider';
+const store = useStore();
+
+const { activeTabName, saveFile } = useSpiderDetail();
+
+onBeforeMount(async () => {
+  await Promise.all([store.dispatch(`project/getAllList`)]);
+
+  store.commit(`${ns}/setAfterSave`, [saveFile]);
+});
+</script>
+
 <template>
   <cl-detail-layout store-namespace="spider">
     <template #actions>
@@ -14,34 +31,5 @@
   <cl-result-dedup-fields-dialog />
   <!-- ./Dialogs -->
 </template>
-<script lang="ts">
-import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
-import { useStore } from 'vuex';
-import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 
-export default defineComponent({
-  name: 'SpiderDetail',
-  setup() {
-    const ns = 'spider';
-    const nsGit = 'git';
-    const store = useStore();
-
-    const { saveFile } = useSpiderDetail();
-
-    onBeforeMount(async () => {
-      await Promise.all([store.dispatch(`project/getAllList`)]);
-
-      store.commit(`${ns}/setAfterSave`, [saveFile]);
-    });
-
-    onBeforeUnmount(() => {
-      store.commit(`${nsGit}/resetForm`);
-    });
-
-    return {
-      ...useSpiderDetail(),
-    };
-  },
-});
-</script>
 <style scoped lang="scss"></style>

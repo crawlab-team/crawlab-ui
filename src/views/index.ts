@@ -15,6 +15,8 @@ import DataSourceDetailTabOverview from './ds/detail/tabs/DataSourceDetailTabOve
 import DataSourceList from './ds/list/DataSourceList.vue';
 import EnvironmentList from './environment/list/EnvironmentList.vue';
 import GitDetail from './git/detail/GitDetail.vue';
+import GitDetailActionsCommon from './git/detail/actions/GitDetailActionsCommon.vue';
+import GitDetailActionsFiles from './git/detail/actions/GitDetailActionsFiles.vue';
 import GitDetailTabBranches from './git/detail/tabs/GitDetailTabBranches.vue';
 import GitDetailTabChanges from './git/detail/tabs/GitDetailTabChanges.vue';
 import GitDetailTabFiles from './git/detail/tabs/GitDetailTabFiles.vue';
@@ -48,12 +50,12 @@ import ScheduleDetail from './schedule/detail/ScheduleDetail.vue';
 import ScheduleDetailTabOverview from './schedule/detail/tabs/ScheduleDetailTabOverview.vue';
 import ScheduleDetailTabTasks from './schedule/detail/tabs/ScheduleDetailTabTasks.vue';
 import ScheduleList from './schedule/list/ScheduleList.vue';
+import SpiderDetail from './spider/detail/SpiderDetail.vue';
 import SpiderDetailActionsCommon from './spider/detail/actions/SpiderDetailActionsCommon.vue';
 import SpiderDetailActionsData from './spider/detail/actions/SpiderDetailActionsData.vue';
 import SpiderDetailActionsDataSource from './spider/detail/actions/SpiderDetailActionsDataSource.vue';
 import SpiderDetailActionsFiles from './spider/detail/actions/SpiderDetailActionsFiles.vue';
 import SpiderDetailActionsGit from './spider/detail/actions/SpiderDetailActionsGit.vue';
-import SpiderDetail from './spider/detail/SpiderDetail.vue';
 import SpiderDetailTabData from './spider/detail/tabs/SpiderDetailTabData.vue';
 import SpiderDetailTabFiles from './spider/detail/tabs/SpiderDetailTabFiles.vue';
 import SpiderDetailTabOverview from './spider/detail/tabs/SpiderDetailTabOverview.vue';
@@ -62,20 +64,20 @@ import SpiderDetailTabSettings from './spider/detail/tabs/SpiderDetailTabSetting
 import SpiderDetailTabTasks from './spider/detail/tabs/SpiderDetailTabTasks.vue';
 import SpiderList from './spider/list/SpiderList.vue';
 import SystemDetail from './system/detail/SystemDetail.vue';
-import TagDetailTabOverview from './tag/detail/tabs/TagDetailTabOverview.vue';
 import TagDetail from './tag/detail/TagDetail.vue';
+import TagDetailTabOverview from './tag/detail/tabs/TagDetailTabOverview.vue';
 import TagViewList from './tag/list/TagViewList.vue';
+import TaskDetail from './task/detail/TaskDetail.vue';
 import TaskDetailActionsCommon from './task/detail/actions/TaskDetailActionsCommon.vue';
 import TaskDetailActionsData from './task/detail/actions/TaskDetailActionsData.vue';
 import TaskDetailActionsLogs from './task/detail/actions/TaskDetailActionsLogs.vue';
 import TaskDetailTabData from './task/detail/tabs/TaskDetailTabData.vue';
 import TaskDetailTabLogs from './task/detail/tabs/TaskDetailTabLogs.vue';
 import TaskDetailTabOverview from './task/detail/tabs/TaskDetailTabOverview.vue';
-import TaskDetail from './task/detail/TaskDetail.vue';
 import TaskList from './task/list/TaskList.vue';
 import TokenList from './token/list/TokenList.vue';
-import UserDetailTabOverview from './user/detail/tabs/UserDetailTabOverview.vue';
 import UserDetail from './user/detail/UserDetail.vue';
+import UserDetailTabOverview from './user/detail/tabs/UserDetailTabOverview.vue';
 import UserList from './user/list/UserList.vue';
 
 export {
@@ -96,6 +98,8 @@ export {
   DataSourceList as ClDataSourceList,
   EnvironmentList as ClEnvironmentList,
   GitDetail as ClGitDetail,
+  GitDetailActionsCommon as ClGitDetailActionsCommon,
+  GitDetailActionsFiles as ClGitDetailActionsFiles,
   GitDetailTabBranches as ClGitDetailTabBranches,
   GitDetailTabChanges as ClGitDetailTabChanges,
   GitDetailTabFiles as ClGitDetailTabFiles,
@@ -129,12 +133,12 @@ export {
   ScheduleDetailTabOverview as ClScheduleDetailTabOverview,
   ScheduleDetailTabTasks as ClScheduleDetailTabTasks,
   ScheduleList as ClScheduleList,
+  SpiderDetail as ClSpiderDetail,
   SpiderDetailActionsCommon as ClSpiderDetailActionsCommon,
   SpiderDetailActionsData as ClSpiderDetailActionsData,
   SpiderDetailActionsDataSource as ClSpiderDetailActionsDataSource,
   SpiderDetailActionsFiles as ClSpiderDetailActionsFiles,
   SpiderDetailActionsGit as ClSpiderDetailActionsGit,
-  SpiderDetail as ClSpiderDetail,
   SpiderDetailTabData as ClSpiderDetailTabData,
   SpiderDetailTabFiles as ClSpiderDetailTabFiles,
   SpiderDetailTabOverview as ClSpiderDetailTabOverview,
@@ -143,19 +147,19 @@ export {
   SpiderDetailTabTasks as ClSpiderDetailTabTasks,
   SpiderList as ClSpiderList,
   SystemDetail as ClSystemDetail,
-  TagDetailTabOverview as ClTagDetailTabOverview,
   TagDetail as ClTagDetail,
+  TagDetailTabOverview as ClTagDetailTabOverview,
   TagViewList as ClTagViewList,
+  TaskDetail as ClTaskDetail,
   TaskDetailActionsCommon as ClTaskDetailActionsCommon,
   TaskDetailActionsData as ClTaskDetailActionsData,
   TaskDetailActionsLogs as ClTaskDetailActionsLogs,
   TaskDetailTabData as ClTaskDetailTabData,
   TaskDetailTabLogs as ClTaskDetailTabLogs,
   TaskDetailTabOverview as ClTaskDetailTabOverview,
-  TaskDetail as ClTaskDetail,
   TaskList as ClTaskList,
   TokenList as ClTokenList,
-  UserDetailTabOverview as ClUserDetailTabOverview,
   UserDetail as ClUserDetail,
+  UserDetailTabOverview as ClUserDetailTabOverview,
   UserList as ClUserList,
 };

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import useSpiderService from '@/services/spider/spiderService';
-import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
+import useGitService from '@/services/git/gitService';
+import useGitDetail from '@/views/git/detail/useGitDetail';
 
 // store
-const ns = 'spider';
+const ns = 'git';
 const store = useStore();
-const { spider: state } = store.state as RootStoreState;
-const { activeId } = useSpiderDetail();
+const { git: state } = store.state as RootStoreState;
+const { activeId } = useGitDetail();
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { activeId } = useSpiderDetail();
     :active-dialog-key="state.activeDialogKey"
     :active-id="activeId"
     :form="state.form"
-    :services="useSpiderService(store)"
+    :services="useGitService(store)"
   />
 </template>
 

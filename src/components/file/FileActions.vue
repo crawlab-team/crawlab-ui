@@ -6,8 +6,8 @@ import { sendEvent } from '@/admin/umeng';
 import { downloadData } from '@/utils';
 
 const props = defineProps<{
-  ns: ListStoreNamespace,
-  activeId: string,
+  ns: ListStoreNamespace;
+  activeId: string;
 }>();
 
 // i18n
@@ -61,19 +61,6 @@ const onClickExport = async () => {
     />
     <cl-nav-action-item>
       <cl-fa-icon-button
-        :icon="['fa', 'robot']"
-        :tooltip="
-          systemInfo.edition !== 'global.edition.community'
-            ? t('components.file.actions.tooltip.createWithAi')
-            : t('components.file.actions.tooltip.createWithAiDisabled')
-        "
-        type="primary"
-        id="create-with-ai-btn"
-        class-name="create-with-ai-btn"
-        :disabled="systemInfo.edition === 'global.edition.community'"
-        @click="onOpenCreateWithAi"
-      />
-      <cl-fa-icon-button
         :icon="['fa', 'upload']"
         :tooltip="t('components.file.actions.tooltip.uploadFiles')"
         type="primary"
@@ -93,9 +80,7 @@ const onClickExport = async () => {
       />
       <cl-fa-icon-button
         :icon="['fa', 'cog']"
-        :tooltip="
-          t('components.file.actions.tooltip.fileEditorSettings')
-        "
+        :tooltip="t('components.file.actions.tooltip.fileEditorSettings')"
         type="info"
         id="open-settings-btn"
         class-name="open-settings-btn"
