@@ -42,6 +42,8 @@ export declare global {
     username?: string;
     password?: string;
     current_branch?: string;
+    status?: GitStatus;
+    error?: string;
     auto_pull?: boolean;
   }
 }

@@ -7,6 +7,8 @@ interface LComponentsGit {
     username: string;
     password: string;
     privateKey: string;
+    status: string;
+    error: string;
     autoPull: string;
   };
   common: {
@@ -51,6 +53,22 @@ interface LComponentsGit {
       pull: string;
       commit: string;
       checkout: string;
+    };
+  };
+  status: {
+    label: {
+      pending: string;
+      cloning: string;
+      ready: string;
+      error: string;
+      unknown: string;
+    };
+    tooltip: {
+      pending: string;
+      cloning: string;
+      ready: string;
+      error: string;
+      unknown: string;
     };
   };
   tabs: {

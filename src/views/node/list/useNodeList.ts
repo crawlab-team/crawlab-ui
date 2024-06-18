@@ -1,11 +1,11 @@
-import useList from '@/layouts/content/list/list';
+import { computed, h, resolveDynamicComponent } from 'vue';
 import { useStore } from 'vuex';
 import {
   getDefaultUseListOptions,
   onListFilterChangeByKey,
   setupListComponent,
 } from '@/utils/list';
-import { computed, h } from 'vue';
+import useList from '@/layouts/content/list/list';
 import NodeType from '@/components/node/NodeType.vue';
 import {
   TABLE_COLUMN_NAME_ACTIONS,
@@ -234,7 +234,7 @@ const useNodeList = () => {
       icon: ['fa', 'heartbeat'],
       width: '150',
       value: (row: Node) => {
-        return h(NodeStatus, { status: row.status } as NodeStatusProps);
+        return h(NodeStatus, { status: row.status });
       },
       hasFilter: true,
       allowFilterItems: true,

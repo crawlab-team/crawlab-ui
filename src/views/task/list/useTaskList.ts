@@ -304,7 +304,7 @@ const useTaskList = () => {
         return h(TaskStatus, {
           status: row.status,
           error: row.error,
-        } as TaskStatusProps);
+        });
       },
       hasFilter: true,
       allowFilterItems: true,

@@ -15,6 +15,7 @@ import { sendEvent } from '@/admin/umeng';
 import { useList } from '@/layouts/content';
 import { onListFilterChangeByKey, translate } from '@/utils';
 import NavLink from '@/components/nav/NavLink.vue';
+import GitStatus from '@/components/git/GitStatus.vue';
 
 const useGitList = () => {
   // router
@@ -86,6 +87,21 @@ const useGitList = () => {
         h(NavLink, {
           path: `/gits/${row._id}`,
           label: row.name,
+        }),
+      hasSort: true,
+      hasFilter: true,
+      allowFilterSearch: true,
+    },
+    {
+      className: 'status',
+      key: 'status',
+      label: t('views.gits.table.columns.status'),
+      icon: ['fa', 'heartbeat'],
+      width: '150',
+      value: (row: Git) =>
+        h(GitStatus, {
+          status: row.status,
+          error: row.error,
         }),
       hasSort: true,
       hasFilter: true,

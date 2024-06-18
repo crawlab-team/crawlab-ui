@@ -7,6 +7,8 @@ const git: LComponentsGit = {
     username: 'Username',
     password: 'Password',
     privateKey: 'Private Key',
+    status: 'Status',
+    error: 'Error',
     autoPull: 'Auto Pull',
   },
   common: {
@@ -51,6 +53,22 @@ const git: LComponentsGit = {
       pull: 'Pull',
       commit: 'Commit and Push',
       checkout: 'Checkout',
+    },
+  },
+  status: {
+    label: {
+      pending: 'Pending',
+      cloning: 'Cloning',
+      ready: 'Ready',
+      error: 'Error',
+      unknown: 'Unknown',
+    },
+    tooltip: {
+      pending: 'Git repo is pending to be cloned',
+      cloning: 'Git repo is cloning',
+      ready: 'Git repo is ready',
+      error: 'Git repo has error during cloning',
+      unknown: 'Unknown git repo status',
     },
   },
   tabs: {

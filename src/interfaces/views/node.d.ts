@@ -1,0 +1,14 @@
+import {
+  NODE_STATUS_OFFLINE,
+  NODE_STATUS_ONLINE,
+  NODE_STATUS_REGISTERED,
+  NODE_STATUS_UNREGISTERED,
+} from '@/constants/node';
+
+declare global {
+  type NodeStatus =
+    | NODE_STATUS_OFFLINE
+    | NODE_STATUS_ONLINE
+    | NODE_STATUS_REGISTERED
+    | NODE_STATUS_UNREGISTERED;
+}

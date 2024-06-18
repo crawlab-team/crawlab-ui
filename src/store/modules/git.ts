@@ -45,7 +45,6 @@ const state = {
   gitRemoteRefs: [],
   gitBranches: [],
   gitTags: [],
-  gitRefType: GIT_REF_TYPE_BRANCH,
   gitCurrentBranchLoading: false,
 } as GitStoreState;
 

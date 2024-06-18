@@ -2,6 +2,7 @@ const gits: LViewGits = {
   table: {
     columns: {
       name: 'Name',
+      status: 'Status',
     },
   },
   navActions: {

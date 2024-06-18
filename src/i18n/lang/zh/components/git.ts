@@ -7,6 +7,8 @@ const git: LComponentsGit = {
     username: '用户名',
     password: '密码',
     privateKey: '私钥',
+    status: '状态',
+    error: '错误',
     autoPull: '自动拉取',
   },
   common: {
@@ -51,6 +53,22 @@ const git: LComponentsGit = {
       pull: '拉取',
       commit: '拉取并推送',
       checkout: '签出',
+    },
+  },
+  status: {
+    label: {
+      pending: '待处理',
+      cloning: '克隆中',
+      ready: '就绪',
+      error: '错误',
+      unknown: '未知',
+    },
+    tooltip: {
+      pending: 'Git 仓库待克隆',
+      cloning: 'Git 仓库克隆中',
+      ready: 'Git 仓库就绪',
+      error: 'Git 仓库克隆过程中出现错误',
+      unknown: '未知 Git 仓库状态',
     },
   },
   tabs: {
