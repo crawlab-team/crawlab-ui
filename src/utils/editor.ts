@@ -5,14 +5,6 @@ export const getLanguageByFileName = (name?: string) => {
       return 'javascript';
     case 'ts':
       return 'typescript';
-    case 'html':
-      return 'html';
-    case 'css':
-      return 'css';
-    case 'json':
-      return 'json';
-    case 'md':
-      return 'markdown';
     case 'py':
       return 'python';
     case 'java':
@@ -31,10 +23,19 @@ export const getLanguageByFileName = (name?: string) => {
       return 'shell';
     case 'sql':
       return 'sql';
+    case 'json':
+      return 'json';
+    case 'html':
+      return 'html';
+    case 'css':
+      return 'css';
+    case 'yaml':
+    case 'yml':
+      return 'yaml';
     case 'xml':
       return 'xml';
-    case 'yaml':
-      return 'yaml';
+    case 'md':
+      return 'markdown';
     default:
       return 'text';
   }

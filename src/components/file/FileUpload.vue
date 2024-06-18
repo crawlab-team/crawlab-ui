@@ -6,18 +6,32 @@ import { plainClone } from '@/utils/object';
 import { useI18n } from 'vue-i18n';
 import { UploadFilled } from '@element-plus/icons-vue';
 import { sendEvent } from '@/admin/umeng';
+import { FileWithPath } from 'file-selector';
 
 const props = defineProps<{
   mode: FileUploadMode;
-  // getInputProps: () => void,
-  open: () => void;
+  uploadInfo?: FileUploadInfo;
 }>();
 const emit = defineEmits<{
   (e: 'mode-change', mode: string): void;
-  (e: 'files-change', files: (UploadRawFile | undefined)[]): void;
+  (e: 'files-change', files: (FileWithPath | undefined)[]): void;
 }>();
 
+const IGNORE_FILE_PATTERN = [
+  'node_modules',
+  '__pycache__',
+  '\.pyc',
+  '\.DS_Store',
+  '\.git',
+  '\.idea',
+  '\.vscode',
+  '\.vs',
+  '\.nuxt',
+];
+
 const { t } = useI18n();
+
+const fileInput = ref<HTMLInputElement>();
 
 const modeOptions = computed<FileUploadModeOption[]>(() => [
   {
@@ -33,39 +47,39 @@ const internalMode = ref<string>();
 
 const uploadRef = ref<typeof ElUpload>();
 
-const dirInfo = ref<FileUploadInfo>();
-
-const setInfo = (info: FileUploadInfo) => {
-  dirInfo.value = plainClone(info);
-};
-
-const resetInfo = () => {
-  dirInfo.value = undefined;
-};
-
 watch(
   () => props.mode,
   () => {
     internalMode.value = props.mode;
-    uploadRef.value?.clearFiles();
   },
 );
 
 const onFileChange = (file: UploadFile, fileList: UploadFile[]) => {
   emit(
     'files-change',
-    fileList.map(f => f.raw),
+    fileList.map(f => f.raw as FileWithPath),
   );
 };
 
-const clearFiles = () => {
-  uploadRef.value?.clearFiles();
-  resetInfo();
+const onDirFilesChange = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const files = Array.from(target.files || [])
+    .filter(f => {
+      return !IGNORE_FILE_PATTERN.some(p => new RegExp(p).test(f.webkitRelativePath || ''));
+    })
+    .map((f: any) => {
+      f.path = f.webkitRelativePath;
+      return f as FileWithPath;
+    });
+  if (!files) return;
+  emit(
+    'files-change',
+    files,
+  );
 };
 
 const onModeChange = (mode: string) => {
   emit('mode-change', mode);
-  resetInfo();
 
   sendEvent('click_file_upload_mode_change', { mode });
 };
@@ -74,6 +88,10 @@ onBeforeMount(() => {
   const { mode } = props;
   internalMode.value = mode;
 });
+
+const onClickUploadDir = () => {
+  fileInput.value?.click();
+};
 </script>
 
 <template>
@@ -109,11 +127,11 @@ onBeforeMount(() => {
           <em>{{ t('components.file.upload.buttons.files.clickToUpload') }}</em>
         </div>
       </el-upload>
-      <!--      <input v-bind="getInputProps()" multiple>-->
+      <!--      <input ref="fileInput" multiple>-->
     </template>
     <template v-else-if="mode === FILE_UPLOAD_MODE_DIR">
       <div class="folder-upload-action-wrapper">
-        <cl-button size="large" class-name="file-upload-action" @click="open">
+        <cl-button size="large" class-name="file-upload-action" @click="onClickUploadDir">
           <i class="fa fa-folder"></i>
           {{
             t(
@@ -121,32 +139,32 @@ onBeforeMount(() => {
             )
           }}
         </cl-button>
-        <template v-if="!!dirInfo?.dirName && dirInfo?.fileCount">
+        <template v-if="!!uploadInfo?.dirName && uploadInfo?.fileCount">
           <cl-tag
             type="primary"
             class="info-tag"
-            :label="dirInfo?.dirName"
+            :label="uploadInfo?.dirName"
             :icon="['fa', 'folder']"
             :tooltip="t('components.file.upload.tooltip.fileName')"
           />
           <cl-tag
             type="success"
             class="info-tag"
-            :label="dirInfo?.fileCount"
+            :label="uploadInfo?.fileCount"
             :icon="['fa', 'hashtag']"
             :tooltip="t('components.file.upload.tooltip.filesCount')"
           />
         </template>
       </div>
-      <!--      <input v-bind="getInputProps()" webkitdirectory multiple>-->
+      <input v-show="false" ref="fileInput" type="file" webkitdirectory multiple @change="onDirFilesChange">
     </template>
-    <div v-if="dirInfo?.filePaths?.length" class="file-list-wrapper">
+    <div v-if="uploadInfo?.filePaths?.length" class="file-list-wrapper">
       <h4 class="title">
         {{ t('components.file.upload.fileList.title') }}
       </h4>
       <ul class="file-list">
         <li
-          v-for="(path, $index) in dirInfo?.filePaths"
+          v-for="(path, $index) in uploadInfo?.filePaths"
           :key="$index"
           class="file-item"
         >

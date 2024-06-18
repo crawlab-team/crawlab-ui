@@ -107,7 +107,7 @@ export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
     ) => {
       const data = new FormData();
       files.forEach(({ path, file }) => {
-        data.append(path, file as File);
+        data.append(path, file);
       });
       return await post(`${endpoint}/${id}/files/save/batch`, data, null, {
         headers: {
