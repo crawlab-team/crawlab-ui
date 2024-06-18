@@ -106,12 +106,11 @@
 <script lang="ts">
 import {computed, defineComponent, h, onBeforeUnmount, onMounted, PropType, ref} from 'vue';
 import {ElMessage} from 'element-plus';
-import {Search} from '@element-plus/icons';
+import {Search} from '@element-plus/icons-vue';
 import {useStore} from 'vuex';
 import {translate} from '@/utils';
 import useRequest from '@/services/request';
 import NavLink from '@/components/nav/NavLink.vue';
-import Tag from '@/components/tag/Tag.vue';
 import NodeType from '@/components/node/NodeType.vue';
 
 const t = translate;

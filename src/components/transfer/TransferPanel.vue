@@ -57,7 +57,7 @@
 <script lang="ts">
 import {computed, defineComponent, ref, watch} from 'vue';
 import {DataItem, Key} from 'element-plus';
-import {Search} from '@element-plus/icons';
+import {Search} from '@element-plus/icons-vue';
 import {useI18n} from 'vue-i18n';
 
 export default defineComponent({

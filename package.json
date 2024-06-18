@@ -60,7 +60,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue": "^2.3.1",
     "@fortawesome/fontawesome-common-types": "^6.1.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-brands-svg-icons": "^6.1.0",
@@ -80,7 +80,7 @@
     "@types/url-join": "^4.0.1",
     "async-validator": "^4.2.5",
     "atom-material-icons": "^3.0.0",
-    "axios": "^1.6.0",
+    "axios": "^1.7.2",
     "core-js": "^3.6.5",
     "crawlab-vue3-dropzone": "3.0.3",
     "cron-parser": "^3.5.0",

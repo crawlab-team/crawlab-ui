@@ -38,7 +38,7 @@ import {getPrimaryPath} from '@/utils/path';
 import {useRouter} from 'vue-router';
 import Icon from '@/components/icon/Icon.vue';
 import {useI18n} from 'vue-i18n';
-import {Close} from '@element-plus/icons';
+import {Close} from '@element-plus/icons-vue';
 
 export default defineComponent({
   name: 'Tab',

@@ -80,7 +80,7 @@ import {FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES} from '@/constants/file';
 import {ElUpload, UploadFile} from 'element-plus/lib/components/upload/src/upload.type';
 import {plainClone} from '@/utils/object';
 import {useI18n} from 'vue-i18n';
-import {UploadFilled} from '@element-plus/icons';
+import {UploadFilled} from '@element-plus/icons-vue';
 import {sendEvent} from '@/admin/umeng';
 
 export default defineComponent({

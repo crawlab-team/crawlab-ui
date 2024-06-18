@@ -112,7 +112,7 @@ import {useStore} from 'vuex';
 import {useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import {setGlobalLang} from '@/utils/i18n';
-import {ArrowDown} from '@element-plus/icons';
+import {ArrowDown} from '@element-plus/icons-vue';
 
 export default defineComponent({
   name: 'Header',

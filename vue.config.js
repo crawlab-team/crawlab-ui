@@ -91,7 +91,7 @@ if (['production'].includes(process.env.NODE_ENV)) {
     '@fortawesome/free-brands-svg-icons': '@fortawesome/free-brands-svg-icons',
     '@fortawesome/free-regular-svg-icons': '@fortawesome/free-regular-svg-icons',
     '@fortawesome/free-solid-svg-icons': '@fortawesome/free-solid-svg-icons',
-    '@element-plus/icons': '@element-plus/icons',
+    '@element-plus/icons-vue': '@element-plus/icons-vue',
     'atom-material-icons': 'atom-material-icons',
     'fontawesome': 'fontawesome',
     'echarts': 'echarts',

@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import {computed, defineComponent, onMounted, PropType, ref, watch} from 'vue';
-import {Close} from '@element-plus/icons';
+import {Close} from '@element-plus/icons-vue';
 
 export default defineComponent({
   name: 'FileEditorNavTabs',

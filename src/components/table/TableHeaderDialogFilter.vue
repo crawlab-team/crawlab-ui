@@ -46,7 +46,7 @@ import {computed, defineComponent, PropType, ref, watch} from 'vue';
 import {getDefaultFilterCondition} from '@/components/filter/FilterCondition.vue';
 import {debounce} from '@/utils/debounce';
 import {useI18n} from 'vue-i18n';
-import {Search} from '@element-plus/icons';
+import {Search} from '@element-plus/icons-vue';
 
 export default defineComponent({
   name: 'TableHeaderDialogFilter',

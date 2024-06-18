@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@element-plus/icons':
-        specifier: ^0.0.11
-        version: https://registry.npmmirror.com/@element-plus/icons/-/icons-0.0.11.tgz
+      '@element-plus/icons-vue':
+        specifier: latest
+        version: 2.3.1(vue@https://registry.npmmirror.com/vue/-/vue-3.2.45.tgz)
       '@fortawesome/fontawesome-common-types':
         specifier: ^6.1.0
         version: https://registry.npmmirror.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-6.2.1.tgz
@@ -69,8 +69,8 @@ importers:
         specifier: ^3.0.0
         version: https://registry.npmmirror.com/atom-material-icons/-/atom-material-icons-3.0.0.tgz
       axios:
-        specifier: ^1.6.0
-        version: 1.6.0
+        specifier: ^1.7.2
+        version: 1.7.2
       core-js:
         specifier: ^3.6.5
         version: https://registry.npmmirror.com/core-js/-/core-js-3.26.1.tgz
@@ -972,11 +972,6 @@ packages:
     version: 2.3.1
     peerDependencies:
       vue: ^3.2.0
-
-  '@element-plus/icons@https://registry.npmmirror.com/@element-plus/icons/-/icons-0.0.11.tgz':
-    resolution: {integrity: sha512-iKQXSxXu131Ai+I9Ymtcof9WId7kaXvB1+WRfAfpQCW7UiAMYgdNDqb/u0hgTo2Yq3MwC4MWJnNuTBEpG8r7+A==, tarball: https://registry.npmmirror.com/@element-plus/icons/-/icons-0.0.11.tgz}
-    version: 0.0.11
-    deprecated: Please use @element-plus/icons-vue instead.
 
   '@esbuild/android-arm64@0.16.4':
     resolution: {integrity: sha512-VPuTzXFm/m2fcGfN6CiwZTlLzxrKsWbPkG7ArRFpuxyaHUm/XFHQPD4xNwZT6uUmpIHhnSjcaCmcla8COzmZ5Q==}
@@ -2412,8 +2407,8 @@ packages:
     resolution: {integrity: sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==, tarball: https://registry.npmmirror.com/aws4/-/aws4-1.11.0.tgz}
     version: 1.11.0
 
-  axios@1.6.0:
-    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
+  axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
 
   babel-code-frame@https://registry.npmmirror.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz:
     resolution: {integrity: sha512-XqYMR2dfdGMW+hd0IUZ2PwK+fGeFkOxZJ0wY+JaQAHzt1Zx8LcvpiZD2NiGkEG8qx0CfkAOr5xt76d1e8vG90g==, tarball: https://registry.npmmirror.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz}
@@ -2537,9 +2532,8 @@ packages:
     resolution: {integrity: sha512-H0ea4Fd3lS1+sTEB2TgcLoK21lLhwEJzlQv3IN47pJS976Gx4zoWe0ak3q+uYh60ppQxg9F16Ri4tS1sfD4+jA==, tarball: https://registry.npmmirror.com/binary-search-bounds/-/binary-search-bounds-2.0.5.tgz}
     version: 2.0.5
 
-  bindings@https://registry.npmmirror.com/bindings/-/bindings-1.5.0.tgz:
-    resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==, tarball: https://registry.npmmirror.com/bindings/-/bindings-1.5.0.tgz}
-    version: 1.5.0
+  bindings@1.5.0:
+    resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
 
   bluebird@https://registry.npmmirror.com/bluebird/-/bluebird-3.7.2.tgz:
     resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==, tarball: https://registry.npmmirror.com/bluebird/-/bluebird-3.7.2.tgz}
@@ -4471,9 +4465,8 @@ packages:
     resolution: {integrity: sha512-YgbXEVCu21CfmoeJ1rFLVLPGhW9o7iCzVFqk7ydy2TxF7rXH2YB68CFgDXLOvTD2pMLtg8paVqurzVjxGRdYmw==, tarball: https://registry.npmmirror.com/file-system/-/file-system-2.2.2.tgz}
     version: 2.2.2
 
-  file-uri-to-path@https://registry.npmmirror.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz:
-    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==, tarball: https://registry.npmmirror.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz}
-    version: 1.0.0
+  file-uri-to-path@1.0.0:
+    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
 
   filesize@https://registry.npmmirror.com/filesize/-/filesize-3.6.1.tgz:
     resolution: {integrity: sha512-7KjR1vv6qnicaPMi1iiTcI85CyYwRO/PSFCu6SvqL8jN2Wjt/NIYQTFtFs7fSDCYOstUkEWIQGFUg5YZQfjlcg==, tarball: https://registry.npmmirror.com/filesize/-/filesize-3.6.1.tgz}
@@ -4535,6 +4528,15 @@ packages:
   follow-redirects@1.15.2:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     version: 1.15.2
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
+  follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -6406,6 +6408,9 @@ packages:
   mz@https://registry.npmmirror.com/mz/-/mz-2.7.0.tgz:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==, tarball: https://registry.npmmirror.com/mz/-/mz-2.7.0.tgz}
     version: 2.7.0
+
+  nan@2.17.0:
+    resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
 
   nan@https://registry.npmmirror.com/nan/-/nan-2.17.0.tgz:
     resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==, tarball: https://registry.npmmirror.com/nan/-/nan-2.17.0.tgz}
@@ -9969,8 +9974,6 @@ snapshots:
     dependencies:
       vue: https://registry.npmmirror.com/vue/-/vue-3.2.45.tgz
 
-  '@element-plus/icons@https://registry.npmmirror.com/@element-plus/icons/-/icons-0.0.11.tgz': {}
-
   '@esbuild/android-arm64@0.16.4':
     optional: true
 
@@ -11533,9 +11536,9 @@ snapshots:
 
   aws4@https://registry.npmmirror.com/aws4/-/aws4-1.11.0.tgz: {}
 
-  axios@1.6.0:
+  axios@1.7.2:
     dependencies:
-      follow-redirects: 1.15.2(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz)
+      follow-redirects: 1.15.6
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -11683,9 +11686,9 @@ snapshots:
 
   binary-search-bounds@https://registry.npmmirror.com/binary-search-bounds/-/binary-search-bounds-2.0.5.tgz: {}
 
-  bindings@https://registry.npmmirror.com/bindings/-/bindings-1.5.0.tgz:
+  bindings@1.5.0:
     dependencies:
-      file-uri-to-path: https://registry.npmmirror.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz
+      file-uri-to-path: 1.0.0
     optional: true
 
   bluebird@https://registry.npmmirror.com/bluebird/-/bluebird-3.7.2.tgz: {}
@@ -13511,7 +13514,7 @@ snapshots:
       file-match: https://registry.npmmirror.com/file-match/-/file-match-1.0.2.tgz
       utils-extend: https://registry.npmmirror.com/utils-extend/-/utils-extend-1.0.8.tgz
 
-  file-uri-to-path@https://registry.npmmirror.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz:
+  file-uri-to-path@1.0.0:
     optional: true
 
   filesize@https://registry.npmmirror.com/filesize/-/filesize-3.6.1.tgz: {}
@@ -13576,13 +13579,11 @@ snapshots:
       inherits: https://registry.npmmirror.com/inherits/-/inherits-2.0.4.tgz
       readable-stream: https://registry.npmmirror.com/readable-stream/-/readable-stream-2.3.7.tgz
 
-  follow-redirects@1.15.2(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz)):
-    optionalDependencies:
-      debug: https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz)
-
   follow-redirects@1.15.2(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz):
     optionalDependencies:
       debug: https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz)
+
+  follow-redirects@1.15.6: {}
 
   font-awesome@https://registry.npmmirror.com/font-awesome/-/font-awesome-4.7.0.tgz: {}
 
@@ -13691,8 +13692,8 @@ snapshots:
 
   fsevents@1.2.13:
     dependencies:
-      bindings: https://registry.npmmirror.com/bindings/-/bindings-1.5.0.tgz
-      nan: https://registry.npmmirror.com/nan/-/nan-2.17.0.tgz
+      bindings: 1.5.0
+      nan: 2.17.0
     optional: true
 
   fsevents@2.3.2:
@@ -14057,7 +14058,7 @@ snapshots:
 
   http-proxy-middleware@https://registry.npmmirror.com/http-proxy-middleware/-/http-proxy-middleware-0.19.1.tgz(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz))(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz):
     dependencies:
-      http-proxy: https://registry.npmmirror.com/http-proxy/-/http-proxy-1.18.1.tgz(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz))
+      http-proxy: https://registry.npmmirror.com/http-proxy/-/http-proxy-1.18.1.tgz(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz)
       is-glob: https://registry.npmmirror.com/is-glob/-/is-glob-4.0.3.tgz
       lodash: 4.17.21
       micromatch: https://registry.npmmirror.com/micromatch/-/micromatch-3.1.10.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz)
@@ -14072,14 +14073,6 @@ snapshots:
       is-glob: https://registry.npmmirror.com/is-glob/-/is-glob-4.0.3.tgz
       is-plain-obj: https://registry.npmmirror.com/is-plain-obj/-/is-plain-obj-3.0.0.tgz
       micromatch: https://registry.npmmirror.com/micromatch/-/micromatch-4.0.5.tgz
-    transitivePeerDependencies:
-      - debug
-
-  http-proxy@https://registry.npmmirror.com/http-proxy/-/http-proxy-1.18.1.tgz(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz)):
-    dependencies:
-      eventemitter3: https://registry.npmmirror.com/eventemitter3/-/eventemitter3-4.0.7.tgz
-      follow-redirects: 1.15.2(debug@https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-6.1.0.tgz))
-      requires-port: https://registry.npmmirror.com/requires-port/-/requires-port-1.0.0.tgz
     transitivePeerDependencies:
       - debug
 
@@ -15340,6 +15333,9 @@ snapshots:
       any-promise: https://registry.npmmirror.com/any-promise/-/any-promise-1.3.0.tgz
       object-assign: https://registry.npmmirror.com/object-assign/-/object-assign-4.1.1.tgz
       thenify-all: https://registry.npmmirror.com/thenify-all/-/thenify-all-1.6.0.tgz
+
+  nan@2.17.0:
+    optional: true
 
   nan@https://registry.npmmirror.com/nan/-/nan-2.17.0.tgz: {}
 
