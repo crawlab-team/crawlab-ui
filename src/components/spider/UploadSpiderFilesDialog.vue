@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
-import { FileWithPath } from 'file-selector';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
 import useSpiderService from '@/services/spider/spiderService';
@@ -25,22 +24,21 @@ const { spider: state } = store.state as RootStoreState;
 
 const fileUploadRef = ref<typeof FileUpload>();
 
-const mode = computed(() => state.fileMode);
-const files = computed(() => state.files);
+const mode = ref<FileUploadMode>(FILE_UPLOAD_MODE_DIR);
+const files = ref<FileWithPath[]>([]);
 const fileUploadVisible = computed(
-  () => state.activeDialogKey === 'uploadFiles',
+  () => state.activeDialogKey === 'uploadFiles'
 );
 const name = computed(() => state.form?.name);
 
 const confirmLoading = ref<boolean>(false);
-const confirmDisabled = computed<boolean>(() => !files.value?.length);
+const confirmDisabled = computed<boolean>(() => !files.value.length);
 
 const { activeId } = useSpiderDetail();
 
 const isDetail = computed<boolean>(() => !!activeId.value);
 
-const { listRootDir, saveFileBinary, saveFilesBinary } =
-  useSpiderService(store);
+const { listRootDir, saveFilesBinary } = useSpiderService(store);
 
 const id = computed<string>(() => {
   if (isDetail.value) {
@@ -96,9 +94,8 @@ const uploadFiles = async () => {
     id.value,
     files.value.map((f: FileWithPath) => {
       return { path: getFilePath(f) as string, file: f as File };
-    }),
+    })
   );
-  store.commit(`${ns}/resetFiles`);
   await listRootDir(id.value);
 };
 
@@ -123,32 +120,35 @@ const onUploadConfirm = async () => {
   }
 };
 
-const onModeChange = (value: string) => {
-  store.commit(`${ns}/setFileMode`, value);
+const onModeChange = (value: FileUploadMode) => {
+  mode.value = value;
 };
 
 const onFilesChange = (fileList: FileWithPath[]) => {
   if (!fileList.length) return;
-
-  // set files
-  store.commit(`${ns}/setFiles`, fileList);
+  files.value = fileList;
 
   sendEvent('click_spider_detail_actions_files_change');
 };
 
 const title = computed(() => {
   return (
-    t('components.file.upload.title') +
-    (name.value ? ` - ${name.value}` : '')
+    t('components.file.upload.title') + (name.value ? ` - ${name.value}` : '')
   );
 });
 
-onBeforeUnmount(() => {
-  store.commit(`${ns}/resetFileMode`);
-  store.commit(`${ns}/resetFiles`);
-  store.commit(`${ns}/hideDialog`);
+watch(fileUploadVisible, () => {
+  if (!fileUploadVisible.value) {
+    files.value = [];
+  }
+});
+watch(mode, () => {
+  files.value = [];
 });
 
+onBeforeUnmount(() => {
+  store.commit(`${ns}/hideDialog`);
+});
 </script>
 
 <template>

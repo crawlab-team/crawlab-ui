@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES } from '@/constants/file';
-import { ElUpload, UploadFile, UploadRawFile } from 'element-plus';
-import { plainClone } from '@/utils/object';
+import { ElUpload, UploadFile } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { UploadFilled } from '@element-plus/icons-vue';
 import { sendEvent } from '@/admin/umeng';
-import { FileWithPath } from 'file-selector';
 
 const props = defineProps<{
   mode: FileUploadMode;
@@ -51,13 +49,13 @@ watch(
   () => props.mode,
   () => {
     internalMode.value = props.mode;
-  },
+  }
 );
 
 const onFileChange = (file: UploadFile, fileList: UploadFile[]) => {
   emit(
     'files-change',
-    fileList.map(f => f.raw as FileWithPath),
+    fileList.map(f => f.raw as FileWithPath)
   );
 };
 
@@ -65,17 +63,16 @@ const onDirFilesChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
   const files = Array.from(target.files || [])
     .filter(f => {
-      return !IGNORE_FILE_PATTERN.some(p => new RegExp(p).test(f.webkitRelativePath || ''));
+      return !IGNORE_FILE_PATTERN.some(p =>
+        new RegExp(p).test(f.webkitRelativePath || '')
+      );
     })
-    .map((f: any) => {
+    .map((f: FileWithPath) => {
       f.path = f.webkitRelativePath;
       return f as FileWithPath;
     });
   if (!files) return;
-  emit(
-    'files-change',
-    files,
-  );
+  emit('files-change', files);
 };
 
 const onModeChange = (mode: string) => {
@@ -109,7 +106,54 @@ const onClickUploadDir = () => {
       </el-radio-group>
     </div>
 
-    <template v-if="mode === FILE_UPLOAD_MODE_FILES">
+    <template v-if="mode === FILE_UPLOAD_MODE_DIR">
+      <div class="folder-upload-action-wrapper">
+        <cl-button
+          size="large"
+          class-name="file-upload-action"
+          @click="onClickUploadDir"
+        >
+          <i class="fa fa-folder"></i>
+          {{
+            t(
+              'components.file.upload.buttons.folder.clickToSelectFolderToUpload'
+            )
+          }}
+        </cl-button>
+        <template v-if="uploadInfo?.dirName && uploadInfo?.fileCount">
+          <cl-tag
+            type="primary"
+            class="info-tag"
+            :label="`${uploadInfo?.dirName} (${uploadInfo?.fileCount})`"
+            :icon="['fa', 'folder']"
+          >
+            <template #tooltip>
+              <div>
+                <label>
+                  {{ t('components.file.upload.tooltip.folderName') }}:
+                </label>
+                <span>{{ uploadInfo?.dirName }}</span>
+              </div>
+              <div>
+                <label>
+                  {{ t('components.file.upload.tooltip.filesCount') }}:
+                </label>
+                <span>{{ uploadInfo?.fileCount }}</span>
+              </div>
+            </template>
+          </cl-tag>
+        </template>
+      </div>
+      <input
+        v-show="false"
+        ref="fileInput"
+        type="file"
+        webkitdirectory
+        multiple
+        @change="onDirFilesChange"
+      />
+    </template>
+    <template v-else-if="mode === FILE_UPLOAD_MODE_FILES">
       <el-upload
         ref="uploadRef"
         class="file-upload-action"
@@ -127,36 +171,6 @@ const onClickUploadDir = () => {
           <em>{{ t('components.file.upload.buttons.files.clickToUpload') }}</em>
         </div>
       </el-upload>
-      <!--      <input ref="fileInput" multiple>-->
-    </template>
-    <template v-else-if="mode === FILE_UPLOAD_MODE_DIR">
-      <div class="folder-upload-action-wrapper">
-        <cl-button size="large" class-name="file-upload-action" @click="onClickUploadDir">
-          <i class="fa fa-folder"></i>
-          {{
-            t(
-              'components.file.upload.buttons.folder.clickToSelectFolderToUpload',
-            )
-          }}
-        </cl-button>
-        <template v-if="!!uploadInfo?.dirName && uploadInfo?.fileCount">
-          <cl-tag
-            type="primary"
-            class="info-tag"
-            :label="uploadInfo?.dirName"
-            :icon="['fa', 'folder']"
-            :tooltip="t('components.file.upload.tooltip.fileName')"
-          />
-          <cl-tag
-            type="success"
-            class="info-tag"
-            :label="uploadInfo?.fileCount"
-            :icon="['fa', 'hashtag']"
-            :tooltip="t('components.file.upload.tooltip.filesCount')"
-          />
-        </template>
-      </div>
-      <input v-show="false" ref="fileInput" type="file" webkitdirectory multiple @change="onDirFilesChange">
     </template>
     <div v-if="uploadInfo?.filePaths?.length" class="file-list-wrapper">
       <h4 class="title">

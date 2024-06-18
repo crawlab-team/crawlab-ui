@@ -77,7 +77,7 @@ const file: LComponentsFile = {
       files: '文件',
     },
     fileList: {
-      title: '带上传文件',
+      title: '待上传文件',
     },
   },
   actions: {

@@ -24,19 +24,7 @@ declare global {
     theme: 'vs' | 'vs-dark' | 'hc-black';
   }
 
-  type FileEditorOptionDefinitionType = 'select' | 'input-number' | 'switch';
-
-  interface FileEditorOptionDefinitionData {
-    options?: string[];
-    min?: number;
-    step?: number;
-  }
-
-  interface FileEditorOptionDefinition {
-    name: string;
-    title: string;
-    description: string;
-    type: FileEditorOptionDefinitionType;
-    data?: FileEditorOptionDefinitionData;
+  interface FileWithPath extends File {
+    path?: string;
   }
 }

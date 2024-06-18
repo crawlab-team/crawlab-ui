@@ -7,8 +7,6 @@ export const getBaseFileStoreState = (): BaseFileStoreState => {
   return {
     fileNavItems: [],
     activeNavItem: undefined,
-    fileMode: FILE_UPLOAD_MODE_DIR,
-    files: [],
     fileContent: '',
     defaultFilePaths: [],
   };
@@ -26,18 +24,6 @@ export const getBaseFileStoreMutations = <
     },
     resetActiveFileNavItem: (state: S) => {
       state.activeNavItem = undefined;
-    },
-    setFileMode: (state: S, mode: FileUploadMode) => {
-      state.fileMode = mode;
-    },
-    resetFileMode: (state: S) => {
-      state.fileMode = FILE_UPLOAD_MODE_DIR;
-    },
-    setFiles: (state: S, files) => {
-      state.files = files;
-    },
-    resetFiles: (state: S) => {
-      state.files = [];
     },
     setFileContent: (state: S, content: string) => {
       state.fileContent = content;
