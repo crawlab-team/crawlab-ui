@@ -7,6 +7,7 @@ interface BaseFileStoreState {
 
 interface BaseFileStoreMutations<S> {
   setFileNavItems: StoreMutation<S, FileNavItem[]>;
+  resetFileNavItems: StoreMutation<S>;
   setActiveFileNavItem: StoreMutation<S, FileNavItem>;
   resetActiveFileNavItem: StoreMutation<S>;
   setFileContent: StoreMutation<S, string>;

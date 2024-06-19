@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, h, onBeforeMount, ref, watch } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import GitFileStatus from '@/components/git/GitFileStatus.vue';
 import Tag from '@/components/tag/Tag.vue';
 import { useI18n } from 'vue-i18n';
-import useGitDetail from '@/views/git/detail/useGitDetail';
 import Table from '@/components/table/Table.vue';
 
 // i18n
@@ -14,8 +13,6 @@ const { t } = useI18n();
 const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
-
-const { activeId } = useGitDetail();
 
 const getStatusTagProps = (status?: string): TagProps => {
   const label = status;
@@ -108,12 +105,6 @@ watch(
   () => tableData.value,
   () => tableRef.value?.clearSelection()
 );
-
-watch(
-  () => activeId.value,
-  () => store.dispatch(`${ns}/getGit`, { id: activeId.value })
-);
-onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </script>
 
 <template>

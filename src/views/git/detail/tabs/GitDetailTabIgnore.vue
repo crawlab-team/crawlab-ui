@@ -37,12 +37,6 @@ const tableColumns = computed<TableColumns<string>>(() => {
     },
   ] as TableColumns<string>;
 });
-
-watch(
-  () => activeId.value,
-  () => store.dispatch(`${ns}/getGit`, { id: activeId.value })
-);
-onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </script>
 
 <template>

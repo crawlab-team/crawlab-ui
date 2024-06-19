@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, onBeforeMount, ref } from 'vue';
+import { computed, h, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useStore } from 'vuex';
 import Time from '@/components/time/Time.vue';
 import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
@@ -88,9 +88,8 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
   ] as TableColumns<GitLog>;
 });
 
-onBeforeMount(async () => {
-  store.dispatch(`${ns}/getGitTags`, { id: activeId.value });
-});
+onBeforeMount(() => store.dispatch(`${ns}/getGitTags`, { id: activeId.value }));
+onBeforeUnmount(() => store.commit(`${ns}/resetGitTags`));
 </script>
 
 <template>

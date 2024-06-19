@@ -19,6 +19,9 @@ export const getBaseFileStoreMutations = <
     setFileNavItems: (state: S, navItems: FileNavItem[]) => {
       state.fileNavItems = navItems;
     },
+    resetFileNavItems: (state: S) => {
+      state.fileNavItems = [];
+    },
     setActiveFileNavItem: (state: S, navItem: FileNavItem) => {
       state.activeNavItem = navItem;
     },

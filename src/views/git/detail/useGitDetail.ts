@@ -144,13 +144,38 @@ const useGitDetail = () => {
     () => state.gitData?.current_branch
   );
 
-  const gitCurrentBranchLoading = computed<boolean>(
-    () => state.gitCurrentBranchLoading
+  const gitDataLoading = computed(() => state.gitDataLoading);
+
+  const gitLocalBranches = computed<GitRef[] | undefined>(
+    () => state.gitData?.branches
   );
+  const gitLocalBranchesDict = computed<Record<string, GitRef>>(() => {
+    const dict: Record<string, GitRef> = {};
+    gitLocalBranches.value?.forEach(branch => {
+      dict[branch.hash || ''] = branch;
+    });
+    return dict;
+  });
+
+  const gitRemoteBranches = computed<GitRef[] | undefined>(
+    () => state.gitBranches
+  );
+  const gitRemoteBranchesDict = computed<Record<string, GitRef>>(() => {
+    const dict: Record<string, GitRef> = {};
+    gitRemoteBranches.value?.forEach(branch => {
+      dict[branch.hash || ''] = branch;
+    });
+    return dict;
+  });
 
   onBeforeMount(() => store.dispatch(`node/getAllList`));
-  onBeforeUnmount(() => store.commit(`${ns}/resetAll`));
 
+  // get git data
+  watch(id, () => store.dispatch(`${ns}/getGit`, { id: id.value }));
+  onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: id.value }));
+  onBeforeMount(() => store.dispatch(`${ns}/getGitBranches`, { id: id.value }));
+
+  // update tab disabled keys
   const { form } = useGit(store);
   let handle = 0;
   watch(form, () => {
@@ -182,7 +207,11 @@ const useGitDetail = () => {
     gitLoading,
     ...gitActions,
     gitCurrentBranch,
-    gitCurrentBranchLoading,
+    gitDataLoading,
+    gitLocalBranches,
+    gitLocalBranchesDict,
+    gitRemoteBranches,
+    gitRemoteBranchesDict,
   };
 };
 

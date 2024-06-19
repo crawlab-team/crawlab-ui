@@ -1,7 +1,15 @@
 <script setup lang="ts">
+import { onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 
 const { activeTabName } = useGitDetail();
+
+const ns = 'git';
+const store = useStore();
+
+onBeforeUnmount(() => store.commit(`${ns}/resetGitData`));
+onBeforeUnmount(() => store.commit(`${ns}/resetGitBranches`));
 </script>
 
 <template>

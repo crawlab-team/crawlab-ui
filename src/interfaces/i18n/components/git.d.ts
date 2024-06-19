@@ -42,6 +42,11 @@ interface LComponentsGit {
       };
     };
   };
+  branches: {
+    new: string;
+    local: string;
+    remote: string;
+  };
   actions: {
     title: string;
     label: {

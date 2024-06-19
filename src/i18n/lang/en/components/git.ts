@@ -42,6 +42,11 @@ const git: LComponentsGit = {
       },
     },
   },
+  branches: {
+    new: 'New Branch',
+    local: 'Local',
+    remote: 'Remote',
+  },
   actions: {
     title: 'Git Actions',
     label: {

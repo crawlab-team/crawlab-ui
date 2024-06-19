@@ -41,11 +41,11 @@ const state = {
     { id: TAB_NAME_IGNORE, title: t('common.tabs.ignore') },
   ],
   gitData: undefined,
+  gitDataLoading: false,
   gitChangeSelection: [],
   gitRemoteRefs: [],
   gitBranches: [],
   gitTags: [],
-  gitCurrentBranchLoading: false,
 } as GitStoreState;
 
 const getters = {
@@ -72,22 +72,16 @@ const getters = {
 const mutations = {
   ...getDefaultStoreMutations<Git>(),
   ...getBaseFileStoreMutations<GitStoreState>(),
-  resetAll: (state: GitStoreState) => {
-    state.gitData = {};
-    state.gitChangeSelection = [];
-    state.gitRemoteRefs = [];
-    state.gitBranches = [];
-    state.gitTags = [];
-    state.gitCurrentBranchLoading = false;
-  },
   setGitData(state: GitStoreState, gitData: GitData) {
     state.gitData = gitData;
   },
   resetGitData: (state: GitStoreState) => {
     state.gitData = {};
   },
+  setGitDataLoading: (state: GitStoreState, loading: boolean) => {
+    state.gitDataLoading = loading;
+  },
   setGitChangeSelection: (state: GitStoreState, selection: GitChange[]) => {
-    debugger;
     state.gitChangeSelection = selection;
   },
   resetGitChangeSelection: (state: GitStoreState) => {
@@ -111,9 +105,6 @@ const mutations = {
   resetGitTags: (state: GitStoreState) => {
     state.gitTags = [];
   },
-  setGitCurrentBranchLoading: (state: GitStoreState, loading: boolean) => {
-    state.gitCurrentBranchLoading = loading;
-  },
 } as GitStoreMutations;
 
 const actions = {
@@ -123,13 +114,13 @@ const actions = {
     { commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
+    commit('setGitDataLoading', true);
     try {
-      commit('setGitCurrentBranchLoading', true);
       const res = await get(`${endpoint}/${id}/git`);
       commit('setGitData', res?.data || {});
       return res;
     } finally {
-      commit('setGitCurrentBranchLoading', false);
+      commit('setGitDataLoading', false);
     }
   },
   cloneGit: async (

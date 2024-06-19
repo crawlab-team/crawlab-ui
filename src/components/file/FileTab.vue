@@ -5,13 +5,13 @@ import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
-  ns: ListStoreNamespace,
-  activeId: string,
-  content: string,
-  navItems: FileNavItem[],
-  activeNavItem?: FileNavItem,
-  services: FileServices<BaseModel>,
-  defaultFilePaths: string[],
+  ns: ListStoreNamespace;
+  activeId: string;
+  content: string;
+  navItems: FileNavItem[];
+  activeNavItem?: FileNavItem;
+  services: FileServices<BaseModel>;
+  defaultFilePaths: string[];
 }>();
 
 // i18n
@@ -87,7 +87,7 @@ const onNavItemDbClick = async (item: FileNavItem) => {
 
 const onNavItemDrop = async (
   draggingItem: FileNavItem,
-  dropItem: FileNavItem,
+  dropItem: FileNavItem
 ) => {
   const { activeId } = props;
   const dirPath = dropItem.path !== '~' ? dropItem.path : '';
@@ -152,7 +152,7 @@ const onDropFiles = async (files: InputFile[]) => {
   await Promise.all(
     files.map(f => {
       return saveFileBinary(activeId, f.path as string, f as File);
-    }),
+    })
   );
   await listRootDir(activeId);
 };
@@ -160,7 +160,7 @@ const onDropFiles = async (files: InputFile[]) => {
 const onCreateWithAi = async (
   name: string,
   sourceCode: string,
-  item?: FileNavItem,
+  item?: FileNavItem
 ) => {
   const { activeId } = props;
   let path = `${pathSep}${name}`;
@@ -198,6 +198,7 @@ onBeforeUnmount(() => {
   const { ns } = props;
   store.commit(`${ns}/resetFileContent`);
   store.commit(`${ns}/resetDefaultFilePaths`);
+  store.commit(`${ns}/resetFileNavItems`);
 });
 </script>
 

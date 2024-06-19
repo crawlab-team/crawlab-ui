@@ -1,17 +1,3 @@
-<template>
-  <div class="git-logs">
-    <cl-table
-      :data="tableData"
-      :columns="tableColumns"
-      :page="tablePagination.page"
-      :page-size="tablePagination.size"
-      :total="allTableData.length"
-      :visible-buttons="[TABLE_ACTION_CUSTOMIZE_COLUMNS]"
-      @pagination-change="onPaginationChange"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed, h, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
@@ -28,8 +14,6 @@ const { t } = useI18n();
 const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
-
-const { activeId } = useGitDetail();
 
 // table pagination
 const tablePagination = ref<TablePagination>({
@@ -108,13 +92,21 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
     },
   ] as TableColumns<GitLog>;
 });
-
-watch(
-  () => activeId.value,
-  () => store.dispatch(`${ns}/getGit`, { id: activeId.value })
-);
-onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: activeId.value }));
 </script>
+
+<template>
+  <div class="git-logs">
+    <cl-table
+      :data="tableData"
+      :columns="tableColumns"
+      :page="tablePagination.page"
+      :page-size="tablePagination.size"
+      :total="allTableData.length"
+      :visible-buttons="[TABLE_ACTION_CUSTOMIZE_COLUMNS]"
+      @pagination-change="onPaginationChange"
+    />
+  </div>
+</template>
 
 <style scoped lang="scss">
 .git-logs {

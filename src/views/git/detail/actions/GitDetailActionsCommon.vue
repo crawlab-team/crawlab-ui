@@ -5,6 +5,7 @@ import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import { ElMessage } from 'element-plus';
 import { GIT_STATUS_READY } from '@/constants';
+import ClFormItem from '@/components/form/FormItem.vue';
 
 const t = translate;
 
@@ -23,12 +24,21 @@ const isDisabled = computed<boolean>(
 
 const {
   gitCurrentBranch,
-  gitCurrentBranchLoading,
+  gitDataLoading,
+  gitLocalBranches,
+  gitLocalBranchesDict,
+  gitRemoteBranches,
+  gitRemoteBranchesDict,
   onClickPull,
   onClickCommit,
 } = useGitDetail();
 
 const isBranchClicked = ref<boolean>(false);
+
+const getRemoteBranchFromLocalBranch = (localBranch: GitRef) => {
+  if (!localBranch.hash) return;
+  return gitRemoteBranchesDict.value[localBranch.hash]?.name;
+};
 
 const onBranchClick = () => {
   isBranchClicked.value = true;
@@ -64,6 +74,71 @@ const onAutoPullChange = async () => {
         :status="gitForm.status"
         :error="gitForm.error"
       />
+      <div class="branch">
+        <!--        <cl-tag-->
+        <!--          class-name="current-branch"-->
+        <!--          type="primary"-->
+        <!--          :icon="['fa', 'code-branch']"-->
+        <!--          size="large"-->
+        <!--          :label="gitCurrentBranch"-->
+        <!--          @click="onBranchClick"-->
+        <!--        >-->
+        <!--          <template #tooltip>-->
+        <!--            <span>{{ t('components.git.common.currentBranch') }}:</span>-->
+        <!--            <span style="color: #409eff; margin-left: 5px; font-weight: bolder">-->
+        <!--              {{ gitCurrentBranch }}-->
+        <!--            </span>-->
+        <!--          </template>-->
+        <!--        </cl-tag>-->
+        <el-select
+          class="current-branch"
+          :model-value="gitCurrentBranch"
+          :disabled="isDisabled || gitDataLoading"
+          :placeholder="t('common.status.loading')"
+        >
+          <template #label="{ label, value }">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              "
+            >
+              <span style="flex: 0; margin-right: 10px">
+                <cl-icon :icon="['fa', 'code-branch']" />
+              </span>
+              <span style="flex: 1">{{ label }}</span>
+            </div>
+          </template>
+          <el-option
+            v-for="branch in gitLocalBranches"
+            :key="branch.hash"
+            :label="branch.name"
+            :value="branch.name"
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 24px;
+              "
+            >
+              <span>{{ branch.name }}</span>
+              <span
+                style="color: var(--cl-disabled-color); font-weight: normal"
+              >
+                {{ getRemoteBranchFromLocalBranch(branch) }}
+              </span>
+            </div>
+          </el-option>
+          <template #footer>
+            <cl-button type="default">
+              {{ t('components.git.branches.new') }}
+            </cl-button>
+          </template>
+        </el-select>
+      </div>
       <cl-fa-icon-button
         :icon="['fa', 'download']"
         :tooltip="t('components.git.actions.tooltip.pull')"
@@ -78,34 +153,6 @@ const onAutoPullChange = async () => {
         :disabled="isDisabled"
         @click="onClickCommit"
       />
-      <div v-if="gitCurrentBranch || gitCurrentBranchLoading" class="branch">
-        <cl-tag
-          v-if="gitCurrentBranchLoading"
-          class-name="current-branch-loading"
-          type="warning"
-          :label="t('components.git.common.status.loading.label')"
-          :tooltip="t('components.git.common.status.loading.tooltip')"
-          :icon="['fa', 'spinner']"
-          spinning
-          size="large"
-        />
-        <cl-tag
-          v-else
-          class-name="current-branch"
-          type="primary"
-          :icon="['fa', 'code-branch']"
-          size="large"
-          :label="gitCurrentBranch"
-          @click="onBranchClick"
-        >
-          <template #tooltip>
-            <span>{{ t('components.git.common.currentBranch') }}:</span>
-            <span style="color: #409eff; margin-left: 5px; font-weight: bolder">
-              {{ gitCurrentBranch }}
-            </span>
-          </template>
-        </cl-tag>
-      </div>
       <!--      <cl-switch-->
       <!--        v-model="gitForm.auto_pull"-->
       <!--        :active-text="t('components.git.form.autoPull')"-->
@@ -116,4 +163,9 @@ const onAutoPullChange = async () => {
   </cl-nav-action-group>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.current-branch {
+  width: 120px;
+  margin-right: 10px;
+}
+</style>
