@@ -45,11 +45,13 @@ const git: LComponentsGit = {
   actions: {
     title: 'Git Actions',
     label: {
+      retry: 'Retry',
       pull: 'Pull',
       commit: 'Commit',
       checkout: 'Checkout',
     },
     tooltip: {
+      retry: 'Retry',
       pull: 'Pull',
       commit: 'Commit and Push',
       checkout: 'Checkout',

@@ -1,14 +1,7 @@
 export declare global {
-  type BasicType =
-    | ''
-    | 'primary'
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'info'
-    | 'plain';
+  type BasicType = 'primary' | 'success' | 'warning' | 'danger' | 'info';
   type BasicEffect = 'dark' | 'light' | 'plain';
-  type BasicSize = 'mini' | 'small' | 'medium' | 'large';
+  type BasicSize = 'small' | 'default' | 'large';
 
   type ElFormValidator = (rule: any, value: any, callback: any) => void;
 

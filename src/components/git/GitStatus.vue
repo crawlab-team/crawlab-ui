@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useStore } from 'vuex';
 import {
   GIT_STATUS_PENDING,
   GIT_STATUS_READY,
@@ -9,7 +10,8 @@ import {
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
-  status: GitStatus;
+  id?: string;
+  status?: GitStatus;
   size?: BasicSize;
   error?: string;
 }>();
@@ -19,6 +21,9 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const ns = 'git';
+const store = useStore();
 
 const data = computed<TagData>(() => {
   const { status, error } = props;
@@ -62,23 +67,49 @@ const data = computed<TagData>(() => {
       };
   }
 });
+
+const onRetry = async () => {
+  const { id } = props;
+  await store.dispatch(`${ns}/cloneGit`, { id });
+  await store.dispatch(`${ns}/getById`, id);
+};
 </script>
 
 <template>
-  <cl-tag
-    :key="data"
-    :icon="data.icon"
-    :label="data.label"
-    :size="size"
-    :spinning="data.spinning"
-    :tooltip="data.tooltip"
-    :type="data.type"
-    @click="emit('click')"
-  >
-    <template #tooltip>
-      <div v-html="data.tooltip" />
-    </template>
-  </cl-tag>
+  <div class="git-status">
+    <cl-tag
+      :key="data"
+      :icon="data.icon"
+      :label="data.label"
+      :size="size"
+      :spinning="data.spinning"
+      :tooltip="data.tooltip"
+      :type="data.type"
+      @click="emit('click')"
+    >
+      <template #tooltip>
+        <div v-html="data.tooltip" />
+      </template>
+    </cl-tag>
+    <cl-tag
+      v-if="status === GIT_STATUS_ERROR"
+      type="warning"
+      :icon="['fa', 'redo']"
+      :size="size"
+      :tooltip="t('components.git.actions.tooltip.retry')"
+      clickable
+      @click="onRetry"
+    />
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.git-status {
+  margin-right: 10px;
+}
+</style>
+<style scoped>
+.git-status:deep(.el-tag:not(:last-child)) {
+  margin-right: 5px;
+}
+</style>

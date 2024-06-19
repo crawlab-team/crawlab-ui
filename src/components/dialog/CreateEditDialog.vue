@@ -1,30 +1,31 @@
 <script setup lang="ts">
-import { computed, provide, ref } from 'vue';
-import { TabsPaneContext } from 'element-plus';
-import { useI18n } from 'vue-i18n';
+import { computed, provide } from 'vue';
 import { sendEvent } from '@/admin/umeng';
-import { emptyArrayFunc } from '@/utils';
+import { emptyArrayFunc, translate } from '@/utils';
 
-const props = withDefaults(defineProps<{
-  visible: boolean,
-  type: CreateEditDialogType,
-  width: string,
-  confirmDisabled: boolean,
-  confirmLoading: boolean,
-  actionFunctions?: CreateEditDialogActionFunctions,
-  title?: string,
-  formRules: FormRuleItem[],
-}>(), {
-  visible: false,
-  type: 'create',
-  width: '80vw',
-  confirmDisabled: false,
-  confirmLoading: false,
-  formRules: emptyArrayFunc,
-});
+const props = withDefaults(
+  defineProps<{
+    visible: boolean;
+    type: CreateEditDialogType;
+    width: string;
+    confirmDisabled: boolean;
+    confirmLoading: boolean;
+    actionFunctions?: CreateEditDialogActionFunctions;
+    title?: string;
+    formRules: FormRuleItem[];
+  }>(),
+  {
+    visible: false,
+    type: 'create',
+    width: '80vw',
+    confirmDisabled: false,
+    confirmLoading: false,
+    formRules: emptyArrayFunc,
+  }
+);
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 const computedTitle = computed<string>(() => {
   const { visible, type, title } = props;
@@ -52,18 +53,9 @@ const onConfirm = () => {
   actionFunctions?.onConfirm?.();
 };
 
-const internalTabName = ref<CreateEditTabName>('single');
-const onTabChange = (tab: TabsPaneContext) => {
-  const tabName = tab.paneName as CreateEditTabName;
-  const { actionFunctions } = props;
-  actionFunctions?.onTabChange?.(tabName);
-
-  sendEvent('click_create_edit_dialog_tab_change', { tabName });
-};
-
 provide<CreateEditDialogActionFunctions | undefined>(
   'action-functions',
-  props.actionFunctions,
+  props.actionFunctions
 );
 provide<FormRuleItem[] | undefined>('form-rules', props.formRules);
 </script>

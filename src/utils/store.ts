@@ -34,6 +34,7 @@ export const getDefaultStoreState = <T = any>(
     sidebarCollapsed: false,
     actionsCollapsed: false,
     tabs: [{ id: 'overview', title: t('common.tabs.overview') }],
+    disabledTabKeys: [],
     afterSave: [],
   };
 };
@@ -231,6 +232,12 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
     },
     setTabs: (state: BaseStoreState<T>, tabs) => {
       state.tabs = tabs;
+    },
+    setDisabledTabKeys: (state: BaseStoreState<T>, keys) => {
+      state.disabledTabKeys = keys;
+    },
+    resetDisabledTabKeys: (state: BaseStoreState<T>) => {
+      state.disabledTabKeys = [];
     },
     setAfterSave: (state: BaseStoreState<T>, fnList) => {
       state.afterSave = fnList;

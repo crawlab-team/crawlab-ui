@@ -45,11 +45,13 @@ const git: LComponentsGit = {
   actions: {
     title: 'Git 操作',
     label: {
+      retry: '重试',
       pull: '拉取',
       commit: '提交',
       checkout: '签出',
     },
     tooltip: {
+      retry: '重试',
       pull: '拉取',
       commit: '拉取并推送',
       checkout: '签出',

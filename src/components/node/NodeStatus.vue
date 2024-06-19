@@ -14,7 +14,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'click', _: void): void;
+  (e: 'click'): void;
 }>();
 
 const { t } = useI18n();

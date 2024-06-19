@@ -42,6 +42,7 @@ interface GitStoreActions
   extends BaseStoreActions<Git>,
     BaseFileStoreActions<GitStoreState> {
   getGit: StoreAction<GitStoreState, { id: string }>;
+  cloneGit: StoreAction<GitStoreState, { id: string }>;
   getGitRemoteRefs: StoreAction<GitStoreState, { id: string }>;
   getGitBranches: StoreAction<GitStoreState, { id: string }>;
   getGitTags: StoreAction<GitStoreState, { id: string }>;

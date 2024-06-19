@@ -1,3 +1,36 @@
+<script setup lang="ts">
+import { translate } from '@/utils';
+
+const t = translate;
+
+const props = defineProps<{
+  items: NavItem[];
+  activeKey: string;
+  collapsed: boolean;
+  toggle: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'select', index: string): void;
+  (e: 'toggle'): void;
+}>();
+
+const onSelect = (index: string) => {
+  emit('select', index);
+};
+
+const onToggle = () => {
+  emit('toggle');
+};
+
+const getClassName = (item: NavItem): string => {
+  const cls = [];
+  if (item.emphasis) cls.push('emphasis');
+  if (item.id) cls.push(item.id);
+  return cls.join(' ');
+};
+</script>
+
 <template>
   <div class="nav-tabs">
     <el-tooltip
@@ -28,69 +61,17 @@
             <font-awesome-icon :icon="item.icon" />
           </template>
           <template v-else>
-            {{ t(item.title) }}
+            {{ item.title ? t(item.title) : '' }}
           </template>
         </el-tooltip>
       </el-menu-item>
     </el-menu>
     <div class="extra">
-      <slot name="extra"> </slot>
+      <slot name="extra"></slot>
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { emptyArrayFunc } from '@/utils/func';
 
-export default defineComponent({
-  name: 'NavTabs',
-  props: {
-    items: {
-      type: Array as PropType<NavItem[]>,
-      default: emptyArrayFunc,
-    },
-    activeKey: {
-      type: String,
-      default: '',
-    },
-    collapsed: {
-      type: Boolean,
-      default: false,
-    },
-    toggle: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['select', 'toggle'],
-  setup(props: NavTabsProps, { emit }) {
-    const { t } = useI18n();
-
-    const onSelect = (index: string) => {
-      emit('select', index);
-    };
-
-    const onToggle = () => {
-      emit('toggle');
-    };
-
-    const getClassName = (item: NavItem): string => {
-      const cls = [];
-      if (item.emphasis) cls.push('emphasis');
-      if (item.id) cls.push(item.id);
-      return cls.join(' ');
-    };
-
-    return {
-      onSelect,
-      onToggle,
-      getClassName,
-      t,
-    };
-  },
-});
-</script>
 <style lang="scss" scoped>
 .nav-tabs {
   display: flex;

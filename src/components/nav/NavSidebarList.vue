@@ -11,7 +11,7 @@ const emit = defineEmits<{
 const onSelect = (id: string) => {
   emit(
     'select',
-    props.items?.findIndex(item => item.id === id),
+    props.items?.findIndex(item => item.id === id)
   );
 };
 </script>

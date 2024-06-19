@@ -132,6 +132,12 @@ const actions = {
       commit('setGitCurrentBranchLoading', false);
     }
   },
+  cloneGit: async (
+    _: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    return await post(`${endpoint}/${id}/clone`);
+  },
   getGitRemoteRefs: async (
     { commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }

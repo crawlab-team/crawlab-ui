@@ -8,14 +8,19 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
   FILTER_OP_CONTAINS,
-  TAB_NAME_SPIDERS,
+  GIT_STATUS_ERROR,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import { sendEvent } from '@/admin/umeng';
 import { useList } from '@/layouts/content';
-import { onListFilterChangeByKey, translate } from '@/utils';
+import {
+  onListFilterChangeByKey,
+  setupListComponent,
+  translate,
+} from '@/utils';
 import NavLink from '@/components/nav/NavLink.vue';
 import GitStatus from '@/components/git/GitStatus.vue';
+import Tag from '@/components/tag/Tag.vue';
 
 const useGitList = () => {
   // router
@@ -98,11 +103,10 @@ const useGitList = () => {
       label: t('views.gits.table.columns.status'),
       icon: ['fa', 'heartbeat'],
       width: '150',
-      value: (row: Git) =>
-        h(GitStatus, {
-          status: row.status,
-          error: row.error,
-        }),
+      value: (row: Git) => {
+        const { _id, status, error } = row;
+        return h(GitStatus, { id: _id, status, error });
+      },
       hasSort: true,
       hasFilter: true,
       allowFilterSearch: true,
@@ -144,6 +148,9 @@ const useGitList = () => {
     navActions,
     tableColumns,
   } as UseListOptions<Git>;
+
+  // init
+  setupListComponent(ns, store, []);
 
   return {
     ...useList<Git>(ns, store, opts),

@@ -1,4 +1,4 @@
-import { computed, ref, onBeforeMount, onBeforeUnmount } from 'vue';
+import { computed, ref, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import useGitService from '@/services/git/gitService';
@@ -7,8 +7,16 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils/i18n';
 import Form from '@/components/form/Form.vue';
-import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
+import {
+  GIT_REF_TYPE_BRANCH,
+  GIT_STATUS_CLONING,
+  GIT_STATUS_ERROR,
+  GIT_STATUS_PENDING,
+  GIT_STATUS_READY,
+} from '@/constants/git';
 import useDetail from '@/layouts/content/detail/useDetail';
+import useGit from '@/components/git/git';
+import { TAB_NAME_OVERVIEW } from '@/constants';
 
 // i18n
 const t = translate;
@@ -74,9 +82,7 @@ const useGitDetail = () => {
       try {
         const res = await store.dispatch(`${ns}/gitPull`, { id: id.value });
         if (res) {
-          await ElMessage.success(
-            t('components.git.common.message.success.pull')
-          );
+          ElMessage.success(t('components.git.common.message.success.pull'));
         }
         await store.dispatch(`${ns}/getGit`, { id: id.value });
       } finally {
@@ -106,9 +112,7 @@ const useGitDetail = () => {
         });
         store.commit(`${ns}/resetGitChangeSelection`);
         if (res) {
-          await ElMessage.success(
-            t('components.git.common.message.success.commit')
-          );
+          ElMessage.success(t('components.git.common.message.success.commit'));
         }
         await store.dispatch(`${ns}/getGit`, { id: id.value });
       } finally {
@@ -126,9 +130,7 @@ const useGitDetail = () => {
           id: id.value,
           branch: gitCheckoutForm.value.name,
         });
-        await ElMessage.success(
-          t('components.git.common.message.success.checkout')
-        );
+        ElMessage.success(t('components.git.common.message.success.checkout'));
         await store.dispatch(`${ns}/getGit`, { id: id.value });
       } finally {
         gitLoading.value.checkout = false;
@@ -148,6 +150,29 @@ const useGitDetail = () => {
 
   onBeforeMount(() => store.dispatch(`node/getAllList`));
   onBeforeUnmount(() => store.commit(`${ns}/resetAll`));
+
+  const { form } = useGit(store);
+  let handle = 0;
+  watch(form, () => {
+    const { status } = form.value as Git;
+    if (status === GIT_STATUS_READY) {
+      store.commit(`${ns}/resetDisabledTabKeys`);
+      clearInterval(handle);
+    } else {
+      store.commit(
+        `${ns}/setDisabledTabKeys`,
+        state.tabs.map(tab => tab.id).filter(id => id !== TAB_NAME_OVERVIEW)
+      );
+      if (status === GIT_STATUS_ERROR) {
+        clearInterval(handle);
+      } else {
+        handle = setInterval(
+          () => store.dispatch(`${ns}/getById`, id.value),
+          5000
+        );
+      }
+    }
+  });
 
   return {
     ...useDetail('git'),

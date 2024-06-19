@@ -81,6 +81,7 @@ export declare global {
     sidebarCollapsed: boolean;
     actionsCollapsed: boolean;
     tabs: NavItem[];
+    disabledTabKeys: string[];
     afterSave: (() => Promise)[];
   }
 
@@ -140,6 +141,8 @@ export declare global {
     expandActions: StoreMutation<BaseStoreState<T>>;
     collapseActions: StoreMutation<BaseStoreState<T>>;
     setTabs: StoreMutation<BaseStoreState, NavItem[]>;
+    setDisabledTabKeys: StoreMutation<BaseStoreState, string[]>;
+    resetDisabledTabKeys: StoreMutation<BaseStoreState, string[]>;
     setAfterSave: StoreMutation<BaseStoreState<T>, (() => Promise)[]>;
   }
 

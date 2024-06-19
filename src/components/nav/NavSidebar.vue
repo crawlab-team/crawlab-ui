@@ -103,7 +103,7 @@ export default defineComponent({
       return items.filter(d =>
         d.title
           ?.toLocaleLowerCase()
-          .includes(searchString.value.toLocaleLowerCase()),
+          .includes(searchString.value.toLocaleLowerCase())
       );
     });
 
@@ -228,12 +228,13 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.nav-sidebar > .search:deep(.el-input__inner) {
+.nav-sidebar > .search:deep(.el-input__wrapper) {
   border: none;
+  box-shadow: none;
   height: 100%;
 }
 
-.nav-sidebar.collapsed > .search:deep(.el-input__inner) {
+.nav-sidebar.collapsed > .search:deep(.el-input__wrapper) {
   padding: 0;
   width: 0;
 }

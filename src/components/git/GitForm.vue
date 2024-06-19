@@ -21,6 +21,7 @@
             form.auth_type === 'http' ? ['fa', 'fa-link'] : ['fa', 'fa-key']
           "
           :label="form.auth_type?.toUpperCase()"
+          size="large"
         />
       </div>
     </cl-form-item>

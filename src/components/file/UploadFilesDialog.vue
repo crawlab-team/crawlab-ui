@@ -124,7 +124,6 @@ const onUploadConfirm = async () => {
 };
 
 const onFilesChange = (fileList: FileWithPath[]) => {
-  console.debug(fileList);
   if (!fileList.length) return;
   files.value = fileList;
 

@@ -45,11 +45,13 @@ interface LComponentsGit {
   actions: {
     title: string;
     label: {
+      retry: string;
       pull: string;
       commit: string;
       checkout: string;
     };
     tooltip: {
+      retry: string;
       pull: string;
       commit: string;
       checkout: string;

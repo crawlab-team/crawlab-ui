@@ -4,6 +4,7 @@ import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import { ElMessage } from 'element-plus';
+import { GIT_STATUS_READY } from '@/constants';
 
 const t = translate;
 
@@ -12,6 +13,13 @@ const { git: state } = store.state as RootStoreState;
 
 // git form
 const gitForm = computed<Git>(() => state.form);
+
+const isDisabled = computed<boolean>(
+  () =>
+    gitForm.value.status !== GIT_STATUS_READY ||
+    !gitForm.value.url ||
+    !gitForm.value.auth_type
+);
 
 const {
   gitCurrentBranch,
@@ -39,7 +47,7 @@ const onAutoPullChange = async () => {
     id: gitForm.value._id,
     form: gitForm.value,
   });
-  await ElMessage.success(t('common.message.success.save'));
+  ElMessage.success(t('common.message.success.save'));
 };
 </script>
 
@@ -50,18 +58,24 @@ const onAutoPullChange = async () => {
       :tooltip="t('components.git.actions.title')"
     />
     <cl-nav-action-item>
+      <cl-git-status
+        size="large"
+        :id="gitForm._id"
+        :status="gitForm.status"
+        :error="gitForm.error"
+      />
       <cl-fa-icon-button
         :icon="['fa', 'download']"
         :tooltip="t('components.git.actions.tooltip.pull')"
         type="primary"
-        :disabled="!gitForm.url || !gitForm.auth_type"
+        :disabled="isDisabled"
         @click="onClickPull"
       />
       <cl-fa-icon-button
         :icon="['fa', 'upload']"
         :tooltip="t('components.git.actions.tooltip.commit')"
         type="success"
-        :disabled="!gitForm.url || !gitForm.auth_type"
+        :disabled="isDisabled"
         @click="onClickCommit"
       />
       <div v-if="gitCurrentBranch || gitCurrentBranchLoading" class="branch">

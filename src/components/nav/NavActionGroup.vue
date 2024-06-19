@@ -1,20 +1,11 @@
+<script setup lang="ts"></script>
+
 <template>
   <div class="nav-action-group">
     <div class="border" />
     <slot></slot>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'NavActionGroup',
-  setup() {
-    return {};
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .nav-action-group {

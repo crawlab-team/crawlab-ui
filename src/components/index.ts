@@ -41,6 +41,7 @@ import FileEditorSettingsDialog from './file/FileEditorSettingsDialog.vue';
 import FileTab from './file/FileTab.vue';
 import FileUpload from './file/FileUpload.vue';
 import UploadFilesDialog from './file/UploadFilesDialog.vue';
+import UploadGitFilesDialog from './file/UploadGitFilesDialog.vue';
 import FilterCondition from './filter/FilterCondition.vue';
 import FilterConditionList from './filter/FilterConditionList.vue';
 import FilterInput from './filter/FilterInput.vue';
@@ -53,6 +54,7 @@ import FormTableField from './form/FormTableField.vue';
 import CreateEditGitDialog from './git/CreateEditGitDialog.vue';
 import GitFileStatus from './git/GitFileStatus.vue';
 import GitForm from './git/GitForm.vue';
+import GitStatus from './git/GitStatus.vue';
 import AtomMaterialIcon from './icon/AtomMaterialIcon.vue';
 import Icon from './icon/Icon.vue';
 import MenuItemIcon from './icon/MenuItemIcon.vue';
@@ -126,11 +128,8 @@ import TableHeaderDialogFilter from './table/TableHeaderDialogFilter.vue';
 import TableHeaderDialogSort from './table/TableHeaderDialogSort.vue';
 import CheckTag from './tag/CheckTag.vue';
 import CheckTagGroup from './tag/CheckTagGroup.vue';
-import CreateEditTagDialog from './tag/CreateEditTagDialog.vue';
 import LinkTag from './tag/LinkTag.vue';
 import Tag from './tag/Tag.vue';
-import TagForm from './tag/TagForm.vue';
-import TagList from './tag/TagList.vue';
 import CreateTaskDialog from './task/CreateTaskDialog.vue';
 import TaskCommand from './task/TaskCommand.vue';
 import TaskForm from './task/TaskForm.vue';
@@ -190,6 +189,7 @@ export {
   FileTab as ClFileTab,
   FileUpload as ClFileUpload,
   UploadFilesDialog as ClUploadFilesDialog,
+  UploadGitFilesDialog as ClUploadGitFilesDialog,
   FilterCondition as ClFilterCondition,
   FilterConditionList as ClFilterConditionList,
   FilterInput as ClFilterInput,
@@ -202,6 +202,7 @@ export {
   CreateEditGitDialog as ClCreateEditGitDialog,
   GitFileStatus as ClGitFileStatus,
   GitForm as ClGitForm,
+  GitStatus as ClGitStatus,
   AtomMaterialIcon as ClAtomMaterialIcon,
   Icon as ClIcon,
   MenuItemIcon as ClMenuItemIcon,
@@ -275,11 +276,8 @@ export {
   TableHeaderDialogSort as ClTableHeaderDialogSort,
   CheckTag as ClCheckTag,
   CheckTagGroup as ClCheckTagGroup,
-  CreateEditTagDialog as ClCreateEditTagDialog,
   LinkTag as ClLinkTag,
   Tag as ClTag,
-  TagForm as ClTagForm,
-  TagList as ClTagList,
   CreateTaskDialog as ClCreateTaskDialog,
   TaskCommand as ClTaskCommand,
   TaskForm as ClTaskForm,

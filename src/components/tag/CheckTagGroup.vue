@@ -1,3 +1,41 @@
+<script setup lang="ts">
+import { computed, onBeforeMount, reactive, watch } from 'vue';
+
+const props = defineProps<{
+  modelValue: string[];
+  options: SelectOption[];
+  disabled: boolean;
+  className?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: 'update:model-value', value: string[]): void;
+  (e: 'change', value: string[]): void;
+}>();
+
+const checkedMap = reactive<{ [key: string]: boolean }>({});
+
+const checkedKeys = computed<string[]>(() => {
+  return Object.keys(checkedMap).filter(k => checkedMap[k]);
+});
+
+const onChange = () => {
+  emit('update:model-value', checkedKeys.value);
+  emit('change', checkedKeys.value);
+};
+
+const updateCheckedMap = () => {
+  if (props.modelValue) {
+    props.modelValue.forEach(key => {
+      checkedMap[key] = true;
+    });
+  }
+};
+
+onBeforeMount(updateCheckedMap);
+watch(() => props.modelValue, updateCheckedMap);
+</script>
+
 <template>
   <div class="check-tag-group">
     <cl-check-tag
@@ -13,64 +51,6 @@
     />
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, onBeforeMount, PropType, reactive, watch } from 'vue';
-
-export default defineComponent({
-  name: 'CheckTagGroup',
-  props: {
-    modelValue: {
-      type: Array as PropType<string[]>,
-      default: () => {
-        return [];
-      },
-    },
-    options: {
-      type: Array as PropType<SelectOption[]>,
-      default: () => {
-        return [];
-      },
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    className: {
-      type: String,
-    },
-  },
-  emits: ['update:model-value', 'change'],
-  setup(props: CheckTagGroupProps, { emit }) {
-    const checkedMap = reactive<{ [key: string]: boolean }>({});
-
-    const checkedKeys = computed<string[]>(() => {
-      return Object.keys(checkedMap).filter(k => checkedMap[k]);
-    });
-
-    const onChange = () => {
-      emit('update:model-value', checkedKeys.value);
-      emit('change', checkedKeys.value);
-    };
-
-    const updateCheckedMap = () => {
-      if (props.modelValue) {
-        props.modelValue.forEach(key => {
-          checkedMap[key] = true;
-        });
-      }
-    };
-
-    onBeforeMount(updateCheckedMap);
-    watch(() => props.modelValue, updateCheckedMap);
-
-    return {
-      checkedMap,
-      onChange,
-    };
-  },
-});
-</script>
 
 <style scoped>
 .check-tag-group:deep(.el-tag:not(:last-child)) {

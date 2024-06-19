@@ -12,7 +12,6 @@ import spider from '@/router/spider';
 import task from '@/router/task';
 import schedule from '@/router/schedule';
 import user from '@/router/user';
-import tag from '@/router/tag';
 import token from '@/router/token';
 import deps from '@/router/deps';
 import notification from '@/router/notification';
@@ -41,7 +40,6 @@ export function getDefaultRoutes(): Array<RouteRecordRaw> {
         ...task,
         ...schedule,
         ...user,
-        ...tag,
         ...token,
         ...deps,
         ...notification,

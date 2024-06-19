@@ -182,7 +182,7 @@ const useSpiderList = () => {
       value: (row: Spider) => {
         const { error, status } = row.stat?.last_task || {};
         if (!status) return;
-        return h(TaskStatus, { status, error } as TaskStatusProps);
+        return h(TaskStatus, { status, error });
       },
     },
     {
