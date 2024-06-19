@@ -8,11 +8,9 @@ import useGitDetail from '@/views/git/detail/useGitDetail';
 const { t } = useI18n();
 
 // store
-const ns = 'spider';
+const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
-
-const { activeId } = useGitDetail();
 
 // table data
 const tableData = computed<TableData<{ name: string; index: number }>>(

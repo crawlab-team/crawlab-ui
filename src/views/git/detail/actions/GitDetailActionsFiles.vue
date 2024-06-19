@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useGitDetail from '@/views/git/detail/useGitDetail';
 
-const ns = 'spider';
+const ns = 'git';
 const { activeId } = useGitDetail();
 </script>
 

@@ -1,3 +1,92 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { ElMenu } from 'element-plus';
+import { emptyArrayFunc } from '@/utils/func';
+import { translate } from '@/utils';
+
+const props = withDefaults(
+  defineProps<{
+    type: NavSidebarType;
+    collapsed: boolean;
+    showActions: boolean;
+    items: NavItem[];
+    activeKey: string;
+    showCheckbox: boolean;
+    defaultCheckedKeys: string[];
+    defaultExpandedKeys: string[];
+    defaultExpandAll: boolean;
+    noSearch: boolean;
+  }>(),
+  {
+    type: 'list',
+    collapsed: false,
+    showActions: false,
+    items: emptyArrayFunc,
+    activeKey: '',
+    showCheckbox: false,
+    defaultCheckedKeys: emptyArrayFunc,
+    defaultExpandedKeys: emptyArrayFunc,
+    defaultExpandAll: false,
+    noSearch: false,
+  }
+);
+
+const emit = defineEmits<{
+  (e: 'select', item: NavItem): void;
+  (e: 'check', item: NavItem, checked: boolean, items: NavItem[]): void;
+}>();
+
+// i18n
+const t = translate;
+
+const searchString = ref('');
+const navMenu = ref<typeof ElMenu | null>(null);
+
+const filteredItems = computed<NavItem[]>(() => {
+  const items = props.items as NavItem[];
+  if (!searchString.value) return items;
+  return items.filter(d =>
+    d.title
+      ?.toLocaleLowerCase()
+      .includes(searchString.value.toLocaleLowerCase())
+  );
+});
+
+const classes = computed(() => {
+  const { collapsed } = props;
+  const cls = [];
+  if (collapsed) cls.push('collapsed');
+  return cls;
+});
+
+const onSelectList = (index: number) => {
+  emit('select', filteredItems.value[index]);
+};
+
+const onSelectTree = (item: NavItem) => {
+  emit('select', item);
+};
+
+const onCheckTree = (item: NavItem, checked: boolean, items: NavItem[]) => {
+  emit('check', item, checked, items);
+};
+
+const scroll = (id: string) => {
+  const idx = filteredItems.value.findIndex(d => d.id === id);
+  if (idx === -1) return;
+  const navSidebarItemHeightNumber = 48; // var(--cl-nav-sidebar-item-height)
+  if (!navMenu.value) return;
+  const $el = navMenu.value.$el as HTMLDivElement;
+  $el.scrollTo({
+    top: navSidebarItemHeightNumber * idx,
+  });
+};
+
+defineExpose({
+  scroll,
+});
+</script>
+
 <template>
   <div class="nav-sidebar" :class="classes">
     <div v-if="!noSearch" class="search">
@@ -36,123 +125,7 @@
     <cl-empty v-else />
   </div>
 </template>
-<script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue';
-import { ElMenu } from 'element-plus';
-import { useI18n } from 'vue-i18n';
-import { emptyArrayFunc } from '@/utils/func';
 
-export const navSidebarContentProps = {
-  items: {
-    type: Array as PropType<NavItem[]>,
-    default: emptyArrayFunc,
-  },
-  activeKey: {
-    type: String,
-  },
-  showCheckbox: {
-    type: Boolean,
-    default: false,
-  },
-};
-
-export default defineComponent({
-  name: 'NavSidebar',
-  props: {
-    type: {
-      type: String as PropType<NavSidebarType>,
-      default: 'list',
-    },
-    collapsed: {
-      type: Boolean,
-    },
-    showActions: {
-      type: Boolean,
-    },
-    ...navSidebarContentProps,
-    defaultCheckedKeys: {
-      type: Array as PropType<string[]>,
-      default: emptyArrayFunc,
-    },
-    defaultExpandedKeys: {
-      type: Array as PropType<string[]>,
-      default: emptyArrayFunc,
-    },
-    defaultExpandAll: {
-      type: Boolean,
-      default: false,
-    },
-    noSearch: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['select', 'check'],
-  setup(props: NavSidebarProps, { emit }) {
-    // i18n
-    const { t } = useI18n();
-
-    const toggling = ref(false);
-    const searchString = ref('');
-    const navMenu = ref<typeof ElMenu | null>(null);
-    const toggleTooltipValue = ref(false);
-
-    const filteredItems = computed<NavItem[]>(() => {
-      const items = props.items as NavItem[];
-      if (!searchString.value) return items;
-      return items.filter(d =>
-        d.title
-          ?.toLocaleLowerCase()
-          .includes(searchString.value.toLocaleLowerCase())
-      );
-    });
-
-    const classes = computed(() => {
-      const { collapsed } = props;
-      const cls = [];
-      if (collapsed) cls.push('collapsed');
-      return cls;
-    });
-
-    const onSelectList = (index: number) => {
-      emit('select', filteredItems.value[index]);
-    };
-
-    const onSelectTree = (item: NavItem) => {
-      emit('select', item);
-    };
-
-    const onCheckTree = (item: NavItem, checked: boolean, items: NavItem[]) => {
-      emit('check', item, checked, items);
-    };
-
-    const scroll = (id: string) => {
-      const idx = filteredItems.value.findIndex(d => d.id === id);
-      if (idx === -1) return;
-      const navSidebarItemHeightNumber = 48; // var(--cl-nav-sidebar-item-height)
-      if (!navMenu.value) return;
-      const $el = navMenu.value.$el as HTMLDivElement;
-      $el.scrollTo({
-        top: navSidebarItemHeightNumber * idx,
-      });
-    };
-
-    return {
-      toggling,
-      searchString,
-      navMenu,
-      toggleTooltipValue,
-      filteredItems,
-      classes,
-      onSelectList,
-      onSelectTree,
-      onCheckTree,
-      scroll,
-      t,
-    };
-  },
-});
-</script>
 <style scoped lang="scss">
 .nav-sidebar {
   height: 100%;

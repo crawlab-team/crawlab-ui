@@ -3,12 +3,13 @@ import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox, ElSelect } from 'element-plus';
 import { GIT_STATUS_READY } from '@/constants';
 import ClFormItem from '@/components/form/FormItem.vue';
 
 const t = translate;
 
+const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
 
@@ -21,6 +22,8 @@ const isDisabled = computed<boolean>(
     !gitForm.value.url ||
     !gitForm.value.auth_type
 );
+
+const gitCurrentBranchRef = ref<typeof ElSelect>();
 
 const {
   gitCurrentBranch,
@@ -40,6 +43,11 @@ const getRemoteBranchFromLocalBranch = (localBranch: GitRef) => {
   return gitRemoteBranchesDict.value[localBranch.hash]?.name;
 };
 
+const onClickNewBranch = () => {
+  gitCurrentBranchRef.value?.blur();
+  store.commit(`${ns}/showDialog`, 'createBranch');
+};
+
 const onBranchClick = () => {
   isBranchClicked.value = true;
 };
@@ -53,7 +61,7 @@ const onBranchCheckout = () => {
 };
 
 const onAutoPullChange = async () => {
-  await store.dispatch(`git/updateById`, {
+  await store.dispatch(`${ns}/updateById`, {
     id: gitForm.value._id,
     form: gitForm.value,
   });
@@ -75,22 +83,8 @@ const onAutoPullChange = async () => {
         :error="gitForm.error"
       />
       <div class="branch">
-        <!--        <cl-tag-->
-        <!--          class-name="current-branch"-->
-        <!--          type="primary"-->
-        <!--          :icon="['fa', 'code-branch']"-->
-        <!--          size="large"-->
-        <!--          :label="gitCurrentBranch"-->
-        <!--          @click="onBranchClick"-->
-        <!--        >-->
-        <!--          <template #tooltip>-->
-        <!--            <span>{{ t('components.git.common.currentBranch') }}:</span>-->
-        <!--            <span style="color: #409eff; margin-left: 5px; font-weight: bolder">-->
-        <!--              {{ gitCurrentBranch }}-->
-        <!--            </span>-->
-        <!--          </template>-->
-        <!--        </cl-tag>-->
         <el-select
+          ref="gitCurrentBranchRef"
           class="current-branch"
           :model-value="gitCurrentBranch"
           :disabled="isDisabled || gitDataLoading"
@@ -133,7 +127,7 @@ const onAutoPullChange = async () => {
             </div>
           </el-option>
           <template #footer>
-            <cl-button type="default">
+            <cl-button type="default" @click="onClickNewBranch">
               {{ t('components.git.branches.new') }}
             </cl-button>
           </template>

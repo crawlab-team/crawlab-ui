@@ -6,6 +6,7 @@ import { getRoutePathByDepth, getTabName } from '@/utils/route';
 import { ElMessage } from 'element-plus';
 import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils/i18n';
+import { debounce } from '@/utils';
 
 // i18n
 const t = translate;
@@ -66,10 +67,10 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
 
   const afterSave = computed<Function[]>(() => state.afterSave);
 
-  const getForm = async () => {
+  const getForm = debounce(async () => {
     if (!activeId.value) return;
     return await store.dispatch(`${ns}/getById`, activeId.value);
-  };
+  });
 
   const onNavSidebarSelect = async (item: NavItem) => {
     if (!item) {
@@ -144,7 +145,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
       id: activeId.value,
       form: state.form,
     });
-    await ElMessage.success(t('common.message.success.save'));
+    ElMessage.success(t('common.message.success.save'));
     await Promise.all([
       store.dispatch(`${ns}/getAllList`),
       store.dispatch(`${ns}/getById`, activeId.value),

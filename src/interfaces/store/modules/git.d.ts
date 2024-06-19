@@ -6,6 +6,7 @@ type GitStoreModule = BaseModule<
 >;
 
 interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
+  activeDialogKey?: DialogKey | 'createBranch';
   gitData?: GitData;
   gitDataLoading: boolean;
   gitChangeSelection: TableData<GitChange>;
@@ -45,7 +46,8 @@ interface GitStoreActions
   getGitRemoteRefs: StoreAction<GitStoreState, { id: string }>;
   getGitBranches: StoreAction<GitStoreState, { id: string }>;
   getGitTags: StoreAction<GitStoreState, { id: string }>;
-  gitCheckout: StoreAction<GitStoreState, { id: string; branch: string }>;
+  gitCheckoutBranch: StoreAction<GitStoreState, { id: string; branch: string }>;
+  gitCheckoutTag: StoreAction<GitStoreState, { id: string; tag: string }>;
   gitPull: StoreAction<GitStoreState, { id: string }>;
   gitCommit: StoreAction<GitStoreState, { id: string; commit_message: string }>;
 }

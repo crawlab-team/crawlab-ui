@@ -44,8 +44,8 @@ const git: LComponentsGit = {
   },
   branches: {
     new: '新建分支',
-    local: '本地',
-    remote: '远程',
+    local: '本地分支',
+    remote: '远程分支',
   },
   actions: {
     title: 'Git 操作',

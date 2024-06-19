@@ -15,7 +15,7 @@ import {
   TAB_NAME_TAGS,
 } from '@/constants';
 import useRequest from '@/services/request';
-import { translate } from '@/utils';
+import { debounce, translate } from '@/utils';
 import {
   getBaseFileStoreActions,
   getBaseFileStoreMutations,
@@ -110,19 +110,21 @@ const mutations = {
 const actions = {
   ...getDefaultStoreActions<Git>('/gits'),
   ...getBaseFileStoreActions<GitStoreState>(endpoint),
-  getGit: async (
-    { commit }: StoreActionContext<GitStoreState>,
-    { id }: { id: string }
-  ) => {
-    commit('setGitDataLoading', true);
-    try {
-      const res = await get(`${endpoint}/${id}/git`);
-      commit('setGitData', res?.data || {});
-      return res;
-    } finally {
-      commit('setGitDataLoading', false);
+  getGit: debounce(
+    async (
+      { commit }: StoreActionContext<GitStoreState>,
+      { id }: { id: string }
+    ) => {
+      commit('setGitDataLoading', true);
+      try {
+        const res = await get(`${endpoint}/${id}/git`);
+        commit('setGitData', res?.data || {});
+        return res;
+      } finally {
+        commit('setGitDataLoading', false);
+      }
     }
-  },
+  ),
   cloneGit: async (
     _: StoreActionContext<GitStoreState>,
     { id }: { id: string }
@@ -153,12 +155,17 @@ const actions = {
     commit('setGitTags', res?.data || []);
     return res;
   },
-  gitCheckout: async (
-    { state }: StoreActionContext<GitStoreState>,
+  gitCheckoutBranch: async (
+    _: StoreActionContext<GitStoreState>,
     { id, branch }: { id: string; branch: string }
   ) => {
-    const res = await post(`${endpoint}/${id}/git/checkout`, { branch });
-    return res;
+    return await post(`${endpoint}/${id}/git/checkout/branch`, { branch });
+  },
+  gitCheckoutTag: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, tag }: { id: string; tag: string }
+  ) => {
+    return await post(`${endpoint}/${id}/git/checkout/tag`, { tag });
   },
   gitPull: async (
     { state }: StoreActionContext<GitStoreState>,

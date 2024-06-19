@@ -175,30 +175,6 @@ const useGitDetail = () => {
   onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: id.value }));
   onBeforeMount(() => store.dispatch(`${ns}/getGitBranches`, { id: id.value }));
 
-  // update tab disabled keys
-  const { form } = useGit(store);
-  let handle = 0;
-  watch(form, () => {
-    const { status } = form.value as Git;
-    if (status === GIT_STATUS_READY) {
-      store.commit(`${ns}/resetDisabledTabKeys`);
-      clearInterval(handle);
-    } else {
-      store.commit(
-        `${ns}/setDisabledTabKeys`,
-        state.tabs.map(tab => tab.id).filter(id => id !== TAB_NAME_OVERVIEW)
-      );
-      if (status === GIT_STATUS_ERROR) {
-        clearInterval(handle);
-      } else {
-        handle = setInterval(
-          () => store.dispatch(`${ns}/getById`, id.value),
-          5000
-        );
-      }
-    }
-  });
-
   return {
     ...useDetail('git'),
     gitCheckoutFormRef,

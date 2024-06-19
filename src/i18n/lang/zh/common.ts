@@ -47,6 +47,7 @@ const common: LCommon = {
       start: '您是否确定启动?',
       deleteSelected: '您是否确定删除已选项?',
       proceed: '您是否确定继续?',
+      create: '您是否确定创建?',
     },
   },
   message: {

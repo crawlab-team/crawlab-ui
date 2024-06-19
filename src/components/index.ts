@@ -41,7 +41,6 @@ import FileEditorSettingsDialog from './file/FileEditorSettingsDialog.vue';
 import FileTab from './file/FileTab.vue';
 import FileUpload from './file/FileUpload.vue';
 import UploadFilesDialog from './file/UploadFilesDialog.vue';
-import UploadGitFilesDialog from './file/UploadGitFilesDialog.vue';
 import FilterCondition from './filter/FilterCondition.vue';
 import FilterConditionList from './filter/FilterConditionList.vue';
 import FilterInput from './filter/FilterInput.vue';
@@ -51,10 +50,11 @@ import FormItem from './form/FormItem.vue';
 import FormReadonlyValue from './form/FormReadonlyValue.vue';
 import FormTable from './form/FormTable.vue';
 import FormTableField from './form/FormTableField.vue';
-import CreateEditGitDialog from './git/CreateEditGitDialog.vue';
+import CreateGitBranchDialog from './git/CreateGitBranchDialog.vue';
 import GitFileStatus from './git/GitFileStatus.vue';
 import GitForm from './git/GitForm.vue';
 import GitStatus from './git/GitStatus.vue';
+import UploadGitFilesDialog from './git/UploadGitFilesDialog.vue';
 import AtomMaterialIcon from './icon/AtomMaterialIcon.vue';
 import Icon from './icon/Icon.vue';
 import MenuItemIcon from './icon/MenuItemIcon.vue';
@@ -189,7 +189,6 @@ export {
   FileTab as ClFileTab,
   FileUpload as ClFileUpload,
   UploadFilesDialog as ClUploadFilesDialog,
-  UploadGitFilesDialog as ClUploadGitFilesDialog,
   FilterCondition as ClFilterCondition,
   FilterConditionList as ClFilterConditionList,
   FilterInput as ClFilterInput,
@@ -199,10 +198,11 @@ export {
   FormReadonlyValue as ClFormReadonlyValue,
   FormTable as ClFormTable,
   FormTableField as ClFormTableField,
-  CreateEditGitDialog as ClCreateEditGitDialog,
+  CreateGitBranchDialog as ClCreateGitBranchDialog,
   GitFileStatus as ClGitFileStatus,
   GitForm as ClGitForm,
   GitStatus as ClGitStatus,
+  UploadGitFilesDialog as ClUploadGitFilesDialog,
   AtomMaterialIcon as ClAtomMaterialIcon,
   Icon as ClIcon,
   MenuItemIcon as ClMenuItemIcon,
