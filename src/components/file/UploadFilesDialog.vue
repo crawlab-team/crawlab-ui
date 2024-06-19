@@ -20,19 +20,19 @@ const props = defineProps<{
 // i18n
 const { t } = useI18n();
 
-// route
-const route = useRoute();
-
 // store
 const store = useStore();
 
-const fileUploadRef = ref<typeof FileUpload>();
+const files = ref<FileWithPath[]>([]);
 
 const mode = ref<FileUploadMode>(FILE_UPLOAD_MODE_DIR);
-const files = ref<FileWithPath[]>([]);
+
+const fileUploadRef = ref<typeof FileUpload>();
+
 const fileUploadVisible = computed(
   () => props.activeDialogKey === 'uploadFiles'
 );
+
 const name = computed(() => props.form?.name);
 
 const confirmLoading = ref<boolean>(false);
@@ -111,9 +111,7 @@ const onUploadConfirm = async () => {
   const { ns } = props;
   confirmLoading.value = true;
   try {
-    sendEvent('click_spider_detail_actions_upload_confirm', {
-      mode: mode.value,
-    });
+    sendEvent('click_spider_detail_actions_upload_confirm');
 
     await uploadFiles();
     await ElMessage.success(t('common.message.success.upload'));
@@ -125,11 +123,8 @@ const onUploadConfirm = async () => {
   }
 };
 
-const onModeChange = (value: FileUploadMode) => {
-  mode.value = value;
-};
-
 const onFilesChange = (fileList: FileWithPath[]) => {
+  console.debug(fileList);
   if (!fileList.length) return;
   files.value = fileList;
 
@@ -146,9 +141,6 @@ watch(fileUploadVisible, () => {
   if (!fileUploadVisible.value) {
     files.value = [];
   }
-});
-watch(mode, () => {
-  files.value = [];
 });
 
 onBeforeUnmount(() => {
@@ -170,7 +162,7 @@ onBeforeUnmount(() => {
       ref="fileUploadRef"
       :mode="mode"
       :upload-info="uploadInfo"
-      @mode-change="onModeChange"
+      @mode-change="(value: FileUploadMode) => (mode = value)"
       @files-change="onFilesChange"
     />
   </cl-dialog>

@@ -11,7 +11,7 @@ const props = defineProps<{
   uploadInfo?: FileUploadInfo;
 }>();
 const emit = defineEmits<{
-  (e: 'mode-change', mode: string): void;
+  (e: 'mode-change', mode: FileUploadMode): void;
   (e: 'files-change', files: (FileWithPath | undefined)[]): void;
 }>();
 
@@ -31,6 +31,15 @@ const { t } = useI18n();
 
 const fileInput = ref<HTMLInputElement>();
 
+const resetFileInput = () => {
+  // reset file input value when mode change
+  if (fileInput.value?.files?.length) {
+    fileInput.value.value = '';
+  }
+};
+watch(() => props.uploadInfo, resetFileInput);
+
+const internalMode = ref<FileUploadMode>(props.mode);
 const modeOptions = computed<FileUploadModeOption[]>(() => [
   {
     label: t('components.file.upload.mode.folder'),
@@ -41,16 +50,8 @@ const modeOptions = computed<FileUploadModeOption[]>(() => [
     value: FILE_UPLOAD_MODE_FILES,
   },
 ]);
-const internalMode = ref<string>();
 
 const uploadRef = ref<typeof ElUpload>();
-
-watch(
-  () => props.mode,
-  () => {
-    internalMode.value = props.mode;
-  }
-);
 
 const onFileChange = (file: UploadFile, fileList: UploadFile[]) => {
   emit(
@@ -75,17 +76,6 @@ const onDirFilesChange = (e: Event) => {
   emit('files-change', files);
 };
 
-const onModeChange = (mode: string) => {
-  emit('mode-change', mode);
-
-  sendEvent('click_file_upload_mode_change', { mode });
-};
-
-onBeforeMount(() => {
-  const { mode } = props;
-  internalMode.value = mode;
-});
-
 const onClickUploadDir = () => {
   fileInput.value?.click();
 };
@@ -93,8 +83,12 @@ const onClickUploadDir = () => {
 
 <template>
   <div class="file-upload">
+    {{ uploadInfo }}
     <div class="mode-select">
-      <el-radio-group v-model="internalMode" @change="onModeChange">
+      <el-radio-group
+        v-model="internalMode"
+        @change="(value: FileUploadMode) => emit('mode-change', value)"
+      >
         <el-radio
           v-for="{ value, label } in modeOptions"
           :key="value"
@@ -217,9 +211,6 @@ const onClickUploadDir = () => {
       border: 1px solid var(--cl-info-plain-color);
       padding: 10px;
       margin-top: 10px;
-
-      .file-item {
-      }
     }
   }
 }
