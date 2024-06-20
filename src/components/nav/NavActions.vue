@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClNavActions' });
 import { computed, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{

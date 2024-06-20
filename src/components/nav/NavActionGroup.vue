@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineOptions({ name: 'ClNavActionGroup' });
+</script>
 
 <template>
   <div class="nav-action-group">

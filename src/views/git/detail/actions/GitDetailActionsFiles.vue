@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClGitDetailActionsFiles' });
 import useGitDetail from '@/views/git/detail/useGitDetail';
 
 const ns = 'git';

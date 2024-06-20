@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClFileEditor' });
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
@@ -38,7 +39,7 @@ const emit = defineEmits<{
     e: 'create-with-ai',
     name: string,
     sourceCode: string,
-    item?: FileNavItem,
+    item?: FileNavItem
   ): void;
 }>();
 
@@ -61,7 +62,7 @@ const resizeObserver = new ResizeObserver(() => {
 const tabs = ref<FileNavItem[]>([]);
 
 const activeFileItem = computed<FileNavItem | undefined>(
-  () => props.activeNavItem,
+  () => props.activeNavItem
 );
 
 const themeColors = ref<monaco.editor.IColors>({});
@@ -417,7 +418,7 @@ const initEditor = async () => {
 const onCreateWithAi = (
   name: string,
   sourceCode: string,
-  item?: FileNavItem,
+  item?: FileNavItem
 ) => {
   emit('create-with-ai', name, sourceCode, item);
 };
@@ -657,7 +658,9 @@ onUnmounted(() => {
 }
 </style>
 <style scoped>
-.file-editor .nav-menu .nav-menu-top-bar:deep(.search.el-input .el-input__wrapper) {
+.file-editor
+  .nav-menu
+  .nav-menu-top-bar:deep(.search.el-input .el-input__wrapper) {
   border: none;
   background: transparent;
   color: inherit;

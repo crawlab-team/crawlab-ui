@@ -3,141 +3,131 @@ import fs from 'fs';
 import rd from 'rd';
 import os from 'os';
 
+const EXPORT_MODULES = [
+  'components',
+  'views',
+  'directives',
+  'layouts',
+  // 'services',
+  // 'store',
+  // 'utils',
+  // 'constants',
+];
+
+const COMPONENT_PREFIX = 'Cl';
+const INDEX_COMP_NAME = 'index';
+
 function isWindows() {
   return os.platform() === 'win32';
 }
 
-const INDEX_COMP_NAME = 'index';
+function readFileAndModify(filePath, componentName) {
+  let fileContent = fs.readFileSync(filePath, 'utf8');
+  fileContent = addComponentName(fileContent, componentName);
+  fs.writeFileSync(filePath, fileContent);
+}
 
-const IGNORE_COMPONENTS_SUB_MODULES = [// 'node',
-  // 'project',
-  // 'spider',
-  // 'task',
-  // 'tag',
-  // 'dataCollection',
-  // 'schedule',
-  // 'user',
-  // 'token',
-  // 'plugin',
-  // 'git',
-  // 'file',
-];
+function processFile(filePath, moduleName) {
+  const fileName = path.basename(filePath);
+  const relPath = `.${filePath.replace(getModulePath(moduleName), '')}`;
 
-const EXPORT_MODULES = ['components', // 'constants',
-  'directives', 'layouts', // 'services',
-  // 'store',
-  // 'utils',
-  'views'];
+  if (filePath.endsWith('.vue')) {
+    const compName = fileName.replace('.vue', '');
+    const importLine = `import ${compName} from '${relPath}';`;
+    const exportLine = `${compName} as ${COMPONENT_PREFIX}${compName},`;
 
-const COMPONENT_PREFIX = 'Cl';
+    readFileAndModify(filePath, compName);
+    return { importLine, exportLine };
+  } else if (
+    filePath.endsWith('.ts') &&
+    !['components', 'layouts', 'views'].includes(moduleName) &&
+    fileName !== INDEX_COMP_NAME
+  ) {
+    let compName = fileName.replace('.ts', '');
+    compName += compName === 'export' ? '_' : '';
 
-const genIndex = (moduleName) => {
-  // import/export lines
-  const importLines = [];
-  const exportLines = [];
+    const importLine = `import ${compName} from '${relPath.replace('.ts', '')}';`;
+    const exportLine = `${compName} as ${compName},`;
+    return { importLine, exportLine };
+  }
+}
 
-  // module path
+function getModulePath(moduleName) {
   let modulePath = path.resolve(`./src/${moduleName}`);
   if (isWindows()) {
     modulePath = modulePath.replace(/\\/g, '/');
   }
+  return modulePath;
+}
 
-  // read each file
+function genIndex(moduleName) {
+  const modulePath = getModulePath(moduleName);
+  const importExportLines = [];
+
+  const processEachFile = filePath => {
+    const lines = processFile(filePath, moduleName);
+    if (lines) importExportLines.push(lines);
+  };
+
   rd.eachSync(modulePath, (f, s) => {
-    if (isWindows()) {
-      f = f.replace(/\\/g, '/');
-    }
-
-    // relative path
-    const relPath = `.${f.replace(modulePath, '')}`;
-
-    // file name
-    const fileName = path.basename(f);
-
-    // vue
-    if (f.endsWith('.vue')) {
-      // component name
-      const compName = fileName.replace('.vue', '');
-
-      // skip ignored components sub-modules
-      if (moduleName === 'components') {
-        const subModuleName = relPath.split('/')[1];
-        if (IGNORE_COMPONENTS_SUB_MODULES.includes(subModuleName)) return;
-      }
-
-      // import line
-      const importLine = `import ${compName} from '${relPath}';`;
-
-      // export line
-      const exportLine = `${compName} as ${COMPONENT_PREFIX}${compName},`;
-
-      // add to importLines/exportLines
-      importLines.push(importLine);
-      exportLines.push(exportLine);
-    } else if (f.endsWith('.ts')) {
-      // skip components, layouts
-      if (['components', 'layouts', 'views'].includes(moduleName)) return;
-
-      // component name
-      let compName = fileName.replace('.ts', '');
-
-      // skip index
-      if (compName === INDEX_COMP_NAME) return;
-
-      // add suffix to component name
-      if (compName === 'export') {
-        compName += '_';
-      }
-
-      // relative component name
-      const relCompName = relPath.replace('.ts', '');
-
-      // import line
-      const importLine = `import ${compName} from '${relCompName}';`;
-
-      // export line
-      const exportLine = `${compName} as ${compName},`;
-
-      // add to importLines/exportLines
-      importLines.push(importLine);
-      exportLines.push(exportLine);
-    }
+    processEachFile(f.replace(/\\/g, '/'));
   });
 
-  // write to index.ts
-  let content = '';
-  importLines.forEach(l => content += l + '\n');
-  content += `
-export {
-${exportLines.map(l => '  ' + l).join('\n')}
-};
-`;
-  fs.writeFileSync(`${modulePath}/index.ts`, content);
-};
+  const importLines = importExportLines.map(line => line.importLine).join('\n');
+  const exportLines = importExportLines
+    .map(line => `  ${line.exportLine}`)
+    .join('\n');
 
-const genRootIndex = () => {
-  const exportLines = EXPORT_MODULES.map(m => `export * from './${m}';`);
-  const content = `${exportLines.join('\n')}
-export * from './router';
-export * from './store';
-export * from './i18n';
-export * from './package';
-export * from './utils';
-export * from './constants';
-export * from './layouts/content';
-export * from './components/form';
-export {default as useSpider} from './components/spider/spider';
-export {
-  ClSpiderDetail,
-} from './views';
-export {installer as default} from './package';
-export {default as useRequest} from './services/request';
-`;
+  const content = `${importLines}\n\nexport {\n${exportLines}\n};\n`;
+  fs.writeFileSync(`${modulePath}/index.ts`, content);
+}
+
+function addComponentName(content, componentName) {
+  const setupScriptTagRegex = /(<script\s+setup[^>]*lang=["']ts["'][^>]*>)/;
+  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?/;
+  const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });`;
+
+  // Check if the script setup tag exists
+  if (setupScriptTagRegex.test(content)) {
+    if (defineOptionsRegex.test(content)) {
+      // If defineOptions exists, update it
+      return content.replace(defineOptionsRegex, newDefineOptions);
+    } else {
+      // If defineOptions does not exist, add it after the script setup tag
+      return content.replace(setupScriptTagRegex, `$1\n${newDefineOptions}`);
+    }
+  }
+  return content; // Return original content if no <script setup> tag found
+}
+
+function genRootIndex() {
+  const exportLines = EXPORT_MODULES.map(
+    module => `export * from './src/${module}';`
+  );
+  const additionalExports = [
+    `export * from './src/router';`,
+    `export * from './src/store';`,
+    `export * from './src/i18n';`,
+    `export * from './src/package';`,
+    `export * from './src/utils';`,
+    `export * from './src/constants';`,
+    `export * from './src/layouts/content';`,
+    `export * from './src/components/form';`,
+    `export { default as useSpider } from './src/components/spider/spider';`,
+    `export { ClSpiderDetail } from './src/views';`,
+    `export { installer as default } from './src/package';`,
+    `export { default as useRequest } from './src/services/request';`,
+  ];
+
+  // Combine all export lines
+  const content = [...exportLines, ...additionalExports].join('\n') + '\n';
+
+  // Write the combined content to the root index.ts
   fs.writeFileSync('./src/index.ts', content);
-};
+}
 
 // gen module index.ts
 EXPORT_MODULES.forEach(m => genIndex(m));
 
 // gen root index.ts
-genRootIndex();
+// genRootIndex();

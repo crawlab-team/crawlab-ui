@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClFileActions' });
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';

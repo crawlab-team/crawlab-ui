@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineOptions({ name: 'ClGitDetailTabOverview' });
+</script>
 
 <template>
   <div class="git-detail-tab-overview">

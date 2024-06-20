@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClNavSidebarList' });
 const props = defineProps<{
   activeKey: string;
   items: NavItem[];

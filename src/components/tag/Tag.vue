@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClTag' });
 import { computed, onMounted, ref, watch } from 'vue';
 import { ElTag } from 'element-plus';
 

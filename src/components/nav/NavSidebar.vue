@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClNavSidebar' });
 import { computed, ref } from 'vue';
 import { ElMenu } from 'element-plus';
 import { emptyArrayFunc } from '@/utils/func';

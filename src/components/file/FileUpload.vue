@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClFileUpload' });
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES } from '@/constants/file';
 import { ElUpload, UploadFile } from 'element-plus';

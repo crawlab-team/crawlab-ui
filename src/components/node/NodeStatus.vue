@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClNodeStatus' });
 import { computed } from 'vue';
 import {
   NODE_STATUS_OFFLINE,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClNavSidebarTree' });
 import { defineComponent, PropType, ref } from 'vue';
 import { emptyArrayFunc } from '@/utils/func';
 
@@ -12,7 +13,12 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{
   (event: 'select', item: NavItem): void;
-  (event: 'check', item: NavItem, checked: boolean, checkedNodes: NavItem[]): void;
+  (
+    event: 'check',
+    item: NavItem,
+    checked: boolean,
+    checkedNodes: NavItem[]
+  ): void;
 }>();
 
 const treeRef = ref();
@@ -87,8 +93,12 @@ const getClass = (item: NavItem): string | undefined => {
   background-color: #ecf5ff !important;
 }
 
-.nav-menu:not(.show-checkbox):deep(.el-tree-node.active > .el-tree-node__content),
-.nav-menu:not(.show-checkbox):deep(.el-tree-node > .el-tree-node__content:hover) {
+.nav-menu:not(.show-checkbox):deep(
+    .el-tree-node.active > .el-tree-node__content
+  ),
+.nav-menu:not(.show-checkbox):deep(
+    .el-tree-node > .el-tree-node__content:hover
+  ) {
   color: #409eff;
 }
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClLinkTag' });
 import { useRouter } from 'vue-router';
 
 export interface LinkTagProps extends TagProps {

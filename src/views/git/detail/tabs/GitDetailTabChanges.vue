@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClGitDetailTabChanges' });
 import { computed, h, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import GitFileStatus from '@/components/git/GitFileStatus.vue';
