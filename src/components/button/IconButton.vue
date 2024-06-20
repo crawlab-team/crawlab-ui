@@ -10,8 +10,7 @@
         :size="size"
         :title="tooltip"
         :type="type"
-        class="icon-button button"
-        style="padding: 7px"
+        class="icon-button button p-1"
         @click="() => $emit('click')"
       />
     </span>
