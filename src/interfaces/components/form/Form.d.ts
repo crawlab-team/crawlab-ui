@@ -10,14 +10,6 @@ import {
 } from '@/constants/form';
 
 declare global {
-  interface FormProps {
-    inline: boolean;
-    labelWidth?: string;
-    size?: string;
-    grid: number;
-    rules?: FormRuleItem | FormRuleItem[];
-  }
-
   interface FormContext {
     labelWidth?: string;
     size?: string;

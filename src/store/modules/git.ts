@@ -157,9 +157,16 @@ const actions = {
   },
   gitCheckoutBranch: async (
     _: StoreActionContext<GitStoreState>,
-    { id, branch }: { id: string; branch: string }
+    {
+      id,
+      localBranch,
+      remoteBranch,
+    }: { id: string; localBranch: string; remoteBranch: string }
   ) => {
-    return await post(`${endpoint}/${id}/git/checkout/branch`, { branch });
+    return await post(`${endpoint}/${id}/git/checkout/branch`, {
+      branch: localBranch,
+      remote_branch: remoteBranch,
+    });
   },
   gitCheckoutTag: async (
     _: StoreActionContext<GitStoreState>,

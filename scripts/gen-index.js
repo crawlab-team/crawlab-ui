@@ -89,8 +89,8 @@ function genIndex(moduleName) {
 
 function addComponentName(content, componentName) {
   const setupScriptTagRegex = /(<script\s+setup[^>]*lang=["']ts["'][^>]*>)/;
-  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?(\n+)?/;
-  const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });\n\n`;
+  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?\n+/;
+  const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });\n`;
 
   // Check if the script setup tag exists
   if (setupScriptTagRegex.test(content)) {

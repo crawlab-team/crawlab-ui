@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailTabRemote' });
-
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 

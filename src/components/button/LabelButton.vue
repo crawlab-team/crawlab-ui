@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClLabelButton' });
-
 import { ButtonProps } from '@/components/button/Button.vue';
 
 export interface LabelButtonProps extends ButtonProps {

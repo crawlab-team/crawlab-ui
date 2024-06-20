@@ -1,3 +1,11 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClNavActionItem' });
+defineProps<{
+  isLabel?: boolean;
+  label?: string;
+}>();
+</script>
+
 <template>
   <div :class="[isLabel ? 'is-label' : '']" class="nav-action-item">
     <span v-if="label" class="nav-action-item-label">
@@ -6,26 +14,6 @@
     <slot></slot>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'NavActionItem',
-  props: {
-    isLabel: {
-      type: Boolean,
-      default: false,
-    },
-    label: {
-      type: String,
-    },
-  },
-  setup() {
-    return {};
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .nav-action-item {

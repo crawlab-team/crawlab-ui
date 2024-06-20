@@ -46,7 +46,10 @@ interface GitStoreActions
   getGitRemoteRefs: StoreAction<GitStoreState, { id: string }>;
   getGitBranches: StoreAction<GitStoreState, { id: string }>;
   getGitTags: StoreAction<GitStoreState, { id: string }>;
-  gitCheckoutBranch: StoreAction<GitStoreState, { id: string; branch: string }>;
+  gitCheckoutBranch: StoreAction<
+    GitStoreState,
+    { id: string; localBranch: string; remoteBranch: string }
+  >;
   gitCheckoutTag: StoreAction<GitStoreState, { id: string; tag: string }>;
   gitPull: StoreAction<GitStoreState, { id: string }>;
   gitCommit: StoreAction<GitStoreState, { id: string; commit_message: string }>;

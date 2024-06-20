@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFileEditor' });
-
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';

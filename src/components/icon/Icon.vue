@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClIcon' });
-
 import { computed } from 'vue';
 import useIcon from '@/components/icon/icon';
 

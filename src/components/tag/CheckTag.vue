@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCheckTag' });
-
 import { TagProps } from '@/components/tag/Tag.vue';
 import { computed, ref } from 'vue';
 

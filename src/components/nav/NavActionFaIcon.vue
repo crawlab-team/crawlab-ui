@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNavActionFaIcon' });
-
 defineProps<{
   tooltip?: string;
   icon: Icon;

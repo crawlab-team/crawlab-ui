@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNavActionButton' });
-
 import { ButtonProps } from '@/components/button/Button.vue';
 
 export interface NavActionButtonProps extends ButtonProps {

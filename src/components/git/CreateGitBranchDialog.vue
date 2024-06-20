@@ -1,10 +1,10 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateGitBranchDialog' });
-
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import useGitDetail from '@/views/git/detail/useGitDetail';
 import { translate } from '@/utils';
+import useGitDetail from '@/views/git/detail/useGitDetail';
+import Form from '@/components/form/Form.vue';
 
 const t = translate;
 
@@ -32,13 +32,40 @@ const filteredRemoteBranches = computed(() =>
   })
 );
 
-const internalRemoteBranch = ref<string>();
-watch(filteredRemoteBranches, () => {
-  internalRemoteBranch.value = filteredRemoteBranches.value?.[0]?.name;
+const formRef = ref<typeof Form>();
+const form = ref<{
+  remoteBranch: string;
+  localBranch: string;
+}>({
+  remoteBranch: '',
+  localBranch: '',
 });
+watch(filteredRemoteBranches, () => {
+  form.value.remoteBranch = filteredRemoteBranches.value?.[0]?.name || '';
+});
+watch(
+  () => form.value.remoteBranch,
+  () => {
+    form.value.localBranch = form.value.remoteBranch?.split('/')?.pop() || '';
+  }
+);
 
+const confirmLoading = ref(false);
 const onConfirm = async () => {
-  store.dispatch(`${ns}/gitCheckoutBranch`, { id: activeId.value });
+  await formRef.value?.validate();
+  confirmLoading.value = true;
+  try {
+    const { localBranch, remoteBranch } = form.value;
+    await store.dispatch(`${ns}/gitCheckoutBranch`, {
+      id: activeId.value,
+      localBranch,
+      remoteBranch,
+    });
+  } finally {
+    confirmLoading.value = false;
+    store.commit(`${ns}/hideDialog`);
+    await store.dispatch(`${ns}/getGit`, { id: activeId.value });
+  }
 };
 
 const onClose = () => {
@@ -50,12 +77,18 @@ const onClose = () => {
   <cl-dialog
     :visible="visible"
     :title="t('components.git.branches.new')"
+    :confirm-loading="confirmLoading"
     @confirm="onConfirm"
     @close="onClose"
   >
-    <cl-form>
-      <cl-form-item :span="4" :label="t('components.git.branches.remote')">
-        <el-select v-model="internalRemoteBranch">
+    <cl-form ref="formRef" :model="form">
+      <cl-form-item
+        prop="remoteBranch"
+        :span="4"
+        :label="t('components.git.branches.remote')"
+        required
+      >
+        <el-select v-model="form.remoteBranch">
           <el-option
             v-for="branch in filteredRemoteBranches"
             :key="branch.hash"
@@ -63,6 +96,14 @@ const onClose = () => {
             :value="branch.name"
           />
         </el-select>
+      </cl-form-item>
+      <cl-form-item
+        prop="localBranch"
+        :span="4"
+        :label="t('components.git.branches.local')"
+        required
+      >
+        <el-input v-model="form.localBranch" />
       </cl-form-item>
     </cl-form>
   </cl-dialog>

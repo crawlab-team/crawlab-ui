@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFileTab' });
-
 import { onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';

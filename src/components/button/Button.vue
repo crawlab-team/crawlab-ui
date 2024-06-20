@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClButton' });
-
 import { computed } from 'vue';
 
 export interface ButtonProps {

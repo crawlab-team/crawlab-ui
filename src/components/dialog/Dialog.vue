@@ -1,3 +1,41 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClDialog' });
+import { translate } from '@/utils';
+
+withDefaults(
+  defineProps<{
+    visible: boolean;
+    modalClass?: string;
+    title?: string;
+    top?: string;
+    width?: string;
+    zIndex?: number;
+    confirmDisabled?: boolean;
+    confirmLoading?: boolean;
+    className?: string;
+  }>(),
+  {
+    top: '15vh',
+  }
+);
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+  (e: 'confirm'): void;
+}>();
+
+// i18n
+const t = translate;
+
+const onClose = () => {
+  emit('close');
+};
+
+const onConfirm = () => {
+  emit('confirm');
+};
+</script>
+
 <template>
   <el-dialog
     :custom-class="[className, visible ? 'visible' : 'hidden'].join(' ')"
@@ -37,71 +75,5 @@
     </template>
   </el-dialog>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'Dialog',
-  props: {
-    visible: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    modalClass: {
-      type: String,
-    },
-    title: {
-      type: String,
-      required: false,
-    },
-    top: {
-      type: String,
-      required: false,
-      default: '15vh',
-    },
-    width: {
-      type: String,
-      required: false,
-    },
-    zIndex: {
-      type: Number,
-      required: false,
-    },
-    confirmDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    confirmLoading: {
-      type: Boolean,
-      default: false,
-    },
-    className: {
-      type: String,
-    },
-  },
-  emits: ['close', 'confirm'],
-  setup(props: DialogProps, { emit }) {
-    // i18n
-    const { t } = useI18n();
-
-    const onClose = () => {
-      emit('close');
-    };
-
-    const onConfirm = () => {
-      emit('confirm');
-    };
-
-    return {
-      onClose,
-      onConfirm,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

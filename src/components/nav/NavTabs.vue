@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNavTabs' });
-
 import { translate } from '@/utils';
 
 const t = translate;

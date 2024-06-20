@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClUploadSpiderFilesDialog' });
-
 import { useStore } from 'vuex';
 import useSpiderService from '@/services/spider/spiderService';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';

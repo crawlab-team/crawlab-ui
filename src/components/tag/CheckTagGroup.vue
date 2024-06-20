@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCheckTagGroup' });
-
 import { computed, onBeforeMount, reactive, watch } from 'vue';
 
 export interface CheckTagGroupProps {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFaIconButton' });
-
 import { computed } from 'vue';
 import { ButtonProps } from '@/components/button/Button.vue';
 
