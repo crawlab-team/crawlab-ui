@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFileEditorNavMenu' });
+
 import {
   computed,
   onBeforeUnmount,

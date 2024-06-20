@@ -1,3 +1,12 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClNavActionFaIcon' });
+
+defineProps<{
+  tooltip?: string;
+  icon: Icon;
+}>();
+</script>
+
 <template>
   <cl-nav-action-item class="nav-action-fa-icon" is-label>
     <el-tooltip :content="tooltip" :disabled="!tooltip">
@@ -5,25 +14,6 @@
     </el-tooltip>
   </cl-nav-action-item>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-
-export default defineComponent({
-  name: 'NavActionFaIcon',
-  props: {
-    tooltip: {
-      type: String,
-    },
-    icon: {
-      type: [String, Array] as PropType<Icon>,
-    },
-  },
-  setup(props, { emit }) {
-    return {};
-  },
-});
-</script>
 
 <style scoped>
 .nav-action-fa-icon {

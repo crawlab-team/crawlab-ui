@@ -1,9 +1,10 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCheckTag' });
 
+import { TagProps } from '@/components/tag/Tag.vue';
 import { computed, ref } from 'vue';
 
-interface CheckTagProps extends TagProps {
+export interface CheckTagProps extends TagProps {
   modelValue: boolean;
 }
 

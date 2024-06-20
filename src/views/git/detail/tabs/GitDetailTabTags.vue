@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailTabTags' });
+
 import { computed, h, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useStore } from 'vuex';
 import Time from '@/components/time/Time.vue';

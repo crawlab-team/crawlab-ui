@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitStatus' });
+
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import {

@@ -1,3 +1,18 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClNavActionButton' });
+
+import { ButtonProps } from '@/components/button/Button.vue';
+
+export interface NavActionButtonProps extends ButtonProps {
+  buttonType: ButtonType;
+  label?: string;
+  icon?: Icon;
+  onClick?: () => void;
+}
+
+withDefaults(defineProps<NavActionButtonProps>(), {});
+</script>
+
 <template>
   <div class="nav-action-button">
     <cl-label-button
@@ -26,33 +41,5 @@
     />
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { buttonProps } from '@/components/button/Button.vue';
-
-export default defineComponent({
-  name: 'NavActionButton',
-  props: {
-    buttonType: {
-      type: String as PropType<ButtonType>,
-      required: true,
-    },
-    label: {
-      type: String,
-    },
-    icon: {
-      type: [String, Array] as PropType<Icon>,
-    },
-    onClick: {
-      type: Function as PropType<() => void>,
-    },
-    ...buttonProps,
-  },
-  setup(props, { emit }) {
-    return {};
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

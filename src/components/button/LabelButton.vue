@@ -1,3 +1,19 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClLabelButton' });
+
+import { ButtonProps } from '@/components/button/Button.vue';
+
+export interface LabelButtonProps extends ButtonProps {
+  label: string;
+  icon: string;
+}
+
+withDefaults(defineProps<LabelButtonProps>(), {
+  label: '',
+  icon: '',
+});
+</script>
+
 <template>
   <cl-button
     :circle="circle"
@@ -18,27 +34,9 @@
   </cl-button>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { buttonProps } from '@/components/button/Button.vue';
-
-export default defineComponent({
-  name: 'LabelButton',
-  props: {
-    icon: {
-      type: [Array, String] as PropType<Icon>,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    ...buttonProps,
-  },
-  emits: ['click'],
-  setup(props: LabelButtonProps, { emit }) {
-    return {};
-  },
-});
-</script>
-
 <style lang="scss" scoped></style>
+<style scoped>
+.label-button:deep(.icon) {
+  width: 20px;
+}
+</style>

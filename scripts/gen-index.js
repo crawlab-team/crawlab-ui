@@ -31,6 +31,11 @@ function processFile(filePath, moduleName) {
   const fileName = path.basename(filePath);
   const relPath = `.${filePath.replace(getModulePath(moduleName), '')}`;
 
+  // skip index.ts
+  if (fileName.split('.')[0] === INDEX_COMP_NAME) {
+    return;
+  }
+
   if (filePath.endsWith('.vue')) {
     const compName = fileName.replace('.vue', '');
     const importLine = `import ${compName} from '${relPath}';`;
@@ -84,8 +89,8 @@ function genIndex(moduleName) {
 
 function addComponentName(content, componentName) {
   const setupScriptTagRegex = /(<script\s+setup[^>]*lang=["']ts["'][^>]*>)/;
-  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?/;
-  const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });`;
+  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?(\n+)?/;
+  const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });\n\n`;
 
   // Check if the script setup tag exists
   if (setupScriptTagRegex.test(content)) {

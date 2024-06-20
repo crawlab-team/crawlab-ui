@@ -1,3 +1,25 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClFaIconButton' });
+
+import { computed } from 'vue';
+import { ButtonProps } from '@/components/button/Button.vue';
+
+export interface FaIconButtonProps extends ButtonProps {
+  icon: Icon;
+  badgeIcon?: Icon;
+  spin?: boolean;
+}
+
+const props = defineProps<FaIconButtonProps>();
+
+const cls = computed<string>(() => {
+  const { className } = props;
+  const classes = ['fa-icon-button'];
+  if (className) classes.push(className);
+  return classes.join(' ');
+});
+</script>
+
 <template>
   <cl-button
     :circle="circle"
@@ -19,44 +41,6 @@
   </cl-button>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
-import { buttonProps } from './Button.vue';
-
-export const faIconButtonProps = {
-  icon: {
-    type: [Array, String] as PropType<Icon>,
-    required: true,
-  },
-  badgeIcon: {
-    type: [Array, String] as PropType<Icon>,
-    required: false,
-  },
-  spin: {
-    type: Boolean,
-    required: false,
-  },
-  ...buttonProps,
-};
-
-export default defineComponent({
-  name: 'FaIconButton',
-  props: faIconButtonProps,
-  emits: ['click'],
-  setup(props: FaIconButtonProps) {
-    const cls = computed<string>(() => {
-      const { className } = props;
-      const classes = ['fa-icon-button'];
-      if (className) classes.push(className);
-      return classes.join(' ');
-    });
-
-    return {
-      cls,
-    };
-  },
-});
-</script>
 <style lang="scss" scoped>
 .badge-icon {
   position: absolute;
@@ -75,5 +59,10 @@ export default defineComponent({
 .fa-icon-button:deep(.el-button--mini),
 .fa-icon-button:deep(.button) {
   padding: 7px;
+}
+
+.fa-icon-button:deep(.el-button--small) {
+  width: 32px;
+  height: 32px;
 }
 </style>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailTabLogs' });
+
 import { computed, h, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import Time from '@/components/time/Time.vue';

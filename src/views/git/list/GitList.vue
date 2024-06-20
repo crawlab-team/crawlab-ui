@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitList' });
+
 import useGitList from '@/views/git/list/useGitList';
 
 const {

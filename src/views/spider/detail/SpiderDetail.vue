@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClSpiderDetail' });
+
 import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';

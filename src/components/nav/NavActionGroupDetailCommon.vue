@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNavActionGroupDetailCommon' });
+
 import { ACTION_BACK, ACTION_SAVE } from '@/constants';
 import { translate } from '@/utils';
 

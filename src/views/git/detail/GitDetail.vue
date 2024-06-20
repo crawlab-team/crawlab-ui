@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetail' });
+
 import { watch, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import useGitDetail from '@/views/git/detail/useGitDetail';

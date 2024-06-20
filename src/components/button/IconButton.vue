@@ -1,3 +1,15 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClIconButton' });
+
+import { ButtonProps } from '@/components/button/Button.vue';
+
+export interface IconButtonProps extends ButtonProps {
+  icon: string;
+}
+
+withDefaults(defineProps<IconButtonProps>(), {});
+</script>
+
 <template>
   <el-tooltip :content="tooltip ? tooltip : undefined">
     <span>
@@ -10,33 +22,20 @@
         :size="size"
         :title="tooltip"
         :type="type"
-        class="icon-button button p-1"
+        class="icon-button button"
         @click="() => $emit('click')"
       />
     </span>
   </el-tooltip>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { buttonProps } from '@/components/button/Button.vue';
-
-export const iconButtonProps = {
-  icon: {
-    type: String,
-    required: true,
-  },
-  ...buttonProps,
-};
-
-export default defineComponent({
-  name: 'IconButton',
-  props: iconButtonProps,
-  emits: ['click'],
-  setup() {
-    return {};
-  },
-});
-</script>
-
 <style lang="scss" scoped></style>
+<style scoped>
+.icon-button {
+  padding: 7px;
+}
+
+.icon-button:deep(.icon) {
+  width: 20px;
+}
+</style>

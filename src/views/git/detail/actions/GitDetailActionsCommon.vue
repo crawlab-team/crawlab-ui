@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailActionsCommon' });
+
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';

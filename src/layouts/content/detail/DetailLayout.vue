@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClDetailLayout' });
+
 import { computed, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import useDetail from '@/layouts/content/detail/useDetail';
 import { useStore } from 'vuex';

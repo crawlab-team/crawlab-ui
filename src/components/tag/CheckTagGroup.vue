@@ -1,13 +1,16 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCheckTagGroup' });
+
 import { computed, onBeforeMount, reactive, watch } from 'vue';
 
-const props = defineProps<{
+export interface CheckTagGroupProps {
   modelValue: string[];
   options: SelectOption[];
   disabled: boolean;
   className?: string;
-}>();
+}
+
+const props = defineProps<CheckTagGroupProps>();
 
 const emit = defineEmits<{
   (e: 'update:model-value', value: string[]): void;
