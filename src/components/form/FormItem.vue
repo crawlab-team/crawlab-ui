@@ -68,7 +68,7 @@ watch(
   () => state?.activeDialogKey,
   () => (internalEditable.value = false)
 );
-,
+
 const editableTooltip = computed<string>(() => {
   const { notEditable } = props;
   if (notEditable) return 'Unable to edit';
@@ -117,7 +117,7 @@ onMounted(() => {
   if (formItem.value) {
     const { labelWidth } = formContext;
     const el = formItem.value?.querySelector(
-      '.el-form-item__content',
+      '.el-form-item__content'
     ) as HTMLDivElement;
     if (labelWidth && el?.style) {
       el.style.width = `calc(100% - ${labelWidth})`;
