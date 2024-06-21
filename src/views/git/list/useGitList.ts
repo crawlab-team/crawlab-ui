@@ -8,7 +8,6 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
   FILTER_OP_CONTAINS,
-  GIT_STATUS_ERROR,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import { sendEvent } from '@/admin/umeng';
@@ -20,7 +19,6 @@ import {
 } from '@/utils';
 import NavLink from '@/components/nav/NavLink.vue';
 import GitStatus from '@/components/git/GitStatus.vue';
-import Tag from '@/components/tag/Tag.vue';
 
 const useGitList = () => {
   // router
@@ -81,67 +79,75 @@ const useGitList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<Git>>(() => [
-    {
-      className: 'name',
-      key: 'name',
-      label: t('views.gits.table.columns.name'),
-      icon: ['fa', 'font'],
-      width: '240',
-      value: (row: Git) =>
-        h(NavLink, {
-          path: `/gits/${row._id}`,
-          label: row.name,
-        }),
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      className: 'status',
-      key: 'status',
-      label: t('views.gits.table.columns.status'),
-      icon: ['fa', 'heartbeat'],
-      width: '150',
-      value: (row: Git) => {
-        const { _id, status, error } = row;
-        return h(GitStatus, { id: _id, status, error });
-      },
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: TABLE_COLUMN_NAME_ACTIONS,
-      label: t('components.table.columns.actions'),
-      fixed: 'right',
-      width: '200',
-      buttons: [
+  const tableColumns = computed<TableColumns<Git>>(
+    () =>
+      [
         {
-          className: 'view-btn',
-          type: 'primary',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: (row: Git) => {
-            router.push(`/gits/${row._id}`);
-
-            sendEvent('click_git_list_actions_view');
+          className: 'name',
+          key: 'name',
+          label: t('views.gits.table.columns.name'),
+          icon: ['fa', 'font'],
+          width: '240',
+          value: (row: Git) =>
+            h(NavLink, {
+              path: `/gits/${row._id}`,
+              label: row.name,
+            }),
+          hasSort: true,
+          hasFilter: true,
+          allowFilterSearch: true,
+        },
+        {
+          className: 'status',
+          key: 'status',
+          label: t('views.gits.table.columns.status'),
+          icon: ['fa', 'heartbeat'],
+          width: '150',
+          value: (row: Git) => {
+            const { _id, status, error } = row;
+            return h(GitStatus, {
+              id: _id,
+              status,
+              error,
+              onRetry: () => store.dispatch(`${ns}/getList`),
+            });
           },
-          action: ACTION_VIEW,
+          hasSort: true,
+          hasFilter: true,
+          allowFilterSearch: true,
         },
         {
-          className: 'delete-btn',
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
-          tooltip: t('common.actions.delete'),
-          onClick: deleteByIdConfirm,
-          action: ACTION_DELETE,
+          key: TABLE_COLUMN_NAME_ACTIONS,
+          label: t('components.table.columns.actions'),
+          fixed: 'right',
+          width: '200',
+          buttons: [
+            {
+              className: 'view-btn',
+              type: 'primary',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: (row: Git) => {
+                router.push(`/gits/${row._id}`);
+
+                sendEvent('click_git_list_actions_view');
+              },
+              action: ACTION_VIEW,
+            },
+            {
+              className: 'delete-btn',
+              type: 'danger',
+              size: 'small',
+              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.delete'),
+              onClick: deleteByIdConfirm,
+              action: ACTION_DELETE,
+            },
+          ],
+          disableTransfer: true,
         },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+      ] as TableColumns<Git>
+  );
 
   // options
   const opts = {

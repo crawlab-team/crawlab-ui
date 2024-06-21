@@ -10,6 +10,7 @@ interface LComponentsGit {
     status: string;
     error: string;
     autoPull: string;
+    urlInvalid: string;
   };
   common: {
     currentBranch: string;

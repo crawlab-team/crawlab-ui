@@ -81,14 +81,6 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
     },
   ] as TableColumns<GitLog>;
 });
-
-watch(
-  () => activeId.value,
-  () => store.dispatch(`${ns}/getGitBranches`, { id: activeId.value })
-);
-onBeforeMount(() =>
-  store.dispatch(`${ns}/getGitBranches`, { id: activeId.value })
-);
 </script>
 
 <template>

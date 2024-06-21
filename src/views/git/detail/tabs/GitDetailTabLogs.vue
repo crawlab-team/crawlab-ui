@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { debounce } from '@/utils';
+
 defineOptions({ name: 'ClGitDetailTabLogs' });
 import { computed, h, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
@@ -8,6 +10,7 @@ import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants/table';
 import { useI18n } from 'vue-i18n';
 import useGitDetail from '@/views/git/detail/useGitDetail';
+import useGit from '@/components/git/git';
 // i18n
 const { t } = useI18n();
 
@@ -15,6 +18,10 @@ const { t } = useI18n();
 const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
+
+const { activeId } = useGitDetail();
+
+const { form } = useGit(store);
 
 // table pagination
 const tablePagination = ref<TablePagination>({
@@ -27,9 +34,7 @@ const onPaginationChange = (pagination: TablePagination) => {
 };
 
 // all table data
-const allTableData = computed<TableData<GitRef>>(
-  () => state.gitData?.logs || []
-);
+const allTableData = computed<TableData<GitRef>>(() => state.gitLogs || []);
 
 // table data
 const tableData = computed<TableData<GitLog>>(() => {
@@ -58,7 +63,7 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
             effect: r.type === GIT_REF_TYPE_BRANCH ? 'dark' : 'light',
             type: r.type === GIT_REF_TYPE_BRANCH ? 'primary' : 'success',
             tooltip: `${r.type}: ${r.name}`,
-          } as TagProps)
+          })
         );
       },
     },
@@ -93,6 +98,12 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
     },
   ] as TableColumns<GitLog>;
 });
+
+const getLogs = debounce(() => {
+  store.dispatch(`${ns}/getLogs`, { id: activeId.value });
+});
+watch(form, getLogs);
+onBeforeMount(getLogs);
 </script>
 
 <template>

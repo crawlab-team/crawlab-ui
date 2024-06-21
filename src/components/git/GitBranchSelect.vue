@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitBranchSelect' });
-
 import { computed, ref, watch } from 'vue';
 import { emptyArrayFunc, translate } from '@/utils';
 
@@ -21,7 +20,8 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: 'modelValue:update', value: string): void;
-  (e: 'change', value: string): void;
+  (e: 'select-local', value: string): void;
+  (e: 'select-remote', value: string): void;
 }>();
 
 const t = translate;
@@ -34,7 +34,15 @@ const getRemoteBranchFromLocalBranch = (localBranch: GitRef) => {
   );
 };
 
-const options = computed(() => {
+const getLocalBranchFromRemoteBranch = (remoteBranch: GitRef) => {
+  const { localBranches } = props;
+  if (!remoteBranch.hash) return;
+  return localBranches.find(
+    localBranch => localBranch.hash === remoteBranch.hash
+  );
+};
+
+const localBranchOptions = computed(() => {
   const { localBranches } = props;
   return localBranches.map(branch => {
     return {
@@ -43,6 +51,19 @@ const options = computed(() => {
       branch,
     };
   });
+});
+
+const remoteBranchOptions = computed(() => {
+  const { remoteBranches } = props;
+  return remoteBranches
+    .filter(branch => !getLocalBranchFromRemoteBranch(branch))
+    .map(branch => {
+      return {
+        value: branch.name,
+        label: branch.name,
+        branch,
+      };
+    });
 });
 
 const selectRef = ref<HTMLElement>();
@@ -55,6 +76,17 @@ watch(
     internalValue.value = value;
   }
 );
+
+const onSelect = (value: string) => {
+  const localBranch = localBranchOptions.value.find(
+    branch => branch.value === value
+  );
+  if (localBranch) {
+    emit('select-local', localBranch.value || '');
+  } else {
+    emit('select-remote', value);
+  }
+};
 </script>
 
 <template>
@@ -64,7 +96,7 @@ watch(
       v-model="internalValue"
       :disabled="disabled || loading"
       :placeholder="t('components.git.branches.select')"
-      @change="() => emit('change', internalValue)"
+      @change="onSelect"
     >
       <template #label="{ label }">
         <div>
@@ -74,7 +106,7 @@ watch(
         </div>
       </template>
       <el-option
-        v-for="op in options"
+        v-for="op in localBranchOptions"
         :key="op.value"
         :label="op.label"
         :value="op.value"
@@ -96,6 +128,28 @@ watch(
           </span>
         </div>
       </el-option>
+      <el-option-group :label="t('components.git.branches.remote')">
+        <el-option
+          v-for="op in remoteBranchOptions"
+          :key="op.value"
+          :label="op.label"
+          :value="op.value"
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 24px;
+            "
+          >
+            <div>
+              <cl-icon :icon="['fa', 'code-branch']" />
+              <span style="margin-left: 5px">{{ op.label }}</span>
+            </div>
+          </div>
+        </el-option>
+      </el-option-group>
     </el-select>
   </div>
 </template>

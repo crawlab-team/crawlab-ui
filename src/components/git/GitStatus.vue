@@ -18,7 +18,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'click', _: void): void;
+  (e: 'click'): void;
+  (e: 'retry'): void;
 }>();
 
 const { t } = useI18n();
@@ -26,7 +27,7 @@ const { t } = useI18n();
 const ns = 'git';
 const store = useStore();
 
-const data = computed<TagData>(() => {
+const data = computed(() => {
   const { status, error } = props;
   switch (status) {
     case GIT_STATUS_PENDING:
@@ -72,7 +73,7 @@ const data = computed<TagData>(() => {
 const onRetry = async () => {
   const { id } = props;
   await store.dispatch(`${ns}/cloneGit`, { id });
-  await store.dispatch(`${ns}/getById`, id);
+  emit('retry');
 };
 </script>
 

@@ -14,7 +14,7 @@ const store = useStore();
 const { git: state } = store.state as RootStoreState;
 const {
   activeId,
-  gitCurrentBranch,
+  currentBranch,
   gitRemoteBranches,
   gitLocalBranchesDict,
   gitRemoteBranchesDict,
@@ -28,7 +28,7 @@ const filteredRemoteBranches = computed(() =>
   gitRemoteBranches.value?.filter(branch => {
     if (!branch.hash) return;
     const localBranch = gitLocalBranchesDict.value[branch.hash];
-    return !localBranch || localBranch.name !== gitCurrentBranch.value;
+    return !localBranch || localBranch.name !== currentBranch.value;
   })
 );
 
@@ -56,7 +56,7 @@ const onConfirm = async () => {
   confirmLoading.value = true;
   try {
     const { localBranch, remoteBranch } = form.value;
-    await store.dispatch(`${ns}/gitCheckoutBranch`, {
+    await store.dispatch(`${ns}/checkoutBranch`, {
       id: activeId.value,
       localBranch,
       remoteBranch,

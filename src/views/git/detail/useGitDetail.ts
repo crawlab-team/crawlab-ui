@@ -140,9 +140,7 @@ const useGitDetail = () => {
     },
   };
 
-  const gitCurrentBranch = computed<string | undefined>(
-    () => state.gitData?.current_branch
-  );
+  const currentBranch = computed<GitRef | undefined>(() => state.currentBranch);
 
   const gitDataLoading = computed(() => state.gitDataLoading);
 
@@ -166,16 +164,6 @@ const useGitDetail = () => {
     return dict;
   });
 
-  onBeforeMount(() => store.dispatch(`node/getAllList`));
-
-  // get git data
-  watch(id, () => store.dispatch(`${ns}/getGit`, { id: id.value }));
-  onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: id.value }));
-  onBeforeMount(() => store.dispatch(`${ns}/getGitBranches`, { id: id.value }));
-  onBeforeMount(() =>
-    store.dispatch(`${ns}/getGitRemoteBranches`, { id: id.value })
-  );
-
   return {
     ...useDetail('git'),
     gitCheckoutFormRef,
@@ -183,7 +171,7 @@ const useGitDetail = () => {
     gitDialogVisible,
     gitLoading,
     ...gitActions,
-    gitCurrentBranch,
+    currentBranch,
     gitDataLoading,
     gitLocalBranches,
     gitLocalBranchesDict,

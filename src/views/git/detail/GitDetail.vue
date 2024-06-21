@@ -1,14 +1,16 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetail' });
-import { watch, onBeforeUnmount } from 'vue';
+import { watch, onBeforeUnmount, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import useGit from '@/components/git/git';
 import {
   GIT_STATUS_ERROR,
   GIT_STATUS_READY,
+  TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
 } from '@/constants';
+import { debounce } from '@/utils';
 
 const { activeId, activeTabName } = useGitDetail();
 
@@ -19,30 +21,52 @@ const { git: state } = store.state;
 // update tab disabled keys
 const { form } = useGit(store);
 let handle = 0;
-watch(form, () => {
-  const { status } = form.value as Git;
-  if (status === GIT_STATUS_READY) {
-    store.commit(`${ns}/resetDisabledTabKeys`);
+watch(
+  form,
+  debounce(() => {
     clearInterval(handle);
-  } else {
-    store.commit(
-      `${ns}/setDisabledTabKeys`,
-      state.tabs.map(tab => tab.id).filter(id => id !== TAB_NAME_OVERVIEW)
-    );
-    if (status === GIT_STATUS_ERROR) {
-      clearInterval(handle);
+    const { status } = form.value as Git;
+    if (status === GIT_STATUS_READY) {
+      store.commit(`${ns}/resetDisabledTabKeys`);
     } else {
+      store.commit(
+        `${ns}/setDisabledTabKeys`,
+        state.tabs.map(tab => tab.id).filter(id => id !== TAB_NAME_OVERVIEW)
+      );
+      if (status === GIT_STATUS_ERROR) {
+        return;
+      }
       handle = setInterval(
         () => store.dispatch(`${ns}/getById`, activeId.value),
         5000
       );
     }
+  })
+);
+
+// get local and remote branches
+const getBranches = debounce(() => {
+  reset();
+  if (form.value?.status !== GIT_STATUS_READY) return;
+  store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value });
+  store.dispatch(`${ns}/getBranches`, { id: activeId.value });
+  store.dispatch(`${ns}/getRemoteBranches`, { id: activeId.value });
+  if (activeTabName.value === TAB_NAME_LOGS) {
+    store.dispatch(`${ns}/getFiles`, { id: activeId.value });
   }
 });
+watch(form, getBranches);
+onBeforeMount(getBranches);
 
-onBeforeUnmount(() => store.commit(`${ns}/resetGitData`));
-onBeforeUnmount(() => store.commit(`${ns}/resetGitBranches`));
-onBeforeUnmount(() => clearInterval(handle));
+// reset
+const reset = () => {
+  store.commit(`${ns}/resetCurrentBranch`);
+  store.commit(`${ns}/resetGitBranches`);
+  store.commit(`${ns}/resetGitRemoteBranches`);
+  clearInterval(handle);
+};
+onBeforeUnmount(reset);
+watch(activeId, reset);
 </script>
 
 <template>

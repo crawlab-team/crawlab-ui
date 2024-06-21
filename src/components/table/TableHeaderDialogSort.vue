@@ -1,3 +1,32 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClTableHeaderDialogSort' });
+import { ASCENDING, DESCENDING, UNSORTED } from '@/constants/sort';
+import { translate } from '@/utils';
+
+defineProps<{
+  value?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: 'change', value?: string): void;
+}>();
+
+// i18n
+const t = translate;
+
+const onChange = (value: SortDirection) => {
+  if (value === UNSORTED) {
+    emit('change', undefined);
+    return;
+  }
+  emit('change', value);
+};
+
+const onClear = () => {
+  emit('change');
+};
+</script>
+
 <template>
   <div class="table-header-dialog-sort">
     <div class="title">
@@ -13,58 +42,16 @@
     </div>
     <el-radio-group :model-value="value" type="primary" @change="onChange">
       <el-radio-button :label="ASCENDING" class="sort-btn">
-        <font-awesome-icon :icon="['fa', 'sort-amount-up']" />
+        <cl-icon :icon="['fa', 'sort-amount-up']" />
         {{ t('components.table.header.dialog.sort.ascending') }}
       </el-radio-button>
       <el-radio-button :label="DESCENDING" class="sort-btn">
-        <font-awesome-icon :icon="['fa', 'sort-amount-down-alt']" />
+        <cl-icon :icon="['fa', 'sort-amount-down-alt']" />
         {{ t('components.table.header.dialog.sort.descending') }}
       </el-radio-button>
     </el-radio-group>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { ASCENDING, DESCENDING, UNSORTED } from '@/constants/sort';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'TableHeaderDialogSort',
-  props: {
-    value: {
-      type: String,
-      required: false,
-    },
-  },
-  emits: ['change'],
-  setup(props, { emit }) {
-    // i18n
-    const { t } = useI18n();
-
-    const onChange = (value: SortDirection) => {
-      if (value === UNSORTED) {
-        emit('change', undefined);
-        return;
-      }
-      emit('change', value);
-    };
-
-    const onClear = () => {
-      emit('change');
-    };
-
-    return {
-      onChange,
-      onClear,
-      UNSORTED,
-      ASCENDING,
-      DESCENDING,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .table-header-dialog-sort {
@@ -99,7 +86,9 @@ export default defineComponent({
 }
 </style>
 <style scoped>
-.table-header-dialog-sort:deep(.el-radio-group .el-radio-button .el-radio-button__inner) {
+.table-header-dialog-sort:deep(
+    .el-radio-group .el-radio-button .el-radio-button__inner
+  ) {
   width: 100%;
 }
 </style>

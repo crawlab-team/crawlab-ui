@@ -39,7 +39,7 @@ export const useForm = (
 
   // active dialog key
   const activeDialogKey = computed<DialogKey | undefined>(
-    () => state.activeDialogKey
+    () => state.activeDialogKey as DialogKey
   );
 
   // is selective form
@@ -56,25 +56,8 @@ export const useForm = (
     () => store.getters[`${ns}/isBatchForm`]
   );
 
-  // form list ids getters
-  const formListIds = computed<string[]>(
-    () => store.getters[`${ns}/formListIds`]
-  );
-
   const validateForm = async () => {
-    if (isBatchForm.value && activeDialogKey.value === 'create') {
-      let valid = true;
-      for (const formRef of formTableFieldRefsMap.value.values()) {
-        try {
-          await formRef.value?.validate?.();
-        } catch (e) {
-          valid = false;
-        }
-      }
-      return valid;
-    } else {
-      return await formRef.value?.validate();
-    }
+    return await formRef.value?.validate();
   };
 
   const resetForm = () => {
@@ -157,6 +140,7 @@ export const useForm = (
     // validate
     try {
       const valid = await validateForm();
+      console.debug('onConfirm', activeDialogKey.value, form.value, valid);
       if (!valid) return;
     } catch (ex) {
       console.error(ex);
@@ -181,27 +165,14 @@ export const useForm = (
       let res: HttpResponse;
       switch (activeDialogKey.value) {
         case 'create':
-          if (isBatchForm.value) {
-            const changedFormList = formList.value.filter(d => !isEmptyForm(d));
-            res = await createList(changedFormList);
-          } else {
-            res = await create(form.value);
-          }
+          console.debug('create', form.value);
+          res = await create(form.value);
           sendEvent('click_form_create_confirm', {
             ns,
-            batch: isBatchForm.value,
           });
           break;
         case 'edit':
-          if (isBatchForm.value) {
-            res = await updateList(
-              formListIds.value,
-              form.value,
-              selectedFormFields.value
-            );
-          } else {
-            res = await updateById(form.value._id as string, form.value);
-          }
+          res = await updateById(form.value._id as string, form.value);
           sendEvent('click_form_edit_confirm', {
             ns,
             batch: isBatchForm.value,

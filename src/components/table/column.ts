@@ -14,13 +14,12 @@ import { sendEvent } from '@/admin/umeng';
 
 const useColumns = (
   props: TableProps,
-  ctx: SetupContext,
   table: Ref<Table<any> | undefined>,
   wrapper: Ref<Element>
 ) => {
   const { columns } = props;
 
-  const { store } = useStore(props, ctx, table);
+  const { store } = useStore(table);
 
   const columnsTransferVisible = ref<boolean>(false);
 
@@ -123,11 +122,6 @@ const useColumns = (
       store.value?.updateColumns();
     }
     internalSelectedColumnKeys.value = columnKeys;
-
-    // set table width to 100%
-    // wrapper.value.querySelectorAll('.el-table__body').forEach((el: HTMLTableElement) => {
-    //   el.setAttribute('style', 'width: 100%');
-    // });
   };
 
   const onColumnsChange = (value: string[]) => {

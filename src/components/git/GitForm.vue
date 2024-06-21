@@ -1,3 +1,82 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClGitForm' });
+import { computed, watch } from 'vue';
+import { useStore } from 'vuex';
+import { translate } from '@/utils';
+import useGit from '@/components/git/git';
+
+// i18n
+const t = translate;
+
+// store
+const ns = 'git';
+const store = useStore();
+const { git: state } = store.state as RootStoreState;
+
+const { form, formRef, isSelectiveForm } = useGit(store);
+
+const onUrlChange = (url: string) => {
+  let authType;
+  let username;
+  let name;
+  if (url.match(/^https?:\/\//)) {
+    authType = 'http';
+    name = url.match(/^https?:\/\/[^\/]+\/(.*?)(\.git)?$/)?.[1] || '';
+  } else if (url.match(/^git@/)) {
+    authType = 'ssh';
+    name = url.match(/^git@[^:]+:(.*?)(\.git)?$/)?.[1] || '';
+    username = url.match(/(\w+)@/)?.[1];
+  } else {
+    authType = '';
+    name = '';
+  }
+  const payload = {
+    ...state.form,
+    auth_type: authType,
+    name,
+  };
+  if (username) payload.username = username;
+  store.commit(`${ns}/setForm`, payload);
+};
+
+const onCurrentBranchChange = (currentBranch: string) => {
+  store.commit(`${ns}/setForm`, {
+    ...state.form,
+    current_branch: currentBranch,
+  });
+};
+
+const onUsernameChange = (username: string) => {
+  store.commit(`${ns}/setForm`, {
+    ...state.form,
+    username,
+  });
+};
+
+const onPasswordChange = (password: string) => {
+  store.commit(`${ns}/setForm`, {
+    ...state.form,
+    password,
+  });
+};
+
+const gitBranchSelectOptions = computed<SelectOption[]>(
+  () => store.getters['spider/gitBranchSelectOptions']
+);
+
+watch(
+  () => JSON.stringify(gitBranchSelectOptions.value),
+  () => {
+    if (
+      !state.form.current_branch &&
+      gitBranchSelectOptions.value?.length > 0
+    ) {
+      onCurrentBranchChange(gitBranchSelectOptions.value[0].value);
+    }
+  }
+);
+</script>
+
 <template>
   <cl-form v-if="form" ref="formRef" :model="form" :selective="isSelectiveForm">
     <!--Row-->
@@ -5,6 +84,11 @@
       :span="4"
       :label="t('components.git.form.repoUrl')"
       prop="url"
+      required
+      :rules="{
+        message: t('components.git.form.urlInvalid'),
+        pattern: /^https?:\/\/|^git@/,
+      }"
     >
       <div style="display: flex; align-items: center; gap: 5px">
         <el-input
@@ -33,6 +117,7 @@
       :offset="2"
       :label="t('components.git.form.name')"
       prop="name"
+      required
     >
       <el-input
         v-model="form.name"
@@ -96,113 +181,5 @@
     </template>
   </cl-form>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, PropType, watch } from 'vue';
-import { useStore } from 'vuex';
-import useGit from '@/components/git/git';
-import { useI18n } from 'vue-i18n';
-import { emptyArrayFunc } from '@/utils';
-
-export default defineComponent({
-  name: 'GitForm',
-  props: {
-    branchSelectOptions: {
-      type: Array as PropType<SelectOption[]>,
-      default: emptyArrayFunc,
-    },
-  },
-  emits: ['change'],
-  setup(props: GitFormProps, { emit }) {
-    // i18n
-    const { t } = useI18n();
-
-    // store
-    const ns = 'git';
-    const store = useStore();
-    const { git: state } = store.state as RootStoreState;
-
-    const onUrlChange = (url: string) => {
-      let authType;
-      let username;
-      let name;
-      if (url.match(/^https?:\/\//)) {
-        authType = 'http';
-        name = url.match(/^https?:\/\/[^\/]+\/(.*?)(\.git)?$/)?.[1] || '';
-      } else if (url.match(/^git@/)) {
-        authType = 'ssh';
-        name = url.match(/^git@[^:]+:(.*?)(\.git)?$/)?.[1] || '';
-        username = url.match(/(\w+)@/)?.[1];
-      } else {
-        authType = '';
-        name = '';
-      }
-      const payload = {
-        ...state.form,
-        auth_type: authType,
-        name,
-      };
-      if (username) payload.username = username;
-      store.commit(`${ns}/setForm`, payload);
-      emit('change', state.form);
-    };
-
-    const onCurrentBranchChange = (currentBranch: string) => {
-      store.commit(`${ns}/setForm`, {
-        ...state.form,
-        current_branch: currentBranch,
-      });
-      emit('change', state.form);
-    };
-
-    const onUsernameChange = (username: string) => {
-      store.commit(`${ns}/setForm`, {
-        ...state.form,
-        username,
-      });
-      emit('change', state.form);
-    };
-
-    const onPasswordChange = (password: string) => {
-      store.commit(`${ns}/setForm`, {
-        ...state.form,
-        password,
-      });
-      emit('change', state.form);
-    };
-
-    const gitBranchSelectOptions = computed<SelectOption[]>(
-      () => store.getters['spider/gitBranchSelectOptions']
-    );
-
-    const isCurrentBranchDisabled = computed<boolean>(
-      () => !gitBranchSelectOptions.value?.length
-    );
-
-    watch(
-      () => JSON.stringify(gitBranchSelectOptions.value),
-      () => {
-        if (
-          !state.form.current_branch &&
-          gitBranchSelectOptions.value?.length > 0
-        ) {
-          onCurrentBranchChange(gitBranchSelectOptions.value[0].value);
-        }
-      }
-    );
-
-    return {
-      ...useGit(store),
-      onUrlChange,
-      onCurrentBranchChange,
-      gitBranchSelectOptions,
-      isCurrentBranchDisabled,
-      onUsernameChange,
-      onPasswordChange,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

@@ -10,6 +10,7 @@ const git: LComponentsGit = {
     status: '状态',
     error: '错误',
     autoPull: '自动拉取',
+    urlInvalid: '无效 URL',
   },
   common: {
     currentBranch: '当前分支',

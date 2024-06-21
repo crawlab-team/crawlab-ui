@@ -50,6 +50,7 @@ import FormItem from './form/FormItem.vue';
 import FormReadonlyValue from './form/FormReadonlyValue.vue';
 import FormTable from './form/FormTable.vue';
 import FormTableField from './form/FormTableField.vue';
+import CreateEditGitDialog from './git/CreateEditGitDialog.vue';
 import CreateGitBranchDialog from './git/CreateGitBranchDialog.vue';
 import GitBranchSelect from './git/GitBranchSelect.vue';
 import GitFileStatus from './git/GitFileStatus.vue';
@@ -199,6 +200,7 @@ export {
   FormReadonlyValue as ClFormReadonlyValue,
   FormTable as ClFormTable,
   FormTableField as ClFormTableField,
+  CreateEditGitDialog as ClCreateEditGitDialog,
   CreateGitBranchDialog as ClCreateGitBranchDialog,
   GitBranchSelect as ClGitBranchSelect,
   GitFileStatus as ClGitFileStatus,

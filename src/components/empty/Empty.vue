@@ -1,3 +1,19 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClEmpty' });
+import { translate } from '@/utils';
+
+const t = translate;
+
+withDefaults(
+  defineProps<{
+    description?: string;
+  }>(),
+  {
+    description: 'components.empty.noDataAvailable',
+  }
+);
+</script>
+
 <template>
   <div class="empty">
     <cl-img-empty />
@@ -6,30 +22,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import ImgEmpty from '@/components/empty/ImgEmpty.vue';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'Empty',
-  props: {
-    description: {
-      type: String,
-      required: false,
-      default: 'components.empty.noDataAvailable',
-    },
-  },
-  setup() {
-    const { t } = useI18n();
-
-    return {
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .empty {

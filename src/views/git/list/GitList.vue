@@ -14,7 +14,7 @@ const {
 
 <template>
   <cl-list-layout
-    class="node-list"
+    class="git-list"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

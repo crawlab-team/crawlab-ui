@@ -1,11 +1,7 @@
 import { computed, Ref, SetupContext } from 'vue';
 import { Table } from 'element-plus/lib/components/table/src/table/defaults';
 
-const useStore = (
-  props: TableProps,
-  ctx: SetupContext,
-  table: Ref<Table<any> | undefined>
-) => {
+const useStore = (table: Ref<Table<any> | undefined>) => {
   const setColumns = (states: TableStoreStates, columns: TableColumnCtx[]) => {
     states._columns.value = columns;
   };

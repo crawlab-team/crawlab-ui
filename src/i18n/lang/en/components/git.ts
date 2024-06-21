@@ -10,6 +10,7 @@ const git: LComponentsGit = {
     status: 'Status',
     error: 'Error',
     autoPull: 'Auto Pull',
+    urlInvalid: 'Invalid URL',
   },
   common: {
     currentBranch: 'Current Branch',

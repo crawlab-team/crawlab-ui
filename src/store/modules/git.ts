@@ -44,8 +44,10 @@ const state = {
   gitDataLoading: false,
   gitChangeSelection: [],
   gitRemoteRefs: [],
+  currentBranch: undefined,
   gitBranches: [],
   gitRemoteBranches: [],
+  gitLogs: [],
   gitTags: [],
 } as GitStoreState;
 
@@ -94,6 +96,12 @@ const mutations = {
   resetGitRemoteRefs: (state: GitStoreState) => {
     state.gitRemoteRefs = [];
   },
+  setCurrentBranch: (state: GitStoreState, branch: GitRef) => {
+    state.currentBranch = branch;
+  },
+  resetCurrentBranch: (state: GitStoreState) => {
+    state.currentBranch = undefined;
+  },
   setGitBranches: (state: GitStoreState, refs: GitRef[]) => {
     state.gitBranches = refs;
   },
@@ -105,6 +113,12 @@ const mutations = {
   },
   resetGitRemoteBranches: (state: GitStoreState) => {
     state.gitRemoteBranches = [];
+  },
+  setGitLogs: (state: GitStoreState, logs: GitLog[]) => {
+    state.gitLogs = logs;
+  },
+  resetGitLogs: (state: GitStoreState) => {
+    state.gitLogs = [];
   },
   setGitTags: (state: GitStoreState, refs: GitRef[]) => {
     state.gitTags = refs;
@@ -146,7 +160,15 @@ const actions = {
     commit('setGitRemoteRefs', res?.data || []);
     return res;
   },
-  getGitBranches: async (
+  getCurrentBranch: async (
+    { commit }: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    const res = await get(`${endpoint}/${id}/branches/current`);
+    commit('setCurrentBranch', res?.data);
+    return res;
+  },
+  getBranches: async (
     { commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
@@ -154,12 +176,36 @@ const actions = {
     commit('setGitBranches', res?.data || []);
     return res;
   },
-  getGitRemoteBranches: async (
+  getRemoteBranches: async (
     { commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
-    const res = await get(`${endpoint}/${id}/remote/branches`);
+    const res = await get(`${endpoint}/${id}/branches/remote`);
     commit('setGitRemoteBranches', res?.data || []);
+    return res;
+  },
+  checkoutBranch: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, branch }: { id: string; branch: string }
+  ) => {
+    return await post(`${endpoint}/${id}/branches/checkout`, {
+      branch,
+    });
+  },
+  checkoutRemoteBranch: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, branch }: { id: string; branch: string }
+  ) => {
+    return await post(`${endpoint}/${id}/branches/remote/checkout`, {
+      branch,
+    });
+  },
+  getLogs: async (
+    { commit }: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    const res = await get(`${endpoint}/${id}/logs`);
+    commit('setGitLogs', res?.data || []);
     return res;
   },
   getGitTags: async (
@@ -169,14 +215,6 @@ const actions = {
     const res = await get(`${endpoint}/${id}/git/tags`);
     commit('setGitTags', res?.data || []);
     return res;
-  },
-  gitCheckoutBranch: async (
-    _: StoreActionContext<GitStoreState>,
-    { id, branch }: { id: string; branch: string }
-  ) => {
-    return await post(`${endpoint}/${id}/branches/checkout`, {
-      branch,
-    });
   },
   gitCheckoutTag: async (
     _: StoreActionContext<GitStoreState>,

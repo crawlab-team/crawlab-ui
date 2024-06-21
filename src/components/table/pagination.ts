@@ -1,9 +1,6 @@
-import { SetupContext } from 'vue';
 import { sendEvent } from '@/admin/umeng';
 
-const usePagination = (props: TableProps, ctx: SetupContext) => {
-  const { emit } = ctx;
-
+const usePagination = (props: TableProps, emit: Function) => {
   const onCurrentChange = (page: number) => {
     const { pageSize } = props;
     emit('pagination-change', {

@@ -29,7 +29,7 @@ export declare global {
     selectable: boolean;
     visibleButtons: BuiltInTableActionButtonName[];
     hideFooter: boolean;
-    selectableFunction: TableSelectableFunction;
+    selectableFunction?: TableSelectableFunction;
     paginationLayout: string;
     loading: boolean;
     paginationPosition: TablePaginationPosition;
@@ -136,6 +136,7 @@ export declare global {
   }
 
   interface TableColumnButton {
+    key: 'filter' | 'sort';
     type?: string;
     size?: string;
     icon?: Icon | TableValueFunction;

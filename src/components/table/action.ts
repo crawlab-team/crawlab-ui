@@ -7,13 +7,10 @@ import { sendEvent } from '@/admin/umeng';
 const t = translate;
 
 const useAction = (
-  props: TableProps,
-  ctx: SetupContext,
+  emit: Function,
   table: Ref,
   actionFunctions?: ListLayoutActionFunctions
 ) => {
-  const { emit } = ctx;
-
   // store context
   const storeContext = inject<ListStoreContext<BaseModel>>('store-context');
   const ns = storeContext?.namespace;

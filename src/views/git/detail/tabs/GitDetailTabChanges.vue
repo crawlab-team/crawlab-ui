@@ -115,7 +115,6 @@ watch(
       :data="tableData"
       :columns="tableColumns"
       height="100%"
-      selectable
       hide-footer
       @selection-change="onSelectionChange"
     />

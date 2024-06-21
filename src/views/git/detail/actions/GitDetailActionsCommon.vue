@@ -24,11 +24,9 @@ const isDisabled = computed<boolean>(
     !gitForm.value.auth_type
 );
 
-const gitCurrentBranchRef = ref<typeof ElSelect>();
-
 const {
   activeId,
-  gitCurrentBranch,
+  currentBranch,
   gitDataLoading,
   gitLocalBranches,
   gitLocalBranchesDict,
@@ -38,13 +36,23 @@ const {
   onClickCommit,
 } = useGitDetail();
 
-const isBranchClicked = ref<boolean>(false);
-
 const branchSelectLoading = ref(false);
-const onBranchChange = async (branch: string) => {
+const onLocalBranchChange = async (branch: string) => {
   branchSelectLoading.value = true;
   try {
-    await store.dispatch(`${ns}/gitCheckoutBranch`, {
+    await store.dispatch(`${ns}/checkoutBranch`, {
+      id: activeId.value,
+      branch,
+    });
+    await store.dispatch(`${ns}/getGit`, { id: activeId.value });
+  } finally {
+    branchSelectLoading.value = false;
+  }
+};
+const onRemoteBranchChange = async (branch: string) => {
+  branchSelectLoading.value = true;
+  try {
+    await store.dispatch(`${ns}/gitCheckoutRemoteBranch`, {
       id: activeId.value,
       branch,
     });
@@ -54,41 +62,10 @@ const onBranchChange = async (branch: string) => {
   }
 };
 
-const currentBranch = ref<string>();
-watch(gitCurrentBranch, () => {
-  if (!gitCurrentBranch.value) return;
-  currentBranch.value = gitCurrentBranch.value || '';
+const internalCurrentBranch = ref<string>();
+watch(currentBranch, () => {
+  internalCurrentBranch.value = currentBranch.value?.name;
 });
-
-const getRemoteBranchFromLocalBranch = (localBranch: GitRef) => {
-  if (!localBranch.hash) return;
-  return gitRemoteBranchesDict.value[localBranch.hash]?.name;
-};
-
-const onClickNewBranch = () => {
-  gitCurrentBranchRef.value?.blur();
-  store.commit(`${ns}/showDialog`, 'createBranch');
-};
-
-const onBranchClick = () => {
-  isBranchClicked.value = true;
-};
-
-const onBranchCancel = () => {
-  isBranchClicked.value = false;
-};
-
-const onBranchCheckout = () => {
-  isBranchClicked.value = false;
-};
-
-const onAutoPullChange = async () => {
-  await store.dispatch(`${ns}/updateById`, {
-    id: gitForm.value._id,
-    form: gitForm.value,
-  });
-  ElMessage.success(t('common.message.success.save'));
-};
 </script>
 
 <template>
@@ -103,15 +80,17 @@ const onAutoPullChange = async () => {
         :id="gitForm._id"
         :status="gitForm.status"
         :error="gitForm.error"
+        @retry="() => store.dispatch(`${ns}/getById`, activeId)"
       />
       <div class="branch">
         <cl-git-branch-select
-          v-model="currentBranch"
+          v-model="internalCurrentBranch"
           :local-branches="gitLocalBranches"
           :remote-branches="gitRemoteBranches"
           :disabled="isDisabled"
           :loading="branchSelectLoading || gitDataLoading"
-          @change="onBranchChange"
+          @select-local="onLocalBranchChange"
+          @select-remote="onRemoteBranchChange"
         />
       </div>
       <cl-fa-icon-button
@@ -128,12 +107,6 @@ const onAutoPullChange = async () => {
         :disabled="isDisabled"
         @click="onClickCommit"
       />
-      <!--      <cl-switch-->
-      <!--        v-model="gitForm.auto_pull"-->
-      <!--        :active-text="t('components.git.form.autoPull')"-->
-      <!--        :disabled="gitForm.url === '' || gitForm.auth_type === ''"-->
-      <!--        @change="onAutoPullChange"-->
-      <!--      />-->
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>

@@ -1,3 +1,54 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClFilterSelect' });
+import { computed, defineComponent, onBeforeMount, PropType, ref } from 'vue';
+import useRequest from '@/services/request';
+import { cloneArray, prependAllToSelectOptions } from '@/utils';
+
+const props = defineProps<{
+  label?: string;
+  placeholder?: string;
+  filterable?: boolean;
+  options?: SelectOption[];
+  optionsRemote?: FilterSelectOptionsRemote;
+}>();
+
+const emit = defineEmits<{
+  (e: 'change', value: any): void;
+}>();
+
+const { get } = useRequest();
+
+const internalModelValue = ref();
+const internalOptions = ref<SelectOption[]>([]);
+
+const computedOptions = computed<SelectOption[]>(() => {
+  const options = cloneArray(props.options || internalOptions.value || []);
+  return prependAllToSelectOptions(options);
+});
+
+const onChange = (value: any) => {
+  if (value === '') return;
+  emit('change', value);
+};
+
+const onClear = () => {
+  internalModelValue.value = undefined;
+  emit('change', undefined);
+};
+
+const getOptions = async () => {
+  if (!props.optionsRemote) return;
+  const { colName, value, label } = props.optionsRemote;
+  let url = `/filters/${colName}`;
+  if (value) url += `/${value}`;
+  if (label) url += `/${label}`;
+  const res = await get(url);
+  internalOptions.value = res.data;
+};
+
+onBeforeMount(getOptions);
+</script>
+
 <template>
   <div class="filter-select">
     <label v-if="label" class="label">
@@ -21,77 +72,6 @@
     </el-select>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, onBeforeMount, PropType, ref } from 'vue';
-import useRequest from '@/services/request';
-import { cloneArray, prependAllToSelectOptions } from '@/utils';
-
-const { get } = useRequest();
-
-export default defineComponent({
-  name: 'FilterSelect',
-  props: {
-    label: {
-      type: String,
-    },
-    placeholder: {
-      type: String,
-    },
-    filterable: {
-      type: Boolean,
-      default: true,
-    },
-    options: {
-      type: Array as PropType<SelectOption[]>,
-    },
-    optionsRemote: {
-      type: Object as PropType<FilterSelectOptionsRemote>,
-    },
-  },
-  emits: ['change'],
-  setup(props: FilterSelectProps, { emit }) {
-    const internalModelValue = ref();
-    const internalOptions = ref<SelectOption[]>([]);
-
-    const computedOptions = computed<SelectOption[]>(() => {
-      const options = cloneArray(props.options || internalOptions.value || []);
-      return prependAllToSelectOptions(options);
-    });
-
-    const onChange = (value: any) => {
-      if (value === '') return;
-      emit('change', value);
-    };
-
-    const onClear = () => {
-      internalModelValue.value = undefined;
-      emit('change', undefined);
-    };
-
-    const getOptions = async () => {
-      if (!props.optionsRemote) return;
-      const { colName, value, label } = props.optionsRemote;
-      let url = `/filters/${colName}`;
-      if (value) url += `/${value}`;
-      if (label) url += `/${label}`;
-      const res = await get(url);
-      internalOptions.value = res.data;
-    };
-
-    onBeforeMount(async () => {
-      await getOptions();
-    });
-
-    return {
-      internalModelValue,
-      computedOptions,
-      onChange,
-      onClear,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .filter-select {

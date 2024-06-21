@@ -1,3 +1,95 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClTable' });
+import { inject, ref, computed } from 'vue';
+import useColumn from '@/components/table/column';
+import useHeader from '@/components/table/header';
+import useAction from '@/components/table/action';
+import usePagination from '@/components/table/pagination';
+import {
+  TABLE_PAGINATION_POSITION_ALL,
+  TABLE_PAGINATION_POSITION_BOTTOM,
+  TABLE_PAGINATION_POSITION_TOP,
+} from '@/constants/table';
+import { emptyArrayFunc } from '@/utils';
+
+const props = withDefaults(
+  defineProps<{
+    data: TableData;
+    columns: TableColumn[];
+    selectedColumnKeys: string[];
+    total: number;
+    page: number;
+    pageSize: number;
+    rowKey: string;
+    selectable?: boolean;
+    visibleButtons: BuiltInTableActionButtonName[];
+    hideFooter?: boolean;
+    selectableFunction?: TableSelectableFunction;
+    paginationLayout: string;
+    loading?: boolean;
+    paginationPosition: TablePaginationPosition;
+    height?: string | number;
+    maxHeight?: string | number;
+    embedded?: boolean;
+  }>(),
+  {
+    data: emptyArrayFunc,
+    columns: emptyArrayFunc,
+    selectedColumnKeys: emptyArrayFunc,
+    total: 0,
+    page: 1,
+    pageSize: 10,
+    rowKey: '_id',
+    visibleButtons: emptyArrayFunc,
+    paginationLayout: 'total, sizes, prev, pager, next',
+    paginationPosition: TABLE_PAGINATION_POSITION_BOTTOM,
+  }
+);
+
+const emit = defineEmits<{
+  (e: 'edit', data: TableData): void;
+  (e: 'delete', data: TableData): void;
+  (e: 'export', data: TableData): void;
+  (
+    e: 'header-change',
+    data: TableColumn,
+    sort: SortData,
+    filter: FilterConditionData[]
+  ): void;
+  (e: 'pagination-change', data: TablePagination): void;
+  (e: 'selection-change', data: TableData): void;
+}>();
+
+const tableWrapperRef = ref();
+const tableRef = ref();
+
+const tableData = computed(() => props.data);
+
+const {
+  internalSelectedColumnKeys,
+  columnsTransferVisible,
+  selectedColumns,
+  onShowColumnsTransfer,
+  onHideColumnsTransfer,
+  onColumnsChange,
+} = useColumn(props, tableRef, tableWrapperRef);
+
+const { onHeaderChange } = useHeader(emit);
+
+// inject action functions
+const actionFunctions = inject<ListLayoutActionFunctions>('action-functions');
+
+const {
+  selection: internalSelection,
+  onSelectionChange,
+  onEdit,
+  onDelete,
+  onExport,
+} = useAction(emit, tableRef, actionFunctions as ListLayoutActionFunctions);
+
+const { onCurrentChange, onSizeChange } = usePagination(props, emit);
+</script>
+
 <template>
   <div
     v-loading="loading"
@@ -43,7 +135,6 @@
         type="selection"
         width="40"
         fixed="left"
-        :selectable="selectableFunction"
       />
       <el-table-column
         v-for="c in selectedColumns"
@@ -56,7 +147,6 @@
         :min-width="c.minWidth || c.width"
         :sortable="c.sortable"
         :index="c.index"
-        :resizable="c.resizable === undefined ? true : c.resizable"
         :class-name="c.className || c.key"
       >
         <template #header="scope">
@@ -124,175 +214,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, inject, PropType, ref, SetupContext } from 'vue';
-import useColumn from '@/components/table/column';
-import useHeader from '@/components/table/header';
-import useData from '@/components/table/data';
-import useAction from '@/components/table/action';
-import usePagination from '@/components/table/pagination';
-import {
-  TABLE_PAGINATION_POSITION_ALL,
-  TABLE_PAGINATION_POSITION_BOTTOM,
-  TABLE_PAGINATION_POSITION_TOP,
-} from '@/constants/table';
-
-export default defineComponent({
-  name: 'Table',
-  props: {
-    data: {
-      type: Array as PropType<TableData>,
-      required: true,
-      default: () => {
-        return [];
-      },
-    },
-    columns: {
-      type: Array as PropType<TableColumn[]>,
-      required: true,
-      default: () => {
-        return [];
-      },
-    },
-    selectedColumnKeys: {
-      type: Array as PropType<string[]>,
-      required: false,
-      default: () => {
-        return [];
-      },
-    },
-    total: {
-      type: Number,
-      default: 0,
-    },
-    page: {
-      type: Number,
-      default: 1,
-    },
-    pageSize: {
-      type: Number,
-      default: 10,
-    },
-    rowKey: {
-      type: String,
-      default: '_id',
-    },
-    selectable: {
-      type: Boolean,
-      default: false,
-    },
-    visibleButtons: {
-      type: Array as PropType<BuiltInTableActionButtonName[]>,
-      required: false,
-      default: () => {
-        return [];
-      },
-    },
-    hideFooter: {
-      type: Boolean,
-      default: false,
-    },
-    selectableFunction: {
-      type: Function as PropType<TableSelectableFunction>,
-      default: () => true,
-    },
-    paginationLayout: {
-      type: String,
-      default: 'total, sizes, prev, pager, next',
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-    paginationPosition: {
-      type: String as PropType<TablePaginationPosition>,
-      default: TABLE_PAGINATION_POSITION_BOTTOM,
-    },
-    height: {
-      type: [String, Number],
-    },
-    maxHeight: {
-      type: [String, Number],
-    },
-    embedded: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: [
-    'edit',
-    'delete',
-    'export',
-    'header-change',
-    'pagination-change',
-    'selection-change',
-  ],
-  setup(props: TableProps, ctx: SetupContext) {
-    const tableWrapperRef = ref();
-    const tableRef = ref();
-
-    const { tableData } = useData(props, ctx);
-
-    const {
-      internalSelectedColumnKeys,
-      columnsTransferVisible,
-      selectedColumns,
-      onShowColumnsTransfer,
-      onHideColumnsTransfer,
-      onColumnsChange,
-    } = useColumn(props, ctx, tableRef, tableWrapperRef);
-
-    const { onHeaderChange } = useHeader(props, ctx);
-
-    // inject action functions
-    const actionFunctions =
-      inject<ListLayoutActionFunctions>('action-functions');
-
-    const {
-      selection: internalSelection,
-      onSelectionChange,
-      onAdd,
-      onEdit,
-      onDelete,
-      onExport,
-      clearSelection,
-    } = useAction(
-      props,
-      ctx,
-      tableRef,
-      actionFunctions as ListLayoutActionFunctions,
-    );
-
-    const { onCurrentChange, onSizeChange } = usePagination(props, ctx);
-
-    return {
-      tableWrapperRef,
-      tableRef,
-      tableData,
-      internalSelectedColumnKeys,
-      columnsTransferVisible,
-      selectedColumns,
-      onHeaderChange,
-      onShowColumnsTransfer,
-      onHideColumnsTransfer,
-      onColumnsChange,
-      onExport,
-      internalSelection,
-      onSelectionChange,
-      onAdd,
-      onEdit,
-      onDelete,
-      clearSelection,
-      onCurrentChange,
-      onSizeChange,
-      TABLE_PAGINATION_POSITION_ALL,
-      TABLE_PAGINATION_POSITION_BOTTOM,
-      TABLE_PAGINATION_POSITION_TOP,
-    };
-  },
-});
-</script>
-
 <style lang="scss" scoped>
 .table {
   background-color: var(--cl-container-white-bg);
@@ -332,9 +253,15 @@ export default defineComponent({
   width: 0;
 }
 
-.table.embedded:deep(.el-table--border .el-table__inner-wrapper  tr:first-child  td:first-child),
-.table.embedded:deep(.el-table.is-scrolling-left.el-table--border  tr:first-child  td:first-child),
-.table.embedded:deep(.el-table--border .el-table__inner-wrapper  tr:first-child  th:first-child) {
+.table.embedded:deep(
+    .el-table--border .el-table__inner-wrapper tr:first-child td:first-child
+  ),
+.table.embedded:deep(
+    .el-table.is-scrolling-left.el-table--border tr:first-child td:first-child
+  ),
+.table.embedded:deep(
+    .el-table--border .el-table__inner-wrapper tr:first-child th:first-child
+  ) {
   border-left: none;
 }
 </style>

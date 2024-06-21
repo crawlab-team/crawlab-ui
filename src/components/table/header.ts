@@ -1,12 +1,8 @@
-import { SetupContext } from 'vue';
-
-const useHeader = (props: TableProps, ctx: SetupContext) => {
-  const { emit } = ctx;
-
+const useHeader = (emit: Function) => {
   const onHeaderChange = (
     column: TableColumn,
     sort: SortData,
-    filter: FilterConditionData[]
+    filter?: FilterConditionData[]
   ) => {
     emit('header-change', column, sort, filter);
   };

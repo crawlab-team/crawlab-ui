@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClImgEmpty' });
+</script>
+
 <template>
   <svg
     class="img-empty"
@@ -118,17 +122,6 @@
     </g>
   </svg>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'ImgEmpty',
-  setup() {
-    return {};
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .img-empty {
