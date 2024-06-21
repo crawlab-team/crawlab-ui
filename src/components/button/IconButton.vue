@@ -11,8 +11,8 @@ withDefaults(defineProps<IconButtonProps>(), {});
 
 <template>
   <el-tooltip :content="tooltip ? tooltip : undefined">
-    <span>
-      <el-button
+    <div class="icon-button button">
+      <cl-button
         :circle="circle"
         :disabled="disabled"
         :icon="icon"
@@ -21,10 +21,9 @@ withDefaults(defineProps<IconButtonProps>(), {});
         :size="size"
         :title="tooltip"
         :type="type"
-        class="icon-button button"
         @click="() => $emit('click')"
       />
-    </span>
+    </div>
   </el-tooltip>
 </template>
 

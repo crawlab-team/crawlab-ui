@@ -35,7 +35,7 @@ const cls = computed<string>(() => {
 
 <template>
   <el-tooltip :content="tooltip" :disabled="!tooltip">
-    <span :id="id" :class="['button-wrapper', cls].join(' ')">
+    <div :id="id" :class="['button-wrapper', cls].join(' ')">
       <el-button
         :circle="circle"
         :disabled="disabled"
@@ -49,7 +49,7 @@ const cls = computed<string>(() => {
       >
         <slot></slot>
       </el-button>
-    </span>
+    </div>
   </el-tooltip>
 </template>
 

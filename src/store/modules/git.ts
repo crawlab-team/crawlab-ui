@@ -45,6 +45,7 @@ const state = {
   gitChangeSelection: [],
   gitRemoteRefs: [],
   gitBranches: [],
+  gitRemoteBranches: [],
   gitTags: [],
 } as GitStoreState;
 
@@ -99,6 +100,12 @@ const mutations = {
   resetGitBranches: (state: GitStoreState) => {
     state.gitBranches = [];
   },
+  setGitRemoteBranches: (state: GitStoreState, refs: GitRef[]) => {
+    state.gitRemoteBranches = refs;
+  },
+  resetGitRemoteBranches: (state: GitStoreState) => {
+    state.gitRemoteBranches = [];
+  },
   setGitTags: (state: GitStoreState, refs: GitRef[]) => {
     state.gitTags = refs;
   },
@@ -143,8 +150,16 @@ const actions = {
     { commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
-    const res = await get(`${endpoint}/${id}/git/branches`);
+    const res = await get(`${endpoint}/${id}/branches`);
     commit('setGitBranches', res?.data || []);
+    return res;
+  },
+  getGitRemoteBranches: async (
+    { commit }: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    const res = await get(`${endpoint}/${id}/remote/branches`);
+    commit('setGitRemoteBranches', res?.data || []);
     return res;
   },
   getGitTags: async (
@@ -157,22 +172,17 @@ const actions = {
   },
   gitCheckoutBranch: async (
     _: StoreActionContext<GitStoreState>,
-    {
-      id,
-      localBranch,
-      remoteBranch,
-    }: { id: string; localBranch: string; remoteBranch: string }
+    { id, branch }: { id: string; branch: string }
   ) => {
-    return await post(`${endpoint}/${id}/git/checkout/branch`, {
-      branch: localBranch,
-      remote_branch: remoteBranch,
+    return await post(`${endpoint}/${id}/branches/checkout`, {
+      branch,
     });
   },
   gitCheckoutTag: async (
     _: StoreActionContext<GitStoreState>,
     { id, tag }: { id: string; tag: string }
   ) => {
-    return await post(`${endpoint}/${id}/git/checkout/tag`, { tag });
+    return await post(`${endpoint}/${id}/tags/checkout`, { tag });
   },
   gitPull: async (
     { state }: StoreActionContext<GitStoreState>,

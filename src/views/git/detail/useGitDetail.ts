@@ -146,9 +146,7 @@ const useGitDetail = () => {
 
   const gitDataLoading = computed(() => state.gitDataLoading);
 
-  const gitLocalBranches = computed<GitRef[] | undefined>(
-    () => state.gitData?.branches
-  );
+  const gitLocalBranches = computed<GitRef[]>(() => state.gitBranches);
   const gitLocalBranchesDict = computed<Record<string, GitRef>>(() => {
     const dict: Record<string, GitRef> = {};
     gitLocalBranches.value?.forEach(branch => {
@@ -158,7 +156,7 @@ const useGitDetail = () => {
   });
 
   const gitRemoteBranches = computed<GitRef[] | undefined>(
-    () => state.gitBranches
+    () => state.gitRemoteBranches
   );
   const gitRemoteBranchesDict = computed<Record<string, GitRef>>(() => {
     const dict: Record<string, GitRef> = {};
@@ -174,6 +172,9 @@ const useGitDetail = () => {
   watch(id, () => store.dispatch(`${ns}/getGit`, { id: id.value }));
   onBeforeMount(() => store.dispatch(`${ns}/getGit`, { id: id.value }));
   onBeforeMount(() => store.dispatch(`${ns}/getGitBranches`, { id: id.value }));
+  onBeforeMount(() =>
+    store.dispatch(`${ns}/getGitRemoteBranches`, { id: id.value })
+  );
 
   return {
     ...useDetail('git'),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailActionsCommon' });
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
@@ -27,6 +27,7 @@ const isDisabled = computed<boolean>(
 const gitCurrentBranchRef = ref<typeof ElSelect>();
 
 const {
+  activeId,
   gitCurrentBranch,
   gitDataLoading,
   gitLocalBranches,
@@ -38,6 +39,26 @@ const {
 } = useGitDetail();
 
 const isBranchClicked = ref<boolean>(false);
+
+const branchSelectLoading = ref(false);
+const onBranchChange = async (branch: string) => {
+  branchSelectLoading.value = true;
+  try {
+    await store.dispatch(`${ns}/gitCheckoutBranch`, {
+      id: activeId.value,
+      branch,
+    });
+    await store.dispatch(`${ns}/getGit`, { id: activeId.value });
+  } finally {
+    branchSelectLoading.value = false;
+  }
+};
+
+const currentBranch = ref<string>();
+watch(gitCurrentBranch, () => {
+  if (!gitCurrentBranch.value) return;
+  currentBranch.value = gitCurrentBranch.value || '';
+});
 
 const getRemoteBranchFromLocalBranch = (localBranch: GitRef) => {
   if (!localBranch.hash) return;
@@ -84,55 +105,14 @@ const onAutoPullChange = async () => {
         :error="gitForm.error"
       />
       <div class="branch">
-        <el-select
-          ref="gitCurrentBranchRef"
-          class="current-branch"
-          :model-value="gitCurrentBranch"
-          :disabled="isDisabled || gitDataLoading"
-          :placeholder="t('common.status.loading')"
-        >
-          <template #label="{ label, value }">
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-              "
-            >
-              <span style="flex: 0; margin-right: 10px">
-                <cl-icon :icon="['fa', 'code-branch']" />
-              </span>
-              <span style="flex: 1">{{ label }}</span>
-            </div>
-          </template>
-          <el-option
-            v-for="branch in gitLocalBranches"
-            :key="branch.hash"
-            :label="branch.name"
-            :value="branch.name"
-          >
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 24px;
-              "
-            >
-              <span>{{ branch.name }}</span>
-              <span
-                style="color: var(--cl-disabled-color); font-weight: normal"
-              >
-                {{ getRemoteBranchFromLocalBranch(branch) }}
-              </span>
-            </div>
-          </el-option>
-          <template #footer>
-            <cl-button type="default" @click="onClickNewBranch">
-              {{ t('components.git.branches.new') }}
-            </cl-button>
-          </template>
-        </el-select>
+        <cl-git-branch-select
+          v-model="currentBranch"
+          :local-branches="gitLocalBranches"
+          :remote-branches="gitRemoteBranches"
+          :disabled="isDisabled"
+          :loading="branchSelectLoading || gitDataLoading"
+          @change="onBranchChange"
+        />
       </div>
       <cl-fa-icon-button
         :icon="['fa', 'download']"
@@ -158,9 +138,4 @@ const onAutoPullChange = async () => {
   </cl-nav-action-group>
 </template>
 
-<style scoped lang="scss">
-.current-branch {
-  width: 120px;
-  margin-right: 10px;
-}
-</style>
+<style scoped lang="scss"></style>

@@ -43,6 +43,7 @@ const git: LComponentsGit = {
     },
   },
   branches: {
+    select: 'Select Branch',
     new: 'New Branch',
     local: 'Local Branch',
     remote: 'Remote Branch',

@@ -43,6 +43,7 @@ const git: LComponentsGit = {
     },
   },
   branches: {
+    select: '选择分支',
     new: '新建分支',
     local: '本地分支',
     remote: '远程分支',

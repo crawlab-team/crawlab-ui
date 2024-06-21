@@ -25,6 +25,7 @@ const onClick = () => {
     :color="color"
     :effect="effect"
     :icon="icon"
+    :suffix-icon="suffixIcon"
     :label="label"
     :spinning="spinning"
     :tooltip="tooltip"

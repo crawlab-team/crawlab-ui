@@ -43,6 +43,7 @@ interface LComponentsGit {
     };
   };
   branches: {
+    select: string;
     new: string;
     local: string;
     remote: string;

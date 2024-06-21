@@ -12,6 +12,7 @@ interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
   gitChangeSelection: TableData<GitChange>;
   gitRemoteRefs: GitRef[];
   gitBranches: GitRef[];
+  gitRemoteBranches: GitRef[];
   gitTags: GitRef[];
 }
 
@@ -34,6 +35,8 @@ interface GitStoreMutations
   resetGitRemoteRefs: StoreMutation<GitStoreState>;
   setGitBranches: StoreMutation<GitStoreState, GitRef[]>;
   resetGitBranches: StoreMutation<GitStoreState>;
+  setGitRemoteBranches: StoreMutation<GitStoreState, GitRef[]>;
+  resetGitRemoteBranches: StoreMutation<GitStoreState>;
   setGitTags: StoreMutation<GitStoreState, GitRef[]>;
   resetGitTags: StoreMutation<GitStoreState>;
 }
@@ -45,11 +48,9 @@ interface GitStoreActions
   cloneGit: StoreAction<GitStoreState, { id: string }>;
   getGitRemoteRefs: StoreAction<GitStoreState, { id: string }>;
   getGitBranches: StoreAction<GitStoreState, { id: string }>;
+  getGitRemoteBranches: StoreAction<GitStoreState, { id: string }>;
   getGitTags: StoreAction<GitStoreState, { id: string }>;
-  gitCheckoutBranch: StoreAction<
-    GitStoreState,
-    { id: string; localBranch: string; remoteBranch: string }
-  >;
+  gitCheckoutBranch: StoreAction<GitStoreState, { id: string; branch: string }>;
   gitCheckoutTag: StoreAction<GitStoreState, { id: string; tag: string }>;
   gitPull: StoreAction<GitStoreState, { id: string }>;
   gitCommit: StoreAction<GitStoreState, { id: string; commit_message: string }>;

@@ -75,6 +75,7 @@ const onMouseLeave = () => {
     :type="computedType"
     :effect="computedEffect"
     :icon="computedIcon"
+    :suffix-icon="suffixIcon"
     :spinning="spinning"
     :width="width"
     :class="['check-tag', className].join(' ')"

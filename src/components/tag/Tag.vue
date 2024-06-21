@@ -10,7 +10,8 @@ export interface TagProps {
   color?: string;
   backgroundColor?: string;
   borderColor?: string;
-  icon?: string | string[];
+  icon?: Icon;
+  suffixIcon?: Icon;
   size?: BasicSize;
   spinning?: boolean;
   width?: string;
@@ -113,8 +114,13 @@ onMounted(() => {
       @mouseenter="$emit('mouseenter')"
       @mouseleave="$emit('mouseleave')"
     >
-      <cl-icon :icon="icon" :spinning="spinning" />
+      <span class="prefix-icon">
+        <cl-icon v-if="icon" :icon="icon" :spinning="spinning" />
+      </span>
       <span>{{ label || tag?.name }}</span>
+      <span class="suffix-icon">
+        <cl-icon v-if="suffixIcon" :icon="suffixIcon" />
+      </span>
     </el-tag>
     <template #content>
       <slot name="tooltip"></slot>
@@ -145,7 +151,11 @@ onMounted(() => {
   font-weight: bolder;
 }
 
-.tag:not(.no-label):deep(.icon) {
+.tag:not(.no-label):deep(.prefix-icon) {
   margin-right: 5px;
+}
+
+.tag:deep(.suffix-icon) {
+  margin-left: 5px;
 }
 </style>
