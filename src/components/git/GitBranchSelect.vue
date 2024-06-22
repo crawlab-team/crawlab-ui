@@ -3,9 +3,10 @@ defineOptions({ name: 'ClGitBranchSelect' });
 import { computed, ref, watch } from 'vue';
 import { emptyArrayFunc, translate } from '@/utils';
 
+const model = defineModel<string>();
+
 const props = withDefaults(
   defineProps<{
-    modelValue: string;
     localBranches: GitRef[];
     remoteBranches: GitRef[];
     disabled?: boolean;
@@ -19,7 +20,6 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'modelValue:update', value: string): void;
   (e: 'select-local', value: string): void;
   (e: 'select-remote', value: string): void;
 }>();
@@ -68,15 +68,6 @@ const remoteBranchOptions = computed(() => {
 
 const selectRef = ref<HTMLElement>();
 
-const internalValue = ref<string>(props.modelValue);
-watch(internalValue, () => emit('modelValue:update', internalValue.value));
-watch(
-  () => props.modelValue,
-  value => {
-    internalValue.value = value;
-  }
-);
-
 const onSelect = (value: string) => {
   const localBranch = localBranchOptions.value.find(
     branch => branch.value === value
@@ -93,7 +84,7 @@ const onSelect = (value: string) => {
   <div ref="selectRef" class="git-branch-select">
     <el-select
       :class="className"
-      v-model="internalValue"
+      v-model="model"
       :disabled="disabled || loading"
       :placeholder="t('components.git.branches.select')"
       @change="onSelect"

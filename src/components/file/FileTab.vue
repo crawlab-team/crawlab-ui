@@ -13,6 +13,7 @@ const props = defineProps<{
   activeNavItem?: FileNavItem;
   services: FileServices<BaseModel>;
   defaultFilePaths: string[];
+  navMenuLoading?: boolean;
 }>();
 
 // i18n
@@ -211,6 +212,7 @@ onBeforeUnmount(() => {
     :active-nav-item="activeNavItem"
     :default-expanded-keys="defaultExpandedKeys"
     :content="content"
+    :nav-menu-loading="navMenuLoading"
     @content-change="onContentChange"
     @save-file="onSaveFile"
     @node-db-click="onNavItemDbClick"

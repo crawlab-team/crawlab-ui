@@ -21,8 +21,6 @@ const { git: state } = store.state as RootStoreState;
 
 const { activeId } = useGitDetail();
 
-const { form } = useGit(store);
-
 // table pagination
 const tablePagination = ref<TablePagination>({
   page: 1,
@@ -102,7 +100,10 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
 const getLogs = debounce(() => {
   store.dispatch(`${ns}/getLogs`, { id: activeId.value });
 });
-watch(form, getLogs);
+watch(activeId, () => {
+  store.commit(`${ns}/resetGitLogs`);
+  getLogs();
+});
 onBeforeMount(getLogs);
 </script>
 

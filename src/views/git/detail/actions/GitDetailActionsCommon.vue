@@ -44,20 +44,22 @@ const onLocalBranchChange = async (branch: string) => {
       id: activeId.value,
       branch,
     });
-    await store.dispatch(`${ns}/getGit`, { id: activeId.value });
   } finally {
+    await store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value });
     branchSelectLoading.value = false;
   }
 };
 const onRemoteBranchChange = async (branch: string) => {
   branchSelectLoading.value = true;
   try {
-    await store.dispatch(`${ns}/gitCheckoutRemoteBranch`, {
+    await store.dispatch(`${ns}/checkoutRemoteBranch`, {
       id: activeId.value,
       branch,
     });
-    await store.dispatch(`${ns}/getGit`, { id: activeId.value });
+  } catch (e: any) {
+    ElMessage.error(e.message);
   } finally {
+    await store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value });
     branchSelectLoading.value = false;
   }
 };

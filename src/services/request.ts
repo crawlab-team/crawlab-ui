@@ -31,7 +31,7 @@ export const initRequest = (router?: Router) => {
           msgBoxVisible = true;
           setTimeout(() => (msgBoxVisible = false), 5000);
           router?.push('/login');
-          await ElNotification({
+          ElNotification({
             title: t('common.status.unauthorized'),
             message: t('common.notification.loggedOut'),
             type: 'warning',
@@ -43,6 +43,11 @@ export const initRequest = (router?: Router) => {
       } else {
         // other errors
         console.error(err);
+        const { message, error } = err.response?.data;
+        if (message === 'error' && error) {
+          throw new Error(error);
+        }
+        throw err;
       }
     }
   );

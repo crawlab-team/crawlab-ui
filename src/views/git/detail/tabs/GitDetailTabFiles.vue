@@ -1,6 +1,8 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailTabFiles' });
+import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import { debounce } from '@/utils';
 import useGitService from '@/services/git/gitService';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 
@@ -9,7 +11,21 @@ const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
 
-const { activeId } = useGitDetail();
+const { activeId, currentBranch } = useGitDetail();
+
+const navMenuLoading = ref(false);
+
+const getFiles = debounce(async () => {
+  if (!activeId.value) return;
+  navMenuLoading.value = true;
+  try {
+    await store.dispatch(`${ns}/listDir`, { id: activeId.value });
+  } finally {
+    navMenuLoading.value = false;
+  }
+});
+watch(currentBranch, getFiles);
+watch(activeId, getFiles);
 </script>
 
 <template>
@@ -21,6 +37,7 @@ const { activeId } = useGitDetail();
     :active-nav-item="state.activeNavItem"
     :services="useGitService(store)"
     :default-file-paths="state.defaultFilePaths"
+    :nav-menu-loading="navMenuLoading"
   />
 </template>
 

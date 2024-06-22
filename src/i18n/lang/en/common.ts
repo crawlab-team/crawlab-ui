@@ -115,6 +115,9 @@ const common: LCommon = {
   placeholder: {
     empty: 'Empty',
   },
+  error: {
+    common: 'An error occurred',
+  },
 };
 
 export default common;

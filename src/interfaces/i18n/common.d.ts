@@ -128,5 +128,8 @@ export declare global {
     placeholder: {
       empty: string;
     };
+    error: {
+      common: string;
+    };
   }
 }

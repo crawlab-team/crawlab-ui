@@ -20,6 +20,7 @@ const props = defineProps<{
   navItems: FileNavItem[];
   activeNavItem?: FileNavItem;
   defaultExpandedKeys: string[];
+  navMenuLoading?: boolean;
 }>();
 const emit = defineEmits<{
   (e: 'content-change', item: string): void;
@@ -80,11 +81,7 @@ const styles = computed<FileEditorStyles>(() => {
   };
 });
 
-const fileSearchString = ref<string>('');
-
 const navMenuCollapsed = ref<boolean>(false);
-
-const showSettings = ref<boolean>(false);
 
 const editorRef = ref<HTMLDivElement>();
 
@@ -105,6 +102,8 @@ const content = computed<string>(() => {
   const { content } = props;
   return content || '';
 });
+
+const fileSearchString = ref<string>('');
 
 const updateEditorOptions = () => {
   editor?.updateOptions(fileState.editorOptions);
@@ -389,7 +388,9 @@ const onDropFiles = (files: InputFile[]) => {
   sendEvent('click_file_editor_drop_files');
 };
 
-const onFileSearch = () => {
+const onFileSearch = (value: string) => {
+  fileSearchString.value = value;
+
   sendEvent('click_file_editor_file_search');
 };
 
@@ -436,64 +437,27 @@ onUnmounted(() => {
 
 <template>
   <div ref="fileEditor" class="file-editor">
-    <div :class="navMenuCollapsed ? 'collapsed' : ''" class="nav-menu">
-      <div :style="{ ...styles.default }" class="nav-menu-top-bar">
-        <div class="left">
-          <el-input
-            v-model="fileSearchString"
-            :style="styles.default"
-            class="search"
-            clearable
-            :placeholder="
-              t('components.file.editor.sidebar.search.placeholder')
-            "
-            @change="onFileSearch"
-          >
-            <template #prefix>
-              <el-icon class="el-input__icon">
-                <font-awesome-icon :icon="['fa', 'search']" />
-              </el-icon>
-            </template>
-          </el-input>
-        </div>
-        <div class="right">
-          <el-tooltip
-            v-if="false"
-            :content="t('components.file.editor.sidebar.settings')"
-          >
-            <span class="action-icon" @click="showSettings = true">
-              <div class="background" />
-              <font-awesome-icon :icon="['fa', 'cog']" />
-            </span>
-          </el-tooltip>
-          <el-tooltip
-            :content="t('components.file.editor.sidebar.toggle.hideFiles')"
-          >
-            <span class="action-icon" @click="onToggleNavMenu">
-              <div class="background" />
-              <font-awesome-icon :icon="['fa', 'minus']" />
-            </span>
-          </el-tooltip>
-        </div>
-      </div>
-      <cl-file-editor-nav-menu
-        :active-item="activeFileItem"
-        :default-expand-all="!!fileSearchString"
-        :default-expanded-keys="defaultExpandedKeys"
-        :items="files"
-        :styles="styles"
-        @node-click="onNavItemClick"
-        @node-db-click="onNavItemDbClick"
-        @node-drop="onNavItemDrop"
-        @ctx-menu-new-file="onContextMenuNewFile"
-        @ctx-menu-new-file-with-ai="onContextMenuNewFileWithAi"
-        @ctx-menu-new-directory="onContextMenuNewDirectory"
-        @ctx-menu-rename="onContextMenuRename"
-        @ctx-menu-clone="onContextMenuClone"
-        @ctx-menu-delete="onContextMenuDelete"
-        @drop-files="onDropFiles"
-      />
-    </div>
+    <cl-file-editor-nav-menu
+      :loading="navMenuLoading"
+      :nav-menu-collapsed="navMenuCollapsed"
+      :active-item="activeFileItem"
+      :default-expand-all="!!fileSearchString"
+      :default-expanded-keys="defaultExpandedKeys"
+      :items="files"
+      :styles="styles"
+      @node-click="onNavItemClick"
+      @node-db-click="onNavItemDbClick"
+      @node-drop="onNavItemDrop"
+      @ctx-menu-new-file="onContextMenuNewFile"
+      @ctx-menu-new-file-with-ai="onContextMenuNewFileWithAi"
+      @ctx-menu-new-directory="onContextMenuNewDirectory"
+      @ctx-menu-rename="onContextMenuRename"
+      @ctx-menu-clone="onContextMenuClone"
+      @ctx-menu-delete="onContextMenuDelete"
+      @drop-files="onDropFiles"
+      @search="onFileSearch"
+      @toggle-nav-menu="onToggleNavMenu"
+    />
     <div class="file-editor-content">
       <cl-file-editor-nav-tabs
         ref="navTabs"
@@ -512,7 +476,7 @@ onUnmounted(() => {
           >
             <span class="action-icon expand-files" @click="onToggleNavMenu">
               <div class="background" />
-              <font-awesome-icon :icon="['fa', 'bars']" />
+              <cl-icon :icon="['fa', 'bars']" />
             </span>
           </el-tooltip>
         </template>
@@ -541,7 +505,7 @@ onUnmounted(() => {
             <el-tooltip :content="t('components.file.editor.sidebar.showMore')">
               <span class="action-icon" @click.prevent="onShowMoreShow">
                 <div class="background" />
-                <font-awesome-icon :icon="['fa', 'angle-down']" />
+                <cl-icon :icon="['fa', 'angle-down']" />
               </span>
             </el-tooltip>
           </div>
@@ -558,34 +522,6 @@ onUnmounted(() => {
 .file-editor {
   height: 100%;
   display: flex;
-
-  .nav-menu {
-    flex-basis: var(--cl-file-editor-nav-menu-width);
-    min-width: var(--cl-file-editor-nav-menu-width);
-    display: flex;
-    flex-direction: column;
-    transition: all var(--cl-file-editor-nav-menu-collapse-transition-duration);
-
-    &.collapsed {
-      min-width: 0;
-      flex-basis: 0;
-      overflow: hidden;
-    }
-
-    .nav-menu-top-bar {
-      flex-basis: var(--cl-file-editor-nav-menu-top-bar-height);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 12px;
-      padding: 0 10px 0 0;
-
-      .left,
-      .right {
-        display: flex;
-      }
-    }
-  }
 
   .file-editor-content {
     position: relative;
@@ -655,15 +591,5 @@ onUnmounted(() => {
       height: 100%;
     }
   }
-}
-</style>
-<style scoped>
-.file-editor
-  .nav-menu
-  .nav-menu-top-bar:deep(.search.el-input .el-input__wrapper) {
-  border: none;
-  background: transparent;
-  color: inherit;
-  box-shadow: none;
 }
 </style>

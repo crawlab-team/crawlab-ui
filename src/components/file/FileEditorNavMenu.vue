@@ -16,6 +16,8 @@ import { useDropzone } from 'crawlab-vue3-dropzone';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
+  loading?: boolean;
+  navMenuCollapsed?: boolean;
   activeItem?: FileNavItem;
   items: FileNavItem[];
   defaultExpandAll: boolean;
@@ -34,6 +36,8 @@ const emit = defineEmits<{
   (e: 'node-drop', draggingItem: FileNavItem, dropItem: FileNavItem): void;
   (e: 'drop-files', files: InputFile[]): void;
   (e: 'drop-files', files: InputFile[]): void;
+  (e: 'search', value: string): void;
+  (e: 'toggle-nav-menu'): void;
 }>();
 
 const { t } = useI18n();
@@ -344,131 +348,212 @@ onMounted(() => {
 onBeforeUnmount(() => {
   treeHeightObserver.unobserve(fileEditorNavMenu.value as Element);
 });
+
+const showSettings = ref<boolean>(false);
+const fileSearchString = ref<string>('');
 </script>
 
 <template>
   <div
-    :style="{ ...styles?.default }"
-    ref="fileEditorNavMenu"
-    class="file-editor-nav-menu"
+    v-loading="loading && { background: 'var(--cl-loading-background-color)' }"
+    :class="navMenuCollapsed ? 'collapsed' : ''"
+    class="nav-menu"
   >
-    <el-tree-v2
-      ref="tree"
-      :height="treeHeight"
-      :render-after-expand="defaultExpandAll"
-      :data="items"
-      :expand-on-click-node="false"
-      :highlight-current="false"
-      :allow-drop="allowDrop"
-      empty-text="No files available"
-      icon-class="fa fa-angle-right"
-      :style="{ ...styles?.default }"
-      :default-expanded-keys="computedDefaultExpandedKeys"
-      draggable
-      @node-drag-enter="onNodeDragEnter"
-      @node-drag-leave="onNodeDragLeave"
-      @node-drag-end="onNodeDragEnd"
-      @node-drop="onNodeDrop"
-      @node-click="onNodeClick"
-      @node-contextmenu="onNodeContextMenuShow"
-      @node-expand="onNodeExpand"
-      @node-collapse="onNodeCollapse"
-    >
-      <template #default="{ data }">
-        <cl-file-editor-nav-menu-context-menu
-          :clicking="contextMenuClicking"
-          :visible="isShowContextMenu(data)"
-          @hide="onNodeContextMenuHide"
-          @clone="onNodeContextMenuClone(data)"
-          @delete="onNodeContextMenuDelete(data)"
-          @rename="onNodeContextMenuRename(data)"
-          @new-file="onNodeContextMenuNewFile(data)"
-          @new-file-with-ai="onNodeContextMenuNewFileWithAi(data)"
-          @new-directory="onNodeContextMenuNewDirectory(data)"
+    <!-- file editor search -->
+    <div :style="{ ...styles.default }" class="nav-menu-top-bar">
+      <div class="left">
+        <el-input
+          v-model="fileSearchString"
+          :style="styles.default"
+          class="search"
+          clearable
+          :placeholder="t('components.file.editor.sidebar.search.placeholder')"
+          @input="emit('search', fileSearchString)"
         >
-          <div
-            v-bind="getBindDir(data)"
-            :class="getItemClass(data)"
-            class="nav-item-wrapper"
+          <template #prefix>
+            <el-icon class="el-input__icon">
+              <cl-icon :icon="['fa', 'search']" />
+            </el-icon>
+          </template>
+        </el-input>
+      </div>
+      <div class="right">
+        <el-tooltip
+          v-if="false"
+          :content="t('components.file.editor.sidebar.settings')"
+        >
+          <span class="action-icon" @click="showSettings = true">
+            <div class="background" />
+            <cl-icon :icon="['fa', 'cog']" />
+          </span>
+        </el-tooltip>
+        <el-tooltip
+          :content="t('components.file.editor.sidebar.toggle.hideFiles')"
+        >
+          <span class="action-icon" @click="emit('toggle-nav-menu')">
+            <div class="background" />
+            <cl-icon :icon="['fa', 'minus']" />
+          </span>
+        </el-tooltip>
+      </div>
+    </div>
+
+    <!-- file editor nav menu -->
+    <div
+      :style="{ ...styles?.default }"
+      ref="fileEditorNavMenu"
+      class="file-editor-nav-menu"
+    >
+      <el-tree-v2
+        ref="tree"
+        :height="treeHeight"
+        :render-after-expand="defaultExpandAll"
+        :data="items"
+        :expand-on-click-node="false"
+        :highlight-current="false"
+        :allow-drop="allowDrop"
+        empty-text="No files available"
+        icon-class="fa fa-angle-right"
+        :style="{ ...styles?.default }"
+        :default-expanded-keys="computedDefaultExpandedKeys"
+        draggable
+        @node-drag-enter="onNodeDragEnter"
+        @node-drag-leave="onNodeDragLeave"
+        @node-drag-end="onNodeDragEnd"
+        @node-drop="onNodeDrop"
+        @node-click="onNodeClick"
+        @node-contextmenu="onNodeContextMenuShow"
+        @node-expand="onNodeExpand"
+        @node-collapse="onNodeCollapse"
+      >
+        <template #default="{ data }">
+          <cl-file-editor-nav-menu-context-menu
+            :clicking="contextMenuClicking"
+            :visible="isShowContextMenu(data)"
+            @hide="onNodeContextMenuHide"
+            @clone="onNodeContextMenuClone(data)"
+            @delete="onNodeContextMenuDelete(data)"
+            @rename="onNodeContextMenuRename(data)"
+            @new-file="onNodeContextMenuNewFile(data)"
+            @new-file-with-ai="onNodeContextMenuNewFileWithAi(data)"
+            @new-directory="onNodeContextMenuNewDirectory(data)"
           >
             <div
-              class="background"
-              :style="{
-                backgroundColor: isSelected(data)
-                  ? styles?.active.backgroundColor
-                  : '',
-              }"
-            />
-            <div class="nav-item">
-              <span class="icon">
-                <cl-atom-material-icon
-                  :is-dir="data.is_dir"
-                  :name="data.name"
-                />
-              </span>
-              <span class="title">
-                {{ data.name }}
-              </span>
+              v-bind="getBindDir(data)"
+              :class="getItemClass(data)"
+              class="nav-item-wrapper"
+            >
+              <div
+                class="background"
+                :style="{
+                  backgroundColor: isSelected(data)
+                    ? styles?.active.backgroundColor
+                    : '',
+                }"
+              />
+              <div class="nav-item">
+                <span class="icon">
+                  <cl-atom-material-icon
+                    :is-dir="data.is_dir"
+                    :name="data.name"
+                  />
+                </span>
+                <span class="title">
+                  {{ data.name }}
+                </span>
+              </div>
             </div>
-          </div>
-        </cl-file-editor-nav-menu-context-menu>
-      </template>
-    </el-tree-v2>
+          </cl-file-editor-nav-menu-context-menu>
+        </template>
+      </el-tree-v2>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.file-editor-nav-menu {
-  flex: 1;
-  max-height: 100%;
-  overflow: auto;
+.nav-menu {
+  flex-basis: var(--cl-file-editor-nav-menu-width);
+  min-width: var(--cl-file-editor-nav-menu-width);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--cl-file-editor-nav-menu-collapse-transition-duration);
 
-  .el-tree {
-    height: 100%;
-    min-width: 100%;
-    max-width: fit-content;
+  &.collapsed {
+    min-width: 0;
+    flex-basis: 0;
+    overflow: hidden;
+  }
 
-    .el-tree-node {
-      .nav-item-wrapper {
-        z-index: 2;
+  .nav-menu-top-bar {
+    flex-basis: var(--cl-file-editor-nav-menu-top-bar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 0 10px 0 0;
 
-        & * {
-          pointer-events: none;
-        }
+    .left,
+    .right {
+      display: flex;
+    }
 
-        &.droppable {
+    .action-icon {
+      cursor: pointer;
+    }
+  }
+
+  .file-editor-nav-menu {
+    flex: 1;
+    max-height: 100%;
+    overflow: auto;
+
+    .el-tree {
+      height: 100%;
+      min-width: 100%;
+      max-width: fit-content;
+
+      .el-tree-node {
+        .nav-item-wrapper {
+          z-index: 2;
+
           & * {
             pointer-events: none;
           }
 
-          .nav-item {
-            border: 1px dashed
-              var(--cl-file-editor-nav-menu-item-drag-target-border-color);
+          &.droppable {
+            & * {
+              pointer-events: none;
+            }
+
+            .nav-item {
+              border: 1px dashed
+                var(--cl-file-editor-nav-menu-item-drag-target-border-color);
+            }
           }
-        }
 
-        .nav-item:hover,
-        .background:hover + .nav-item {
-          color: var(--cl-file-editor-nav-menu-item-selected-color);
-        }
+          .nav-item:hover,
+          .background:hover + .nav-item {
+            color: var(--cl-file-editor-nav-menu-item-selected-color);
+          }
 
-        .background {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          left: 0;
-          top: 0;
-          z-index: -1;
-        }
+          .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: -1;
+          }
 
-        .nav-item {
-          display: flex;
-          align-items: center;
-          font-size: 14px;
-          user-select: none;
+          .nav-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            user-select: none;
 
-          .icon {
-            margin-right: 5px;
+            .icon {
+              margin-right: 5px;
+            }
           }
         }
       }
@@ -477,6 +562,14 @@ onBeforeUnmount(() => {
 }
 </style>
 <style scoped>
+.nav-menu .nav-menu-top-bar:deep(.search .el-input__wrapper > .el-input__inner),
+.nav-menu .nav-menu-top-bar:deep(.search .el-input__wrapper) {
+  border: none;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
 .file-editor-nav-menu:deep(.el-tree .el-tree-node > .el-tree-node__content) {
   background-color: inherit;
   position: relative;

@@ -1,22 +1,24 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetail' });
 import { watch, onBeforeUnmount, onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import useGit from '@/components/git/git';
 import {
   GIT_STATUS_ERROR,
   GIT_STATUS_READY,
-  TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
 } from '@/constants';
 import { debounce } from '@/utils';
 
-const { activeId, activeTabName } = useGitDetail();
+const router = useRouter();
 
 const ns = 'git';
 const store = useStore<RootStoreState>();
 const { git: state } = store.state;
+
+const { activeId, activeTabName } = useGitDetail();
 
 // update tab disabled keys
 const { form } = useGit(store);
@@ -51,9 +53,6 @@ const getBranches = debounce(() => {
   store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value });
   store.dispatch(`${ns}/getBranches`, { id: activeId.value });
   store.dispatch(`${ns}/getRemoteBranches`, { id: activeId.value });
-  if (activeTabName.value === TAB_NAME_LOGS) {
-    store.dispatch(`${ns}/getFiles`, { id: activeId.value });
-  }
 });
 watch(form, getBranches);
 onBeforeMount(getBranches);

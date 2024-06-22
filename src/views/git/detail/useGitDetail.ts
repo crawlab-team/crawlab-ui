@@ -47,7 +47,7 @@ const useGitDetail = () => {
 
   const route = useRoute();
 
-  const id = computed(() => route.params.id as string);
+  const id = computed<string>(() => route.params.id as string);
 
   const { create: createGitForm, updateById: updateGitFormById } =
     useGitService(store);
@@ -163,6 +163,16 @@ const useGitDetail = () => {
     });
     return dict;
   });
+
+  // redirect to overview tab if the current tab is disabled
+  watch(
+    () => state.disabledTabKeys,
+    () => {
+      if (state.disabledTabKeys.includes(activeTabName.value)) {
+        router.push(`/gits/${id.value}/${TAB_NAME_OVERVIEW}`);
+      }
+    }
+  );
 
   return {
     ...useDetail('git'),

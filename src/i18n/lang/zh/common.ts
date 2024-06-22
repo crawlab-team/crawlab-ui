@@ -115,6 +115,9 @@ const common: LCommon = {
   placeholder: {
     empty: '空',
   },
+  error: {
+    common: '发生错误',
+  },
 };
 
 export default common;
