@@ -23,9 +23,21 @@ interface LComponentsGit {
     };
     messageBox: {
       confirm: {
+        branch: {
+          delete: string;
+        };
         pull: string;
       };
       prompt: {
+        branch: {
+          new: {
+            title: string;
+            validate: {
+              notEmpty: string;
+              notSame: string;
+            };
+          };
+        };
         commit: {
           label: string;
           placeholder: string;
@@ -49,18 +61,21 @@ interface LComponentsGit {
     local: string;
     remote: string;
   };
+  tags: {
+    new: string;
+  };
   actions: {
     title: string;
     label: {
       retry: string;
-      pull: string;
       commit: string;
+      pull: string;
       checkout: string;
     };
     tooltip: {
       retry: string;
-      pull: string;
       commit: string;
+      pull: string;
       checkout: string;
     };
   };

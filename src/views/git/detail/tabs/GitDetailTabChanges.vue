@@ -1,19 +1,22 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailTabChanges' });
-import { computed, h, ref, watch } from 'vue';
+import { computed, h, ref, watch, onBeforeMount, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import GitFileStatus from '@/components/git/GitFileStatus.vue';
-import Tag from '@/components/tag/Tag.vue';
-import { useI18n } from 'vue-i18n';
+import Tag, { TagProps } from '@/components/tag/Tag.vue';
 import Table from '@/components/table/Table.vue';
+import useGitDetail from '@/views/git/detail/useGitDetail';
+import { debounce, translate } from '@/utils';
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
+
+const { activeId, currentBranch } = useGitDetail();
 
 const getStatusTagProps = (status?: string): TagProps => {
   const label = status;
@@ -69,9 +72,7 @@ const getStatusTagProps = (status?: string): TagProps => {
 const tableRef = ref<typeof Table>();
 
 // table data
-const tableData = computed<TableData<GitChange>>(
-  () => state.gitData?.changes || []
-);
+const tableData = computed<TableData<GitChange>>(() => state.gitChanges || []);
 
 // table columns
 const tableColumns = computed<TableColumns<GitChange>>(() => {
@@ -79,7 +80,6 @@ const tableColumns = computed<TableColumns<GitChange>>(() => {
     {
       key: 'changed_file',
       label: t('components.git.changes.table.columns.changedFile'),
-      width: '1000',
       icon: ['far', 'file-code'],
       value: (row: GitChange) => {
         return h(GitFileStatus, { fileStatus: row });
@@ -106,16 +106,39 @@ watch(
   () => tableData.value,
   () => tableRef.value?.clearSelection()
 );
+
+const loading = ref(false);
+const getChanges = debounce(async () => {
+  if (!activeId.value) return;
+  loading.value = true;
+  try {
+    await store.dispatch(`${ns}/getChanges`, { id: activeId.value });
+  } finally {
+    loading.value = false;
+  }
+});
+watch(currentBranch, getChanges);
+watch(activeId, getChanges);
+onBeforeMount(getChanges);
+onMounted(() => {
+  if (state.gitChangesDefaultCheckAll) {
+    tableRef.value?.checkAll();
+  }
+});
 </script>
 
 <template>
   <div class="git-changes">
     <cl-table
+      v-loading="loading"
       ref="tableRef"
       :data="tableData"
       :columns="tableColumns"
       height="100%"
       hide-footer
+      :border="false"
+      fit
+      selectable
       @selection-change="onSelectionChange"
     />
   </div>

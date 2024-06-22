@@ -23,9 +23,21 @@ const git: LComponentsGit = {
     },
     messageBox: {
       confirm: {
+        branch: {
+          delete: '确定删除该分支?',
+        },
         pull: '确定从远端拉取代码?',
       },
       prompt: {
+        branch: {
+          new: {
+            title: '新分支名称',
+            validate: {
+              notEmpty: '不能为空',
+              notSame: '不能与当前分支同名',
+            },
+          },
+        },
         commit: {
           label: '确定提交代码?',
           placeholder: '提交信息',
@@ -49,18 +61,21 @@ const git: LComponentsGit = {
     local: '本地分支',
     remote: '远程分支',
   },
+  tags: {
+    new: '新建标签',
+  },
   actions: {
     title: 'Git 操作',
     label: {
       retry: '重试',
-      pull: '拉取',
       commit: '提交',
+      pull: '拉取',
       checkout: '签出',
     },
     tooltip: {
       retry: '重试',
+      commit: '提交代码',
       pull: '拉取',
-      commit: '拉取并推送',
       checkout: '签出',
     },
   },

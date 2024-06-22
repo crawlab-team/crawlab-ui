@@ -91,36 +91,6 @@ const useGitDetail = () => {
 
       sendEvent('click_spider_detail_git_pull');
     },
-    onClickCommit: async () => {
-      const res = await ElMessageBox.prompt(
-        t('components.git.common.messageBox.prompt.commit.label'),
-        t('components.git.common.actions.commit'),
-        {
-          type: 'warning',
-          inputPlaceholder: t(
-            'components.git.common.messageBox.prompt.commit.placeholder'
-          ),
-        }
-      );
-      const commitMessage = res.value;
-      gitLoading.value.commit = true;
-      // await saveGit();
-      try {
-        const res = await store.dispatch(`${ns}/gitCommit`, {
-          id: id.value,
-          commit_message: commitMessage,
-        });
-        store.commit(`${ns}/resetGitChangeSelection`);
-        if (res) {
-          ElMessage.success(t('components.git.common.message.success.commit'));
-        }
-        await store.dispatch(`${ns}/getGit`, { id: id.value });
-      } finally {
-        gitLoading.value.commit = false;
-      }
-
-      sendEvent('click_spider_detail_git_commit');
-    },
     onDialogCheckoutConfirm: async () => {
       await gitCheckoutFormRef.value?.validate();
       gitDialogVisible.value.checkout = false;

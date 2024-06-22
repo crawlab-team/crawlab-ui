@@ -11,6 +11,10 @@ export interface FaIconButtonProps extends ButtonProps {
 
 const props = defineProps<FaIconButtonProps>();
 
+const emit = defineEmits<{
+  (e: 'click', event: Event): void;
+}>();
+
 const cls = computed<string>(() => {
   const { className } = props;
   const classes = ['fa-icon-button'];
@@ -31,11 +35,11 @@ const cls = computed<string>(() => {
     is-icon
     :id="id"
     :class-name="cls"
-    @click="() => $emit('click')"
+    @click="event => emit('click', event)"
   >
-    <font-awesome-icon :icon="icon" :spin="spin" />
+    <cl-icon :icon="icon" :spin="spin" />
     <div v-if="badgeIcon" class="badge-icon">
-      <font-awesome-icon :icon="badgeIcon" />
+      <cl-icon :icon="badgeIcon" />
     </div>
   </cl-button>
 </template>
@@ -47,21 +51,5 @@ const cls = computed<string>(() => {
   right: 2px;
   font-size: 8px;
   color: var(--cl-white);
-}
-</style>
-
-<style scoped>
-.el-button,
-.el-button--mini,
-.fa-icon-button,
-.fa-icon-button:deep(.el-button),
-.fa-icon-button:deep(.el-button--mini),
-.fa-icon-button:deep(.button) {
-  padding: 7px;
-}
-
-.fa-icon-button:deep(.el-button--small) {
-  width: 32px;
-  height: 32px;
 }
 </style>

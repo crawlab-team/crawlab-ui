@@ -4,7 +4,7 @@ import { translate } from '@/utils';
 
 const t = translate;
 
-const props = defineProps<{
+defineProps<{
   items: NavItem[];
   activeKey: string;
   collapsed: boolean;
@@ -43,9 +43,7 @@ const getClassName = (item: NavItem): string => {
       "
     >
       <div class="toggle" @click="onToggle">
-        <font-awesome-icon
-          :icon="collapsed ? ['fa', 'indent'] : ['fa', 'outdent']"
-        />
+        <cl-icon :icon="collapsed ? ['fa', 'indent'] : ['fa', 'outdent']" />
       </div>
     </el-tooltip>
     <el-menu :default-active="activeKey" mode="horizontal" @select="onSelect">
@@ -58,12 +56,12 @@ const getClassName = (item: NavItem): string => {
         :disabled="item.disabled"
       >
         <el-tooltip :content="item.tooltip" :disabled="!item.tooltip">
-          <template v-if="!!item.icon">
-            <font-awesome-icon :icon="item.icon" />
-          </template>
-          <template v-else>
-            {{ item.title ? t(item.title) : '' }}
-          </template>
+          <div class="item-wrapper">
+            <cl-icon :icon="item.icon" />
+            <span class="label">
+              {{ item.title ? t(item.title) : '' }}
+            </span>
+          </div>
         </el-tooltip>
       </el-menu-item>
     </el-menu>
@@ -111,6 +109,15 @@ const getClassName = (item: NavItem): string => {
         color: var(--cl-info-color);
         border-bottom: none;
       }
+
+      .item-wrapper {
+        display: flex;
+        align-items: center;
+
+        .icon {
+          margin-right: 3px;
+        }
+      }
     }
   }
 
@@ -122,9 +129,8 @@ const getClassName = (item: NavItem): string => {
   }
 }
 </style>
-
 <style scoped>
-.nav-tabs:deep(.el-menu--horizontal) {
-  /*border-bottom: none;*/
+.nav-tabs:deep(.el-menu-item .icon) {
+  margin-right: 5px;
 }
 </style>

@@ -23,9 +23,21 @@ const git: LComponentsGit = {
     },
     messageBox: {
       confirm: {
+        branch: {
+          delete: 'Are you sure to delete this branch?',
+        },
         pull: 'Are you sure to pull from remote?',
       },
       prompt: {
+        branch: {
+          new: {
+            title: 'New Branch Name',
+            validate: {
+              notEmpty: 'Cannot be empty',
+              notSame: 'Cannot be the same as current branch',
+            },
+          },
+        },
         commit: {
           label: 'Are you sure to commit?',
           placeholder: 'Commit Message',
@@ -49,18 +61,21 @@ const git: LComponentsGit = {
     local: 'Local Branch',
     remote: 'Remote Branch',
   },
+  tags: {
+    new: 'New Tag',
+  },
   actions: {
     title: 'Git Actions',
     label: {
       retry: 'Retry',
-      pull: 'Pull',
       commit: 'Commit',
+      pull: 'Pull',
       checkout: 'Checkout',
     },
     tooltip: {
       retry: 'Retry',
+      commit: 'Commit code',
       pull: 'Pull',
-      commit: 'Commit and Push',
       checkout: 'Checkout',
     },
   },

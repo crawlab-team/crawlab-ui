@@ -68,7 +68,6 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
     {
       key: 'msg',
       label: t('components.git.logs.table.columns.commitMessage'),
-      width: '650',
       icon: ['fa', 'comment-alt'],
     },
     {
@@ -116,6 +115,8 @@ onBeforeMount(getLogs);
       :page-size="tablePagination.size"
       :total="allTableData.length"
       :visible-buttons="[TABLE_ACTION_CUSTOMIZE_COLUMNS]"
+      :border="false"
+      fit
       @pagination-change="onPaginationChange"
     />
   </div>

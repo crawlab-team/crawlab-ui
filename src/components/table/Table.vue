@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClTable' });
 import { inject, ref, computed } from 'vue';
+import { ElTable } from 'element-plus';
 import useColumn from '@/components/table/column';
 import useHeader from '@/components/table/header';
 import useAction from '@/components/table/action';
@@ -31,6 +32,8 @@ const props = withDefaults(
     height?: string | number;
     maxHeight?: string | number;
     embedded?: boolean;
+    border?: boolean;
+    fit?: boolean;
   }>(),
   {
     data: emptyArrayFunc,
@@ -43,6 +46,7 @@ const props = withDefaults(
     visibleButtons: emptyArrayFunc,
     paginationLayout: 'total, sizes, prev, pager, next',
     paginationPosition: TABLE_PAGINATION_POSITION_BOTTOM,
+    border: true,
   }
 );
 
@@ -85,9 +89,19 @@ const {
   onEdit,
   onDelete,
   onExport,
+  clearSelection,
 } = useAction(emit, tableRef, actionFunctions as ListLayoutActionFunctions);
 
 const { onCurrentChange, onSizeChange } = usePagination(props, emit);
+
+const checkAll = () => {
+  tableRef.value?.toggleRowSelection(true);
+};
+
+defineExpose({
+  clearSelection,
+  checkAll,
+});
 </script>
 
 <template>
@@ -121,11 +135,11 @@ const { onCurrentChange, onSizeChange } = usePagination(props, emit);
       v-if="selectedColumns.length > 0"
       ref="tableRef"
       :data="tableData"
-      :fit="false"
+      :fit="fit"
       :row-key="rowKey"
       :height="height"
       :max-height="maxHeight"
-      border
+      :border="border"
       @selection-change="onSelectionChange"
     >
       <el-table-column

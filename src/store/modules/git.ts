@@ -6,13 +6,11 @@ import {
 } from '@/utils/store';
 import {
   GIT_REF_TYPE_BRANCH,
-  TAB_NAME_BRANCHES,
   TAB_NAME_CHANGES,
   TAB_NAME_FILES,
   TAB_NAME_IGNORE,
   TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
-  TAB_NAME_TAGS,
 } from '@/constants';
 import useRequest from '@/services/request';
 import { debounce, translate } from '@/utils';
@@ -26,19 +24,32 @@ const t = translate;
 
 const endpoint = '/gits';
 
-const { get, post } = useRequest();
+const { get, post, del } = useRequest();
 
 const state = {
   ...getDefaultStoreState<Git>('git'),
   ...getBaseFileStoreState(),
   tabs: [
-    { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
-    { id: TAB_NAME_FILES, title: t('common.tabs.files') },
-    { id: TAB_NAME_BRANCHES, title: t('common.tabs.branches') },
-    { id: TAB_NAME_TAGS, title: t('common.tabs.tags') },
-    { id: TAB_NAME_LOGS, title: t('common.tabs.logs') },
-    { id: TAB_NAME_CHANGES, title: t('common.tabs.changes') },
-    { id: TAB_NAME_IGNORE, title: t('common.tabs.ignore') },
+    {
+      id: TAB_NAME_OVERVIEW,
+      title: t('common.tabs.overview'),
+      icon: ['fa', 'info-circle'],
+    },
+    {
+      id: TAB_NAME_FILES,
+      title: t('common.tabs.files'),
+      icon: ['fa', 'file-code'],
+    },
+    {
+      id: TAB_NAME_CHANGES,
+      title: t('common.tabs.changes'),
+      icon: ['fa', 'code-commit'],
+    },
+    {
+      id: TAB_NAME_LOGS,
+      title: t('common.tabs.logs'),
+      icon: ['fa', 'code-branch'],
+    },
   ],
   gitData: undefined,
   gitDataLoading: false,
@@ -47,6 +58,8 @@ const state = {
   currentBranch: undefined,
   gitBranches: [],
   gitRemoteBranches: [],
+  gitChanges: [],
+  gitChangesDefaultCheckAll: false,
   gitLogs: [],
   gitTags: [],
 } as GitStoreState;
@@ -113,6 +126,15 @@ const mutations = {
   },
   resetGitRemoteBranches: (state: GitStoreState) => {
     state.gitRemoteBranches = [];
+  },
+  setGitChanges: (state: GitStoreState, changes: GitChange[]) => {
+    state.gitChanges = changes;
+  },
+  resetGitChanges: (state: GitStoreState) => {
+    state.gitChanges = [];
+  },
+  setGitChangesDefaultCheckAll: (state: GitStoreState, checkAll: boolean) => {
+    state.gitChangesDefaultCheckAll = checkAll;
   },
   setGitLogs: (state: GitStoreState, logs: GitLog[]) => {
     state.gitLogs = logs;
@@ -184,6 +206,27 @@ const actions = {
     commit('setGitRemoteBranches', res?.data || []);
     return res;
   },
+  newBranch: async (
+    _: StoreActionContext<GitStoreState>,
+    {
+      id,
+      sourceBranch,
+      targetBranch,
+    }: { id: string; sourceBranch: string; targetBranch: string }
+  ) => {
+    return await post(`${endpoint}/${id}/branches/new`, {
+      source_branch: sourceBranch,
+      target_branch: targetBranch,
+    });
+  },
+  deleteBranch: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, branch }: { id: string; branch: string }
+  ) => {
+    return await del(`${endpoint}/${id}/branches`, {
+      branch,
+    });
+  },
   checkoutBranch: async (
     _: StoreActionContext<GitStoreState>,
     { id, branch }: { id: string; branch: string }
@@ -199,6 +242,14 @@ const actions = {
     return await post(`${endpoint}/${id}/branches/remote/checkout`, {
       branch,
     });
+  },
+  getChanges: async (
+    { commit }: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    const res = await get(`${endpoint}/${id}/changes`);
+    commit('setGitChanges', res?.data || []);
+    return res;
   },
   getLogs: async (
     { commit }: StoreActionContext<GitStoreState>,

@@ -5,7 +5,7 @@ import { computed } from 'vue';
 export interface ButtonProps {
   tooltip?: string;
   type?: string;
-  size?: string;
+  size?: BasicSize;
   round?: boolean;
   circle?: boolean;
   plain?: boolean;
@@ -22,6 +22,10 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'primary',
   size: 'default',
 });
+
+const emit = defineEmits<{
+  (e: 'click', event: Event): void;
+}>();
 
 const cls = computed<string>(() => {
   const { noMargin, className, isIcon } = props;
@@ -45,7 +49,7 @@ const cls = computed<string>(() => {
         :title="tooltip"
         :type="type"
         :loading="loading"
-        @click="() => $emit('click')"
+        @click="event => emit('click', event)"
       >
         <slot></slot>
       </el-button>
