@@ -92,9 +92,6 @@ export declare global {
     formListIds: StoreGetter<BaseStoreState, string[]>;
     allListSelectOptions: StoreGetter<BaseStoreState, SelectOption[]>;
     allDict: StoreGetter<BaseStoreState, Map<string, T>>;
-    tabName: StoreGetter<BaseStoreState, string>;
-    allTags: StoreGetter<BaseStoreState, Tag[]>;
-    tabs: StoreGetter<BaseStoreState, NavItem[]>;
   }
 
   interface BaseStoreMutations<T = any>

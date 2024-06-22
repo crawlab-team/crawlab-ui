@@ -111,6 +111,7 @@ onBeforeMount(getLogs);
     <cl-table
       :data="tableData"
       :columns="tableColumns"
+      row-key="hash"
       :page="tablePagination.page"
       :page-size="tablePagination.size"
       :total="allTableData.length"

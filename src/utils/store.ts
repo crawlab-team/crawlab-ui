@@ -70,24 +70,6 @@ export const getDefaultStoreGetters = <T = any>(
       );
       return dict;
     },
-    /**
-     * @deprecated
-     */
-    tabName: () => {
-      const router = useRouter();
-      if (!router) return '';
-      const arr = router.currentRoute.value.path.split('/');
-      if (arr.length < 3) return '';
-      return arr[3];
-    },
-    allTags: (state: BaseStoreState<T>, getters, rootState) => {
-      return rootState.tag.allList.filter(d => d.col === `${state.ns}s`);
-    },
-    tabs: (state: BaseStoreState<T>, getters, rootState) => {
-      return state.tabs.filter(t =>
-        rootState.layout.detailTabVisibleFn(state.ns, t)
-      );
-    },
   };
 };
 

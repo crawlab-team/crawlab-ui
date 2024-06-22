@@ -16,6 +16,10 @@ const props = defineProps<{
   navMenuLoading?: boolean;
 }>();
 
+const emit = defineEmits<{
+  (e: 'file-change', value: string): void;
+}>();
+
 // i18n
 const { t } = useI18n();
 
@@ -80,6 +84,7 @@ const onSaveFile = async (item: FileNavItem) => {
   const { activeId, content } = props;
   if (!item.path) return;
   await saveFile(activeId, item.path, content);
+  emit('file-change', item.path as string);
   ElMessage.success(t('common.message.success.save'));
 };
 
@@ -95,6 +100,7 @@ const onNavItemDrop = async (
   const dirPath = dropItem.path !== '~' ? dropItem.path : '';
   const newPath = `${dirPath}${pathSep}${draggingItem.name}`;
   await renameFile(activeId, draggingItem.path as string, newPath);
+  emit('file-change', newPath);
   await listRootDir(activeId);
 };
 
@@ -103,6 +109,7 @@ const onContextMenuNewFile = async (item: FileNavItem, name: string) => {
   if (!item.path) return;
   const path = getPath(item, name);
   await saveFile(activeId, path, '');
+  emit('file-change', path);
   await listRootDir(activeId);
   await openFile(path);
 };
@@ -117,6 +124,7 @@ const onContextMenuNewDirectory = async (item: FileNavItem, name: string) => {
   if (!item.path) return;
   const path = getPath(item, name);
   await saveDir(activeId, path);
+  emit('file-change', item.path);
   await listRootDir(activeId);
 };
 
@@ -125,6 +133,7 @@ const onContextMenuRename = async (item: FileNavItem, name: string) => {
   if (!item.path) return;
   const path = getPath(item, name);
   await renameFile(activeId, item.path, path);
+  emit('file-change', item.path);
   await listRootDir(activeId);
 };
 
@@ -134,6 +143,7 @@ const onContextMenuClone = async (item: FileNavItem, name: string) => {
   const dirPath = getDirPath(item.path);
   const path = `${dirPath}${pathSep}${name}`;
   await copyFile(activeId, item.path, path);
+  emit('file-change', item.path);
   await listRootDir(activeId);
 };
 
@@ -141,6 +151,7 @@ const onContextMenuDelete = async (item: FileNavItem) => {
   const { activeId } = props;
   if (!item.path) return;
   await deleteFile(activeId, item.path);
+  emit('file-change', item.path);
   await listRootDir(activeId);
 };
 
@@ -170,6 +181,7 @@ const onCreateWithAi = async (
     path = getPath(item, name);
   }
   await saveFile(activeId, path, sourceCode);
+  emit('file-change', path);
   await listRootDir(activeId);
   await openFile(path);
 };

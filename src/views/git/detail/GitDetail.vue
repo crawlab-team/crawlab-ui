@@ -1,24 +1,23 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetail' });
 import { watch, onBeforeUnmount, onBeforeMount } from 'vue';
-import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import useGit from '@/components/git/git';
 import {
   GIT_STATUS_ERROR,
   GIT_STATUS_READY,
+  TAB_NAME_CHANGES,
+  TAB_NAME_FILES,
   TAB_NAME_OVERVIEW,
 } from '@/constants';
 import { debounce } from '@/utils';
-
-const router = useRouter();
 
 const ns = 'git';
 const store = useStore<RootStoreState>();
 const { git: state } = store.state;
 
-const { activeId, activeTabName } = useGitDetail();
+const { activeId, activeTabName, tabs } = useGitDetail();
 
 // update tab disabled keys
 const { form } = useGit(store);
@@ -57,11 +56,20 @@ const getBranches = debounce(() => {
 watch(form, getBranches);
 onBeforeMount(getBranches);
 
+// get changes
+const getChanges = debounce(() => {
+  if (form.value?.status !== GIT_STATUS_READY) return;
+  store.dispatch(`${ns}/getChanges`, { id: activeId.value });
+});
+watch(form, getChanges);
+onBeforeMount(getChanges);
+
 // reset
 const reset = () => {
   store.commit(`${ns}/resetCurrentBranch`);
   store.commit(`${ns}/resetGitBranches`);
   store.commit(`${ns}/resetGitRemoteBranches`);
+  store.commit(`${ns}/resetGitChanges`);
   clearInterval(handle);
 };
 onBeforeUnmount(reset);
@@ -69,10 +77,13 @@ watch(activeId, reset);
 </script>
 
 <template>
-  <cl-detail-layout store-namespace="git">
+  <cl-detail-layout store-namespace="git" :tabs="tabs">
     <template #actions>
       <cl-git-detail-actions-common />
-      <cl-git-detail-actions-files v-if="activeTabName === 'files'" />
+      <cl-git-detail-actions-changes
+        v-if="activeTabName === TAB_NAME_CHANGES"
+      />
+      <cl-git-detail-actions-files v-if="activeTabName === TAB_NAME_FILES" />
     </template>
   </cl-detail-layout>
 

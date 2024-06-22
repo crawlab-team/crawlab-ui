@@ -15,7 +15,6 @@ interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
   gitBranches: GitRef[];
   gitRemoteBranches: GitRef[];
   gitChanges: GitChange[];
-  gitChangesDefaultCheckAll: boolean;
   gitLogs: GitLog[];
   gitTags: GitRef[];
 }
@@ -45,7 +44,6 @@ interface GitStoreMutations
   resetGitRemoteBranches: StoreMutation<GitStoreState>;
   setGitChanges: StoreMutation<GitStoreState, GitChange[]>;
   resetGitChanges: StoreMutation<GitStoreState>;
-  setGitChangesDefaultCheckAll: StoreMutation<GitStoreState, boolean>;
   setGitLogs: StoreMutation<GitStoreState, GitLog[]>;
   resetGitLogs: StoreMutation<GitStoreState>;
   setGitTags: StoreMutation<GitStoreState, GitRef[]>;
@@ -72,6 +70,14 @@ interface GitStoreActions
     { id: string; branch: string }
   >;
   getChanges: StoreAction<GitStoreState, { id: string }>;
+  addChanges: StoreAction<GitStoreState, { id: string; changes: GitChange[] }>;
+  deleteChanges: StoreAction<
+    GitStoreState,
+    { id: string; changes: GitChange[] }
+  >;
+  commit: StoreAction<GitStoreState, { id: string; message: string }>;
+  pull: StoreAction<GitStoreState, { id: string }>;
+  push: StoreAction<GitStoreState, { id: string }>;
   getLogs: StoreAction<GitStoreState, { id: string }>;
   getGitTags: StoreAction<GitStoreState, { id: string }>;
   gitCheckoutTag: StoreAction<GitStoreState, { id: string; tag: string }>;

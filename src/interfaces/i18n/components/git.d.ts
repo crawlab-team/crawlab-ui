@@ -26,7 +26,7 @@ interface LComponentsGit {
         branch: {
           delete: string;
         };
-        pull: string;
+        push: string;
       };
       prompt: {
         branch: {
@@ -39,8 +39,11 @@ interface LComponentsGit {
           };
         };
         commit: {
-          label: string;
+          title: string;
           placeholder: string;
+          validate: {
+            notEmpty: string;
+          };
         };
       };
     };
@@ -60,6 +63,9 @@ interface LComponentsGit {
     new: string;
     local: string;
     remote: string;
+    pull: string;
+    commit: string;
+    push: string;
   };
   tags: {
     new: string;
@@ -68,15 +74,19 @@ interface LComponentsGit {
     title: string;
     label: {
       retry: string;
-      commit: string;
-      pull: string;
       checkout: string;
+      pull: string;
+      commit: string;
+      rollback: string;
+      push: string;
     };
     tooltip: {
       retry: string;
-      commit: string;
-      pull: string;
       checkout: string;
+      pull: string;
+      commit: string;
+      rollback: string;
+      push: string;
     };
   };
   status: {
@@ -141,6 +151,10 @@ interface LComponentsGit {
       columns: {
         changedFile: string;
         status: string;
+      };
+      actions: {
+        add: string;
+        rollback: string;
       };
     };
   };

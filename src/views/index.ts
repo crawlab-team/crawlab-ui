@@ -15,6 +15,7 @@ import DataSourceDetailTabOverview from './ds/detail/tabs/DataSourceDetailTabOve
 import DataSourceList from './ds/list/DataSourceList.vue';
 import EnvironmentList from './environment/list/EnvironmentList.vue';
 import GitDetail from './git/detail/GitDetail.vue';
+import GitDetailActionsChanges from './git/detail/actions/GitDetailActionsChanges.vue';
 import GitDetailActionsCommon from './git/detail/actions/GitDetailActionsCommon.vue';
 import GitDetailActionsFiles from './git/detail/actions/GitDetailActionsFiles.vue';
 import GitDetailTabBranches from './git/detail/tabs/GitDetailTabBranches.vue';
@@ -95,6 +96,7 @@ export {
   DataSourceList as ClDataSourceList,
   EnvironmentList as ClEnvironmentList,
   GitDetail as ClGitDetail,
+  GitDetailActionsChanges as ClGitDetailActionsChanges,
   GitDetailActionsCommon as ClGitDetailActionsCommon,
   GitDetailActionsFiles as ClGitDetailActionsFiles,
   GitDetailTabBranches as ClGitDetailTabBranches,

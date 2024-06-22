@@ -20,9 +20,12 @@ export declare global {
   }
 
   interface GitRef {
-    type?: string;
+    type?: 'branch' | 'tag';
     name?: string;
+    full_name?: string;
     hash?: string;
+    timestamp?: string;
+    remote_track?: string;
   }
 
   interface GitData {

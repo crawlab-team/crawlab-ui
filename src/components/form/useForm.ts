@@ -210,9 +210,6 @@ export const useForm = (
 
   // dialog tab change
   const onTabChange = (tabName: CreateEditTabName) => {
-    // if (tabName === 'batch') {
-    //   store.commit(`${ns}/setFormList`, getNewFormList());
-    // }
     store.commit(`${ns}/setCreateEditDialogTabName`, tabName);
   };
 

@@ -39,5 +39,6 @@ withDefaults(defineProps<LabelButtonProps>(), {
 <style scoped>
 .label-button:deep(.icon) {
   width: 20px;
+  margin-right: 3px;
 }
 </style>

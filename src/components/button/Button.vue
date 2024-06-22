@@ -49,7 +49,7 @@ const cls = computed<string>(() => {
         :title="tooltip"
         :type="type"
         :loading="loading"
-        @click="event => emit('click', event)"
+        @click="(event: Event) => emit('click', event)"
       >
         <slot></slot>
       </el-button>

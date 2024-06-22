@@ -26,7 +26,7 @@ const git: LComponentsGit = {
         branch: {
           delete: '确定删除该分支?',
         },
-        pull: '确定从远端拉取代码?',
+        push: '确定推送到远端?',
       },
       prompt: {
         branch: {
@@ -39,8 +39,11 @@ const git: LComponentsGit = {
           },
         },
         commit: {
-          label: '确定提交代码?',
-          placeholder: '提交信息',
+          title: '提交信息',
+          placeholder: '请输入提交信息',
+          validate: {
+            notEmpty: '不能为空',
+          },
         },
       },
     },
@@ -60,6 +63,9 @@ const git: LComponentsGit = {
     new: '新建分支',
     local: '本地分支',
     remote: '远程分支',
+    pull: '拉取 (Pull)',
+    commit: '提交 (Commit)',
+    push: '推送 (Push)',
   },
   tags: {
     new: '新建标签',
@@ -68,15 +74,19 @@ const git: LComponentsGit = {
     title: 'Git 操作',
     label: {
       retry: '重试',
-      commit: '提交',
-      pull: '拉取',
       checkout: '签出',
+      pull: '拉取',
+      commit: '提交',
+      rollback: '回滚',
+      push: '推送',
     },
     tooltip: {
       retry: '重试',
-      commit: '提交代码',
-      pull: '拉取',
-      checkout: '签出',
+      checkout: '签出 (Checkout)',
+      pull: '从远端仓库拉取 (Pull)',
+      commit: '提交代码 (Commit)',
+      rollback: '回滚变更 (Rollback)',
+      push: '推送到远端仓库 (Push)',
     },
   },
   status: {
@@ -141,6 +151,10 @@ const git: LComponentsGit = {
       columns: {
         changedFile: '变更文件',
         status: '状态',
+      },
+      actions: {
+        add: '添加',
+        rollback: '回滚',
       },
     },
   },

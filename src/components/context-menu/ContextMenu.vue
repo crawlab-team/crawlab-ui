@@ -4,7 +4,6 @@
     :show-arrow="false"
     :visible="visible"
     popper-class="context-menu"
-    trigger="manual"
   >
     <template #default>
       <slot name="default"></slot>
@@ -58,4 +57,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.context-menu {
+  padding: 0 !important;
+}
+</style>

@@ -52,7 +52,6 @@ export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
       { id, path }: FileRequestPayload
     ) => {
       const res = await get(`${endpoint}/${id}/files/list`, { path });
-      console.debug(res);
       const navItems = res.data as FileNavItem[];
       commit('setFileNavItems', navItems);
       return res;

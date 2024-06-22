@@ -56,12 +56,16 @@ const getClassName = (item: NavItem): string => {
         :disabled="item.disabled"
       >
         <el-tooltip :content="item.tooltip" :disabled="!item.tooltip">
-          <div class="item-wrapper">
-            <cl-icon :icon="item.icon" />
-            <span class="label">
-              {{ item.title ? t(item.title) : '' }}
-            </span>
-          </div>
+          <el-badge
+            :value="item.badge || ''"
+            :type="item.badgeType"
+            :offset="[10, 10]"
+          >
+            <div class="item-wrapper">
+              <cl-icon :icon="item.icon" />
+              <span class="label">{{ item.title }}</span>
+            </div>
+          </el-badge>
         </el-tooltip>
       </el-menu-item>
     </el-menu>

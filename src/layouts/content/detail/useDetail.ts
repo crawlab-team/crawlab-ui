@@ -7,6 +7,7 @@ import { ElMessage } from 'element-plus';
 import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils/i18n';
 import { debounce } from '@/utils';
+import { TAB_NAME_CHANGES } from '@/constants';
 
 // i18n
 const t = translate;
@@ -47,12 +48,11 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
   const actionsCollapsed = computed<boolean>(() => state.actionsCollapsed);
 
   const tabs = computed(() => {
-    return (plainClone(store.getters[`${ns}/tabs`]) as NavItem[]).map(
-      (tab: NavItem) => {
-        tab.disabled = store.state[ns].disabledTabKeys.includes(tab.id);
-        return tab;
-      }
-    );
+    return state.tabs.map(tab => {
+      tab.title = t(tab.title || '');
+      tab.disabled = state.disabledTabKeys.includes(tab.id);
+      return tab;
+    });
   });
 
   const contentContainerStyle = computed(() => {

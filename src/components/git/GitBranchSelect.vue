@@ -22,29 +22,15 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'select-local', value: string): void;
   (e: 'select-remote', value: string): void;
-  (e: 'delete', value: string): void;
   (e: 'new-branch'): void;
   (e: 'delete-branch', value: string): void;
   (e: 'new-tag'): void;
+  (e: 'pull'): void;
+  (e: 'commit'): void;
+  (e: 'push'): void;
 }>();
 
 const t = translate;
-
-const getRemoteBranchFromLocalBranch = (localBranch: GitRef) => {
-  const { remoteBranches } = props;
-  if (!localBranch.hash) return;
-  return remoteBranches.find(
-    remoteBranch => remoteBranch.hash === localBranch.hash
-  );
-};
-
-const getLocalBranchFromRemoteBranch = (remoteBranch: GitRef) => {
-  const { localBranches } = props;
-  if (!remoteBranch.hash) return;
-  return localBranches.find(
-    localBranch => localBranch.hash === remoteBranch.hash
-  );
-};
 
 const localBranchOptions = computed(() => {
   const { localBranches } = props;
@@ -60,7 +46,12 @@ const localBranchOptions = computed(() => {
 const remoteBranchOptions = computed(() => {
   const { remoteBranches } = props;
   return remoteBranches
-    .filter(branch => !getLocalBranchFromRemoteBranch(branch))
+    .filter(
+      branch =>
+        !localBranchOptions.value.some(
+          op => op.branch?.remote_track === branch.name
+        )
+    )
     .map(branch => {
       return {
         value: branch.name,
@@ -81,6 +72,21 @@ const onSelect = (value: string) => {
   } else {
     emit('select-remote', value);
   }
+};
+
+const onPull = () => {
+  selectRef.value?.blur();
+  emit('pull');
+};
+
+const onCommit = () => {
+  selectRef.value?.blur();
+  emit('commit');
+};
+
+const onPush = () => {
+  selectRef.value?.blur();
+  emit('push');
 };
 
 const onNewBranch = () => {
@@ -110,6 +116,7 @@ const onDeleteBranch = (value: string, event: Event) => {
       :placeholder="t('components.git.branches.select')"
       @change="onSelect"
     >
+      <!-- label -->
       <template #label="{ label }">
         <div>
           <cl-icon v-if="!loading" :icon="['fa', 'code-branch']" />
@@ -117,6 +124,8 @@ const onDeleteBranch = (value: string, event: Event) => {
           <span style="margin-left: 5px">{{ label }}</span>
         </div>
       </template>
+
+      <!-- options: local branches -->
       <el-option
         v-for="op in localBranchOptions"
         :key="op.value"
@@ -128,8 +137,8 @@ const onDeleteBranch = (value: string, event: Event) => {
             <cl-icon :icon="['fa', 'code-branch']" />
             <span>{{ op.label }}</span>
           </div>
-          <span class="remote">
-            {{ getRemoteBranchFromLocalBranch(op.branch)?.name }}
+          <span v-if="op.branch?.remote_track" class="remote">
+            {{ op.branch?.remote_track }}
           </span>
           <div class="actions">
             <cl-fa-icon-button
@@ -144,6 +153,8 @@ const onDeleteBranch = (value: string, event: Event) => {
           </div>
         </div>
       </el-option>
+
+      <!-- options: remote branches -->
       <el-option-group :label="t('components.git.branches.remote')">
         <el-option
           v-for="op in remoteBranchOptions"
@@ -160,7 +171,34 @@ const onDeleteBranch = (value: string, event: Event) => {
         </el-option>
       </el-option-group>
 
+      <!-- footer actions -->
       <template #footer>
+        <ul class="el-select-dropdown__list">
+          <li class="el-select-dropdown__item" @click="onPull">
+            <div>
+              <cl-icon :icon="['fa', 'cloud-download-alt']" />
+              <span>
+                {{ t('components.git.branches.pull') }}
+              </span>
+            </div>
+          </li>
+          <li class="el-select-dropdown__item" @click="onCommit">
+            <div>
+              <cl-icon :icon="['fa', 'code-commit']" />
+              <span>
+                {{ t('components.git.branches.commit') }}
+              </span>
+            </div>
+          </li>
+          <li class="el-select-dropdown__item" @click="onPush">
+            <div>
+              <cl-icon :icon="['fa', 'cloud-upload-alt']" />
+              <span>
+                {{ t('components.git.branches.push') }}
+              </span>
+            </div>
+          </li>
+        </ul>
         <ul class="el-select-dropdown__list">
           <li class="el-select-dropdown__item" @click="onNewBranch">
             <div>
@@ -201,6 +239,7 @@ const onDeleteBranch = (value: string, event: Event) => {
 
     .icon-wrapper {
       .icon {
+        width: 15px;
         margin-right: 5px;
       }
     }
@@ -239,21 +278,29 @@ const onDeleteBranch = (value: string, event: Event) => {
     }
   }
 
+  .el-select-dropdown__header,
   .el-select-dropdown__footer {
     padding: 0;
 
-    .el-select-dropdown__item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-
-      &:hover {
-        background-color: var(--el-fill-color-light);
+    .el-select-dropdown__list {
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--el-border-color);
       }
 
-      .icon {
-        margin-right: 5px;
+      .el-select-dropdown__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+
+        &:hover {
+          background-color: var(--el-fill-color-light);
+        }
+
+        .icon {
+          width: 15px;
+          margin-right: 5px;
+        }
       }
     }
   }

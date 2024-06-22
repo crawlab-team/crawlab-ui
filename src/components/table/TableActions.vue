@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClTableActions' });
-
 import { defineComponent, inject, PropType } from 'vue';
 import { ACTION_ADD, ACTION_DELETE, ACTION_EDIT } from '@/constants/action';
 import {

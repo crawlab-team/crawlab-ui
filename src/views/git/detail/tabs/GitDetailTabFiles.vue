@@ -26,6 +26,10 @@ const getFiles = debounce(async () => {
 });
 watch(currentBranch, getFiles);
 watch(activeId, getFiles);
+
+const onFileChange = () => {
+  store.dispatch(`${ns}/getChanges`, { id: activeId.value });
+};
 </script>
 
 <template>
@@ -38,6 +42,7 @@ watch(activeId, getFiles);
     :services="useGitService(store)"
     :default-file-paths="state.defaultFilePaths"
     :nav-menu-loading="navMenuLoading"
+    @file-change="onFileChange"
   />
 </template>
 

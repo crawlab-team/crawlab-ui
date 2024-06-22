@@ -2,11 +2,13 @@
 defineOptions({ name: 'ClGitDetailTabChanges' });
 import { computed, h, ref, watch, onBeforeMount, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
 import GitFileStatus from '@/components/git/GitFileStatus.vue';
 import Tag, { TagProps } from '@/components/tag/Tag.vue';
 import Table from '@/components/table/Table.vue';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import { debounce, translate } from '@/utils';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants';
 
 // i18n
 const t = translate;
@@ -18,9 +20,13 @@ const { git: state } = store.state as RootStoreState;
 
 const { activeId, currentBranch } = useGitDetail();
 
-const getStatusTagProps = (status?: string): TagProps => {
-  const label = status;
-  switch (status) {
+const getStatusTagProps = (change: GitChange): TagProps => {
+  const { worktree, staging } = change;
+  let label = staging;
+  if ([' ', '?'].includes(staging || '')) {
+    label = worktree;
+  }
+  switch (label) {
     case '?':
       return {
         type: 'danger',
@@ -90,10 +96,54 @@ const tableColumns = computed<TableColumns<GitChange>>(() => {
       label: t('components.git.changes.table.columns.status'),
       width: '100',
       icon: ['fa', 'edit'],
-      fixed: 'right',
       value: (row: GitChange) => {
-        return h(Tag, getStatusTagProps(row.worktree));
+        return h(Tag, getStatusTagProps(row));
       },
+    },
+    {
+      key: TABLE_COLUMN_NAME_ACTIONS,
+      className: TABLE_COLUMN_NAME_ACTIONS,
+      label: t('components.table.columns.actions'),
+      width: '150',
+      icon: ['fa', 'tools'],
+      fixed: 'right',
+      buttons: [
+        {
+          type: 'info',
+          size: 'small',
+          icon: ['fa', 'plus'],
+          tooltip: t('components.git.changes.table.actions.add'),
+          disabled: (row: GitChange) => row.worktree !== '?',
+          onClick: async (row: GitChange) => {
+            try {
+              await store.dispatch(`${ns}/addChanges`, {
+                id: activeId.value,
+                changes: [row],
+              });
+              await store.dispatch(`${ns}/getChanges`, { id: activeId.value });
+            } catch (e) {
+              ElMessage.error(e.message);
+            }
+          },
+        },
+        {
+          type: 'info',
+          size: 'small',
+          icon: ['fa', 'undo'],
+          tooltip: t('components.git.changes.table.actions.rollback'),
+          onClick: async (row: GitChange) => {
+            try {
+              await store.dispatch(`${ns}/deleteChanges`, {
+                id: activeId.value,
+                changes: [row],
+              });
+              await store.dispatch(`${ns}/getChanges`, { id: activeId.value });
+            } catch (e) {
+              ElMessage.error(e.message);
+            }
+          },
+        },
+      ],
     },
   ] as TableColumns<GitChange>;
 });
@@ -120,11 +170,6 @@ const getChanges = debounce(async () => {
 watch(currentBranch, getChanges);
 watch(activeId, getChanges);
 onBeforeMount(getChanges);
-onMounted(() => {
-  if (state.gitChangesDefaultCheckAll) {
-    tableRef.value?.checkAll();
-  }
-});
 </script>
 
 <template>
@@ -134,6 +179,10 @@ onMounted(() => {
       ref="tableRef"
       :data="tableData"
       :columns="tableColumns"
+      :row-key="
+        ({ path, worktree, staging }: GitChange) =>
+          [path, worktree, staging].join('_')
+      "
       height="100%"
       hide-footer
       :border="false"
@@ -159,5 +208,9 @@ onMounted(() => {
   border-top: none;
   border-left: none;
   border-right: none;
+}
+
+.git-changes:deep(.file-name.deleted) {
+  text-decoration: line-through;
 }
 </style>

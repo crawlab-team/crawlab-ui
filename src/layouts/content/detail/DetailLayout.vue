@@ -12,6 +12,7 @@ const props = withDefaults(
     navItemNameKey: string;
     showBackButton: boolean;
     showSaveButton: boolean;
+    tabs?: NavItem[];
   }>(),
   {
     noSidebar: false,
@@ -47,7 +48,7 @@ const {
   sidebarCollapsed,
   actionsCollapsed,
   showActionsToggleTooltip,
-  tabs,
+  tabs: defaultTabs,
   contentContainerStyle,
   onNavSidebarSelect,
   onNavSidebarToggle,
@@ -100,7 +101,7 @@ onBeforeUnmount(() => {
     <div class="content">
       <cl-nav-tabs
         :active-key="activeTabName"
-        :items="tabs"
+        :items="tabs || defaultTabs"
         :collapsed="sidebarCollapsed"
         toggle
         class="nav-tabs"

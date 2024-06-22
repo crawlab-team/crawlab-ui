@@ -8,19 +8,16 @@ import {
   GIT_REF_TYPE_BRANCH,
   TAB_NAME_CHANGES,
   TAB_NAME_FILES,
-  TAB_NAME_IGNORE,
   TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
 } from '@/constants';
 import useRequest from '@/services/request';
-import { debounce, translate } from '@/utils';
+import { debounce } from '@/utils';
 import {
   getBaseFileStoreActions,
   getBaseFileStoreMutations,
   getBaseFileStoreState,
 } from '@/store/utils/file';
-
-const t = translate;
 
 const endpoint = '/gits';
 
@@ -32,22 +29,22 @@ const state = {
   tabs: [
     {
       id: TAB_NAME_OVERVIEW,
-      title: t('common.tabs.overview'),
+      title: 'common.tabs.overview',
       icon: ['fa', 'info-circle'],
     },
     {
       id: TAB_NAME_FILES,
-      title: t('common.tabs.files'),
+      title: 'common.tabs.files',
       icon: ['fa', 'file-code'],
     },
     {
       id: TAB_NAME_CHANGES,
-      title: t('common.tabs.changes'),
+      title: 'common.tabs.changes',
       icon: ['fa', 'code-commit'],
     },
     {
       id: TAB_NAME_LOGS,
-      title: t('common.tabs.logs'),
+      title: 'common.tabs.logs',
       icon: ['fa', 'code-branch'],
     },
   ],
@@ -59,7 +56,6 @@ const state = {
   gitBranches: [],
   gitRemoteBranches: [],
   gitChanges: [],
-  gitChangesDefaultCheckAll: false,
   gitLogs: [],
   gitTags: [],
 } as GitStoreState;
@@ -132,9 +128,6 @@ const mutations = {
   },
   resetGitChanges: (state: GitStoreState) => {
     state.gitChanges = [];
-  },
-  setGitChangesDefaultCheckAll: (state: GitStoreState, checkAll: boolean) => {
-    state.gitChangesDefaultCheckAll = checkAll;
   },
   setGitLogs: (state: GitStoreState, logs: GitLog[]) => {
     state.gitLogs = logs;
@@ -249,6 +242,49 @@ const actions = {
   ) => {
     const res = await get(`${endpoint}/${id}/changes`);
     commit('setGitChanges', res?.data || []);
+    return res;
+  },
+  addChanges: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, changes }: { id: string; changes: GitChange[] }
+  ) => {
+    return await post(`${endpoint}/${id}/changes`, {
+      changes,
+    });
+  },
+  deleteChanges: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, changes }: { id: string; changes: GitChange[] }
+  ) => {
+    return await del(`${endpoint}/${id}/changes`, {
+      changes,
+    });
+  },
+  commit: async (
+    _: StoreActionContext<GitStoreState>,
+    {
+      id,
+      message,
+      changes,
+    }: { id: string; message: string; changes: GitChange[] }
+  ) => {
+    return await post(`${endpoint}/${id}/commit`, {
+      message,
+      changes,
+    });
+  },
+  pull: async (
+    { state }: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    const res = await post(`${endpoint}/${id}/pull`, {});
+    return res;
+  },
+  push: async (
+    { state }: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    const res = await post(`${endpoint}/${id}/push`, {});
     return res;
   },
   getLogs: async (

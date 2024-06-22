@@ -26,7 +26,7 @@ const git: LComponentsGit = {
         branch: {
           delete: 'Are you sure to delete this branch?',
         },
-        pull: 'Are you sure to pull from remote?',
+        push: 'Are you sure to push to remote?',
       },
       prompt: {
         branch: {
@@ -39,8 +39,11 @@ const git: LComponentsGit = {
           },
         },
         commit: {
-          label: 'Are you sure to commit?',
-          placeholder: 'Commit Message',
+          title: 'Commit Message',
+          placeholder: 'Please enter commit message',
+          validate: {
+            notEmpty: 'Cannot be empty',
+          },
         },
       },
     },
@@ -60,6 +63,9 @@ const git: LComponentsGit = {
     new: 'New Branch',
     local: 'Local Branch',
     remote: 'Remote Branch',
+    pull: 'Pull',
+    commit: 'Commit',
+    push: 'Push',
   },
   tags: {
     new: 'New Tag',
@@ -68,15 +74,19 @@ const git: LComponentsGit = {
     title: 'Git Actions',
     label: {
       retry: 'Retry',
-      commit: 'Commit',
-      pull: 'Pull',
       checkout: 'Checkout',
+      pull: 'Pull',
+      commit: 'Commit',
+      rollback: 'Rollback',
+      push: 'Push',
     },
     tooltip: {
       retry: 'Retry',
-      commit: 'Commit code',
-      pull: 'Pull',
       checkout: 'Checkout',
+      pull: 'Pull from the remote repository',
+      commit: 'Commit code',
+      rollback: 'Rollback changes',
+      push: 'Push to the remote repository',
     },
   },
   status: {
@@ -141,6 +151,10 @@ const git: LComponentsGit = {
       columns: {
         changedFile: 'Changed File',
         status: 'Status',
+      },
+      actions: {
+        add: 'Add',
+        rollback: 'Rollback',
       },
     },
   },

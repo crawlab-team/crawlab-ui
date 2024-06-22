@@ -16,27 +16,10 @@ import {
 } from '@/constants/git';
 import useDetail from '@/layouts/content/detail/useDetail';
 import useGit from '@/components/git/git';
-import { TAB_NAME_OVERVIEW } from '@/constants';
+import { TAB_NAME_CHANGES, TAB_NAME_OVERVIEW } from '@/constants';
 
 // i18n
 const t = translate;
-
-const gitCheckoutFormRef = ref<typeof Form>();
-
-const gitCheckoutForm = ref({
-  type: GIT_REF_TYPE_BRANCH,
-  name: '',
-});
-
-const gitDialogVisible = ref({
-  checkout: false,
-});
-
-const gitLoading = ref({
-  checkout: false,
-  pull: false,
-  commit: false,
-});
 
 const useGitDetail = () => {
   const ns = 'git';
@@ -49,66 +32,19 @@ const useGitDetail = () => {
 
   const id = computed<string>(() => route.params.id as string);
 
-  const { create: createGitForm, updateById: updateGitFormById } =
-    useGitService(store);
+  const tabs = computed(() => {
+    return state.tabs.map(tab => {
+      tab.title = t(tab.title || '');
+      tab.disabled = state.disabledTabKeys.includes(tab.id);
+      if (tab.id === TAB_NAME_CHANGES) {
+        tab.badge = state.gitChanges.length;
+        tab.badgeType = 'danger';
+      }
+      return tab;
+    });
+  });
 
   const activeTabName = computed<string>(() => getTabName(router));
-
-  const saveGit = async () => {
-    if (!id.value || !state.form.url || activeTabName.value !== 'git') return;
-    if (state.form._id) {
-      await updateGitFormById(state.form._id, state.form);
-    } else {
-      const res = await createGitForm({
-        _id: state.form._id,
-        ...state.form,
-      });
-      await store.dispatch(`git/getById`, res.data?._id);
-    }
-    await store.dispatch(`${ns}/getGit`, { id: id.value });
-  };
-
-  const gitActions = {
-    onClickPull: async () => {
-      await ElMessageBox.confirm(
-        t('components.git.common.messageBox.confirm.pull'),
-        t('components.git.common.actions.pull'),
-        {
-          type: 'warning',
-        }
-      );
-      gitLoading.value.pull = true;
-      await saveGit();
-      try {
-        const res = await store.dispatch(`${ns}/gitPull`, { id: id.value });
-        if (res) {
-          ElMessage.success(t('components.git.common.message.success.pull'));
-        }
-        await store.dispatch(`${ns}/getGit`, { id: id.value });
-      } finally {
-        gitLoading.value.pull = false;
-      }
-
-      sendEvent('click_spider_detail_git_pull');
-    },
-    onDialogCheckoutConfirm: async () => {
-      await gitCheckoutFormRef.value?.validate();
-      gitDialogVisible.value.checkout = false;
-      gitLoading.value.checkout = true;
-      try {
-        await store.dispatch(`${ns}/gitCheckout`, {
-          id: id.value,
-          branch: gitCheckoutForm.value.name,
-        });
-        ElMessage.success(t('components.git.common.message.success.checkout'));
-        await store.dispatch(`${ns}/getGit`, { id: id.value });
-      } finally {
-        gitLoading.value.checkout = false;
-      }
-
-      sendEvent('click_spider_detail_git_checkout_confirm');
-    },
-  };
 
   const currentBranch = computed<GitRef | undefined>(() => state.currentBranch);
 
@@ -144,19 +80,80 @@ const useGitDetail = () => {
     }
   );
 
+  const isDisabled = computed<boolean>(() => {
+    const gitForm = state.form;
+    return (
+      gitForm.status !== GIT_STATUS_READY || !gitForm.url || !gitForm.auth_type
+    );
+  });
+
+  const commitLoading = ref(false);
+  const onCommit = async () => {
+    if (!state.gitChangeSelection.length) return;
+    const { value: message } = await ElMessageBox.prompt(
+      t('components.git.common.messageBox.prompt.commit.title'),
+      {
+        type: 'info',
+        inputPlaceholder: t(
+          'components.git.common.messageBox.prompt.commit.placeholder'
+        ),
+        inputValidator: (value: string) => {
+          if (!value) {
+            return t(
+              'components.git.common.messageBox.prompt.commit.validate.notEmpty'
+            );
+          }
+          return true;
+        },
+      }
+    );
+    try {
+      await store.dispatch(`${ns}/commit`, {
+        id: id.value,
+        message,
+        changes: state.gitChangeSelection,
+      });
+      await Promise.all([
+        store.dispatch(`${ns}/getChanges`, { id: id.value }),
+        store.dispatch(`${ns}/getLogs`, { id: id.value }),
+      ]);
+    } catch (e: any) {
+      ElMessage.error(e.message);
+    } finally {
+      commitLoading.value = false;
+    }
+  };
+
+  const rollbackLoading = ref(false);
+  const onRollback = async () => {
+    if (!state.gitChangeSelection.length) return;
+    try {
+      await store.dispatch(`${ns}/deleteChanges`, {
+        id: id.value,
+        changes: state.gitChangeSelection,
+      });
+      await store.dispatch(`${ns}/getChanges`, { id: id.value });
+    } catch (e: any) {
+      ElMessage.error(e.message);
+    } finally {
+      rollbackLoading.value = false;
+    }
+  };
+
   return {
     ...useDetail('git'),
-    gitCheckoutFormRef,
-    gitCheckoutForm,
-    gitDialogVisible,
-    gitLoading,
-    ...gitActions,
+    tabs,
     currentBranch,
     gitDataLoading,
     gitLocalBranches,
     gitLocalBranchesDict,
     gitRemoteBranches,
     gitRemoteBranchesDict,
+    isDisabled,
+    commitLoading,
+    onCommit,
+    rollbackLoading,
+    onRollback,
   };
 };
 

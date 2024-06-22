@@ -21,7 +21,7 @@ const props = withDefaults(
     total: number;
     page: number;
     pageSize: number;
-    rowKey: string;
+    rowKey: string | ((row: any) => string);
     selectable?: boolean;
     visibleButtons: BuiltInTableActionButtonName[];
     hideFooter?: boolean;

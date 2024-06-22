@@ -1,3 +1,5 @@
+import { Component } from 'vue';
+
 export declare global {
   interface NavItem<T = any> extends TreeNode<NavItem<T>> {
     id: string;
@@ -9,5 +11,7 @@ export declare global {
     emphasis?: boolean;
     style?: any;
     disabled?: boolean;
+    badge?: string | number;
+    badgeType?: BasicType;
   }
 }

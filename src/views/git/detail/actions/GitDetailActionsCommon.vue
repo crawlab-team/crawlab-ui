@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { TAB_NAME_CHANGES } from '@/constants';
+
 defineOptions({ name: 'ClGitDetailActionsCommon' });
 import { h, ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
@@ -7,7 +9,6 @@ import { useRouter } from 'vue-router';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { GIT_STATUS_READY } from '@/constants';
 
 const t = translate;
 
@@ -20,20 +21,15 @@ const { git: state } = store.state as RootStoreState;
 // git form
 const gitForm = computed<Git>(() => state.form);
 
-const isDisabled = computed<boolean>(
-  () =>
-    gitForm.value.status !== GIT_STATUS_READY ||
-    !gitForm.value.url ||
-    !gitForm.value.auth_type
-);
-
 const {
+  activeTabName,
   activeId,
   currentBranch,
   gitDataLoading,
   gitLocalBranches,
   gitRemoteBranches,
-  onClickPull,
+  isDisabled,
+  onCommit,
 } = useGitDetail();
 
 const internalCurrentBranch = ref<string>();
@@ -160,8 +156,11 @@ const onNewTag = async (tag: string) => {
 };
 
 const onClickCommit = async () => {
-  store.commit(`${ns}/setGitChangesDefaultCheckAll`, true);
-  router.push(`/gits/${activeId.value}/changes`);
+  if (activeTabName.value !== TAB_NAME_CHANGES) {
+    router.push(`/gits/${activeId.value}/changes`);
+  } else {
+    await onCommit();
+  }
 };
 </script>
 
@@ -191,22 +190,9 @@ const onClickCommit = async () => {
           @new-branch="onNewBranch"
           @delete-branch="onDeleteBranch"
           @new-tag="onNewTag"
+          @commit="onClickCommit"
         />
       </div>
-      <cl-fa-icon-button
-        :icon="['fa', 'code-commit']"
-        :tooltip="t('components.git.actions.tooltip.commit')"
-        type="primary"
-        :disabled="isDisabled"
-        @click="onClickCommit"
-      />
-      <cl-fa-icon-button
-        :icon="['fa', 'download']"
-        :tooltip="t('components.git.actions.tooltip.pull')"
-        type="primary"
-        :disabled="isDisabled"
-        @click="onClickPull"
-      />
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
