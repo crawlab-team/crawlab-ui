@@ -6,7 +6,6 @@ declare global {
     type: CreateEditDialogType;
     width: string;
     batchFormData: TableData;
-    batchFormFields: FormTableField[];
     confirmDisabled?: boolean;
     confirmLoading?: boolean;
     actionFunctions?: CreateEditDialogActionFunctions;

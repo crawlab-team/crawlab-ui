@@ -10,7 +10,7 @@ import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants/table';
 import { useI18n } from 'vue-i18n';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import useGit from '@/components/git/git';
+import useGit from '@/components/git/useGit';
 // i18n
 const { t } = useI18n();
 

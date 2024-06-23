@@ -133,10 +133,6 @@ const useScheduleList = () => {
               label: t('components.task.mode.label.selectedNodes'),
               value: TASK_MODE_SELECTED_NODES,
             },
-            {
-              label: t('components.task.mode.label.selectedTags'),
-              value: TASK_MODE_SELECTED_NODE_TAGS,
-            },
           ],
           onChange: onListFilterChangeByKey(store, ns, 'mode', FILTER_OP_EQUAL),
         },
@@ -177,188 +173,191 @@ const useScheduleList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<Schedule>>(() => [
-    {
-      key: 'name',
-      label: t('views.schedules.table.columns.name'),
-      icon: ['fa', 'font'],
-      width: '150',
-      value: (row: Schedule) =>
-        h(NavLink, {
-          path: `/schedules/${row._id}`,
-          label: row.name,
-        }),
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: 'spider_id',
-      label: t('views.schedules.table.columns.spider'),
-      icon: ['fa', 'spider'],
-      width: '160',
-      value: (row: Schedule) => {
-        if (!row.spider_id) return;
-        const spider = allSpiderDict.value.get(row.spider_id);
-        return h(NavLink, {
-          label: spider?.name,
-          path: `/spiders/${spider?._id}`,
-        });
-      },
-      hasFilter: true,
-      allowFilterSearch: true,
-      allowFilterItems: true,
-      filterItems: allSpiderListSelectOptions.value,
-    },
-    {
-      key: 'mode',
-      label: t('views.schedules.table.columns.mode'),
-      icon: ['fa', 'cog'],
-      width: '160',
-      value: (row: Schedule) => {
-        return h(TaskMode, { mode: row.mode } as TaskModeProps);
-      },
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: modeOptions,
-    },
-    {
-      key: 'cron',
-      label: t('views.schedules.table.columns.cron'),
-      icon: ['fa', 'clock'],
-      width: '160',
-      value: (row: Schedule) => {
-        return h(ScheduleCron, { cron: row.cron } as ScheduleCronProps);
-      },
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: 'enabled',
-      label: t('views.schedules.table.columns.enabled'),
-      icon: ['fa', 'toggle-on'],
-      width: '120',
-      value: (row: Schedule) => {
-        return h(Switch, {
-          modelValue: row.enabled,
-          disabled: !isAllowedAction(
-            router.currentRoute.value.path,
-            ACTION_ENABLE
-          ),
-          'onUpdate:modelValue': async (value: boolean) => {
-            if (value) {
-              await store.dispatch(`${ns}/enable`, row._id);
-              ElMessage.success(
-                t('components.schedule.message.success.enable')
-              );
-            } else {
-              await store.dispatch(`${ns}/disable`, row._id);
-              ElMessage.success(
-                t('components.schedule.message.success.disable')
-              );
-            }
-
-            value
-              ? sendEvent('click_schedule_list_enable')
-              : sendEvent('click_schedule_list_disable');
-
-            await store.dispatch(`${ns}/getList`);
-          },
-        } as SwitchProps);
-      },
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: [
-        { label: t('common.control.enabled'), value: true },
-        { label: t('common.control.disabled'), value: false },
-      ],
-    },
-    {
-      key: 'entry_id',
-      label: t('views.schedules.table.columns.entryId'),
-      icon: ['fa', 'hash'],
-      width: '120',
-      defaultHidden: true,
-    },
-    {
-      key: 'description',
-      label: t('views.schedules.table.columns.description'),
-      icon: ['fa', 'comment-alt'],
-      width: 'auto',
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: TABLE_COLUMN_NAME_ACTIONS,
-      label: t('components.table.columns.actions'),
-      fixed: 'right',
-      width: '200',
-      buttons: [
+  const tableColumns = computed<TableColumns<Schedule>>(
+    () =>
+      [
         {
-          className: 'view-btn',
-          type: 'primary',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: row => {
-            router.push(`/schedules/${row._id}`);
-
-            sendEvent('click_schedule_list_actions_view');
-          },
-          action: ACTION_VIEW,
+          key: 'name',
+          label: t('views.schedules.table.columns.name'),
+          icon: ['fa', 'font'],
+          width: '150',
+          value: (row: Schedule) =>
+            h(NavLink, {
+              path: `/schedules/${row._id}`,
+              label: row.name,
+            }),
+          hasSort: true,
+          hasFilter: true,
+          allowFilterSearch: true,
         },
-        // {
-        //   type: 'info',
-        //   size: 'small',
-        //   icon: ['fa', 'clone'],
-        //   tooltip: t('common.actions.clone'),
-        //   onClick: (row) => {
-        //     // TODO: implement
-        //     console.log('clone', row);
-        //   }
-        // },
         {
-          type: 'success',
-          size: 'small',
-          icon: ['fa', 'play'],
-          tooltip: t('common.actions.run'),
-          onClick: async row => {
-            sendEvent('click_schedule_list_actions_run');
-
-            await ElMessageBox.confirm(
-              t('common.messageBox.confirm.run'),
-              t('common.actions.run'),
-              {
-                type: 'warning',
-                confirmButtonText: t('common.actions.confirm'),
-                cancelButtonText: t('common.actions.cancel'),
-              }
-            );
-            sendEvent('click_schedule_list_actions_run_confirm');
-            await store.dispatch('task/create', {
-              mode: row.mode,
-              priority: row.priority,
-              spider_id: row.spider_id,
-              cmd: row.cmd,
-              param: row.param,
+          key: 'spider_id',
+          label: t('views.schedules.table.columns.spider'),
+          icon: ['fa', 'spider'],
+          width: '160',
+          value: (row: Schedule) => {
+            if (!row.spider_id) return;
+            const spider = allSpiderDict.value.get(row.spider_id);
+            return h(NavLink, {
+              label: spider?.name,
+              path: `/spiders/${spider?._id}`,
             });
-            await ElMessage.success(t('common.message.success.run'));
           },
-          className: 'run-btn',
-          action: ACTION_RUN,
+          hasFilter: true,
+          allowFilterSearch: true,
+          allowFilterItems: true,
+          filterItems: allSpiderListSelectOptions.value,
         },
         {
-          className: 'delete-btn',
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
-          tooltip: t('common.actions.delete'),
-          onClick: deleteByIdConfirm,
-          action: ACTION_DELETE,
+          key: 'mode',
+          label: t('views.schedules.table.columns.mode'),
+          icon: ['fa', 'cog'],
+          width: '160',
+          value: (row: Schedule) => {
+            return h(TaskMode, { mode: row.mode } as TaskModeProps);
+          },
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: modeOptions,
         },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+        {
+          key: 'cron',
+          label: t('views.schedules.table.columns.cron'),
+          icon: ['fa', 'clock'],
+          width: '160',
+          value: (row: Schedule) => {
+            return h(ScheduleCron, { cron: row.cron } as ScheduleCronProps);
+          },
+          hasFilter: true,
+          allowFilterSearch: true,
+        },
+        {
+          key: 'enabled',
+          label: t('views.schedules.table.columns.enabled'),
+          icon: ['fa', 'toggle-on'],
+          width: '120',
+          value: (row: Schedule) => {
+            return h(Switch, {
+              modelValue: row.enabled,
+              disabled: !isAllowedAction(
+                router.currentRoute.value.path,
+                ACTION_ENABLE
+              ),
+              'onUpdate:modelValue': async (value: boolean) => {
+                if (value) {
+                  await store.dispatch(`${ns}/enable`, row._id);
+                  ElMessage.success(
+                    t('components.schedule.message.success.enable')
+                  );
+                } else {
+                  await store.dispatch(`${ns}/disable`, row._id);
+                  ElMessage.success(
+                    t('components.schedule.message.success.disable')
+                  );
+                }
+
+                value
+                  ? sendEvent('click_schedule_list_enable')
+                  : sendEvent('click_schedule_list_disable');
+
+                await store.dispatch(`${ns}/getList`);
+              },
+            } as SwitchProps);
+          },
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: [
+            { label: t('common.control.enabled'), value: true },
+            { label: t('common.control.disabled'), value: false },
+          ],
+        },
+        {
+          key: 'entry_id',
+          label: t('views.schedules.table.columns.entryId'),
+          icon: ['fa', 'hash'],
+          width: '120',
+          defaultHidden: true,
+        },
+        {
+          key: 'description',
+          label: t('views.schedules.table.columns.description'),
+          icon: ['fa', 'comment-alt'],
+          width: 'auto',
+          hasFilter: true,
+          allowFilterSearch: true,
+        },
+        {
+          key: TABLE_COLUMN_NAME_ACTIONS,
+          label: t('components.table.columns.actions'),
+          fixed: 'right',
+          width: '200',
+          buttons: [
+            {
+              className: 'view-btn',
+              type: 'primary',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: row => {
+                router.push(`/schedules/${row._id}`);
+
+                sendEvent('click_schedule_list_actions_view');
+              },
+              action: ACTION_VIEW,
+            },
+            // {
+            //   type: 'info',
+            //   size: 'small',
+            //   icon: ['fa', 'clone'],
+            //   tooltip: t('common.actions.clone'),
+            //   onClick: (row) => {
+            //     // TODO: implement
+            //     console.log('clone', row);
+            //   }
+            // },
+            {
+              type: 'success',
+              size: 'small',
+              icon: ['fa', 'play'],
+              tooltip: t('common.actions.run'),
+              onClick: async row => {
+                sendEvent('click_schedule_list_actions_run');
+
+                await ElMessageBox.confirm(
+                  t('common.messageBox.confirm.run'),
+                  t('common.actions.run'),
+                  {
+                    type: 'warning',
+                    confirmButtonText: t('common.actions.confirm'),
+                    cancelButtonText: t('common.actions.cancel'),
+                  }
+                );
+                sendEvent('click_schedule_list_actions_run_confirm');
+                await store.dispatch('task/create', {
+                  mode: row.mode,
+                  priority: row.priority,
+                  spider_id: row.spider_id,
+                  cmd: row.cmd,
+                  param: row.param,
+                });
+                await ElMessage.success(t('common.message.success.run'));
+              },
+              className: 'run-btn',
+              action: ACTION_RUN,
+            },
+            {
+              className: 'delete-btn',
+              type: 'danger',
+              size: 'small',
+              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.delete'),
+              onClick: deleteByIdConfirm,
+              action: ACTION_DELETE,
+            },
+          ],
+          disableTransfer: true,
+        },
+      ] as TableColumns<Schedule>
+  );
 
   // options
   const opts = {

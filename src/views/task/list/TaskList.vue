@@ -1,6 +1,28 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClTaskList' });
+import useTaskList from '@/views/task/list/useTaskList';
+
+defineProps<{
+  noActions?: boolean;
+  embedded?: boolean;
+}>();
+
+const {
+  navActions,
+  tableColumns,
+  tableData,
+  tableTotal,
+  tablePagination,
+  actionFunctions,
+} = useTaskList();
+</script>
+
 <template>
   <cl-list-layout
     class="task-list"
+    :row-key="
+      (row: Task) => [row._id, row.status, JSON.stringify(row.stat)].join('_')
+    "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
@@ -17,29 +39,5 @@
     </template>
   </cl-list-layout>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useTaskList from '@/views/task/list/useTaskList';
-
-export default defineComponent({
-  name: 'TaskList',
-  props: {
-    noActions: {
-      type: Boolean,
-      default: false,
-    },
-    embedded: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props: TaskListProps, { emit }) {
-    return {
-      ...useTaskList(),
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

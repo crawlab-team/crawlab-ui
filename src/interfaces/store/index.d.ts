@@ -88,7 +88,6 @@ export declare global {
   interface BaseStoreGetters<S = BaseStoreState, R = RootStoreState>
     extends GetterTree<S, R> {
     dialogVisible: StoreGetter<BaseStoreState, boolean>;
-    isBatchForm: StoreGetter<BaseStoreState, boolean>;
     formListIds: StoreGetter<BaseStoreState, string[]>;
     allListSelectOptions: StoreGetter<BaseStoreState, SelectOption[]>;
     allDict: StoreGetter<BaseStoreState, Map<string, T>>;

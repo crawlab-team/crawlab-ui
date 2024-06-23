@@ -6,10 +6,11 @@ import {
 } from '@/utils/store';
 import {
   GIT_REF_TYPE_BRANCH,
-  TAB_NAME_CHANGES,
-  TAB_NAME_FILES,
-  TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_FILES,
+  TAB_NAME_CHANGES,
+  TAB_NAME_LOGS,
+  TAB_NAME_SPIDERS,
 } from '@/constants';
 import useRequest from '@/services/request';
 import { debounce } from '@/utils';
@@ -46,6 +47,11 @@ const state = {
       id: TAB_NAME_LOGS,
       title: 'common.tabs.logs',
       icon: ['fa', 'code-branch'],
+    },
+    {
+      id: TAB_NAME_SPIDERS,
+      title: 'common.tabs.spiders',
+      icon: ['fa', 'spider'],
     },
   ],
   gitData: undefined,
@@ -274,18 +280,16 @@ const actions = {
     });
   },
   pull: async (
-    { state }: StoreActionContext<GitStoreState>,
+    _: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
-    const res = await post(`${endpoint}/${id}/pull`, {});
-    return res;
+    return await post(`${endpoint}/${id}/pull`, {});
   },
   push: async (
-    { state }: StoreActionContext<GitStoreState>,
+    _: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
-    const res = await post(`${endpoint}/${id}/push`, {});
-    return res;
+    return await post(`${endpoint}/${id}/push`, {});
   },
   getLogs: async (
     { commit }: StoreActionContext<GitStoreState>,
@@ -310,23 +314,26 @@ const actions = {
     return await post(`${endpoint}/${id}/tags/checkout`, { tag });
   },
   gitPull: async (
-    { state }: StoreActionContext<GitStoreState>,
+    _: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
-    const res = await post(`${endpoint}/${id}/git/pull`, {});
-    return res;
+    return await post(`${endpoint}/${id}/git/pull`, {});
   },
   gitCommit: async (
     { state }: StoreActionContext<GitStoreState>,
     { id, commit_message }: { id: string; commit_message: string }
   ) => {
     const paths = state.gitChangeSelection.map(d => d.path);
-    console.debug(paths);
-    const res = await post(`${endpoint}/${id}/git/commit`, {
+    return await post(`${endpoint}/${id}/git/commit`, {
       paths,
       commit_message,
     });
-    return res;
+  },
+  createSpider: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, spider }: { id: string; spider: Spider }
+  ) => {
+    return await post(`${endpoint}/${id}/spiders`, spider);
   },
 } as GitStoreActions;
 

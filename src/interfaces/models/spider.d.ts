@@ -21,6 +21,8 @@ export declare global {
     stat?: SpiderStat;
     incremental_sync?: boolean;
     auto_install?: boolean;
+    git_id?: string;
+    git_root_path?: string;
   }
 
   interface SpiderStat {

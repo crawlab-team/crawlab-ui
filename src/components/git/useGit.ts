@@ -3,11 +3,6 @@ import useForm from '@/components/form/useForm';
 import useGitService from '@/services/git/gitService';
 import { getDefaultFormComponentData } from '@/utils/form';
 
-// get new git
-export const getNewGit = (): Git => {
-  return {};
-};
-
 // form component data
 const formComponentData = getDefaultFormComponentData<Git>();
 

@@ -4,7 +4,7 @@ import { computed } from 'vue';
 
 export interface ButtonProps {
   tooltip?: string;
-  type?: string;
+  type?: BasicType;
   size?: BasicSize;
   round?: boolean;
   circle?: boolean;

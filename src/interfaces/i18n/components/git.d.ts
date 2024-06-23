@@ -160,10 +160,14 @@ interface LComponentsGit {
       empty: string;
     };
   };
-  ignore: {
-    table: {
-      columns: {
-        file: string;
+  spiders: {
+    title: string;
+    actions: {
+      label: {
+        create: string;
+      };
+      tooltip: {
+        create: string;
       };
     };
   };

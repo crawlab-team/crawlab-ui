@@ -33,24 +33,6 @@ export const useDataSource: any = (store: Store<RootStoreState>) => {
   const ns = 'ds' as ListStoreNamespace;
   const { ds: state } = store.state as RootStoreState;
 
-  // batch form fields
-  const batchFormFields: FormTableField[] = [
-    {
-      prop: 'name',
-      label: 'Name',
-      width: '150',
-      fieldType: FORM_FIELD_TYPE_INPUT,
-      required: true,
-      placeholder: 'Name',
-    },
-    {
-      prop: 'description',
-      label: 'Description',
-      width: '200',
-      fieldType: FORM_FIELD_TYPE_INPUT_TEXTAREA,
-    },
-  ];
-
   // form rules
   const formRules = readonly<FormRules>({});
 
@@ -134,7 +116,6 @@ export const useDataSource: any = (store: Store<RootStoreState>) => {
 
   return {
     ...useForm(ns, store, useDataSourceService(store), formComponentData),
-    batchFormFields,
     formRules,
     typeOptions,
     getTypeOptionsWithDefault,

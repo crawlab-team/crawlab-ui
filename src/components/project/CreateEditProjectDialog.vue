@@ -7,7 +7,6 @@
     :batch-form-data="formList"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
-    :batch-form-fields="batchFormFields"
   >
     <template #default>
       <cl-project-form />
@@ -30,7 +29,6 @@ const {
   formList,
   confirmDisabled,
   confirmLoading,
-  batchFormFields,
 } = useProject(store);
 </script>
 

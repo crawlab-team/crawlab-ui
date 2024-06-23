@@ -1,12 +1,10 @@
 import { RouteRecordRaw } from 'vue-router';
 import {
-  TAB_NAME_BRANCHES,
-  TAB_NAME_CHANGES,
-  TAB_NAME_FILES,
-  TAB_NAME_IGNORE,
-  TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
-  TAB_NAME_TAGS,
+  TAB_NAME_FILES,
+  TAB_NAME_CHANGES,
+  TAB_NAME_LOGS,
+  TAB_NAME_SPIDERS,
 } from '@/constants/tab';
 
 const endpoint = 'gits';
@@ -36,15 +34,6 @@ export default [
           import('@/views/git/detail/tabs/GitDetailTabFiles.vue'),
       },
       {
-        path: TAB_NAME_BRANCHES,
-        component: () =>
-          import('@/views/git/detail/tabs/GitDetailTabBranches.vue'),
-      },
-      {
-        path: TAB_NAME_TAGS,
-        component: () => import('@/views/git/detail/tabs/GitDetailTabTags.vue'),
-      },
-      {
         path: TAB_NAME_LOGS,
         component: () => import('@/views/git/detail/tabs/GitDetailTabLogs.vue'),
       },
@@ -54,9 +43,9 @@ export default [
           import('@/views/git/detail/tabs/GitDetailTabChanges.vue'),
       },
       {
-        path: TAB_NAME_IGNORE,
+        path: TAB_NAME_SPIDERS,
         component: () =>
-          import('@/views/git/detail/tabs/GitDetailTabIgnore.vue'),
+          import('@/views/git/detail/tabs/GitDetailTabSpiders.vue'),
       },
     ],
   },

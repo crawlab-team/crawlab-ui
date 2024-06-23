@@ -83,4 +83,5 @@ interface GitStoreActions
   gitCheckoutTag: StoreAction<GitStoreState, { id: string; tag: string }>;
   gitPull: StoreAction<GitStoreState, { id: string }>;
   gitCommit: StoreAction<GitStoreState, { id: string; commit_message: string }>;
+  createSpider: StoreAction<GitStoreState, { id: string; spider: Spider }>;
 }

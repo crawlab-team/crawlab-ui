@@ -1,6 +1,32 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClSpiderList' });
+import useSpiderList from '@/views/spider/list/useSpiderList';
+
+defineProps<{
+  noActions?: boolean;
+  embedded?: boolean;
+}>();
+
+const {
+  navActions,
+  tableColumns,
+  tableData,
+  tableTotal,
+  tablePagination,
+  tableListFilter,
+  tableListSort,
+  actionFunctions,
+  tableActionsPrefix,
+} = useSpiderList();
+</script>
+
 <template>
   <cl-list-layout
     class="spider-list"
+    :row-key="
+      (row: Spider) =>
+        [row._id, row.last_task?.status, JSON.stringify(row.stat)].join('_')
+    "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
@@ -22,52 +48,6 @@
     </template>
   </cl-list-layout>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useSpiderList from '@/views/spider/list/useSpiderList';
-
-export default defineComponent({
-  name: 'SpiderList',
-  props: {
-    noActions: {
-      type: Boolean,
-      required: false,
-    },
-    embedded: {
-      type: Boolean,
-      required: false,
-    },
-  },
-  setup() {
-    const {
-      navActions,
-      tableColumns,
-      tableData,
-      tableTotal,
-      tablePagination,
-      tableListFilter,
-      tableListSort,
-      actionFunctions,
-      tableActionsPrefix,
-      activeDialogKey,
-    } = useSpiderList();
-
-    return {
-      navActions,
-      tableColumns,
-      tableData,
-      tableTotal,
-      tablePagination,
-      tableListFilter,
-      tableListSort,
-      actionFunctions,
-      tableActionsPrefix,
-      activeDialogKey,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .spider-list {

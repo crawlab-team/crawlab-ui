@@ -3,7 +3,7 @@ defineOptions({ name: 'ClGitForm' });
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
-import useGit from '@/components/git/git';
+import useGit from '@/components/git/useGit';
 
 // i18n
 const t = translate;

@@ -1,14 +1,8 @@
-import { watch, computed, ref, onBeforeMount, onMounted } from 'vue';
+import { watch, computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderService from '@/services/spider/spiderService';
-import { useRoute, useRouter } from 'vue-router';
-import useGitService from '@/services/git/gitService';
-import { getTabName } from '@/utils/route';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { sendEvent } from '@/admin/umeng';
+import { useRoute } from 'vue-router';
 import { translate } from '@/utils/i18n';
-import Form from '@/components/form/Form.vue';
-import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
 import useDetail from '@/layouts/content/detail/useDetail';
 
 // i18n

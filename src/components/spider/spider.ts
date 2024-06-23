@@ -28,57 +28,6 @@ const useSpider = (store: Store<RootStoreState>) => {
   // options for default mode
   const modeOptions = getModeOptions();
 
-  // use project
-  const { allProjectSelectOptions } = useProject(store);
-
-  // batch form fields
-  const batchFormFields = computed<FormTableField[]>(() => [
-    {
-      prop: 'name',
-      label: t('components.spider.form.name'),
-      width: '150',
-      placeholder: t('components.spider.form.name'),
-      fieldType: FORM_FIELD_TYPE_INPUT,
-      required: true,
-    },
-    {
-      prop: 'cmd',
-      label: t('components.spider.form.command'),
-      width: '200',
-      placeholder: t('components.spider.form.command'),
-      fieldType: FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
-      required: true,
-    },
-    {
-      prop: 'param',
-      label: t('components.spider.form.param'),
-      width: '200',
-      placeholder: t('components.spider.form.param'),
-      fieldType: FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
-    },
-    {
-      prop: 'mode',
-      label: t('components.spider.form.defaultMode'),
-      width: '200',
-      fieldType: FORM_FIELD_TYPE_SELECT,
-      options: modeOptions,
-      required: true,
-    },
-    {
-      prop: 'project_id',
-      label: t('components.spider.form.project'),
-      width: '200',
-      fieldType: FORM_FIELD_TYPE_SELECT,
-      options: allProjectSelectOptions.value,
-    },
-    {
-      prop: 'description',
-      label: t('components.spider.form.description'),
-      width: '200',
-      fieldType: FORM_FIELD_TYPE_INPUT_TEXTAREA,
-    },
-  ]);
-
   // route
   const route = useRoute();
 
@@ -114,7 +63,6 @@ const useSpider = (store: Store<RootStoreState>) => {
 
   return {
     ...useForm('spider', store, useSpiderService(store), formComponentData),
-    batchFormFields,
     id,
     modeOptions,
     fetchDataCollection,

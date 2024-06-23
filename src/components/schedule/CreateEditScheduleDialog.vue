@@ -2,7 +2,6 @@
   <cl-create-edit-dialog
     :action-functions="actionFunctions"
     :batch-form-data="formList"
-    :batch-form-fields="batchFormFields"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
     :tab-name="createEditDialogTabName"
@@ -19,7 +18,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import useSchedule from '@/components/schedule/schedule';
+import useSchedule from '@/components/schedule/useSchedule';
 
 export default defineComponent({
   name: 'CreateEditScheduleDialog',

@@ -21,32 +21,6 @@ const useProject = (store: Store<RootStoreState>) => {
   const ns = 'project';
   const state = store.state[ns];
 
-  // batch form fields
-  const batchFormFields = computed<FormTableField[]>(() => [
-    {
-      prop: 'name',
-      label: t('components.project.form.name'),
-      width: '150',
-      fieldType: FORM_FIELD_TYPE_INPUT,
-      placeholder: t('components.project.form.name'),
-      required: true,
-    },
-    // {
-    //   prop: 'tags',
-    //   label: t('components.project.form.tags'),
-    //   width: '200',
-    //   placeholder: t('components.project.form.tags'),
-    //   fieldType: FORM_FIELD_TYPE_TAG_INPUT,
-    // },
-    {
-      prop: 'description',
-      label: t('components.project.form.description'),
-      width: '800',
-      placeholder: t('components.project.form.description'),
-      fieldType: FORM_FIELD_TYPE_INPUT_TEXTAREA,
-    },
-  ]);
-
   // form rules
   const formRules = readonly<FormRules>({
     tags: {
@@ -71,7 +45,6 @@ const useProject = (store: Store<RootStoreState>) => {
 
   return {
     ...useForm('project', store, useProjectService(store), formComponentData),
-    batchFormFields,
     formRules,
     allProjectSelectOptions,
   };

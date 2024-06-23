@@ -52,6 +52,7 @@ import FormTable from './form/FormTable.vue';
 import FormTableField from './form/FormTableField.vue';
 import CreateEditGitDialog from './git/CreateEditGitDialog.vue';
 import CreateGitBranchDialog from './git/CreateGitBranchDialog.vue';
+import CreateGitSpiderDialog from './git/CreateGitSpiderDialog.vue';
 import GitBranchSelect from './git/GitBranchSelect.vue';
 import GitFileStatus from './git/GitFileStatus.vue';
 import GitForm from './git/GitForm.vue';
@@ -64,6 +65,7 @@ import InputList from './input/InputList.vue';
 import InputWithButton from './input/InputWithButton.vue';
 import TagInput from './input/TagInput.vue';
 import TagInputItem from './input/TagInputItem.vue';
+import DetailTabList from './list/DetailTabList.vue';
 import MetricDashboard from './metric/MetricDashboard.vue';
 import MetricList from './metric/MetricList.vue';
 import MetricProgress from './metric/MetricProgress.vue';
@@ -202,6 +204,7 @@ export {
   FormTableField as ClFormTableField,
   CreateEditGitDialog as ClCreateEditGitDialog,
   CreateGitBranchDialog as ClCreateGitBranchDialog,
+  CreateGitSpiderDialog as ClCreateGitSpiderDialog,
   GitBranchSelect as ClGitBranchSelect,
   GitFileStatus as ClGitFileStatus,
   GitForm as ClGitForm,
@@ -214,6 +217,7 @@ export {
   InputWithButton as ClInputWithButton,
   TagInput as ClTagInput,
   TagInputItem as ClTagInputItem,
+  DetailTabList as ClDetailTabList,
   MetricDashboard as ClMetricDashboard,
   MetricList as ClMetricList,
   MetricProgress as ClMetricProgress,

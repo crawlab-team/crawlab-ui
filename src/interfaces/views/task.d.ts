@@ -61,6 +61,5 @@ declare global {
   type TaskMode =
     | TASK_MODE_RANDOM
     | TASK_MODE_ALL_NODES
-    | TASK_MODE_SELECTED_NODES
-    | TASK_MODE_SELECTED_NODE_TAGS;
+    | TASK_MODE_SELECTED_NODES;
 }

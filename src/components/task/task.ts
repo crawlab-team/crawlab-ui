@@ -42,50 +42,7 @@ const useTask = (store: Store<RootStoreState>) => {
     return opts;
   })();
 
-  const {
-    allListSelectOptions: allSpiderListSelectOptions,
-    allDict: allSpiderDict,
-  } = useSpider(store);
-
-  // readonly form fields
-  const readonlyFormFields = computed<string[]>(() => state.readonlyFormFields);
-
-  // batch form fields
-  const batchFormFields = computed<FormTableField[]>(() => [
-    {
-      prop: 'spider_id',
-      label: t('components.task.form.spider'),
-      width: '150',
-      placeholder: t('components.task.form.spider'),
-      fieldType: FORM_FIELD_TYPE_SELECT,
-      options: allSpiderListSelectOptions.value,
-      disabled: () => readonlyFormFields.value.includes('spider_id'),
-      required: true,
-    },
-    {
-      prop: 'cmd',
-      label: t('components.task.form.command'),
-      width: '200',
-      placeholder: t('components.task.form.command'),
-      fieldType: FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
-      required: true,
-    },
-    {
-      prop: 'param',
-      label: t('components.task.form.param'),
-      width: '200',
-      placeholder: t('components.task.form.param'),
-      fieldType: FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
-    },
-    {
-      prop: 'mode',
-      label: t('components.task.form.mode'),
-      width: '200',
-      fieldType: FORM_FIELD_TYPE_SELECT,
-      options: modeOptions,
-      required: true,
-    },
-  ]);
+  const { allDict: allSpiderDict } = useSpider(store);
 
   // route
   const route = useRoute();
@@ -96,7 +53,6 @@ const useTask = (store: Store<RootStoreState>) => {
   return {
     ...useForm('task', store, useTaskService(store), formComponentData),
     allSpiderDict,
-    batchFormFields,
     id,
     modeOptions,
     modeOptionsDict,

@@ -1,6 +1,7 @@
 <template>
   <cl-list-layout
     class="node-list"
+    :row-key="(row: CNode) => [row._id, row.status].join('_')"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

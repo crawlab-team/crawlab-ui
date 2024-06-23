@@ -12,6 +12,7 @@ import {
 const props = withDefaults(
   defineProps<{
     navActions: ListActionGroup[];
+    rowKey: string | ((row: any) => string);
     tableColumns: TableColumns;
     tableData: TableData;
     tableTotal: number;
@@ -32,6 +33,7 @@ const props = withDefaults(
   }>(),
   {
     navActions: emptyArrayFunc,
+    rowKey: '_id',
     tableColumns: emptyArrayFunc,
     tableData: emptyArrayFunc,
     tableTotal: 0,
@@ -162,6 +164,7 @@ const tableColumnsHash = computed<string>(() => {
       <cl-table
         ref="tableRef"
         :key="tableColumnsHash"
+        :row-key="rowKey"
         :columns="tableColumns"
         :data="tableData"
         :total="tableTotal"

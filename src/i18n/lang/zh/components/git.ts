@@ -160,10 +160,14 @@ const git: LComponentsGit = {
       empty: '没有需要提交的内容, 工作区是干净的',
     },
   },
-  ignore: {
-    table: {
-      columns: {
-        file: '文件',
+  spiders: {
+    title: '爬虫操作',
+    actions: {
+      label: {
+        create: '新建爬虫',
+      },
+      tooltip: {
+        create: '创建一个新的爬虫',
       },
     },
   },

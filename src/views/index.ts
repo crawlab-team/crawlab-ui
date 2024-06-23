@@ -18,14 +18,12 @@ import GitDetail from './git/detail/GitDetail.vue';
 import GitDetailActionsChanges from './git/detail/actions/GitDetailActionsChanges.vue';
 import GitDetailActionsCommon from './git/detail/actions/GitDetailActionsCommon.vue';
 import GitDetailActionsFiles from './git/detail/actions/GitDetailActionsFiles.vue';
-import GitDetailTabBranches from './git/detail/tabs/GitDetailTabBranches.vue';
+import GitDetailActionsSpiders from './git/detail/actions/GitDetailActionsSpiders.vue';
 import GitDetailTabChanges from './git/detail/tabs/GitDetailTabChanges.vue';
 import GitDetailTabFiles from './git/detail/tabs/GitDetailTabFiles.vue';
-import GitDetailTabIgnore from './git/detail/tabs/GitDetailTabIgnore.vue';
 import GitDetailTabLogs from './git/detail/tabs/GitDetailTabLogs.vue';
 import GitDetailTabOverview from './git/detail/tabs/GitDetailTabOverview.vue';
-import GitDetailTabRemote from './git/detail/tabs/GitDetailTabRemote.vue';
-import GitDetailTabTags from './git/detail/tabs/GitDetailTabTags.vue';
+import GitDetailTabSpiders from './git/detail/tabs/GitDetailTabSpiders.vue';
 import GitList from './git/list/GitList.vue';
 import Home from './home/Home.vue';
 import Login from './login/Login.vue';
@@ -99,14 +97,12 @@ export {
   GitDetailActionsChanges as ClGitDetailActionsChanges,
   GitDetailActionsCommon as ClGitDetailActionsCommon,
   GitDetailActionsFiles as ClGitDetailActionsFiles,
-  GitDetailTabBranches as ClGitDetailTabBranches,
+  GitDetailActionsSpiders as ClGitDetailActionsSpiders,
   GitDetailTabChanges as ClGitDetailTabChanges,
   GitDetailTabFiles as ClGitDetailTabFiles,
-  GitDetailTabIgnore as ClGitDetailTabIgnore,
   GitDetailTabLogs as ClGitDetailTabLogs,
   GitDetailTabOverview as ClGitDetailTabOverview,
-  GitDetailTabRemote as ClGitDetailTabRemote,
-  GitDetailTabTags as ClGitDetailTabTags,
+  GitDetailTabSpiders as ClGitDetailTabSpiders,
   GitList as ClGitList,
   Home as ClHome,
   Login as ClLogin,

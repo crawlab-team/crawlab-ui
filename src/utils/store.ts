@@ -1,7 +1,6 @@
 import { getDefaultPagination } from '@/utils/pagination';
 import { useService } from '@/services';
 import { plainClone } from '@/utils/object';
-import { useRouter } from 'vue-router';
 import { emptyObjectFunc } from '@/utils/func';
 import { translate } from '@/utils/i18n';
 
@@ -49,10 +48,6 @@ export const getDefaultStoreGetters = <T = any>(
   return {
     dialogVisible: (state: BaseStoreState<T>) =>
       state.activeDialogKey !== undefined,
-    // isBatchForm: (state: BaseStoreState<T>) => state.isSelectiveForm || state.createEditDialogTabName === 'batch',
-    isBatchForm: (state: BaseStoreState<T>) => {
-      return state.isSelectiveForm || state.createEditDialogTabName === 'batch';
-    },
     formListIds: (state: BaseStoreState<T>) =>
       state.formList.map(d => (d as BaseModel)._id as string),
     allListSelectOptions: (state: BaseStoreState<T>) =>
@@ -229,7 +224,53 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
 
 export const getDefaultStoreActions = <T = any>(
   endpoint: string
-): BaseStoreActions<T> => {
+): {
+  deleteList: (
+    { commit }: StoreActionContext<BaseStoreState<T>>,
+    ids: string[]
+  ) => Promise<Response>;
+  getAllList: ({
+    commit,
+  }: StoreActionContext<BaseStoreState<T>>) => Promise<ResponseWithListData<T>>;
+  createList: (
+    { state, commit }: StoreActionContext<BaseStoreState<T>>,
+    data: T[]
+  ) => Promise<ResponseWithListData<T>>;
+  getById: (
+    { commit }: StoreActionContext<BaseStoreState<T>>,
+    id: string
+  ) => Promise<ResponseWithData<T>>;
+  getList: ({
+    state,
+    commit,
+  }: StoreActionContext<BaseStoreState<T>>) => Promise<ResponseWithListData<T>>;
+  deleteById: (
+    { commit }: StoreActionContext<BaseStoreState<T>>,
+    id: string
+  ) => Promise<Response>;
+  create: (
+    { commit }: StoreActionContext<BaseStoreState<T>>,
+    form: T
+  ) => Promise<ResponseWithData<T>>;
+  getListWithParams: (
+    _: StoreActionContext<BaseStoreState<T>>,
+    params?: ListRequestParams
+  ) => Promise<ResponseWithListData<T>>;
+  updateById: (
+    { commit }: StoreActionContext<BaseStoreState<T>>,
+    {
+      id,
+      form,
+    }: {
+      id: string;
+      form: T;
+    }
+  ) => Promise<ResponseWithData<T>>;
+  updateList: (
+    { state, commit }: StoreActionContext<BaseStoreState<T>>,
+    { ids, data, fields }: BatchRequestPayloadWithData
+  ) => Promise<Response>;
+} => {
   const {
     getById,
     create,
@@ -251,26 +292,20 @@ export const getDefaultStoreActions = <T = any>(
       commit('setForm', res.data);
       return res;
     },
-    create: async (
-      { commit }: StoreActionContext<BaseStoreState<T>>,
-      form: T
-    ) => {
-      const res = await create(form);
-      return res;
+    create: async (_: StoreActionContext<BaseStoreState<T>>, form: T) => {
+      return await create(form);
     },
     updateById: async (
-      { commit }: StoreActionContext<BaseStoreState<T>>,
+      _: StoreActionContext<BaseStoreState<T>>,
       { id, form }: { id: string; form: T }
     ) => {
-      const res = await updateById(id, form);
-      return res;
+      return await updateById(id, form);
     },
     deleteById: async (
-      { commit }: StoreActionContext<BaseStoreState<T>>,
+      _: StoreActionContext<BaseStoreState<T>>,
       id: string
     ) => {
-      const res = await deleteById(id);
-      return res;
+      return await deleteById(id);
     },
     getList: async ({
       state,
@@ -297,22 +332,17 @@ export const getDefaultStoreActions = <T = any>(
       commit('setAllList', res.data || []);
       return res;
     },
-    createList: async (
-      { state, commit }: StoreActionContext<BaseStoreState<T>>,
-      data: T[]
-    ) => {
-      const res = await createList(data);
-      return res;
+    createList: async (_: StoreActionContext<BaseStoreState<T>>, data: T[]) => {
+      return await createList(data);
     },
     updateList: async (
-      { state, commit }: StoreActionContext<BaseStoreState<T>>,
+      _: StoreActionContext<BaseStoreState<T>>,
       { ids, data, fields }: BatchRequestPayloadWithData
     ) => {
-      const res = await updateList(ids, data, fields);
-      return res;
+      return await updateList(ids, data, fields);
     },
     deleteList: async (
-      { commit }: StoreActionContext<BaseStoreState<T>>,
+      _: StoreActionContext<BaseStoreState<T>>,
       ids: string[]
     ) => {
       return await deleteList(ids);

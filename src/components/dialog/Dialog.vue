@@ -12,10 +12,12 @@ withDefaults(
     zIndex?: number;
     confirmDisabled?: boolean;
     confirmLoading?: boolean;
+    confirmType?: BasicType;
     className?: string;
   }>(),
   {
     top: '15vh',
+    confirmType: 'primary',
   }
 );
 
@@ -66,7 +68,7 @@ const onConfirm = () => {
         class-name="confirm-btn"
         :disabled="confirmDisabled"
         :loading="confirmLoading"
-        type="primary"
+        :type="confirmType"
         @click="onConfirm"
       >
         {{ t('common.actions.confirm') }}

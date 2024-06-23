@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateEditGitDialog' });
 import { useStore } from 'vuex';
-import useGit from '@/components/git/git';
+import useGit from '@/components/git/useGit';
 
 // store
 const store = useStore();

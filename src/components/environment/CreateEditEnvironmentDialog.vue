@@ -2,7 +2,6 @@
   <cl-create-edit-dialog
     :action-functions="actionFunctions"
     :batch-form-data="formList"
-    :batch-form-fields="batchFormFields"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
     :tab-name="createEditDialogTabName"

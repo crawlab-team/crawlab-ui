@@ -33,8 +33,6 @@ export default defineComponent({
           return 'success';
         case TASK_MODE_SELECTED_NODES:
           return 'primary';
-        case TASK_MODE_SELECTED_NODE_TAGS:
-          return 'primary';
         default:
           return 'info';
       }
@@ -49,8 +47,6 @@ export default defineComponent({
           return t('components.task.mode.label.allNodes');
         case TASK_MODE_SELECTED_NODES:
           return t('components.task.mode.label.selectedNodes');
-        case TASK_MODE_SELECTED_NODE_TAGS:
-          return t('components.task.mode.label.selectedTags');
         default:
           return t('components.task.mode.label.unknown');
       }
@@ -65,8 +61,6 @@ export default defineComponent({
           return ['fa', 'sitemap'];
         case TASK_MODE_SELECTED_NODES:
           return ['fa', 'network-wired'];
-        case TASK_MODE_SELECTED_NODE_TAGS:
-          return ['fa', 'tags'];
         default:
           return ['fa', 'question'];
       }
@@ -81,8 +75,6 @@ export default defineComponent({
           return t('components.task.mode.tooltip.allNodes');
         case TASK_MODE_SELECTED_NODES:
           return t('components.task.mode.tooltip.selectedNodes');
-        case TASK_MODE_SELECTED_NODE_TAGS:
-          return t('components.task.mode.tooltip.selectedTags');
         default:
           return t('components.task.mode.tooltip.unknown');
       }

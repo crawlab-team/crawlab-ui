@@ -51,11 +51,6 @@ export const useForm = (
   // readonly form fields
   const readonlyFormFields = computed<string[]>(() => state.readonlyFormFields);
 
-  // is batch form getters
-  const isBatchForm = computed<boolean>(
-    () => store.getters[`${ns}/isBatchForm`]
-  );
-
   const validateForm = async () => {
     return await formRef.value?.validate();
   };
@@ -111,11 +106,8 @@ export const useForm = (
     () => store.getters[`${ns}/allDict`]
   );
 
-  // all tags
-  const allTags = computed<string[]>(() => store.getters[`${ns}/allTags`]);
-
   // services
-  const { getList, create, updateById, createList, updateList } = services;
+  const { getList, create, updateById } = services;
 
   // dialog create edit
   const createEditDialogVisible = computed<boolean>(() => {
@@ -175,7 +167,6 @@ export const useForm = (
           res = await updateById(form.value._id as string, form.value);
           sendEvent('click_form_edit_confirm', {
             ns,
-            batch: isBatchForm.value,
           });
           break;
         default:
@@ -239,7 +230,6 @@ export const useForm = (
     isSelectiveForm,
     selectedFormFields,
     formList,
-    isBatchForm,
     validateForm,
     resetForm,
     isFormItemDisabled,
@@ -249,7 +239,6 @@ export const useForm = (
     allListSelectOptions,
     allListSelectOptionsWithEmpty,
     allDict,
-    allTags,
     confirmDisabled,
     confirmLoading,
     setConfirmLoading,

@@ -15,7 +15,7 @@ import {
   GIT_STATUS_READY,
 } from '@/constants/git';
 import useDetail from '@/layouts/content/detail/useDetail';
-import useGit from '@/components/git/git';
+import useGit from '@/components/git/useGit';
 import {
   TAB_NAME_CHANGES,
   TAB_NAME_FILES,

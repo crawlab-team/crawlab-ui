@@ -160,10 +160,14 @@ const git: LComponentsGit = {
       empty: 'Nothing to commit, work tree clean',
     },
   },
-  ignore: {
-    table: {
-      columns: {
-        file: 'File',
+  spiders: {
+    title: 'Spiders Actions',
+    actions: {
+      label: {
+        create: 'Create Spider',
+      },
+      tooltip: {
+        create: 'Create a new spider',
       },
     },
   },

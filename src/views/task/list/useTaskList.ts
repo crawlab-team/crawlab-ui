@@ -1,25 +1,25 @@
-import useList from '@/layouts/content/list/list';
-import { useStore } from 'vuex';
 import { computed, h } from 'vue';
-import NavLink from '@/components/nav/NavLink.vue';
-import TaskStatus from '@/components/task/TaskStatus.vue';
-import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import useList from '@/layouts/content/list/list';
+import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
+import { translate } from '@/utils/i18n';
+import { sendEvent } from '@/admin/umeng';
+import { getStatusOptions, isCancellable } from '@/utils/task';
 import useRequest from '@/services/request';
+import NavLink from '@/components/nav/NavLink.vue';
+import TaskStatus from '@/components/task/TaskStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import NodeType from '@/components/node/NodeType.vue';
 import Time from '@/components/time/Time.vue';
 import Duration from '@/components/time/Duration.vue';
-import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
-import { getStatusOptions, isCancellable } from '@/utils/task';
 import TaskResults from '@/components/task/TaskResults.vue';
 import useNode from '@/components/node/node';
 import useSpider from '@/components/spider/spider';
 import useTask from '@/components/task/task';
-import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
-import schedule from '@/components/schedule/schedule';
+import useSchedule from '@/components/schedule/useSchedule';
 import TaskCommand from '@/components/task/TaskCommand.vue';
 import {
   ACTION_ADD,
@@ -205,305 +205,316 @@ const useTaskList = () => {
   const { allListSelectOptions: allSpiderListSelectOptions } = useSpider(store);
 
   const { allListSelectOptions: allScheduleListSelectOptions } =
-    schedule(store);
+    useSchedule(store);
 
   // table columns
-  const tableColumns = computed<TableColumns<Task>>(() => [
-    {
-      key: 'node_id',
-      label: t('views.tasks.table.columns.node'),
-      icon: ['fa', 'server'],
-      width: '160',
-      value: (row: Task) => {
-        if (!row.node_id) return;
-        const node = allNodeDict.value.get(row.node_id);
-        if (!node) return;
-        return h(NodeType, {
-          isMaster: node?.is_master,
-          label: node?.name,
-          onClick: () => {
-            router.push(`/nodes/${node?._id}`);
-
-            sendEvent('click_task_list_actions_view');
-          },
-        } as NodeTypeProps);
-      },
-      hasFilter: true,
-      allowFilterSearch: true,
-      allowFilterItems: true,
-      filterItems: allNodeListSelectOptions.value,
-    },
-    {
-      key: 'spider_id',
-      label: t('views.tasks.table.columns.spider'),
-      icon: ['fa', 'spider'],
-      width: '160',
-      value: (row: Task) => {
-        if (!row.spider_id) return;
-        const spider = allSpiderDict.value.get(row.spider_id);
-        return h(NavLink, {
-          label: spider?.name,
-          path: `/spiders/${spider?._id}`,
-        });
-      },
-      hasFilter: true,
-      allowFilterSearch: true,
-      allowFilterItems: true,
-      filterItems: allSpiderListSelectOptions.value,
-    },
-    {
-      key: 'schedule_id',
-      label: t('views.tasks.table.columns.schedule'),
-      icon: ['fa', 'clock'],
-      width: '160',
-      value: (row: Task) => {
-        if (!row.schedule_id) return;
-        const schedule = allScheduleDict.value.get(row.schedule_id);
-        return h(NavLink, {
-          label: schedule?.name,
-          path: `/schedules/${schedule?._id}`,
-        });
-      },
-      hasFilter: true,
-      allowFilterSearch: true,
-      allowFilterItems: true,
-      filterItems: allScheduleListSelectOptions.value,
-    },
-    {
-      key: 'priority',
-      label: t('views.tasks.table.columns.priority'),
-      icon: ['fa', 'sort-numeric-down'],
-      width: '120',
-      value: (row: Task) => {
-        return h(TaskPriority, { priority: row.priority } as TaskPriorityProps);
-      },
-      hasSort: true,
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: priorityOptions,
-    },
-    {
-      key: 'config',
-      label: t('views.tasks.table.columns.cmd'),
-      icon: ['fa', 'terminal'],
-      width: '160',
-      value: (row: Task) => {
-        return h(TaskCommand, {
-          task: row,
-          spider: allSpiderDict.value?.get(row.spider_id as string),
-          size: 'small',
-        } as TaskConfigProps);
-      },
-    },
-    {
-      key: 'status',
-      label: t('views.tasks.table.columns.status'),
-      icon: ['fa', 'check-square'],
-      width: '120',
-      value: (row: Task) => {
-        return h(TaskStatus, {
-          status: row.status,
-          error: row.error,
-        });
-      },
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: getStatusOptions(),
-    },
-    {
-      key: 'stat_create_ts',
-      label: t('views.tasks.table.columns.stat.create_ts'),
-      icon: ['fa', 'clock'],
-      width: '120',
-      value: (row: Task) => {
-        if (!row.stat?.create_ts || row.stat?.create_ts.startsWith('000'))
-          return;
-        return h(Time, { time: row.stat?.create_ts as string } as TimeProps);
-      },
-      defaultHidden: true,
-    },
-    {
-      key: 'stat_start_ts',
-      label: t('views.tasks.table.columns.stat.start_ts'),
-      icon: ['fa', 'clock'],
-      width: '120',
-      value: (row: Task) => {
-        if (!row.stat?.start_ts || row.stat?.start_ts.startsWith('000')) return;
-        return h(Time, { time: row.stat?.start_ts as string } as TimeProps);
-      },
-    },
-    {
-      key: 'stat_end_ts',
-      label: t('views.tasks.table.columns.stat.end_ts'),
-      icon: ['fa', 'clock'],
-      width: '120',
-      value: (row: Task) => {
-        if (!row.stat?.end_ts || row.stat?.end_ts.startsWith('000')) return;
-        return h(Time, { time: row.stat?.end_ts as string } as TimeProps);
-      },
-    },
-    {
-      key: 'stat_wait_duration',
-      label: t('views.tasks.table.columns.stat.wait_duration'),
-      icon: ['fa', 'stopwatch'],
-      width: '160',
-      value: (row: Task) => {
-        if (!row.stat?.wait_duration) return;
-        return h(Duration, {
-          duration: row.stat?.wait_duration as number,
-        } as DurationProps);
-      },
-      defaultHidden: true,
-    },
-    {
-      key: 'stat_runtime_duration',
-      label: t('views.tasks.table.columns.stat.runtime_duration'),
-      icon: ['fa', 'stopwatch'],
-      width: '160',
-      value: (row: Task) => {
-        if (!row.stat?.runtime_duration) return;
-        return h(Duration, {
-          duration: row.stat?.runtime_duration as number,
-        } as DurationProps);
-      },
-      defaultHidden: true,
-    },
-    {
-      key: 'stat_total_duration',
-      label: t('views.tasks.table.columns.stat.total_duration'),
-      icon: ['fa', 'stopwatch'],
-      width: '160',
-      value: (row: Task) => {
-        if (!row.stat?.total_duration) return;
-        return h(Duration, {
-          duration: row.stat?.total_duration as number,
-        } as DurationProps);
-      },
-    },
-    {
-      key: 'stat_result_count',
-      label: t('views.tasks.table.columns.stat.results'),
-      icon: ['fa', 'table'],
-      width: '150',
-      value: (row: Task) => {
-        if (row.stat?.result_count === undefined) return;
-        return h(TaskResults, {
-          results: row.stat.result_count,
-          status: row.status,
-          clickable: true,
-          onClick: () => {
-            router.push(`/tasks/${row._id}/data`);
-            sendEvent('click_task_list_actions_view_data');
-          },
-        } as TaskResultsProps);
-      },
-    },
-    {
-      key: TABLE_COLUMN_NAME_ACTIONS,
-      label: t('components.table.columns.actions'),
-      icon: ['fa', 'tools'],
-      width: '240',
-      fixed: 'right',
-      buttons: row => [
+  const tableColumns = computed<TableColumns<Task>>(
+    () =>
+      [
         {
-          className: 'view-btn',
-          type: 'primary',
-          size: 'small',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: row => {
-            router.push(`/tasks/${row._id}`);
+          key: 'node_id',
+          label: t('views.tasks.table.columns.node'),
+          icon: ['fa', 'server'],
+          width: '160',
+          value: (row: Task) => {
+            if (!row.node_id) return;
+            const node = allNodeDict.value.get(row.node_id);
+            if (!node) return;
+            return h(NodeType, {
+              isMaster: node?.is_master,
+              label: node?.name,
+              onClick: () => {
+                router.push(`/nodes/${node?._id}`);
 
-            sendEvent('click_task_list_actions_view');
+                sendEvent('click_task_list_actions_view');
+              },
+            } as NodeTypeProps);
           },
-          action: ACTION_VIEW,
+          hasFilter: true,
+          allowFilterSearch: true,
+          allowFilterItems: true,
+          filterItems: allNodeListSelectOptions.value,
         },
         {
-          className: 'view-logs-btn',
-          type: 'info',
-          size: 'small',
-          icon: ['fa', 'file-alt'],
-          tooltip: t('common.actions.viewLogs'),
-          onClick: row => {
-            router.push(`/tasks/${row._id}/logs`);
-
-            sendEvent('click_task_list_actions_view_logs');
+          key: 'spider_id',
+          label: t('views.tasks.table.columns.spider'),
+          icon: ['fa', 'spider'],
+          width: '160',
+          value: (row: Task) => {
+            if (!row.spider_id) return;
+            const spider = row.spider || allSpiderDict.value.get(row.spider_id);
+            return h(NavLink, {
+              label: spider?.name,
+              path: `/spiders/${spider?._id}`,
+            });
           },
-          action: ACTION_VIEW_LOGS,
+          hasFilter: true,
+          allowFilterSearch: true,
+          allowFilterItems: true,
+          filterItems: allSpiderListSelectOptions.value,
         },
         {
-          className: 'restart-btn',
-          type: 'warning',
-          size: 'small',
-          icon: ['fa', 'redo'],
-          tooltip: t('common.actions.restart'),
-          onClick: async row => {
-            sendEvent('click_task_list_actions_restart');
-
-            await ElMessageBox.confirm(
-              t('common.messageBox.confirm.restart'),
-              t('common.actions.restart'),
-              { type: 'warning', confirmButtonClass: 'restart-confirm-btn' }
-            );
-
-            sendEvent('click_task_list_actions_restart_confirm');
-
-            await post(`/tasks/${row._id}/restart`);
-            await ElMessage.success(t('common.message.success.restart'));
-            await store.dispatch(`task/getList`);
+          key: 'schedule_id',
+          label: t('views.tasks.table.columns.schedule'),
+          icon: ['fa', 'clock'],
+          width: '160',
+          value: (row: Task) => {
+            if (!row.schedule_id) return;
+            const schedule = allScheduleDict.value.get(row.schedule_id);
+            return h(NavLink, {
+              label: schedule?.name,
+              path: `/schedules/${schedule?._id}`,
+            });
           },
-          action: ACTION_RESTART,
+          hasFilter: true,
+          allowFilterSearch: true,
+          allowFilterItems: true,
+          filterItems: allScheduleListSelectOptions.value,
         },
         {
-          className: 'view-data-btn',
-          type: 'success',
-          size: 'small',
-          icon: ['fa', 'database'],
-          tooltip: t('common.actions.viewData'),
-          onClick: row => {
-            router.push(`/tasks/${row._id}/data`);
-
-            sendEvent('click_task_list_actions_view_data');
+          key: 'priority',
+          label: t('views.tasks.table.columns.priority'),
+          icon: ['fa', 'sort-numeric-down'],
+          width: '120',
+          value: (row: Task) => {
+            return h(TaskPriority, {
+              priority: row.priority,
+            } as TaskPriorityProps);
           },
-          action: ACTION_VIEW_DATA,
+          hasSort: true,
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: priorityOptions,
         },
-        isCancellable(row.status)
-          ? {
-              className: 'cancel-btn',
+        {
+          key: 'config',
+          label: t('views.tasks.table.columns.cmd'),
+          icon: ['fa', 'terminal'],
+          width: '160',
+          value: (row: Task) => {
+            return h(TaskCommand, {
+              task: row,
+              spider: allSpiderDict.value?.get(row.spider_id as string),
+              size: 'small',
+            } as TaskConfigProps);
+          },
+        },
+        {
+          key: 'status',
+          label: t('views.tasks.table.columns.status'),
+          icon: ['fa', 'check-square'],
+          width: '120',
+          value: (row: Task) => {
+            return h(TaskStatus, {
+              status: row.status,
+              error: row.error,
+            });
+          },
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: getStatusOptions(),
+        },
+        {
+          key: 'stat_create_ts',
+          label: t('views.tasks.table.columns.stat.create_ts'),
+          icon: ['fa', 'clock'],
+          width: '120',
+          value: (row: Task) => {
+            if (!row.stat?.create_ts || row.stat?.create_ts.startsWith('000'))
+              return;
+            return h(Time, {
+              time: row.stat?.create_ts as string,
+            } as TimeProps);
+          },
+          defaultHidden: true,
+        },
+        {
+          key: 'stat_start_ts',
+          label: t('views.tasks.table.columns.stat.start_ts'),
+          icon: ['fa', 'clock'],
+          width: '120',
+          value: (row: Task) => {
+            if (!row.stat?.start_ts || row.stat?.start_ts.startsWith('000'))
+              return;
+            return h(Time, { time: row.stat?.start_ts as string } as TimeProps);
+          },
+        },
+        {
+          key: 'stat_end_ts',
+          label: t('views.tasks.table.columns.stat.end_ts'),
+          icon: ['fa', 'clock'],
+          width: '120',
+          value: (row: Task) => {
+            if (!row.stat?.end_ts || row.stat?.end_ts.startsWith('000')) return;
+            return h(Time, { time: row.stat?.end_ts as string } as TimeProps);
+          },
+        },
+        {
+          key: 'stat_wait_duration',
+          label: t('views.tasks.table.columns.stat.wait_duration'),
+          icon: ['fa', 'stopwatch'],
+          width: '160',
+          value: (row: Task) => {
+            if (!row.stat?.wait_duration) return;
+            return h(Duration, {
+              duration: row.stat?.wait_duration as number,
+            } as DurationProps);
+          },
+          defaultHidden: true,
+        },
+        {
+          key: 'stat_runtime_duration',
+          label: t('views.tasks.table.columns.stat.runtime_duration'),
+          icon: ['fa', 'stopwatch'],
+          width: '160',
+          value: (row: Task) => {
+            if (!row.stat?.runtime_duration) return;
+            return h(Duration, {
+              duration: row.stat?.runtime_duration as number,
+            } as DurationProps);
+          },
+          defaultHidden: true,
+        },
+        {
+          key: 'stat_total_duration',
+          label: t('views.tasks.table.columns.stat.total_duration'),
+          icon: ['fa', 'stopwatch'],
+          width: '160',
+          value: (row: Task) => {
+            if (!row.stat?.total_duration) return;
+            return h(Duration, {
+              duration: row.stat?.total_duration as number,
+            } as DurationProps);
+          },
+        },
+        {
+          key: 'stat_result_count',
+          label: t('views.tasks.table.columns.stat.results'),
+          icon: ['fa', 'table'],
+          width: '150',
+          value: (row: Task) => {
+            if (row.stat?.result_count === undefined) return;
+            return h(TaskResults, {
+              results: row.stat.result_count,
+              status: row.status,
+              clickable: true,
+              onClick: () => {
+                router.push(`/tasks/${row._id}/data`);
+                sendEvent('click_task_list_actions_view_data');
+              },
+            } as TaskResultsProps);
+          },
+        },
+        {
+          key: TABLE_COLUMN_NAME_ACTIONS,
+          label: t('components.table.columns.actions'),
+          icon: ['fa', 'tools'],
+          width: '240',
+          fixed: 'right',
+          buttons: row => [
+            {
+              className: 'view-btn',
+              type: 'primary',
+              size: 'small',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: row => {
+                router.push(`/tasks/${row._id}`);
+
+                sendEvent('click_task_list_actions_view');
+              },
+              action: ACTION_VIEW,
+            },
+            {
+              className: 'view-logs-btn',
               type: 'info',
               size: 'small',
-              icon: ['fa', 'stop'],
-              tooltip: t('common.actions.cancel'),
-              onClick: async (row: Task) => {
-                sendEvent('click_task_list_actions_cancel');
+              icon: ['fa', 'file-alt'],
+              tooltip: t('common.actions.viewLogs'),
+              onClick: row => {
+                router.push(`/tasks/${row._id}/logs`);
+
+                sendEvent('click_task_list_actions_view_logs');
+              },
+              action: ACTION_VIEW_LOGS,
+            },
+            {
+              className: 'restart-btn',
+              type: 'warning',
+              size: 'small',
+              icon: ['fa', 'redo'],
+              tooltip: t('common.actions.restart'),
+              onClick: async row => {
+                sendEvent('click_task_list_actions_restart');
 
                 await ElMessageBox.confirm(
-                  t('common.messageBox.confirm.cancel'),
-                  t('common.actions.cancel'),
-                  { type: 'warning', confirmButtonClass: 'cancel-confirm-btn' }
+                  t('common.messageBox.confirm.restart'),
+                  t('common.actions.restart'),
+                  { type: 'warning', confirmButtonClass: 'restart-confirm-btn' }
                 );
 
-                sendEvent('click_task_list_actions_cancel_confirm');
+                sendEvent('click_task_list_actions_restart_confirm');
 
-                await ElMessage.info(t('common.message.info.cancel'));
-                await post(`/tasks/${row._id}/cancel`);
-                await store.dispatch(`${ns}/getList`);
+                await post(`/tasks/${row._id}/restart`);
+                await ElMessage.success(t('common.message.success.restart'));
+                await store.dispatch(`task/getList`);
               },
-              action: ACTION_CANCEL,
-            }
-          : {
-              className: 'delete-btn',
-              type: 'danger',
-              size: 'small',
-              icon: ['fa', 'trash-alt'],
-              tooltip: t('common.actions.delete'),
-              onClick: deleteByIdConfirm,
-              action: ACTION_DELETE,
+              action: ACTION_RESTART,
             },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+            {
+              className: 'view-data-btn',
+              type: 'success',
+              size: 'small',
+              icon: ['fa', 'database'],
+              tooltip: t('common.actions.viewData'),
+              onClick: row => {
+                router.push(`/tasks/${row._id}/data`);
+
+                sendEvent('click_task_list_actions_view_data');
+              },
+              action: ACTION_VIEW_DATA,
+            },
+            isCancellable(row.status)
+              ? {
+                  className: 'cancel-btn',
+                  type: 'info',
+                  size: 'small',
+                  icon: ['fa', 'stop'],
+                  tooltip: t('common.actions.cancel'),
+                  onClick: async (row: Task) => {
+                    sendEvent('click_task_list_actions_cancel');
+
+                    await ElMessageBox.confirm(
+                      t('common.messageBox.confirm.cancel'),
+                      t('common.actions.cancel'),
+                      {
+                        type: 'warning',
+                        confirmButtonClass: 'cancel-confirm-btn',
+                      }
+                    );
+
+                    sendEvent('click_task_list_actions_cancel_confirm');
+
+                    ElMessage.info(t('common.message.info.cancel'));
+                    await post(`/tasks/${row._id}/cancel`);
+                    await store.dispatch(`${ns}/getList`);
+                  },
+                  action: ACTION_CANCEL,
+                }
+              : {
+                  className: 'delete-btn',
+                  type: 'danger',
+                  size: 'small',
+                  icon: ['fa', 'trash-alt'],
+                  tooltip: t('common.actions.delete'),
+                  onClick: deleteByIdConfirm,
+                  action: ACTION_DELETE,
+                },
+          ],
+          disableTransfer: true,
+        },
+      ] as TableColumns<Task>
+  );
 
   // options
   const opts = {

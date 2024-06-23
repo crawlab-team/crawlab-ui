@@ -5,7 +5,7 @@ import { computed, onBeforeMount, reactive, watch } from 'vue';
 export interface CheckTagGroupProps {
   modelValue: string[];
   options: SelectOption[];
-  disabled: boolean;
+  disabled?: boolean;
   className?: string;
 }
 

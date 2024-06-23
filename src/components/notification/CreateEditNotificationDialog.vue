@@ -7,7 +7,6 @@
     :batch-form-data="formList"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
-    :batch-form-fields="batchFormFields"
   >
     <template #default>
       <cl-notification-form />

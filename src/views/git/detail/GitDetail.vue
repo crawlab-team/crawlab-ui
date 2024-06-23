@@ -3,13 +3,14 @@ defineOptions({ name: 'ClGitDetail' });
 import { watch, onBeforeUnmount, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import useGit from '@/components/git/git';
+import useGit from '@/components/git/useGit';
 import {
   GIT_STATUS_ERROR,
   GIT_STATUS_READY,
   TAB_NAME_CHANGES,
   TAB_NAME_FILES,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_SPIDERS,
 } from '@/constants';
 import { debounce } from '@/utils';
 
@@ -84,6 +85,9 @@ watch(activeId, reset);
         v-if="activeTabName === TAB_NAME_CHANGES"
       />
       <cl-git-detail-actions-files v-if="activeTabName === TAB_NAME_FILES" />
+      <cl-git-detail-actions-spiders
+        v-if="activeTabName === TAB_NAME_SPIDERS"
+      />
     </template>
   </cl-detail-layout>
 
