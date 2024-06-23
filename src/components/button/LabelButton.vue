@@ -2,7 +2,7 @@
 defineOptions({ name: 'ClLabelButton' });
 import { ButtonProps } from '@/components/button/Button.vue';
 
-export interface LabelButtonProps extends ButtonProps {
+export interface LabelButtonProps extends /* @vue-ignore */ ButtonProps {
   label: string;
   icon: string;
 }

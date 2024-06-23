@@ -2,7 +2,7 @@
 defineOptions({ name: 'ClIconButton' });
 import { ButtonProps } from '@/components/button/Button.vue';
 
-export interface IconButtonProps extends ButtonProps {
+export interface IconButtonProps extends /* @vue-ignore */ ButtonProps {
   icon: string;
 }
 

@@ -3,7 +3,7 @@ defineOptions({ name: 'ClFaIconButton' });
 import { computed } from 'vue';
 import { ButtonProps } from '@/components/button/Button.vue';
 
-export interface FaIconButtonProps extends ButtonProps {
+export interface FaIconButtonProps extends /* @vue-ignore */ ButtonProps {
   icon: Icon;
   badgeIcon?: Icon;
   spin?: boolean;
