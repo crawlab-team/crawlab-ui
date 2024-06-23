@@ -16,9 +16,10 @@ const git: LComponentsGit = {
     currentBranch: 'Current Branch',
     message: {
       success: {
-        checkout: 'Checkout successfully',
+        checkout: 'Switched to {branch}',
         pull: 'Pulled successfully',
-        commit: 'Committed successfully',
+        commit: '1 file committed | {fileCount} files committed',
+        push: 'Pushed successfully',
       },
     },
     messageBox: {
@@ -156,6 +157,7 @@ const git: LComponentsGit = {
         add: 'Add',
         rollback: 'Rollback',
       },
+      empty: 'Nothing to commit, work tree clean',
     },
   },
   ignore: {

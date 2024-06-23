@@ -12,7 +12,7 @@ declare global {
     aplus_queue: { action: string; arguments: any[] }[];
     _app?: App;
     _t?: (path: string, args?: any) => string;
-    _tc?: (c: number, path: string) => string;
+    _tc?: (path: string, c: number, args?: any) => string;
     _tp?: (pluginName: string, path: string) => string;
     SimpleMDE: any;
   }

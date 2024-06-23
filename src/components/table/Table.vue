@@ -34,6 +34,7 @@ const props = withDefaults(
     embedded?: boolean;
     border?: boolean;
     fit?: boolean;
+    emptyText?: string;
   }>(),
   {
     data: emptyArrayFunc,
@@ -140,6 +141,7 @@ defineExpose({
       :height="height"
       :max-height="maxHeight"
       :border="border"
+      :empty-text="emptyText"
       @selection-change="onSelectionChange"
     >
       <el-table-column

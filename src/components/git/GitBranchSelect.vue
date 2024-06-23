@@ -77,6 +77,7 @@ const onSelect = (value: string) => {
 const onPull = () => {
   selectRef.value?.blur();
   emit('pull');
+  console.debug('onPull');
 };
 
 const onCommit = () => {

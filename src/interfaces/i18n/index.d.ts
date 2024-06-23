@@ -11,7 +11,7 @@ export declare global {
     views: LViews;
   }
 
-  type LI18n = I18n<{ en: L; zh: L }, unknown, unknown, false>;
+  type LI18n = I18n<{ en: L; zh: L }, {}, {}, string, false>;
 }
 
 export * from './components';

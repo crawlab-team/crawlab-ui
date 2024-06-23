@@ -138,8 +138,8 @@ importers:
         specifier: ^4.0.0
         version: https://registry.npmmirror.com/vue-debounce/-/vue-debounce-4.0.0.tgz(vue@3.4.29(typescript@5.4.5))
       vue-i18n:
-        specifier: 9.1.9
-        version: https://registry.npmmirror.com/vue-i18n/-/vue-i18n-9.1.9.tgz(vue@3.4.29(typescript@5.4.5))
+        specifier: 9.13.1
+        version: 9.13.1(vue@3.4.29(typescript@5.4.5))
       vue-router:
         specifier: 4.0.11
         version: https://registry.npmmirror.com/vue-router/-/vue-router-4.0.11.tgz(vue@3.4.29(typescript@5.4.5))
@@ -1179,40 +1179,17 @@ packages:
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
 
-  '@intlify/core-base@https://registry.npmmirror.com/@intlify/core-base/-/core-base-9.1.9.tgz':
-    resolution: {integrity: sha512-x5T0p/Ja0S8hs5xs+ImKyYckVkL4CzcEXykVYYV6rcbXxJTe2o58IquSqX9bdncVKbRZP7GlBU1EcRaQEEJ+vw==, tarball: https://registry.npmmirror.com/@intlify/core-base/-/core-base-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
+  '@intlify/core-base@9.13.1':
+    resolution: {integrity: sha512-+bcQRkJO9pcX8d0gel9ZNfrzU22sZFSA0WVhfXrf5jdJOS24a+Bp8pozuS9sBI9Hk/tGz83pgKfmqcn/Ci7/8w==}
+    engines: {node: '>= 16'}
 
-  '@intlify/devtools-if@https://registry.npmmirror.com/@intlify/devtools-if/-/devtools-if-9.1.9.tgz':
-    resolution: {integrity: sha512-oKSMKjttG3Ut/1UGEZjSdghuP3fwA15zpDPcjkf/1FjlOIm6uIBGMNS5jXzsZy593u+P/YcnrZD6cD3IVFz9vQ==, tarball: https://registry.npmmirror.com/@intlify/devtools-if/-/devtools-if-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
+  '@intlify/message-compiler@9.13.1':
+    resolution: {integrity: sha512-SKsVa4ajYGBVm7sHMXd5qX70O2XXjm55zdZB3VeMFCvQyvLew/dLvq3MqnaIsTMF1VkkOb9Ttr6tHcMlyPDL9w==}
+    engines: {node: '>= 16'}
 
-  '@intlify/message-compiler@https://registry.npmmirror.com/@intlify/message-compiler/-/message-compiler-9.1.9.tgz':
-    resolution: {integrity: sha512-6YgCMF46Xd0IH2hMRLCssZI3gFG4aywidoWQ3QP4RGYQXQYYfFC54DxhSgfIPpVoPLQ+4AD29eoYmhiHZ+qLFQ==, tarball: https://registry.npmmirror.com/@intlify/message-compiler/-/message-compiler-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
-
-  '@intlify/message-resolver@https://registry.npmmirror.com/@intlify/message-resolver/-/message-resolver-9.1.9.tgz':
-    resolution: {integrity: sha512-Lx/DBpigeK0sz2BBbzv5mu9/dAlt98HxwbG7xLawC3O2xMF9MNWU5FtOziwYG6TDIjNq0O/3ZbOJAxwITIWXEA==, tarball: https://registry.npmmirror.com/@intlify/message-resolver/-/message-resolver-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
-
-  '@intlify/runtime@https://registry.npmmirror.com/@intlify/runtime/-/runtime-9.1.9.tgz':
-    resolution: {integrity: sha512-XgPw8+UlHCiie3fI41HPVa/VDJb3/aSH7bLhY1hJvlvNV713PFtb4p4Jo+rlE0gAoMsMCGcsiT982fImolSltg==, tarball: https://registry.npmmirror.com/@intlify/runtime/-/runtime-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
-
-  '@intlify/shared@https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz':
-    resolution: {integrity: sha512-xKGM1d0EAxdDFCWedcYXOm6V5Pfw/TMudd6/qCdEb4tv0hk9EKeg7lwQF1azE0dP2phvx0yXxrt7UQK+IZjNdw==, tarball: https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
-
-  '@intlify/vue-devtools@https://registry.npmmirror.com/@intlify/vue-devtools/-/vue-devtools-9.1.9.tgz':
-    resolution: {integrity: sha512-YPehH9uL4vZcGXky4Ev5qQIITnHKIvsD2GKGXgqf+05osMUI6WSEQHaN9USRa318Rs8RyyPCiDfmA0hRu3k7og==, tarball: https://registry.npmmirror.com/@intlify/vue-devtools/-/vue-devtools-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
+  '@intlify/shared@9.13.1':
+    resolution: {integrity: sha512-u3b6BKGhE6j/JeRU6C/RL2FgyJfy6LakbtfeVF8fJXURpZZTzfh3e05J0bu0XPw447Q6/WUp3C4ajv4TMS4YsQ==}
+    engines: {node: '>= 16'}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1863,6 +1840,9 @@ packages:
 
   '@vue/component-compiler-utils@3.3.0':
     resolution: {integrity: sha512-97sfH2mYNU+2PzGrmK2haqffDpVASuib9/w2/noxiFi31Z54hW+q3izKQXXQZSNhtiUpAI36uSuYepeBe4wpHQ==}
+
+  '@vue/devtools-api@6.6.3':
+    resolution: {integrity: sha512-0MiMsFma/HqA6g3KLKn+AGpL1kgKhFWszC9U29NfpWK5LE7bjeXxySWJrOJ77hBz+TBrBQ7o4QJqbPbqbs8rJw==}
 
   '@vue/devtools-api@https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.4.5.tgz':
     resolution: {integrity: sha512-JD5fcdIuFxU4fQyXUu3w2KpAJHzTVdN+p4iOX2lMWSHMOoQdMAcpFLZzm9Z/2nmsoZ1a96QEhZ26e50xLBsgOQ==, tarball: https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.4.5.tgz}
@@ -6071,11 +6051,6 @@ packages:
     resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
     engines: {node: '>= 8'}
 
-  source-map@https://registry.npmmirror.com/source-map/-/source-map-0.6.1.tgz:
-    resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==, tarball: https://registry.npmmirror.com/source-map/-/source-map-0.6.1.tgz}
-    version: 0.6.1
-    engines: {node: '>=0.10.0'}
-
   source-map@https://registry.npmmirror.com/source-map/-/source-map-0.7.4.tgz:
     resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==, tarball: https://registry.npmmirror.com/source-map/-/source-map-0.7.4.tgz}
     version: 0.7.4
@@ -6662,10 +6637,9 @@ packages:
   vue-hot-reload-api@2.3.4:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
 
-  vue-i18n@https://registry.npmmirror.com/vue-i18n/-/vue-i18n-9.1.9.tgz:
-    resolution: {integrity: sha512-JeRdNVxS2OGp1E+pye5XB6+M6BBkHwAv9C80Q7+kzoMdUDGRna06tjC0vCB/jDX9aWrl5swxOMFcyAr7or8XTA==, tarball: https://registry.npmmirror.com/vue-i18n/-/vue-i18n-9.1.9.tgz}
-    version: 9.1.9
-    engines: {node: '>= 10'}
+  vue-i18n@9.13.1:
+    resolution: {integrity: sha512-mh0GIxx0wPtPlcB1q4k277y0iKgo25xmDPWioVVYanjPufDBpvu5ySTjP5wOrSvlYQ2m1xI+CFhGdauv/61uQg==}
+    engines: {node: '>= 16'}
     peerDependencies:
       vue: ^3.0.0
 
@@ -8057,40 +8031,17 @@ snapshots:
   '@humanwhocodes/retry@0.3.0':
     optional: true
 
-  '@intlify/core-base@https://registry.npmmirror.com/@intlify/core-base/-/core-base-9.1.9.tgz':
+  '@intlify/core-base@9.13.1':
     dependencies:
-      '@intlify/devtools-if': https://registry.npmmirror.com/@intlify/devtools-if/-/devtools-if-9.1.9.tgz
-      '@intlify/message-compiler': https://registry.npmmirror.com/@intlify/message-compiler/-/message-compiler-9.1.9.tgz
-      '@intlify/message-resolver': https://registry.npmmirror.com/@intlify/message-resolver/-/message-resolver-9.1.9.tgz
-      '@intlify/runtime': https://registry.npmmirror.com/@intlify/runtime/-/runtime-9.1.9.tgz
-      '@intlify/shared': https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz
-      '@intlify/vue-devtools': https://registry.npmmirror.com/@intlify/vue-devtools/-/vue-devtools-9.1.9.tgz
+      '@intlify/message-compiler': 9.13.1
+      '@intlify/shared': 9.13.1
 
-  '@intlify/devtools-if@https://registry.npmmirror.com/@intlify/devtools-if/-/devtools-if-9.1.9.tgz':
+  '@intlify/message-compiler@9.13.1':
     dependencies:
-      '@intlify/shared': https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz
+      '@intlify/shared': 9.13.1
+      source-map-js: 1.2.0
 
-  '@intlify/message-compiler@https://registry.npmmirror.com/@intlify/message-compiler/-/message-compiler-9.1.9.tgz':
-    dependencies:
-      '@intlify/message-resolver': https://registry.npmmirror.com/@intlify/message-resolver/-/message-resolver-9.1.9.tgz
-      '@intlify/shared': https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz
-      source-map: https://registry.npmmirror.com/source-map/-/source-map-0.6.1.tgz
-
-  '@intlify/message-resolver@https://registry.npmmirror.com/@intlify/message-resolver/-/message-resolver-9.1.9.tgz': {}
-
-  '@intlify/runtime@https://registry.npmmirror.com/@intlify/runtime/-/runtime-9.1.9.tgz':
-    dependencies:
-      '@intlify/message-compiler': https://registry.npmmirror.com/@intlify/message-compiler/-/message-compiler-9.1.9.tgz
-      '@intlify/message-resolver': https://registry.npmmirror.com/@intlify/message-resolver/-/message-resolver-9.1.9.tgz
-      '@intlify/shared': https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz
-
-  '@intlify/shared@https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz': {}
-
-  '@intlify/vue-devtools@https://registry.npmmirror.com/@intlify/vue-devtools/-/vue-devtools-9.1.9.tgz':
-    dependencies:
-      '@intlify/message-resolver': https://registry.npmmirror.com/@intlify/message-resolver/-/message-resolver-9.1.9.tgz
-      '@intlify/runtime': https://registry.npmmirror.com/@intlify/runtime/-/runtime-9.1.9.tgz
-      '@intlify/shared': https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz
+  '@intlify/shared@9.13.1': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -9077,6 +9028,8 @@ snapshots:
       - velocityjs
       - walrus
       - whiskers
+
+  '@vue/devtools-api@6.6.3': {}
 
   '@vue/devtools-api@https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.4.5.tgz': {}
 
@@ -13379,8 +13332,6 @@ snapshots:
 
   source-map@0.7.4: {}
 
-  source-map@https://registry.npmmirror.com/source-map/-/source-map-0.6.1.tgz: {}
-
   source-map@https://registry.npmmirror.com/source-map/-/source-map-0.7.4.tgz: {}
 
   sourcemap-codec@https://registry.npmmirror.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz: {}
@@ -13897,12 +13848,11 @@ snapshots:
 
   vue-hot-reload-api@2.3.4: {}
 
-  vue-i18n@https://registry.npmmirror.com/vue-i18n/-/vue-i18n-9.1.9.tgz(vue@3.4.29(typescript@5.4.5)):
+  vue-i18n@9.13.1(vue@3.4.29(typescript@5.4.5)):
     dependencies:
-      '@intlify/core-base': https://registry.npmmirror.com/@intlify/core-base/-/core-base-9.1.9.tgz
-      '@intlify/shared': https://registry.npmmirror.com/@intlify/shared/-/shared-9.1.9.tgz
-      '@intlify/vue-devtools': https://registry.npmmirror.com/@intlify/vue-devtools/-/vue-devtools-9.1.9.tgz
-      '@vue/devtools-api': https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.4.5.tgz
+      '@intlify/core-base': 9.13.1
+      '@intlify/shared': 9.13.1
+      '@vue/devtools-api': 6.6.3
       vue: 3.4.29(typescript@5.4.5)
 
   vue-loader@15.10.1(@vue/compiler-sfc@3.4.29)(cache-loader@4.1.0(webpack@5.92.1))(css-loader@6.11.0(webpack@5.92.1))(lodash@4.17.21)(vue-template-compiler@2.7.14)(webpack@5.92.1):

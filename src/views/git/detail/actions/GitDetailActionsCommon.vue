@@ -29,7 +29,12 @@ const {
   gitLocalBranches,
   gitRemoteBranches,
   isDisabled,
+  pullLoading,
+  onPull,
+  commitLoading,
   onCommit,
+  pushLoading,
+  onPush,
 } = useGitDetail();
 
 const internalCurrentBranch = ref<string>();
@@ -155,12 +160,24 @@ const onNewTag = async (tag: string) => {
   // }
 };
 
+const onClickPull = async () => {
+  console.debug('onClickPull');
+  if (pullLoading.value) return;
+  await onPull();
+};
+
 const onClickCommit = async () => {
   if (activeTabName.value !== TAB_NAME_CHANGES) {
     router.push(`/gits/${activeId.value}/changes`);
   } else {
+    if (commitLoading.value) return;
     await onCommit();
   }
+};
+
+const onClickPush = async () => {
+  if (pushLoading.value) return;
+  await onPush();
 };
 </script>
 
@@ -190,7 +207,9 @@ const onClickCommit = async () => {
           @new-branch="onNewBranch"
           @delete-branch="onDeleteBranch"
           @new-tag="onNewTag"
+          @pull="onClickPull"
           @commit="onClickCommit"
+          @push="onClickPush"
         />
       </div>
     </cl-nav-action-item>

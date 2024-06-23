@@ -19,6 +19,7 @@ interface LComponentsGit {
         checkout: string;
         pull: string;
         commit: string;
+        push: string;
       };
     };
     messageBox: {
@@ -156,6 +157,7 @@ interface LComponentsGit {
         add: string;
         rollback: string;
       };
+      empty: string;
     };
   };
   ignore: {

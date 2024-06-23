@@ -16,9 +16,10 @@ const git: LComponentsGit = {
     currentBranch: '当前分支',
     message: {
       success: {
-        checkout: '成功签出',
+        checkout: '切换至 {branch}',
         pull: '成功拉取代码',
-        commit: '成功提交代码',
+        commit: '成果提交 {fileCount} 个文件',
+        push: '成功推送代码',
       },
     },
     messageBox: {
@@ -156,6 +157,7 @@ const git: LComponentsGit = {
         add: '添加',
         rollback: '回滚',
       },
+      empty: '没有需要提交的内容, 工作区是干净的',
     },
   },
   ignore: {

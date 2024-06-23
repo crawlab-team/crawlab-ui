@@ -188,6 +188,7 @@ onBeforeMount(getChanges);
       :border="false"
       fit
       selectable
+      :empty-text="t('components.git.changes.table.empty')"
       @selection-change="onSelectionChange"
     />
   </div>

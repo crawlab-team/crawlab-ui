@@ -29,7 +29,7 @@ withDefaults(defineProps<LabelButtonProps>(), {
       :loading="loading"
       @click="() => $emit('click')"
     >
-      <font-awesome-icon v-if="icon" :icon="icon" class="icon" />
+      <font-awesome-icon v-if="icon && !loading" :icon="icon" class="icon" />
       {{ label }}
     </cl-button>
   </div>
@@ -40,5 +40,9 @@ withDefaults(defineProps<LabelButtonProps>(), {
 .label-button:deep(.icon) {
   width: 20px;
   margin-right: 3px;
+}
+
+.label-button:deep(.el-icon.is-loading) {
+  width: 17px;
 }
 </style>

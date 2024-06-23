@@ -16,10 +16,20 @@ import {
 } from '@/constants/git';
 import useDetail from '@/layouts/content/detail/useDetail';
 import useGit from '@/components/git/git';
-import { TAB_NAME_CHANGES, TAB_NAME_OVERVIEW } from '@/constants';
+import {
+  TAB_NAME_CHANGES,
+  TAB_NAME_FILES,
+  TAB_NAME_LOGS,
+  TAB_NAME_OVERVIEW,
+} from '@/constants';
 
 // i18n
 const t = translate;
+
+const pullLoading = ref(false);
+const commitLoading = ref(false);
+const rollbackLoading = ref(false);
+const pushLoading = ref(false);
 
 const useGitDetail = () => {
   const ns = 'git';
@@ -87,7 +97,6 @@ const useGitDetail = () => {
     );
   });
 
-  const commitLoading = ref(false);
   const onCommit = async () => {
     if (!state.gitChangeSelection.length) return;
     const { value: message } = await ElMessageBox.prompt(
@@ -107,6 +116,8 @@ const useGitDetail = () => {
         },
       }
     );
+    const fileCount = state.gitChangeSelection.length;
+    commitLoading.value = true;
     try {
       await store.dispatch(`${ns}/commit`, {
         id: id.value,
@@ -117,6 +128,16 @@ const useGitDetail = () => {
         store.dispatch(`${ns}/getChanges`, { id: id.value }),
         store.dispatch(`${ns}/getLogs`, { id: id.value }),
       ]);
+      console.debug(
+        t('components.git.common.message.success.commit', fileCount, {
+          fileCount,
+        })
+      );
+      ElMessage.success(
+        t('components.git.common.message.success.commit', fileCount, {
+          fileCount,
+        })
+      );
     } catch (e: any) {
       ElMessage.error(e.message);
     } finally {
@@ -124,9 +145,9 @@ const useGitDetail = () => {
     }
   };
 
-  const rollbackLoading = ref(false);
   const onRollback = async () => {
     if (!state.gitChangeSelection.length) return;
+    rollbackLoading.value = true;
     try {
       await store.dispatch(`${ns}/deleteChanges`, {
         id: id.value,
@@ -137,6 +158,53 @@ const useGitDetail = () => {
       ElMessage.error(e.message);
     } finally {
       rollbackLoading.value = false;
+    }
+  };
+
+  const onPull = async () => {
+    pullLoading.value = true;
+    try {
+      const res = await store.dispatch(`${ns}/pull`, {
+        id: id.value,
+      });
+      if (res.data) {
+        ElMessage.info(res.data);
+      } else {
+        ElMessage.success(t('components.git.common.messageBox.success.pull'));
+      }
+      if (activeTabName.value === TAB_NAME_FILES) {
+        await store.dispatch(`${ns}/listDir`, { id: id.value });
+      } else if (activeTabName.value === TAB_NAME_LOGS) {
+        await store.dispatch(`${ns}/getLogs`, { id: id.value });
+      }
+    } catch (e: any) {
+      ElMessage.error(e.message);
+    } finally {
+      pullLoading.value = false;
+    }
+  };
+
+  const onPush = async () => {
+    pushLoading.value = true;
+    try {
+      const res = await store.dispatch(`${ns}/push`, {
+        id: id.value,
+      });
+      if (res.data) {
+        ElMessage.info(res.data);
+      } else {
+        ElMessage.success(t('components.git.common.message.success.push'));
+      }
+      if (activeTabName.value === TAB_NAME_LOGS) {
+        await Promise.all([
+          store.dispatch(`${ns}/getLogs`, { id: id.value }),
+          store.dispatch(`${ns}/getRemoteBranches`, { id: id.value }),
+        ]);
+      }
+    } catch (e: any) {
+      ElMessage.error(e.message);
+    } finally {
+      pushLoading.value = false;
     }
   };
 
@@ -154,6 +222,10 @@ const useGitDetail = () => {
     onCommit,
     rollbackLoading,
     onRollback,
+    pullLoading,
+    onPull,
+    pushLoading,
+    onPush,
   };
 };
 
