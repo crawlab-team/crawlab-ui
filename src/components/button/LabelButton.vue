@@ -2,15 +2,16 @@
 defineOptions({ name: 'ClLabelButton' });
 import { ButtonProps } from '@/components/button/Button.vue';
 
-export interface LabelButtonProps extends /* @vue-ignore */ ButtonProps {
-  label: string;
-  icon: string;
-}
+defineProps<
+  ButtonProps & {
+    label?: string;
+    icon?: Icon;
+  }
+>();
 
-withDefaults(defineProps<LabelButtonProps>(), {
-  label: '',
-  icon: '',
-});
+const emit = defineEmits<{
+  (e: 'click'): void;
+}>();
 </script>
 
 <template>
@@ -27,7 +28,7 @@ withDefaults(defineProps<LabelButtonProps>(), {
       :id="id"
       :class-name="['label-button', className].join(' ')"
       :loading="loading"
-      @click="() => $emit('click')"
+      @click="() => emit('click')"
     >
       <font-awesome-icon v-if="icon && !loading" :icon="icon" class="icon" />
       {{ label }}

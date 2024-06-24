@@ -2,14 +2,17 @@
 defineOptions({ name: 'ClNavActionButton' });
 import { ButtonProps } from '@/components/button/Button.vue';
 
-export interface NavActionButtonProps extends /* @vue-ignore */ ButtonProps {
-  buttonType: ButtonType;
-  label?: string;
-  icon?: Icon;
-  onClick?: () => void;
-}
-
-withDefaults(defineProps<NavActionButtonProps>(), {});
+withDefaults(
+  defineProps<
+    ButtonProps & {
+      buttonType: ButtonType;
+      label?: string;
+      icon?: Icon;
+      onClick?: () => void;
+    }
+  >(),
+  {}
+);
 </script>
 
 <template>
