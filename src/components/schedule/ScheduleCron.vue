@@ -9,7 +9,6 @@ import zh from 'dayjs/locale/zh.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useI18n } from 'vue-i18n';
 import { getI18n } from '@/i18n';
-import { TagProps } from '@/components/tag/tag';
 
 dayjs.extend(localizedFormat);
 

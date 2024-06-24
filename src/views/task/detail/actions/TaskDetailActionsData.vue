@@ -3,7 +3,7 @@ defineOptions({ name: 'ClTaskDetailActionsData' });
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 import useRequest from '@/services/request';
 import { FILTER_OP_EQUAL } from '@/constants';
 import { inferDataFieldTypes } from '@/utils/dataFields';

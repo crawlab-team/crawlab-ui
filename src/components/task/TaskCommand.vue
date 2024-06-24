@@ -1,9 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClTaskCommand' });
-import { computed, PropType } from 'vue';
-import { emptyObjectFunc } from '@/utils';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { TagProps } from '@/components/tag/tag';
 
 const props = defineProps<{
   task: Task;

@@ -1,17 +1,11 @@
-import { computed, readonly, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useScheduleService from '@/services/schedule/scheduleService';
 import { getDefaultFormComponentData } from '@/utils/form';
-import {
-  FORM_FIELD_TYPE_INPUT,
-  FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
-  FORM_FIELD_TYPE_SELECT,
-  FORM_FIELD_TYPE_SWITCH,
-} from '@/constants/form';
 import { parseExpression } from 'cron-parser';
 import { getModeOptions } from '@/utils/task';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 import { translate } from '@/utils/i18n';
 import useScheduleDetail from '@/views/schedule/detail/useScheduleDetail';
 
@@ -35,7 +29,7 @@ const useSchedule = (store: Store<RootStoreState>) => {
   const modeOptions = getModeOptions();
 
   // form rules
-  const formRules = readonly<FormRules>({
+  const formRules: FormRules = {
     cron: {
       trigger: 'blur',
       validator: (_, value: string, callback) => {
@@ -53,7 +47,7 @@ const useSchedule = (store: Store<RootStoreState>) => {
         }
       },
     },
-  });
+  };
 
   // all schedule select options
   const allScheduleSelectOptions = computed<SelectOption[]>(() =>

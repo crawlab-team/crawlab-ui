@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateEditNodeDialog' });
 import { useStore } from 'vuex';
-import useNode from '@/components/node/node';
+import useNode from '@/components/node/useNode';
 
 // store
 const store = useStore();

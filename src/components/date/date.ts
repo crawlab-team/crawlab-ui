@@ -1,9 +1,3 @@
-import {
-  RangeItemKey,
-  RangeItemOption,
-  RangeItemValue,
-} from '@/components/date/RangePicker.vue';
-
 export const getRangeItemOption = (
   label: string,
   key: RangeItemKey,

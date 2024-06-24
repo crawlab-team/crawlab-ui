@@ -3,12 +3,12 @@ import { useStore } from 'vuex';
 import { computed, h } from 'vue';
 import TaskStatus from '@/components/task/TaskStatus.vue';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
-import useList from '@/layouts/content/list/list';
+import useList from '@/layouts/content/list/useList';
 import NavLink from '@/components/nav/NavLink.vue';
 import Time from '@/components/time/Time.vue';
 import SpiderStat from '@/components/spider/SpiderStat.vue';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
-import useProject from '@/components/project/project';
+import useProject from '@/components/project/useProject';
 import { translate } from '@/utils/i18n';
 import { sendEvent } from '@/admin/umeng';
 import {

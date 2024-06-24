@@ -4,8 +4,6 @@ import { computed } from 'vue';
 import { isCancellable } from '@/utils/task';
 import { TASK_STATUS_PENDING } from '@/constants/task';
 import { useI18n } from 'vue-i18n';
-import { TaskStatus } from '@/components/task/task';
-import { TagProps } from '@/components/tag/tag';
 
 const props = defineProps<{
   results?: number;

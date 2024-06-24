@@ -12,6 +12,8 @@ import '@/styles/index.scss';
 // fontawesome
 library.add(fab, far, fas);
 
+const COMPONENT_PREFIX = 'Cl';
+
 const makeInstaller = (
   items: [string, ComponentOptionsMixin][] = []
 ): Plugin => {
@@ -33,6 +35,7 @@ const makeInstaller = (
 
     // install components
     items.forEach(([name, component]) => {
+      if (!name.startsWith(COMPONENT_PREFIX)) return;
       component.name = name;
       app.component(`${name}`, component);
     });

@@ -19,7 +19,6 @@ interface TagProps {
   clickable?: boolean;
   closable?: boolean;
   disabled?: boolean;
-  tag?: Tag;
   className?: string;
 }
 

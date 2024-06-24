@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClSpiderDetailActionsCommon' });
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
 

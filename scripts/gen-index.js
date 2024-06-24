@@ -49,13 +49,18 @@ function processFile(filePath, moduleName) {
     return { importLine, exportLine };
   } else if (
     filePath.endsWith('.ts') &&
-    !['components', 'layouts', 'views'].includes(moduleName) &&
+    // !['components', 'layouts', 'views'].includes(moduleName) &&
     fileName !== INDEX_COMP_NAME
   ) {
     let compName = fileName.replace('.ts', '');
     compName += compName === 'export' ? '_' : '';
 
-    const importLine = `import ${compName} from '${relPath.replace('.ts', '')}';`;
+    let importLine;
+    if (compName.startsWith('use')) {
+      importLine = `import ${compName} from '${relPath.replace('.ts', '')}';`;
+    } else {
+      importLine = `import * as ${compName} from '${relPath.replace('.ts', '')}';`;
+    }
     const exportLine = `${compName} as ${compName},`;
     return { importLine, exportLine };
   }
@@ -141,9 +146,7 @@ function genRootIndex() {
     `export * from './src/utils';`,
     `export * from './src/constants';`,
     `export * from './src/layouts/content';`,
-    `export * from './src/components/form';`,
-    `export { default as useSpider } from './src/components/spider/spider';`,
-    `export { ClSpiderDetail } from './src/views';`,
+    `export * from './src/components/useForm';`,
     `export { installer as default } from './src/package';`,
     `export { default as useRequest } from './src/services/request';`,
   ];

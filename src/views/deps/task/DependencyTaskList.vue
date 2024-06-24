@@ -16,7 +16,6 @@ import NodeType from '@/components/node/NodeType.vue';
 import TaskStatusComp from '@/components/task/TaskStatus.vue';
 import Tag from '@/components/tag/Tag.vue';
 import Time from '@/components/time/Time.vue';
-import { TaskStatus } from '@/components/task/task';
 
 const t = translate;
 

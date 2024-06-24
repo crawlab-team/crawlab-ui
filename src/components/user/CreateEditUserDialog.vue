@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateEditUserDialog' });
 import { useStore } from 'vuex';
-import useUser from '@/components/user/user';
+import useUser from '@/components/user/useUser';
 
 // store
 const store = useStore();

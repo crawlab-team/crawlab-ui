@@ -2,7 +2,7 @@
 defineOptions({ name: 'ClSpiderDetailTabData' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 
 // store
 const store = useStore();

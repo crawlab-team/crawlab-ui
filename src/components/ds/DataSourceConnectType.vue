@@ -7,7 +7,6 @@ import {
   DATA_SOURCE_CONNECT_TYPE_HOSTS,
 } from '@/constants/ds';
 import { useI18n } from 'vue-i18n';
-import { TagProps } from '@/components/tag/tag';
 
 const props = defineProps<{
   dataSource?: DataSource;

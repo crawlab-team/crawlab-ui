@@ -1,10 +1,10 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailTabChanges' });
-import { computed, h, ref, watch, onBeforeMount, onMounted } from 'vue';
+import { computed, h, ref, watch, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import GitFileStatus from '@/components/git/GitFileStatus.vue';
-import Tag, { TagProps } from '@/components/tag/Tag.vue';
+import Tag from '@/components/tag/Tag.vue';
 import Table from '@/components/table/Table.vue';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import { debounce, translate } from '@/utils';
@@ -121,7 +121,7 @@ const tableColumns = computed<TableColumns<GitChange>>(() => {
                 changes: [row],
               });
               await store.dispatch(`${ns}/getChanges`, { id: activeId.value });
-            } catch (e) {
+            } catch (e: any) {
               ElMessage.error(e.message);
             }
           },
@@ -138,7 +138,7 @@ const tableColumns = computed<TableColumns<GitChange>>(() => {
                 changes: [row],
               });
               await store.dispatch(`${ns}/getChanges`, { id: activeId.value });
-            } catch (e) {
+            } catch (e: any) {
               ElMessage.error(e.message);
             }
           },

@@ -4,13 +4,6 @@ import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useSpiderService from '@/services/spider/spiderService';
 import { getDefaultFormComponentData } from '@/utils/form';
-import {
-  FORM_FIELD_TYPE_INPUT,
-  FORM_FIELD_TYPE_INPUT_TEXTAREA,
-  FORM_FIELD_TYPE_INPUT_WITH_BUTTON,
-  FORM_FIELD_TYPE_SELECT,
-} from '@/constants/form';
-import useProject from '@/components/project/project';
 import useRequest from '@/services/request';
 import { FILTER_OP_CONTAINS } from '@/constants/filter';
 import { getModeOptions } from '@/utils/task';

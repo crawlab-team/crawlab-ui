@@ -3,9 +3,9 @@ defineOptions({ name: 'ClSpiderForm' });
 
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/spider';
-import useNode from '@/components/node/node';
-import useProject from '@/components/project/project';
+import useSpider from '@/components/spider/useSpider';
+import useNode from '@/components/node/useNode';
+import useProject from '@/components/project/useProject';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import pinyin, { STYLE_NORMAL } from 'pinyin';
 import { isZeroObjectId } from '@/utils/mongo';

@@ -5,7 +5,7 @@ import {
   onListFilterChangeByKey,
   setupListComponent,
 } from '@/utils/list';
-import useList from '@/layouts/content/list/list';
+import useList from '@/layouts/content/list/useList';
 import NodeType from '@/components/node/NodeType.vue';
 import {
   TABLE_COLUMN_NAME_ACTIONS,

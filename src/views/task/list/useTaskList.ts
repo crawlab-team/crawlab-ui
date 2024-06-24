@@ -3,7 +3,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
-import useList from '@/layouts/content/list/list';
+import useList from '@/layouts/content/list/useList';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import { translate } from '@/utils/i18n';
 import { sendEvent } from '@/admin/umeng';
@@ -16,8 +16,8 @@ import NodeType from '@/components/node/NodeType.vue';
 import Time from '@/components/time/Time.vue';
 import Duration from '@/components/time/Duration.vue';
 import TaskResults from '@/components/task/TaskResults.vue';
-import useNode from '@/components/node/node';
-import useSpider from '@/components/spider/spider';
+import useNode from '@/components/node/useNode';
+import useSpider from '@/components/spider/useSpider';
 import useTask from '@/components/task/useTask';
 import useSchedule from '@/components/schedule/useSchedule';
 import TaskCommand from '@/components/task/TaskCommand.vue';
@@ -35,7 +35,6 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
-import { TaskStatus } from '@/components/task/task';
 
 const { post } = useRequest();
 
@@ -280,7 +279,7 @@ const useTaskList = () => {
           value: (row: Task) => {
             return h(TaskPriority, {
               priority: row.priority,
-            } as TaskPriorityProps);
+            });
           },
           hasSort: true,
           hasFilter: true,
@@ -297,7 +296,7 @@ const useTaskList = () => {
               task: row,
               spider: allSpiderDict.value?.get(row.spider_id as string),
               size: 'small',
-            } as TaskConfigProps);
+            });
           },
         },
         {

@@ -22,16 +22,7 @@ const useProject = (store: Store<RootStoreState>) => {
   const state = store.state[ns];
 
   // form rules
-  const formRules = readonly<FormRules>({
-    tags: {
-      validator: (_, value, callback) => {
-        if (isDuplicated(value)) {
-          return callback('Duplicated tags');
-        }
-        callback();
-      },
-    },
-  });
+  const formRules: FormRules = {};
 
   // all project select options
   const allProjectSelectOptions = computed<SelectOption[]>(() =>

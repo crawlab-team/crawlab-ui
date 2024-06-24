@@ -3,9 +3,8 @@ import {
   TASK_MODE_RANDOM,
   TASK_MODE_SELECTED_NODES,
 } from '@/constants/task';
-import { TaskStatus } from '@/components/task/task';
 
-declare global {
+export declare global {
   interface Task extends BaseModel {
     spider_id?: string;
     spider_name?: string;
@@ -43,4 +42,12 @@ declare global {
     | TASK_MODE_RANDOM
     | TASK_MODE_ALL_NODES
     | TASK_MODE_SELECTED_NODES;
+
+  type TaskStatus =
+    | 'abnormal'
+    | 'cancelled'
+    | 'error'
+    | 'finished'
+    | 'running'
+    | 'pending';
 }

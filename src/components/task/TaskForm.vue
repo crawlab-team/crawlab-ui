@@ -2,8 +2,8 @@
 defineOptions({ name: 'ClTaskForm' });
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/spider';
-import useNode from '@/components/node/node';
+import useSpider from '@/components/spider/useSpider';
+import useNode from '@/components/node/useNode';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useRequest from '@/services/request';
 import useTask from '@/components/task/useTask';

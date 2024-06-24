@@ -28,13 +28,13 @@ const t = translate;
 // form component data
 const formComponentData = getDefaultFormComponentData<DataSource>();
 
-export const useDataSource: any = (store: Store<RootStoreState>) => {
+export const useDataSource = (store: Store<RootStoreState>) => {
   // store
   const ns = 'ds' as ListStoreNamespace;
   const { ds: state } = store.state as RootStoreState;
 
   // form rules
-  const formRules = readonly<FormRules>({});
+  const formRules: FormRules = {};
 
   // type options
   const typeOptions = readonly<SelectOption[]>([
@@ -77,7 +77,7 @@ export const useDataSource: any = (store: Store<RootStoreState>) => {
     );
 
     await store.dispatch(`${ns}/changePassword`, { id, password: value });
-    await ElMessage.success(t('common.message.success.save'));
+    ElMessage.success(t('common.message.success.save'));
   };
 
   // on connect type change

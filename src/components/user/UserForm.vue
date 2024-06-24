@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
-import useUser from '@/components/user/user';
+import useUser from '@/components/user/useUser';
 import useUserDetail from '@/views/user/detail/useUserDetail';
 
 // i18n

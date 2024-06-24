@@ -3,11 +3,6 @@ import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useUserService from '@/services/user/userService';
 import { getDefaultFormComponentData } from '@/utils/form';
-import {
-  FORM_FIELD_TYPE_INPUT,
-  FORM_FIELD_TYPE_INPUT_PASSWORD,
-  FORM_FIELD_TYPE_SELECT,
-} from '@/constants/form';
 import { getModeOptions } from '@/utils/task';
 import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -29,7 +24,7 @@ const useUser = (store: Store<RootStoreState>) => {
   const modeOptions = getModeOptions();
 
   // form rules
-  const formRules = readonly<FormRules>({
+  const formRules: FormRules = {
     password: {
       trigger: 'blur',
       validator: (_, value: string, callback) => {
@@ -40,7 +35,7 @@ const useUser = (store: Store<RootStoreState>) => {
         return callback();
       },
     },
-  });
+  };
 
   // all user select options
   const allUserSelectOptions = computed<SelectOption[]>(() =>
@@ -75,7 +70,7 @@ const useUser = (store: Store<RootStoreState>) => {
     sendEvent('click_user_form_change_password');
 
     await store.dispatch(`${ns}/changePassword`, { id, password: value });
-    await ElMessage.success(t('common.message.success.save'));
+    ElMessage.success(t('common.message.success.save'));
   };
 
   const rolesOptions: SelectOption[] = [

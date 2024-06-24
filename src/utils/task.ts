@@ -9,7 +9,6 @@ import {
   TASK_STATUS_RUNNING,
 } from '@/constants/task';
 import { translate } from '@/utils/i18n';
-import { TaskStatus } from '@/components/task/task';
 
 const t = translate;
 
