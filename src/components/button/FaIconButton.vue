@@ -1,7 +1,22 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFaIconButton' });
 import { computed } from 'vue';
-import { ButtonProps } from '@/components/button/button';
+
+interface ButtonProps {
+  tooltip?: string;
+  type?: BasicType;
+  size?: BasicSize;
+  round?: boolean;
+  circle?: boolean;
+  plain?: boolean;
+  disabled?: boolean;
+  isIcon?: boolean;
+  loading?: boolean;
+  onClick?: () => void;
+  className?: string;
+  id?: string;
+  noMargin?: boolean;
+}
 
 const props = defineProps<
   ButtonProps & {
@@ -35,7 +50,7 @@ const cls = computed<string>(() => {
     is-icon
     :id="id"
     :class-name="cls"
-    @click="event => emit('click', event)"
+    @click="(event: Event) => emit('click', event)"
   >
     <cl-icon :icon="icon" :spin="spin" />
     <div v-if="badgeIcon" class="badge-icon">

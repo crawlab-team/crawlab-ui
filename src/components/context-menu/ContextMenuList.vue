@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClContextMenuList' });
 
-export interface ContextMenuItem {
+interface ContextMenuItem {
   title: string;
   icon?: Icon;
   action?: () => void;

@@ -1,50 +1,38 @@
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClTaskDetailActionsLogs' });
+import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import useTask from '@/components/task/useTask';
 import { useI18n } from 'vue-i18n';
 
-export default defineComponent({
-  name: 'TaskDetailActionsLogs',
-  setup() {
-    // i18n
-    const { t } = useI18n();
+// i18n
+const { t } = useI18n();
 
-    // store
-    const ns = 'task';
-    const store = useStore();
-    const { task: state } = store.state as RootStoreState;
+// store
+const ns = 'task';
+const store = useStore();
+const { task: state } = store.state as RootStoreState;
 
-    // internal auto update
-    const internalAutoUpdate = ref<boolean>(state.logAutoUpdate);
+// internal auto update
+const internalAutoUpdate = ref<boolean>(state.logAutoUpdate);
 
-    // watch log auto update
-    watch(
-      () => state.logAutoUpdate,
-      () => {
-        setTimeout(() => {
-          internalAutoUpdate.value = state.logAutoUpdate;
-        }, 100);
-      }
-    );
+// watch log auto update
+watch(
+  () => state.logAutoUpdate,
+  () => {
+    setTimeout(() => {
+      internalAutoUpdate.value = state.logAutoUpdate;
+    }, 100);
+  }
+);
 
-    // auto update change
-    const onAutoUpdateChange = (value: boolean) => {
-      if (value) {
-        store.commit(`${ns}/enableLogAutoUpdate`);
-      } else {
-        store.commit(`${ns}/disableLogAutoUpdate`);
-      }
-    };
-
-    return {
-      ...useTask(store),
-      internalAutoUpdate,
-      onAutoUpdateChange,
-      t,
-    };
-  },
-});
+// auto update change
+const onAutoUpdateChange = (value: boolean) => {
+  if (value) {
+    store.commit(`${ns}/enableLogAutoUpdate`);
+  } else {
+    store.commit(`${ns}/disableLogAutoUpdate`);
+  }
+};
 </script>
 
 <template>
@@ -58,4 +46,4 @@ export default defineComponent({
   </cl-nav-action-group>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

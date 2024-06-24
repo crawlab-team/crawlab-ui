@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import { TagProps } from '@/components/tag/tag';
-
 defineOptions({ name: 'ClTag' });
 import { computed, onMounted, ref, watch } from 'vue';
 import { ElTag } from 'element-plus';
+
+interface TagProps {
+  label?: string;
+  tooltip?: string;
+  type?: BasicType;
+  color?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  icon?: Icon;
+  suffixIcon?: Icon;
+  size?: BasicSize;
+  spinning?: boolean;
+  width?: string;
+  effect?: BasicEffect;
+  clickable?: boolean;
+  closable?: boolean;
+  disabled?: boolean;
+  tag?: Tag;
+  className?: string;
+}
 
 const props = defineProps<TagProps>();
 

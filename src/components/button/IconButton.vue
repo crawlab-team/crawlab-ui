@@ -1,6 +1,21 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClIconButton' });
-import { ButtonProps } from '@/components/button/button';
+
+interface ButtonProps {
+  tooltip?: string;
+  type?: BasicType;
+  size?: BasicSize;
+  round?: boolean;
+  circle?: boolean;
+  plain?: boolean;
+  disabled?: boolean;
+  isIcon?: boolean;
+  loading?: boolean;
+  onClick?: () => void;
+  className?: string;
+  id?: string;
+  noMargin?: boolean;
+}
 
 defineProps<
   ButtonProps & {

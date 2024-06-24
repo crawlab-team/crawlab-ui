@@ -2,9 +2,20 @@
 defineOptions({ name: 'ClFileEditorNavMenuContextMenu' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { ContextMenuProps } from '@/components/context-menu/ContextMenu.vue';
-import { ContextMenuItem } from '@/components/context-menu/ContextMenuList.vue';
 import { translate } from '@/utils';
+
+interface ContextMenuProps {
+  visible?: boolean;
+  placement: string;
+  clicking?: boolean;
+}
+
+interface ContextMenuItem {
+  title: string;
+  icon?: Icon;
+  action?: () => void;
+  className?: string;
+}
 
 withDefaults(defineProps<ContextMenuProps>(), {
   placement: 'right-start',

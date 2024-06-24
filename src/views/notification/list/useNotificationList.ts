@@ -78,77 +78,80 @@ const useNotificationList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<NotificationSetting>>(() => [
-    {
-      key: 'name',
-      label: t('views.notification.settings.form.name'),
-      icon: ['fa', 'font'],
-      width: '240',
-      value: (row: NotificationSetting) =>
-        h(NavLink, {
-          label: row.name,
-          path: `/notifications/${row._id}`,
-        }),
-    },
-    {
-      key: 'type',
-      label: t('views.notification.settings.form.type'),
-      icon: ['fa', 'list'],
-      width: '120',
-      value: (row: NotificationSetting) =>
-        t(`views.notification.settings.type.${row.type}`),
-    },
-    {
-      key: 'enabled',
-      label: t('views.notification.settings.form.enabled'),
-      icon: ['fa', 'toggle-on'],
-      width: '120',
-      value: (row: NotificationSetting) =>
-        h(Switch, {
-          modelValue: row.enabled,
-          onChange: async value => {
-            if (!row._id) return;
-            if (!value) {
-              await post(`/notifications/settings/${row._id}/disable`);
-            } else {
-              await post(`/notifications/settings/${row._id}/enable`);
-            }
-          },
-        }),
-    },
-    {
-      key: 'description',
-      label: t('views.notification.settings.form.description'),
-      icon: ['fa', 'comment-alt'],
-      width: 'auto',
-    },
-    {
-      key: 'actions',
-      label: t('components.table.columns.actions'),
-      fixed: 'right',
-      width: '200',
-      buttons: [
+  const tableColumns = computed<TableColumns<NotificationSetting>>(
+    () =>
+      [
         {
-          type: 'primary',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: (row: NotificationSetting) => {
-            router.push(`/notifications/${row._id}`);
-          },
+          key: 'name',
+          label: t('views.notification.settings.form.name'),
+          icon: ['fa', 'font'],
+          width: '240',
+          value: (row: NotificationSetting) =>
+            h(NavLink, {
+              label: row.name,
+              path: `/notifications/${row._id}`,
+            }),
         },
         {
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
-          tooltip: t('common.actions.delete'),
-          onClick: deleteByIdConfirm,
-          className: 'delete-btn',
-          action: ACTION_DELETE,
+          key: 'type',
+          label: t('views.notification.settings.form.type'),
+          icon: ['fa', 'list'],
+          width: '120',
+          value: (row: NotificationSetting) =>
+            t(`views.notification.settings.type.${row.type}`),
         },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+        {
+          key: 'enabled',
+          label: t('views.notification.settings.form.enabled'),
+          icon: ['fa', 'toggle-on'],
+          width: '120',
+          value: (row: NotificationSetting) =>
+            h(Switch, {
+              modelValue: row.enabled,
+              onChange: async value => {
+                if (!row._id) return;
+                if (!value) {
+                  await post(`/notifications/settings/${row._id}/disable`);
+                } else {
+                  await post(`/notifications/settings/${row._id}/enable`);
+                }
+              },
+            }),
+        },
+        {
+          key: 'description',
+          label: t('views.notification.settings.form.description'),
+          icon: ['fa', 'comment-alt'],
+          width: 'auto',
+        },
+        {
+          key: 'actions',
+          label: t('components.table.columns.actions'),
+          fixed: 'right',
+          width: '200',
+          buttons: [
+            {
+              type: 'primary',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: (row: NotificationSetting) => {
+                router.push(`/notifications/${row._id}`);
+              },
+            },
+            {
+              type: 'danger',
+              size: 'small',
+              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.delete'),
+              onClick: deleteByIdConfirm,
+              className: 'delete-btn',
+              action: ACTION_DELETE,
+            },
+          ],
+          disableTransfer: true,
+        },
+      ] as TableColumns<NotificationSetting>
+  );
 
   // options
   const opts = {

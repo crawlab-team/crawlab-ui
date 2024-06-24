@@ -1,33 +1,24 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClSpiderDetailActionsCommon' });
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
 
-export default defineComponent({
-  name: 'SpiderDetailActionsCommon',
-  setup() {
-    // i18n
-    const { t } = useI18n();
+// i18n
+const { t } = useI18n();
 
-    // store
-    const ns = 'spider';
-    const store = useStore();
+// store
+const ns = 'spider';
+const store = useStore();
 
-    const onRun = () => {
-      store.commit(`${ns}/showDialog`, 'run');
+const { activeDialogKey } = useSpider(store);
 
-      sendEvent('click_spider_detail_actions_run');
-    };
+const onRun = () => {
+  store.commit(`${ns}/showDialog`, 'run');
 
-    return {
-      ...useSpider(store),
-      onRun,
-      t,
-    };
-  },
-});
+  sendEvent('click_spider_detail_actions_run');
+};
 </script>
 
 <template>

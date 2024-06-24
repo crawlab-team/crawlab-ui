@@ -4,7 +4,7 @@ import { computed, onMounted, onUnmounted, ref, watch, StyleValue } from 'vue';
 import { init } from 'echarts';
 import { translate } from '@/utils/i18n';
 
-export interface LineChartProps {
+interface LineChartProps {
   config: EChartsConfig;
   width?: string;
   height?: string;

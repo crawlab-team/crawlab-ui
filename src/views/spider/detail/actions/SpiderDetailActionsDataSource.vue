@@ -12,7 +12,7 @@ const { get, post } = useRequest();
 
 // i18n
 const t = translate;
-const store = getStore<RootStoreState>();
+const store = getStore();
 
 const { id } = useSpider(store);
 

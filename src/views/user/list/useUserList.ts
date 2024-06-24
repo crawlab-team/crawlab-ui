@@ -106,75 +106,77 @@ const useUserList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<User>>(() => [
-    {
-      key: 'username',
-      label: t('views.users.table.columns.username'),
-      icon: ['fa', 'font'],
-      width: '180',
-      value: (row: User) =>
-        h(NavLink, {
-          path: `/users/${row._id}`,
-          label: row.username,
-        }),
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: 'email',
-      label: t('views.users.table.columns.email'),
-      icon: ['fa', 'at'],
-      width: '180',
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: 'role',
-      label: t('views.users.table.columns.role'),
-      icon: ['fa', 'font'],
-      width: '150',
-      value: (row: User) => h(UserRole, { role: row.role } as UserRoleProps),
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: rolesOptions,
-    },
-    {
-      key: TABLE_COLUMN_NAME_ACTIONS,
-      label: t('components.table.columns.actions'),
-      fixed: 'right',
-      width: '200',
-      buttons: [
-        {
-          className: 'view-btn',
-          type: 'primary',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: row => {
-            router.push(`/users/${row._id}`);
+  const tableColumns = computed<TableColumns<User>>(() =>
+    [
+      {
+        key: 'username',
+        label: t('views.users.table.columns.username'),
+        icon: ['fa', 'font'],
+        width: '180',
+        value: (row: User) =>
+          h(NavLink, {
+            path: `/users/${row._id}`,
+            label: row.username,
+          }),
+        hasSort: true,
+        hasFilter: true,
+        allowFilterSearch: true,
+      },
+      {
+        key: 'email',
+        label: t('views.users.table.columns.email'),
+        icon: ['fa', 'at'],
+        width: '180',
+        hasSort: true,
+        hasFilter: true,
+        allowFilterSearch: true,
+      },
+      {
+        key: 'role',
+        label: t('views.users.table.columns.role'),
+        icon: ['fa', 'font'],
+        width: '150',
+        value: (row: User) => h(UserRole, { role: row.role } as UserRoleProps),
+        hasFilter: true,
+        allowFilterItems: true,
+        filterItems: rolesOptions,
+      },
+      {
+        key: TABLE_COLUMN_NAME_ACTIONS,
+        label: t('components.table.columns.actions'),
+        fixed: 'right',
+        width: '200',
+        buttons: [
+          {
+            className: 'view-btn',
+            type: 'primary',
+            icon: ['fa', 'search'],
+            tooltip: t('common.actions.view'),
+            onClick: (row: User) => {
+              router.push(`/users/${row._id}`);
 
-            sendEvent('click_user_list_actions_view');
+              sendEvent('click_user_list_actions_view');
+            },
+            action: ACTION_VIEW,
           },
-          action: ACTION_VIEW,
-        },
-        {
-          className: 'delete-btn',
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
-          tooltip: (row: User) =>
-            row.username === USERNAME_ADMIN
-              ? t('components.user.delete.tooltip.adminUserNonDeletable')
-              : t('common.actions.delete'),
-          disabled: (row: User) => row.username === USERNAME_ADMIN,
-          onClick: deleteByIdConfirm,
-          action: ACTION_DELETE,
-        },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+          {
+            className: 'delete-btn',
+            type: 'danger',
+            size: 'small',
+            icon: ['fa', 'trash-alt'],
+            tooltip: (row: User) =>
+              row.username === USERNAME_ADMIN
+                ? t('components.user.delete.tooltip.adminUserNonDeletable')
+                : t('common.actions.delete'),
+            disabled: (row: User) => row.username === USERNAME_ADMIN,
+            onClick: deleteByIdConfirm,
+            action: ACTION_DELETE,
+          },
+        ],
+        disableTransfer: true,
+      },
+    ].map(col => col as TableColumn<User>)
+  );
 
   const selectableFunction = (row: User) => {
     return row.username !== USERNAME_ADMIN;

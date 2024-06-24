@@ -76,100 +76,103 @@ const useProjectList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<Project>>(() => [
-    {
-      className: 'name',
-      key: 'name',
-      label: t('views.projects.table.columns.name'),
-      icon: ['fa', 'font'],
-      width: '150',
-      value: (row: Project) =>
-        h(NavLink, {
-          path: `/projects/${row._id}`,
-          label: row.name,
-        }),
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      className: 'spiders',
-      key: 'spiders',
-      label: t('views.projects.table.columns.spiders'),
-      icon: ['fa', 'spider'],
-      value: (row: Project) =>
-        h(NavLink, {
-          path: `/projects/${row._id}/${TAB_NAME_SPIDERS}`,
-          label: row.spiders,
-        }),
-      width: '120',
-    },
-    // {
-    //   key: 'tags',
-    //   label: t('views.projects.table.columns.tags'),
-    //   icon: ['fa', 'hashtag'],
-    //   value: ({tags}: Project) => {
-    //     return h(TagList, {tags});
-    //   },
-    //   width: '200',
-    // },
-    {
-      key: 'description',
-      label: t('views.projects.table.columns.description'),
-      icon: ['fa', 'comment-alt'],
-      width: 'auto',
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: TABLE_COLUMN_NAME_ACTIONS,
-      label: t('components.table.columns.actions'),
-      fixed: 'right',
-      width: '200',
-      buttons: [
+  const tableColumns = computed<TableColumns<Project>>(
+    () =>
+      [
         {
-          className: 'view-btn',
-          type: 'primary',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: row => {
-            router.push(`/projects/${row._id}`);
-
-            sendEvent('click_project_list_actions_view');
-          },
-          action: ACTION_VIEW,
+          className: 'name',
+          key: 'name',
+          label: t('views.projects.table.columns.name'),
+          icon: ['fa', 'font'],
+          width: '150',
+          value: (row: Project) =>
+            h(NavLink, {
+              path: `/projects/${row._id}`,
+              label: row.name,
+            }),
+          hasSort: true,
+          hasFilter: true,
+          allowFilterSearch: true,
+        },
+        {
+          className: 'spiders',
+          key: 'spiders',
+          label: t('views.projects.table.columns.spiders'),
+          icon: ['fa', 'spider'],
+          value: (row: Project) =>
+            h(NavLink, {
+              path: `/projects/${row._id}/${TAB_NAME_SPIDERS}`,
+              label: row.spiders,
+            }),
+          width: '120',
         },
         // {
-        //   type: 'warning',
-        //   icon: ['fa', 'edit'],
-        //   tooltip: t('common.actions.edit'),
-        //   onClick: (row) => {
-        //     store.commit(`${ns}/setForm`, row);
-        //     store.commit(`${ns}/showDialog`, 'edit');
+        //   key: 'tags',
+        //   label: t('views.projects.table.columns.tags'),
+        //   icon: ['fa', 'hashtag'],
+        //   value: ({tags}: Project) => {
+        //     return h(TagList, {tags});
         //   },
-        // },
-        // {
-        //   type: 'info',
-        //   size: 'small',
-        //   icon: ['fa', 'clone'],
-        //   tooltip: t('common.actions.clone'),
-        //   onClick: (row) => {
-        //     console.log('clone', row);
-        //   }
+        //   width: '200',
         // },
         {
-          className: 'delete-btn',
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
-          tooltip: t('common.actions.delete'),
-          onClick: deleteByIdConfirm,
-          action: ACTION_DELETE,
+          key: 'description',
+          label: t('views.projects.table.columns.description'),
+          icon: ['fa', 'comment-alt'],
+          width: 'auto',
+          hasFilter: true,
+          allowFilterSearch: true,
         },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+        {
+          key: TABLE_COLUMN_NAME_ACTIONS,
+          label: t('components.table.columns.actions'),
+          fixed: 'right',
+          width: '200',
+          buttons: [
+            {
+              className: 'view-btn',
+              type: 'primary',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: row => {
+                router.push(`/projects/${row._id}`);
+
+                sendEvent('click_project_list_actions_view');
+              },
+              action: ACTION_VIEW,
+            },
+            // {
+            //   type: 'warning',
+            //   icon: ['fa', 'edit'],
+            //   tooltip: t('common.actions.edit'),
+            //   onClick: (row) => {
+            //     store.commit(`${ns}/setForm`, row);
+            //     store.commit(`${ns}/showDialog`, 'edit');
+            //   },
+            // },
+            // {
+            //   type: 'info',
+            //   size: 'small',
+            //   icon: ['fa', 'clone'],
+            //   tooltip: t('common.actions.clone'),
+            //   onClick: (row) => {
+            //     console.log('clone', row);
+            //   }
+            // },
+            {
+              className: 'delete-btn',
+              type: 'danger',
+              size: 'small',
+              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.delete'),
+              onClick: deleteByIdConfirm,
+              action: ACTION_DELETE,
+            },
+          ],
+          disableTransfer: true,
+        },
+      ] as TableColumns<Project>
+  );
 
   // options
   const opts = {

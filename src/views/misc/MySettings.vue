@@ -1,5 +1,6 @@
-<script lang="ts">
-import { defineComponent, onBeforeMount, ref } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClMySettings' });
+import { onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
 import { plainClone } from '@/utils/object';
 import useUser from '@/components/user/user';
@@ -7,43 +8,28 @@ import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
 
-export default defineComponent({
-  name: 'MySettings',
-  setup() {
-    // i18n
-    const { t } = useI18n();
+// i18n
+const { t } = useI18n();
 
-    // store
-    const ns = 'user';
-    const store = useStore();
+// store
+const ns = 'user';
+const store = useStore();
 
-    const { formRules, onChangePasswordFunc } = useUser(store);
+const { formRules, onChangePasswordFunc } = useUser(store);
 
-    const form = ref<User>({});
+const form = ref<User>({});
 
-    onBeforeMount(() => {
-      form.value = plainClone(store.getters['user/me']) as User;
-    });
-
-    const onChangePassword = () => onChangePasswordFunc(form.value._id);
-
-    const onSave = async () => {
-      await store.dispatch(`${ns}/putMe`, form.value);
-      await ElMessage.success(t('common.message.success.save'));
-      await store.dispatch(`${ns}/getMe`);
-    };
-
-    return {
-      form,
-      formRules,
-      ROLE_ADMIN,
-      ROLE_NORMAL,
-      onChangePassword,
-      onSave,
-      t,
-    };
-  },
+onBeforeMount(() => {
+  form.value = plainClone(store.getters['user/me']) as User;
 });
+
+const onChangePassword = () => onChangePasswordFunc(form.value._id);
+
+const onSave = async () => {
+  await store.dispatch(`${ns}/putMe`, form.value);
+  ElMessage.success(t('common.message.success.save'));
+  await store.dispatch(`${ns}/getMe`);
+};
 </script>
 
 <template>

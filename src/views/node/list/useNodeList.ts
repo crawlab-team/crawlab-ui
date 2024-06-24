@@ -195,221 +195,224 @@ const useNodeList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<Node>>(() => [
-    {
-      key: 'name', // name
-      className: 'name',
-      label: t('views.nodes.table.columns.name'),
-      icon: ['fa', 'font'],
-      width: '150',
-      value: (row: Node) =>
-        h(NavLink, {
-          path: `/nodes/${row._id}`,
-          label: row.name,
-        }),
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: 'is_master', // is_master
-      className: 'is_master',
-      label: t('views.nodes.table.columns.nodeType'),
-      icon: ['fa', 'list'],
-      width: '150',
-      value: (row: Node) => {
-        return h(NodeType, { isMaster: row.is_master } as NodeTypeProps);
-      },
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: [
-        { label: t('components.node.nodeType.label.master'), value: true },
-        { label: t('components.node.nodeType.label.worker'), value: false },
-      ],
-    },
-    {
-      key: 'status', // status
-      className: 'status',
-      label: t('views.nodes.table.columns.status'),
-      icon: ['fa', 'heartbeat'],
-      width: '150',
-      value: (row: Node) => {
-        return h(NodeStatus, { status: row.status });
-      },
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: [
+  const tableColumns = computed<TableColumns<Node>>(
+    () =>
+      [
         {
-          label: t('components.node.nodeStatus.label.unregistered'),
-          value: NODE_STATUS_UNREGISTERED,
+          key: 'name', // name
+          className: 'name',
+          label: t('views.nodes.table.columns.name'),
+          icon: ['fa', 'font'],
+          width: '150',
+          value: (row: Node) =>
+            h(NavLink, {
+              path: `/nodes/${row._id}`,
+              label: row.name,
+            }),
+          hasSort: true,
+          hasFilter: true,
+          allowFilterSearch: true,
         },
         {
-          label: t('components.node.nodeStatus.label.registered'),
-          value: NODE_STATUS_REGISTERED,
-        },
-        {
-          label: t('components.node.nodeStatus.label.online'),
-          value: NODE_STATUS_ONLINE,
-        },
-        {
-          label: t('components.node.nodeStatus.label.offline'),
-          value: NODE_STATUS_OFFLINE,
-        },
-      ],
-    },
-    {
-      key: 'ip',
-      className: 'ip',
-      label: t('views.nodes.table.columns.ip'),
-      icon: ['fa', 'map-marker-alt'],
-      width: '150',
-      defaultHidden: true,
-    },
-    {
-      key: 'mac',
-      className: 'mac',
-      label: t('views.nodes.table.columns.mac'),
-      icon: ['fa', 'map-marker-alt'],
-      width: '150',
-      defaultHidden: true,
-    },
-    {
-      key: 'hostname',
-      className: 'hostname',
-      label: t('views.nodes.table.columns.hostname'),
-      icon: ['fa', 'map-marker-alt'],
-      width: '150',
-      defaultHidden: true,
-    },
-    {
-      key: 'runners',
-      className: 'runners',
-      label: t('views.nodes.table.columns.runners'),
-      icon: ['fa', 'play'],
-      width: '160',
-      value: (row: Node) => {
-        if (
-          row.max_runners === undefined ||
-          !row.status ||
-          ![NODE_STATUS_ONLINE, NODE_STATUS_OFFLINE].includes(row.status)
-        )
-          return;
-        return h(NodeRunners, {
-          available: row.available_runners,
-          max: row.max_runners,
-        } as NodeRunnersProps);
-      },
-    },
-    {
-      key: 'enabled', // enabled
-      className: 'enabled',
-      label: t('views.nodes.table.columns.enabled'),
-      icon: ['fa', 'toggle-on'],
-      width: '120',
-      value: (row: Node) => {
-        return h(Switch, {
-          modelValue: row.enabled,
-          disabled: !isAllowedAction(
-            router.currentRoute.value.path,
-            ACTION_ENABLE
-          ),
-          'onUpdate:modelValue': async (value: boolean) => {
-            row.enabled = value;
-            await store.dispatch(`${ns}/updateById`, {
-              id: row._id,
-              form: row,
-            });
-
-            value
-              ? sendEvent('click_node_list_enable')
-              : sendEvent('click_node_list_disable');
+          key: 'is_master', // is_master
+          className: 'is_master',
+          label: t('views.nodes.table.columns.nodeType'),
+          icon: ['fa', 'list'],
+          width: '150',
+          value: (row: Node) => {
+            return h(NodeType, { isMaster: row.is_master } as NodeTypeProps);
           },
-        } as SwitchProps);
-      },
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: [
-        { label: t('common.control.enabled'), value: true },
-        { label: t('common.control.disabled'), value: false },
-      ],
-    },
-    // {
-    //   key: 'tags',
-    //   className: 'tags',
-    //   label: t('views.nodes.table.columns.tags'),
-    //   icon: ['fa', 'hashtag'],
-    //   value: ({tags}: Node) => {
-    //     return h(TagList, {tags});
-    //   },
-    //   width: '150',
-    // },
-    {
-      key: 'description',
-      className: 'description',
-      label: t('views.nodes.table.columns.description'),
-      icon: ['fa', 'comment-alt'],
-      width: 'auto',
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: TABLE_COLUMN_NAME_ACTIONS,
-      className: TABLE_COLUMN_NAME_ACTIONS,
-      label: t('components.table.columns.actions'),
-      fixed: 'right',
-      width: '200',
-      buttons: [
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: [
+            { label: t('components.node.nodeType.label.master'), value: true },
+            { label: t('components.node.nodeType.label.worker'), value: false },
+          ],
+        },
         {
-          type: 'primary',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: row => {
-            router.push(`/nodes/${row._id}`);
-
-            sendEvent('click_node_list_actions_view');
+          key: 'status', // status
+          className: 'status',
+          label: t('views.nodes.table.columns.status'),
+          icon: ['fa', 'heartbeat'],
+          width: '150',
+          value: (row: Node) => {
+            return h(NodeStatus, { status: row.status });
           },
-          action: ACTION_VIEW,
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: [
+            {
+              label: t('components.node.nodeStatus.label.unregistered'),
+              value: NODE_STATUS_UNREGISTERED,
+            },
+            {
+              label: t('components.node.nodeStatus.label.registered'),
+              value: NODE_STATUS_REGISTERED,
+            },
+            {
+              label: t('components.node.nodeStatus.label.online'),
+              value: NODE_STATUS_ONLINE,
+            },
+            {
+              label: t('components.node.nodeStatus.label.offline'),
+              value: NODE_STATUS_OFFLINE,
+            },
+          ],
+        },
+        {
+          key: 'ip',
+          className: 'ip',
+          label: t('views.nodes.table.columns.ip'),
+          icon: ['fa', 'map-marker-alt'],
+          width: '150',
+          defaultHidden: true,
+        },
+        {
+          key: 'mac',
+          className: 'mac',
+          label: t('views.nodes.table.columns.mac'),
+          icon: ['fa', 'map-marker-alt'],
+          width: '150',
+          defaultHidden: true,
+        },
+        {
+          key: 'hostname',
+          className: 'hostname',
+          label: t('views.nodes.table.columns.hostname'),
+          icon: ['fa', 'map-marker-alt'],
+          width: '150',
+          defaultHidden: true,
+        },
+        {
+          key: 'runners',
+          className: 'runners',
+          label: t('views.nodes.table.columns.runners'),
+          icon: ['fa', 'play'],
+          width: '160',
+          value: (row: Node) => {
+            if (
+              row.max_runners === undefined ||
+              !row.status ||
+              ![NODE_STATUS_ONLINE, NODE_STATUS_OFFLINE].includes(row.status)
+            )
+              return;
+            return h(NodeRunners, {
+              available: row.available_runners,
+              max: row.max_runners,
+            } as NodeRunnersProps);
+          },
+        },
+        {
+          key: 'enabled', // enabled
+          className: 'enabled',
+          label: t('views.nodes.table.columns.enabled'),
+          icon: ['fa', 'toggle-on'],
+          width: '120',
+          value: (row: Node) => {
+            return h(Switch, {
+              modelValue: row.enabled,
+              disabled: !isAllowedAction(
+                router.currentRoute.value.path,
+                ACTION_ENABLE
+              ),
+              'onUpdate:modelValue': async (value: boolean) => {
+                row.enabled = value;
+                await store.dispatch(`${ns}/updateById`, {
+                  id: row._id,
+                  form: row,
+                });
+
+                value
+                  ? sendEvent('click_node_list_enable')
+                  : sendEvent('click_node_list_disable');
+              },
+            } as SwitchProps);
+          },
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: [
+            { label: t('common.control.enabled'), value: true },
+            { label: t('common.control.disabled'), value: false },
+          ],
         },
         // {
-        //   type: 'info',
-        //   size: 'small',
-        //   icon: ['fa', 'clone'],
-        //   tooltip: 'Clone',
-        //   onClick: (row) => {
-        //     console.log('clone', row);
-        //   }
+        //   key: 'tags',
+        //   className: 'tags',
+        //   label: t('views.nodes.table.columns.tags'),
+        //   icon: ['fa', 'hashtag'],
+        //   value: ({tags}: Node) => {
+        //     return h(TagList, {tags});
+        //   },
+        //   width: '150',
         // },
         {
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
-          tooltip: t('common.actions.delete'),
-          disabled: (row: Node) => !!row.active,
-          onClick: async (row: Node) => {
-            sendEvent('click_node_list_actions_delete');
-
-            const res = await ElMessageBox.confirm(
-              t('common.messageBox.confirm.delete'),
-              t('common.actions.delete'),
-              {
-                type: 'warning',
-                confirmButtonClass: 'el-button--danger',
-              }
-            );
-
-            sendEvent('click_node_list_actions_delete_confirm');
-
-            if (res) {
-              await deleteById(row._id as string);
-            }
-            await getList();
-          },
-          action: ACTION_DELETE,
+          key: 'description',
+          className: 'description',
+          label: t('views.nodes.table.columns.description'),
+          icon: ['fa', 'comment-alt'],
+          width: 'auto',
+          hasFilter: true,
+          allowFilterSearch: true,
         },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+        {
+          key: TABLE_COLUMN_NAME_ACTIONS,
+          className: TABLE_COLUMN_NAME_ACTIONS,
+          label: t('components.table.columns.actions'),
+          fixed: 'right',
+          width: '200',
+          buttons: [
+            {
+              type: 'primary',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: row => {
+                router.push(`/nodes/${row._id}`);
+
+                sendEvent('click_node_list_actions_view');
+              },
+              action: ACTION_VIEW,
+            },
+            // {
+            //   type: 'info',
+            //   size: 'small',
+            //   icon: ['fa', 'clone'],
+            //   tooltip: 'Clone',
+            //   onClick: (row) => {
+            //     console.log('clone', row);
+            //   }
+            // },
+            {
+              type: 'danger',
+              size: 'small',
+              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.delete'),
+              disabled: (row: Node) => !!row.active,
+              onClick: async (row: Node) => {
+                sendEvent('click_node_list_actions_delete');
+
+                const res = await ElMessageBox.confirm(
+                  t('common.messageBox.confirm.delete'),
+                  t('common.actions.delete'),
+                  {
+                    type: 'warning',
+                    confirmButtonClass: 'el-button--danger',
+                  }
+                );
+
+                sendEvent('click_node_list_actions_delete_confirm');
+
+                if (res) {
+                  await deleteById(row._id as string);
+                }
+                await getList();
+              },
+              action: ACTION_DELETE,
+            },
+          ],
+          disableTransfer: true,
+        },
+      ] as TableColumns<Node>
+  );
 
   // options
   const opts = getDefaultUseListOptions<Node>(navActions, tableColumns);

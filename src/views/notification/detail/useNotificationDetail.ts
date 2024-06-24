@@ -2,10 +2,6 @@ import { computed, onBeforeMount, ref } from 'vue';
 import useDetail from '@/layouts/content/detail/useDetail';
 import useNotification from '@/components/notification/notification';
 import { useStore } from 'vuex';
-import { translate } from '@/utils';
-import { DataItem } from 'element-plus';
-
-const t = translate;
 
 const useNotificationDetail = () => {
   const ns = 'notification';
@@ -14,13 +10,13 @@ const useNotificationDetail = () => {
 
   const { id, form } = useNotification(store);
 
-  const triggersList = computed<DataItem[]>(
+  const triggersList = computed<any[]>(
     () =>
       state.triggersList?.map((trigger: string) => {
         return {
           label: trigger,
           key: trigger,
-        } as DataItem;
+        };
       }) || []
   );
 

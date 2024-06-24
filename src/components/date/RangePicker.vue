@@ -3,36 +3,33 @@ defineOptions({ name: 'ClRangePicker' });
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { Dayjs } from 'dayjs';
 
-export interface DateRange {
+interface DateRange {
   start: Dayjs;
   end: Dayjs;
 }
 
-export interface RangeItem {
+interface RangeItem {
   key: RangeItemKey;
   value?: DateRange;
 }
 
-export interface RangeItemOption extends SelectOption {
+interface RangeItemOption extends SelectOption {
   value?: RangeItem;
 }
 
-export type RangeItemKey = 'custom' | string;
+type RangeItemKey = 'custom' | string;
+type RangeItemValue = RangeItemValueFunc | DateRange;
+type RangeItemValueFunc = () => DateRange;
+type RangePickerType = 'daterange' | 'datetimerange';
 
-export type RangeItemValue = RangeItemValueFunc | DateRange;
-
-export type RangeItemValueFunc = () => DateRange;
-
-export type RangePickerType = 'daterange' | 'datetimerange';
-
-export interface RangePickerProps {
+interface RangePickerProps {
   className?: string;
   type?: RangePickerType;
   modelValue?: RangeItem;
   options?: RangeItemOption[];
 }
 
-export interface RangePickerEmits {
+interface RangePickerEmits {
   (e: 'change', value?: RangeItem): void;
 }
 

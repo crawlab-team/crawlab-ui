@@ -1,7 +1,22 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClButton' });
 import { computed } from 'vue';
-import { ButtonProps } from '@/components/button/button';
+
+interface ButtonProps {
+  tooltip?: string;
+  type?: BasicType;
+  size?: BasicSize;
+  round?: boolean;
+  circle?: boolean;
+  plain?: boolean;
+  disabled?: boolean;
+  isIcon?: boolean;
+  loading?: boolean;
+  onClick?: () => void;
+  className?: string;
+  id?: string;
+  noMargin?: boolean;
+}
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'primary',

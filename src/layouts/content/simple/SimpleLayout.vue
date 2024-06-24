@@ -1,19 +1,13 @@
-<script>
-export default {
-  name: 'SimpleLayout',
-  props: {
-    background: {
-      type: String,
-      default: '#ffffff',
-    },
-    padding: {
-      type: String,
-    },
-  },
-  setup() {
-    return {};
-  },
-};
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    background?: string;
+    padding?: string;
+  }>(),
+  {
+    background: '#ffffff',
+  }
+);
 </script>
 
 <template>

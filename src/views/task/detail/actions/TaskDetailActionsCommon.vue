@@ -1,4 +1,5 @@
-<script lang="ts">
+<script setup lang="ts">
+defineOptions({ name: 'ClTaskDetailActionsCommon' });
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import { isCancellable } from '@/utils/task';
@@ -13,91 +14,74 @@ import dayjs from 'dayjs';
 
 const { post } = useRequest();
 
-export default defineComponent({
-  name: 'TaskDetailActionsCommon',
-  setup() {
-    // i18n
-    const { t } = useI18n();
+// i18n
+const { t } = useI18n();
 
-    // router
-    const router = useRouter();
+// router
+const router = useRouter();
 
-    // store
-    const ns = 'task';
-    const store = useStore();
+// store
+const ns = 'task';
+const store = useStore();
 
-    // use task
-    const { form } = useTask(store);
+// use task
+const { form } = useTask(store);
 
-    // use task detail
-    const { activeId } = useTaskDetail();
+// use task detail
+const { activeId } = useTaskDetail();
 
-    // restart
-    const onRestart = async () => {
-      await ElMessageBox.confirm(
-        t('common.messageBox.confirm.restart'),
-        'Restart',
-        { type: 'warning' }
-      );
-      await post(`/tasks/${activeId.value}/restart`);
-      await ElMessage.success('common.message.success.restart');
-      await store.dispatch(`${ns}/getById`, activeId.value);
-    };
+// restart
+const onRestart = async () => {
+  await ElMessageBox.confirm(
+    t('common.messageBox.confirm.restart'),
+    'Restart',
+    { type: 'warning' }
+  );
+  await post(`/tasks/${activeId.value}/restart`);
+  ElMessage.success('common.message.success.restart');
+  await store.dispatch(`${ns}/getById`, activeId.value);
+};
 
-    // cancel
-    const onCancel = async () => {
-      await ElMessageBox.confirm(
-        t('common.messageBox.confirm.cancel'),
-        t('common.actions.cancel'),
-        { type: 'warning' }
-      );
-      await ElMessage.info('Attempt to cancel');
-      await post(`/tasks/${activeId.value}/cancel`);
-      await store.dispatch(`${ns}/getById`, activeId.value);
-    };
+// cancel
+const onCancel = async () => {
+  await ElMessageBox.confirm(
+    t('common.messageBox.confirm.cancel'),
+    t('common.actions.cancel'),
+    { type: 'warning' }
+  );
+  ElMessage.info('Attempt to cancel');
+  await post(`/tasks/${activeId.value}/cancel`);
+  await store.dispatch(`${ns}/getById`, activeId.value);
+};
 
-    // delete
-    const onDelete = async () => {
-      await ElMessageBox.confirm(
-        t('common.messageBox.confirm.delete'),
-        t('common.actions.delete'),
-        {
-          type: 'warning',
-          confirmButtonClass: 'el-button--danger',
-        }
-      );
-      await store.dispatch(`${ns}/deleteById`, activeId.value);
-      await router.push('/tasks');
-    };
+// delete
+const onDelete = async () => {
+  await ElMessageBox.confirm(
+    t('common.messageBox.confirm.delete'),
+    t('common.actions.delete'),
+    {
+      type: 'warning',
+      confirmButtonClass: 'el-button--danger',
+    }
+  );
+  await store.dispatch(`${ns}/deleteById`, activeId.value);
+  await router.push('/tasks');
+};
 
-    // cancellable
-    const cancellable = computed<boolean>(() =>
-      isCancellable(form.value?.status)
-    );
+// cancellable
+const cancellable = computed<boolean>(() => isCancellable(form.value?.status));
 
-    // total duration
-    const getTotalDuration = () => {
-      switch (form.value?.status) {
-        case TASK_STATUS_PENDING:
-        case TASK_STATUS_RUNNING:
-          return dayjs().diff(form.value?.stat?.create_ts, 'ms');
-        default:
-          return form.value?.stat?.total_duration;
-      }
-    };
-    const totalDuration = computed<number>(() => getTotalDuration());
-
-    return {
-      ...useTask(store),
-      onRestart,
-      onCancel,
-      onDelete,
-      cancellable,
-      totalDuration,
-      t,
-    };
-  },
-});
+// total duration
+const getTotalDuration = () => {
+  switch (form.value?.status) {
+    case TASK_STATUS_PENDING:
+    case TASK_STATUS_RUNNING:
+      return dayjs().diff(form.value?.stat?.create_ts, 'ms');
+    default:
+      return form.value?.stat?.total_duration;
+  }
+};
+const totalDuration = computed<number>(() => getTotalDuration());
 </script>
 
 <template>
@@ -144,7 +128,6 @@ export default defineComponent({
         is-tag
         size="large"
         :tooltip="t('views.tasks.table.columns.stat.total_duration')"
-        :icon="totalDurationIcon"
       />
     </cl-nav-action-item>
   </cl-nav-action-group>

@@ -1,9 +1,28 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCheckTag' });
-import { TagProps } from '@/components/tag/tag';
 import { computed, ref } from 'vue';
 
-export interface CheckTagProps extends TagProps {
+interface TagProps {
+  label?: string;
+  tooltip?: string;
+  type?: BasicType;
+  color?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  icon?: Icon;
+  suffixIcon?: Icon;
+  size?: BasicSize;
+  spinning?: boolean;
+  width?: string;
+  effect?: BasicEffect;
+  clickable?: boolean;
+  closable?: boolean;
+  disabled?: boolean;
+  tag?: Tag;
+  className?: string;
+}
+
+interface CheckTagProps extends TagProps {
   modelValue: boolean;
 }
 

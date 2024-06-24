@@ -1,15 +1,43 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClDateRangePicker' });
 import { computed } from 'vue';
-import {
-  RangeItem,
-  RangePickerEmits,
-  RangePickerProps,
-} from '@/components/date/RangePicker.vue';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { translate } from '@/utils';
 
+interface DateRange {
+  start: Dayjs;
+  end: Dayjs;
+}
+
+interface RangeItem {
+  key: RangeItemKey;
+  value?: DateRange;
+}
+
+interface RangeItemOption extends SelectOption {
+  value?: RangeItem;
+}
+
+type RangeItemKey = 'custom' | string;
+type RangeItemValueFunc = () => DateRange;
+type RangePickerType = 'daterange' | 'datetimerange';
+
+interface RangePickerProps {
+  className?: string;
+  type?: RangePickerType;
+  modelValue?: RangeItem;
+  options?: RangeItemOption[];
+}
+
+interface RangePickerEmits {
+  (e: 'change', value?: RangeItem): void;
+}
+
 type DateRangePickerProps = RangePickerProps;
+
+interface RangePickerEmits {
+  (e: 'change', value?: RangeItem): void;
+}
 
 type DateRangePickerEmits = RangePickerEmits;
 

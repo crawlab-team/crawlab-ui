@@ -2,7 +2,7 @@
 defineOptions({ name: 'ClContextMenu' });
 import { ClickOutside as vClickOutside } from 'element-plus';
 
-export interface ContextMenuProps {
+interface ContextMenuProps {
   visible?: boolean;
   placement: string;
   clicking?: boolean;

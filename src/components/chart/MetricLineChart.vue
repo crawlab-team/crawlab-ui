@@ -2,7 +2,16 @@
 defineOptions({ name: 'ClMetricLineChart' });
 import { computed } from 'vue';
 import { plainClone } from '@/utils/object';
-import { LineChartProps } from '@/components/chart/LineChart.vue';
+
+interface LineChartProps {
+  config: EChartsConfig;
+  width?: string;
+  height?: string;
+  theme?: string;
+  labelKey?: string;
+  valueKey?: string;
+  isTimeSeries?: boolean;
+}
 
 const props = defineProps<
   LineChartProps & {
