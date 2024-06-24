@@ -6,17 +6,18 @@ import AppComp from './App.vue';
 import { getStore } from '@/store';
 import { getI18n } from '@/i18n';
 import { initBaiduTonji } from '@/admin/baidu';
-import { importStylesheets } from '@/package/utils';
 import { getRouter } from '@/router';
 import { initRequest } from '@/services/request';
 import { initUmeng } from '@/admin/umeng';
 import { setGlobalLang } from '@/utils/i18n';
 import { track, locate, auth, export_ } from '@/directives';
 import { initClarity } from '@/admin/clarity';
+import 'normalize.css/normalize.css';
+import 'element-plus/theme-chalk/index.css';
+import '@/styles/index.scss';
 
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
-    initStylesheet: true,
     initBaiduTongji: true,
     initUmeng: true,
     initClarity: true,
@@ -56,9 +57,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
 
   // normalize options
   options = normalizeOptions(options);
-
-  // import stylesheets
-  if (options.initStylesheet) importStylesheets();
 
   // baidu tongji
   if (options.initBaiduTongji) initBaiduTonji();

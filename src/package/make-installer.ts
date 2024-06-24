@@ -5,7 +5,9 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { importStylesheets } from '@/package/utils';
+import 'normalize.css/normalize.css';
+import 'element-plus/theme-chalk/index.css';
+import '@/styles/index.scss';
 
 // fontawesome
 library.add(fab, far, fas);
@@ -17,9 +19,6 @@ const makeInstaller = (
 
   // install function
   const install = (app: App) => {
-    // import stylesheets
-    importStylesheets();
-
     // skip if already exists in apps
     if (apps.includes(app)) return;
 

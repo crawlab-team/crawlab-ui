@@ -3,7 +3,6 @@ import { Store } from 'vuex';
 
 export declare global {
   interface CreateAppOptions {
-    initStylesheet?: boolean;
     initBaiduTongji?: boolean;
     initUmeng?: boolean;
     initClarity?: boolean;
