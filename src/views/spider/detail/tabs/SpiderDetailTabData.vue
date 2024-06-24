@@ -1,4 +1,5 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+defineOptions({ name: 'ClSpiderDetailTabData' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';

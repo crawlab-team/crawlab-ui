@@ -1,4 +1,5 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+defineOptions({ name: 'ClCreateEditProjectDialog' });
 import { useStore } from 'vuex';
 import useProject from '@/components/project/project';
 

@@ -1,4 +1,5 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+defineOptions({ name: 'ClSpiderDetailActionsData' });
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';

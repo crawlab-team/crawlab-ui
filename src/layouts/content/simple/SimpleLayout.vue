@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClSimpleLayout' });
 withDefaults(
   defineProps<{
     background?: string;

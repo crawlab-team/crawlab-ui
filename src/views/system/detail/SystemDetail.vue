@@ -1,4 +1,5 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+defineOptions({ name: 'ClSystemDetail' });
 import { onBeforeMount, ref } from 'vue';
 import { translate } from '@/utils';
 import { useStore } from 'vuex';
@@ -27,7 +28,7 @@ onBeforeMount(async () => {
 
 const onSave = async () => {
   await store.dispatch(`${ns}/saveSiteTitle`);
-  await ElMessage.success(t('common.message.success.save'));
+  ElMessage.success(t('common.message.success.save'));
 };
 </script>
 

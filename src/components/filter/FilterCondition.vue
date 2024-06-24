@@ -17,7 +17,7 @@ import {
 } from '@/constants/filter';
 import { plainClone } from '@/utils/object';
 
-export interface FilterConditionData {
+interface FilterConditionData {
   key?: string;
   op?: string;
   value?: any;
