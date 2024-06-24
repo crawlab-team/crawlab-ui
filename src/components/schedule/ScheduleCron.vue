@@ -4,7 +4,6 @@ import { computed } from 'vue';
 import { CronExpression, parseExpression } from 'cron-parser';
 import cronstrue from 'cronstrue/i18n';
 import dayjs from 'dayjs';
-import en from 'dayjs/locale/en.js';
 import zh from 'dayjs/locale/zh.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useI18n } from 'vue-i18n';
@@ -52,9 +51,9 @@ const next = computed<string | undefined>(() => {
     return t('common.status.unknown');
   }
   if (getI18n().global.locale.value === 'zh') {
-    return dayjs(interval.value.next().getTime()).locale(zh)?.format('llll');
+    return dayjs(interval.value.next().getTime())?.locale(zh)?.format('llll');
   } else {
-    return dayjs(interval.value.next().getTime())?.locale(en)?.format('llll');
+    return dayjs(interval.value.next().getTime())?.format('llll');
   }
 });
 
