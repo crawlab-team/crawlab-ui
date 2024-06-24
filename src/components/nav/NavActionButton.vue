@@ -4,7 +4,7 @@ import { ButtonProps } from '@/components/button/button';
 
 withDefaults(
   defineProps<
-    /* @vue-ignore */ ButtonProps & {
+    ButtonProps & {
       buttonType: ButtonType;
       label?: string;
       icon?: Icon;

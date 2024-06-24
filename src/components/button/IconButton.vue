@@ -3,7 +3,7 @@ defineOptions({ name: 'ClIconButton' });
 import { ButtonProps } from '@/components/button/button';
 
 defineProps<
-  /* @vue-ignore */ ButtonProps & {
+  ButtonProps & {
     icon: string;
   }
 >();

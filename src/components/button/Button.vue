@@ -3,7 +3,7 @@ defineOptions({ name: 'ClButton' });
 import { computed } from 'vue';
 import { ButtonProps } from '@/components/button/button';
 
-const props = withDefaults(defineProps</* @vue-ignore */ ButtonProps>(), {
+const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'primary',
   size: 'default',
 });

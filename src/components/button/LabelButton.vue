@@ -3,7 +3,7 @@ defineOptions({ name: 'ClLabelButton' });
 import { ButtonProps } from '@/components/button/button';
 
 defineProps<
-  /* @vue-ignore */ ButtonProps & {
+  ButtonProps & {
     label?: string;
     icon?: Icon;
   }

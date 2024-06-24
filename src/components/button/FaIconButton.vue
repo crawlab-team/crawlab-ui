@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { ButtonProps } from '@/components/button/button';
 
 const props = defineProps<
-  /* @vue-ignore */ ButtonProps & {
+  ButtonProps & {
     icon: Icon;
     badgeIcon?: Icon;
     spin?: boolean;

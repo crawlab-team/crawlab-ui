@@ -5,7 +5,7 @@ import { plainClone } from '@/utils/object';
 import { LineChartProps } from '@/components/chart/LineChart.vue';
 
 const props = defineProps<
-  /* @vue-ignore */ LineChartProps & {
+  LineChartProps & {
     metric?: string;
   }
 >();

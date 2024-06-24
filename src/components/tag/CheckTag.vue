@@ -3,7 +3,7 @@ defineOptions({ name: 'ClCheckTag' });
 import { TagProps } from '@/components/tag/tag';
 import { computed, ref } from 'vue';
 
-export interface CheckTagProps extends /* @vue-ignore */ TagProps {
+export interface CheckTagProps extends TagProps {
   modelValue: boolean;
 }
 

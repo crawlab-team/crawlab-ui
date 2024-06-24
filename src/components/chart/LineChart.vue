@@ -14,7 +14,7 @@ export interface LineChartProps {
   isTimeSeries?: boolean;
 }
 
-const props = withDefaults(defineProps</* @vue-ignore */ LineChartProps>(), {
+const props = withDefaults(defineProps<LineChartProps>(), {
   width: '100%',
   height: '100%',
   theme: 'light',
