@@ -1,12 +1,15 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClIconButton' });
-import { ButtonProps } from '@/components/button/Button.vue';
+import { ButtonProps } from '@/components/button/button';
 
-export interface IconButtonProps extends /* @vue-ignore */ ButtonProps {
-  icon: string;
-}
-
-withDefaults(defineProps<IconButtonProps>(), {});
+withDefaults(
+  defineProps<
+    /* @vue-ignore */ ButtonProps & {
+      icon: string;
+    }
+  >(),
+,  {}
+);
 </script>
 
 <template>

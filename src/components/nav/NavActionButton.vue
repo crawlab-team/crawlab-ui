@@ -1,10 +1,10 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNavActionButton' });
-import { ButtonProps } from '@/components/button/Button.vue';
+import { ButtonProps } from '@/components/button/button';
 
 withDefaults(
   defineProps<
-    ButtonProps & {
+    /* @vue-ignore */ ButtonProps & {
       buttonType: ButtonType;
       label?: string;
       icon?: Icon;

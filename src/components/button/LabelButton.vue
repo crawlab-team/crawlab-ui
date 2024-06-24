@@ -1,9 +1,9 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClLabelButton' });
-import { ButtonProps } from '@/components/button/Button.vue';
+import { ButtonProps } from '@/components/button/button';
 
 defineProps<
-  ButtonProps & {
+  /* @vue-ignore */ ButtonProps & {
     label?: string;
     icon?: Icon;
   }

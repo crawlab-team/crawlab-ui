@@ -1,15 +1,15 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFaIconButton' });
 import { computed } from 'vue';
-import { ButtonProps } from '@/components/button/Button.vue';
+import { ButtonProps } from '@/components/button/button';
 
-export interface FaIconButtonProps extends /* @vue-ignore */ ButtonProps {
-  icon: Icon;
-  badgeIcon?: Icon;
-  spin?: boolean;
-}
-
-const props = defineProps<FaIconButtonProps>();
+const props = defineProps<
+  /* @vue-ignore */ ButtonProps & {
+    icon: Icon;
+    badgeIcon?: Icon;
+    spin?: boolean;
+  }
+>();
 
 const emit = defineEmits<{
   (e: 'click', event: Event): void;
