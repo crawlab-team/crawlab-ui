@@ -2,14 +2,11 @@
 defineOptions({ name: 'ClIconButton' });
 import { ButtonProps } from '@/components/button/button';
 
-withDefaults(
-  defineProps<
-    /* @vue-ignore */ ButtonProps & {
-      icon: string;
-    }
-  >(),
-,  {}
-);
+defineProps<
+  /* @vue-ignore */ ButtonProps & {
+    icon: string;
+  }
+>();
 </script>
 
 <template>
