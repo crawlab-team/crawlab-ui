@@ -1,3 +1,17 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import useNodeList from '@/views/node/list/useNodeList';
+
+export default defineComponent({
+  name: 'NodeList',
+  setup() {
+    return {
+      ...useNodeList(),
+    };
+  },
+});
+</script>
+
 <template>
   <cl-list-layout
     class="node-list"
@@ -17,19 +31,5 @@
     </template>
   </cl-list-layout>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useNodeList from '@/views/node/list/useNodeList';
-
-export default defineComponent({
-  name: 'NodeList',
-  setup() {
-    return {
-      ...useNodeList(),
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

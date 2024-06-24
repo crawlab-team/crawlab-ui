@@ -1,22 +1,11 @@
 import {
   TASK_MODE_ALL_NODES,
   TASK_MODE_RANDOM,
-  TASK_MODE_SELECTED_NODE_TAGS,
   TASK_MODE_SELECTED_NODES,
-  TASK_STATUS_ABNORMAL,
-  TASK_STATUS_CANCELLED,
-  TASK_STATUS_ERROR,
-  TASK_STATUS_FINISHED,
-  TASK_STATUS_PENDING,
-  TASK_STATUS_RUNNING,
 } from '@/constants/task';
+import { TaskStatus } from '@/components/task/task';
 
 declare global {
-  interface TaskListProps {
-    noActions?: boolean;
-    embedded?: boolean;
-  }
-
   interface Task extends BaseModel {
     spider_id?: string;
     spider_name?: string;
@@ -38,14 +27,6 @@ declare global {
     // view model
     spider?: Spider;
   }
-
-  type TaskStatus =
-    | TASK_STATUS_PENDING
-    | TASK_STATUS_RUNNING
-    | TASK_STATUS_FINISHED
-    | TASK_STATUS_ERROR
-    | TASK_STATUS_CANCELLED
-    | TASK_STATUS_ABNORMAL;
 
   interface TaskStat {
     create_ts?: string;

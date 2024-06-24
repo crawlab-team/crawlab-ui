@@ -1,9 +1,3 @@
-<template>
-  <div class="blank-layout">
-    <slot> </slot>
-  </div>
-</template>
-
 <script>
 export default {
   name: 'BlankLayout',
@@ -12,6 +6,12 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div class="blank-layout">
+    <slot></slot>
+  </div>
+</template>
 
 <style scoped>
 .blank-layout {

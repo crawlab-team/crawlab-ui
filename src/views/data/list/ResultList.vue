@@ -1,19 +1,3 @@
-<template>
-  <cl-list-layout
-    :action-functions="actionFunctions"
-    :no-actions="noActions"
-    :table-pagination="tablePagination"
-    :table-columns="tableColumns"
-    :table-data="tableData"
-    :table-total="tableTotal"
-    :visible-buttons="visibleButtons"
-    :embedded="embedded"
-    class="result-list"
-  />
-
-  <cl-result-cell-dialog />
-</template>
-
 <script lang="ts">
 import {
   computed,
@@ -28,6 +12,7 @@ import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants';
 import { emptyArrayFunc } from '@/utils';
 import ResultCell from '@/components/result/ResultCell.vue';
 import { getDataFieldIconByType } from '@/utils/dataFields';
+import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
 
 export default defineComponent({
   name: 'ResultList',
@@ -187,6 +172,22 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-list-layout
+    :action-functions="actionFunctions"
+    :no-actions="noActions"
+    :table-pagination="tablePagination"
+    :table-columns="tableColumns"
+    :table-data="tableData"
+    :table-total="tableTotal"
+    :visible-buttons="visibleButtons"
+    :embedded="embedded"
+    class="result-list"
+  />
+
+  <cl-result-cell-dialog />
+</template>
 
 <style lang="scss" scoped>
 .result-list {

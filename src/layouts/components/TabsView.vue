@@ -1,3 +1,83 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClTabsView' });
+import { computed, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+import { plainClone } from '@/utils/object';
+import { Tab } from '@/components/tab/Tab.vue';
+
+// store
+const storeNameSpace = 'layout';
+const store = useStore<RootStoreState>();
+
+// route
+const route = useRoute();
+
+// router
+const router = useRouter();
+
+// current path
+const currentPath = computed(() => route.path);
+
+// tabs
+const tabs = computed<Tab[]>(() => store.getters[`${storeNameSpace}/tabs`]);
+
+const addTab = (tab: Tab) => {
+  store.commit(`${storeNameSpace}/addTab`, tab);
+};
+const setActiveTab = (tab: Tab) => {
+  store.commit(`${storeNameSpace}/setActiveTabId`, tab.id);
+};
+const onAddTab = () => {
+  addTab({ path: '/' });
+  const newTab = tabs.value[tabs.value.length - 1];
+  setActiveTab(newTab);
+  router.push(newTab.path);
+};
+
+const onDragDrop = (tabs: Tab[]) => {
+  store.commit(`${storeNameSpace}/setTabs`, tabs);
+};
+const updateTabs = (path: string) => {
+  // active tab
+  const activeTab = store.getters[`${storeNameSpace}/activeTab`] as
+    | Tab
+    | undefined;
+
+  // skip if active tab is undefined
+  if (!activeTab) return;
+
+  // clone
+  const activeTabClone = plainClone(activeTab);
+
+  // set path to active tab
+  activeTabClone.path = path;
+
+  // update path of active tab
+  store.commit(`${storeNameSpace}/updateTab`, activeTabClone);
+};
+
+watch(currentPath, updateTabs);
+
+onMounted(() => {
+  // add current page to tabs if no tab exists
+  if (tabs.value.length === 0) {
+    // add tab
+    addTab({ path: currentPath.value });
+
+    // new tab
+    const newTab = tabs.value[0];
+    if (!newTab) return;
+
+    // set active tab id
+    setActiveTab(newTab);
+  }
+
+  // update tabs
+  updateTabs(currentPath.value);
+});
+</script>
+
 <template>
   <div class="tabs-view">
     <cl-draggable-list
@@ -22,95 +102,7 @@
     <!-- ./Add cl-tab -->
   </div>
 </template>
-<script lang="ts">
-import { computed, defineComponent, onMounted, watch } from 'vue';
-import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
-import { plainClone } from '@/utils/object';
 
-export default defineComponent({
-  name: 'TabsView',
-  setup() {
-    // store
-    const storeNameSpace = 'layout';
-    const store = useStore<RootStoreState>();
-
-    // route
-    const route = useRoute();
-
-    // router
-    const router = useRouter();
-
-    // current path
-    const currentPath = computed(() => route.path);
-
-    // tabs
-    const tabs = computed<Tab[]>(() => store.getters[`${storeNameSpace}/tabs`]);
-
-    const addTab = (tab: Tab) => {
-      store.commit(`${storeNameSpace}/addTab`, tab);
-    };
-    const setActiveTab = (tab: Tab) => {
-      store.commit(`${storeNameSpace}/setActiveTabId`, tab.id);
-    };
-    const onAddTab = () => {
-      addTab({ path: '/' });
-      const newTab = tabs.value[tabs.value.length - 1];
-      setActiveTab(newTab);
-      router.push(newTab.path);
-    };
-
-    const onDragDrop = (tabs: Tab[]) => {
-      store.commit(`${storeNameSpace}/setTabs`, tabs);
-    };
-    const updateTabs = (path: string) => {
-      // active tab
-      const activeTab = store.getters[`${storeNameSpace}/activeTab`] as
-        | Tab
-        | undefined;
-
-      // skip if active tab is undefined
-      if (!activeTab) return;
-
-      // clone
-      const activeTabClone = plainClone(activeTab);
-
-      // set path to active tab
-      activeTabClone.path = path;
-
-      // update path of active tab
-      store.commit(`${storeNameSpace}/updateTab`, activeTabClone);
-    };
-
-    watch(currentPath, updateTabs);
-
-    onMounted(() => {
-      // add current page to tabs if no tab exists
-      if (tabs.value.length === 0) {
-        // add tab
-        addTab({ path: currentPath.value });
-
-        // new tab
-        const newTab = tabs.value[0];
-        if (!newTab) return;
-
-        // set active tab id
-        setActiveTab(newTab);
-      }
-
-      // update tabs
-      updateTabs(currentPath.value);
-    });
-
-    return {
-      tabs,
-      onAddTab,
-      currentPath,
-      onDragDrop,
-    };
-  },
-});
-</script>
 <style lang="scss" scoped>
 .tabs-view {
   padding: 10px 0;

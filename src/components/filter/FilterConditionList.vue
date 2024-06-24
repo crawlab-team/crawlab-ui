@@ -1,3 +1,33 @@
+<script setup lang="ts">
+import { getDefaultFilterCondition } from '@/components/filter/filter';
+
+defineOptions({ name: 'ClFilterConditionList' });
+import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
+
+const props = defineProps<{
+  conditions?: FilterConditionData[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'change', conditions: FilterConditionData[]): void;
+}>();
+
+const onChange = (index: number, condition: FilterConditionData) => {
+  const { conditions } = props as FilterConditionListProps;
+  conditions[index] = condition;
+  emit('change', conditions);
+};
+
+const onDelete = (index: number) => {
+  const { conditions } = props as FilterConditionListProps;
+  conditions.splice(index, 1);
+  if (conditions.length === 0) {
+    conditions.push(getDefaultFilterCondition());
+  }
+  emit('change', conditions);
+};
+</script>
+
 <template>
   <ul class="filter-condition-list">
     <li
@@ -13,46 +43,6 @@
     </li>
   </ul>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { getDefaultFilterCondition } from '@/components/filter/FilterCondition.vue';
-
-export default defineComponent({
-  name: 'FilterConditionList',
-  props: {
-    conditions: {
-      type: Array,
-      required: false,
-      default: () => {
-        return [];
-      },
-    },
-  },
-  emits: ['change'],
-  setup(props, { emit }) {
-    const onChange = (index: number, condition: FilterConditionData) => {
-      const { conditions } = props as FilterConditionListProps;
-      conditions[index] = condition;
-      emit('change', conditions);
-    };
-
-    const onDelete = (index: number) => {
-      const { conditions } = props as FilterConditionListProps;
-      conditions.splice(index, 1);
-      if (conditions.length === 0) {
-        conditions.push(getDefaultFilterCondition());
-      }
-      emit('change', conditions);
-    };
-
-    return {
-      onChange,
-      onDelete,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .filter-condition-list {

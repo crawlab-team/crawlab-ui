@@ -22,9 +22,13 @@ function isWindows() {
 }
 
 function readFileAndModify(filePath, componentName) {
-  let fileContent = fs.readFileSync(filePath, 'utf8');
-  fileContent = addComponentName(fileContent, componentName);
-  fs.writeFileSync(filePath, fileContent);
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+  let newFileContent = '';
+  newFileContent = addComponentName(fileContent, componentName);
+  // newFileContent = reorderVueComponents(newFileContent);
+  if (newFileContent !== fileContent) {
+    fs.writeFileSync(filePath, newFileContent);
+  }
 }
 
 function processFile(filePath, moduleName) {
@@ -89,8 +93,8 @@ function genIndex(moduleName) {
 
 function addComponentName(content, componentName) {
   const setupScriptTagRegex = /(<script\s+setup[^>]*lang=["']ts["'][^>]*>)/;
-  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?\n+/;
-  const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });\n`;
+  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?/;
+  const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });`;
 
   // Check if the script setup tag exists
   if (setupScriptTagRegex.test(content)) {
@@ -103,6 +107,26 @@ function addComponentName(content, componentName) {
     }
   }
   return content; // Return original content if no <script setup> tag found
+}
+
+function reorderVueComponents(fileContent) {
+  const templateMatch = fileContent.match(/<template>[\s\S]*?<\/template>/);
+  const scriptMatch = fileContent.match(/<script[\s\S]*?<\/script>/);
+  const styleMatch = fileContent.match(/<style[\s\S]*?<\/style>/);
+
+  const templatePosition = fileContent.indexOf('<template>');
+  const scriptPosition = fileContent.indexOf('<script');
+  const stylePosition = fileContent.indexOf('<style');
+
+  if (!(templatePosition < scriptPosition && scriptPosition < stylePosition)) {
+    return fileContent;
+  }
+
+  return [
+    scriptMatch ? scriptMatch[0] : '',
+    templateMatch ? templateMatch[0] : '',
+    styleMatch ? styleMatch[0] : '',
+  ].join('\n\n');
 }
 
 function genRootIndex() {

@@ -1,7 +1,25 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClCreateEditUserDialog' });
+import { useStore } from 'vuex';
+import useUser from '@/components/user/user';
+
+// store
+const store = useStore();
+
+const {
+  actionFunctions,
+  confirmDisabled,
+  confirmLoading,
+  createEditDialogTabName,
+  createEditDialogVisible,
+  formRules,
+  activeDialogKey,
+} = useUser(store);
+</script>
+
 <template>
   <cl-create-edit-dialog
     :action-functions="actionFunctions"
-    :batch-form-data="formList"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
     :form-rules="formRules"
@@ -14,23 +32,5 @@
     </template>
   </cl-create-edit-dialog>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import useUser from '@/components/user/user';
-
-export default defineComponent({
-  name: 'CreateEditUserDialog',
-  setup() {
-    // store
-    const store = useStore();
-
-    return {
-      ...useUser(store),
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

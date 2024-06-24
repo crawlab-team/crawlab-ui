@@ -1,3 +1,17 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import useDataSourceList from '@/views/ds/list/useDataSourceList';
+
+export default defineComponent({
+  name: 'DataSourceList',
+  setup() {
+    return {
+      ...useDataSourceList(),
+    };
+  },
+});
+</script>
+
 <template>
   <cl-list-layout
     :action-functions="actionFunctions"
@@ -15,19 +29,5 @@
     </template>
   </cl-list-layout>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useDataSourceList from '@/views/ds/list/useDataSourceList';
-
-export default defineComponent({
-  name: 'DataSourceList',
-  setup() {
-    return {
-      ...useDataSourceList(),
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

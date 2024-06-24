@@ -1,11 +1,12 @@
 import { Directive, ref, h } from 'vue';
-import { ExportTypeCsv } from '@/constants/export';
 import ExportForm from '@/components/export/ExportForm.vue';
 import { sendEvent } from '@/admin/umeng';
 import { downloadData, translate } from '@/utils';
 import { ElMessageBox, ElNotification, NotificationHandle } from 'element-plus';
 import useExportService from '@/services/export/exportService';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+export type ExportType = 'csv' | 'json';
 
 // i18n
 const t = translate;
@@ -76,7 +77,7 @@ const export_: Directive<HTMLElement, ExportDirective> = {
     const exportPollingIntervalCache = new Map<string, any>();
 
     // export type
-    const exportType = ref<ExportType>(ExportTypeCsv);
+    const exportType = ref<ExportType>('csv');
 
     const pollAndDownload = async (exportId: string) => {
       await new Promise(resolve => setTimeout(resolve, 1000));

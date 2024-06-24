@@ -1,7 +1,3 @@
-<template>
-  <cl-detail-layout store-namespace="schedule" />
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue';
 import useScheduleDetail from '@/views/schedule/detail/useScheduleDetail';
@@ -15,5 +11,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-detail-layout store-namespace="schedule" />
+</template>
 
 <style lang="scss" scoped></style>

@@ -1,3 +1,26 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClMenuItemIcon' });
+import { computed } from 'vue';
+import useIcon from '@/components/icon/icon';
+
+const props = withDefaults(
+  defineProps<{
+    item: MenuItem;
+    size: IconSize;
+  }>(),
+  {
+    size: 'default',
+  }
+);
+
+const { getFontSize } = useIcon();
+
+const fontSize = computed(() => {
+  const { size } = props;
+  return getFontSize(size);
+});
+</script>
+
 <template>
   <template v-if="!item || !item.icon">
     <font-awesome-icon
@@ -21,35 +44,7 @@
     ></i>
   </template>
 </template>
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
-import useIcon from '@/components/icon/icon';
 
-export default defineComponent({
-  name: 'MenuItemIcon',
-  props: {
-    item: {
-      type: Object as PropType<MenuItem>,
-    },
-    size: {
-      type: String as PropType<IconSize>,
-      default: 'default',
-    },
-  },
-  setup(props: MenuItemIconProps) {
-    const { getFontSize } = useIcon();
-
-    const fontSize = computed(() => {
-      const { size } = props as MenuItemIconProps;
-      return getFontSize(size);
-    });
-
-    return {
-      fontSize,
-    };
-  },
-});
-</script>
 <style lang="scss" scoped>
 .menu-item-icon {
   width: 20px;

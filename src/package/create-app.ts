@@ -12,7 +12,6 @@ import { initRequest } from '@/services/request';
 import { initUmeng } from '@/admin/umeng';
 import { setGlobalLang } from '@/utils/i18n';
 import { track, locate, auth, export_ } from '@/directives';
-import { initDemo } from '@/demo';
 import { initClarity } from '@/admin/clarity';
 
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
@@ -75,9 +74,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
 
   // clarity
   if (options.initClarity) initClarity();
-
-  // demo
-  if (options.initDemo) initDemo();
 
   // remove loading placeholder
   document.querySelector('#loading-placeholder')?.remove();

@@ -10,10 +10,15 @@ import {
   watch,
 } from 'vue';
 import Node from 'element-plus/es/components/tree/src/model/node';
+import { useI18n } from 'vue-i18n';
 import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
 import { ElMessageBox, ElTree } from 'element-plus';
 import { useDropzone } from 'crawlab-vue3-dropzone';
-import { useI18n } from 'vue-i18n';
+import {
+  FileEditorNavMenuClickStatus,
+  FileEditorStyles,
+  FileNavItem,
+} from '@/components/file/file';
 
 const props = defineProps<{
   loading?: boolean;
@@ -360,11 +365,11 @@ const fileSearchString = ref<string>('');
     class="nav-menu"
   >
     <!-- file editor search -->
-    <div :style="{ ...styles.default }" class="nav-menu-top-bar">
+    <div :style="{ ...styles?.default }" class="nav-menu-top-bar">
       <div class="left">
         <el-input
           v-model="fileSearchString"
-          :style="styles.default"
+          :style="styles?.default"
           class="search"
           clearable
           :placeholder="t('components.file.editor.sidebar.search.placeholder')"

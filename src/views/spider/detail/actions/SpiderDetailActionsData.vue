@@ -1,95 +1,5 @@
-<template>
-  <cl-nav-action-group class="spider-detail-actions-data">
-    <cl-nav-action-fa-icon
-      :icon="['fa', 'table']"
-      :label="t('components.spider.actions.data.tooltip.dataActions')"
-    />
-    <cl-nav-action-item>
-      <el-tooltip
-        :content="t('components.spider.actions.data.tooltip.displayAllFields')"
-      >
-        <cl-switch
-          class="display-all-fields"
-          :active-icon="['fa', 'eye']"
-          :inactive-icon="['fa', 'eye']"
-          inline-prompt
-          v-model="displayAllFields"
-          @change="onDisplayAllFieldsChange"
-        />
-      </el-tooltip>
-    </cl-nav-action-item>
-    <cl-nav-action-item v-export="colName">
-      <cl-fa-icon-button
-        :icon="['fa', 'download']"
-        :tooltip="t('components.spider.actions.data.tooltip.export')"
-        type="primary"
-        id="export-btn"
-        class-name="export-btn"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item>
-      <cl-fa-icon-button
-        :icon="['fa', 'lightbulb']"
-        :tooltip="
-          t('components.spider.actions.data.tooltip.inferDataFieldsTypes')
-        "
-        type="primary"
-        class-name="infer-data-fields-types-btn"
-        @click="onClickInferDataFieldsTypes"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item>
-      <el-tooltip
-        :content="
-          dedupEnabled
-            ? t('components.spider.actions.data.tooltip.dedup.enabled')
-            : t('components.spider.actions.data.tooltip.dedup.disabled')
-        "
-      >
-        <cl-switch
-          class="dedup"
-          :active-icon="['fa', 'filter']"
-          :inactive-icon="['fa', 'filter']"
-          inline-prompt
-          v-model="dedupEnabled"
-          @change="onDedupEnabledChange"
-        />
-      </el-tooltip>
-    </cl-nav-action-item>
-    <cl-nav-action-item v-if="dedupEnabled">
-      <cl-fa-icon-button
-        :icon="['fa', 'list']"
-        :tooltip="t('components.spider.actions.data.tooltip.dedup.fields')"
-        type="primary"
-        class-name="infer-data-fields-types-btn"
-        @click="onClickDedupFields"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item v-if="dedupEnabled">
-      <el-tooltip :content="t('components.result.dedup.labels.dedupType')">
-        <el-select
-          class="dedup-type"
-          v-model="dedupType"
-          @change="onDedupTypeChange"
-          style="margin-right: 10px"
-        >
-          <el-option
-            :value="DEDUP_TYPE_IGNORE"
-            :label="t('components.result.dedup.types.ignore')"
-          />
-          <el-option
-            :value="DEDUP_TYPE_OVERWRITE"
-            :label="t('components.result.dedup.types.overwrite')"
-          />
-        </el-select>
-      </el-tooltip>
-    </cl-nav-action-item>
-  </cl-nav-action-group>
-</template>
-
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import { ExportTypeCsv } from '@/constants/export';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import { inferDataFieldTypes } from '@/utils/dataFields';
@@ -107,9 +17,6 @@ const { spider: spiderState, dataCollection: dataCollectionState } =
 
 // spider col name
 const colName = () => spiderState.form.col_name as string;
-
-// export type
-const exportType = ref<ExportType>(ExportTypeCsv);
 
 // display all fields
 const displayAllFields = ref<boolean>(spiderState.dataDisplayAllFields);
@@ -211,6 +118,95 @@ const onClickDedupFields = () => {
   store.commit(`${nsDc}/setDedupFieldsDialogVisible`, true);
 };
 </script>
+
+<template>
+  <cl-nav-action-group class="spider-detail-actions-data">
+    <cl-nav-action-fa-icon
+      :icon="['fa', 'table']"
+      :label="t('components.spider.actions.data.tooltip.dataActions')"
+    />
+    <cl-nav-action-item>
+      <el-tooltip
+        :content="t('components.spider.actions.data.tooltip.displayAllFields')"
+      >
+        <cl-switch
+          class="display-all-fields"
+          :active-icon="['fa', 'eye']"
+          :inactive-icon="['fa', 'eye']"
+          inline-prompt
+          v-model="displayAllFields"
+          @change="onDisplayAllFieldsChange"
+        />
+      </el-tooltip>
+    </cl-nav-action-item>
+    <cl-nav-action-item v-export="colName">
+      <cl-fa-icon-button
+        :icon="['fa', 'download']"
+        :tooltip="t('components.spider.actions.data.tooltip.export')"
+        type="primary"
+        id="export-btn"
+        class-name="export-btn"
+      />
+    </cl-nav-action-item>
+    <cl-nav-action-item>
+      <cl-fa-icon-button
+        :icon="['fa', 'lightbulb']"
+        :tooltip="
+          t('components.spider.actions.data.tooltip.inferDataFieldsTypes')
+        "
+        type="primary"
+        class-name="infer-data-fields-types-btn"
+        @click="onClickInferDataFieldsTypes"
+      />
+    </cl-nav-action-item>
+    <cl-nav-action-item>
+      <el-tooltip
+        :content="
+          dedupEnabled
+            ? t('components.spider.actions.data.tooltip.dedup.enabled')
+            : t('components.spider.actions.data.tooltip.dedup.disabled')
+        "
+      >
+        <cl-switch
+          class="dedup"
+          :active-icon="['fa', 'filter']"
+          :inactive-icon="['fa', 'filter']"
+          inline-prompt
+          v-model="dedupEnabled"
+          @change="onDedupEnabledChange"
+        />
+      </el-tooltip>
+    </cl-nav-action-item>
+    <cl-nav-action-item v-if="dedupEnabled">
+      <cl-fa-icon-button
+        :icon="['fa', 'list']"
+        :tooltip="t('components.spider.actions.data.tooltip.dedup.fields')"
+        type="primary"
+        class-name="infer-data-fields-types-btn"
+        @click="onClickDedupFields"
+      />
+    </cl-nav-action-item>
+    <cl-nav-action-item v-if="dedupEnabled">
+      <el-tooltip :content="t('components.result.dedup.labels.dedupType')">
+        <el-select
+          class="dedup-type"
+          v-model="dedupType"
+          @change="onDedupTypeChange"
+          style="margin-right: 10px"
+        >
+          <el-option
+            :value="DEDUP_TYPE_IGNORE"
+            :label="t('components.result.dedup.types.ignore')"
+          />
+          <el-option
+            :value="DEDUP_TYPE_OVERWRITE"
+            :label="t('components.result.dedup.types.overwrite')"
+          />
+        </el-select>
+      </el-tooltip>
+    </cl-nav-action-item>
+  </cl-nav-action-group>
+</template>
 
 <style scoped>
 .spider-detail-actions-data:deep(.display-all-fields),

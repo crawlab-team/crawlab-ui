@@ -6,14 +6,12 @@ import LineChart from './chart/LineChart.vue';
 import Metric from './chart/Metric.vue';
 import MetricLineChart from './chart/MetricLineChart.vue';
 import PieChart from './chart/PieChart.vue';
-import ColorPicker from './color/ColorPicker.vue';
 import ContextMenu from './context-menu/ContextMenu.vue';
 import ContextMenuList from './context-menu/ContextMenuList.vue';
 import DateRangePicker from './date/DateRangePicker.vue';
 import DateTimeRangePicker from './date/DateTimeRangePicker.vue';
 import RangePicker from './date/RangePicker.vue';
 import ConfirmDialog from './dialog/ConfirmDialog.vue';
-import CreateDialogContentBatch from './dialog/CreateDialogContentBatch.vue';
 import CreateEditDialog from './dialog/CreateEditDialog.vue';
 import Dialog from './dialog/Dialog.vue';
 import DraggableItem from './drag/DraggableItem.vue';
@@ -47,8 +45,6 @@ import FilterInput from './filter/FilterInput.vue';
 import FilterSelect from './filter/FilterSelect.vue';
 import Form from './form/Form.vue';
 import FormItem from './form/FormItem.vue';
-import FormReadonlyValue from './form/FormReadonlyValue.vue';
-import FormTable from './form/FormTable.vue';
 import FormTableField from './form/FormTableField.vue';
 import CreateEditGitDialog from './git/CreateEditGitDialog.vue';
 import CreateGitBranchDialog from './git/CreateGitBranchDialog.vue';
@@ -62,16 +58,7 @@ import AtomMaterialIcon from './icon/AtomMaterialIcon.vue';
 import Icon from './icon/Icon.vue';
 import MenuItemIcon from './icon/MenuItemIcon.vue';
 import InputList from './input/InputList.vue';
-import InputWithButton from './input/InputWithButton.vue';
-import TagInput from './input/TagInput.vue';
-import TagInputItem from './input/TagInputItem.vue';
 import DetailTabList from './list/DetailTabList.vue';
-import MetricDashboard from './metric/MetricDashboard.vue';
-import MetricList from './metric/MetricList.vue';
-import MetricProgress from './metric/MetricProgress.vue';
-import MetricSnapshot from './metric/MetricSnapshot.vue';
-import MetricTargetName from './metric/MetricTargetName.vue';
-import MetricTargetType from './metric/MetricTargetType.vue';
 import NavActionBack from './nav/NavActionBack.vue';
 import NavActionButton from './nav/NavActionButton.vue';
 import NavActionFaIcon from './nav/NavActionFaIcon.vue';
@@ -92,19 +79,8 @@ import NodeStatus from './node/NodeStatus.vue';
 import NodeType from './node/NodeType.vue';
 import CreateEditNotificationDialog from './notification/CreateEditNotificationDialog.vue';
 import NotificationForm from './notification/NotificationForm.vue';
-import CreateEditPluginDialog from './plugin/CreateEditPluginDialog.vue';
-import InstallPluginDialog from './plugin/InstallPluginDialog.vue';
-import InstallPublicPlugin from './plugin/InstallPublicPlugin.vue';
-import PluginForm from './plugin/PluginForm.vue';
-import PluginPid from './plugin/PluginPid.vue';
-import PluginStatus from './plugin/PluginStatus.vue';
-import PluginStatusMultiNode from './plugin/PluginStatusMultiNode.vue';
-import PublicPluginContent from './plugin/PublicPluginContent.vue';
-import PublicPluginItem from './plugin/PublicPluginItem.vue';
-import SettingsPluginDialog from './plugin/SettingsPluginDialog.vue';
 import CreateEditProjectDialog from './project/CreateEditProjectDialog.vue';
 import ProjectForm from './project/ProjectForm.vue';
-import ProjectTag from './project/ProjectTag.vue';
 import ResultCell from './result/ResultCell.vue';
 import ResultCellDialog from './result/ResultCellDialog.vue';
 import ResultDedupFieldsDialog from './result/ResultDedupFieldsDialog.vue';
@@ -158,14 +134,12 @@ export {
   Metric as ClMetric,
   MetricLineChart as ClMetricLineChart,
   PieChart as ClPieChart,
-  ColorPicker as ClColorPicker,
   ContextMenu as ClContextMenu,
   ContextMenuList as ClContextMenuList,
   DateRangePicker as ClDateRangePicker,
   DateTimeRangePicker as ClDateTimeRangePicker,
   RangePicker as ClRangePicker,
   ConfirmDialog as ClConfirmDialog,
-  CreateDialogContentBatch as ClCreateDialogContentBatch,
   CreateEditDialog as ClCreateEditDialog,
   Dialog as ClDialog,
   DraggableItem as ClDraggableItem,
@@ -199,8 +173,6 @@ export {
   FilterSelect as ClFilterSelect,
   Form as ClForm,
   FormItem as ClFormItem,
-  FormReadonlyValue as ClFormReadonlyValue,
-  FormTable as ClFormTable,
   FormTableField as ClFormTableField,
   CreateEditGitDialog as ClCreateEditGitDialog,
   CreateGitBranchDialog as ClCreateGitBranchDialog,
@@ -214,16 +186,7 @@ export {
   Icon as ClIcon,
   MenuItemIcon as ClMenuItemIcon,
   InputList as ClInputList,
-  InputWithButton as ClInputWithButton,
-  TagInput as ClTagInput,
-  TagInputItem as ClTagInputItem,
   DetailTabList as ClDetailTabList,
-  MetricDashboard as ClMetricDashboard,
-  MetricList as ClMetricList,
-  MetricProgress as ClMetricProgress,
-  MetricSnapshot as ClMetricSnapshot,
-  MetricTargetName as ClMetricTargetName,
-  MetricTargetType as ClMetricTargetType,
   NavActionBack as ClNavActionBack,
   NavActionButton as ClNavActionButton,
   NavActionFaIcon as ClNavActionFaIcon,
@@ -244,19 +207,8 @@ export {
   NodeType as ClNodeType,
   CreateEditNotificationDialog as ClCreateEditNotificationDialog,
   NotificationForm as ClNotificationForm,
-  CreateEditPluginDialog as ClCreateEditPluginDialog,
-  InstallPluginDialog as ClInstallPluginDialog,
-  InstallPublicPlugin as ClInstallPublicPlugin,
-  PluginForm as ClPluginForm,
-  PluginPid as ClPluginPid,
-  PluginStatus as ClPluginStatus,
-  PluginStatusMultiNode as ClPluginStatusMultiNode,
-  PublicPluginContent as ClPublicPluginContent,
-  PublicPluginItem as ClPublicPluginItem,
-  SettingsPluginDialog as ClSettingsPluginDialog,
   CreateEditProjectDialog as ClCreateEditProjectDialog,
   ProjectForm as ClProjectForm,
-  ProjectTag as ClProjectTag,
   ResultCell as ClResultCell,
   ResultCellDialog as ClResultCellDialog,
   ResultDedupFieldsDialog as ClResultDedupFieldsDialog,

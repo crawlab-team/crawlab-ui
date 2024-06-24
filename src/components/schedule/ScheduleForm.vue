@@ -8,7 +8,7 @@ import useNode from '@/components/node/node';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
-import useTask from '@/components/task/task';
+import useTask from '@/components/task/useTask';
 
 const { t } = useI18n();
 

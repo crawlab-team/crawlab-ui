@@ -6,9 +6,9 @@ import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
 import { getOSPathSeparator } from '@/utils';
-import { useRoute } from 'vue-router';
 import { FILE_UPLOAD_MODE_DIR } from '@/constants';
 import FileUpload from '@/components/file/FileUpload.vue';
+import { FileWithPath } from '@/components/file/file';
 
 const props = defineProps<{
   ns: ListStoreNamespace;

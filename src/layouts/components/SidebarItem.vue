@@ -1,40 +1,3 @@
-<template>
-  <!-- no sub menu items -->
-  <el-menu-item
-    v-if="!item.children"
-    v-track="{
-      code: 'click_sidebar_menu_item',
-      params: {
-        path: item.path,
-      },
-    }"
-    :index="item.path"
-    @click="onMenuItemClick(item)"
-  >
-    <cl-menu-item-icon :item="item" size="normal" />
-    <template #title>
-      <span class="menu-item-title">{{ t(item.title) }}</span>
-    </template>
-  </el-menu-item>
-  <!-- ./no sub menu items -->
-
-  <!-- has sub menu items -->
-  <el-sub-menu v-else :index="item.path">
-    <template #title>
-      <cl-menu-item-icon :item="item" size="normal" />
-      <span class="menu-item-title">{{ t(item.title) }}</span>
-    </template>
-    <SidebarItem
-      v-for="(subItem, $index) in item.children"
-      :key="$index"
-      :index="subItem.path"
-      :item="subItem"
-      @click="onMenuItemClick(subItem)"
-    />
-  </el-sub-menu>
-  <!-- ./has sub menu items -->
-</template>
-
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { emptyObjectFunc } from '@/utils/func';
@@ -63,6 +26,26 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <!-- no sub menu items -->
+  <el-menu-item
+    v-if="!item.children"
+    v-track="{
+      code: 'click_sidebar_menu_item',
+      params: {
+        path: item.path,
+      },
+    }"
+    :index="item.path"
+    @click="onMenuItemClick(item)"
+  >
+    <cl-menu-item-icon :item="item" size="normal" />
+    <template #title>
+      <span class="menu-item-title">{{ t(item.title) }}</span>
+    </template>
+  </el-menu-item>
+</template>
 
 <style lang="scss" scoped>
 .el-menu-item * {

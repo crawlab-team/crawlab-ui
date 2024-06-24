@@ -1,3 +1,29 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClContextMenu' });
+import { ClickOutside as vClickOutside } from 'element-plus';
+
+export interface ContextMenuProps {
+  visible?: boolean;
+  placement: string;
+  clicking?: boolean;
+}
+
+const props = withDefaults(defineProps<ContextMenuProps>(), {
+  placement: 'right-start',
+});
+
+export interface contextMenuEmits {
+  (e: 'hide'): void;
+}
+
+const emit = defineEmits<contextMenuEmits>();
+
+const onClickOutside = () => {
+  if (props.clicking) return;
+  emit('hide');
+};
+</script>
+
 <template>
   <el-popover
     :placement="placement"
@@ -15,47 +41,6 @@
     </template>
   </el-popover>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { ClickOutside } from 'element-plus';
-
-export const contextMenuDefaultProps = {
-  visible: {
-    type: Boolean,
-    default: false,
-  },
-  placement: {
-    type: String,
-    default: 'right-start',
-  },
-  clicking: {
-    type: Boolean,
-    default: false,
-  },
-};
-
-export const contextMenuDefaultEmits = ['hide'];
-
-export default defineComponent({
-  name: 'ContextMenu',
-  directives: {
-    ClickOutside,
-  },
-  emits: contextMenuDefaultEmits,
-  props: contextMenuDefaultProps,
-  setup(props, { emit }) {
-    const onClickOutside = () => {
-      if (props.clicking) return;
-      emit('hide');
-    };
-
-    return {
-      onClickOutside,
-    };
-  },
-});
-</script>
 
 <style lang="scss">
 .context-menu {

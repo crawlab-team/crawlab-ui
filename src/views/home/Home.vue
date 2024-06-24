@@ -1,56 +1,3 @@
-<template>
-  <div class="home">
-    <el-row class="row-overview-metrics">
-      <el-col
-        v-for="(m, i) in metrics"
-        :key="i"
-        :span="24 / Math.min(metrics.length, 4)"
-      >
-        <cl-metric
-          v-track="{
-            code: 'click_home',
-            params: {
-              metricName: m.name,
-            },
-          }"
-          :icon="m.icon"
-          :title="m.name"
-          :value="m.value"
-          :clickable="!!m.path"
-          :color="getColor(m)"
-          @click="onMetricClick(m)"
-        />
-      </el-col>
-    </el-row>
-    <el-row class="row-line-chart">
-      <cl-line-chart :config="dailyConfig" is-time-series label-key="date" />
-    </el-row>
-    <el-row class="row-pie-chart">
-      <el-col :span="8">
-        <cl-pie-chart
-          :config="tasksByStatusConfig"
-          label-key="status"
-          value-key="tasks"
-        />
-      </el-col>
-      <el-col :span="8">
-        <cl-pie-chart
-          :config="tasksByNodeConfig"
-          label-key="node_name"
-          value-key="tasks"
-        />
-      </el-col>
-      <el-col :span="8">
-        <cl-pie-chart
-          :config="tasksBySpiderConfig"
-          label-key="spider_name"
-          value-key="tasks"
-        />
-      </el-col>
-    </el-row>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import useRequest from '@/services/request';
@@ -294,6 +241,59 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="home">
+    <el-row class="row-overview-metrics">
+      <el-col
+        v-for="(m, i) in metrics"
+        :key="i"
+        :span="24 / Math.min(metrics.length, 4)"
+      >
+        <cl-metric
+          v-track="{
+            code: 'click_home',
+            params: {
+              metricName: m.name,
+            },
+          }"
+          :icon="m.icon"
+          :title="m.name"
+          :value="m.value"
+          :clickable="!!m.path"
+          :color="getColor(m)"
+          @click="onMetricClick(m)"
+        />
+      </el-col>
+    </el-row>
+    <el-row class="row-line-chart">
+      <cl-line-chart :config="dailyConfig" is-time-series label-key="date" />
+    </el-row>
+    <el-row class="row-pie-chart">
+      <el-col :span="8">
+        <cl-pie-chart
+          :config="tasksByStatusConfig"
+          label-key="status"
+          value-key="tasks"
+        />
+      </el-col>
+      <el-col :span="8">
+        <cl-pie-chart
+          :config="tasksByNodeConfig"
+          label-key="node_name"
+          value-key="tasks"
+        />
+      </el-col>
+      <el-col :span="8">
+        <cl-pie-chart
+          :config="tasksBySpiderConfig"
+          label-key="spider_name"
+          value-key="tasks"
+        />
+      </el-col>
+    </el-row>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .home {

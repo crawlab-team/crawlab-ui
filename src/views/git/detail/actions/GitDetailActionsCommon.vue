@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { TAB_NAME_CHANGES } from '@/constants';
-
 defineOptions({ name: 'ClGitDetailActionsCommon' });
+import { TAB_NAME_CHANGES } from '@/constants';
 import { h, ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import { ElMessage, ElMessageBox } from 'element-plus';

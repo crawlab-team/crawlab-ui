@@ -1,20 +1,6 @@
 import { Ref } from 'vue';
 
 declare global {
-  interface CreateEditDialogProps {
-    visible: boolean;
-    type: CreateEditDialogType;
-    width: string;
-    batchFormData: TableData;
-    confirmDisabled?: boolean;
-    confirmLoading?: boolean;
-    actionFunctions?: CreateEditDialogActionFunctions;
-    tabName?: CreateEditTabName;
-    title?: string;
-    noBatch?: boolean;
-    formRules?: FormRuleItem[];
-  }
-
   type CreateEditDialogType = 'create' | 'edit';
 
   type CreateEditTabName = 'single' | 'batch';

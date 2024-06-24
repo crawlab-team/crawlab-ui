@@ -5,7 +5,7 @@ import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';
 import useNode from '@/components/node/node';
 import { TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODES } from '@/constants/task';
-import useTask from '@/components/task/task';
+import useTask from '@/components/task/useTask';
 import { ElMessage } from 'element-plus';
 import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils';

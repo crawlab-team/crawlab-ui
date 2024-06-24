@@ -1,17 +1,3 @@
-<template>
-  <cl-dialog
-    :title="t('components.result.dedup.dialog.fields.title')"
-    :visible="dialogVisible"
-    @confirm="onDialogConfirm"
-    @close="onDialogClose"
-  >
-    <cl-input-list
-      v-model="keys"
-      :placeholder="t('components.result.dedup.dialog.fields.placeholder')"
-    />
-  </cl-dialog>
-</template>
-
 <script setup lang="ts">
 defineOptions({ name: 'ClResultDedupFieldsDialog' });
 import { computed, ref, watch } from 'vue';
@@ -58,5 +44,19 @@ const onDialogConfirm = async () => {
   onDialogClose();
 };
 </script>
+
+<template>
+  <cl-dialog
+    :title="t('components.result.dedup.dialog.fields.title')"
+    :visible="dialogVisible"
+    @confirm="onDialogConfirm"
+    @close="onDialogClose"
+  >
+    <cl-input-list
+      v-model="keys"
+      :placeholder="t('components.result.dedup.dialog.fields.placeholder')"
+    />
+  </cl-dialog>
+</template>
 
 <style lang="scss" scoped></style>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { getDefaultFilterCondition } from '@/components/filter/filter';
+
 defineOptions({ name: 'ClTableHeaderDialogFilter' });
-import { computed, defineComponent, PropType, ref, watch } from 'vue';
-import { getDefaultFilterCondition } from '@/components/filter/FilterCondition.vue';
+import { computed, ref, watch } from 'vue';
+import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
 import { debounce } from '@/utils/debounce';
-import { useI18n } from 'vue-i18n';
 import { Search } from '@element-plus/icons-vue';
 import { emptyArrayFunc, translate } from '@/utils';
 

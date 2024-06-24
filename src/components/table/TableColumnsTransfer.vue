@@ -1,3 +1,57 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClTableColumnsTransfer' });
+import { computed, onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const props = defineProps<{
+  visible?: boolean;
+  columns?: TableColumn[];
+  selectedColumnKeys?: string[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+  (e: 'change', value: string[]): void;
+  (e: 'sort', value: string[]): void;
+  (e: 'confirm', value: string[]): void;
+}>();
+
+// i18n
+const { t } = useI18n();
+
+const internalSelectedColumnKeys = ref<string[]>([]);
+
+const computedData = computed<any[]>(() => {
+  const { columns } = props as TableColumnsTransferProps;
+  return columns.map(d => {
+    const { key, label, disableTransfer } = d;
+    return {
+      key,
+      label,
+      disabled: disableTransfer || false,
+    };
+  });
+});
+
+const onClose = () => {
+  emit('close');
+};
+
+const onChange = (value: string[]) => {
+  internalSelectedColumnKeys.value = value;
+};
+
+const onConfirm = () => {
+  emit('confirm', internalSelectedColumnKeys.value);
+  emit('close');
+};
+
+onBeforeMount(() => {
+  const { selectedColumnKeys } = props as TableColumnsTransferProps;
+  internalSelectedColumnKeys.value = selectedColumnKeys || [];
+});
+</script>
+
 <template>
   <el-dialog
     :before-close="onClose"
@@ -25,80 +79,6 @@
     </template>
   </el-dialog>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, onBeforeMount, ref } from 'vue';
-import { DataItem } from 'element-plus';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'TableColumnsTransfer',
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    columns: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
-    selectedColumnKeys: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
-  },
-  emits: ['close', 'change', 'sort', 'confirm'],
-  setup(props, { emit }) {
-    // i18n
-    const { t } = useI18n();
-
-    const internalSelectedColumnKeys = ref<string[]>([]);
-
-    const computedData = computed<DataItem[]>(() => {
-      const { columns } = props as TableColumnsTransferProps;
-      return columns.map(d => {
-        const { key, label, disableTransfer } = d;
-        return {
-          key,
-          label,
-          disabled: disableTransfer || false,
-        };
-      });
-    });
-
-    const onClose = () => {
-      emit('close');
-    };
-
-    const onChange = (value: string[]) => {
-      internalSelectedColumnKeys.value = value;
-    };
-
-    const onConfirm = () => {
-      emit('confirm', internalSelectedColumnKeys.value);
-      emit('close');
-    };
-
-    onBeforeMount(() => {
-      const { selectedColumnKeys } = props as TableColumnsTransferProps;
-      internalSelectedColumnKeys.value = selectedColumnKeys || [];
-    });
-
-    return {
-      internalSelectedColumnKeys,
-      computedData,
-      onClose,
-      onChange,
-      onConfirm,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .table-columns-transfer-content {

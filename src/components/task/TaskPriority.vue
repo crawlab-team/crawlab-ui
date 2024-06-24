@@ -2,7 +2,7 @@
 defineOptions({ name: 'ClTaskPriority' });
 import { computed } from 'vue';
 import { getPriorityLabel } from '@/utils/task';
-import { TagProps } from '@/components/tag/Tag.vue';
+import { TagProps } from '@/components/tag/tag';
 
 const props = withDefaults(
   defineProps<{

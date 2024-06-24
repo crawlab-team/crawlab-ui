@@ -1,10 +1,118 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClFileEditorNavTabs' });
+import { computed, onMounted, ref, watch } from 'vue';
+import { Close } from '@element-plus/icons-vue';
+import { FileEditorStyles, FileNavItem } from '@/components/file/file';
+
+const props = defineProps<{
+  activeTab?: FileNavItem;
+  tabs?: FileNavItem[];
+  styles?: FileEditorStyles;
+}>();
+
+const emit = defineEmits<{
+  (e: 'tab-click', item: FileNavItem): void;
+  (e: 'tab-close', item: FileNavItem): void;
+  (e: 'tab-close-others', item: FileNavItem): void;
+  (e: 'tab-close-all'): void;
+  (e: 'tab-dragend', items: FileNavItem[]): void;
+  (e: 'show-more'): void;
+}>();
+
+const activeContextMenuItem = ref<FileNavItem>();
+
+const navTabs = ref<HTMLDivElement>();
+
+const navTabsWidth = ref<number>();
+
+const navTabsOverflowWidth = ref<number>();
+
+const contextMenuClicking = ref<boolean>(false);
+
+const tabs = computed<FileNavItem[]>(() => {
+  const { tabs } = props as FileEditorNavTabsProps;
+  return tabs;
+});
+
+const getTitle = (item: FileNavItem) => {
+  return item.name;
+};
+
+const onClick = (item: FileNavItem) => {
+  emit('tab-click', item);
+};
+
+const onClose = (item: FileNavItem) => {
+  emit('tab-close', item);
+};
+
+const onCloseOthers = (item: FileNavItem) => {
+  emit('tab-close-others', item);
+};
+
+const onCloseAll = () => {
+  emit('tab-close-all');
+};
+
+const onDragEnd = (items: FileNavItem[]) => {
+  emit('tab-dragend', items);
+};
+
+const onContextMenuShow = (item: FileNavItem) => {
+  contextMenuClicking.value = true;
+  activeContextMenuItem.value = item;
+
+  setTimeout(() => {
+    contextMenuClicking.value = false;
+  }, 500);
+};
+
+const onContextMenuHide = () => {
+  activeContextMenuItem.value = undefined;
+};
+
+const isShowContextMenu = (item: FileNavItem) => {
+  return activeContextMenuItem.value?.path === item.path;
+};
+
+const updateWidths = () => {
+  if (!navTabs.value) return;
+
+  // width
+  navTabsWidth.value = Number(
+    getComputedStyle(navTabs.value).width.replace('px', '')
+  );
+
+  // overflow width
+  const el = navTabs.value.querySelector('.draggable-list');
+  if (el) {
+    navTabsOverflowWidth.value = Number(
+      getComputedStyle(el).width.replace('px', '')
+    );
+  }
+};
+
+const isActive = (item: FileNavItem) => {
+  return props.activeTab && props.activeTab.path === item.path;
+};
+
+watch(tabs.value, () => {
+  setTimeout(updateWidths, 100);
+});
+
+onMounted(() => {
+  // update tabs widths
+  updateWidths();
+});
+</script>
+
 <template>
   <div
     ref="navTabs"
-    :style="{ ...styles.default }"
+    :style="{ ...styles?.default }"
     class="file-editor-nav-tabs"
   >
-    <slot name="prefix"></slot>
+    <slot name="prefix" />
     <cl-draggable-list item-key="path" :items="tabs" @d-end="onDragEnd">
       <template v-slot="{ item }">
         <cl-file-editor-nav-tabs-context-menu
@@ -17,7 +125,7 @@
         >
           <div
             :class="isActive(item) ? 'active' : ''"
-            :style="{ ...(isActive(item) ? styles.active : styles.default) }"
+            :style="{ ...(isActive(item) ? styles?.active : styles?.default) }"
             class="file-editor-nav-tab"
             @click="onClick(item)"
             @contextmenu.prevent="onContextMenuShow(item)"
@@ -29,7 +137,7 @@
               <span
                 class="title"
                 :style="{
-                  color: styles.active.color,
+                  color: styles?.active?.color,
                 }"
               >
                 {{ getTitle(item) }}
@@ -47,166 +155,6 @@
     </cl-draggable-list>
   </div>
 </template>
-
-<script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  PropType,
-  ref,
-  watch,
-} from 'vue';
-import { Close } from '@element-plus/icons-vue';
-
-export default defineComponent({
-  name: 'FileEditorNavTabs',
-  components: { Close },
-  props: {
-    activeTab: {
-      type: Object,
-      required: false,
-    },
-    tabs: {
-      type: Array,
-      required: true,
-      default: () => {
-        return [];
-      },
-    },
-    styles: {
-      type: Object as PropType<FileEditorStyles>,
-      required: false,
-      default: () => {
-        return {};
-      },
-    },
-  },
-  emits: [
-    'tab-click',
-    'tab-close',
-    'tab-close-others',
-    'tab-close-all',
-    'tab-dragend',
-    'show-more',
-  ],
-  setup(props, { emit }) {
-    const activeContextMenuItem = ref<FileNavItem>();
-
-    const navTabs = ref<HTMLDivElement>();
-
-    const navTabsWidth = ref<number>();
-
-    const navTabsOverflowWidth = ref<number>();
-
-    const showMoreVisible = computed<boolean>(() => {
-      if (
-        navTabsWidth.value === undefined ||
-        navTabsOverflowWidth.value === undefined
-      )
-        return false;
-      return navTabsOverflowWidth.value > navTabsWidth.value;
-    });
-
-    const contextMenuClicking = ref<boolean>(false);
-
-    const tabs = computed<FileNavItem[]>(() => {
-      const { tabs } = props as FileEditorNavTabsProps;
-      return tabs;
-    });
-
-    const getTitle = (item: FileNavItem) => {
-      return item.name;
-    };
-
-    const onClick = (item: FileNavItem) => {
-      emit('tab-click', item);
-    };
-
-    const onClose = (item: FileNavItem) => {
-      emit('tab-close', item);
-    };
-
-    const onCloseOthers = (item: FileNavItem) => {
-      emit('tab-close-others', item);
-    };
-
-    const onCloseAll = () => {
-      emit('tab-close-all');
-    };
-
-    const onDragEnd = (items: FileNavItem[]) => {
-      emit('tab-dragend', items);
-    };
-
-    const onContextMenuShow = (item: FileNavItem) => {
-      contextMenuClicking.value = true;
-      activeContextMenuItem.value = item;
-
-      setTimeout(() => {
-        contextMenuClicking.value = false;
-      }, 500);
-    };
-
-    const onContextMenuHide = () => {
-      activeContextMenuItem.value = undefined;
-    };
-
-    const isShowContextMenu = (item: FileNavItem) => {
-      return activeContextMenuItem.value?.path === item.path;
-    };
-
-    const updateWidths = () => {
-      if (!navTabs.value) return;
-
-      // width
-      navTabsWidth.value = Number(
-        getComputedStyle(navTabs.value).width.replace('px', '')
-      );
-
-      // overflow width
-      const el = navTabs.value.querySelector('.draggable-list');
-      if (el) {
-        navTabsOverflowWidth.value = Number(
-          getComputedStyle(el).width.replace('px', '')
-        );
-      }
-    };
-
-    const isActive = (item: FileNavItem) => {
-      return props.activeTab && props.activeTab.path === item.path;
-    };
-
-    watch(tabs.value, () => {
-      setTimeout(updateWidths, 100);
-    });
-
-    onMounted(() => {
-      // update tabs widths
-      updateWidths();
-    });
-
-    return {
-      activeContextMenuItem,
-      navTabs,
-      navTabsWidth,
-      navTabsOverflowWidth,
-      showMoreVisible,
-      contextMenuClicking,
-      getTitle,
-      onClick,
-      onClose,
-      onCloseOthers,
-      onCloseAll,
-      onDragEnd,
-      onContextMenuShow,
-      onContextMenuHide,
-      isShowContextMenu,
-      isActive,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .file-editor-nav-tabs {

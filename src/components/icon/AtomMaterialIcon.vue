@@ -1,39 +1,25 @@
-<template>
-  <span class="atom-material-icon" v-html="html" />
-</template>
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClAtomMaterialIcon' });
+import { computed } from 'vue';
 import {
   getFileIconFromName,
   getFolderIconFromName,
 } from 'atom-material-icons';
 
-export default defineComponent({
-  name: 'AtomMaterialIcon',
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    isDir: {
-      type: Boolean,
-      required: false,
-    },
-  },
-  setup(props: AtomMaterialIconProps) {
-    const html = computed<string>(() => {
-      const { name, isDir } = props;
-      const icon = isDir
-        ? getFolderIconFromName(name)
-        : getFileIconFromName(name);
-      return icon.default;
-    });
+const props = defineProps<{
+  name: string;
+  isDir?: boolean;
+}>();
 
-    return {
-      html,
-    };
-  },
+const html = computed<string>(() => {
+  const { name, isDir } = props;
+  const icon = isDir ? getFolderIconFromName(name) : getFileIconFromName(name);
+  return icon.default;
 });
 </script>
+
+<template>
+  <span class="atom-material-icon" v-html="html" />
+</template>
 
 <style lang="scss" scoped></style>

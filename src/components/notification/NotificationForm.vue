@@ -1,3 +1,26 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClNotificationForm' });
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
+import useNotification from '@/components/notification/notification';
+
+defineProps<{
+  readonly?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: any): void;
+}>();
+
+// i18n
+const { t } = useI18n();
+
+// store
+const store = useStore();
+
+const { form, isSelectiveForm } = useNotification(store);
+</script>
+
 <template>
   <cl-form v-if="form" ref="formRef" :model="form" :selective="isSelectiveForm">
     <cl-form-item
@@ -9,7 +32,6 @@
       <el-input
         v-model="form.name"
         :placeholder="t('views.notification.settings.form.name')"
-        @change="onChange"
       />
     </cl-form-item>
     <cl-form-item
@@ -138,49 +160,7 @@
         />
       </cl-form-item>
     </template>
-
-    <template v-else-if="form.type === 'mobile'">
-      <cl-form-item
-        :span="4"
-        :label="t('views.notification.settings.form.mobile.webhook')"
-        prop="mobile.webhook"
-      >
-        <el-input
-          v-model="form.mobile.webhook"
-          :placeholder="t('views.notification.settings.form.mobile.webhook')"
-        />
-      </cl-form-item>
-    </template>
   </cl-form>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
-import useNotification from '@/components/notification/notification';
-
-export default defineComponent({
-  name: 'NotificationForm',
-  props: {
-    readonly: {
-      type: Boolean,
-    },
-  },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    // i18n
-    const { t } = useI18n();
-
-    // store
-    const store = useStore();
-
-    return {
-      ...useNotification(store),
-      t,
-    };
-  },
-});
-</script>
 
 <style scoped></style>

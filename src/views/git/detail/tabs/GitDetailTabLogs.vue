@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { debounce } from '@/utils';
-
 defineOptions({ name: 'ClGitDetailTabLogs' });
 import { computed, h, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import Time from '@/components/time/Time.vue';
-import Tag from '@/components/tag/Tag.vue';
+import { useI18n } from 'vue-i18n';
+import { debounce } from '@/utils';
 import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants/table';
-import { useI18n } from 'vue-i18n';
+import Time from '@/components/time/Time.vue';
+import Tag from '@/components/tag/Tag.vue';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import useGit from '@/components/git/useGit';
+
 // i18n
 const { t } = useI18n();
 

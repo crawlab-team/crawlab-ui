@@ -1,7 +1,6 @@
 import {
   TASK_MODE_ALL_NODES,
   TASK_MODE_RANDOM,
-  TASK_MODE_SELECTED_NODE_TAGS,
   TASK_MODE_SELECTED_NODES,
   TASK_STATUS_CANCELLED,
   TASK_STATUS_ERROR,
@@ -10,6 +9,7 @@ import {
   TASK_STATUS_RUNNING,
 } from '@/constants/task';
 import { translate } from '@/utils/i18n';
+import { TaskStatus } from '@/components/task/task';
 
 const t = translate;
 
@@ -51,7 +51,6 @@ export const getModeOptions = (): SelectOption[] => {
       value: TASK_MODE_SELECTED_NODES,
       label: t('components.task.mode.label.selectedNodes'),
     },
-    // {value: TASK_MODE_SELECTED_NODE_TAGS, label: t('components.task.mode.label.selectedTags')},
   ];
 };
 

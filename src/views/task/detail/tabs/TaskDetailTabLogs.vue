@@ -1,22 +1,3 @@
-<template>
-  <div class="task-detail-tab-logs">
-    <div class="pagination">
-      <el-pagination
-        :current-page="page"
-        :page-size="size"
-        :page-sizes="pageSizes"
-        :total="total"
-        layout="total, sizes, prev, pager, next"
-        @current-change="onPageChange"
-        @size-change="onSizeChange"
-      />
-    </div>
-    <div class="log-container">
-      <div ref="editorRef" class="log" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import {
   computed,
@@ -192,6 +173,25 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="task-detail-tab-logs">
+    <div class="pagination">
+      <el-pagination
+        :current-page="page"
+        :page-size="size"
+        :page-sizes="pageSizes"
+        :total="total"
+        layout="total, sizes, prev, pager, next"
+        @current-change="onPageChange"
+        @size-change="onSizeChange"
+      />
+    </div>
+    <div class="log-container">
+      <div ref="editorRef" class="log" />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .task-detail-tab-logs {

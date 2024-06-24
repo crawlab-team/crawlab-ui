@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { conditionTypesMap } from '@/components/filter/filter';
+
 defineOptions({ name: 'ClTableHeader' });
 import { computed, reactive, ref } from 'vue';
-import { conditionTypesMap } from '@/components/filter/FilterCondition.vue';
 import { ASCENDING, DESCENDING } from '@/constants/sort';
 import { FILTER_OP_NOT_SET } from '@/constants/filter';
 import { translate } from '@/utils';

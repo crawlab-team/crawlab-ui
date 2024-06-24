@@ -10,6 +10,8 @@ import {
   TASK_STATUS_RUNNING,
 } from '@/constants/task';
 import { useI18n } from 'vue-i18n';
+import { TagProps } from '@/components/tag/tag';
+import { TaskStatus } from '@/components/task/task';
 
 const props = defineProps<{
   status: TaskStatus;
@@ -24,14 +26,14 @@ const emit = defineEmits<{
 // i18n
 const { t } = useI18n();
 
-const data = computed<TagData>(() => {
+const data = computed<TagProps>(() => {
   const { status, error } = props;
   switch (status) {
     case TASK_STATUS_PENDING:
       return {
         label: t('components.task.status.label.pending'),
         tooltip: t('components.task.status.tooltip.pending'),
-        type: '',
+        type: 'primary',
         icon: ['fa', 'hourglass-start'],
         spinning: true,
       };

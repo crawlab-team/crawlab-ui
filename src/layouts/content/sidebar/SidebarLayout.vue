@@ -1,9 +1,3 @@
-<template>
-  <div class="sidebar-layout">
-    <slot />
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue';
 
@@ -14,6 +8,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="sidebar-layout">
+    <slot />
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .sidebar-layout {

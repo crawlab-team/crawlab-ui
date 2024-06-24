@@ -10,7 +10,7 @@ import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import pinyin, { STYLE_NORMAL } from 'pinyin';
 import { isZeroObjectId } from '@/utils/mongo';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
-import useTask from '@/components/task/task';
+import useTask from '@/components/task/useTask';
 import { translate } from '@/utils';
 
 // i18n

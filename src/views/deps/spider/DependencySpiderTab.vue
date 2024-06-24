@@ -1,45 +1,3 @@
-<template>
-  <div class="dependency-spider-tab">
-    <div class="top-bar">
-      <cl-form :model="spiderData" inline>
-        <cl-form-item :label="t('views.env.deps.spider.form.dependencyType')">
-          <cl-tag
-            :label="spiderDataDependencyTypeLabel"
-            :type="spiderDataDependencyTypeType"
-            :tooltip="spiderDataDependencyTypeTooltip"
-            size="large"
-          />
-        </cl-form-item>
-      </cl-form>
-      <cl-button
-        class-name="action-btn"
-        :tooltip="t('common.actions.install')"
-        :disabled="!spiderData.dependency_type"
-        @click="onInstallByConfig"
-      >
-        <font-awesome-icon class="icon" :icon="['fa', 'download']" />
-        {{ t('common.actions.install') }}
-      </cl-button>
-    </div>
-    <cl-table :data="tableData" :columns="tableColumns" hide-footer />
-    <cl-install-form
-      :visible="dialogVisible.install"
-      :lang="lang"
-      :nodes="allNodes"
-      :names="installForm.names"
-      @confirm="onInstall"
-      @close="() => onDialogClose('install')"
-    />
-    <cl-uninstall-form
-      :visible="dialogVisible.uninstall"
-      :nodes="uninstallForm.nodes"
-      :names="uninstallForm.names"
-      @confirm="onUninstall"
-      @close="() => onDialogClose('uninstall')"
-    />
-  </div>
-</template>
-
 <script lang="ts">
 import { computed, defineComponent, h, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -121,7 +79,7 @@ export default defineComponent({
             if (!result) return;
             const { versions } = result;
             res.push(
-              h('span', { style: 'margin-right: 5px' }, versions?.join(', ')),
+              h('span', { style: 'margin-right: 5px' }, versions?.join(', '))
             );
             if (result.upgradable) {
               res.push(
@@ -131,7 +89,7 @@ export default defineComponent({
                   size: 'mini',
                   tooltip: t('views.env.deps.common.status.upgradable'),
                   icon: ['fa', 'arrow-up'],
-                }),
+                })
               );
             } else if (result.downgradable) {
               res.push(
@@ -141,7 +99,7 @@ export default defineComponent({
                   size: 'mini',
                   tooltip: t('views.env.deps.common.status.downgradable'),
                   icon: ['fa', 'arrow-down'],
-                }),
+                })
               );
             }
             return res;
@@ -307,10 +265,10 @@ export default defineComponent({
     };
 
     const onInstall = async ({
-                               mode,
-                               upgrade,
-                               nodeIds,
-                             }: {
+      mode,
+      upgrade,
+      nodeIds,
+    }: {
       mode: string;
       upgrade: boolean;
       nodeIds: string[];
@@ -332,9 +290,9 @@ export default defineComponent({
     };
 
     const onUninstall = async ({
-                                 mode,
-                                 nodeIds,
-                               }: {
+      mode,
+      nodeIds,
+    }: {
       mode: string;
       nodeIds: string[];
     }) => {
@@ -360,7 +318,7 @@ export default defineComponent({
     const onInstallByConfig = async () => {
       await ElMessageBox.confirm(
         t('common.messageBox.confirm.install'),
-        t('common.actions.install'),
+        t('common.actions.install')
       );
       const id = route.params.id;
       if (!id) return;
@@ -400,6 +358,48 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="dependency-spider-tab">
+    <div class="top-bar">
+      <cl-form :model="spiderData" inline>
+        <cl-form-item :label="t('views.env.deps.spider.form.dependencyType')">
+          <cl-tag
+            :label="spiderDataDependencyTypeLabel"
+            :type="spiderDataDependencyTypeType"
+            :tooltip="spiderDataDependencyTypeTooltip"
+            size="large"
+          />
+        </cl-form-item>
+      </cl-form>
+      <cl-button
+        class-name="action-btn"
+        :tooltip="t('common.actions.install')"
+        :disabled="!spiderData.dependency_type"
+        @click="onInstallByConfig"
+      >
+        <font-awesome-icon class="icon" :icon="['fa', 'download']" />
+        {{ t('common.actions.install') }}
+      </cl-button>
+    </div>
+    <cl-table :data="tableData" :columns="tableColumns" hide-footer />
+    <cl-install-form
+      :visible="dialogVisible.install"
+      :lang="lang"
+      :nodes="allNodes"
+      :names="installForm.names"
+      @confirm="onInstall"
+      @close="() => onDialogClose('install')"
+    />
+    <cl-uninstall-form
+      :visible="dialogVisible.uninstall"
+      :nodes="uninstallForm.nodes"
+      :names="uninstallForm.names"
+      @confirm="onUninstall"
+      @close="() => onDialogClose('uninstall')"
+    />
+  </div>
+</template>
 
 <style scoped>
 .dependency-spider-tab .top-bar {
@@ -442,8 +442,12 @@ export default defineComponent({
 .dependency-spider-tab:deep(.el-table .el-table__inner-wrapper thead),
 .dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tbody),
 .dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tr),
-.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tr > th:first-child),
-.dependency-spider-tab:deep(.el-table .el-table__inner-wrapper tr > td:first-child) {
+.dependency-spider-tab:deep(
+    .el-table .el-table__inner-wrapper tr > th:first-child
+  ),
+.dependency-spider-tab:deep(
+    .el-table .el-table__inner-wrapper tr > td:first-child
+  ) {
   border-left: none;
 }
 </style>

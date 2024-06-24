@@ -1,109 +1,3 @@
-<template>
-  <div :class="sidebarCollapsed ? 'collapsed' : ''" class="header-container">
-    <el-header height="var(--cl-header-height)" class="header">
-      <div class="left"></div>
-      <div class="right">
-        <iframe
-          v-if="systemInfo.edition === 'global.edition.community'"
-          class="item"
-          src="https://ghbtns.com/github-btn.html?user=crawlab-team&repo=crawlab&type=star&count=true"
-          frameborder="0"
-          scrolling="0"
-          width="105"
-          height="20"
-          title="GitHub"
-        />
-        <el-link
-          v-if="systemInfo.edition === 'global.edition.community'"
-          v-track="{ code: 'click_header_pro' }"
-          class="item"
-          :href="`https://www.crawlab.cn/${locale}/#pricing`"
-          target="_blank"
-          type="warning"
-        >
-          <font-awesome-icon class="icon" :icon="['fa', 'arrow-up']" />
-          {{ t('global.upgrade.pro') }}
-        </el-link>
-        <el-link
-          v-track="{ code: 'click_header_docs' }"
-          class="item"
-          :href="`https://docs.crawlab.cn/${locale}/`"
-          target="_blank"
-        >
-          <font-awesome-icon class="icon" :icon="['fa', 'book']" />
-          {{ t('global.docs') }}
-        </el-link>
-        <el-dropdown class="lang">
-          <span class="el-dropdown-link item action">
-            <font-awesome-icon class="icon" :icon="['fa', 'globe']" />
-            {{ langName }}
-            <el-icon class="el-icon--right">
-              <arrow-down />
-            </el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item
-                v-track="{
-                  code: 'click_header_lang',
-                  params: { locale: 'en' },
-                }"
-                :class="locale === 'en' ? 'active' : ''"
-                @click="() => setLang('en')"
-              >
-                {{ t('global.lang', [], { locale: 'en' }) }}
-              </el-dropdown-item>
-              <el-dropdown-item
-                v-track="{
-                  code: 'click_header_lang',
-                  params: { locale: 'zh' },
-                }"
-                :class="locale === 'zh' ? 'active' : ''"
-                @click="() => setLang('zh')"
-              >
-                {{ t('global.lang', [], { locale: 'zh' }) }}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <el-dropdown v-locate="'me'" class="me">
-          <span class="el-dropdown-link item action">
-            <font-awesome-icon class="icon" :icon="['far', 'user']" />
-            {{ username }}
-            <el-icon class="el-icon--right">
-              <arrow-down />
-            </el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item
-                v-track="{ code: 'click_header_disclaimer' }"
-                @click="onClickDisclaimer"
-              >
-                {{ t('layouts.components.header.disclaimer') }}
-              </el-dropdown-item>
-              <el-dropdown-item
-                v-track="{ code: 'click_header_my_settings' }"
-                @click="onClickMySettings"
-              >
-                {{ t('layouts.components.header.mySettings') }}
-              </el-dropdown-item>
-              <el-dropdown-item
-                v-track="{ code: 'click_header_logout' }"
-                @click="onLogout"
-              >
-                <span v-locate="'logout'">{{
-                  t('layouts.components.header.logout')
-                }}</span>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-    </el-header>
-  </div>
-</template>
-
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
@@ -196,6 +90,79 @@ export default defineComponent({
 });
 </script>
 
+<template>
+  <div :class="sidebarCollapsed ? 'collapsed' : ''" class="header-container">
+    <el-header height="var(--cl-header-height)" class="header">
+      <div class="left"></div>
+      <div class="right">
+        <iframe
+          v-if="systemInfo.edition === 'global.edition.community'"
+          class="item"
+          src="https://ghbtns.com/github-btn.html?user=crawlab-team&repo=crawlab&type=star&count=true"
+          frameborder="0"
+          scrolling="0"
+          width="105"
+          height="20"
+          title="GitHub"
+        />
+        <el-link
+          v-if="systemInfo.edition === 'global.edition.community'"
+          v-track="{ code: 'click_header_pro' }"
+          class="item"
+          :href="`https://www.crawlab.cn/${locale}/#pricing`"
+          target="_blank"
+          type="warning"
+        >
+          <font-awesome-icon class="icon" :icon="['fa', 'arrow-up']" />
+          {{ t('global.upgrade.pro') }}
+        </el-link>
+        <el-link
+          v-track="{ code: 'click_header_docs' }"
+          class="item"
+          :href="`https://docs.crawlab.cn/${locale}/`"
+          target="_blank"
+        >
+          <font-awesome-icon class="icon" :icon="['fa', 'book']" />
+          {{ t('global.docs') }}
+        </el-link>
+        <el-dropdown class="lang">
+          <span class="el-dropdown-link item action">
+            <font-awesome-icon class="icon" :icon="['fa', 'globe']" />
+            {{ langName }}
+            <el-icon class="el-icon--right">
+              <arrow-down />
+            </el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-track="{
+                  code: 'click_header_lang',
+                  params: { locale: 'en' },
+                }"
+                :class="locale === 'en' ? 'active' : ''"
+                @click="() => setLang('en')"
+              >
+                {{ t('global.lang', [], { locale: 'en' }) }}
+              </el-dropdown-item>
+              <el-dropdown-item
+                v-track="{
+                  code: 'click_header_lang',
+                  params: { locale: 'zh' },
+                }"
+                :class="locale === 'zh' ? 'active' : ''"
+                @click="() => setLang('zh')"
+              >
+                {{ t('global.lang', [], { locale: 'zh' }) }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+    </el-header>
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .header-container {
   height: var(--cl-header-height);
@@ -240,12 +207,5 @@ export default defineComponent({
       }
     }
   }
-}
-</style>
-
-<style scoped>
-.el-dropdown-menu__item.active {
-  background: #ecf5ff;
-  color: #409eff;
 }
 </style>

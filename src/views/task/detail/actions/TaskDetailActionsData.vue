@@ -1,55 +1,7 @@
-<template>
-  <cl-nav-action-group class="task-detail-actions-data">
-    <cl-nav-action-fa-icon
-      :icon="['fa', 'database']"
-      :tooltip="t('components.task.actions.data.tooltip.dataActions')"
-    />
-    <cl-nav-action-item>
-      <el-tooltip
-        :content="t('components.task.actions.data.tooltip.displayAllFields')"
-      >
-        <cl-switch
-          class="display-all-fields"
-          :active-icon="['fa', 'eye']"
-          :inactive-icon="['fa', 'eye']"
-          inline-prompt
-          v-model="displayAllFields"
-          @change="onDisplayAllFieldsChange"
-        />
-      </el-tooltip>
-    </cl-nav-action-item>
-    <cl-nav-action-item
-      v-export="{
-        target,
-        conditions,
-      }"
-    >
-      <cl-fa-icon-button
-        :icon="['fa', 'download']"
-        :tooltip="t('components.task.actions.data.tooltip.export')"
-        type="primary"
-        id="export-btn"
-        class-name="export-btn"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item>
-      <cl-fa-icon-button
-        :icon="['fa', 'lightbulb']"
-        :tooltip="
-          t('components.task.actions.data.tooltip.inferDataFieldsTypes')
-        "
-        type="primary"
-        class-name="infer-data-fields-types-btn"
-        @click="onClickInferDataFieldsTypes"
-      />
-    </cl-nav-action-item>
-  </cl-nav-action-group>
-</template>
-
-<script lang="ts" setup>
-import { computed, defineComponent, ref, watch } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClTaskDetailActionsData' });
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ExportTypeCsv } from '@/constants/export';
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/spider';
 import useRequest from '@/services/request';
@@ -124,7 +76,7 @@ const onClickInferDataFieldsTypes = async () => {
     { type: 'warning' }
   );
   await inferFields();
-  await ElMessage.success(t('common.message.success.action'));
+  ElMessage.success(t('common.message.success.action'));
 };
 
 watch(
@@ -139,6 +91,54 @@ watch(
   }
 );
 </script>
+
+<template>
+  <cl-nav-action-group class="task-detail-actions-data">
+    <cl-nav-action-fa-icon
+      :icon="['fa', 'database']"
+      :tooltip="t('components.task.actions.data.tooltip.dataActions')"
+    />
+    <cl-nav-action-item>
+      <el-tooltip
+        :content="t('components.task.actions.data.tooltip.displayAllFields')"
+      >
+        <cl-switch
+          class="display-all-fields"
+          :active-icon="['fa', 'eye']"
+          :inactive-icon="['fa', 'eye']"
+          inline-prompt
+          v-model="displayAllFields"
+          @change="onDisplayAllFieldsChange"
+        />
+      </el-tooltip>
+    </cl-nav-action-item>
+    <cl-nav-action-item
+      v-export="{
+        target,
+        conditions,
+      }"
+    >
+      <cl-fa-icon-button
+        :icon="['fa', 'download']"
+        :tooltip="t('components.task.actions.data.tooltip.export')"
+        type="primary"
+        id="export-btn"
+        class-name="export-btn"
+      />
+    </cl-nav-action-item>
+    <cl-nav-action-item>
+      <cl-fa-icon-button
+        :icon="['fa', 'lightbulb']"
+        :tooltip="
+          t('components.task.actions.data.tooltip.inferDataFieldsTypes')
+        "
+        type="primary"
+        class-name="infer-data-fields-types-btn"
+        @click="onClickInferDataFieldsTypes"
+      />
+    </cl-nav-action-item>
+  </cl-nav-action-group>
+</template>
 
 <style scoped>
 .task-detail-actions-data:deep(.display-all-fields) {

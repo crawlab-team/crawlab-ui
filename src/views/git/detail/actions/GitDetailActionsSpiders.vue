@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import ClCreateGitSpiderDialog from '@/components/git/CreateGitSpiderDialog.vue';
-
 defineOptions({ name: 'ClGitDetailActionsSpiders' });
+
 import { ref } from 'vue';
 import { useStore } from 'vuex';
-import useGitDetail from '@/views/git/detail/useGitDetail';
-import { translate } from '@/utils';
-import useSpider from '@/components/spider/spider';
 import { ElMessage } from 'element-plus';
+import { translate } from '@/utils';
+import useGitDetail from '@/views/git/detail/useGitDetail';
+import useSpider from '@/components/spider/spider';
+import ClCreateGitSpiderDialog from '@/components/git/CreateGitSpiderDialog.vue';
 
 const t = translate;
 

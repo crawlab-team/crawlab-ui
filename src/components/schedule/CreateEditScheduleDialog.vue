@@ -1,7 +1,25 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClCreateEditScheduleDialog' });
+import { useStore } from 'vuex';
+import useSchedule from '@/components/schedule/useSchedule';
+
+// store
+const store = useStore();
+
+const {
+  actionFunctions,
+  activeDialogKey,
+  confirmDisabled,
+  confirmLoading,
+  createEditDialogTabName,
+  createEditDialogVisible,
+  formRules,
+} = useSchedule(store);
+</script>
+
 <template>
   <cl-create-edit-dialog
     :action-functions="actionFunctions"
-    :batch-form-data="formList"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
     :tab-name="createEditDialogTabName"
@@ -14,23 +32,5 @@
     </template>
   </cl-create-edit-dialog>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import useSchedule from '@/components/schedule/useSchedule';
-
-export default defineComponent({
-  name: 'CreateEditScheduleDialog',
-  setup() {
-    // store
-    const store = useStore();
-
-    return {
-      ...useSchedule(store),
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

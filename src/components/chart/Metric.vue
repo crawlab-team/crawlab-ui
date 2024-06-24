@@ -1,3 +1,36 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClMetric' });
+import { computed, PropType, StyleValue } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const props = defineProps<{
+  title?: string;
+  value?: number | string;
+  icon?: Icon;
+  color?: string;
+  clickable?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'click'): void;
+}>();
+
+const { t } = useI18n();
+
+const style = computed<StyleValue>(() => {
+  const { color } = props;
+  return {
+    backgroundColor: color,
+  };
+});
+
+const onClick = () => {
+  const { clickable } = props;
+  if (!clickable) return;
+  emit('click');
+};
+</script>
+
 <template>
   <div
     :class="[clickable ? 'clickable' : '']"
@@ -11,7 +44,7 @@
     </div>
     <div class="info">
       <div class="title">
-        {{ t(title) }}
+        {{ t(title || '') }}
       </div>
       <div class="value">
         {{ value }}
@@ -19,55 +52,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'Metric',
-  props: {
-    title: {
-      type: String,
-    },
-    value: {
-      type: [Number, String],
-    },
-    icon: {
-      type: [String, Array] as PropType<Icon>,
-    },
-    color: {
-      type: String,
-    },
-    clickable: {
-      type: Boolean,
-    },
-  },
-  emits: ['click'],
-  setup(props: MetricProps, { emit }) {
-    const { t } = useI18n();
-
-    const style = computed<Partial<CSSStyleDeclaration>>(() => {
-      const { color } = props;
-      return {
-        backgroundColor: color,
-      };
-    });
-
-    const onClick = () => {
-      const { clickable } = props;
-      if (!clickable) return;
-      emit('click');
-    };
-
-    return {
-      style,
-      onClick,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .metric {

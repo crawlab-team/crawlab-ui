@@ -1,16 +1,3 @@
-<template>
-  <cl-simple-layout>
-    <div class="disclaimer">
-      <div class="container">
-        <h1 class="title">
-          {{ title }}
-        </h1>
-        <div class="content" v-html="content" />
-      </div>
-    </div>
-  </cl-simple-layout>
-</template>
-
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { Converter } from 'showdown';
@@ -40,6 +27,19 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-simple-layout>
+    <div class="disclaimer">
+      <div class="container">
+        <h1 class="title">
+          {{ title }}
+        </h1>
+        <div class="content" v-html="content" />
+      </div>
+    </div>
+  </cl-simple-layout>
+</template>
 
 <style scoped lang="scss">
 .disclaimer {

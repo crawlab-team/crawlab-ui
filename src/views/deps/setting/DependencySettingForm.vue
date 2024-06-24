@@ -1,3 +1,45 @@
+<script lang="ts">
+import { defineComponent, onBeforeMount, ref, watch } from 'vue';
+import { translate } from '@/utils';
+
+const t = translate;
+
+export default defineComponent({
+  name: 'DependencySettingForm',
+  props: {
+    form: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  emits: ['change'],
+  setup(props, { emit }) {
+    const internalForm = ref({});
+
+    const onChange = () => {
+      emit('change', internalForm.value);
+    };
+
+    watch(
+      () => props.form,
+      () => {
+        internalForm.value = { ...props.form };
+      }
+    );
+
+    onBeforeMount(() => {
+      internalForm.value = { ...props.form };
+    });
+
+    return {
+      internalForm,
+      onChange,
+      t,
+    };
+  },
+});
+</script>
+
 <template>
   <cl-form :key="JSON.stringify(form)" :model="form">
     <cl-form-item
@@ -45,47 +87,5 @@
     </cl-form-item>
   </cl-form>
 </template>
-
-<script lang="ts">
-import { defineComponent, onBeforeMount, ref, watch } from 'vue';
-import { translate } from '@/utils';
-
-const t = translate;
-
-export default defineComponent({
-  name: 'DependencySettingForm',
-  props: {
-    form: {
-      type: Object,
-      default: () => {},
-    },
-  },
-  emits: ['change'],
-  setup(props, { emit }) {
-    const internalForm = ref({});
-
-    const onChange = () => {
-      emit('change', internalForm.value);
-    };
-
-    watch(
-      () => props.form,
-      () => {
-        internalForm.value = { ...props.form };
-      }
-    );
-
-    onBeforeMount(() => {
-      internalForm.value = { ...props.form };
-    });
-
-    return {
-      internalForm,
-      onChange,
-      t,
-    };
-  },
-});
-</script>
 
 <style scoped></style>

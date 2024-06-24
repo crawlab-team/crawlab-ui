@@ -1,3 +1,18 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClProjectForm' });
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import useProject from '@/components/project/project';
+
+// i18n
+const { t } = useI18n();
+
+// store
+const store = useStore();
+const { form, formRules, isSelectiveForm, isFormItemDisabled } =
+  useProject(store);
+</script>
+
 <template>
   <cl-form
     v-if="form"
@@ -22,17 +37,6 @@
       />
     </cl-form-item>
     <cl-form-item
-      v-if="false"
-      :span="2"
-      :label="t('components.project.form.tags')"
-      prop="tags"
-    >
-      <cl-tag-input
-        v-model="form.tags"
-        :disabled="isFormItemDisabled('tags')"
-      />
-    </cl-form-item>
-    <cl-form-item
       :span="4"
       :label="t('components.project.form.description')"
       prop="description"
@@ -47,28 +51,5 @@
     </cl-form-item>
   </cl-form>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import useProject from '@/components/project/project';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'ProjectForm',
-  setup() {
-    // i18n
-    const { t } = useI18n();
-
-    // store
-    const store = useStore();
-
-    return {
-      ...useProject(store),
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

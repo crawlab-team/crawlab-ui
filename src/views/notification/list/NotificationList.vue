@@ -1,21 +1,3 @@
-<template>
-  <cl-list-layout
-    class="notification-list"
-    :action-functions="actionFunctions"
-    :nav-actions="navActions"
-    :table-pagination="tablePagination"
-    :table-columns="tableColumns"
-    :table-data="tableData"
-    :table-total="tableTotal"
-  >
-    <template #extra>
-      <!-- Dialogs (handled by store) -->
-      <cl-create-edit-notification-dialog />
-      <!-- ./Dialogs -->
-    </template>
-  </cl-list-layout>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue';
 import useNotificationList from '@/views/notification/list/useNotificationList';
@@ -49,5 +31,23 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-list-layout
+    class="notification-list"
+    :action-functions="actionFunctions"
+    :nav-actions="navActions"
+    :table-pagination="tablePagination"
+    :table-columns="tableColumns"
+    :table-data="tableData"
+    :table-total="tableTotal"
+  >
+    <template #extra>
+      <!-- Dialogs (handled by store) -->
+      <cl-create-edit-notification-dialog />
+      <!-- ./Dialogs -->
+    </template>
+  </cl-list-layout>
+</template>
 
 <style scoped></style>

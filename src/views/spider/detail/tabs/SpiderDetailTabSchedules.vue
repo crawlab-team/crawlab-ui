@@ -1,8 +1,3 @@
-<template>
-  <div class="spider-detail-tab-schedules">
-    <cl-schedule-list no-actions embedded />
-  </div>
-</template>
 <script lang="ts">
 import {
   computed,
@@ -56,6 +51,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="spider-detail-tab-schedules">
+    <cl-schedule-list no-actions embedded />
+  </div>
+</template>
 
 <style scoped>
 .spider-detail-tab-schedules:deep(.el-table) {

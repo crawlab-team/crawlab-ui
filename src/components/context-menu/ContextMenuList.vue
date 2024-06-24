@@ -1,3 +1,28 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClContextMenuList' });
+
+export interface ContextMenuItem {
+  title: string;
+  icon?: Icon;
+  action?: () => void;
+  className?: string;
+}
+
+defineProps<{
+  items?: ContextMenuItem[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'hide'): void;
+}>();
+
+const onClick = (item: ContextMenuItem) => {
+  if (!item.action) return;
+  item.action();
+  emit('hide');
+};
+</script>
+
 <template>
   <ul class="context-menu-list">
     <li
@@ -12,11 +37,7 @@
             v-if="Array.isArray(item.icon)"
             :icon="item.icon"
           />
-          <cl-atom-material-icon
-            v-else-if="typeof item.icon === 'string'"
-            :is-dir="false"
-            :name="item.icon"
-          />
+          <cl-atom-material-icon v-else :is-dir="false" :name="item.icon" />
         </template>
       </span>
       <span class="title">
@@ -25,33 +46,6 @@
     </li>
   </ul>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-
-export default defineComponent({
-  name: 'ContextMenuList',
-  props: {
-    items: {
-      type: Array as PropType<ContextMenuItem[]>,
-      default: () => {
-        return [];
-      },
-    },
-  },
-  setup(props, { emit }) {
-    const onClick = (item: ContextMenuItem) => {
-      if (!item.action) return;
-      item.action();
-      emit('hide');
-    };
-
-    return {
-      onClick,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .context-menu-list {

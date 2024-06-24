@@ -1,27 +1,27 @@
-<script lang="ts">
-import { defineComponent, inject } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClDraggableItemContent' });
+import { inject, computed } from 'vue';
+import { DraggableListContext } from '@/components/drag/DraggableList.vue';
 
-export default defineComponent({
-  name: 'DraggableItemContent',
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props) {
-    return () => {
-      const { item } = props;
-      const content = inject<DraggableListContext>('list');
-      if (
-        !content ||
-        !content.ctx ||
-        !content.ctx.slots ||
-        !content.ctx.slots.default
-      )
-        return '';
-      return content.ctx.slots.default({ item });
-    };
-  },
-});
+defineProps<{
+  item: DraggableItemData;
+}>();
+
+const content = inject<DraggableListContext>('list');
+const defaultSlotName = computed(() =>
+  content?.ctx?.slots?.default ? 'default' : ''
+);
 </script>
+
+<template>
+  <div
+    v-if="
+      content && content.ctx && content.ctx.slots && content.ctx.slots.default
+    "
+  >
+    <slot :name="defaultSlotName" :item="item" />
+  </div>
+  <div v-else>
+    <!-- 这里可以放置备用的内容或者一个空的占位符 -->
+  </div>
+</template>

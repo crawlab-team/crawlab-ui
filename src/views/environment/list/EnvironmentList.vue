@@ -1,3 +1,17 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import useEnvironmentList from '@/views/environment/list/useEnvironmentList';
+
+export default defineComponent({
+  name: 'EnvironmentList',
+  setup() {
+    return {
+      ...useEnvironmentList(),
+    };
+  },
+});
+</script>
+
 <template>
   <cl-list-layout
     :action-functions="actionFunctions"
@@ -15,19 +29,5 @@
     </template>
   </cl-list-layout>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useEnvironmentList from '@/views/environment/list/useEnvironmentList';
-
-export default defineComponent({
-  name: 'EnvironmentList',
-  setup() {
-    return {
-      ...useEnvironmentList(),
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

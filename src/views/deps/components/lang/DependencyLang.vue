@@ -1,114 +1,13 @@
-<template>
-  <cl-list-layout
-    v-loading="loading"
-    class="dependency-list"
-    :table-columns="tableColumns"
-    :table-data="tableData"
-    :table-total="tableTotal"
-    :table-pagination="tablePagination"
-    :action-functions="actionFunctions"
-    :visible-buttons="['export', 'customize-columns']"
-    table-pagination-layout="total, prev, pager, next"
-    :table-actions-prefix="tableActionsPrefix"
-    @select="onSelect"
-  >
-    <template #nav-actions-extra>
-      <div class="top-bar">
-        <div class="top-bar-left">
-          <el-input
-            class="search-query"
-            v-model="searchQuery"
-            :placeholder="t('views.env.deps.common.actions.searchDependencies')"
-            :prefix-icon="Search"
-            clearable
-            @keyup.enter="onSearch"
-            @clear="onSearchClear"
-          />
-          <cl-label-button
-            class="search-btn"
-            :icon="['fa', 'search']"
-            :placeholder="t('common.search')"
-            :disabled="!installed ? !searchQuery : false"
-            @click="onSearch"
-          />
-          <el-radio-group
-            class="view-mode"
-            v-model="viewMode"
-            @change="onInstalledChange"
-          >
-            <el-radio-button label="installed">
-              <font-awesome-icon
-                :icon="['fa', 'check']"
-                style="margin-right: 5px"
-              />
-              {{ t('views.env.deps.common.status.installed') }}
-            </el-radio-button>
-            <el-radio-button label="installable">
-              <font-awesome-icon :icon="icon" style="margin-right: 5px" />
-              {{ t('views.env.deps.common.status.installable') }}
-            </el-radio-button>
-          </el-radio-group>
-          <cl-button
-            class-name="tasks-btn"
-            :type="runningTaskTotal === 0 ? 'primary' : 'warning'"
-            @click="() => onDialogOpen('tasks')"
-          >
-            <font-awesome-icon
-              :icon="
-                runningTaskTotal === 0 ? ['fa', 'tasks'] : ['fa', 'spinner']
-              "
-              :spin="runningTaskTotal > 0"
-              style="margin-right: 5px"
-            />
-            {{
-              runningTaskTotal === 0
-                ? t('views.env.deps.task.tasks')
-                : `${t('views.env.deps.task.tasks')} (${runningTaskTotal})`
-            }}
-          </cl-button>
-          <cl-fa-icon-button
-            class-name="update-btn"
-            type="primary"
-            :tooltip="updateTooltip"
-            :icon="updateInstalledLoading ? ['fa', 'spinner'] : ['fa', 'sync']"
-            :spin="updateInstalledLoading"
-            :disabled="updateInstalledLoading"
-            @click="onUpdate"
-          />
-        </div>
-      </div>
-    </template>
-    <template #extra>
-      <cl-install-form
-        :visible="dialogVisible.install"
-        :lang="lang"
-        :nodes="allNodes"
-        :names="installForm.names"
-        @confirm="onInstall"
-        @close="() => onDialogClose('install')"
-      />
-      <cl-uninstall-form
-        :visible="dialogVisible.uninstall"
-        :nodes="uninstallForm.nodes"
-        :names="uninstallForm.names"
-        @confirm="onUninstall"
-        @close="() => onDialogClose('uninstall')"
-      />
-      <cl-dialog
-        :title="t('views.env.deps.task.tasks')"
-        :visible="dialogVisible.tasks"
-        width="1024px"
-        @confirm="() => onDialogClose('tasks')"
-        @close="() => onDialogClose('tasks')"
-      >
-        <cl-dependency-task-list v-if="dialogVisible.tasks" :type="lang" />
-      </cl-dialog>
-    </template>
-  </cl-list-layout>
-</template>
-
 <script lang="ts">
-import { computed, defineComponent, h, onBeforeUnmount, onMounted, PropType, ref } from 'vue';
+import {
+  computed,
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  onMounted,
+  PropType,
+  ref,
+} from 'vue';
 import { ElMessage } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
@@ -571,6 +470,89 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-list-layout
+    v-loading="loading"
+    class="dependency-list"
+    :table-columns="tableColumns"
+    :table-data="tableData"
+    :table-total="tableTotal"
+    :table-pagination="tablePagination"
+    :action-functions="actionFunctions"
+    :visible-buttons="['export', 'customize-columns']"
+    table-pagination-layout="total, prev, pager, next"
+    :table-actions-prefix="tableActionsPrefix"
+    @select="onSelect"
+  >
+    <template #nav-actions-extra>
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <el-input
+            class="search-query"
+            v-model="searchQuery"
+            :placeholder="t('views.env.deps.common.actions.searchDependencies')"
+            :prefix-icon="Search"
+            clearable
+            @keyup.enter="onSearch"
+            @clear="onSearchClear"
+          />
+          <cl-label-button
+            class="search-btn"
+            :icon="['fa', 'search']"
+            :placeholder="t('common.search')"
+            :disabled="!installed ? !searchQuery : false"
+            @click="onSearch"
+          />
+          <el-radio-group
+            class="view-mode"
+            v-model="viewMode"
+            @change="onInstalledChange"
+          >
+            <el-radio-button label="installed">
+              <font-awesome-icon
+                :icon="['fa', 'check']"
+                style="margin-right: 5px"
+              />
+              {{ t('views.env.deps.common.status.installed') }}
+            </el-radio-button>
+            <el-radio-button label="installable">
+              <font-awesome-icon :icon="icon" style="margin-right: 5px" />
+              {{ t('views.env.deps.common.status.installable') }}
+            </el-radio-button>
+          </el-radio-group>
+          <cl-button
+            class-name="tasks-btn"
+            :type="runningTaskTotal === 0 ? 'primary' : 'warning'"
+            @click="() => onDialogOpen('tasks')"
+          >
+            <font-awesome-icon
+              :icon="
+                runningTaskTotal === 0 ? ['fa', 'tasks'] : ['fa', 'spinner']
+              "
+              :spin="runningTaskTotal > 0"
+              style="margin-right: 5px"
+            />
+            {{
+              runningTaskTotal === 0
+                ? t('views.env.deps.task.tasks')
+                : `${t('views.env.deps.task.tasks')} (${runningTaskTotal})`
+            }}
+          </cl-button>
+          <cl-fa-icon-button
+            class-name="update-btn"
+            type="primary"
+            :tooltip="updateTooltip"
+            :icon="updateInstalledLoading ? ['fa', 'spinner'] : ['fa', 'sync']"
+            :spin="updateInstalledLoading"
+            :disabled="updateInstalledLoading"
+            @click="onUpdate"
+          />
+        </div>
+      </div>
+    </template>
+  </cl-list-layout>
+</template>
 
 <style scoped>
 .search-query {

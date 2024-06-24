@@ -196,7 +196,7 @@ const useSpiderList = () => {
           value: (row: Spider) => {
             const time = row.stat?.last_task?.stat?.start_ts;
             if (!time) return;
-            return h(Time, { time } as TaskStatusProps);
+            return h(Time, { time });
           },
         },
         {

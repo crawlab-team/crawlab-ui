@@ -6,7 +6,7 @@ import useSpider from '@/components/spider/spider';
 import useNode from '@/components/node/node';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useRequest from '@/services/request';
-import useTask from '@/components/task/task';
+import useTask from '@/components/task/useTask';
 import { isCancellable } from '@/utils/task';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { isZeroObjectId } from '@/utils/mongo';

@@ -1,3 +1,21 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
+import { translate } from '@/utils';
+
+const t = translate;
+
+export default defineComponent({
+  name: 'NotificationDetailTabTriggers',
+  setup() {
+    return {
+      ...useNotificationDetail(),
+      t,
+    };
+  },
+});
+</script>
+
 <template>
   <div class="notification-detail-tab-triggers">
     <!--    <cl-transfer-->
@@ -28,24 +46,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
-import { translate } from '@/utils';
-
-const t = translate;
-
-export default defineComponent({
-  name: 'NotificationDetailTabTriggers',
-  setup() {
-    return {
-      ...useNotificationDetail(),
-      t,
-    };
-  },
-});
-</script>
-
 <style lang="scss" scoped>
 .notification-detail-tab-triggers {
   height: 100%;
@@ -59,12 +59,5 @@ export default defineComponent({
   .el-form {
     margin-top: 20px;
   }
-}
-</style>
-
-<style scoped>
-.notification-detail-tab-triggers:deep(.transfer .el-card),
-.notification-detail-tab-triggers:deep(.transfer .el-card .check-list) {
-  height: 100%;
 }
 </style>

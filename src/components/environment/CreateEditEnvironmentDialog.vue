@@ -1,7 +1,21 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClCreateEditEnvironmentDialog' });
+import useEnvironment from '@/components/environment/useEnvironment';
+import { getStore } from '@/store';
+
+const {
+  actionFunctions,
+  activeDialogKey,
+  confirmDisabled,
+  confirmLoading,
+  createEditDialogTabName,
+  createEditDialogVisible,
+} = useEnvironment(getStore());
+</script>
+
 <template>
   <cl-create-edit-dialog
     :action-functions="actionFunctions"
-    :batch-form-data="formList"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
     :tab-name="createEditDialogTabName"
@@ -14,23 +28,5 @@
     </template>
   </cl-create-edit-dialog>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useEnvironment from '@/components/environment/useEnvironment';
-import { getStore } from '@/store';
-
-export default defineComponent({
-  name: 'CreateEditEnvironmentDialog',
-  setup() {
-    // store
-    const store = getStore();
-
-    return {
-      ...useEnvironment(store),
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

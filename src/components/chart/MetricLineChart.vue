@@ -1,3 +1,37 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClMetricLineChart' });
+import { computed } from 'vue';
+import { plainClone } from '@/utils/object';
+import { LineChartProps } from '@/components/chart/LineChart.vue';
+
+const props = defineProps<
+  LineChartProps & {
+    metric?: string;
+  }
+>();
+
+const config = computed<EChartsConfig>(() => {
+  const config = plainClone(props.config);
+  return Object.assign(config || {}, {
+    option: {
+      title: {
+        show: false,
+      },
+      tooltip: {
+        axisPointer: {
+          type: 'cross',
+        },
+      },
+      yAxis: {
+        scale: true,
+      },
+    },
+  }) as EChartsConfig;
+});
+
+const title = computed<string>(() => `Metric: ${props.metric}`);
+</script>
+
 <template>
   <div class="metric-line-chart">
     <div class="metric-line-chart-top">
@@ -8,49 +42,6 @@
     <cl-line-chart :config="config" />
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
-import { lineChartProps } from './LineChart.vue';
-import { plainClone } from '@/utils/object';
-
-export default defineComponent({
-  name: 'MetricLineChart',
-  props: {
-    ...lineChartProps,
-    metric: {
-      type: String,
-    },
-  },
-  setup(props: MetricLineChartProps, { emit }) {
-    const config = computed<EChartsConfig>(() => {
-      const config = plainClone(props.config);
-      return Object.assign(config || {}, {
-        option: {
-          title: {
-            show: false,
-          },
-          tooltip: {
-            axisPointer: {
-              type: 'cross',
-            },
-          },
-          yAxis: {
-            scale: true,
-          },
-        },
-      }) as EChartsConfig;
-    });
-
-    const title = computed<string>(() => `Metric: ${props.metric}`);
-
-    return {
-      config,
-      title,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .metric-line-chart {

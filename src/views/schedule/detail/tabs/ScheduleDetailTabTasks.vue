@@ -1,10 +1,11 @@
-<template>
-  <div class="schedule-detail-tab-tasks">
-    <cl-task-list no-actions embedded />
-  </div>
-</template>
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, onBeforeUnmount, watch } from 'vue';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  watch,
+} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { FILTER_OP_EQUAL } from '@/constants/filter';
@@ -60,14 +61,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="schedule-detail-tab-tasks">
+    <cl-task-list no-actions embedded />
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .schedule-detail-tab-overview {
   margin: 20px;
-}
-</style>
-
-<style scoped>
-.schedule-detail-tab-tasks:deep(.el-table) {
-  border: none;
 }
 </style>

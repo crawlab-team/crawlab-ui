@@ -1,3 +1,24 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClActionTab' });
+
+import { translate } from '@/utils';
+
+defineProps<{
+  icon?: Icon;
+  title?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: 'click'): void;
+}>();
+
+const t = translate;
+
+const onClick = () => {
+  emit('click');
+};
+</script>
+
 <template>
   <el-tooltip :content="t('components.tab.newTab')">
     <cl-tab
@@ -10,37 +31,6 @@
     />
   </el-tooltip>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import Icon from '@/components/icon/Icon.vue';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'ActionTab',
-  props: {
-    icon: {
-      type: [String, Array] as PropType<Icon>,
-    },
-    title: {
-      type: String,
-    },
-  },
-  emits: ['click'],
-  setup(props: ActionTabProps, { emit }) {
-    const { t } = useI18n();
-
-    const onClick = () => {
-      emit('click');
-    };
-
-    return {
-      onClick,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .action-tab {

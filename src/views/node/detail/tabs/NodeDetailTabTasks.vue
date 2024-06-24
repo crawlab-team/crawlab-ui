@@ -1,8 +1,3 @@
-<template>
-  <div class="node-detail-tab-tasks">
-    <cl-task-list no-actions embedded />
-  </div>
-</template>
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
@@ -41,14 +36,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="node-detail-tab-tasks">
+    <cl-task-list no-actions embedded />
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .node-detail-tab-overview {
   margin: 20px;
-}
-</style>
-
-<style scoped>
-.node-detail-tab-tasks:deep(.el-table) {
-  border: none;
 }
 </style>

@@ -1,8 +1,71 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClInputList' });
+import { ref, watch } from 'vue';
+import { cloneArray, translate } from '@/utils';
+
+const props = withDefaults(
+  defineProps<{
+    modelValue: string[];
+    placeholder: string;
+    size: BasicSize;
+    actionSize: BasicSize;
+    disabled: boolean;
+  }>(),
+  {
+    modelValue: () => [''],
+    placeholder: '',
+    size: 'small',
+    actionSize: 'small',
+  }
+);
+
+const emit = defineEmits<{
+  (e: 'update:model-value', value: string[]): void;
+}>();
+
+// i18n
+const t = translate;
+
+const internalModelValue = ref(props.modelValue);
+
+const getOnChangeFn = (index: number) => {
+  return (value: string) => {
+    const newModelValue = cloneArray(internalModelValue.value || []);
+    newModelValue[index] = value;
+    emit('update:model-value', newModelValue);
+  };
+};
+
+const onAdd = (index: number) => {
+  const newModelValue = cloneArray(internalModelValue.value || []);
+  newModelValue.splice(index + 1, 0, '');
+  internalModelValue.value = newModelValue;
+  emit('update:model-value', newModelValue);
+};
+
+const onDelete = (index: number) => {
+  const newModelValue = cloneArray(internalModelValue.value || []);
+  newModelValue.splice(index, 1);
+  if (newModelValue.length === 0) {
+    newModelValue.push('');
+  }
+  internalModelValue.value = newModelValue;
+  emit('update:model-value', newModelValue);
+};
+
+watch(
+  () => props.modelValue,
+  () => {
+    internalModelValue.value = props.modelValue || [''];
+  }
+);
+</script>
+
 <template>
   <div class="input-list">
     <div
       class="input-list-item"
-      v-for="(v, $index) in internalModelValue"
+      v-for="(_, $index) in internalModelValue"
       :key="$index"
     >
       <el-input
@@ -38,85 +101,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue';
-import { cloneArray, translate } from '@/utils';
-
-// i18n
-const t = translate;
-
-export default defineComponent({
-  name: 'InputList',
-  props: {
-    modelValue: {
-      type: Array as PropType<string[]>,
-      default: () => {
-        return [''];
-      },
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    size: {
-      type: String as PropType<BasicType>,
-    },
-    actionSize: {
-      type: String as PropType<BasicType>,
-      default: 'small',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['update:model-value'],
-  setup(props: InputListProps, { emit }) {
-    const internalModelValue = ref(props.modelValue);
-
-    const getOnChangeFn = (index: number) => {
-      return (value: string) => {
-        const newModelValue = cloneArray(internalModelValue.value || []);
-        newModelValue[index] = value;
-        emit('update:model-value', newModelValue);
-      };
-    };
-
-    const onAdd = (index: number) => {
-      const newModelValue = cloneArray(internalModelValue.value || []);
-      newModelValue.splice(index + 1, 0, '');
-      internalModelValue.value = newModelValue;
-      emit('update:model-value', newModelValue);
-    };
-
-    const onDelete = (index: number) => {
-      const newModelValue = cloneArray(internalModelValue.value || []);
-      newModelValue.splice(index, 1);
-      if (newModelValue.length === 0) {
-        newModelValue.push('');
-      }
-      internalModelValue.value = newModelValue;
-      emit('update:model-value', newModelValue);
-    };
-
-    watch(
-      () => props.modelValue,
-      () => {
-        internalModelValue.value = props.modelValue || [''];
-      }
-    );
-
-    return {
-      internalModelValue,
-      getOnChangeFn,
-      onAdd,
-      onDelete,
-      t,
-    };
-  },
-});
-</script>
-
 <style lang="scss" scoped>
 .input-list {
   display: flex;
@@ -138,11 +122,5 @@ export default defineComponent({
       padding-left: 5px;
     }
   }
-}
-</style>
-
-<style scoped>
-.input-list:deep(.actions .tag:not(:first-child)) {
-  margin-left: 5px;
 }
 </style>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNavSidebarTree' });
-import { defineComponent, PropType, ref } from 'vue';
-import { emptyArrayFunc } from '@/utils/func';
+import { ref } from 'vue';
 
 const props = defineProps<{
   activeKey: string;

@@ -1,15 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFormItem' });
-import {
-  computed,
-  defineComponent,
-  inject,
-  onMounted,
-  PropType,
-  ref,
-  StyleValue,
-  watch,
-} from 'vue';
+import { computed, inject, onMounted, ref, StyleValue, watch } from 'vue';
 import { RuleItem } from 'async-validator';
 import { cloneArray } from '@/utils/object';
 

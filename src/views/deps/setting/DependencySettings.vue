@@ -1,27 +1,3 @@
-<template>
-  <cl-list-layout
-    :table-columns="tableColumns"
-    :table-data="tableData"
-    :table-total="tableTotal"
-    :table-pagination="tablePagination"
-    :action-functions="actionFunctions"
-    :nav-actions="navActions"
-    no-actions
-    :visible-buttons="['export', 'customize-columns']"
-  >
-    <template #extra>
-      <cl-dialog
-        :visible="dialogVisible"
-        width="800px"
-        @confirm="onDialogConfirm"
-        @close="onDialogClose"
-      >
-        <cl-dependency-setting-form :form="form" @change="onFormChange" />
-      </cl-dialog>
-    </template>
-  </cl-list-layout>
-</template>
-
 <script lang="ts">
 import { defineComponent, computed, ref, h } from 'vue';
 import { ElMessage } from 'element-plus';
@@ -170,5 +146,29 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-list-layout
+    :table-columns="tableColumns"
+    :table-data="tableData"
+    :table-total="tableTotal"
+    :table-pagination="tablePagination"
+    :action-functions="actionFunctions"
+    :nav-actions="navActions"
+    no-actions
+    :visible-buttons="['export', 'customize-columns']"
+  >
+    <template #extra>
+      <cl-dialog
+        :visible="dialogVisible"
+        width="800px"
+        @confirm="onDialogConfirm"
+        @close="onDialogClose"
+      >
+        <cl-dependency-setting-form :form="form" @change="onFormChange" />
+      </cl-dialog>
+    </template>
+  </cl-list-layout>
+</template>
 
 <style scoped></style>

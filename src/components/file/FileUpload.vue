@@ -1,11 +1,11 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFileUpload' });
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES } from '@/constants/file';
 import { ElUpload, UploadFile } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { UploadFilled } from '@element-plus/icons-vue';
-import { sendEvent } from '@/admin/umeng';
+import { FileWithPath } from '@/components/file/file';
 
 const props = defineProps<{
   mode: FileUploadMode;

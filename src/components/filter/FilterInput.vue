@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFilterInput' });
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { debounce } from 'vue-debounce';
 
 defineProps<{

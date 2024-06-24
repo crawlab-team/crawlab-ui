@@ -1,3 +1,45 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClDataSourceForm' });
+import { computed } from 'vue';
+import { getStore } from '@/store';
+import useDataSource from '@/components/ds/useDataSource';
+import { useI18n } from 'vue-i18n';
+import useDataSourceDetail from '@/views/ds/detail/useDataSourceDetail';
+import {
+  DATA_SOURCE_CONNECT_TYPE_HOSTS,
+  DATA_SOURCE_CONNECT_TYPE_STANDARD,
+  DATA_SOURCE_CONNECT_TYPE_URL,
+} from '@/constants/ds';
+
+const props = defineProps<{
+  readonly?: boolean;
+}>();
+
+// i18n
+const { t } = useI18n();
+
+// store
+const store = getStore();
+
+const {
+  form,
+  isSelectiveForm,
+  isFormItemDisabled,
+  onConnectTypeChange,
+  onHostsAdd,
+  onHostsDelete,
+  typeOptions,
+} = useDataSource(store);
+
+const { activeId } = useDataSourceDetail();
+
+const { onChangePasswordFunc } = useDataSource(store);
+
+const onChangePassword = () => onChangePasswordFunc(activeId.value);
+
+const isDetail = computed<boolean>(() => !!activeId.value);
+</script>
+
 <template>
   <cl-form
     class="data-source-form"
@@ -53,15 +95,15 @@
         :disabled="isFormItemDisabled('connect_type')"
         @change="onConnectTypeChange"
       >
-        <el-radio label="standard">{{
-          t('components.ds.connectType.label.standard')
-        }}</el-radio>
-        <el-radio label="url">{{
-          t('components.ds.connectType.label.url')
-        }}</el-radio>
-        <el-radio label="hosts">{{
-          t('components.ds.connectType.label.hosts')
-        }}</el-radio>
+        <el-radio label="standard"
+          >{{ t('components.ds.connectType.label.standard') }}
+        </el-radio>
+        <el-radio label="url"
+          >{{ t('components.ds.connectType.label.url') }}
+        </el-radio>
+        <el-radio label="hosts"
+          >{{ t('components.ds.connectType.label.hosts') }}
+        </el-radio>
       </el-radio-group>
     </cl-form-item>
     <!--./Row-->
@@ -99,7 +141,7 @@
         :label="t('components.ds.form.hosts')"
         prop="hosts"
       >
-        <el-row v-for="(h, $index) in form.hosts" :key="$index">
+        <el-row v-for="(_, $index) in form.hosts" :key="$index">
           <el-input
             class="hosts-item-input"
             v-model="form.hosts[$index]"
@@ -189,53 +231,6 @@
     <!--./Row-->
   </cl-form>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
-import { getStore } from '@/store';
-import useDataSource from '@/components/ds/useDataSource';
-import { useI18n } from 'vue-i18n';
-import useDataSourceDetail from '@/views/ds/detail/useDataSourceDetail';
-import {
-  DATA_SOURCE_CONNECT_TYPE_HOSTS,
-  DATA_SOURCE_CONNECT_TYPE_STANDARD,
-  DATA_SOURCE_CONNECT_TYPE_URL,
-} from '@/constants/ds';
-
-export default defineComponent({
-  name: 'DataSourceForm',
-  props: {
-    readonly: {
-      type: Boolean,
-    },
-  },
-  setup() {
-    // i18n
-    const { t } = useI18n();
-
-    // store
-    const store = getStore();
-
-    const { activeId } = useDataSourceDetail();
-
-    const { onChangePasswordFunc } = useDataSource(store);
-
-    const onChangePassword = () => onChangePasswordFunc(activeId.value);
-
-    const isDetail = computed<boolean>(() => !!activeId.value);
-
-    return {
-      ...useDataSource(store),
-      onChangePassword,
-      isDetail,
-      DATA_SOURCE_CONNECT_TYPE_STANDARD,
-      DATA_SOURCE_CONNECT_TYPE_URL,
-      DATA_SOURCE_CONNECT_TYPE_HOSTS,
-      t,
-    };
-  },
-});
-</script>
 
 <style scoped>
 .data-source-form:deep(.hosts-item .hosts-item-input) {

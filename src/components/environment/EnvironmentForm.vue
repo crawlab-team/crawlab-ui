@@ -1,3 +1,22 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClEnvironmentForm' });
+import { getStore } from '@/store';
+import useEnvironment from '@/components/environment/useEnvironment';
+import { useI18n } from 'vue-i18n';
+
+defineProps<{
+  readonly?: boolean;
+}>();
+
+// i18n
+const { t } = useI18n();
+
+// store
+const store = getStore();
+
+const { form, isSelectiveForm, isFormItemDisabled } = useEnvironment(store);
+</script>
+
 <template>
   <cl-form
     class="environment-form"
@@ -38,34 +57,6 @@
     <!--./Row-->
   </cl-form>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { getStore } from '@/store';
-import useEnvironment from '@/components/environment/useEnvironment';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'EnvironmentForm',
-  props: {
-    readonly: {
-      type: Boolean,
-    },
-  },
-  setup() {
-    // i18n
-    const { t } = useI18n();
-
-    // store
-    const store = getStore();
-
-    return {
-      ...useEnvironment(store),
-      t,
-    };
-  },
-});
-</script>
 
 <style scoped>
 .environment-form:deep(.hosts-item .hosts-item-input) {

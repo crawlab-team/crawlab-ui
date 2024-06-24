@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ClDetailTabList from '@/components/list/DetailTabList.vue';
-
 defineOptions({ name: 'ClSpiderDetailTabTasks' });
 </script>
 

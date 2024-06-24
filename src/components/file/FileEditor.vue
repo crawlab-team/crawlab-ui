@@ -4,6 +4,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
 import { FILE_ROOT } from '@/constants/file';
+import { FileEditorStyles, FileNavItem } from '@/components/file/file';
 
 // components
 import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';
@@ -178,7 +179,7 @@ const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
 };
 
 const files = computed<FileNavItem[]>(() => {
-  const { navItems } = props as FileEditorProps;
+  const { navItems } = props;
   const root: FileNavItem = {
     id: FILE_ROOT,
     path: FILE_ROOT,

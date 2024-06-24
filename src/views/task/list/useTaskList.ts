@@ -10,7 +10,7 @@ import { sendEvent } from '@/admin/umeng';
 import { getStatusOptions, isCancellable } from '@/utils/task';
 import useRequest from '@/services/request';
 import NavLink from '@/components/nav/NavLink.vue';
-import TaskStatus from '@/components/task/TaskStatus.vue';
+import TaskStatusComp from '@/components/task/TaskStatus.vue';
 import TaskPriority from '@/components/task/TaskPriority.vue';
 import NodeType from '@/components/node/NodeType.vue';
 import Time from '@/components/time/Time.vue';
@@ -18,7 +18,7 @@ import Duration from '@/components/time/Duration.vue';
 import TaskResults from '@/components/task/TaskResults.vue';
 import useNode from '@/components/node/node';
 import useSpider from '@/components/spider/spider';
-import useTask from '@/components/task/task';
+import useTask from '@/components/task/useTask';
 import useSchedule from '@/components/schedule/useSchedule';
 import TaskCommand from '@/components/task/TaskCommand.vue';
 import {
@@ -35,6 +35,7 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
+import { TaskStatus } from '@/components/task/task';
 
 const { post } = useRequest();
 
@@ -305,8 +306,8 @@ const useTaskList = () => {
           icon: ['fa', 'check-square'],
           width: '120',
           value: (row: Task) => {
-            return h(TaskStatus, {
-              status: row.status,
+            return h(TaskStatusComp, {
+              status: row.status as TaskStatus,
               error: row.error,
             });
           },
@@ -402,7 +403,7 @@ const useTaskList = () => {
                 router.push(`/tasks/${row._id}/data`);
                 sendEvent('click_task_list_actions_view_data');
               },
-            } as TaskResultsProps);
+            });
           },
         },
         {

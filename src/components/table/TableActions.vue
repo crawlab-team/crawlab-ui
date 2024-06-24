@@ -1,12 +1,11 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClTableActions' });
-import { defineComponent, inject, PropType } from 'vue';
-import { ACTION_ADD, ACTION_DELETE, ACTION_EDIT } from '@/constants/action';
+import { inject } from 'vue';
+import { ACTION_DELETE, ACTION_EDIT } from '@/constants/action';
 import {
   TABLE_ACTION_CUSTOMIZE_COLUMNS,
   TABLE_ACTION_EXPORT,
 } from '@/constants/table';
-import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { emptyArrayFunc, getPrimaryPath, translate } from '@/utils';

@@ -1,3 +1,27 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClNodeForm' });
+import { useStore } from 'vuex';
+import useNode from '@/components/node/node';
+import { useI18n } from 'vue-i18n';
+import { sendEvent } from '@/admin/umeng';
+
+defineProps<{
+  readonly?: boolean;
+}>();
+
+// i18n
+const { t } = useI18n();
+
+// store
+const store = useStore();
+
+const { form, isSelectiveForm, isFormItemDisabled } = useNode(store);
+
+const onEnabledChange = (value: boolean) => {
+  sendEvent(value ? 'click_node_form_enable' : 'click_node_form_disable');
+};
+</script>
+
 <template>
   <cl-form v-if="form" ref="formRef" :model="form" :selective="isSelectiveForm">
     <!--Row-->
@@ -23,22 +47,6 @@
       prop="key"
     >
       <el-input v-locate="'key'" :model-value="form.key" disabled />
-    </cl-form-item>
-    <!--./Row-->
-
-    <!--Row-->
-    <!--TODO: implement tags later-->
-    <cl-form-item
-      v-if="false"
-      :span="2"
-      :label="t('components.node.form.tags')"
-      prop="tags"
-    >
-      <cl-tag-input
-        v-locate="'tags'"
-        v-model="form.tags"
-        :disabled="isFormItemDisabled('tags')"
-      />
     </cl-form-item>
     <!--./Row-->
 
@@ -129,39 +137,5 @@
   </cl-form>
   <!--./Row-->
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import useNode from '@/components/node/node';
-import { useI18n } from 'vue-i18n';
-import { sendEvent } from '@/admin/umeng';
-
-export default defineComponent({
-  name: 'NodeForm',
-  props: {
-    readonly: {
-      type: Boolean,
-    },
-  },
-  setup(props, { emit }) {
-    // i18n
-    const { t } = useI18n();
-
-    // store
-    const store = useStore();
-
-    const onEnabledChange = (value: boolean) => {
-      sendEvent(value ? 'click_node_form_enable' : 'click_node_form_disable');
-    };
-
-    return {
-      ...useNode(store),
-      onEnabledChange,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped></style>

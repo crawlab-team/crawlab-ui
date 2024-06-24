@@ -1,17 +1,3 @@
-<template>
-  <div class="notification-detail-tab-template">
-    <el-input
-      v-model="internalTitle"
-      class="title"
-      :placeholder="t('views.notification.settings.form.title')"
-      @input="onTitleChange"
-    />
-    <div class="simple-mde">
-      <textarea :value="form.template" ref="simpleMDERef" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { translate } from '@/utils';
@@ -90,6 +76,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <div class="notification-detail-tab-template">
+    <el-input
+      v-model="internalTitle"
+      class="title"
+      :placeholder="t('views.notification.settings.form.title')"
+      @input="onTitleChange"
+    />
+    <div class="simple-mde">
+      <textarea :value="form.template" ref="simpleMDERef" />
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .notification-detail-tab-template {

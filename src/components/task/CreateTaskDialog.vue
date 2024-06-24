@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateTaskDialog' });
 import { useStore } from 'vuex';
-import useTask from '@/components/task/task';
+import useTask from '@/components/task/useTask';
 
 defineProps<{
   title?: string;

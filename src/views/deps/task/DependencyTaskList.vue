@@ -1,24 +1,3 @@
-<template>
-  <cl-table
-    :columns="tableColumns"
-    :data="tableData"
-    :page="tablePagination.page"
-    :page-size="tablePagination.size"
-    :total="tableTotal"
-    :visible-buttons="['']"
-    @pagination-change="onPaginationChange"
-  />
-  <cl-dialog
-    :title="t('views.env.deps.task.form.logs')"
-    :visible="dialogVisible.logs"
-    width="1200px"
-    @confirm="onLogsClose"
-    @close="onLogsClose"
-  >
-    <cl-logs-view :logs="logs" />
-  </cl-dialog>
-</template>
-
 <script lang="ts">
 import {
   computed,
@@ -34,9 +13,10 @@ import { translate } from '@/utils';
 import useRequest from '@/services/request';
 import TaskAction from '@/views/deps/task/TaskAction.vue';
 import NodeType from '@/components/node/NodeType.vue';
-import TaskStatus from '@/components/task/TaskStatus.vue';
+import TaskStatusComp from '@/components/task/TaskStatus.vue';
 import Tag from '@/components/tag/Tag.vue';
 import Time from '@/components/time/Time.vue';
+import { TaskStatus } from '@/components/task/task';
 
 const t = translate;
 
@@ -111,7 +91,10 @@ export default defineComponent({
         icon: ['fa', 'check-square'],
         width: '120',
         value: (row: EnvDepsTask) => {
-          return h(TaskStatus, { status: row.status, error: row.error });
+          return h(TaskStatusComp, {
+            status: row.status as TaskStatus,
+            error: row.error,
+          });
         },
       },
       {
@@ -215,5 +198,26 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-table
+    :columns="tableColumns"
+    :data="tableData"
+    :page="tablePagination.page"
+    :page-size="tablePagination.size"
+    :total="tableTotal"
+    :visible-buttons="['']"
+    @pagination-change="onPaginationChange"
+  />
+  <cl-dialog
+    :title="t('views.env.deps.task.form.logs')"
+    :visible="dialogVisible.logs"
+    width="1200px"
+    @confirm="onLogsClose"
+    @close="onLogsClose"
+  >
+    <cl-logs-view :logs="logs" />
+  </cl-dialog>
+</template>
 
 <style scoped></style>

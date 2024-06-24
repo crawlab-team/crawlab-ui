@@ -1,9 +1,3 @@
-<template>
-  <div class="simple-layout" :style="{ background, padding }">
-    <slot> </slot>
-  </div>
-</template>
-
 <script>
 export default {
   name: 'SimpleLayout',
@@ -21,6 +15,12 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div class="simple-layout" :style="{ background, padding }">
+    <slot></slot>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .simple-layout {

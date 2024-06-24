@@ -1,7 +1,3 @@
-<template>
-  <cl-tag :type="type" :label="actionName" :icon="icon" />
-</template>
-
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 
@@ -52,5 +48,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <cl-tag :type="type" :label="actionName" :icon="icon" />
+</template>
 
 <style scoped></style>

@@ -1,140 +1,3 @@
-<template>
-  <div class="login-container">
-    <canvas id="canvas" class="login-canvas" />
-    <el-form
-      ref="loginFormRef"
-      :model="loginForm"
-      :rules="loginRules"
-      auto-complete="on"
-      class="login-form"
-      label-position="left"
-    >
-      <h3 class="title">
-        <img :src="logo" alt="logo" class="logo-img" />
-        <!--        <span class="logo-title">Crawlab</span>-->
-        <span class="logo-sub-title">
-          <div class="logo-sub-title-block">
-            {{ t(systemInfo.edition || '') }}
-          </div>
-          <div class="logo-sub-title-block">
-            {{ systemInfo.version }}
-          </div>
-        </span>
-      </h3>
-      <el-form-item prop="username" style="margin-bottom: 28px">
-        <el-input
-          v-model="loginForm.username"
-          :placeholder="t('views.login.loginForm.username')"
-          auto-complete="on"
-          name="username"
-          type="text"
-          size="large"
-          @keyup.enter="onLogin"
-        />
-      </el-form-item>
-      <el-form-item prop="password" style="margin-bottom: 28px">
-        <el-input
-          v-model="loginForm.password"
-          :placeholder="t('views.login.loginForm.password')"
-          auto-complete="on"
-          name="password"
-          type="password"
-          size="large"
-          @keyup.enter="onLogin"
-        />
-      </el-form-item>
-      <el-form-item
-        v-if="isSignup"
-        prop="confirmPassword"
-        style="margin-bottom: 28px"
-      >
-        <el-input
-          v-model="loginForm.confirmPassword"
-          :placeholder="t('views.login.loginForm.confirmPassword')"
-          auto-complete="on"
-          name="confirm-password"
-          size="large"
-        />
-      </el-form-item>
-      <el-form-item v-if="isSignup" prop="email" style="margin-bottom: 28px">
-        <el-input
-          v-model="loginForm.email"
-          :placeholder="t('views.login.loginForm.email')"
-          name="email"
-          size="large"
-        />
-      </el-form-item>
-      <el-form-item style="border: none">
-        <el-button
-          v-if="isSignup"
-          :loading="loading"
-          style="width: 100%"
-          type="primary"
-          size="large"
-        >
-          {{ t('views.login.loginForm.signUp') }}
-        </el-button>
-        <el-button
-          v-if="!isSignup"
-          :loading="loading"
-          style="width: 100%"
-          type="primary"
-          size="large"
-          @click="onLogin"
-        >
-          {{ t('views.login.loginForm.signIn') }}
-        </el-button>
-      </el-form-item>
-      <div class="alternatives">
-        <div class="left">
-          <el-tooltip
-            :content="t('views.login.forgotPassword.content')"
-            trigger="click"
-          >
-            <span class="forgot-password">{{
-              t('views.login.forgotPassword.label')
-            }}</span>
-          </el-tooltip>
-        </div>
-      </div>
-      <div class="tips">
-        <span>{{ t('views.login.initial.title') }}: admin/admin</span>
-        <!--TODO: implement github stars-->
-        <a
-          v-if="false"
-          href="https://github.com/crawlab-team/crawlab"
-          style="float: right"
-          target="_blank"
-        >
-          <img
-            alt="github-stars"
-            src="https://img.shields.io/github/stars/crawlab-team/crawlab?logo=github"
-          />
-        </a>
-      </div>
-      <div class="lang">
-        <span :class="lang === 'zh' ? 'active' : ''" @click="setLang('zh')"
-          >中文</span
-        >
-        |
-        <span :class="lang === 'en' ? 'active' : ''" @click="setLang('en')"
-          >English</span
-        >
-      </div>
-      <div v-if="false" class="documentation">
-        <a href="https://docs-next.crawlab.cn" target="_blank">{{
-          t('views.login.documentation')
-        }}</a>
-      </div>
-      <div class="mobile-warning" v-if="isShowMobileWarning">
-        <el-alert :closable="false" type="error">
-          {{ t('views.login.mobile.warning') }}
-        </el-alert>
-      </div>
-    </el-form>
-  </div>
-</template>
-
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import { isValidUsername } from '@/utils/validate';
@@ -330,6 +193,143 @@ export default defineComponent({
 });
 </script>
 
+<template>
+  <div class="login-container">
+    <canvas id="canvas" class="login-canvas" />
+    <el-form
+      ref="loginFormRef"
+      :model="loginForm"
+      :rules="loginRules"
+      auto-complete="on"
+      class="login-form"
+      label-position="left"
+    >
+      <h3 class="title">
+        <img :src="logo" alt="logo" class="logo-img" />
+        <!--        <span class="logo-title">Crawlab</span>-->
+        <span class="logo-sub-title">
+          <div class="logo-sub-title-block">
+            {{ t(systemInfo.edition || '') }}
+          </div>
+          <div class="logo-sub-title-block">
+            {{ systemInfo.version }}
+          </div>
+        </span>
+      </h3>
+      <el-form-item prop="username" style="margin-bottom: 28px">
+        <el-input
+          v-model="loginForm.username"
+          :placeholder="t('views.login.loginForm.username')"
+          auto-complete="on"
+          name="username"
+          type="text"
+          size="large"
+          @keyup.enter="onLogin"
+        />
+      </el-form-item>
+      <el-form-item prop="password" style="margin-bottom: 28px">
+        <el-input
+          v-model="loginForm.password"
+          :placeholder="t('views.login.loginForm.password')"
+          auto-complete="on"
+          name="password"
+          type="password"
+          size="large"
+          @keyup.enter="onLogin"
+        />
+      </el-form-item>
+      <el-form-item
+        v-if="isSignup"
+        prop="confirmPassword"
+        style="margin-bottom: 28px"
+      >
+        <el-input
+          v-model="loginForm.confirmPassword"
+          :placeholder="t('views.login.loginForm.confirmPassword')"
+          auto-complete="on"
+          name="confirm-password"
+          size="large"
+        />
+      </el-form-item>
+      <el-form-item v-if="isSignup" prop="email" style="margin-bottom: 28px">
+        <el-input
+          v-model="loginForm.email"
+          :placeholder="t('views.login.loginForm.email')"
+          name="email"
+          size="large"
+        />
+      </el-form-item>
+      <el-form-item style="border: none">
+        <el-button
+          v-if="isSignup"
+          :loading="loading"
+          style="width: 100%"
+          type="primary"
+          size="large"
+        >
+          {{ t('views.login.loginForm.signUp') }}
+        </el-button>
+        <el-button
+          v-if="!isSignup"
+          :loading="loading"
+          style="width: 100%"
+          type="primary"
+          size="large"
+          @click="onLogin"
+        >
+          {{ t('views.login.loginForm.signIn') }}
+        </el-button>
+      </el-form-item>
+      <div class="alternatives">
+        <div class="left">
+          <el-tooltip
+            :content="t('views.login.forgotPassword.content')"
+            trigger="click"
+          >
+            <span class="forgot-password">{{
+              t('views.login.forgotPassword.label')
+            }}</span>
+          </el-tooltip>
+        </div>
+      </div>
+      <div class="tips">
+        <span>{{ t('views.login.initial.title') }}: admin/admin</span>
+        <!--TODO: implement github stars-->
+        <a
+          v-if="false"
+          href="https://github.com/crawlab-team/crawlab"
+          style="float: right"
+          target="_blank"
+        >
+          <img
+            alt="github-stars"
+            src="https://img.shields.io/github/stars/crawlab-team/crawlab?logo=github"
+          />
+        </a>
+      </div>
+      <div class="lang">
+        <span :class="lang === 'zh' ? 'active' : ''" @click="setLang('zh')"
+          >中文</span
+        >
+        |
+        <span :class="lang === 'en' ? 'active' : ''" @click="setLang('en')"
+          >English</span
+        >
+      </div>
+      <div v-if="false" class="documentation">
+        <a href="https://docs-next.crawlab.cn" target="_blank">{{
+          t('views.login.documentation')
+        }}</a>
+      </div>
+      <div class="mobile-warning" v-if="isShowMobileWarning">
+        <el-alert :closable="false" type="error">
+          {{ t('views.login.mobile.warning') }}
+        </el-alert>
+      </div>
+    </el-form>
+  </div>
+</template>
+
 <style lang="scss" rel="stylesheet/scss" scoped>
 .login-container {
   position: fixed;
@@ -508,18 +508,5 @@ export default defineComponent({
   .mobile-warning {
     margin-top: 20px;
   }
-}
-</style>
-<style scoped>
-.mobile-warning:deep(.el-alert .el-alert__description) {
-  font-size: 1.2rem;
-}
-
-#canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
 }
 </style>

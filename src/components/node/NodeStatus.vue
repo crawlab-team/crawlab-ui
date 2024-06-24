@@ -20,7 +20,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const data = computed<TagData>(() => {
+const data = computed<TagProps>(() => {
   const { status } = props;
   switch (status) {
     case NODE_STATUS_UNREGISTERED:

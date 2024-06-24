@@ -10,7 +10,7 @@ import TaskMode from '@/components/task/TaskMode.vue';
 import ScheduleCron from '@/components/schedule/ScheduleCron.vue';
 import Switch from '@/components/switch/Switch.vue';
 import useSpider from '@/components/spider/spider';
-import useTask from '@/components/task/task';
+import useTask from '@/components/task/useTask';
 import { translate } from '@/utils/i18n';
 import { sendEvent } from '@/admin/umeng';
 import {
@@ -26,7 +26,6 @@ import {
   FILTER_OP_EQUAL,
   TASK_MODE_ALL_NODES,
   TASK_MODE_RANDOM,
-  TASK_MODE_SELECTED_NODE_TAGS,
   TASK_MODE_SELECTED_NODES,
 } from '@/constants';
 import { isAllowedAction } from '@/utils';

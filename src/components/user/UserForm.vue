@@ -1,3 +1,29 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClUserForm' });
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
+import useUser from '@/components/user/user';
+import useUserDetail from '@/views/user/detail/useUserDetail';
+
+// i18n
+const { t } = useI18n();
+
+// store
+const store = useStore();
+
+const { activeId } = useUserDetail();
+
+const { onChangePasswordFunc } = useUser(store);
+
+const onChangePassword = () => onChangePasswordFunc(activeId.value);
+
+const isDetail = computed<boolean>(() => !!activeId.value);
+
+const { form, formRules, isSelectiveForm, isFormItemDisabled } = useUser(store);
+</script>
+
 <template>
   <cl-form
     v-if="form"
@@ -87,43 +113,5 @@
     <!-- ./Row -->
   </cl-form>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import useUser from '@/components/user/user';
-import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
-import useUserDetail from '@/views/user/detail/useUserDetail';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'UserForm',
-  setup() {
-    // i18n
-    const { t } = useI18n();
-
-    // store
-    const ns = 'user';
-    const store = useStore();
-
-    const { activeId } = useUserDetail();
-
-    const { onChangePasswordFunc } = useUser(store);
-
-    const onChangePassword = () => onChangePasswordFunc(activeId.value);
-
-    const isDetail = computed<boolean>(() => !!activeId.value);
-
-    return {
-      ...useUser(store),
-      ROLE_ADMIN,
-      ROLE_NORMAL,
-      onChangePassword,
-      isDetail,
-      t,
-    };
-  },
-});
-</script>
 
 <style scoped></style>

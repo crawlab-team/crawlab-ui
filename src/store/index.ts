@@ -49,7 +49,7 @@ export const setStore = (store: Store<RootStoreState>) => {
   _store = store;
 };
 
-export const getStore = <T>(): Store<T | RootStoreState> => {
+export const getStore = (): Store<RootStoreState> => {
   if (!_store) {
     _store = createStore();
   }

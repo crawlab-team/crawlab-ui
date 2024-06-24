@@ -1,19 +1,3 @@
-<template>
-  <el-container class="basic-layout">
-    <cl-sidebar />
-    <el-container
-      :class="sidebarCollapsed ? 'collapsed' : ''"
-      class="container"
-    >
-      <cl-header />
-      <cl-tabs-view />
-      <div class="container-body">
-        <router-view />
-      </div>
-    </el-container>
-  </el-container>
-</template>
-
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
@@ -32,6 +16,22 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <el-container class="basic-layout">
+    <cl-sidebar />
+    <el-container
+      :class="sidebarCollapsed ? 'collapsed' : ''"
+      class="container"
+    >
+      <cl-header />
+      <cl-tabs-view />
+      <div class="container-body">
+        <router-view />
+      </div>
+    </el-container>
+  </el-container>
+</template>
 
 <style lang="scss" scoped>
 .basic-layout {

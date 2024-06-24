@@ -1,3 +1,77 @@
+<script setup lang="ts">
+defineOptions({ name: 'ClTransferPanel' });
+import { computed, ref, watch } from 'vue';
+import { Search } from '@element-plus/icons-vue';
+import { translate } from '@/utils';
+import { DraggableItemData } from '@/components/drag/DraggableItem.vue';
+
+const props = withDefaults(
+  defineProps<{
+    title: string;
+    checked?: string[];
+    data?: DraggableItemData[];
+  }>(),
+  {
+    title: 'Title',
+  }
+);
+
+const emit = defineEmits<{
+  (e: 'check', value: string[]): void;
+  (e: 'drag', items: DraggableItemData[]): void;
+}>();
+
+const t = translate;
+
+const searchString = ref<string>('');
+
+const isCheckedAll = ref<boolean>(false);
+
+const isIntermediate = ref<boolean>(false);
+
+const items = computed<DraggableItemData[]>(() => {
+  const { data } = props as TransferPanelProps;
+  if (!searchString.value) {
+    return data;
+  }
+  return data?.filter(d =>
+    d.label.toLowerCase().includes(searchString.value.toLowerCase())
+  );
+});
+
+const summary = computed<string>(() => {
+  const { checked, data } = props as TransferPanelProps;
+  return `${checked.length}/${data.length}`;
+});
+
+const onCheck = (value: string[]) => {
+  emit('check', value);
+};
+
+const onCheckAll = (value: boolean) => {
+  const { data } = props as TransferPanelProps;
+  emit('check', value ? data?.map(d => d.key) : []);
+};
+
+const onDragEnd = (items: DraggableItemData[]) => {
+  emit('drag', items);
+};
+
+watch(
+  () => {
+    const { checked } = props as TransferPanelProps;
+    return checked;
+  },
+  () => {
+    const { checked, data } = props as TransferPanelProps;
+    isCheckedAll.value =
+      checked?.length > 0 && checked?.length === data?.length;
+    isIntermediate.value =
+      checked?.length > 0 && checked?.length < data?.length;
+  }
+);
+</script>
+
 <template>
   <el-card class="transfer-panel" shadow="never">
     <template #header>
@@ -5,7 +79,7 @@
         <div class="left">
           <el-checkbox
             v-model="isCheckedAll"
-            :disabled="data.length === 0"
+            :disabled="data?.length === 0"
             :indeterminate="isIntermediate"
             class="check-all"
             @change="onCheckAll"
@@ -53,103 +127,6 @@
     </template>
   </el-card>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
-import { DataItem, Key } from 'element-plus';
-import { Search } from '@element-plus/icons-vue';
-import { useI18n } from 'vue-i18n';
-
-export default defineComponent({
-  name: 'TransferPanel',
-  props: {
-    title: {
-      type: String,
-      required: false,
-      default: 'Title',
-    },
-    checked: {
-      type: Array,
-      required: false,
-      default: () => {
-        return [];
-      },
-    },
-    data: {
-      type: Array,
-      required: false,
-      default: () => {
-        return [];
-      },
-    },
-  },
-  emits: ['check', 'drag'],
-  setup(props, { emit }) {
-    const { t } = useI18n();
-
-    const searchString = ref<string>('');
-
-    const isCheckedAll = ref<boolean>(false);
-
-    const isIntermediate = ref<boolean>(false);
-
-    const items = computed<DataItem[]>(() => {
-      const { data } = props as TransferPanelProps;
-      if (!searchString.value) {
-        return data;
-      }
-      return data.filter(d =>
-        d.label.toLowerCase().includes(searchString.value.toLowerCase())
-      );
-    });
-
-    const summary = computed<string>(() => {
-      const { checked, data } = props as TransferPanelProps;
-      return `${checked.length}/${data.length}`;
-    });
-
-    const onCheck = (value: Key[]) => {
-      emit('check', value);
-    };
-
-    const onCheckAll = (value: boolean) => {
-      const { data } = props as TransferPanelProps;
-      emit('check', value ? data.map(d => d.key) : []);
-    };
-
-    const onDragEnd = (items: DataItem[]) => {
-      emit('drag', items);
-    };
-
-    watch(
-      () => {
-        const { checked } = props as TransferPanelProps;
-        return checked;
-      },
-      () => {
-        const { checked, data } = props as TransferPanelProps;
-        isCheckedAll.value =
-          checked.length > 0 && checked.length === data.length;
-        isIntermediate.value =
-          checked.length > 0 && checked.length < data.length;
-      }
-    );
-
-    return {
-      searchString,
-      isCheckedAll,
-      isIntermediate,
-      items,
-      summary,
-      onCheck,
-      onCheckAll,
-      onDragEnd,
-      Search,
-      t,
-    };
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .transfer-panel {
