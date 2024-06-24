@@ -1,13 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClDraggableItem' });
 import { computed } from 'vue';
-
-export interface DraggableItemData {
-  key: string;
-  dragging: boolean;
-
-  [prop: string]: any;
-}
+import { DraggableItemData } from '@/components/drag/drag';
 
 const props = defineProps<{
   item: DraggableItemData;
@@ -43,7 +37,7 @@ const classes = computed(() => {
     @dragenter="emit('d-enter', item)"
     @dragleave="emit('d-leave', item)"
   >
-    <cl-draggable-item-content :item="item" />
+    <slot :item="item" />
   </div>
 </template>
 

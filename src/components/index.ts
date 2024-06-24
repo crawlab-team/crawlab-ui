@@ -15,7 +15,6 @@ import ConfirmDialog from './dialog/ConfirmDialog.vue';
 import CreateEditDialog from './dialog/CreateEditDialog.vue';
 import Dialog from './dialog/Dialog.vue';
 import DraggableItem from './drag/DraggableItem.vue';
-import DraggableItemContent from './drag/DraggableItemContent.vue';
 import DraggableList from './drag/DraggableList.vue';
 import CreateEditDataSourceDialog from './ds/CreateEditDataSourceDialog.vue';
 import DataSourceConnectType from './ds/DataSourceConnectType.vue';
@@ -143,7 +142,6 @@ export {
   CreateEditDialog as ClCreateEditDialog,
   Dialog as ClDialog,
   DraggableItem as ClDraggableItem,
-  DraggableItemContent as ClDraggableItemContent,
   DraggableList as ClDraggableList,
   CreateEditDataSourceDialog as ClCreateEditDataSourceDialog,
   DataSourceConnectType as ClDataSourceConnectType,

@@ -5,10 +5,10 @@ import { translate } from '@/utils';
 const t = translate;
 
 defineProps<{
-  items: NavItem[];
-  activeKey: string;
-  collapsed: boolean;
-  toggle: boolean;
+  items?: NavItem[];
+  activeKey?: string;
+  collapsed?: boolean;
+  toggle?: boolean;
 }>();
 
 const emit = defineEmits<{

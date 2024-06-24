@@ -2,24 +2,18 @@
 defineOptions({ name: 'ClTab' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { getPrimaryPath } from '@/utils/path';
 import { useRouter } from 'vue-router';
 import { Close } from '@element-plus/icons-vue';
 import { translate } from '@/utils';
-
-export interface Tab {
-  id?: number;
-  path: string;
-  dragging?: boolean;
-  isAction?: boolean;
-}
+import { getPrimaryPath } from '@/utils/path';
+import { Tab } from '@/components/tab/tab';
 
 const props = withDefaults(
   defineProps<{
     tab?: Tab;
     icon?: Icon;
-    showTitle: boolean;
-    showClose: boolean;
+    showTitle?: boolean;
+    showClose?: boolean;
     disabled?: boolean;
   }>(),
   {
@@ -43,19 +37,20 @@ const item = computed<MenuItem | undefined>(() => {
   const { tab } = props;
   if (!tab) return;
 
+  if (tab.path === '/') {
+    tab.path = '/home';
+  }
+
   // normalized menu items
   const menuItems = store.getters['layout/normalizedMenuItems'] as MenuItem[];
 
-  // iterate normalized menu items
-  for (const _item of menuItems) {
-    // primary path, or first-level path
-    const primaryPath = getPrimaryPath(tab.path);
+  // primary path, or first-level path
+  const primaryPath = getPrimaryPath(tab.path);
 
-    // if primary path equals to item path, or tab path equals to item path, return it
-    if (primaryPath === _item.path || tab.path === _item.path) {
-      return _item;
-    }
-  }
+  const item = menuItems.find(d => {
+    return primaryPath === d.path || tab.path === d.path;
+  });
+  if (item) return item;
 
   return {
     path: tab.path,
@@ -64,8 +59,6 @@ const item = computed<MenuItem | undefined>(() => {
 });
 
 const title = computed(() => {
-  // TODO: detailed title
-  // return item.value?.title || tm('No Title');
   return item.value?.title;
 });
 
@@ -98,7 +91,9 @@ const onClick = () => {
   router.push(tab.path);
 };
 
-const close = () => {
+const onClose = (event: Event) => {
+  event.stopPropagation();
+
   // current tab
   const { tab } = props;
   if (!tab) return;
@@ -128,10 +123,6 @@ const close = () => {
     }
   }
 };
-
-const onClose = () => {
-  setTimeout(close, 10);
-};
 </script>
 
 <template>
@@ -152,7 +143,7 @@ const onClose = () => {
       }"
       v-if="showClose"
       class="close-btn"
-      @click.stop="onClose"
+      @click="event => onClose(event)"
     >
       <el-icon>
         <close />

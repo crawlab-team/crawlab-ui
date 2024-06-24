@@ -17,7 +17,6 @@ export * from './object';
 export * from './os';
 export * from './pagination';
 export * from './path';
-export * from './plugin';
 export * from './request';
 export * from './result';
 export * from './route';

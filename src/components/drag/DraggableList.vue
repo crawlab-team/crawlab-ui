@@ -1,30 +1,11 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClDraggableList' });
 import {
-  computed,
-  provide,
-  reactive,
-  ref,
-  SetupContext,
-  useAttrs,
-  useSlots,
-} from 'vue';
+  DraggableItemData,
+  DraggableListInternalItems,
+} from '@/components/drag/drag';
+import { computed, reactive, ref } from 'vue';
 import { plainClone } from '@/utils/object';
-
-export interface DraggableListProps {
-  items: DraggableItemData[];
-  itemKey: string;
-}
-
-export interface DraggableListContext {
-  ctx: SetupContext<any>;
-  props: DraggableListProps;
-}
-
-export interface DraggableListInternalItems {
-  draggingItem?: DraggableItemData;
-  targetItem?: DraggableItemData;
-}
 
 const props = withDefaults(
   defineProps<{
@@ -36,10 +17,6 @@ const props = withDefaults(
   }
 );
 
-const slots = useSlots();
-
-const attrs = useAttrs();
-
 const emit = defineEmits<{
   (e: 'd-end', items: DraggableItemData[]): void;
 }>();
@@ -48,7 +25,7 @@ const internalItems = reactive<DraggableListInternalItems>({});
 const isDragging = ref(false);
 
 const orderedItems = computed(() => {
-  const { items, itemKey } = props as DraggableListProps;
+  const { items, itemKey } = props;
   const { draggingItem, targetItem } = internalItems;
   if (!draggingItem || !targetItem) return items;
   const orderedItems = plainClone(items) as DraggableItemData[];
@@ -82,7 +59,7 @@ const onTabDragEnd = () => {
 };
 
 const onTabDragEnter = (item: DraggableItemData) => {
-  const { itemKey } = props as DraggableListProps;
+  const { itemKey } = props;
   const { draggingItem } = internalItems;
   if (
     !draggingItem ||
@@ -95,7 +72,7 @@ const onTabDragEnter = (item: DraggableItemData) => {
 };
 
 const onTabDragLeave = (item: DraggableItemData) => {
-  const { itemKey } = props as DraggableListProps;
+  const { itemKey } = props;
   const { draggingItem, targetItem } = internalItems;
   if (
     !!targetItem ||
@@ -105,11 +82,6 @@ const onTabDragLeave = (item: DraggableItemData) => {
     return;
   internalItems.targetItem = undefined;
 };
-
-provide('list', {
-  ctx: { emit, slots, attrs },
-  props,
-} as DraggableListContext);
 </script>
 
 <template>
@@ -122,7 +94,9 @@ provide('list', {
       @d-enter="onTabDragEnter"
       @d-leave="onTabDragLeave"
       @d-start="onTabDragStart"
-    />
+    >
+      <slot :item="item" />
+    </cl-draggable-item>
   </div>
 </template>
 
