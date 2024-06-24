@@ -159,6 +159,7 @@ onMounted(() => {
   // initialize canvas
   if (window.innerWidth >= 1024) {
     window?.initCanvas?.();
+    console.debug(window?.initCanvas);
   } else {
     isShowMobileWarning.value = true;
   }
@@ -173,7 +174,7 @@ onUnmounted(() => {
 
 <template>
   <div class="login-container">
-    <canvas id="canvas" class="login-canvas" />
+    <!--    <canvas id="canvas" class="login-canvas" />-->
     <el-form
       ref="loginFormRef"
       :model="loginForm"
@@ -309,19 +310,11 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-#canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-}
-
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: var(--cl-white);
+  //background-color: var(--cl-white);
 
   .login-form {
     background: transparent;
@@ -498,5 +491,15 @@ onUnmounted(() => {
 <style scoped>
 .mobile-warning:deep(.el-alert .el-alert__description) {
   font-size: 1.2rem;
+}
+</style>
+<style>
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 </style>

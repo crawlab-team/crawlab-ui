@@ -5,6 +5,7 @@ declare global {
     VITE_APP_API_BASE_URL?: string;
     VUE_APP_INIT_UMENG?: string;
     VUE_APP_INIT_BAIDU_TONGJI?: string;
+    threeJSApp?: any;
     initCanvas?: () => void;
     resetCanvas?: () => void;
     _hmt?: Array;

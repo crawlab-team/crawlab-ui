@@ -1,258 +1,244 @@
-function initCanvas() {
-  let canvas, ctx, circ, nodes, mouse, SENSITIVITY, SIBLINGS_LIMIT, DENSITY, NODES_QTY, ANCHOR_LENGTH, MOUSE_RADIUS,
-    TURBULENCE, MOUSE_MOVING_TURBULENCE, MOUSE_ANGLE_TURBULENCE, MOUSE_MOVING_RADIUS, BASE_BRIGHTNESS, RADIUS_DEGRADE,
-    SAMPLE_SIZE
+class ThreeJSApp {
+  constructor() {
+    this.cameraRange = 3;
+    this.scene = new THREE.Scene();
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.camera = new THREE.PerspectiveCamera(
+      35,
+      window.innerWidth / window.innerHeight,
+      1,
+      500
+    );
+    this.sceneGroup = new THREE.Object3D();
+    this.particularGroup = new THREE.Object3D();
+    this.modularGroup = new THREE.Object3D();
+    this.mouse = new THREE.Vector2();
+    this.INTERSECTED = null;
+    this.cameraValue = false;
+    this.uSpeed = 0.1;
 
-  let handle
-
-  // how close next node must be to activate connection (in px)
-  // shorter distance == better connection (line width)
-  SENSITIVITY = 200
-  // note that siblings limit is not 'accurate' as the node can actually have more connections than this value that's because the node accepts sibling nodes with no regard to their current connections this is acceptable because potential fix would not result in significant visual difference
-  // more siblings == bigger node
-  SIBLINGS_LIMIT = 10
-  // default node margin
-  DENSITY = 100
-  // total number of nodes used (incremented after creation)
-  NODES_QTY = 0
-  // avoid nodes spreading
-  ANCHOR_LENGTH = 100
-  // highlight radius
-  MOUSE_RADIUS = 200
-  // turbulence of randomness
-  TURBULENCE = 3
-  // turbulence of mouse moving
-  MOUSE_MOVING_TURBULENCE = 50
-  // turbulence of mouse moving angle
-  MOUSE_ANGLE_TURBULENCE = 0.002
-  // moving radius of mouse
-  MOUSE_MOVING_RADIUS = 600
-  // base brightness
-  BASE_BRIGHTNESS = 0.12
-  // radius degrade
-  RADIUS_DEGRADE = 0.4
-  // sample size
-  SAMPLE_SIZE = 0.5
-
-  circ = 2 * Math.PI
-  nodes = []
-
-  canvas = document.querySelector('#canvas')
-  if (!canvas) return;
-  resizeWindow()
-  ctx = canvas.getContext('2d')
-  if (!ctx) {
-    alert('Ooops! Your browser does not support canvas :\'(')
+    this.initRenderer();
+    this.initScene();
+    this.initCamera();
+    this.initLights();
+    this.initObjects();
+    this.initRaycaster();
+    // this.addEventListeners();
+    this.animate();
   }
 
-  function Mouse(x, y) {
-    this.anchorX = x
-    this.anchorY = y
-    this.x = x
-    this.y = y - MOUSE_RADIUS / 2
-    this.angle = 0
+  initRenderer() {
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.shadowMap.enabled = false;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(this.renderer.domElement);
   }
 
-  Mouse.prototype.computePosition = function () {
-    // this.x = this.anchorX + MOUSE_MOVING_RADIUS / 2 * Math.sin(this.angle)
-    // this.y = this.anchorY - MOUSE_MOVING_RADIUS / 2 * Math.cos(this.angle)
+  initScene() {
+    const setcolor = 0x000000;
+    // const setcolor = 0xffffff;
+    this.scene.background = new THREE.Color(setcolor);
+    this.scene.fog = new THREE.Fog(setcolor, 2.5, 3.5);
+    this.scene.add(this.sceneGroup);
+    this.scene.add(this.modularGroup);
   }
 
-  Mouse.prototype.move = function () {
-    let vx = Math.random() * MOUSE_MOVING_TURBULENCE
-    let vy = Math.random() * MOUSE_MOVING_TURBULENCE
-    if (this.x + vx + MOUSE_RADIUS / 2 > window.innerWidth || this.x + vx - MOUSE_RADIUS / 2 < 0) {
-      vx = -vx
-    }
-    if (this.y + vy + MOUSE_RADIUS / 2 > window.innerHeight || this.y + vy - MOUSE_RADIUS / 2 < 0) {
-      vy = -vy
-    }
-    this.x += vx
-    this.y += vy
-    // this.angle += Math.random() * MOUSE_ANGLE_TURBULENCE * 2 * Math.PI
-    // this.angle -= Math.floor(this.angle / (2 * Math.PI)) * 2 * Math.PI
-    // this.computePosition()
+  initCamera() {
+    this.camera.position.set(0, 0, this.cameraRange);
+    window.addEventListener('resize', () => this.onWindowResize(), false);
   }
 
-  function Node(x, y) {
-    this.anchorX = x
-    this.anchorY = y
-    this.x = Math.random() * (x - (x - ANCHOR_LENGTH)) + (x - ANCHOR_LENGTH)
-    this.y = Math.random() * (y - (y - ANCHOR_LENGTH)) + (y - ANCHOR_LENGTH)
-    this.vx = Math.random() * TURBULENCE - 1
-    this.vy = Math.random() * TURBULENCE - 1
-    this.energy = Math.random() * 100
-    this.radius = Math.random()
-    this.siblings = []
-    this.brightness = 0
+  initLights() {
+    const light = new THREE.SpotLight(0xffffff, 1);
+    light.position.set(5, 5, 2);
+    light.castShadow = true;
+    light.shadow.mapSize.width = 10000;
+    light.shadow.mapSize.height = 10000;
+    light.penumbra = 0.5;
+
+    const lightBack = new THREE.PointLight(0x0fffff, 1);
+    lightBack.position.set(0, -3, -1);
+
+    const rectLight = new THREE.RectAreaLight(0x0fffff, 50, 1, 1);
+    rectLight.position.set(0, 0, 1);
+    rectLight.lookAt(0, 0, 0);
+
+    this.scene.add(light);
+    this.scene.add(lightBack);
+    this.scene.add(rectLight);
   }
 
-  Node.prototype.drawNode = function () {
-    let color = 'rgba(64, 156, 255, ' + this.brightness + ')'
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, 2 * this.radius + 2 * this.siblings.length / SIBLINGS_LIMIT / 1.5, 0, circ)
-    ctx.fillStyle = color
-    ctx.fill()
-  }
+  generateParticle(num, amp = 2) {
+    const material = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      // color: 0x000000,
+      // color: 0x409eff,
+      side: THREE.DoubleSide,
+    });
+    const geometry = new THREE.CircleGeometry(0.2, 5);
 
-  Node.prototype.drawConnections = function () {
-    for (let i = 0; i < this.siblings.length; i++) {
-      let color = 'rgba(64, 156, 255, ' + this.brightness + ')'
-      ctx.beginPath()
-      ctx.moveTo(this.x, this.y)
-      ctx.lineTo(this.siblings[i].x, this.siblings[i].y)
-      ctx.lineWidth = 1 - calcDistance(this, this.siblings[i]) / SENSITIVITY
-      ctx.strokeStyle = color
-      ctx.stroke()
+    for (let i = 1; i < num; i++) {
+      const pscale = 0.001 + Math.abs(this.mathRandom(0.03));
+      const particular = new THREE.Mesh(geometry, material);
+      particular.position.set(
+        this.mathRandom(amp),
+        this.mathRandom(amp),
+        this.mathRandom(amp)
+      );
+      particular.rotation.set(
+        this.mathRandom(),
+        this.mathRandom(),
+        this.mathRandom()
+      );
+      particular.scale.set(pscale, pscale, pscale);
+      particular.speedValue = this.mathRandom(1);
+      this.particularGroup.add(particular);
     }
   }
 
-  Node.prototype.moveNode = function () {
-    this.energy -= 2
-    if (this.energy < 1) {
-      this.energy = Math.random() * 100
-      if (this.x - this.anchorX < -ANCHOR_LENGTH) {
-        this.vx = Math.random() * TURBULENCE
-      } else if (this.x - this.anchorX > ANCHOR_LENGTH) {
-        this.vx = Math.random() * -TURBULENCE
-      } else {
-        this.vx = Math.random() * 2 * TURBULENCE - TURBULENCE
-      }
-      if (this.y - this.anchorY < -ANCHOR_LENGTH) {
-        this.vy = Math.random() * TURBULENCE
-      } else if (this.y - this.anchorY > ANCHOR_LENGTH) {
-        this.vy = Math.random() * -TURBULENCE
-      } else {
-        this.vy = Math.random() * 2 * TURBULENCE - TURBULENCE
-      }
-    }
-    this.x += this.vx * this.energy / 100
-    this.y += this.vy * this.energy / 100
+  mathRandom(num = 1) {
+    return -Math.random() * num + Math.random() * num;
   }
 
-  function Handle() {
-    this.isStopped = false
-  }
+  initObjects() {
+    this.generateParticle(500, 2);
+    this.sceneGroup.add(this.particularGroup);
 
-  Handle.prototype.stop = function () {
-    this.isStopped = true
-  }
+    for (let i = 0; i < 30; i++) {
+      const geometry = new THREE.IcosahedronGeometry(1);
+      const material = new THREE.MeshStandardMaterial({
+        shading: THREE.FlatShading,
+        color: 0x111111,
+        transparent: false,
+        opacity: 1,
+        wireframe: false,
+      });
+      const cube = new THREE.Mesh(geometry, material);
+      cube.speedRotation = Math.random() * 0.1;
+      cube.positionX = this.mathRandom();
+      cube.positionY = this.mathRandom();
+      cube.positionZ = this.mathRandom();
+      cube.castShadow = true;
+      cube.receiveShadow = true;
 
-  function initNodes() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    nodes = []
-    for (let i = DENSITY; i < canvas.width; i += DENSITY) {
-      for (let j = DENSITY; j < canvas.height; j += DENSITY) {
-        nodes.push(new Node(i, j))
-        NODES_QTY++
-      }
+      const newScaleValue = this.mathRandom(0.3);
+      cube.scale.set(newScaleValue, newScaleValue, newScaleValue);
+      cube.rotation.set(
+        this.mathRandom((180 * Math.PI) / 180),
+        this.mathRandom((180 * Math.PI) / 180),
+        this.mathRandom((180 * Math.PI) / 180)
+      );
+      cube.position.set(cube.positionX, cube.positionY, cube.positionZ);
+      this.modularGroup.add(cube);
     }
   }
 
-  function initMouse() {
-    mouse = new Mouse(canvas.width / 2, canvas.height / 2)
+  initRaycaster() {
+    this.raycaster = new THREE.Raycaster();
   }
 
-  function initHandle() {
-    handle = new Handle()
+  addEventListeners() {
+    window.addEventListener(
+      'mousedown',
+      event => this.onMouseDown(event),
+      false
+    );
+    window.addEventListener('mouseup', event => this.onMouseUp(event), false);
+    window.addEventListener(
+      'mousemove',
+      event => this.onMouseMove(event),
+      false
+    );
   }
 
-  function calcDistance(node1, node2) {
-    return Math.sqrt(Math.pow(node1.x - node2.x, 2) + (Math.pow(node1.y - node2.y, 2)))
+  onWindowResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  function findSiblings() {
-    let node1, node2, distance
-    for (let i = 0; i < NODES_QTY; i++) {
-      node1 = nodes[i]
-      node1.siblings = []
-      for (let j = 0; j < NODES_QTY; j++) {
-        node2 = nodes[j]
-        if (node1 !== node2) {
-          distance = calcDistance(node1, node2)
-          if (distance < SENSITIVITY) {
-            if (node1.siblings.length < SIBLINGS_LIMIT) {
-              node1.siblings.push(node2)
-            } else {
-              let node_sibling_distance = 0
-              let max_distance = 0
-              let s
-              for (let k = 0; k < SIBLINGS_LIMIT; k++) {
-                node_sibling_distance = calcDistance(node1, node1.siblings[k])
-                if (node_sibling_distance > max_distance) {
-                  max_distance = node_sibling_distance
-                  s = k
-                }
-              }
-              if (distance < max_distance) {
-                node1.siblings.splice(s, 1)
-                node1.siblings.push(node2)
-              }
-            }
-          }
+  onMouseMove(event) {
+    event.preventDefault();
+    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  }
+
+  onMouseDown(event) {
+    event.preventDefault();
+    this.onMouseMove(event);
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(
+      this.modularGroup.children
+    );
+    if (intersects.length > 0) {
+      this.cameraValue = false;
+      if (this.INTERSECTED != intersects[0].object) {
+        if (this.INTERSECTED) {
+          this.INTERSECTED.material.emissive.setHex(
+            this.INTERSECTED.currentHex
+          );
         }
+        this.INTERSECTED = intersects[0].object;
+        this.INTERSECTED.currentHex =
+          this.INTERSECTED.material.emissive.getHex();
+        this.INTERSECTED.material.emissive.setHex(0xffff00);
+
+        TweenMax.to(this.camera.position, 1, {
+          x: this.INTERSECTED.position.x,
+          y: this.INTERSECTED.position.y,
+          z: this.INTERSECTED.position.z + 3,
+          ease: Power2.easeInOut,
+        });
+      } else {
+        if (this.INTERSECTED) {
+          this.INTERSECTED.material.emissive.setHex(
+            this.INTERSECTED.currentHex
+          );
+        }
+        this.INTERSECTED = null;
       }
     }
   }
 
-  function redrawScene() {
-    if (handle && handle.isStopped) {
-      return
+  onMouseUp(event) {
+    // Add your onMouseUp logic if needed
+  }
+
+  animate() {
+    const time = performance.now() * 0.0003;
+    requestAnimationFrame(() => this.animate());
+
+    for (const object of this.particularGroup.children) {
+      object.rotation.x += object.speedValue / 10;
+      object.rotation.y += object.speedValue / 10;
+      object.rotation.z += object.speedValue / 10;
     }
-    resizeWindow()
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    findSiblings()
-    let i, node, distance
-    for (i = 0; i < NODES_QTY; i++) {
-      node = nodes[i]
-      distance = calcDistance({
-        x: mouse.x,
-        y: mouse.y
-      }, node)
-      node.brightness = (1 - Math.log(distance / MOUSE_RADIUS * RADIUS_DEGRADE)) * BASE_BRIGHTNESS
+
+    const ratio = 0.3;
+
+    for (const cube of this.modularGroup.children) {
+      cube.rotation.x += 0.008 * ratio;
+      cube.rotation.y += 0.005 * ratio;
+      cube.rotation.z += 0.003 * ratio;
+      cube.position.x = Math.sin(time * cube.positionZ) * cube.positionY;
+      cube.position.y = Math.cos(time * cube.positionX) * cube.positionZ;
+      cube.position.z = Math.sin(time * cube.positionY) * cube.positionX;
     }
-    for (i = 0; i < NODES_QTY; i++) {
-      node = nodes[i]
-      if (node.brightness) {
-        node.drawNode()
-        node.drawConnections()
-      }
-      node.moveNode()
-    }
-    // mouse.move()
-    setTimeout(() => {
-      requestAnimationFrame(redrawScene)
-    }, 50)
+
+    this.particularGroup.rotation.y += 0.005 * ratio;
+    this.modularGroup.rotation.y -=
+      (this.mouse.x * 4 + this.modularGroup.rotation.y) * this.uSpeed * ratio;
+    this.modularGroup.rotation.x -=
+      (-this.mouse.y * 4 + this.modularGroup.rotation.x) * this.uSpeed * ratio;
+    this.camera.lookAt(this.scene.position);
+    this.renderer.render(this.scene, this.camera);
   }
-
-  function initHandlers() {
-    document.addEventListener('resize', resizeWindow, {passive: true})
-    // canvas.addEventListener('mousemove', mousemoveHandler, false)
-  }
-
-  function resizeWindow() {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
-
-  function mousemoveHandler(e) {
-    mouse.x = e.clientX
-    mouse.y = e.clientY
-  }
-
-  function init() {
-    initHandlers()
-    initNodes()
-    initMouse()
-    initHandle()
-    redrawScene()
-  }
-
-  function reset() {
-    handle.isStopped = true
-  }
-
-  init()
-
-  window.resetCanvas = reset
 }
+
+window.initCanvas = function () {
+  window.threeJSApp = new ThreeJSApp();
+};
+window.resetCanvas = function () {
+  window.threeJSApp = null;
+  document.querySelector('canvas').remove();
+};
