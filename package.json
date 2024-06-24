@@ -1,6 +1,6 @@
 {
   "name": "crawlab-ui",
-  "version": "0.6.3-7",
+  "version": "0.6.3-8",
   "private": false,
   "author": {
     "name": "Marvin Zhang",
@@ -45,7 +45,7 @@
     "prebuild": "pnpm run prebuild:gen",
     "prebuild:gen": "pnpm run gen:index && pnpm run gen:svg",
     "postbuild": "pnpm run postbuild:gen",
-    "postbuild:gen": "pnpm run gen:interfaces",
+    "postbuild:gen": "pnpm run gen:dts && pnpm run gen:interfaces",
     "postbuild:dist:local": "node ./scripts/copy-dist-local.js",
     "build": "pnpm run prebuild && pnpm run build:lib && pnpm run postbuild",
     "build:dist:local": "pnpm run build && pnpm run postbuild:dist:local",
