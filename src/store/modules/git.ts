@@ -31,12 +31,10 @@ const state = {
     {
       id: TAB_NAME_OVERVIEW,
       title: 'common.tabs.overview',
-      icon: ['fa', 'info-circle'],
     },
     {
       id: TAB_NAME_FILES,
       title: 'common.tabs.files',
-      icon: ['fa', 'file-code'],
     },
     {
       id: TAB_NAME_CHANGES,
@@ -51,7 +49,6 @@ const state = {
     {
       id: TAB_NAME_SPIDERS,
       title: 'common.tabs.spiders',
-      icon: ['fa', 'spider'],
     },
   ],
   gitData: undefined,

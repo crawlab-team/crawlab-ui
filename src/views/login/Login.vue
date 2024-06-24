@@ -1,5 +1,6 @@
-<script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClLogin' });
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { isValidUsername } from '@/utils/validate';
 import { useRoute, useRouter } from 'vue-router';
 import logo from '@/assets/svg/logo-main.svg';
@@ -12,184 +13,161 @@ import { LOCAL_STORAGE_KEY_TOKEN } from '@/constants/localStorage';
 
 const { post } = useRequest();
 
-export default defineComponent({
-  name: 'Login',
-  setup() {
-    // store
-    const store = useStore();
-    const { common: commonState } = store.state as RootStoreState;
+// store
+const store = useStore();
+const { common: commonState } = store.state as RootStoreState;
 
-    // current route
-    const route = useRoute();
+// current route
+const route = useRoute();
 
-    // router
-    const router = useRouter();
+// router
+const router = useRouter();
 
-    // i18n
-    const { t } = useI18n();
+// i18n
+const { t } = useI18n();
 
-    // loading
-    const loading = ref<boolean>(false);
+// loading
+const loading = ref<boolean>(false);
 
-    // is signup
-    const isSignup = computed(() => route.path === '/signup');
+// is signup
+const isSignup = computed(() => route.path === '/signup');
 
-    // login form
-    const loginForm = ref<LoginForm>({
-      username: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
+// login form
+const loginForm = ref<LoginForm>({
+  username: '',
+  password: '',
+  confirmPassword: '',
+  email: '',
+});
+
+// login form ref
+const loginFormRef = ref();
+
+const validateUsername = (rule: any, value: any, callback: any) => {
+  if (!isValidUsername(value)) {
+    callback(new Error(t('views.login.errors.incorrectUsername')));
+  } else {
+    callback();
+  }
+};
+
+const validatePass = (rule: any, value: any, callback: any) => {
+  if (value.length < 5) {
+    callback(new Error(t('views.login.errors.passwordLength')));
+  } else {
+    callback();
+  }
+};
+
+const validateConfirmPass = (rule: any, value: any, callback: any) => {
+  if (!isSignup.value) return callback();
+  if (value !== loginForm.value.password) {
+    callback(new Error(t('views.login.errors.passwordSame')));
+  } else {
+    callback();
+  }
+};
+
+const loginRules: LoginRules = {
+  username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+  password: [{ required: true, trigger: 'blur', validator: validatePass }],
+  confirmPassword: [
+    { required: true, trigger: 'blur', validator: validateConfirmPass },
+  ],
+};
+
+const isShowMobileWarning = ref<boolean>(false);
+
+const allowRegister = ref<boolean>(false);
+
+const internalLang = ref<string>(localStorage.getItem('lang') || 'en');
+
+const lang = computed<string | null>(
+  () => internalLang.value || localStorage.getItem('lang')
+);
+
+const setLang = (lang: Lang) => {
+  internalLang.value = lang;
+  setGlobalLang(lang);
+};
+
+// validate and perform login request
+const login = async () => {
+  // skip if login form ref is empty
+  if (!loginFormRef.value) return;
+
+  // validate login form
+  await loginFormRef.value.validate();
+
+  // username and password
+  const { username, password } = loginForm.value;
+
+  // set loading
+  loading.value = true;
+
+  try {
+    // perform login request
+    const res = await post<LoginForm, ResponseWithData>('/login', {
+      username,
+      password,
     });
 
-    // login form ref
-    const loginFormRef = ref();
+    // validate data
+    if (!res?.data) {
+      ElMessage.error(t('views.login.errors.unauthorized'));
+      return;
+    }
 
-    const validateUsername = (rule: any, value: any, callback: any) => {
-      if (!isValidUsername(value)) {
-        callback(new Error(t('views.login.errors.incorrectUsername')));
-      } else {
-        callback();
-      }
-    };
+    // set token to local storage
+    localStorage.setItem(LOCAL_STORAGE_KEY_TOKEN, res.data);
 
-    const validatePass = (rule: any, value: any, callback: any) => {
-      if (value.length < 5) {
-        callback(new Error(t('views.login.errors.passwordLength')));
-      } else {
-        callback();
-      }
-    };
+    // initialize plugins
+    // initPlugins(router, store)
+    //   .then(() => console.info('[Crawlab] plugins initialized'))
+    //   .catch(e => console.warn('[Crawlab] initializing plugins with error', e));
 
-    const validateConfirmPass = (rule: any, value: any, callback: any) => {
-      if (!isSignup.value) return callback();
-      if (value !== loginForm.value.password) {
-        callback(new Error(t('views.login.errors.passwordSame')));
-      } else {
-        callback();
-      }
-    };
+    // redirect to home page
+    await router.push('/');
+  } catch (e: any) {
+    // error
+    if (e.toString().includes('401')) {
+      // unauthorized
+      ElMessage.error(t('views.login.errors.unauthorized'));
+    } else {
+      // other error
+      ElMessage.error(e.toString());
+    }
+    throw e;
+  } finally {
+    // unset loading
+    loading.value = false;
+  }
+};
 
-    const loginRules: LoginRules = {
-      username: [
-        { required: true, trigger: 'blur', validator: validateUsername },
-      ],
-      password: [{ required: true, trigger: 'blur', validator: validatePass }],
-      confirmPassword: [
-        { required: true, trigger: 'blur', validator: validateConfirmPass },
-      ],
-    };
+// on login hook
+const onLogin = async () => {
+  // login
+  await login();
 
-    const isShowMobileWarning = ref<boolean>(false);
+  // get current user (me)
+  await store.dispatch('user/getMe');
+};
 
-    const allowRegister = ref<boolean>(false);
+const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
-    const internalLang = ref<string>(localStorage.getItem('lang') || 'en');
-
-    const lang = computed<string | null>(
-      () => internalLang.value || localStorage.getItem('lang')
-    );
-
-    const setLang = (lang: Lang) => {
-      internalLang.value = lang;
-      setGlobalLang(lang);
-    };
-
-    // validate and perform login request
-    const login = async () => {
-      // skip if login form ref is empty
-      if (!loginFormRef.value) return;
-
-      // validate login form
-      await loginFormRef.value.validate();
-
-      // username and password
-      const { username, password } = loginForm.value;
-
-      // set loading
-      loading.value = true;
-
-      try {
-        // perform login request
-        const res = await post<LoginForm, ResponseWithData>('/login', {
-          username,
-          password,
-        });
-
-        // validate data
-        if (!res?.data) {
-          await ElMessage.error(t('views.login.errors.unauthorized'));
-          return;
-        }
-
-        // set token to local storage
-        localStorage.setItem(LOCAL_STORAGE_KEY_TOKEN, res.data);
-
-        // initialize plugins
-        // initPlugins(router, store)
-        //   .then(() => console.info('[Crawlab] plugins initialized'))
-        //   .catch(e => console.warn('[Crawlab] initializing plugins with error', e));
-
-        // redirect to home page
-        await router.push('/');
-      } catch (e: any) {
-        // error
-        if (e.toString().includes('401')) {
-          // unauthorized
-          await ElMessage.error(t('views.login.errors.unauthorized'));
-        } else {
-          // other error
-          await ElMessage.error(e.toString());
-        }
-        throw e;
-      } finally {
-        // unset loading
-        loading.value = false;
-      }
-    };
-
-    // on login hook
-    const onLogin = async () => {
-      // login
-      await login();
-
-      // get current user (me)
-      await store.dispatch('user/getMe');
-    };
-
-    const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
-
-    onMounted(() => {
-      // initialize canvas
-      if (window.innerWidth >= 1024) {
-        window?.initCanvas?.();
-      } else {
-        isShowMobileWarning.value = true;
-      }
-    });
-    onUnmounted(() => {
-      // reset canvas
-      if (window.resetCanvas) {
-        window.resetCanvas();
-      }
-    });
-
-    return {
-      loginForm,
-      loginFormRef,
-      loginRules,
-      isShowMobileWarning,
-      allowRegister,
-      isSignup,
-      loading,
-      lang,
-      logo,
-      setLang,
-      onLogin,
-      systemInfo,
-      t,
-    };
-  },
+onMounted(() => {
+  // initialize canvas
+  if (window.innerWidth >= 1024) {
+    window?.initCanvas?.();
+  } else {
+    isShowMobileWarning.value = true;
+  }
+});
+onUnmounted(() => {
+  // reset canvas
+  if (window.resetCanvas) {
+    window.resetCanvas();
+  }
 });
 </script>
 
@@ -208,12 +186,12 @@ export default defineComponent({
         <img :src="logo" alt="logo" class="logo-img" />
         <!--        <span class="logo-title">Crawlab</span>-->
         <span class="logo-sub-title">
-          <div class="logo-sub-title-block">
+          <span class="logo-sub-title-block">
             {{ t(systemInfo.edition || '') }}
-          </div>
-          <div class="logo-sub-title-block">
+          </span>
+          <span class="logo-sub-title-block">
             {{ systemInfo.version }}
-          </div>
+          </span>
         </span>
       </h3>
       <el-form-item prop="username" style="margin-bottom: 28px">
@@ -330,7 +308,15 @@ export default defineComponent({
   </div>
 </template>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 .login-container {
   position: fixed;
   height: 100%;
@@ -371,11 +357,10 @@ export default defineComponent({
 
   .title {
     font-family: 'Verdana', serif;
-    /*font-style: italic;*/
     font-weight: 600;
     font-size: 24px;
     color: #409eff;
-    margin: 0px auto 20px auto;
+    margin: 0 auto 20px auto;
     text-align: center;
     cursor: default;
 
@@ -508,5 +493,10 @@ export default defineComponent({
   .mobile-warning {
     margin-top: 20px;
   }
+}
+</style>
+<style scoped>
+.mobile-warning:deep(.el-alert .el-alert__description) {
+  font-size: 1.2rem;
 }
 </style>
