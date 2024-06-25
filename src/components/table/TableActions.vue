@@ -92,7 +92,7 @@ const conditions = () => {
   <div class="table-actions">
     <slot name="prefix"></slot>
     <cl-fa-icon-button
-      v-if="showButton(ACTION_EDIT)"
+      v-if="false && showButton(ACTION_EDIT)"
       :disabled="selection.length === 0"
       :icon="['fa', 'edit']"
       id="edit-btn"
@@ -114,6 +114,7 @@ const conditions = () => {
       @click="onDelete"
     />
     <div
+      v-if="false"
       v-export="{
         target,
         conditions,
@@ -131,7 +132,7 @@ const conditions = () => {
       />
     </div>
     <cl-fa-icon-button
-      v-if="showButton(TABLE_ACTION_CUSTOMIZE_COLUMNS)"
+      v-if="false && showButton(TABLE_ACTION_CUSTOMIZE_COLUMNS)"
       :icon="['fa', 'arrows-alt']"
       id="customize-columns-btn"
       class="action-btn customize-columns-btn"

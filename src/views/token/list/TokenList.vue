@@ -1,30 +1,26 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClTokenList' });
 import useTokenList from '@/views/token/list/useTokenList';
 
-export default defineComponent({
-  name: 'TokenList',
-  props: {
-    noActions: {
-      type: Boolean,
-      default: false,
-    },
-    embedded: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup() {
-    return {
-      ...useTokenList(),
-    };
-  },
-});
+defineProps<{
+  noActions?: boolean;
+  embedded?: boolean;
+}>();
+
+const {
+  actionFunctions,
+  navActions,
+  tablePagination,
+  tableColumns,
+  tableData,
+  tableTotal,
+} = useTokenList();
 </script>
 
 <template>
   <cl-list-layout
     class="token-list"
+    :row-key="(row: Token) => [row._id, row._visible].join('_')"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
