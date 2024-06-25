@@ -15,7 +15,7 @@ const { t } = useI18n();
 // store
 const store = useStore();
 
-const { form, isSelectiveForm, isFormItemDisabled } = useNode(store);
+const { form, formRef, isSelectiveForm, isFormItemDisabled } = useNode(store);
 
 const onEnabledChange = (value: boolean) => {
   sendEvent(value ? 'click_node_form_enable' : 'click_node_form_disable');

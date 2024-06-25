@@ -15,7 +15,7 @@ const { t } = useI18n();
 const ns = 'user';
 const store = useStore();
 
-const { formRules, onChangePasswordFunc } = useUser(store);
+const { formRef, formRules, onChangePasswordFunc } = useUser(store);
 
 const form = ref<User>({});
 

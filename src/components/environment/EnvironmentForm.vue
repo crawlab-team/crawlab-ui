@@ -14,7 +14,8 @@ const { t } = useI18n();
 // store
 const store = getStore();
 
-const { form, isSelectiveForm, isFormItemDisabled } = useEnvironment(store);
+const { form, formRef, isSelectiveForm, isFormItemDisabled } =
+  useEnvironment(store);
 </script>
 
 <template>

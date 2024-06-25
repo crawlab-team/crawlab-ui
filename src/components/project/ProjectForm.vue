@@ -9,7 +9,7 @@ const { t } = useI18n();
 
 // store
 const store = useStore();
-const { form, formRules, isSelectiveForm, isFormItemDisabled } =
+const { form, formRef, formRules, isSelectiveForm, isFormItemDisabled } =
   useProject(store);
 </script>
 

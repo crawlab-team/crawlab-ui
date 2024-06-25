@@ -18,7 +18,7 @@ const { t } = useI18n();
 // store
 const store = useStore();
 
-const { form, isSelectiveForm } = useNotification(store);
+const { form, formRef, isSelectiveForm } = useNotification(store);
 </script>
 
 <template>

@@ -16,8 +16,14 @@ const { t } = useI18n();
 const ns = 'schedule';
 const store = useStore();
 
-const { formRules, isSelectiveForm, isFormItemDisabled, modeOptions } =
-  useSchedule(store);
+const {
+  form,
+  formRef,
+  formRules,
+  isSelectiveForm,
+  isFormItemDisabled,
+  modeOptions,
+} = useSchedule(store);
 
 // use node
 const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
@@ -27,9 +33,6 @@ const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
 
 // use task
 const { priorityOptions } = useTask(store);
-
-// use schedule
-const { form } = useSchedule(store);
 
 // on enabled change
 const onEnabledChange = async (value: boolean) => {

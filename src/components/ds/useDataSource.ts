@@ -1,6 +1,5 @@
-import { readonly } from 'vue';
 import { Store } from 'vuex';
-import useDataSourceService from '@/services/ds/dataSourceService';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import {
   DATA_SOURCE_CONNECT_TYPE_HOSTS,
   DATA_SOURCE_CONNECT_TYPE_STANDARD,
@@ -14,12 +13,8 @@ import {
   DATA_SOURCE_TYPE_ELASTICSEARCH,
   DATA_SOURCE_TYPE_KAFKA,
 } from '@/constants/ds';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import useDataSourceService from '@/services/ds/dataSourceService';
 import { getDefaultFormComponentData, plainClone, translate } from '@/utils';
-import {
-  FORM_FIELD_TYPE_INPUT,
-  FORM_FIELD_TYPE_INPUT_TEXTAREA,
-} from '@/constants';
 import useForm from '@/components/form/useForm';
 
 // i18n
@@ -28,16 +23,16 @@ const t = translate;
 // form component data
 const formComponentData = getDefaultFormComponentData<DataSource>();
 
-export const useDataSource: any = (store: Store<RootStoreState>) => {
+export const useDataSource = (store: Store<RootStoreState>) => {
   // store
   const ns = 'ds' as ListStoreNamespace;
   const { ds: state } = store.state as RootStoreState;
 
   // form rules
-  const formRules = readonly<FormRules>({});
+  const formRules: FormRules = {};
 
   // type options
-  const typeOptions = readonly<SelectOption[]>([
+  const typeOptions: SelectOption[] = [
     { label: t('components.ds.type.mongo'), value: DATA_SOURCE_TYPE_MONGO },
     { label: t('components.ds.type.mysql'), value: DATA_SOURCE_TYPE_MYSQL },
     {
@@ -55,7 +50,7 @@ export const useDataSource: any = (store: Store<RootStoreState>) => {
       value: DATA_SOURCE_TYPE_ELASTICSEARCH,
     },
     { label: t('components.ds.type.kafka'), value: DATA_SOURCE_TYPE_KAFKA },
-  ]);
+  ];
   const getTypeOptionsWithDefault = (): SelectOption[] => {
     return [
       { label: t('components.ds.type.default'), value: undefined },
@@ -77,7 +72,7 @@ export const useDataSource: any = (store: Store<RootStoreState>) => {
     );
 
     await store.dispatch(`${ns}/changePassword`, { id, password: value });
-    await ElMessage.success(t('common.message.success.save'));
+    ElMessage.success(t('common.message.success.save'));
   };
 
   // on connect type change

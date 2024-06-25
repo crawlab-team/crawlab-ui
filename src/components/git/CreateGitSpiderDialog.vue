@@ -11,13 +11,12 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'confirm', spider: Spider): void;
+  (e: 'close'): void;
 }>();
 
 // store
 const store = useStore<RootStoreState>();
 const { spider: spiderState } = store.state as RootStoreState;
-
-const { form } = useGit(store);
 
 const formRef = ref();
 

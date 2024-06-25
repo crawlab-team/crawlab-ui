@@ -34,12 +34,18 @@ const { allListSelectOptions: allNodeSelectOptions, allDict: allNodeDict } =
 const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
 
 // use task
-const { form, allSpiderDict, modeOptionsDict } = useTask(store);
+const {
+  form,
+  formRef,
+  allSpiderDict,
+  modeOptions,
+  modeOptionsDict,
+  priorityOptions,
+  isFormItemDisabled,
+} = useTask(store);
 
 // use task detail
 const { activeId } = useTaskDetail();
-
-const { modeOptions, priorityOptions, isFormItemDisabled } = useTask(store);
 
 // use request
 const { get } = useRequest();

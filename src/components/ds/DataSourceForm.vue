@@ -26,14 +26,13 @@ const {
   isSelectiveForm,
   isFormItemDisabled,
   onConnectTypeChange,
+  onChangePasswordFunc,
   onHostsAdd,
   onHostsDelete,
   typeOptions,
 } = useDataSource(store);
 
 const { activeId } = useDataSourceDetail();
-
-const { onChangePasswordFunc } = useDataSource(store);
 
 const onChangePassword = () => onChangePasswordFunc(activeId.value);
 

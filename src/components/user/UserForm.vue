@@ -21,7 +21,8 @@ const onChangePassword = () => onChangePasswordFunc(activeId.value);
 
 const isDetail = computed<boolean>(() => !!activeId.value);
 
-const { form, formRules, isSelectiveForm, isFormItemDisabled } = useUser(store);
+const { form, formRef, formRules, isSelectiveForm, isFormItemDisabled } =
+  useUser(store);
 </script>
 
 <template>

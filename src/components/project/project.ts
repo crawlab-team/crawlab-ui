@@ -14,15 +14,12 @@ import { translate } from '@/utils/i18n';
 const formComponentData = getDefaultFormComponentData<Project>();
 
 const useProject = (store: Store<RootStoreState>) => {
-  // i18n
-  const t = translate;
-
   // store
   const ns = 'project';
   const state = store.state[ns];
 
   // form rules
-  const formRules = readonly<FormRules>({
+  const formRules: FormRules = {
     tags: {
       validator: (_, value, callback) => {
         if (isDuplicated(value)) {
@@ -31,7 +28,7 @@ const useProject = (store: Store<RootStoreState>) => {
         callback();
       },
     },
-  });
+  };
 
   // all project select options
   const allProjectSelectOptions = computed<SelectOption[]>(() =>

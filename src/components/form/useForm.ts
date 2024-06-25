@@ -52,6 +52,7 @@ export const useForm = (
   const readonlyFormFields = computed<string[]>(() => state.readonlyFormFields);
 
   const validateForm = async () => {
+    console.debug(formRef.value);
     return await formRef.value?.validate();
   };
 
@@ -132,7 +133,7 @@ export const useForm = (
     // validate
     try {
       const valid = await validateForm();
-      console.debug('onConfirm', activeDialogKey.value, form.value, valid);
+      console.debug(valid);
       if (!valid) return;
     } catch (ex) {
       console.error(ex);
@@ -210,7 +211,7 @@ export const useForm = (
     formTable;
 
   // action functions
-  const actionFunctions = {
+  const actionFunctions: CreateEditDialogActionFunctions = {
     onClose,
     onConfirm,
     onTabChange,
@@ -219,7 +220,7 @@ export const useForm = (
     onDelete,
     onFieldChange,
     onFieldRegister,
-  } as CreateEditDialogActionFunctions;
+  };
 
   return {
     ...formTable,
