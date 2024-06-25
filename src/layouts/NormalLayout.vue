@@ -1,20 +1,12 @@
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClNormalLayout' });
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
-export default defineComponent({
-  name: 'NormalLayout',
-  setup() {
-    const store = useStore();
-    const { layout } = store.state as RootStoreState;
+const store = useStore();
+const { layout: state } = store.state as RootStoreState;
 
-    const sidebarCollapsed = computed<boolean>(() => layout.sidebarCollapsed);
-
-    return {
-      sidebarCollapsed,
-    };
-  },
-});
+const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
 </script>
 
 <template>

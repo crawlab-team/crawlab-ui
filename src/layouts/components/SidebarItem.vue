@@ -1,42 +1,27 @@
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { emptyObjectFunc } from '@/utils/func';
+<script setup lang="ts">
+defineOptions({ name: 'ClSidebarItem' });
 import { useI18n } from 'vue-i18n';
 
-export default defineComponent({
-  name: 'SidebarItem',
-  props: {
-    item: {
-      type: Object as PropType<MenuItem>,
-      default: emptyObjectFunc,
-    },
-  },
-  emits: ['click'],
-  setup(props: SidebarItemProps, { emit }) {
-    const { t } = useI18n();
+defineProps<{
+  item: MenuItem;
+}>();
 
-    const onMenuItemClick = (item: MenuItem) => {
-      emit('click', item);
-    };
+const emit = defineEmits<{
+  (e: 'click', item: MenuItem): void;
+}>();
 
-    return {
-      onMenuItemClick,
-      t,
-    };
-  },
-});
+const { t } = useI18n();
+
+const onMenuItemClick = (item: MenuItem) => {
+  emit('click', item);
+};
 </script>
 
 <template>
   <!-- no sub menu items -->
   <el-menu-item
     v-if="!item.children"
-    v-track="{
-      code: 'click_sidebar_menu_item',
-      params: {
-        path: item.path,
-      },
-    }"
+    v-track="'click_sidebar_menu_item'"
     :index="item.path"
     @click="onMenuItemClick(item)"
   >

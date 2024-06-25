@@ -174,7 +174,7 @@ onUnmounted(() => {
 
 <template>
   <div class="login-container">
-    <!--    <canvas id="canvas" class="login-canvas" />-->
+    <div id="login-canvas" />
     <el-form
       ref="loginFormRef"
       :model="loginForm"
@@ -185,7 +185,6 @@ onUnmounted(() => {
     >
       <h3 class="title">
         <img :src="logo" alt="logo" class="logo-img" />
-        <!--        <span class="logo-title">Crawlab</span>-->
         <span class="logo-sub-title">
           <span class="logo-sub-title-block">
             {{ t(systemInfo.edition || '') }}
@@ -329,7 +328,7 @@ onUnmounted(() => {
 
   .tips {
     font-size: 14px;
-    color: #666;
+    color: var(--cl-info-light-color);
     margin-bottom: 10px;
     background: transparent;
 
@@ -406,7 +405,7 @@ onUnmounted(() => {
       line-height: 48px;
       margin-left: 20px;
       font-weight: 500;
-      color: var(--cl-info-medium-color);
+      color: var(--cl-info-light-color);
       opacity: 0.8;
 
       .logo-sub-title-block {
@@ -423,7 +422,7 @@ onUnmounted(() => {
     right: 10px;
     top: 7px;
     font-size: 16px;
-    color: #889aa4;
+    color: var(--cl-info-light-color);
     cursor: pointer;
     user-select: none;
   }
@@ -433,7 +432,7 @@ onUnmounted(() => {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    color: #666;
+    color: var(--cl-info-light-color);
     font-weight: 400;
     margin-bottom: 10px;
     padding-bottom: 10px;
@@ -453,7 +452,7 @@ onUnmounted(() => {
   .lang {
     margin-top: 20px;
     text-align: center;
-    color: #666;
+    color: var(--cl-primary-color);
 
     span {
       cursor: pointer;
@@ -491,15 +490,5 @@ onUnmounted(() => {
 <style scoped>
 .mobile-warning:deep(.el-alert .el-alert__description) {
   font-size: 1.2rem;
-}
-</style>
-<style>
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
 }
 </style>

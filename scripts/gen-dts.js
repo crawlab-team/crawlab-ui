@@ -3,10 +3,9 @@ import fs from 'fs';
 import { Project } from 'ts-morph';
 import vueCompiler from '@vue/compiler-sfc';
 import klawSync from 'klaw-sync';
-import chalk from 'chalk';
-
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { log } from './utils.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -29,10 +28,10 @@ const include = path => includedFiles.some(f => path.includes(f));
 /**
  * fork = require( https://github.com/egoist/vue-dts-gen/blob/main/src/index.ts
  */
-const genVueTypes = async (
+async function genVueTypes(
   root,
   outDir = path.resolve(__dirname, '../typings')
-) => {
+) {
   const options = {
     compilerOptions: {
       allowJs: true,
@@ -54,6 +53,9 @@ const genVueTypes = async (
 
   const sourceFiles = [];
 
+  const start = Date.now();
+
+  log('Getting all files...', 'info');
   const filePaths = klawSync(root, {
     nodir: true,
   })
@@ -102,44 +104,54 @@ const genVueTypes = async (
       }
     })
   );
+  log(
+    `Found valid source files: ${sourceFiles.length}/${filePaths.length}`,
+    'success'
+  );
 
+  log('Checking files...', 'info');
   const diagnostics = project.getPreEmitDiagnostics();
-
   console.log(project.formatDiagnosticsWithColorAndContext(diagnostics));
+  if (diagnostics.length) {
+    log(`Files checked with ${diagnostics.length} errors`, 'warn');
+  } else {
+    log('Files checked without errors', 'success');
+  }
 
   await project.emit({
     emitOnlyDtsFiles: true,
   });
 
   // iterate source files
-  for (const sourceFile of sourceFiles) {
-    const emitOutput = sourceFile.getEmitOutput();
-    const outputFiles = emitOutput.getOutputFiles();
-    console.log(
-      chalk.yellow(
-        `Generating definition for file: ${chalk.bold(sourceFile.getBaseName())} (${outputFiles.length})`
-      )
-    );
-
-    for (const outputFile of outputFiles) {
-      const filepath = outputFile.getFilePath();
-
-      await fs.promises.mkdir(path.dirname(filepath), {
-        recursive: true,
-      });
-
-      await fs.promises.writeFile(filepath, outputFile.getText(), 'utf8');
-      console.log(
-        chalk.green(
-          'Definition for file: ' +
-            chalk.bold(sourceFile.getBaseName()) +
-            ' generated'
-        )
+  log('Parsing files...', 'info');
+  await Promise.all(
+    sourceFiles.map(async sourceFile => {
+      const emitOutput = sourceFile.getEmitOutput();
+      const outputFiles = emitOutput.getOutputFiles();
+      log(
+        `Generating definition for file: ${sourceFile.getBaseName()} (output files: ${outputFiles.length})`,
+        'info'
       );
-    }
-  }
+
+      await Promise.all(
+        outputFiles.map(async outputFile => {
+          const filepath = outputFile.getFilePath();
+          await fs.promises.mkdir(path.dirname(filepath), {
+            recursive: true,
+          });
+          await fs.promises.writeFile(filepath, outputFile.getText(), 'utf8');
+          log(
+            `Definition for file: ${sourceFile.getBaseName()} generated`,
+            'success'
+          );
+        })
+      );
+    })
+  );
+  log('All definition files generated', 'success');
 
   // export interfaces in typings/index.d.ts
+  log('Exporting interfaces...', 'info');
   const idxFilePath = path.resolve(__dirname, '../typings/index.d.ts');
   if (fs.existsSync(idxFilePath)) {
     let fileContent = fs.readFileSync(idxFilePath);
@@ -149,7 +161,14 @@ const genVueTypes = async (
     }
     fs.writeFileSync(idxFilePath, fileContent);
   }
-};
+  log('Interfaces exported', 'success');
+
+  const end = Date.now();
+
+  const duration = ((end - start) / 1000).toFixed(1);
+
+  log(`Done in ${duration}s`, 'success');
+}
 
 (async function () {
   await genVueTypes(

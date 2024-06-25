@@ -1,5 +1,6 @@
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClSidebar' });
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import logo from '@/assets/svg/logo-white.svg';
@@ -8,114 +9,84 @@ import { getPrimaryPath } from '@/utils/path';
 import { useI18n } from 'vue-i18n';
 import urljoin from 'url-join';
 
-export default defineComponent({
-  name: 'Sidebar',
-  setup() {
-    const router = useRouter();
+const router = useRouter();
 
-    const route = useRoute();
+const route = useRoute();
 
-    const { t } = useI18n();
+const { t } = useI18n();
 
-    const store = useStore();
+const store = useStore();
 
-    const {
-      common: commonState,
-      layout: layoutState,
-      system: systemState,
-    } = store.state as RootStoreState;
+const {
+  common: commonState,
+  layout: layoutState,
+  system: systemState,
+} = store.state as RootStoreState;
 
-    const storeNamespace = 'layout';
+const storeNamespace = 'layout';
 
-    const sidebarCollapsed = computed<boolean>(
-      () => layoutState.sidebarCollapsed
-    );
+const sidebarCollapsed = computed<boolean>(() => layoutState.sidebarCollapsed);
 
-    const menuItems = computed<MenuItem[]>(
-      () => store.getters['layout/sidebarMenuItems']
-    );
+const menuItems = computed<MenuItem[]>(
+  () => store.getters['layout/sidebarMenuItems']
+);
 
-    const getMenuItemPathMap = (
-      rootPath: string,
-      item: MenuItem
-    ): Map<string, string> => {
-      const paths = new Map<string, string>();
-      const itemPath = item.path?.startsWith('/')
-        ? item.path
-        : urljoin(rootPath, item.path || '');
-      paths.set(itemPath, rootPath);
-      if (item.children && item.children.length > 0) {
-        for (const subItem of item.children) {
-          getMenuItemPathMap(itemPath, subItem).forEach((parentPath, path) => {
-            paths.set(path, parentPath);
-          });
-        }
-      }
-      return paths;
-    };
+const getMenuItemPathMap = (
+  rootPath: string,
+  item: MenuItem
+): Map<string, string> => {
+  const paths = new Map<string, string>();
+  const itemPath = item.path?.startsWith('/')
+    ? item.path
+    : urljoin(rootPath, item.path || '');
+  paths.set(itemPath, rootPath);
+  if (item.children && item.children.length > 0) {
+    for (const subItem of item.children) {
+      getMenuItemPathMap(itemPath, subItem).forEach((parentPath, path) => {
+        paths.set(path, parentPath);
+      });
+    }
+  }
+  return paths;
+};
 
-    const allMenuItemPathMap = computed<Map<string, string>>(() => {
-      const paths = new Map<string, string>();
-      for (const item of menuItems.value) {
-        getMenuItemPathMap('/', item).forEach((parentPath, path) => {
-          paths.set(path, parentPath);
-        });
-      }
-      return paths;
+const allMenuItemPathMap = computed<Map<string, string>>(() => {
+  const paths = new Map<string, string>();
+  for (const item of menuItems.value) {
+    getMenuItemPathMap('/', item).forEach((parentPath, path) => {
+      paths.set(path, parentPath);
     });
-
-    const activePath = computed<string>(() => {
-      if (allMenuItemPathMap.value.has(route.path)) {
-        return route.path;
-      }
-      return getPrimaryPath(route.path);
-    });
-
-    const openedIndexes = computed<string[]>(() => {
-      const parentPath = allMenuItemPathMap.value.get(activePath.value);
-      if (!parentPath) return [];
-      return [parentPath];
-    });
-
-    const toggleIcon = computed<string[]>(() => {
-      if (sidebarCollapsed.value) {
-        return ['fas', 'indent'];
-      } else {
-        return ['fas', 'outdent'];
-      }
-    });
-
-    const onMenuItemClick = (index: string, indexPath: string[]) => {
-      if (indexPath) router.push(indexPath?.[indexPath?.length - 1]);
-    };
-
-    const toggleSidebar = () => {
-      store.commit(
-        `${storeNamespace}/setSideBarCollapsed`,
-        !sidebarCollapsed.value
-      );
-    };
-
-    const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
-
-    const siteTitle = computed<Setting>(() => systemState.siteTitle);
-
-    return {
-      sidebarCollapsed,
-      toggleIcon,
-      menuItems,
-      logo,
-      logoIcon,
-      activePath,
-      openedIndexes,
-      onMenuItemClick,
-      toggleSidebar,
-      systemInfo,
-      siteTitle,
-      t,
-    };
-  },
+  }
+  return paths;
 });
+
+const activePath = computed<string>(() => {
+  if (allMenuItemPathMap.value.has(route.path)) {
+    return route.path;
+  }
+  return getPrimaryPath(route.path);
+});
+
+const openedIndexes = computed<string[]>(() => {
+  const parentPath = allMenuItemPathMap.value.get(activePath.value);
+  if (!parentPath) return [];
+  return [parentPath];
+});
+
+const onMenuItemClick = (_: string, indexPath: string[]) => {
+  if (indexPath) router.push(indexPath?.[indexPath?.length - 1]);
+};
+
+const toggleSidebar = () => {
+  store.commit(
+    `${storeNamespace}/setSideBarCollapsed`,
+    !sidebarCollapsed.value
+  );
+};
+
+const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
+
+const siteTitle = computed<Setting>(() => systemState.siteTitle);
 </script>
 
 <template>
@@ -123,12 +94,7 @@ export default defineComponent({
     :class="sidebarCollapsed ? 'collapsed' : ''"
     class="sidebar-toggle"
     @click="toggleSidebar"
-    v-track="{
-      code: 'click_sidebar_toggle',
-      params: {
-        collapse: () => sidebarCollapsed,
-      },
-    }"
+    v-track="'click_sidebar_toggle'"
   >
     <font-awesome-icon v-if="!sidebarCollapsed" :icon="['fas', 'outdent']" />
     <font-awesome-icon v-else :icon="['fas', 'indent']" />
@@ -149,14 +115,14 @@ export default defineComponent({
           class="logo"
         >
           <img class="logo-img" alt="logo-img" :src="logo" />
-          <span class="logo-sub-title">
+          <div class="logo-sub-title">
             <div class="logo-sub-title-block">
               {{ t(systemInfo.edition || '') }}
             </div>
             <div class="logo-sub-title-block">
               {{ systemInfo.version }}
             </div>
-          </span>
+          </div>
         </div>
         <div v-else class="logo-title">
           {{ siteTitle.value?.site_title }}
@@ -179,7 +145,7 @@ export default defineComponent({
         :default-openeds="openedIndexes"
         @select="onMenuItemClick"
       >
-        <template v-for="(item, $index) in menuItems" :key="$index">
+        <template v-for="item in menuItems" :key="$index">
           <cl-sidebar-item :item="item" />
         </template>
       </el-menu>

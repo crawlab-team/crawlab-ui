@@ -168,3 +168,12 @@
     transform: rotate3d(1, 0, 0, 90deg);
   }
 }
+
+#login-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}

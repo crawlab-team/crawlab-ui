@@ -1,63 +1,41 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import { translate } from '@/utils';
+
+defineProps<{
+  visible?: boolean;
+  names?: string[];
+  nodes?: any[];
+  loading?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'confirm', data: { mode: string; nodeIds: string[] }): void;
+  (e: 'close'): void;
+}>();
 
 const t = translate;
 
-export default defineComponent({
-  name: 'UninstallForm',
-  props: {
-    visible: {
-      type: Boolean,
-    },
-    names: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
-    nodes: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
-    loading: {
-      type: Boolean,
-    },
-  },
-  emits: ['confirm', 'close'],
-  setup(props, { emit }) {
-    const mode = ref('all');
-    const nodeIds = ref([]);
+const mode = ref('all');
+const nodeIds = ref([]);
 
-    const reset = () => {
-      mode.value = 'all';
-      nodeIds.value = [];
-    };
+const reset = () => {
+  mode.value = 'all';
+  nodeIds.value = [];
+};
 
-    const onConfirm = () => {
-      emit('confirm', {
-        mode: mode.value,
-        nodeIds: nodeIds.value,
-      });
-      reset();
-    };
+const onConfirm = () => {
+  emit('confirm', {
+    mode: mode.value,
+    nodeIds: nodeIds.value,
+  });
+  reset();
+};
 
-    const onClose = () => {
-      emit('close');
-      reset();
-    };
-
-    return {
-      nodeIds,
-      mode,
-      onConfirm,
-      onClose,
-      t,
-    };
-  },
-});
+const onClose = () => {
+  emit('close');
+  reset();
+};
 </script>
 
 <template>
