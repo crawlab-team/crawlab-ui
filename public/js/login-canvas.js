@@ -288,5 +288,5 @@ function initCanvas() {
 
   init();
 
-  window.resetCanvas = reset;
+  window.disposeCanvas = reset;
 }

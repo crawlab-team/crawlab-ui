@@ -1,5 +1,9 @@
 class ThreeJSApp {
   constructor() {
+    this.frameId = null;
+    this.fps = 60;
+    this.fpsInterval = 1000 / this.fps;
+    this.then = Date.now();
     this.cameraRange = 3;
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -208,7 +212,7 @@ class ThreeJSApp {
 
   animate() {
     const time = performance.now() * 0.0003;
-    requestAnimationFrame(() => this.animate());
+    this.frameId = requestAnimationFrame(() => this.animate());
 
     for (const object of this.particularGroup.children) {
       object.rotation.x += object.speedValue / 10;
@@ -233,7 +237,36 @@ class ThreeJSApp {
     this.modularGroup.rotation.x -=
       (-this.mouse.y * 4 + this.modularGroup.rotation.x) * this.uSpeed * ratio;
     this.camera.lookAt(this.scene.position);
-    this.renderer.render(this.scene, this.camera);
+
+    const now = Date.now();
+    const elapsed = now - this.then;
+    if (elapsed > this.fpsInterval) {
+      this.then = now - (elapsed % this.fpsInterval);
+      this.renderer.render(this.scene, this.camera);
+    }
+  }
+
+  stopAnimation() {
+    if (this.frameId) {
+      cancelAnimationFrame(this.frameId); // 使用frameId来停止动画
+      this.frameId = null; // 清空frameId
+    }
+  }
+
+  dispose() {
+    this.stopAnimation(); // 停止动画
+    this.scene.traverse(object => {
+      if (object.material) {
+        object.material.dispose();
+      }
+      if (object.geometry) {
+        object.geometry.dispose();
+      }
+    });
+    this.renderer.dispose();
+    document
+      .getElementById('login-canvas')
+      .removeChild(this.renderer.domElement);
   }
 }
 
@@ -241,9 +274,8 @@ window.initCanvas = function () {
   window.threeJSApp = new ThreeJSApp();
 };
 window.resetCanvas = function () {
-  window.threeJSApp = null;
-  const el = document.querySelector('#login-canvas');
-  if (el) {
-    el.innerHTML = '';
+  if (window.threeJSApp) {
+    window.threeJSApp.dispose();
+    window.threeJSApp = null;
   }
 };

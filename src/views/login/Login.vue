@@ -165,9 +165,9 @@ onMounted(() => {
   }
 });
 onUnmounted(() => {
-  // reset canvas
-  if (window.resetCanvas) {
-    window.resetCanvas();
+  // dispose canvas
+  if (window.disposeCanvas) {
+    window.disposeCanvas();
   }
 });
 </script>
