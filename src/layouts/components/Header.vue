@@ -214,6 +214,10 @@ const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
           cursor: pointer;
         }
 
+        &:focus-visible {
+          outline: none;
+        }
+
         .icon {
           margin-right: 6px;
         }
