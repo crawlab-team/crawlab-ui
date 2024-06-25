@@ -11,7 +11,7 @@ import {
   DATA_SOURCE_CONNECT_TYPE_URL,
 } from '@/constants/ds';
 
-const props = defineProps<{
+defineProps<{
   readonly?: boolean;
 }>();
 
@@ -23,6 +23,7 @@ const store = getStore();
 
 const {
   form,
+  formRef,
   isSelectiveForm,
   isFormItemDisabled,
   onConnectTypeChange,

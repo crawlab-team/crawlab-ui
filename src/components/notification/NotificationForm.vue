@@ -160,6 +160,19 @@ const { form, formRef, isSelectiveForm } = useNotification(store);
         />
       </cl-form-item>
     </template>
+
+    <template v-else-if="form.type === 'mobile'">
+      <cl-form-item
+        :span="4"
+        :label="t('views.notification.settings.form.mobile.webhook')"
+        prop="mobile.webhook"
+      >
+        <el-input
+          v-model="form.mobile.webhook"
+          :placeholder="t('views.notification.settings.form.mobile.webhook')"
+        />
+      </cl-form-item>
+    </template>
   </cl-form>
 </template>
 
