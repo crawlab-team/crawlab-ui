@@ -1,6 +1,6 @@
 import { computed, h } from 'vue';
 import { useStore } from 'vuex';
-import useList from '@/layouts/content/list/list';
+import useList from '@/layouts/content/list/useList';
 import NavLink from '@/components/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
 import { translate } from '@/utils/i18n';

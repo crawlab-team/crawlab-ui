@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateEditSpiderDialog' });
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 
 // store
 const store = useStore();

@@ -6,7 +6,7 @@ import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 import ClCreateGitSpiderDialog from '@/components/git/CreateGitSpiderDialog.vue';
 
 const t = translate;

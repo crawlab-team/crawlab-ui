@@ -1,27 +1,8 @@
 <script setup lang="ts">
-import { conditionTypesOptions } from '@/components/filter/filter';
-
 defineOptions({ name: 'ClFilterCondition' });
+import { conditionTypesOptions } from '@/components/filter/filter';
 import { computed } from 'vue';
-import {
-  FILTER_OP_CONTAINS,
-  FILTER_OP_EQUAL,
-  FILTER_OP_GREATER_THAN,
-  FILTER_OP_GREATER_THAN_EQUAL,
-  FILTER_OP_LESS_THAN,
-  FILTER_OP_LESS_THAN_EQUAL,
-  FILTER_OP_NOT_CONTAINS,
-  FILTER_OP_NOT_EQUAL,
-  FILTER_OP_NOT_SET,
-  FILTER_OP_REGEX,
-} from '@/constants/filter';
-import { plainClone } from '@/utils/object';
-
-interface FilterConditionData {
-  key?: string;
-  op?: string;
-  value?: any;
-}
+import { FILTER_OP_NOT_SET } from '@/constants/filter';
 
 const props = defineProps<{
   condition?: FilterConditionData;

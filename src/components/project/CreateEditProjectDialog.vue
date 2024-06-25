@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateEditProjectDialog' });
 import { useStore } from 'vuex';
-import useProject from '@/components/project/project';
+import useProject from '@/components/project/useProject';
 
 // store
 const store = useStore();

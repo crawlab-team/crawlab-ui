@@ -2,9 +2,9 @@
 defineOptions({ name: 'ClScheduleForm' });
 import { useStore } from 'vuex';
 import useSchedule from '@/components/schedule/useSchedule';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
-import useNode from '@/components/node/node';
+import useNode from '@/components/node/useNode';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';

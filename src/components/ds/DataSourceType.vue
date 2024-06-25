@@ -12,7 +12,6 @@ import {
   DATA_SOURCE_TYPE_KAFKA,
 } from '@/constants/ds';
 import { useI18n } from 'vue-i18n';
-import { TagProps } from '@/components/tag/tag';
 
 const props = defineProps<{
   dataSource?: DataSource;

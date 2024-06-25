@@ -6,7 +6,7 @@ import { getStore } from '@/store';
 import { translate } from '@/utils';
 import useRequest from '@/services/request';
 import useDataSource from '@/components/ds/useDataSource';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 
 const { get, post } = useRequest();
 

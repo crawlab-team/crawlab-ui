@@ -6,7 +6,6 @@ import {
   DATA_SOURCE_STATUS_ONLINE,
 } from '@/constants/ds';
 import { useI18n } from 'vue-i18n';
-import { TagProps } from '@/components/tag/tag';
 
 const props = withDefaults(
   defineProps<{

@@ -18,8 +18,6 @@ interface RangeItemOption extends SelectOption {
 }
 
 type RangeItemKey = 'custom' | string;
-type RangeItemValue = RangeItemValueFunc | DateRange;
-type RangeItemValueFunc = () => DateRange;
 type RangePickerType = 'daterange' | 'datetimerange';
 
 interface RangePickerProps {

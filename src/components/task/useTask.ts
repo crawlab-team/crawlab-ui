@@ -4,7 +4,7 @@ import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useTaskService from '@/services/task/taskService';
 import { getDefaultFormComponentData } from '@/utils/form';
-import useSpider from '@/components/spider/spider';
+import useSpider from '@/components/spider/useSpider';
 import {
   getModeOptions,
   getModeOptionsDict,

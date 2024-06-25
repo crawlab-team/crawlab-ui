@@ -92,7 +92,7 @@ const useList = <T = any>(
       );
       sendEvent('click_list_layout_actions_delete_confirm', { ns });
       await store.dispatch(`${ns}/deleteById`, row._id);
-      await ElMessage.success(t('common.message.success.delete'));
+      ElMessage.success(t('common.message.success.delete'));
       await store.dispatch(`${ns}/getList`);
     },
     onHeaderChange: async (column, sort, filter) => {

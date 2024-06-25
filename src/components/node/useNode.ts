@@ -1,4 +1,3 @@
-import { readonly } from 'vue';
 import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useNodeService from '@/services/node/nodeService';
@@ -14,7 +13,7 @@ const useNode = (store: Store<RootStoreState>) => {
   const ns = 'node';
 
   // form rules
-  const formRules = readonly<FormRules>({});
+  const formRules: FormRules = {};
 
   return {
     ...useForm(ns, store, useNodeService(store), formComponentData),

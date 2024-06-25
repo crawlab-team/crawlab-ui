@@ -1,7 +1,7 @@
 import { computed, h } from 'vue';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { useStore } from 'vuex';
-import useList from '@/layouts/content/list/list';
+import useList from '@/layouts/content/list/useList';
 import NavLink from '@/components/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
 import UserRole from '@/components/user/UserRole.vue';
@@ -19,7 +19,7 @@ import {
   FILTER_OP_EQUAL,
 } from '@/constants';
 import { onListFilterChangeByKey } from '@/utils';
-import useUser from '@/components/user/user';
+import useUser from '@/components/user/useUser';
 
 // i18n
 const t = translate;

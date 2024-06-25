@@ -10,8 +10,6 @@ import {
   TASK_STATUS_RUNNING,
 } from '@/constants/task';
 import { useI18n } from 'vue-i18n';
-import { TagProps } from '@/components/tag/tag';
-import { TaskStatus } from '@/components/task/task';
 
 const props = defineProps<{
   status: TaskStatus;

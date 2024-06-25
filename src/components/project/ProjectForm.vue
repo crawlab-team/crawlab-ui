@@ -2,7 +2,7 @@
 defineOptions({ name: 'ClProjectForm' });
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
-import useProject from '@/components/project/project';
+import useProject from '@/components/project/useProject';
 
 // i18n
 const { t } = useI18n();

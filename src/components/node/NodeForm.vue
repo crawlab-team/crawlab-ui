@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNodeForm' });
 import { useStore } from 'vuex';
-import useNode from '@/components/node/node';
+import useNode from '@/components/node/useNode';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
 
