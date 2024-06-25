@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClDependencyLang' });
 import { computed, h, onBeforeUnmount, onMounted, PropType, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';

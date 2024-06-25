@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClInstallForm' });
 import { onBeforeMount, ref, watch } from 'vue';
 import { translate } from '@/utils';
 import useRequest from '@/services/request';

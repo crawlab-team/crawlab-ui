@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClUninstallForm' });
 import { ref } from 'vue';
 import { translate } from '@/utils';
 

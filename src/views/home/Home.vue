@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ClHome' });
 import { onMounted, ref } from 'vue';
 import useRequest from '@/services/request';
 import dayjs from 'dayjs';
