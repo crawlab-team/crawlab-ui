@@ -28,7 +28,7 @@ const updateEditorContent = () => {
 const initEditor = async () => {
   if (!editorRef.value) return;
   editor = monaco.editor.create(editorRef.value, {
-    language: 'md',
+    language: 'markdown',
     lineNumbers: 'off',
     lineNumbersMinChars: 0,
     lineDecorationsWidth: 0,
