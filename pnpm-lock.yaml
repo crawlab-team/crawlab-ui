@@ -53,9 +53,6 @@ importers:
       '@types/showdown':
         specifier: ^2.0.6
         version: 2.0.6
-      '@types/simplemde':
-        specifier: ^1.11.11
-        version: 1.11.11
       '@types/url-join':
         specifier: ^4.0.3
         version: 4.0.3
@@ -119,9 +116,6 @@ importers:
       showdown:
         specifier: ^2.1.0
         version: 2.1.0
-      simplemde:
-        specifier: ^1.11.2
-        version: https://registry.npmmirror.com/simplemde/-/simplemde-1.11.2.tgz
       url-join:
         specifier: ^4.0.1
         version: https://registry.npmmirror.com/url-join/-/url-join-4.0.1.tgz
@@ -1624,9 +1618,6 @@ packages:
   '@types/showdown@2.0.6':
     resolution: {integrity: sha512-pTvD/0CIeqe4x23+YJWlX2gArHa8G0J0Oh6GKaVXV7TAeickpkkZiNOgFcFcmLQ5lB/K0qBJL1FtRYltBfbGCQ==}
 
-  '@types/simplemde@1.11.11':
-    resolution: {integrity: sha512-H3ml0YJtx9XMs2pGHwQy/UHzkg9W3Ke3QikQ/jHhEZj1dfmPbWqIvaNyNrt3dtiVlztWhMgK02+Rmoem+Jot/Q==}
-
   '@types/sockjs@0.3.36':
     resolution: {integrity: sha512-MK9V6NzAS1+Ud7JV9lJLFqW85VbC9dq3LmwZCuBe4wBDgKC0Kj/jd8Xl+nSviU+Qc3+m7umHHyHg//2KSa0a0Q==}
 
@@ -2497,14 +2488,6 @@ packages:
 
   code-block-writer@13.0.1:
     resolution: {integrity: sha512-c5or4P6erEA69TxaxTNcHUNcIn+oyxSRTOWV+pSYF+z4epXqNvwvJ70XPGjPNgue83oAFAPBRQYwpAJ/Hpe/Sg==}
-
-  codemirror-spell-checker@https://registry.npmmirror.com/codemirror-spell-checker/-/codemirror-spell-checker-1.1.2.tgz:
-    resolution: {integrity: sha512-2Tl6n0v+GJRsC9K3MLCdLaMOmvWL0uukajNJseorZJsslaxZyZMgENocPU8R0DyoTAiKsyqiemSOZo7kjGV0LQ==, tarball: https://registry.npmmirror.com/codemirror-spell-checker/-/codemirror-spell-checker-1.1.2.tgz}
-    version: 1.1.2
-
-  codemirror@https://registry.npmmirror.com/codemirror/-/codemirror-5.65.10.tgz:
-    resolution: {integrity: sha512-IXAG5wlhbgcTJ6rZZcmi4+sjWIbJqIGfeg3tNa3yX84Jb3T4huS5qzQAo/cUisc1l3bI47WZodpyf7cYcocDKg==, tarball: https://registry.npmmirror.com/codemirror/-/codemirror-5.65.10.tgz}
-    version: 5.65.10
 
   collect-v8-coverage@1.0.1:
     resolution: {integrity: sha512-iBPtljfCNcTKNAto0KEtDfZ3qzjJvqE3aTGZsbhjSBlorqpXJlaWWtPO35D+ZImoC3KWejX64o+yPGxhWSTzfg==}
@@ -4480,12 +4463,6 @@ packages:
     version: 4.3.0
     engines: {node: '>=8'}
 
-  marked@https://registry.npmmirror.com/marked/-/marked-4.2.3.tgz:
-    resolution: {integrity: sha512-slWRdJkbTZ+PjkyJnE30Uid64eHwbwa1Q25INCAYfZlK4o6ylagBy/Le9eWntqJFoFT93ikUKMv47GZ4gTwHkw==, tarball: https://registry.npmmirror.com/marked/-/marked-4.2.3.tgz}
-    version: 4.2.3
-    engines: {node: '>= 12'}
-    hasBin: true
-
   matchit@https://registry.npmmirror.com/matchit/-/matchit-1.1.0.tgz:
     resolution: {integrity: sha512-+nGYoOlfHmxe5BW5tE0EMJppXEwdSf8uBA1GTZC7Q77kbT35+VKLYJMzVNWCHSsga1ps1tPYFtFyvxvKzWVmMA==, tarball: https://registry.npmmirror.com/matchit/-/matchit-1.1.0.tgz}
     version: 1.1.0
@@ -5859,10 +5836,6 @@ packages:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==, tarball: https://registry.npmmirror.com/signal-exit/-/signal-exit-3.0.7.tgz}
     version: 3.0.7
 
-  simplemde@https://registry.npmmirror.com/simplemde/-/simplemde-1.11.2.tgz:
-    resolution: {integrity: sha512-AUXuHJ/tEEDEcN/MTitHIw3AuBcheizJt7SVwtyn00B0UK5RKZ3GB+JndmRcJ5wfYGCIL0O2yJm/uz0sJOFSLg==, tarball: https://registry.npmmirror.com/simplemde/-/simplemde-1.11.2.tgz}
-    version: 1.11.2
-
   sirv-cli@https://registry.npmmirror.com/sirv-cli/-/sirv-cli-1.0.14.tgz:
     resolution: {integrity: sha512-yyUTNr984ANKDloqepkYbBSqvx3buwYg2sQKPWjSU+IBia5loaoka2If8N9CMwt8AfP179cdEl7kYJ//iWJHjQ==, tarball: https://registry.npmmirror.com/sirv-cli/-/sirv-cli-1.0.14.tgz}
     version: 1.0.14
@@ -6302,10 +6275,6 @@ packages:
     resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
     engines: {node: '>=14.17'}
     hasBin: true
-
-  typo-js@https://registry.npmmirror.com/typo-js/-/typo-js-1.2.2.tgz:
-    resolution: {integrity: sha512-C7pYBQK17EjSg8tVNY91KHdUt5Nf6FMJ+c3js076quPmBML57PmNMzAcIq/2kf/hSYtFABNDIYNYlJRl5BJhGw==, tarball: https://registry.npmmirror.com/typo-js/-/typo-js-1.2.2.tgz}
-    version: 1.2.2
 
   ufo@1.5.3:
     resolution: {integrity: sha512-Y7HYmWaFwPUmkoQCUIAYpKqkOf+SbVj/2fJJZ4RJMCfZp0rTGwRbzQD+HghfnhKOjL9E01okqz+ncJskGYfBNw==}
@@ -8408,8 +8377,6 @@ snapshots:
 
   '@types/showdown@2.0.6': {}
 
-  '@types/simplemde@1.11.11': {}
-
   '@types/sockjs@0.3.36':
     dependencies:
       '@types/node': 20.14.8
@@ -9663,12 +9630,6 @@ snapshots:
   co@4.6.0: {}
 
   code-block-writer@13.0.1: {}
-
-  codemirror-spell-checker@https://registry.npmmirror.com/codemirror-spell-checker/-/codemirror-spell-checker-1.1.2.tgz:
-    dependencies:
-      typo-js: https://registry.npmmirror.com/typo-js/-/typo-js-1.2.2.tgz
-
-  codemirror@https://registry.npmmirror.com/codemirror/-/codemirror-5.65.10.tgz: {}
 
   collect-v8-coverage@1.0.1: {}
 
@@ -11667,8 +11628,6 @@ snapshots:
 
   map-obj@https://registry.npmmirror.com/map-obj/-/map-obj-4.3.0.tgz: {}
 
-  marked@https://registry.npmmirror.com/marked/-/marked-4.2.3.tgz: {}
-
   matchit@https://registry.npmmirror.com/matchit/-/matchit-1.1.0.tgz:
     dependencies:
       '@arr/every': https://registry.npmmirror.com/@arr/every/-/every-1.0.1.tgz
@@ -13013,12 +12972,6 @@ snapshots:
 
   signal-exit@https://registry.npmmirror.com/signal-exit/-/signal-exit-3.0.7.tgz: {}
 
-  simplemde@https://registry.npmmirror.com/simplemde/-/simplemde-1.11.2.tgz:
-    dependencies:
-      codemirror: https://registry.npmmirror.com/codemirror/-/codemirror-5.65.10.tgz
-      codemirror-spell-checker: https://registry.npmmirror.com/codemirror-spell-checker/-/codemirror-spell-checker-1.1.2.tgz
-      marked: https://registry.npmmirror.com/marked/-/marked-4.2.3.tgz
-
   sirv-cli@https://registry.npmmirror.com/sirv-cli/-/sirv-cli-1.0.14.tgz:
     dependencies:
       console-clear: https://registry.npmmirror.com/console-clear/-/console-clear-1.1.1.tgz
@@ -13454,8 +13407,6 @@ snapshots:
       mime-types: 2.1.35
 
   typescript@5.4.5: {}
-
-  typo-js@https://registry.npmmirror.com/typo-js/-/typo-js-1.2.2.tgz: {}
 
   ufo@1.5.3: {}
 
