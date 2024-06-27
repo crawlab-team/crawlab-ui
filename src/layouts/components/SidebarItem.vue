@@ -30,6 +30,21 @@ const onMenuItemClick = (item: MenuItem) => {
       <span class="menu-item-title">{{ t(item.title) }}</span>
     </template>
   </el-menu-item>
+
+  <!-- has sub menu items -->
+  <el-sub-menu v-else :index="item.path">
+    <template #title>
+      <cl-menu-item-icon :item="item" size="normal" />
+      <span class="menu-item-title">{{ t(item.title) }}</span>
+    </template>
+    <sidebar-item
+      v-for="(subItem, $index) in item.children"
+      :key="$index"
+      :index="subItem.path"
+      :item="subItem"
+      @click="onMenuItemClick(subItem)"
+    />
+  </el-sub-menu>
 </template>
 
 <style lang="scss" scoped>
