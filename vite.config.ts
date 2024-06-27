@@ -1,8 +1,8 @@
-import {resolve} from 'path';
-import {defineConfig} from 'vite';
+import { resolve } from 'path';
+import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
-import {visualizer} from 'rollup-plugin-visualizer';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   build: {
@@ -29,7 +29,6 @@ export default defineConfig({
         '@fortawesome/vue-fontawesome',
         'echarts',
         'atom-material-icons',
-        'simplemde',
         'monaco-editor',
       ],
       output: {
@@ -50,35 +49,20 @@ export default defineConfig({
           '@fortawesome/vue-fontawesome': 'FontAwesomeVue',
           echarts: 'Echarts',
           'atom-material-icons': 'AtomMaterialIcons',
-          'simplemde': 'SimpleMDE',
           'monaco-editor': 'monaco',
-        }
-      }
+        },
+      },
     },
   },
   resolve: {
     dedupe: ['vue'],
-    alias: [
-      {find: '@', replacement: resolve(__dirname, 'src')},
-    ],
-    extensions: [
-      '.js',
-      '.ts',
-      '.jsx',
-      '.tsx',
-      '.json',
-      '.vue',
-      '.scss',
-    ]
+    alias: [{ find: '@', replacement: resolve(__dirname, 'src') }],
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss'],
   },
   optimizeDeps: {
-    include: ['monaco-editor']
+    include: ['monaco-editor'],
   },
-  plugins: [
-    vue(),
-    dynamicImport(),
-    visualizer({open: true}),
-  ],
+  plugins: [vue(), dynamicImport(), visualizer({ open: true })],
   server: {
     cors: true,
   },
