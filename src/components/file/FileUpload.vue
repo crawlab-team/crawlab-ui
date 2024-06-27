@@ -5,7 +5,6 @@ import { FILE_UPLOAD_MODE_DIR, FILE_UPLOAD_MODE_FILES } from '@/constants/file';
 import { ElUpload, UploadFile } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { UploadFilled } from '@element-plus/icons-vue';
-import { FileWithPath } from '@/components/file/file';
 
 const props = defineProps<{
   mode: FileUploadMode;

@@ -2,7 +2,6 @@
 defineOptions({ name: 'ClFileEditorNavTabs' });
 import { computed, onMounted, ref, watch } from 'vue';
 import { Close } from '@element-plus/icons-vue';
-import { FileEditorStyles, FileNavItem } from '@/components/file/file';
 
 const props = defineProps<{
   activeTab?: FileNavItem;

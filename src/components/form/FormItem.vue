@@ -145,9 +145,11 @@ onMounted(() => {
           </span>
         </el-tooltip>
       </template>
-      <div class="form-item-content">
-        <slot></slot>
-      </div>
+      <template #default>
+        <div class="form-item-content">
+          <slot></slot>
+        </div>
+      </template>
     </el-form-item>
   </div>
 </template>
@@ -159,6 +161,8 @@ onMounted(() => {
     margin-right: 0;
 
     .form-item-label {
+      font-weight: bold;
+
       .editable-checkbox {
         margin-left: 10px;
       }

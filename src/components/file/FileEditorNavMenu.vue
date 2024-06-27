@@ -9,16 +9,11 @@ import {
   ref,
   watch,
 } from 'vue';
-import Node from 'element-plus/es/components/tree/src/model/node';
 import { useI18n } from 'vue-i18n';
+import Node from 'element-plus/es/components/tree/src/model/node';
 import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
 import { ElMessageBox, ElTree } from 'element-plus';
 import { useDropzone } from 'crawlab-vue3-dropzone';
-import {
-  FileEditorNavMenuClickStatus,
-  FileEditorStyles,
-  FileNavItem,
-} from '@/components/file/file';
 
 const props = defineProps<{
   loading?: boolean;
@@ -39,7 +34,6 @@ const emit = defineEmits<{
   (e: 'ctx-menu-clone', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-delete', item: FileNavItem): void;
   (e: 'node-drop', draggingItem: FileNavItem, dropItem: FileNavItem): void;
-  (e: 'drop-files', files: InputFile[]): void;
   (e: 'drop-files', files: InputFile[]): void;
   (e: 'search', value: string): void;
   (e: 'toggle-nav-menu'): void;

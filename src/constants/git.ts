@@ -5,3 +5,5 @@ export const GIT_STATUS_PENDING = 'pending';
 export const GIT_STATUS_CLONING = 'cloning';
 export const GIT_STATUS_READY = 'ready';
 export const GIT_STATUS_ERROR = 'error';
+export const GIT_STATUS_PULLING = 'pulling';
+export const GIT_STATUS_PUSHING = 'pushing';

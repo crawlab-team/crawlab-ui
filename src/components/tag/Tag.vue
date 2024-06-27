@@ -50,27 +50,26 @@ const onClose = (ev?: Event) => {
 };
 
 const cls = computed<string[]>(() => {
-  const { clickable, disabled, label, tag, className } = props;
+  const { clickable, disabled, label, className } = props;
   const cls = [] as string[];
   if (clickable) cls.push('clickable');
   if (disabled) cls.push('disabled');
-  if (!label && !tag?.name) cls.push('no-label');
+  if (!label) cls.push('no-label');
   if (className) cls.push(className);
   return cls;
 });
 
 const setStyle = () => {
-  const { color, borderColor, width, tag } = props;
+  const { color, borderColor, width } = props;
 
   // normalize colors
-  const color_ = color ?? tag?.color;
-  const borderColor_ = borderColor ?? color_;
+  const borderColor_ = borderColor ?? color;
 
   // set style of tag
   const elTag = tagRef.value?.$el;
   if (!elTag) return;
   const styleTagList = [];
-  if (color_) styleTagList.push(`color: ${color_}`);
+  if (color) styleTagList.push(`color: ${color}`);
   if (borderColor_) styleTagList.push(`border-color: ${borderColor_}`);
   if (width) styleTagList.push(`width: ${width}`);
   const styleTag = styleTagList.join(';');
@@ -80,8 +79,8 @@ const setStyle = () => {
   const elTagClose = elTag.querySelector('.el-tag__close');
   if (!elTagClose) return;
   const styleTagCloseList = [];
-  if (color_) {
-    styleTagCloseList.push(`color: ${color_}`);
+  if (color) {
+    styleTagCloseList.push(`color: ${color}`);
     styleTagCloseList.push(`background-color: transparent`);
   }
   const styleTagClose = styleTagCloseList.join(';');
@@ -116,7 +115,7 @@ onMounted(() => {
       <span class="prefix-icon">
         <cl-icon v-if="icon" :icon="icon" :spinning="spinning" />
       </span>
-      <span>{{ label || tag?.name }}</span>
+      <span>{{ label }}</span>
       <span class="suffix-icon">
         <cl-icon v-if="suffixIcon" :icon="suffixIcon" />
       </span>

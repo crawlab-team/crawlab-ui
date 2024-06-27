@@ -3,6 +3,8 @@ import {
   GIT_STATUS_CLONING,
   GIT_STATUS_READY,
   GIT_STATUS_ERROR,
+  GIT_STATUS_PULLING,
+  GIT_STATUS_PUSHING,
 } from '@/constants/git';
 
 declare global {
@@ -10,5 +12,7 @@ declare global {
     | GIT_STATUS_PENDING
     | GIT_STATUS_CLONING
     | GIT_STATUS_READY
-    | GIT_STATUS_ERROR;
+    | GIT_STATUS_ERROR
+    | GIT_STATUS_PULLING
+    | GIT_STATUS_PUSHING;
 }

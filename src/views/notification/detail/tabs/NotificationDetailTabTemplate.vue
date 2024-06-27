@@ -1,80 +1,66 @@
-<script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { translate } from '@/utils';
-import 'simplemde/dist/simplemde.min.js';
+<script setup lang="ts">
+defineOptions({ name: 'ClNotificationDetailTabTemplate' });
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import * as monaco from 'monaco-editor';
+import { translate } from '@/utils';
 import useNotification from '@/components/notification/notification';
-import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
 const t = translate;
 
-export default defineComponent({
-  name: 'NotificationDetailTabTemplate',
-  setup() {
-    // store
-    const ns = 'notification';
-    const store = useStore();
-    const { form } = useNotification(store);
+// store
+const ns = 'notification';
+const store = useStore();
 
-    const simpleMDERef = ref();
+const { form } = useNotification(store);
 
-    const simpleMDE = ref();
+const internalTitle = ref();
 
-    const internalTitle = ref();
+const editorRef = ref();
 
-    onMounted(() => {
-      simpleMDE.value = new window.SimpleMDE({
-        element: simpleMDERef.value,
-        spellChecker: false,
-        placeholder: t('views.notification.settings.form.templateContent'),
-      });
-      simpleMDE.value.codemirror.on('change', () => {
-        if (simpleMDE.value.value() !== form.value.template) {
-          store.commit(`${ns}/setTemplateContent`, simpleMDE.value.value());
-        }
-      });
+let editor: monaco.editor.IStandaloneCodeEditor | null = null;
 
-      const { title } = form.value;
-      internalTitle.value = title;
-    });
+const updateEditorContent = () => {
+  editor?.setValue(form.value.template || '');
+  store.commit(`${ns}/setTemplate`, form.value.template);
+};
 
-    onBeforeUnmount(() => {
-      simpleMDE.value.toTextArea();
-      simpleMDE.value = null;
-    });
+const initEditor = async () => {
+  if (!editorRef.value) return;
+  editor = monaco.editor.create(editorRef.value, {
+    language: 'md',
+    lineNumbers: 'off',
+    lineNumbersMinChars: 0,
+    lineDecorationsWidth: 0,
+    scrollBeyondLastLine: false,
+    minimap: { enabled: false },
+    automaticLayout: true,
+  });
+  editor.setValue(form.value.template || '');
+};
 
-    watch(
-      () => form.value.template,
-      template => {
-        if (simpleMDE.value) {
-          if (simpleMDE.value.value() !== template) {
-            simpleMDE.value.value(template);
-          }
-        }
-      }
-    );
-
-    watch(
-      () => form.value.title,
-      title => {
-        internalTitle.value = title;
-      }
-    );
-
-    const onTitleChange = (title: string) => {
-      store.commit(`${ns}/setTemplateTitle`, title);
-    };
-
-    return {
-      ...useNotificationDetail(),
-      form,
-      simpleMDERef,
-      internalTitle,
-      onTitleChange,
-      t,
-    };
-  },
+onMounted(() => {
+  const { title } = form.value;
+  internalTitle.value = title;
+  initEditor();
 });
+
+onBeforeUnmount(() => {
+  editor?.dispose();
+});
+
+watch(() => form.value.template, updateEditorContent);
+
+watch(
+  () => form.value.title,
+  title => {
+    internalTitle.value = title;
+  }
+);
+
+const onTitleChange = (title: string) => {
+  store.commit(`${ns}/setTemplateTitle`, title);
+};
 </script>
 
 <template>
@@ -85,25 +71,26 @@ export default defineComponent({
       :placeholder="t('views.notification.settings.form.title')"
       @input="onTitleChange"
     />
-    <div class="simple-mde">
-      <textarea :value="form.template" ref="simpleMDERef" />
-    </div>
+    <div ref="editorRef" class="editor" />
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .notification-detail-tab-template {
-  /*min-height: 100%;*/
   display: flex;
   flex-direction: column;
-}
+  height: 100%;
 
-.notification-detail-tab-template .title {
-  /*margin-bottom: 20px;*/
+  .editor {
+    flex: 1;
+  }
 }
-
-.notification-detail-tab-template .title:deep(.el-input__inner) {
+</style>
+<style scoped>
+.notification-detail-tab-template .title:deep(.el-input__wrapper) {
   border: none;
+  border-bottom: 1px solid var(--el-border-color-light);
+  box-shadow: none;
 }
 
 .notification-detail-tab-template:deep(.editor-toolbar) {

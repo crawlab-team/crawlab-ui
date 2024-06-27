@@ -1,12 +1,16 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailActionsCommon' });
-import { TAB_NAME_CHANGES } from '@/constants';
+import {
+  GIT_STATUS_PULLING,
+  GIT_STATUS_PUSHING,
+  TAB_NAME_CHANGES,
+} from '@/constants';
 import { h, ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox, ElMessageBoxOptions } from 'element-plus';
 
 const t = translate;
 
@@ -112,22 +116,21 @@ const onNewBranch = async () => {
 };
 
 const onDeleteBranch = async (branch: string) => {
-  const confirm = await ElMessageBox.confirm(
-    () =>
-      h('div', [
-        t('components.git.common.messageBox.confirm.branch.delete'),
-        h(
-          'label',
-          { style: 'margin-left: 5px;color: var(--cl-danger-color)' },
-          [branch]
-        ),
-      ]),
-    {
-      type: 'warning',
-      confirmButtonClass: 'el-button--danger',
-      confirmButtonText: t('common.actions.delete'),
-    }
-  );
+  const message: ElMessageBoxOptions['message'] = () =>
+    h('div', [
+      t('components.git.common.messageBox.confirm.branch.delete'),
+      h(
+        'label',
+        // { style: 'margin-left: 5px;color: var(--cl-danger-color)' },
+        { style: { marginLeft: '5px', color: 'var(--cl-danger-color)' } },
+        [branch]
+      ),
+    ]) as any;
+  const confirm = await ElMessageBox.confirm(message, {
+    type: 'warning',
+    confirmButtonClass: 'el-button--danger',
+    confirmButtonText: t('common.actions.delete'),
+  });
   if (!confirm) return;
   branchSelectLoading.value = true;
   try {
@@ -177,18 +180,37 @@ const onClickPush = async () => {
   if (pushLoading.value) return;
   await onPush();
 };
+
+const loading = computed(
+  () =>
+    branchSelectLoading.value ||
+    gitDataLoading.value ||
+    pullLoading.value ||
+    commitLoading.value ||
+    pushLoading.value
+);
 </script>
 
 <template>
   <cl-nav-action-group>
     <cl-nav-action-fa-icon
-      :icon="['fa', 'code-branch']"
+      :icon="['fab', 'git']"
       :tooltip="t('components.git.actions.title')"
     />
     <cl-nav-action-item>
       <cl-git-status
+        v-if="pullLoading"
         size="large"
-        :id="gitForm._id"
+        :status="GIT_STATUS_PULLING"
+      />
+      <cl-git-status
+        v-else-if="pushLoading"
+        size="large"
+        :status="GIT_STATUS_PUSHING"
+      />
+      <cl-git-status
+        v-else
+        size="large"
         :status="gitForm.status"
         :error="gitForm.error"
         @retry="() => store.dispatch(`${ns}/getById`, activeId)"
@@ -199,7 +221,7 @@ const onClickPush = async () => {
           :local-branches="gitLocalBranches"
           :remote-branches="gitRemoteBranches"
           :disabled="isDisabled"
-          :loading="branchSelectLoading || gitDataLoading"
+          :loading="loading"
           @select-local="onLocalBranchChange"
           @select-remote="onRemoteBranchChange"
           @new-branch="onNewBranch"

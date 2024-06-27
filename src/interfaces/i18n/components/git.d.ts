@@ -96,6 +96,8 @@ interface LComponentsGit {
       cloning: string;
       ready: string;
       error: string;
+      pulling: string;
+      pushing: string;
       unknown: string;
     };
     tooltip: {
@@ -103,6 +105,8 @@ interface LComponentsGit {
       cloning: string;
       ready: string;
       error: string;
+      pulling: string;
+      pushing: string;
       unknown: string;
     };
   };

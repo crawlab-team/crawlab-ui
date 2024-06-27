@@ -6,7 +6,6 @@ import { plainClone } from '@/utils/object';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
-import { FileEditorOptions } from '@/components/file/file';
 
 const { t } = useI18n();
 

@@ -170,7 +170,7 @@ const useGitDetail = () => {
       if (res.data) {
         ElMessage.info(res.data);
       } else {
-        ElMessage.success(t('components.git.common.messageBox.success.pull'));
+        ElMessage.success(t('components.git.common.message.success.pull'));
       }
       if (activeTabName.value === TAB_NAME_FILES) {
         await store.dispatch(`${ns}/listDir`, { id: id.value });

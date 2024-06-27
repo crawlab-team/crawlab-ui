@@ -42,7 +42,6 @@ import FileEditorSettingsDialog from './file/FileEditorSettingsDialog.vue';
 import FileTab from './file/FileTab.vue';
 import FileUpload from './file/FileUpload.vue';
 import UploadFilesDialog from './file/UploadFilesDialog.vue';
-import * as file from './file/file';
 import * as fileEditorDropZone from './file/fileEditorDropZone';
 import FilterCondition from './filter/FilterCondition.vue';
 import FilterConditionList from './filter/FilterConditionList.vue';
@@ -194,7 +193,6 @@ export {
   FileTab as ClFileTab,
   FileUpload as ClFileUpload,
   UploadFilesDialog as ClUploadFilesDialog,
-  file as file,
   fileEditorDropZone as fileEditorDropZone,
   FilterCondition as ClFilterCondition,
   FilterConditionList as ClFilterConditionList,

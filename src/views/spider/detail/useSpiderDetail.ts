@@ -4,7 +4,6 @@ import useSpiderService from '@/services/spider/spiderService';
 import { useRoute } from 'vue-router';
 import { translate } from '@/utils/i18n';
 import useDetail from '@/layouts/content/detail/useDetail';
-import { FileNavItem } from '@/components/file/file';
 
 // i18n
 const t = translate;

@@ -96,6 +96,8 @@ const git: LComponentsGit = {
       cloning: 'Cloning',
       ready: 'Ready',
       error: 'Error',
+      pulling: 'Pulling',
+      pushing: 'Pushing',
       unknown: 'Unknown',
     },
     tooltip: {
@@ -103,6 +105,8 @@ const git: LComponentsGit = {
       cloning: 'Git repo is cloning',
       ready: 'Git repo is ready',
       error: 'Git repo has error during cloning',
+      pulling: 'Git repo is pulling',
+      pushing: 'Git repo is pushing',
       unknown: 'Unknown git repo status',
     },
   },

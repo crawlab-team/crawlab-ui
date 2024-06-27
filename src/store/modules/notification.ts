@@ -10,11 +10,8 @@ import {
   TAB_NAME_TRIGGERS,
 } from '@/constants';
 import { translate } from '@/utils/i18n';
-import useRequest from '@/services/request';
 
 const t = translate;
-
-const { get } = useRequest();
 
 const state = {
   ...getDefaultStoreState<NotificationSetting>('notification'),

@@ -2,9 +2,8 @@
 defineOptions({ name: 'ClFileTab' });
 import { onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
-import { FileNavItem } from '@/components/file/file';
+import { ElMessage } from 'element-plus';
 
 const props = defineProps<{
   ns: ListStoreNamespace;

@@ -96,6 +96,8 @@ const git: LComponentsGit = {
       cloning: '克隆中',
       ready: '就绪',
       error: '错误',
+      pulling: '拉取中',
+      pushing: '推送中',
       unknown: '未知',
     },
     tooltip: {
@@ -103,6 +105,8 @@ const git: LComponentsGit = {
       cloning: 'Git 仓库克隆中',
       ready: 'Git 仓库就绪',
       error: 'Git 仓库克隆过程中出现错误',
+      pulling: 'Git 仓库拉取中',
+      pushing: 'Git 仓库推送中',
       unknown: '未知 Git 仓库状态',
     },
   },

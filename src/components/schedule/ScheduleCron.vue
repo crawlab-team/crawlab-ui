@@ -109,6 +109,33 @@ const data = computed<TagProps>(() => {
       <div v-html="data.tooltip" />
     </template>
   </cl-tag>
+  <div v-else :class="[isValid ? 'valid' : 'invalid']" class="schedule-cron">
+    <div class="row">
+      <span class="title">
+        <el-tooltip
+          :content="t('components.schedule.cron.title.cronDescription')"
+        >
+          <font-awesome-icon
+            :icon="['fa', 'info-circle']"
+            class="description"
+          />
+        </el-tooltip>
+      </span>
+      <span class="value description">
+        {{ isValid ? description : t('common.status.invalid') }}
+      </span>
+    </div>
+    <div class="row">
+      <span class="title">
+        <el-tooltip :content="t('components.schedule.cron.title.nextRun')">
+          <font-awesome-icon :icon="['fa', 'arrow-right']" class="next" />
+        </el-tooltip>
+      </span>
+      <span class="value next">
+        {{ isValid ? next : t('common.status.invalid') }}
+      </span>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

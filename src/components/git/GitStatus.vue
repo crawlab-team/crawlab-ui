@@ -7,6 +7,8 @@ import {
   GIT_STATUS_READY,
   GIT_STATUS_ERROR,
   GIT_STATUS_CLONING,
+  GIT_STATUS_PULLING,
+  GIT_STATUS_PUSHING,
 } from '@/constants/git';
 import { useI18n } from 'vue-i18n';
 
@@ -59,6 +61,22 @@ const data = computed(() => {
         tooltip: `${t('components.git.status.tooltip.error')}<br><span style="color: 'var(--cl-red)">${error}</span>`,
         type: 'danger',
         icon: ['fa', 'times'],
+      };
+    case GIT_STATUS_PULLING:
+      return {
+        label: t('components.git.status.label.pulling'),
+        tooltip: `${t('components.git.status.tooltip.pulling')}`,
+        type: 'warning',
+        icon: ['fa', 'spinner'],
+        spinning: true,
+      };
+    case GIT_STATUS_PUSHING:
+      return {
+        label: t('components.git.status.label.pushing'),
+        tooltip: `${t('components.git.status.tooltip.pushing')}`,
+        type: 'warning',
+        icon: ['fa', 'spinner'],
+        spinning: true,
       };
     default:
       return {
