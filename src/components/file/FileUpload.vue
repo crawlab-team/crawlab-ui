@@ -83,7 +83,6 @@ const onClickUploadDir = () => {
 
 <template>
   <div class="file-upload">
-    {{ uploadInfo }}
     <div class="mode-select">
       <el-radio-group
         v-model="internalMode"
