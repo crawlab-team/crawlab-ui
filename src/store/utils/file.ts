@@ -65,19 +65,19 @@ export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
       return res;
     },
     getFileInfo: async (
-      { commit }: StoreActionContext<S>,
+      _: StoreActionContext<S>,
       { id, path }: FileRequestPayload
     ) => {
       return await get(`${endpoint}/${id}/files/info`, { path });
     },
     saveFile: async (
-      { commit }: StoreActionContext<S>,
+      _: StoreActionContext<S>,
       { id, path, data }: FileRequestPayload
     ) => {
       return await post(`${endpoint}/${id}/files/save`, { path, data });
     },
     saveFileBinary: async (
-      { commit }: StoreActionContext<S>,
+      _: StoreActionContext<S>,
       { id, path, file }: FileRequestPayload
     ) => {
       const data = new FormData();
@@ -90,13 +90,16 @@ export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
       });
     },
     saveFilesBinary: async (
-      { commit }: StoreActionContext<S>,
-      { id, files }: SaveFilesRequestPayload
+      _: StoreActionContext<S>,
+      { id, files, targetDirectory }: SaveFilesRequestPayload
     ) => {
       const data = new FormData();
       files.forEach(({ path, file }) => {
         data.append(path, file);
       });
+      if (targetDirectory) {
+        data.append('targetDirectory', targetDirectory);
+      }
       return await post(`${endpoint}/${id}/files/save/batch`, data, null, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -104,33 +107,30 @@ export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
       });
     },
     saveDir: async (
-      { commit }: StoreActionContext<S>,
+      _: StoreActionContext<S>,
       { id, path }: FileRequestPayload
     ) => {
       return await post(`${endpoint}/${id}/files/save/dir`, { path });
     },
     renameFile: async (
-      { commit }: StoreActionContext<S>,
+      _: StoreActionContext<S>,
       { id, path, new_path }: FileRequestPayload
     ) => {
       return await post(`${endpoint}/${id}/files/rename`, { path, new_path });
     },
     deleteFile: async (
-      { commit }: StoreActionContext<S>,
+      _: StoreActionContext<S>,
       { id, path }: FileRequestPayload
     ) => {
       return await del(`${endpoint}/${id}/files`, { path });
     },
     copyFile: async (
-      { commit }: StoreActionContext<S>,
+      _: StoreActionContext<S>,
       { id, path, new_path }: FileRequestPayload
     ) => {
       return await post(`${endpoint}/${id}/files/copy`, { path, new_path });
     },
-    exportFiles: async (
-      { commit }: StoreActionContext<S>,
-      { id }: { id: string }
-    ) => {
+    exportFiles: async (_: StoreActionContext<S>, { id }: { id: string }) => {
       return (await post(
         `${endpoint}/${id}/files/export`,
         {},

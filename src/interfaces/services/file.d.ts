@@ -13,7 +13,8 @@ interface FileServices<T> extends Services<T> {
   saveFileBinary: (id: string, path: string, file: File) => Promise<Response>;
   saveFilesBinary: (
     id: string,
-    files: { path: string; file: File }[]
+    files: { path: string; file: File }[],
+    targetDirectory?: string
   ) => Promise<Response>;
   saveDir: (id: string, path: string) => Promise<Response>;
   renameFile: (id: string, path: string, new_path: string) => Promise<Response>;

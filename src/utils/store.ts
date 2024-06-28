@@ -16,7 +16,6 @@ export const getDefaultStoreState = <T = any>(
       createEdit: true,
     },
     activeDialogKey: undefined,
-    createEditDialogTabName: 'single',
     form: {} as T,
     isSelectiveForm: false,
     selectedFormFields: [],
@@ -75,7 +74,6 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
     },
     hideDialog: (state: BaseStoreState<T>) => {
       // reset all other state variables
-      state.createEditDialogTabName = 'single';
       state.isSelectiveForm = false;
       state.selectedFormFields = [];
       state.formList = [];
@@ -83,15 +81,6 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
 
       // set active dialog key as undefined
       state.activeDialogKey = undefined;
-    },
-    setCreateEditDialogTabName: (
-      state: BaseStoreState<T>,
-      tabName: CreateEditTabName
-    ) => {
-      state.createEditDialogTabName = tabName;
-    },
-    resetCreateEditDialogTabName: (state: BaseStoreState<T>) => {
-      state.createEditDialogTabName = 'single';
     },
     setForm: (state: BaseStoreState<T>, value: T) => {
       state.form = value;

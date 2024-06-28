@@ -11,9 +11,10 @@ import {
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Node from 'element-plus/es/components/tree/src/model/node';
+import { useDropzone } from 'crawlab-vue3-dropzone';
 import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
 import { ElMessageBox, ElTree } from 'element-plus';
-import { useDropzone } from 'crawlab-vue3-dropzone';
+import { FILE_ROOT } from '@/constants';
 
 const props = defineProps<{
   loading?: boolean;
@@ -63,7 +64,7 @@ const contextMenuClicking = ref<boolean>(false);
 const expandedKeys = ref<string[]>([]);
 
 const computedDefaultExpandedKeys = computed<string[]>(() => {
-  return ['~'].concat(expandedKeys.value);
+  return [FILE_ROOT].concat(expandedKeys.value);
 });
 
 const addDefaultExpandedKey = (key: string) => {

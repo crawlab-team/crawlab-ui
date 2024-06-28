@@ -4,6 +4,7 @@ import { onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
+import { FILE_ROOT } from '@/constants';
 
 const props = defineProps<{
   ns: ListStoreNamespace;
@@ -45,7 +46,7 @@ const fileEditor = ref();
 const pathSep = '/';
 
 const isRoot = (item: FileNavItem): boolean => {
-  return item.path === '~';
+  return item.path === FILE_ROOT;
 };
 
 const getDirPath = (path: string): string => {
@@ -97,7 +98,7 @@ const onNavItemDrop = async (
   dropItem: FileNavItem
 ) => {
   const { activeId } = props;
-  const dirPath = dropItem.path !== '~' ? dropItem.path : '';
+  const dirPath = dropItem.path !== FILE_ROOT ? dropItem.path : '';
   const newPath = `${dirPath}${pathSep}${draggingItem.name}`;
   await renameFile(activeId, draggingItem.path as string, newPath);
   emit('file-change', newPath);

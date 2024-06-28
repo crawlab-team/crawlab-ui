@@ -59,6 +59,10 @@ const file: LComponentsFile = {
   },
   upload: {
     title: '文件上传',
+    form: {
+      mode: '上传模式',
+      targetDirectory: '目标目录',
+    },
     buttons: {
       files: {
         dragFilesHereOr: '拖拽文件至此，或',
@@ -79,6 +83,7 @@ const file: LComponentsFile = {
     fileList: {
       title: '待上传文件',
     },
+    rootDirectory: '根目录',
   },
   actions: {
     tooltip: {

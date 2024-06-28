@@ -117,11 +117,6 @@ export const useForm = (
     return ['create', 'edit'].includes(activeDialogKey);
   });
 
-  // dialog create edit tab name
-  const createEditDialogTabName = computed<CreateEditTabName>(
-    () => state.createEditDialogTabName
-  );
-
   // dialog confirm
   const confirmDisabled = computed<boolean>(() => {
     return isSelectiveForm.value && selectedFormFields.value.length === 0;
@@ -235,7 +230,6 @@ export const useForm = (
     resetForm,
     isFormItemDisabled,
     activeDialogKey,
-    createEditDialogTabName,
     createEditDialogVisible,
     allListSelectOptions,
     allListSelectOptionsWithEmpty,

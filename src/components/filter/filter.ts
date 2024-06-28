@@ -11,7 +11,6 @@ import {
   FILTER_OP_NOT_SET,
   FILTER_OP_REGEX,
 } from '@/constants';
-import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
 
 export const defaultFilterCondition: FilterConditionData = {
   op: FILTER_OP_NOT_SET,

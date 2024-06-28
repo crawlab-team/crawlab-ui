@@ -64,7 +64,6 @@ export declare global {
     ns: StoreNamespace;
     dialogVisible: DialogVisible;
     activeDialogKey: DialogKey | undefined;
-    createEditDialogTabName: CreateEditTabName;
     form: T;
     isSelectiveForm: boolean;
     selectedFormFields: string[];
@@ -97,11 +96,6 @@ export declare global {
     extends MutationTree<BaseStoreState<T>> {
     showDialog: StoreMutation<BaseStoreState<T>, DialogKey>;
     hideDialog: StoreMutation<BaseStoreState<T>>;
-    setCreateEditDialogTabName: StoreMutation<
-      BaseStoreState<T>,
-      CreateEditTabName
-    >;
-    resetCreateEditDialogTabName: StoreMutation<BaseStoreState<T>>;
     setForm: StoreMutation<BaseStoreState<T>, T>;
     resetForm: StoreMutation<BaseStoreState<T>>;
     setIsSelectiveForm: StoreMutation<BaseStoreState<T>, boolean>;

@@ -61,6 +61,10 @@ const file: LComponentsFile = {
   },
   upload: {
     title: 'Files Upload',
+    form: {
+      mode: 'Upload Mode',
+      targetDirectory: 'Target Folder',
+    },
     buttons: {
       files: {
         dragFilesHereOr: 'Drag files here, or',
@@ -81,6 +85,7 @@ const file: LComponentsFile = {
     fileList: {
       title: 'Files to Upload',
     },
+    rootDirectory: 'Root Directory',
   },
   actions: {
     tooltip: {

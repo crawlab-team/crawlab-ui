@@ -33,9 +33,10 @@ const useFileService = <T>(
 
   const saveFilesBinary = (
     id: string,
-    files: { path: string; file: File }[]
+    files: { path: string; file: File }[],
+    targetDirectory?: string
   ) => {
-    return dispatch(`${ns}/saveFilesBinary`, { id, files });
+    return dispatch(`${ns}/saveFilesBinary`, { id, files, targetDirectory });
   };
 
   const saveDir = (id: string, path: string) => {

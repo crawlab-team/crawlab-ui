@@ -61,7 +61,7 @@ defineExpose({
     class="form"
     :rules="rules"
     hide-required-asterisk
-    @validate="$emit('validate')"
+    @validate="emit('validate')"
   >
     <slot></slot>
   </el-form>

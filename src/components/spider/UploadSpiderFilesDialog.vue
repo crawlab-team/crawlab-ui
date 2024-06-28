@@ -18,6 +18,7 @@ const { activeId } = useSpiderDetail();
     :active-id="activeId"
     :form="state.form"
     :services="useSpiderService(store)"
+    :file-nav-items="state.fileNavItems"
   />
 </template>
 

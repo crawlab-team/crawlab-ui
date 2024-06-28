@@ -4,7 +4,6 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
 import { FILE_ROOT } from '@/constants/file';
-import { FileEditorStyles, FileNavItem } from '@/components/file/file';
 
 // components
 import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';

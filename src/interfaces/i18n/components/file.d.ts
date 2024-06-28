@@ -59,6 +59,10 @@ interface LComponentsFile {
   };
   upload: {
     title: string;
+    form: {
+      mode: string;
+      targetDirectory: string;
+    };
     buttons: {
       files: {
         dragFilesHereOr: string;
@@ -79,6 +83,7 @@ interface LComponentsFile {
     fileList: {
       title: string;
     };
+    rootDirectory: string;
   };
   actions: {
     tooltip: {

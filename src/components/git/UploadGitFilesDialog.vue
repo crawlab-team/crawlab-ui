@@ -18,6 +18,7 @@ const { activeId } = useGitDetail();
     :active-id="activeId"
     :form="state.form"
     :services="useGitService(store)"
+    :file-nav-items="state.fileNavItems"
   />
 </template>
 

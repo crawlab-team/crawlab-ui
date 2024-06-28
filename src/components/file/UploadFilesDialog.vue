@@ -6,8 +6,7 @@ import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
 import { getOSPathSeparator } from '@/utils';
-import { FILE_UPLOAD_MODE_DIR } from '@/constants';
-import FileUpload from '@/components/file/FileUpload.vue';
+import { FILE_ROOT, FILE_UPLOAD_MODE_DIR } from '@/constants';
 
 const props = defineProps<{
   ns: ListStoreNamespace;
@@ -15,6 +14,7 @@ const props = defineProps<{
   activeId: string;
   form: BaseModel;
   services: FileServices<BaseModel>;
+  fileNavItems: FileNavItem[];
 }>();
 
 // i18n
@@ -27,7 +27,7 @@ const files = ref<FileWithPath[]>([]);
 
 const mode = ref<FileUploadMode>(FILE_UPLOAD_MODE_DIR);
 
-const fileUploadRef = ref<typeof FileUpload>();
+const targetDirectory = ref<string>(FILE_ROOT);
 
 const fileUploadVisible = computed(
   () => props.activeDialogKey === 'uploadFiles'
@@ -78,6 +78,28 @@ const uploadInfo = computed(() => {
   return info;
 });
 
+const getDirectoryOptions = (items: FileNavItem[]): SelectOption[] => {
+  return items
+    .filter(item => item.is_dir)
+    .map(item => {
+      return {
+        label: item.name,
+        value: item.path,
+        children: getDirectoryOptions(item.children || []),
+      };
+    });
+};
+
+const directoryOptions = computed(() => {
+  return [
+    {
+      label: `~ (${t('components.file.upload.rootDirectory')})`,
+      value: FILE_ROOT,
+      children: getDirectoryOptions(props.fileNavItems),
+    },
+  ];
+});
+
 const getFilePath = (f: FileWithPath): string => {
   const path = f.path;
   if (!path) return f.name;
@@ -97,7 +119,8 @@ const uploadFiles = async () => {
     id.value,
     files.value.map((f: FileWithPath) => {
       return { path: getFilePath(f) as string, file: f as File };
-    })
+    }),
+    targetDirectory.value
   );
   await listRootDir(id.value);
 };
@@ -114,9 +137,9 @@ const onUploadConfirm = async () => {
     sendEvent('click_spider_detail_actions_upload_confirm');
 
     await uploadFiles();
-    await ElMessage.success(t('common.message.success.upload'));
+    ElMessage.success(t('common.message.success.upload'));
   } catch (e: any) {
-    await ElMessage.error(e);
+    ElMessage.error(e);
   } finally {
     confirmLoading.value = false;
     store.commit(`${ns}/hideDialog`);
@@ -130,9 +153,13 @@ const onFilesChange = (fileList: FileWithPath[]) => {
   sendEvent('click_spider_detail_actions_files_change');
 };
 
+const onTargetDirectoryChange = (dir: string) => {
+  targetDirectory.value = dir;
+};
+
 const title = computed(() => {
   return (
-    t('components.file.upload.title') + (name.value ? ` - ${name.value}` : '')
+    t('components.file.upload.title') + (name.value ? `: ${name.value}` : '')
   );
 });
 
@@ -144,6 +171,7 @@ watch(fileUploadVisible, () => {
 
 onBeforeUnmount(() => {
   const { ns } = props;
+  targetDirectory.value = FILE_ROOT;
   store.commit(`${ns}/hideDialog`);
 });
 </script>
@@ -158,10 +186,12 @@ onBeforeUnmount(() => {
     @confirm="onUploadConfirm"
   >
     <cl-file-upload
-      ref="fileUploadRef"
       :mode="mode"
+      :target-directory="targetDirectory"
+      :directory-options="directoryOptions"
       :upload-info="uploadInfo"
       @mode-change="(value: FileUploadMode) => (mode = value)"
+      @directory-change="onTargetDirectoryChange"
       @files-change="onFilesChange"
     />
   </cl-dialog>
