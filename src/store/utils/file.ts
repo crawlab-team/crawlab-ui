@@ -1,4 +1,4 @@
-import { FILE_UPLOAD_MODE_DIR } from '@/constants';
+import { FILE_ROOT, FILE_UPLOAD_MODE_DIR } from '@/constants';
 import useRequest from '@/services/request';
 
 const { get, post, del } = useRequest();
@@ -97,7 +97,7 @@ export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
       files.forEach(({ path, file }) => {
         data.append(path, file);
       });
-      if (targetDirectory) {
+      if (targetDirectory && targetDirectory !== FILE_ROOT) {
         data.append('targetDirectory', targetDirectory);
       }
       return await post(`${endpoint}/${id}/files/save/batch`, data, null, {

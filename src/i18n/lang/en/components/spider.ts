@@ -13,6 +13,7 @@ const spider: LComponentsSpider = {
     incrementalSync: 'Incremental Sync',
     autoInstall: 'Auto Install',
     autoInstallDisabled: 'Auto Install (available in Crawlab Pro)',
+    gitRootPath: 'Git Path',
   },
   actions: {
     files: {

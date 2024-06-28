@@ -85,7 +85,6 @@ const file: LComponentsFile = {
     fileList: {
       title: 'Files to Upload',
     },
-    rootDirectory: 'Root Directory',
   },
   actions: {
     tooltip: {
@@ -97,6 +96,7 @@ const file: LComponentsFile = {
       createWithAiDisabled: 'Create with AI (available in Crawlab Pro)',
     },
   },
+  rootDirectory: 'Root Directory',
 };
 
 export default file;

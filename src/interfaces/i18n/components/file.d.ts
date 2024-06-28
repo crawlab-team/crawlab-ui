@@ -83,7 +83,6 @@ interface LComponentsFile {
     fileList: {
       title: string;
     };
-    rootDirectory: string;
   };
   actions: {
     tooltip: {
@@ -95,4 +94,5 @@ interface LComponentsFile {
       fileEditorSettings: string;
     };
   };
+  rootDirectory: string;
 }

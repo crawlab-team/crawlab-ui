@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getRootDirectoryOptions } from '@/utils/file';
+
 defineOptions({ name: 'ClUploadFilesDialog' });
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
@@ -78,27 +80,9 @@ const uploadInfo = computed(() => {
   return info;
 });
 
-const getDirectoryOptions = (items: FileNavItem[]): SelectOption[] => {
-  return items
-    .filter(item => item.is_dir)
-    .map(item => {
-      return {
-        label: item.name,
-        value: item.path,
-        children: getDirectoryOptions(item.children || []),
-      };
-    });
-};
-
-const directoryOptions = computed(() => {
-  return [
-    {
-      label: `~ (${t('components.file.upload.rootDirectory')})`,
-      value: FILE_ROOT,
-      children: getDirectoryOptions(props.fileNavItems),
-    },
-  ];
-});
+const directoryOptions = computed(() =>
+  getRootDirectoryOptions(props.fileNavItems)
+);
 
 const getFilePath = (f: FileWithPath): string => {
   const path = f.path;

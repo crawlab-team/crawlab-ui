@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClSpiderForm' });
 
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/useSpider';
 import useNode from '@/components/node/useNode';
@@ -18,10 +18,6 @@ const t = translate;
 
 // store
 const store = useStore();
-
-const { common: commonState } = store.state as RootStoreState;
-
-const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
 // use node
 const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
@@ -90,6 +86,8 @@ defineExpose({
 
 <template>
   <cl-form v-if="form" ref="formRef" :model="form">
+    <slot name="header" />
+
     <!-- Row -->
     <cl-form-item
       :span="2"
@@ -255,6 +253,8 @@ defineExpose({
       />
     </cl-form-item>
     <!--./Row-->
+
+    <slot name="footer" />
   </cl-form>
 </template>
 

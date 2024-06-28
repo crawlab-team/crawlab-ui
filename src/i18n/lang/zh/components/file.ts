@@ -83,7 +83,6 @@ const file: LComponentsFile = {
     fileList: {
       title: '待上传文件',
     },
-    rootDirectory: '根目录',
   },
   actions: {
     tooltip: {
@@ -95,6 +94,7 @@ const file: LComponentsFile = {
       createWithAiDisabled: '用 AI 创建 (仅限 Crawlab Pro)',
     },
   },
+  rootDirectory: '根目录',
 };
 
 export default file;
