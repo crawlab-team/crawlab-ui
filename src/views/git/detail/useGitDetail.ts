@@ -22,6 +22,7 @@ import {
   TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
 } from '@/constants';
+import { getRequestBaseUrlWs } from '@/utils';
 
 // i18n
 const t = translate;
@@ -160,26 +161,36 @@ const useGitDetail = () => {
   };
 
   const onPull = async () => {
-    pullLoading.value = true;
-    try {
-      const res = await store.dispatch(`${ns}/pull`, {
-        id: id.value,
-      });
-      if (res.data) {
-        ElMessage.info(res.data);
-      } else {
-        ElMessage.success(t('components.git.common.message.success.pull'));
-      }
-      if (activeTabName.value === TAB_NAME_FILES) {
-        await store.dispatch(`${ns}/listDir`, { id: id.value });
-      } else if (activeTabName.value === TAB_NAME_LOGS) {
-        await store.dispatch(`${ns}/getLogs`, { id: id.value });
-      }
-    } catch (e: any) {
-      ElMessage.error(e.message);
-    } finally {
+    const ws = new WebSocket(
+      getRequestBaseUrlWs() + `/gits/${id.value}/pull/ws`
+    );
+    ws.onopen = () => {
+      pullLoading.value = true;
+    };
+    ws.onmessage = event => {
+      console.debug(event.data);
+    };
+    ws.onerror = error => {
       pullLoading.value = false;
-    }
+      ElMessage.error(error);
+    };
+    ws.onclose = event => {
+      pullLoading.value = false;
+      if (event.code === 1000) {
+        if (event.reason) {
+          ElMessage.info(event.reason);
+        } else {
+          ElMessage.success(t('components.git.common.message.success.pull'));
+          if (activeTabName.value === TAB_NAME_FILES) {
+            store.dispatch(`${ns}/listDir`, { id: id.value });
+          } else if (activeTabName.value === TAB_NAME_LOGS) {
+            store.dispatch(`${ns}/getLogs`, { id: id.value });
+          }
+        }
+      } else {
+        ElMessage.error(event.reason);
+      }
+    };
   };
 
   const onPush = async () => {

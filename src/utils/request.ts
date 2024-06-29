@@ -2,6 +2,16 @@ export const getRequestBaseUrl = (): string => {
   return import.meta.env.VITE_APP_API_BASE_URL || 'http://localhost:8000';
 };
 
+export const getRequestBaseUrlWs = (): string => {
+  if (import.meta.env.VITE_APP_API_BASE_URL.startsWith('http://')) {
+    return (
+      import.meta.env.VITE_APP_API_BASE_URL.replace(/https?/, 'ws') ||
+      'ws://localhost:8000'
+    );
+  }
+  return `ws://${window.location.hostname}${import.meta.env.VITE_APP_API_BASE_URL}`;
+};
+
 export const getEmptyResponseWithListData = <
   T = any,
 >(): ResponseWithListData<T> => {
