@@ -49,5 +49,6 @@ export declare global {
     error?: string;
     auto_pull?: boolean;
     spiders?: Spider[];
+    clone_logs?: string[];
   }
 }

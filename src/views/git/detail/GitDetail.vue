@@ -24,7 +24,17 @@ const ns = 'git';
 const store = useStore<RootStoreState>();
 const { git: state } = store.state;
 
-const { activeId, activeTabName, tabs } = useGitDetail();
+const {
+  activeId,
+  activeTabName,
+  tabs,
+  pullLoading,
+  pullBoxVisible,
+  pullBoxLogs,
+  pushLoading,
+  pushBoxVisible,
+  pushBoxLogs,
+} = useGitDetail();
 
 // update tab disabled keys
 const { form } = useGit(store);
@@ -134,6 +144,21 @@ provide<{ (item: FileNavItem): void }>(
   <cl-upload-git-files-dialog />
   <cl-create-git-branch-dialog />
   <!-- ./Dialogs -->
+
+  <!-- Boxes -->
+  <cl-git-logs-box
+    :visible="pullBoxVisible"
+    :loading="pullLoading"
+    :logs="pullBoxLogs"
+    :title="t('components.git.common.box.title.pull')"
+  />
+  <cl-git-logs-box
+    :visible="pushBoxVisible"
+    :loading="pushLoading"
+    :logs="pushBoxLogs"
+    :title="t('components.git.common.box.title.push')"
+  />
+  <!-- ./Boxes -->
 </template>
 
 <style scoped lang="scss"></style>

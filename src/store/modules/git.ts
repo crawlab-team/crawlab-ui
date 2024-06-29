@@ -135,34 +135,43 @@ const actions = {
     return await post(`${endpoint}/${id}/clone`);
   },
   getGitRemoteRefs: async (
-    { commit }: StoreActionContext<GitStoreState>,
+    { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
     const res = await get(`${endpoint}/${id}/git/remote-refs`);
+    if (JSON.stringify(state.gitRemoteRefs) === JSON.stringify(res?.data)) {
+      return;
+    }
     commit('setGitRemoteRefs', res?.data || []);
     return res;
   },
   getCurrentBranch: async (
-    { commit }: StoreActionContext<GitStoreState>,
+    { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
     const res = await get(`${endpoint}/${id}/branches/current`);
+    if (JSON.stringify(state.currentBranch) === JSON.stringify(res?.data))
+      return;
     commit('setCurrentBranch', res?.data);
     return res;
   },
   getBranches: async (
-    { commit }: StoreActionContext<GitStoreState>,
+    { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
     const res = await get(`${endpoint}/${id}/branches`);
+    if (JSON.stringify(state.gitBranches) === JSON.stringify(res?.data)) return;
     commit('setGitBranches', res?.data || []);
     return res;
   },
   getRemoteBranches: async (
-    { commit }: StoreActionContext<GitStoreState>,
+    { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
     const res = await get(`${endpoint}/${id}/branches/remote`);
+    if (JSON.stringify(state.gitRemoteBranches) === JSON.stringify(res?.data)) {
+      return;
+    }
     commit('setGitRemoteBranches', res?.data || []);
     return res;
   },
@@ -204,10 +213,11 @@ const actions = {
     });
   },
   getChanges: async (
-    { commit }: StoreActionContext<GitStoreState>,
+    { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
     const res = await get(`${endpoint}/${id}/changes`);
+    if (JSON.stringify(state.gitChanges) === JSON.stringify(res?.data)) return;
     commit('setGitChanges', res?.data || []);
     return res;
   },
@@ -253,18 +263,20 @@ const actions = {
     return await post(`${endpoint}/${id}/push`, {});
   },
   getLogs: async (
-    { commit }: StoreActionContext<GitStoreState>,
+    { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
     const res = await get(`${endpoint}/${id}/logs`);
+    if (JSON.stringify(state.gitLogs) === JSON.stringify(res?.data)) return;
     commit('setGitLogs', res?.data || []);
     return res;
   },
   getGitTags: async (
-    { commit }: StoreActionContext<GitStoreState>,
+    { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
     const res = await get(`${endpoint}/${id}/git/tags`);
+    if (JSON.stringify(state.gitTags) === JSON.stringify(res?.data)) return;
     commit('setGitTags', res?.data || []);
     return res;
   },

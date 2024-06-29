@@ -13,6 +13,7 @@ interface LComponentsSpider {
     incrementalSync: string;
     autoInstall: string;
     autoInstallDisabled: string;
+    git: string;
     gitRootPath: string;
   };
   actions: {

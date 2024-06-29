@@ -1,6 +1,7 @@
 import { computed, h } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { ElPopover } from 'element-plus';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -8,6 +9,7 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
   FILTER_OP_CONTAINS,
+  GIT_STATUS_READY,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import { sendEvent } from '@/admin/umeng';
@@ -19,6 +21,7 @@ import {
 } from '@/utils';
 import NavLink from '@/components/nav/NavLink.vue';
 import GitStatus from '@/components/git/GitStatus.vue';
+import ClTag from '@/components/tag/Tag.vue';
 
 const useGitList = () => {
   // router
@@ -102,16 +105,41 @@ const useGitList = () => {
           key: 'status',
           label: t('views.gits.table.columns.status'),
           icon: ['fa', 'heartbeat'],
-          width: '150',
+          width: '160',
           value: (row: Git) => {
-            const { _id, status, error } = row;
-            return h(GitStatus, {
-              id: _id,
-              status,
-              error,
-              onClick: () => router.push(`/gits/${_id}`),
-              onRetry: () => store.dispatch(`${ns}/getList`),
-            });
+            const { _id, status, error, clone_logs } = row;
+            return h(
+              'div',
+              {
+                style: {
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'start',
+                },
+              },
+              [
+                h(GitStatus, {
+                  id: _id,
+                  status,
+                  error,
+                  onClick: () => {
+                    router.push(`/gits/${_id}`);
+                  },
+                  onRetry: () => store.dispatch(`${ns}/getList`),
+                }),
+                clone_logs?.length
+                  ? h(ClTag, {
+                      type: 'info',
+                      icon: ['fa', 'file-alt'],
+                      clickable: true,
+                      onClick: () => {
+                        store.commit(`${ns}/showDialog`, 'logs');
+                        store.commit(`${ns}/setForm`, row);
+                      },
+                    })
+                  : null,
+              ]
+            );
           },
           hasSort: true,
           hasFilter: true,

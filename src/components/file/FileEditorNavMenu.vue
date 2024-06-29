@@ -430,6 +430,7 @@ const fileSearchString = ref<string>('');
         @node-drag-end="onNodeDragEnd"
         @node-drop="onNodeDrop"
         @node-click="onNodeClick"
+        @node-contextmenu="onNodeContextMenuShow"
         @node-expand="onNodeExpand"
         @node-collapse="onNodeCollapse"
       >

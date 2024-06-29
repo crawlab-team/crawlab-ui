@@ -13,6 +13,7 @@ const spider: LComponentsSpider = {
     incrementalSync: '增量同步文件',
     autoInstall: '自动安装依赖',
     autoInstallDisabled: '自动安装依赖 (仅限 Crawlab Pro)',
+    git: 'Git 仓库',
     gitRootPath: 'Git 仓库路径',
   },
   actions: {

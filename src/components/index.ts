@@ -1,3 +1,4 @@
+import Box from './box/Box.vue';
 import Button from './button/Button.vue';
 import FaIconButton from './button/FaIconButton.vue';
 import IconButton from './button/IconButton.vue';
@@ -59,6 +60,9 @@ import CreateGitSpiderDialog from './git/CreateGitSpiderDialog.vue';
 import GitBranchSelect from './git/GitBranchSelect.vue';
 import GitFileStatus from './git/GitFileStatus.vue';
 import GitForm from './git/GitForm.vue';
+import GitLogsBox from './git/GitLogsBox.vue';
+import GitLogsDialog from './git/GitLogsDialog.vue';
+import GitPath from './git/GitPath.vue';
 import GitRepo from './git/GitRepo.vue';
 import GitStatus from './git/GitStatus.vue';
 import UploadGitFilesDialog from './git/UploadGitFilesDialog.vue';
@@ -149,6 +153,7 @@ import UserRole from './user/UserRole.vue';
 import useUser from './user/useUser';
 
 export {
+  Box as ClBox,
   Button as ClButton,
   FaIconButton as ClFaIconButton,
   IconButton as ClIconButton,
@@ -210,6 +215,9 @@ export {
   GitBranchSelect as ClGitBranchSelect,
   GitFileStatus as ClGitFileStatus,
   GitForm as ClGitForm,
+  GitLogsBox as ClGitLogsBox,
+  GitLogsDialog as ClGitLogsDialog,
+  GitPath as ClGitPath,
   GitRepo as ClGitRepo,
   GitStatus as ClGitStatus,
   UploadGitFilesDialog as ClUploadGitFilesDialog,

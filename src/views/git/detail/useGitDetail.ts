@@ -1,21 +1,11 @@
-import { computed, ref, onBeforeMount, onBeforeUnmount, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import useGitService from '@/services/git/gitService';
 import { getTabName } from '@/utils/route';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils/i18n';
-import Form from '@/components/form/Form.vue';
-import {
-  GIT_REF_TYPE_BRANCH,
-  GIT_STATUS_CLONING,
-  GIT_STATUS_ERROR,
-  GIT_STATUS_PENDING,
-  GIT_STATUS_READY,
-} from '@/constants/git';
+import { GIT_STATUS_READY } from '@/constants/git';
 import useDetail from '@/layouts/content/detail/useDetail';
-import useGit from '@/components/git/useGit';
 import {
   TAB_NAME_CHANGES,
   TAB_NAME_FILES,
@@ -28,9 +18,13 @@ import { getRequestBaseUrlWs } from '@/utils';
 const t = translate;
 
 const pullLoading = ref(false);
+const pullBoxVisible = ref(false);
+const pullBoxLogs = ref<string[]>([]);
 const commitLoading = ref(false);
 const rollbackLoading = ref(false);
 const pushLoading = ref(false);
+const pushBoxLogs = ref<string[]>([]);
+const pushBoxVisible = ref(false);
 
 const useGitDetail = () => {
   const ns = 'git';
@@ -166,16 +160,21 @@ const useGitDetail = () => {
     );
     ws.onopen = () => {
       pullLoading.value = true;
+      pullBoxVisible.value = true;
     };
     ws.onmessage = event => {
-      console.debug(event.data);
+      if (event.data) pullBoxLogs.value.push(event.data);
     };
     ws.onerror = error => {
       pullLoading.value = false;
-      ElMessage.error(error);
+      pullBoxVisible.value = false;
+      pullBoxLogs.value = [];
+      ElMessage.error(error.toString());
     };
     ws.onclose = event => {
       pullLoading.value = false;
+      pullBoxVisible.value = false;
+      pullBoxLogs.value = [];
       if (event.code === 1000) {
         if (event.reason) {
           ElMessage.info(event.reason);
@@ -194,27 +193,40 @@ const useGitDetail = () => {
   };
 
   const onPush = async () => {
-    pushLoading.value = true;
-    try {
-      const res = await store.dispatch(`${ns}/push`, {
-        id: id.value,
-      });
-      if (res.data) {
-        ElMessage.info(res.data);
-      } else {
-        ElMessage.success(t('components.git.common.message.success.push'));
-      }
-      if (activeTabName.value === TAB_NAME_LOGS) {
-        await Promise.all([
-          store.dispatch(`${ns}/getLogs`, { id: id.value }),
-          store.dispatch(`${ns}/getRemoteBranches`, { id: id.value }),
-        ]);
-      }
-    } catch (e: any) {
-      ElMessage.error(e.message);
-    } finally {
+    const ws = new WebSocket(
+      getRequestBaseUrlWs() + `/gits/${id.value}/push/ws`
+    );
+    ws.onopen = () => {
+      pushLoading.value = true;
+      pushBoxVisible.value = true;
+    };
+    ws.onmessage = event => {
+      if (event.data) pushBoxLogs.value.push(event.data);
+    };
+    ws.onerror = error => {
       pushLoading.value = false;
-    }
+      pushBoxVisible.value = false;
+      pushBoxLogs.value = [];
+      ElMessage.error(error.toString());
+    };
+    ws.onclose = event => {
+      pushLoading.value = false;
+      pushBoxVisible.value = false;
+      pushBoxLogs.value = [];
+      if (event.code === 1000) {
+        if (event.reason) {
+          ElMessage.info(event.reason);
+        } else {
+          ElMessage.success(t('components.git.common.message.success.push'));
+          if (activeTabName.value === TAB_NAME_LOGS) {
+            store.dispatch(`${ns}/getLogs`, { id: id.value });
+            store.dispatch(`${ns}/getRemoteBranches`, { id: id.value });
+          }
+        }
+      } else {
+        ElMessage.error(event.reason);
+      }
+    };
   };
 
   return {
@@ -231,8 +243,12 @@ const useGitDetail = () => {
     rollbackLoading,
     onRollback,
     pullLoading,
+    pullBoxVisible,
+    pullBoxLogs,
     onPull,
     pushLoading,
+    pushBoxVisible,
+    pushBoxLogs,
     onPush,
   };
 };

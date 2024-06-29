@@ -153,7 +153,7 @@ onMounted(() => {
   margin-right: 5px;
 }
 
-.tag:deep(.suffix-icon) {
+.tag:not(.no-label):deep(.suffix-icon) {
   margin-left: 5px;
 }
 </style>

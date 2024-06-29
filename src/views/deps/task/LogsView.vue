@@ -1,30 +1,39 @@
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClLogsView' });
+import { ref, computed } from 'vue';
 
-export default defineComponent({
-  name: 'LogsView',
-  props: {
-    logs: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
-  },
-  setup(props, { emit }) {
-    const content = computed(() => {
-      return props.logs.join('\n').replace(/\n/g, '<br>');
-    });
+const props = defineProps<{
+  logs?: string[];
+}>();
 
-    return {
-      content,
-    };
-  },
+const content = computed(() => {
+  const { logs } = props;
+  const data: string[] = [];
+  logs?.forEach(l => {
+    l.trim()
+      .split(/[\n\r]/)
+      .map(line => {
+        data.push(line.trim());
+      });
+  });
+  return data.join('\n');
+});
+
+const logsViewRef = ref<HTMLDivElement>();
+
+const scrollToBottom = () => {
+  logsViewRef.value?.scrollTo(0, logsViewRef.value?.scrollHeight);
+};
+
+defineExpose({
+  scrollToBottom,
 });
 </script>
 
 <template>
-  <div class="logs-view" v-html="content"></div>
+  <div class="logs-view" ref="logsViewRef">
+    <pre>{{ content }}</pre>
+  </div>
 </template>
 
 <style scoped>

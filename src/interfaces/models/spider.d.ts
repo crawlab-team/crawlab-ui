@@ -23,6 +23,7 @@ export declare global {
     auto_install?: boolean;
     git_id?: string;
     git_root_path?: string;
+    git?: Git;
   }
 
   interface SpiderStat {

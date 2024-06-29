@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import ClGitPath from '@/components/git/GitPath.vue';
+
 defineOptions({ name: 'ClSpiderDetailActionsCommon' });
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/useSpider';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { isPro } from '@/utils';
 import { sendEvent } from '@/admin/umeng';
+import useSpider from '@/components/spider/useSpider';
+
+const router = useRouter();
 
 // i18n
 const { t } = useI18n();
@@ -12,7 +18,7 @@ const { t } = useI18n();
 const ns = 'spider';
 const store = useStore();
 
-const { activeDialogKey } = useSpider(store);
+const { activeDialogKey, form } = useSpider(store);
 
 const onRun = () => {
   store.commit(`${ns}/showDialog`, 'run');
@@ -32,22 +38,33 @@ const onRun = () => {
         @click="onRun"
       />
     </cl-nav-action-item>
-    <!--TODO: implement-->
-    <cl-nav-action-item v-if="false">
-      <cl-fa-icon-button
-        :icon="['fa', 'clone']"
-        :tooltip="t('common.actions.clone')"
-        type="info"
-      />
-    </cl-nav-action-item>
-    <!--TODO: implement-->
-    <cl-nav-action-item v-if="false">
-      <cl-fa-icon-button
-        :icon="['far', 'star']"
-        plain
-        :tooltip="t('common.actions.bookmark')"
-        type="warning"
-      />
+  </cl-nav-action-group>
+  <cl-nav-action-group v-if="isPro() && form?.git">
+    <cl-nav-action-fa-icon :icon="['fab', 'git']" />
+    <cl-nav-action-item>
+      <div style="margin-right: 10px">
+        <cl-tag
+          :label="form.git.name"
+          :icon="['fa', 'code-branch']"
+          :tooltip="`${t('components.spider.form.git')}: ${form.git.name}`"
+          size="large"
+          clickable
+          @click="router.push(`/gits/${form.git._id}`)"
+        >
+          <template #tooltip>
+            <div>
+              <label>{{ t('components.spider.form.git') }}: </label>
+              <span>{{ form.git.name }}</span>
+            </div>
+            <div>
+              <label>{{ t('components.spider.form.gitRootPath') }}: </label>
+              <span>
+                <cl-git-path :path="form.git_root_path" />
+              </span>
+            </div>
+          </template>
+        </cl-tag>
+      </div>
     </cl-nav-action-item>
   </cl-nav-action-group>
 

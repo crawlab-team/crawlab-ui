@@ -12,6 +12,7 @@ interface LComponentsGit {
     autoPull: string;
     urlInvalid: string;
     spider: string;
+    cloneLogs: string;
   };
   common: {
     currentBranch: string;
@@ -47,6 +48,12 @@ interface LComponentsGit {
             notEmpty: string;
           };
         };
+      };
+    };
+    box: {
+      title: {
+        pull: string;
+        push: string;
       };
     };
     actions: {

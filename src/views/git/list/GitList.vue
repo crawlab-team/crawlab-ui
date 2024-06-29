@@ -16,8 +16,14 @@ const {
   <cl-list-layout
     class="git-list"
     :row-key="
-      ({ _id, name, status, spiders }: Git) =>
-        [_id, name, status, spiders].join('_')
+      ({ _id, name, status, spiders, clone_logs }: Git) =>
+        [
+          _id,
+          name,
+          status,
+          JSON.stringify(spiders),
+          JSON.stringify(clone_logs),
+        ].join('_')
     "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
@@ -29,9 +35,15 @@ const {
     <template #extra>
       <!-- Dialogs (handled by store) -->
       <cl-create-edit-git-dialog />
+      <cl-git-logs-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
 <style scoped lang="scss"></style>
+<style scoped>
+.git-list:deep(.git-status) {
+  margin-right: 0;
+}
+</style>

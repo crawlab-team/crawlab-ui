@@ -12,6 +12,7 @@ const git: LComponentsGit = {
     autoPull: 'Auto Pull',
     urlInvalid: 'Invalid URL',
     spider: 'Spider',
+    cloneLogs: 'Clone Logs',
   },
   common: {
     currentBranch: 'Current Branch',
@@ -57,6 +58,12 @@ const git: LComponentsGit = {
       loading: {
         label: 'Loading',
         tooltip: 'Loading Git data from remote, please wait...',
+      },
+    },
+    box: {
+      title: {
+        pull: 'Git Pull',
+        push: 'Git Push',
       },
     },
   },

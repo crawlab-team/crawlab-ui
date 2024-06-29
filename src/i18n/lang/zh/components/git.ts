@@ -12,6 +12,7 @@ const git: LComponentsGit = {
     autoPull: '自动拉取',
     urlInvalid: '无效 URL',
     spider: '爬虫',
+    cloneLogs: '克隆日志',
   },
   common: {
     currentBranch: '当前分支',
@@ -47,6 +48,12 @@ const git: LComponentsGit = {
             notEmpty: '不能为空',
           },
         },
+      },
+    },
+    box: {
+      title: {
+        pull: '拉取代码',
+        push: '推送代码',
       },
     },
     actions: {
