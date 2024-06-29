@@ -27,7 +27,6 @@ const {
   activeTabName,
   activeId,
   currentBranch,
-  gitDataLoading,
   gitLocalBranches,
   gitRemoteBranches,
   isDisabled,
@@ -184,7 +183,6 @@ const onClickPush = async () => {
 const loading = computed(
   () =>
     branchSelectLoading.value ||
-    gitDataLoading.value ||
     pullLoading.value ||
     commitLoading.value ||
     pushLoading.value

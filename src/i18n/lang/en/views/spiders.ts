@@ -3,6 +3,7 @@ const spiders: LViewsSpiders = {
     columns: {
       name: 'Name',
       project: 'Project',
+      git: 'Git Repo',
       lastStatus: 'Last Status',
       lastRunAt: 'Last Run At',
       stats: 'Stats',

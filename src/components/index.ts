@@ -59,6 +59,7 @@ import CreateGitSpiderDialog from './git/CreateGitSpiderDialog.vue';
 import GitBranchSelect from './git/GitBranchSelect.vue';
 import GitFileStatus from './git/GitFileStatus.vue';
 import GitForm from './git/GitForm.vue';
+import GitRepo from './git/GitRepo.vue';
 import GitStatus from './git/GitStatus.vue';
 import UploadGitFilesDialog from './git/UploadGitFilesDialog.vue';
 import useGit from './git/useGit';
@@ -111,7 +112,6 @@ import useSpider from './spider/useSpider';
 import Switch from './switch/Switch.vue';
 import ActionTab from './tab/ActionTab.vue';
 import Tab from './tab/Tab.vue';
-import * as tab from './tab/tab';
 import Table from './table/Table.vue';
 import TableActions from './table/TableActions.vue';
 import TableCell from './table/TableCell.vue';
@@ -210,6 +210,7 @@ export {
   GitBranchSelect as ClGitBranchSelect,
   GitFileStatus as ClGitFileStatus,
   GitForm as ClGitForm,
+  GitRepo as ClGitRepo,
   GitStatus as ClGitStatus,
   UploadGitFilesDialog as ClUploadGitFilesDialog,
   useGit as useGit,
@@ -262,7 +263,6 @@ export {
   Switch as ClSwitch,
   ActionTab as ClActionTab,
   Tab as ClTab,
-  tab as tab,
   Table as ClTable,
   TableActions as ClTableActions,
   TableCell as ClTableCell,

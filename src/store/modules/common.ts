@@ -8,7 +8,12 @@ export default {
   state: {
     lang: localStorage.getItem('lang') || 'en',
     systemInfo: undefined,
-  },
+  } as CommonStoreState,
+  getters: {
+    isPro: (state: CommonStoreState) => {
+      return state.systemInfo?.edition === 'global.edition.pro';
+    },
+  } as CommonStoreGetters,
   mutations: {
     setLang: (state: CommonStoreState, lang: Lang) => {
       state.lang = lang;
@@ -16,11 +21,11 @@ export default {
     setSystemInfo: (state: CommonStoreState, info: SystemInfo) => {
       state.systemInfo = plainClone(info);
     },
-  },
+  } as CommonStoreMutations,
   actions: {
     getSystemInfo: async ({ commit }: StoreActionContext) => {
       const res = await get('/system-info');
       commit('setSystemInfo', res.data);
     },
-  },
+  } as CommonStoreActions,
 } as CommonStoreModule;

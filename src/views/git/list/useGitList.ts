@@ -109,12 +109,26 @@ const useGitList = () => {
               id: _id,
               status,
               error,
+              onClick: () => router.push(`/gits/${_id}`),
               onRetry: () => store.dispatch(`${ns}/getList`),
             });
           },
           hasSort: true,
           hasFilter: true,
           allowFilterSearch: true,
+        },
+        {
+          className: 'spiders',
+          key: 'spiders',
+          label: t('views.gits.table.columns.spiders'),
+          icon: ['fa', 'spider'],
+          width: '120',
+          value: (row: Git) =>
+            h(NavLink, {
+              path: `/gits/${row._id}/spiders`,
+              label: row.spiders?.length || 0,
+            }),
+          hasSort: false,
         },
         {
           key: TABLE_COLUMN_NAME_ACTIONS,

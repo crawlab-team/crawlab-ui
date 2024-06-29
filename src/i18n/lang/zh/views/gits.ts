@@ -3,6 +3,7 @@ const gits: LViewGits = {
     columns: {
       name: '名称',
       status: '状态',
+      spiders: '爬虫',
     },
   },
   navActions: {

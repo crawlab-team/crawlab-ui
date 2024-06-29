@@ -21,7 +21,8 @@ const {
   <cl-list-layout
     class="task-list"
     :row-key="
-      (row: Task) => [row._id, row.status, JSON.stringify(row.stat)].join('_')
+      ({ _id, status, stat }: Task) =>
+        [_id, status, JSON.stringify(stat)].join('_')
     "
     :action-functions="actionFunctions"
     :nav-actions="navActions"

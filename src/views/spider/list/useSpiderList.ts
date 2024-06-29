@@ -1,14 +1,6 @@
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { computed, h } from 'vue';
-import TaskStatus from '@/components/task/TaskStatus.vue';
-import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
-import useList from '@/layouts/content/list/useList';
-import NavLink from '@/components/nav/NavLink.vue';
-import Time from '@/components/time/Time.vue';
-import SpiderStat from '@/components/spider/SpiderStat.vue';
-import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
-import useProject from '@/components/project/useProject';
 import { translate } from '@/utils/i18n';
 import { sendEvent } from '@/admin/umeng';
 import {
@@ -24,6 +16,16 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
+import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
+import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
+import useList from '@/layouts/content/list/useList';
+import TaskStatus from '@/components/task/TaskStatus.vue';
+import NavLink from '@/components/nav/NavLink.vue';
+import Time from '@/components/time/Time.vue';
+import SpiderStat from '@/components/spider/SpiderStat.vue';
+import GitRepo from '@/components/git/GitRepo.vue';
+import useProject from '@/components/project/useProject';
+import { EMPTY_OBJECT_ID, isPro } from '@/utils';
 
 const useSpiderList = () => {
   // i18n
@@ -111,8 +113,8 @@ const useSpiderList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<Spider>>(
-    () =>
+  const tableColumns = computed<TableColumns<Spider>>(() =>
+    (
       [
         {
           key: 'name',
@@ -130,20 +132,6 @@ const useSpiderList = () => {
           hasFilter: true,
           allowFilterSearch: true,
         },
-        // {
-        //   key: 'spider_type',
-        //   label: 'Spider Type',
-        //   icon: ['fa', 'list'],
-        //   width: '120',
-        //   filterItems: [
-        //     {label: 'Customized', value: 'customized'},
-        //     {label: 'Configurable', value: 'configurable'},
-        //   ],
-        //   value: (row: Spider) => {
-        //     return h(SpiderType, {type: row.spider_type});
-        //   },
-        //   hasFilter: true,
-        // },
         {
           key: 'project_id',
           className: 'project_id',
@@ -163,18 +151,24 @@ const useSpiderList = () => {
           allowFilterItems: true,
           filterItems: allProjectListSelectOptions.value,
         },
-        // {
-        //   key: 'is_long_task',
-        //   label: 'Is Long Task',
-        //   width: '80',
-        // },
-        // {
-        //   key: 'latest_tasks',
-        //   label: 'Latest Tasks',
-        //   icon: ['fa', 'project-diagram'],
-        //   width: '180',
-        //   defaultHidden: true,
-        // },
+        {
+          key: 'git_id',
+          className: 'git_id',
+          label: t('views.spiders.table.columns.git'),
+          icon: ['fab', 'git'],
+          width: '240',
+          value: (row: Spider) => {
+            if (!row.git_id || row.git_id === EMPTY_OBJECT_ID) return;
+            return h(GitRepo, {
+              name: row.git?.name,
+              gitRootPath: row.git_root_path,
+              onClick: () => router.push(`/gits/${row.git_id}`),
+            });
+          },
+          hasFilter: true,
+          allowFilterSearch: true,
+          proOnly: true,
+        },
         {
           key: 'last_status',
           className: 'last_status',
@@ -182,9 +176,14 @@ const useSpiderList = () => {
           icon: ['fa', 'heartbeat'],
           width: '120',
           value: (row: Spider) => {
-            const { error, status } = row.stat?.last_task || {};
+            const { _id, status, error } = row.stat?.last_task || {};
             if (!status) return;
-            return h(TaskStatus, { status, error });
+            return h(TaskStatus, {
+              status,
+              error,
+              clickable: true,
+              onClick: () => router.push(`/tasks/${_id}`),
+            });
           },
         },
         {
@@ -232,14 +231,6 @@ const useSpiderList = () => {
           width: '160',
           defaultHidden: true,
         },
-        // {
-        //   key: 'create_username',
-        //   label: 'Created By',
-        //   icon: ['fa', 'user'],
-        //   width: '100',
-        //   hasFilter: true,
-        //   defaultHidden: true,
-        // },
         {
           key: 'description',
           className: 'description',
@@ -260,7 +251,7 @@ const useSpiderList = () => {
               size: 'small',
               icon: ['fa', 'play'],
               tooltip: t('common.actions.run'),
-              onClick: row => {
+              onClick: (row: Spider) => {
                 store.commit(`${ns}/setForm`, row);
                 store.commit(`${ns}/showDialog`, 'run');
 
@@ -274,7 +265,7 @@ const useSpiderList = () => {
               size: 'small',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: row => {
+              onClick: (row: Spider) => {
                 router.push(`/spiders/${row._id}`);
 
                 sendEvent('click_spider_list_actions_view');
@@ -287,7 +278,7 @@ const useSpiderList = () => {
               size: 'small',
               icon: ['fa', 'upload'],
               tooltip: t('common.actions.uploadFiles'),
-              onClick: row => {
+              onClick: (row: Spider) => {
                 store.commit(`${ns}/setForm`, row);
                 store.commit(`${ns}/showDialog`, 'uploadFiles');
 
@@ -301,7 +292,7 @@ const useSpiderList = () => {
               size: 'small',
               icon: ['fa', 'database'],
               tooltip: t('common.actions.viewData'),
-              onClick: row => {
+              onClick: (row: Spider) => {
                 router.push(`/spiders/${row._id}/data`);
 
                 sendEvent('click_spider_list_actions_view_data');
@@ -309,15 +300,6 @@ const useSpiderList = () => {
               className: 'view-data-btn',
               action: ACTION_VIEW_DATA,
             },
-            // {
-            //   type: 'info',
-            //   size: 'small',
-            //   icon: ['fa', 'clone'],
-            //   tooltip: t('common.actions.clone'),
-            //   onClick: (row) => {
-            //     console.log('clone', row);
-            //   }
-            // },
             {
               type: 'danger',
               size: 'small',
@@ -331,6 +313,10 @@ const useSpiderList = () => {
           disableTransfer: true,
         },
       ] as TableColumns<Spider>
+    ).filter(col => {
+      if (isPro()) return true;
+      return !col.proOnly;
+    })
   );
 
   // table actions prefix

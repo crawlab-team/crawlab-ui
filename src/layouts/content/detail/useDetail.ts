@@ -49,9 +49,11 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
 
   const tabs = computed(() => {
     return state.tabs.map(tab => {
-      tab.title = t(tab.title || '');
-      tab.disabled = state.disabledTabKeys.includes(tab.id);
-      return tab;
+      return {
+        ...tab,
+        title: t(tab.title || ''),
+        disabled: state.disabledTabKeys.includes(tab.id),
+      };
     });
   });
 

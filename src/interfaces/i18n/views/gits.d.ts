@@ -3,6 +3,7 @@ interface LViewGits {
     columns: {
       name: string;
       status: string;
+      spiders: string;
     };
   };
   navActions: LNavActions;

@@ -11,6 +11,7 @@ const git: LComponentsGit = {
     error: 'Error',
     autoPull: 'Auto Pull',
     urlInvalid: 'Invalid URL',
+    spider: 'Spider',
   },
   common: {
     currentBranch: 'Current Branch',
@@ -174,6 +175,7 @@ const git: LComponentsGit = {
         create: 'Create a new spider',
       },
     },
+    gitRootPath: 'Git Root Path',
   },
 };
 

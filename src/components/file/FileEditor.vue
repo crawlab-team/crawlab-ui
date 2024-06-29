@@ -4,8 +4,6 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
 import { FILE_ROOT } from '@/constants/file';
-
-// components
 import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';
 import { useI18n } from 'vue-i18n';
 import { sendEvent } from '@/admin/umeng';
@@ -404,7 +402,6 @@ const initEditor = async () => {
   addSaveKeyMap();
 
   // on editor change
-  // editor.on('change', onContentChange);
   editor.onDidChangeModelContent(() => {
     onContentChange(editor?.getValue() || '');
   });

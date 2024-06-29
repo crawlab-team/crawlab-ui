@@ -8,6 +8,7 @@ const props = withDefaults(
     icon: Icon;
     spinning?: boolean;
     size: IconSize;
+    color?: string;
   }>(),
   {
     size: 'default',
@@ -34,13 +35,13 @@ const isFaIcon = computed<boolean>(() => {
       v-if="isFaIcon"
       :class="spinning ? 'fa-spin' : ''"
       :icon="icon"
-      :style="{ fontSize }"
+      :style="{ fontSize, color }"
       class="icon"
     />
     <i
       v-else
       :class="[spinning ? 'fa-spin' : '', icon, 'icon']"
-      :style="{ fontSize }"
+      :style="{ fontSize, color }"
     />
   </template>
 </template>

@@ -3,6 +3,7 @@ interface LViewsSpiders {
     columns: {
       name: string;
       project: string;
+      git: string;
       lastStatus: string;
       lastRunAt: string;
       stats: string;

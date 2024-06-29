@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router';
 import { Close } from '@element-plus/icons-vue';
 import { translate } from '@/utils';
 import { getPrimaryPath } from '@/utils/path';
-import { Tab } from '@/components/tab/tab';
 
 const props = withDefaults(
   defineProps<{

@@ -16,3 +16,8 @@ export const isAllowedAction = (target: string, action: string): boolean => {
   if (!actionVisibleFn) return true;
   return actionVisibleFn(target, action);
 };
+
+export const isPro = (): boolean => {
+  const store = getStore();
+  return !!store.getters['common/isPro'];
+};

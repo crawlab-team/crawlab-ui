@@ -58,8 +58,6 @@ const useGitDetail = () => {
 
   const currentBranch = computed<GitRef | undefined>(() => state.currentBranch);
 
-  const gitDataLoading = computed(() => state.gitDataLoading);
-
   const gitLocalBranches = computed<GitRef[]>(() => state.gitBranches);
   const gitLocalBranchesDict = computed<Record<string, GitRef>>(() => {
     const dict: Record<string, GitRef> = {};
@@ -212,7 +210,6 @@ const useGitDetail = () => {
     ...useDetail('git'),
     tabs,
     currentBranch,
-    gitDataLoading,
     gitLocalBranches,
     gitLocalBranchesDict,
     gitRemoteBranches,

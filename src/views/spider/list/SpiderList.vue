@@ -24,8 +24,8 @@ const {
   <cl-list-layout
     class="spider-list"
     :row-key="
-      (row: Spider) =>
-        [row._id, row.last_task?.status, JSON.stringify(row.stat)].join('_')
+      ({ _id, last_task, stat }: Spider) =>
+        [_id, last_task?.status, JSON.stringify(stat)].join('_')
     "
     :action-functions="actionFunctions"
     :nav-actions="navActions"

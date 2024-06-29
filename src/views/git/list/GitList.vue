@@ -15,6 +15,10 @@ const {
 <template>
   <cl-list-layout
     class="git-list"
+    :row-key="
+      ({ _id, name, status, spiders }: Git) =>
+        [_id, name, status, spiders].join('_')
+    "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

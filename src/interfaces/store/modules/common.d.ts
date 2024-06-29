@@ -12,7 +12,10 @@ declare global {
     systemInfo?: SystemInfo;
   }
 
-  type CommonStoreGetters = GetterTree<CommonStoreState, RootStoreState>;
+  interface CommonStoreGetters
+    extends GetterTree<CommonStoreState, RootStoreState> {
+    isPro: StoreGetter<CommonStoreState, boolean>;
+  }
 
   interface CommonStoreMutations extends MutationTree<CommonStoreState> {
     setLang: StoreMutation<CommonStoreState, Lang>;

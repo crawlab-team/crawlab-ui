@@ -15,6 +15,7 @@ const props = defineProps<{
   status: TaskStatus;
   size?: BasicSize;
   error?: string;
+  clickable?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -91,6 +92,7 @@ const data = computed<TagProps>(() => {
     :spinning="data.spinning"
     :type="data.type"
     :size="size"
+    :clickable="clickable"
     @click="emit('click')"
   >
     <template #tooltip>

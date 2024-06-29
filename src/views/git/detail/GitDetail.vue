@@ -1,10 +1,10 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetail' });
-import { watch, onBeforeUnmount, onBeforeMount } from 'vue';
+import { computed, watch, onBeforeUnmount, onBeforeMount, provide } from 'vue';
 import { useStore } from 'vuex';
-import useGitDetail from '@/views/git/detail/useGitDetail';
-import useGit from '@/components/git/useGit';
+import { useRouter } from 'vue-router';
 import {
+  FILE_ROOT,
   GIT_STATUS_ERROR,
   GIT_STATUS_READY,
   TAB_NAME_CHANGES,
@@ -12,7 +12,13 @@ import {
   TAB_NAME_OVERVIEW,
   TAB_NAME_SPIDERS,
 } from '@/constants';
-import { debounce } from '@/utils';
+import { debounce, translate } from '@/utils';
+import useGitDetail from '@/views/git/detail/useGitDetail';
+import useGit from '@/components/git/useGit';
+
+const t = translate;
+
+const router = useRouter();
 
 const ns = 'git';
 const store = useStore<RootStoreState>();
@@ -75,6 +81,39 @@ const reset = () => {
 };
 onBeforeUnmount(reset);
 watch(activeId, reset);
+
+const spidersDict = computed<{ [key: string]: Spider }>(() => {
+  const dict = {} as { [key: string]: Spider };
+  (form.value as Git).spiders?.forEach(spider => {
+    if (spider.git_root_path === undefined) return;
+    dict[spider.git_root_path || FILE_ROOT] = spider;
+  });
+  return dict;
+});
+
+provide<{ (item: FileNavItem): TagProps | undefined }>(
+  'highlight-tag-fn',
+  (item: FileNavItem) => {
+    if (!item.is_dir) return;
+    if (!item.path) return;
+    const spider = spidersDict.value[item.path];
+    if (!spider) return;
+    return {
+      color: 'var(--cl-primary-color)',
+      icon: ['fa', 'spider'],
+      tooltip: `${t('components.git.form.spider')}: ${spider.name}`,
+    } as TagProps;
+  }
+);
+provide<{ (item: FileNavItem): void }>(
+  'highlight-click-fn',
+  (item: FileNavItem) => {
+    if (!item.is_dir) return;
+    if (!item.path) return;
+    const spider = spidersDict.value[item.path];
+    router.push(`/spiders/${spider._id}`);
+  }
+);
 </script>
 
 <template>

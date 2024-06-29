@@ -3,7 +3,7 @@ defineOptions({ name: 'ClSpiderDetailActionsDataSource' });
 import { computed, onBeforeMount, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { getStore } from '@/store';
-import { translate } from '@/utils';
+import { EMPTY_OBJECT_ID, translate } from '@/utils';
 import useRequest from '@/services/request';
 import useDataSource from '@/components/ds/useDataSource';
 import useSpider from '@/components/spider/useSpider';
@@ -28,9 +28,7 @@ const allDataSourceSelectOptionsWithDefault = computed<SelectOption[]>(() => {
 
 const dsId = ref<string>();
 const onDataSourceChange = async (value: string) => {
-  await post(
-    `/spiders/${id.value}/data-source/${value || '000000000000000000000000'}`
-  );
+  await post(`/spiders/${id.value}/data-source/${value || EMPTY_OBJECT_ID}`);
   await store.dispatch('spider/getById', id.value);
   ElMessage.success(t('components.ds.message.success.change'));
 };

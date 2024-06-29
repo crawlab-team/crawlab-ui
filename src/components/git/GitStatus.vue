@@ -105,6 +105,7 @@ const onRetry = async () => {
       :spinning="data.spinning"
       :tooltip="data.tooltip"
       :type="data.type"
+      clickable
       @click="emit('click')"
     >
       <template #tooltip>

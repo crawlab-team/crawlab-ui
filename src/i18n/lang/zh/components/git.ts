@@ -11,6 +11,7 @@ const git: LComponentsGit = {
     error: '错误',
     autoPull: '自动拉取',
     urlInvalid: '无效 URL',
+    spider: '爬虫',
   },
   common: {
     currentBranch: '当前分支',
@@ -174,6 +175,7 @@ const git: LComponentsGit = {
         create: '创建一个新的爬虫',
       },
     },
+    gitRootPath: 'Git 仓库路径',
   },
 };
 

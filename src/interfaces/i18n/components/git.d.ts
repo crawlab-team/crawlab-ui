@@ -11,6 +11,7 @@ interface LComponentsGit {
     error: string;
     autoPull: string;
     urlInvalid: string;
+    spider: string;
   };
   common: {
     currentBranch: string;
@@ -174,5 +175,6 @@ interface LComponentsGit {
         create: string;
       };
     };
+    gitRootPath: string;
   };
 }

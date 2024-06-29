@@ -4,7 +4,6 @@ import { computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { plainClone } from '@/utils/object';
-import { Tab } from '@/components/tab/tab';
 
 // store
 const storeNameSpace = 'layout';

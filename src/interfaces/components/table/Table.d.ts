@@ -60,6 +60,7 @@ export declare global {
     allowFilterItems?: boolean;
     required?: boolean;
     className?: string;
+    proOnly?: boolean;
   }
 
   type TableColumns<T = any> = TableColumn<T>[];

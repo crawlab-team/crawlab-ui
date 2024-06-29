@@ -1,7 +1,6 @@
 import { plainClone } from '@/utils/object';
 import { normalizeTree } from '@/utils/tree';
 import { getDefaultMenuItems } from '@/router';
-import { Tab } from '@/components/tab/tab';
 
 export default {
   namespaced: true,

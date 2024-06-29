@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import boolean from 'async-validator/dist-types/validator/boolean';
+
 defineOptions({ name: 'ClFileEditorNavMenu' });
 import {
   computed,
@@ -8,6 +10,7 @@ import {
   reactive,
   ref,
   watch,
+  inject,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Node from 'element-plus/es/components/tree/src/model/node';
@@ -25,6 +28,7 @@ const props = defineProps<{
   defaultExpandedKeys: string[];
   styles?: FileEditorStyles;
 }>();
+
 const emit = defineEmits<{
   (e: 'node-click', item: FileNavItem): void;
   (e: 'node-db-click', item: FileNavItem): void;
@@ -45,6 +49,13 @@ const { t } = useI18n();
 const tree = ref<typeof ElTree>();
 
 const fileEditorNavMenu = ref<HTMLDivElement>();
+
+const highlightTagFn = inject<{ (item: FileNavItem): TagProps | undefined }>(
+  'highlight-tag-fn'
+);
+const highlightClickFn = inject<{ (item: FileNavItem): void }>(
+  'highlight-click-fn'
+);
 
 const clickStatus = reactive<FileEditorNavMenuClickStatus>({
   clicked: false,
@@ -77,10 +88,6 @@ const removeDefaultExpandedKey = (key: string) => {
   expandedKeys.value.splice(idx, 1);
 };
 
-const resetDefaultExpandedKeys = () => {
-  expandedKeys.value = [];
-};
-
 const resetClickStatus = () => {
   clickStatus.clicked = false;
   clickStatus.item = undefined;
@@ -110,6 +117,7 @@ const updateSelectedMap = (item: FileNavItem) => {
 
 const onNodeClick = (item: FileNavItem) => {
   if (clickStatus.clicked && clickStatus.item?.path === item.path) {
+    if (item.is_dir) return;
     emit('node-db-click', item);
     updateSelectedMap(item);
     resetClickStatus();
@@ -127,7 +135,7 @@ const onNodeClick = (item: FileNavItem) => {
   }, 200);
 };
 
-const onNodeContextMenuShow = (ev: Event, item: FileNavItem) => {
+const onNodeContextMenuShow = (_: Event, item: FileNavItem) => {
   contextMenuClicking.value = true;
   activeContextMenuItem.value = item;
   setTimeout(() => {
@@ -216,13 +224,13 @@ const onNodeContextMenuDelete = async (item: FileNavItem) => {
   emit('ctx-menu-delete', item);
 };
 
-const onNodeDragEnter = (draggingNode: Node, dropNode: Node) => {
+const onNodeDragEnter = (_: Node, dropNode: Node) => {
   const item = dropNode.data as FileNavItem;
   if (!item.path) return;
   dragCache[item.path] = true;
 };
 
-const onNodeDragLeave = (draggingNode: Node, dropNode: Node) => {
+const onNodeDragLeave = (_: Node, dropNode: Node) => {
   const item = dropNode.data as FileNavItem;
   if (!item.path) return;
   dragCache[item.path] = false;
@@ -422,11 +430,10 @@ const fileSearchString = ref<string>('');
         @node-drag-end="onNodeDragEnd"
         @node-drop="onNodeDrop"
         @node-click="onNodeClick"
-        @node-contextmenu="onNodeContextMenuShow"
         @node-expand="onNodeExpand"
         @node-collapse="onNodeCollapse"
       >
-        <template #default="{ data }">
+        <template #default="{ data }: { data: FileNavItem }">
           <cl-file-editor-nav-menu-context-menu
             :clicking="contextMenuClicking"
             :visible="isShowContextMenu(data)"
@@ -458,11 +465,37 @@ const fileSearchString = ref<string>('');
                     :name="data.name"
                   />
                 </span>
-                <span class="title">
+                <span
+                  class="title"
+                  :style="{
+                    color: highlightTagFn?.(data)?.color,
+                  }"
+                >
                   {{ data.name }}
                 </span>
               </div>
             </div>
+            <template v-if="highlightTagFn?.(data)">
+              <el-tooltip
+                :content="highlightTagFn(data).tooltip"
+                :disabled="!highlightTagFn(data).tooltip"
+              >
+                <div
+                  class="nav-item-suffix"
+                  @click="
+                    (event: Event) => {
+                      event.stopPropagation();
+                      highlightClickFn?.(data);
+                    }
+                  "
+                >
+                  <cl-icon
+                    :icon="highlightTagFn(data).icon"
+                    :color="highlightTagFn(data).color"
+                  />
+                </div>
+              </el-tooltip>
+            </template>
           </cl-file-editor-nav-menu-context-menu>
         </template>
       </el-tree-v2>
@@ -555,6 +588,16 @@ const fileSearchString = ref<string>('');
               margin-right: 5px;
             }
           }
+        }
+
+        .nav-item-suffix {
+          position: absolute;
+          height: 100%;
+          top: 0;
+          right: 10px;
+          display: flex;
+          align-items: center;
+          z-index: 100;
         }
       }
     }

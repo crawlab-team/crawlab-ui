@@ -48,5 +48,6 @@ export declare global {
     status?: GitStatus;
     error?: string;
     auto_pull?: boolean;
+    spiders?: Spider[];
   }
 }
