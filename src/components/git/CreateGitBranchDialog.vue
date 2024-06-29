@@ -64,7 +64,10 @@ const onConfirm = async () => {
   } finally {
     confirmLoading.value = false;
     store.commit(`${ns}/hideDialog`);
-    await store.dispatch(`${ns}/getGit`, { id: activeId.value });
+    await Promise.all([
+      store.dispatch(`${ns}/getCurrentBranch`, activeId.value),
+      store.dispatch(`${ns}/getBranches`, activeId.value),
+    ]);
   }
 };
 

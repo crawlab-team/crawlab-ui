@@ -13,7 +13,6 @@ import {
   TAB_NAME_SPIDERS,
 } from '@/constants';
 import useRequest from '@/services/request';
-import { debounce } from '@/utils';
 import {
   getBaseFileStoreActions,
   getBaseFileStoreMutations,
@@ -51,8 +50,6 @@ const state = {
       title: 'common.tabs.spiders',
     },
   ],
-  gitData: undefined,
-  gitDataLoading: false,
   gitChangeSelection: [],
   gitRemoteRefs: [],
   currentBranch: undefined,
@@ -65,15 +62,6 @@ const state = {
 
 const getters = {
   ...getDefaultStoreGetters<Git>(),
-  gitLogsMap: (state: GitStoreState) => {
-    const m = new Map<string, GitLog>();
-    state.gitData?.logs?.forEach(l => {
-      if (l.hash) {
-        m.set(l.hash, l);
-      }
-    });
-    return m;
-  },
   gitBranchSelectOptions: (state: GitStoreState) => {
     return state.gitRemoteRefs
       .filter(r => r.type === GIT_REF_TYPE_BRANCH)
@@ -87,15 +75,6 @@ const getters = {
 const mutations = {
   ...getDefaultStoreMutations<Git>(),
   ...getBaseFileStoreMutations<GitStoreState>(),
-  setGitData(state: GitStoreState, gitData: GitData) {
-    state.gitData = gitData;
-  },
-  resetGitData: (state: GitStoreState) => {
-    state.gitData = {};
-  },
-  setGitDataLoading: (state: GitStoreState, loading: boolean) => {
-    state.gitDataLoading = loading;
-  },
   setGitChangeSelection: (state: GitStoreState, selection: GitChange[]) => {
     state.gitChangeSelection = selection;
   },
@@ -149,21 +128,6 @@ const mutations = {
 const actions = {
   ...getDefaultStoreActions<Git>('/gits'),
   ...getBaseFileStoreActions<GitStoreState>(endpoint),
-  getGit: debounce(
-    async (
-      { commit }: StoreActionContext<GitStoreState>,
-      { id }: { id: string }
-    ) => {
-      commit('setGitDataLoading', true);
-      try {
-        const res = await get(`${endpoint}/${id}/git`);
-        commit('setGitData', res?.data || {});
-        return res;
-      } finally {
-        commit('setGitDataLoading', false);
-      }
-    }
-  ),
   cloneGit: async (
     _: StoreActionContext<GitStoreState>,
     { id }: { id: string }
