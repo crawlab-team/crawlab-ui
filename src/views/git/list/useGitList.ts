@@ -22,6 +22,7 @@ import {
 import NavLink from '@/components/nav/NavLink.vue';
 import GitStatus from '@/components/git/GitStatus.vue';
 import ClTag from '@/components/tag/Tag.vue';
+import ClIcon from '@/components/icon/Icon.vue';
 
 const useGitList = () => {
   // router
@@ -92,10 +93,26 @@ const useGitList = () => {
           icon: ['fa', 'font'],
           width: '240',
           value: (row: Git) =>
-            h(NavLink, {
-              path: `/gits/${row._id}`,
-              label: row.name,
-            }),
+            h(
+              'div',
+              {
+                style: {
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'start',
+                  gap: '8px',
+                },
+              },
+              [
+                h(ClIcon, {
+                  icon: ['fab', 'git'],
+                }),
+                h(NavLink, {
+                  path: `/gits/${row._id}`,
+                  label: row.name,
+                }),
+              ]
+            ),
           hasSort: true,
           hasFilter: true,
           allowFilterSearch: true,
@@ -131,6 +148,7 @@ const useGitList = () => {
                   ? h(ClTag, {
                       type: 'info',
                       icon: ['fa', 'file-alt'],
+                      tooltip: t('components.git.form.cloneLogs'),
                       clickable: true,
                       onClick: () => {
                         store.commit(`${ns}/showDialog`, 'logs');

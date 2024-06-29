@@ -1,10 +1,17 @@
 const useIcon = () => {
-  // implementation
   const isFaIcon = (icon: Icon) => {
     if (Array.isArray(icon)) {
-      return icon.length > 0 && icon[0].substr(0, 2) === 'fa';
+      return icon.length > 0 && icon[0].substring(0, 2) === 'fa';
     } else {
-      return icon?.substr(0, 2) === 'fa';
+      return icon?.substring(0, 2) === 'fa';
+    }
+  };
+
+  const isAzure = (icon: Icon) => {
+    if (Array.isArray(icon)) {
+      return icon.length > 0 && icon[0] === 'azure';
+    } else {
+      return icon?.startsWith('azure');
     }
   };
 
@@ -26,6 +33,7 @@ const useIcon = () => {
   return {
     // public variables and methods
     isFaIcon,
+    isAzure,
     getFontSize,
   };
 };
