@@ -5,6 +5,11 @@ const gits: LViewGits = {
       status: 'Status',
       spiders: 'Spiders',
     },
+    actions: {
+      tooltip: {
+        deleteNotAllowed: 'Cannot delete the git repo with spiders',
+      },
+    },
   },
   navActions: {
     new: {

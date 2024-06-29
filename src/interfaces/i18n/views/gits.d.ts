@@ -5,6 +5,11 @@ interface LViewGits {
       status: string;
       spiders: string;
     };
+    actions: {
+      tooltip: {
+        deleteNotAllowed: string;
+      };
+    };
   };
   navActions: LNavActions;
 }

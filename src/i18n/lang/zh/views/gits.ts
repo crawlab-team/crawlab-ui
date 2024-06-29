@@ -5,6 +5,11 @@ const gits: LViewGits = {
       status: '状态',
       spiders: '爬虫',
     },
+    actions: {
+      tooltip: {
+        deleteNotAllowed: '无法删除带有爬虫的 Git 仓库',
+      },
+    },
   },
   navActions: {
     new: {

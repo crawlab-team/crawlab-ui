@@ -3,9 +3,9 @@ defineOptions({ name: 'ClGitDetailTabLogs' });
 import { computed, h, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
+import { Column } from 'element-plus';
 import { debounce } from '@/utils';
 import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
-import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants/table';
 import Time from '@/components/time/Time.vue';
 import Tag from '@/components/tag/Tag.vue';
 import useGitDetail from '@/views/git/detail/useGitDetail';
@@ -20,37 +20,24 @@ const { git: state } = store.state as RootStoreState;
 
 const { activeId } = useGitDetail();
 
-// table pagination
-const tablePagination = ref<TablePagination>({
-  page: 1,
-  size: 10,
-});
-
-const onPaginationChange = (pagination: TablePagination) => {
-  tablePagination.value = { ...pagination };
-};
-
 // all table data
 const allTableData = computed<TableData<GitRef>>(() => state.gitLogs || []);
 
 // table data
 const tableData = computed<TableData<GitLog>>(() => {
-  const { page, size } = tablePagination.value;
-  return allTableData.value.filter(
-    (_, i) => i >= (page - 1) * size && i < page * size
+  return allTableData.value.sort((a: GitRef, b: GitRef) =>
+    (b.timestamp || '') > (a.timestamp || '') ? 1 : -1
   );
 });
 
 // table columns
-const tableColumns = computed<TableColumns<GitLog>>(() => {
+const tableColumns = computed<Column<GitLog>[]>(() => {
   return [
     {
-      key: 'ref',
-      label: t('components.git.logs.table.columns.reference'),
-      width: '120',
-      icon: ['fa', 'tags'],
-      value: (row: GitLog) => {
-        return row.refs?.map(r =>
+      title: t('components.git.logs.table.columns.reference'),
+      width: 120,
+      cellRenderer: ({ rowData }: { rowData: GitLog }) => {
+        return rowData.refs?.map(r =>
           h(Tag, {
             label: r.name,
             icon:
@@ -65,38 +52,42 @@ const tableColumns = computed<TableColumns<GitLog>>(() => {
       },
     },
     {
-      key: 'msg',
-      label: t('components.git.logs.table.columns.commitMessage'),
-      icon: ['fa', 'comment-alt'],
+      dataKey: 'msg',
+      width: 300,
+      flexGrow: 1,
+      title: t('components.git.logs.table.columns.commitMessage'),
     },
     {
-      key: 'author',
-      label: t('components.git.logs.table.columns.author'),
-      width: '250',
-      icon: ['fa', 'user'],
-      value: (row: GitLog) => {
-        return `${row.author_name}${row.author_email ? ' (' + row.author_email + ')' : ''}`;
+      title: t('components.git.logs.table.columns.author'),
+      width: 120,
+      cellRenderer: ({ rowData }: { rowData: GitLog }) => {
+        const { author_name, author_email } = rowData;
+        return `${author_name}${author_email ? ' (' + author_email + ')' : ''}`;
       },
     },
     {
-      key: 'timestamp',
-      label: t('components.git.logs.table.columns.timestamp'),
-      width: '200',
-      icon: ['fa', 'clock'],
+      title: t('components.git.logs.table.columns.timestamp'),
+      width: 200,
       fixed: 'right',
-      value: (row: GitLog) => {
+      cellRenderer: ({ rowData }: { rowData: GitLog }) => {
         return h(Time, {
-          time: row.timestamp,
+          time: rowData.timestamp,
           ago: false,
           format: 'YYYY-MM-DD hh:mm:ss A',
         });
       },
     },
-  ] as TableColumns<GitLog>;
+  ] as Column<GitLog>[];
 });
 
-const getLogs = debounce(() => {
-  store.dispatch(`${ns}/getLogs`, { id: activeId.value });
+const loading = ref(false);
+const getLogs = debounce(async () => {
+  loading.value = true;
+  try {
+    await store.dispatch(`${ns}/getLogs`, { id: activeId.value });
+  } finally {
+    loading.value = false;
+  }
 });
 watch(activeId, () => {
   store.commit(`${ns}/resetGitLogs`);
@@ -106,19 +97,22 @@ onBeforeMount(getLogs);
 </script>
 
 <template>
-  <div class="git-logs">
-    <cl-table
-      :data="tableData"
-      :columns="tableColumns"
-      row-key="hash"
-      :page="tablePagination.page"
-      :page-size="tablePagination.size"
-      :total="allTableData.length"
-      :visible-buttons="[TABLE_ACTION_CUSTOMIZE_COLUMNS]"
-      :border="false"
-      fit
-      @pagination-change="onPaginationChange"
-    />
+  <div v-loading="loading" class="git-logs">
+    <el-auto-resizer>
+      <template #default="{ height, width }">
+        <el-table-v2
+          :data="tableData"
+          :columns="tableColumns"
+          :row-key="
+            ({ hash, timestamp }: GitRef) => [hash, timestamp].join('_')
+          "
+          :total="allTableData.length"
+          :border="false"
+          :width="width"
+          :height="height"
+        />
+      </template>
+    </el-auto-resizer>
   </div>
 </template>
 
@@ -137,5 +131,9 @@ onBeforeMount(getLogs);
   border-top: none;
   border-left: none;
   border-right: none;
+}
+
+.git-logs:deep(.el-tag) {
+  transition: none;
 }
 </style>

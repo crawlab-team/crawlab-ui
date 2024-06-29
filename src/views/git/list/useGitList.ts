@@ -181,7 +181,11 @@ const useGitList = () => {
               type: 'danger',
               size: 'small',
               icon: ['fa', 'trash-alt'],
-              tooltip: t('common.actions.delete'),
+              tooltip: row =>
+                !row.spiders?.length
+                  ? t('common.actions.delete')
+                  : t('views.gits.table.actions.tooltip.deleteNotAllowed'),
+              disabled: row => row.spiders?.length > 0,
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,
             },
