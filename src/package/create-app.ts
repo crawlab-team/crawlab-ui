@@ -19,8 +19,8 @@ import '@/styles/index.scss';
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
     initBaiduTongji: true,
-    initUmeng: true,
-    initClarity: true,
+    initUmeng: false,
+    initClarity: false,
     initDemo: false,
     loadStore: true,
     loadRouter: true,
@@ -43,8 +43,6 @@ export const getDefaultCreateAppOptions = (): CreateAppOptions => {
 export const normalizeOptions = (
   options: CreateAppOptions
 ): CreateAppOptions => {
-  // if (process.env.VUE_APP_INIT_UMENG === 'false' || window.VUE_APP_INIT_UMENG === 'false') options.initUmeng = false;
-  // if (process.env.VUE_APP_INIT_BAIDU_TONGJI === 'false' || window.VUE_APP_INIT_BAIDU_TONGJI === 'false') options.initBaiduTongji = false;
   return options;
 };
 

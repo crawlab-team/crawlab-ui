@@ -2,7 +2,7 @@ import { Directive } from 'vue';
 import { getRouter } from '@/router';
 import { getStore } from '@/store';
 
-const auth: Directive<HTMLElement, Auth> = {
+export const auth: Directive<HTMLElement, Auth> = {
   mounted(el, binding) {
     // router
     const router = getRouter();
@@ -44,5 +44,3 @@ const auth: Directive<HTMLElement, Auth> = {
     }
   },
 };
-
-export default auth;

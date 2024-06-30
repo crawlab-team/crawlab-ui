@@ -1,6 +1,6 @@
 import { Directive } from 'vue';
 
-const locate: Directive<HTMLElement, Locate> = {
+export const locate: Directive<HTMLElement, Locate> = {
   mounted(el, binding) {
     let name: string;
     if (typeof binding.value === 'string') {
@@ -18,5 +18,3 @@ const locate: Directive<HTMLElement, Locate> = {
     el.setAttribute('id', name);
   },
 };
-
-export default locate;

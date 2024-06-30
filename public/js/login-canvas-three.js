@@ -13,9 +13,11 @@ class ThreeJSApp {
       1,
       500
     );
+
     this.sceneGroup = new THREE.Object3D();
     this.particularGroup = new THREE.Object3D();
     this.modularGroup = new THREE.Object3D();
+
     this.mouse = new THREE.Vector2();
     this.INTERSECTED = null;
     this.cameraValue = false;
@@ -27,7 +29,6 @@ class ThreeJSApp {
     this.initLights();
     this.initObjects();
     this.initRaycaster();
-    // this.addEventListeners();
     this.animate();
   }
 
@@ -35,14 +36,12 @@ class ThreeJSApp {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMap.enabled = false;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    let el = document.querySelector('#login-canvas');
-    el.appendChild(this.renderer.domElement);
-    // document.body.appendChild(this.renderer.domElement);
+    let container = document.querySelector('#login-canvas');
+    container.appendChild(this.renderer.domElement);
   }
 
   initScene() {
     const setColor = 0x000000;
-    // const setcolor = 0xffffff;
     this.scene.background = new THREE.Color(setColor);
     this.scene.fog = new THREE.Fog(setColor, 2.5, 3.5);
     this.scene.add(this.sceneGroup);
@@ -62,10 +61,10 @@ class ThreeJSApp {
     light.shadow.mapSize.height = 10000;
     light.penumbra = 0.5;
 
-    const lightBack = new THREE.PointLight(0x0fffff, 1);
+    const lightBack = new THREE.PointLight(0x409eff, 1);
     lightBack.position.set(0, -3, -1);
 
-    const rectLight = new THREE.RectAreaLight(0x0fffff, 50, 1, 1);
+    const rectLight = new THREE.RectAreaLight(0x409eff, 50, 1, 1);
     rectLight.position.set(0, 0, 1);
     rectLight.lookAt(0, 0, 0);
 
@@ -77,8 +76,6 @@ class ThreeJSApp {
   generateParticle(num, amp = 2) {
     const material = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
-      // color: 0x000000,
-      // color: 0x409eff,
       side: THREE.DoubleSide,
     });
     const geometry = new THREE.CircleGeometry(0.2, 5);
@@ -113,21 +110,21 @@ class ThreeJSApp {
     for (let i = 0; i < 10; i++) {
       const geometry = new THREE.IcosahedronGeometry(1);
       const material = new THREE.MeshStandardMaterial({
-        shading: THREE.FlatShading,
+        shading: THREE.SmoothShading,
         color: 0x111111,
         transparent: false,
         opacity: 1,
         wireframe: false,
       });
       const cube = new THREE.Mesh(geometry, material);
-      cube.speedRotation = Math.random() * 0.1;
+      cube.speedRotation = Math.random() * 0.2;
       cube.positionX = this.mathRandom();
       cube.positionY = this.mathRandom();
       cube.positionZ = this.mathRandom();
       cube.castShadow = true;
       cube.receiveShadow = true;
 
-      const newScaleValue = this.mathRandom(0.3);
+      const newScaleValue = this.mathRandom(0.1);
       cube.scale.set(newScaleValue, newScaleValue, newScaleValue);
       cube.rotation.set(
         this.mathRandom((180 * Math.PI) / 180),
@@ -178,7 +175,7 @@ class ThreeJSApp {
     );
     if (intersects.length > 0) {
       this.cameraValue = false;
-      if (this.INTERSECTED != intersects[0].object) {
+      if (this.INTERSECTED !== intersects[0].object) {
         if (this.INTERSECTED) {
           this.INTERSECTED.material.emissive.setHex(
             this.INTERSECTED.currentHex
@@ -220,7 +217,7 @@ class ThreeJSApp {
       object.rotation.z += object.speedValue / 10;
     }
 
-    const ratio = 0.3;
+    const ratio = 0.1;
 
     for (const cube of this.modularGroup.children) {
       cube.rotation.x += 0.008 * ratio;
@@ -237,6 +234,9 @@ class ThreeJSApp {
     this.modularGroup.rotation.x -=
       (-this.mouse.y * 4 + this.modularGroup.rotation.x) * this.uSpeed * ratio;
     this.camera.lookAt(this.scene.position);
+
+    // this.logoGroup.rotation.x += 0.01;
+    // this.logoGroup.rotation.y += 0.01;
 
     const now = Date.now();
     const elapsed = now - this.then;
@@ -264,9 +264,7 @@ class ThreeJSApp {
       }
     });
     this.renderer.dispose();
-    document
-      .getElementById('login-canvas')
-      .removeChild(this.renderer.domElement);
+    this.renderer.domElement.remove();
   }
 }
 

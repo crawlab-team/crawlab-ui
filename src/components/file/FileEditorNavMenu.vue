@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import boolean from 'async-validator/dist-types/validator/boolean';
-
 defineOptions({ name: 'ClFileEditorNavMenu' });
 import {
   computed,

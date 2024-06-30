@@ -1,14 +1,15 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClLogin' });
-import { computed, onMounted, onUnmounted, ref } from 'vue';
-import { isValidUsername } from '@/utils/validate';
-import { useRoute, useRouter } from 'vue-router';
-import logo from '@/assets/svg/logo-main.svg';
-import { ElMessage } from 'element-plus';
-import useRequest from '@/services/request';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import { setGlobalLang } from '@/utils/i18n';
 import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
+import { User, Lock } from '@element-plus/icons-vue';
+import logo from '@/assets/svg/logo-main.svg';
+import useRequest from '@/services/request';
+import { isValidUsername } from '@/utils/validate';
+import { setGlobalLang } from '@/utils/i18n';
 import { LOCAL_STORAGE_KEY_TOKEN } from '@/constants/localStorage';
 
 const { post } = useRequest();
@@ -156,25 +157,20 @@ const onLogin = async () => {
 const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
 onMounted(() => {
-  // initialize canvas
-  if (window.innerWidth >= 1024) {
-    window?.initCanvas?.();
-    console.debug(window?.initCanvas);
-  } else {
-    isShowMobileWarning.value = true;
+  if (!window.threeJSApp && window.initCanvas) {
+    window.initCanvas();
   }
 });
-onUnmounted(() => {
-  // dispose canvas
-  if (window.disposeCanvas) {
-    window.disposeCanvas();
+
+onBeforeUnmount(() => {
+  if (window.resetCanvas) {
+    window.resetCanvas();
   }
 });
 </script>
 
 <template>
   <div class="login-container">
-    <div id="login-canvas" />
     <el-form
       ref="loginFormRef"
       :model="loginForm"
@@ -202,6 +198,7 @@ onUnmounted(() => {
           name="username"
           type="text"
           size="large"
+          :prefix-icon="User"
           @keyup.enter="onLogin"
         />
       </el-form-item>
@@ -213,6 +210,7 @@ onUnmounted(() => {
           name="password"
           type="password"
           size="large"
+          :prefix-icon="Lock"
           @keyup.enter="onLogin"
         />
       </el-form-item>
@@ -227,6 +225,7 @@ onUnmounted(() => {
           auto-complete="on"
           name="confirm-password"
           size="large"
+          :prefix-icon="Lock"
         />
       </el-form-item>
       <el-form-item v-if="isSignup" prop="email" style="margin-bottom: 28px">
@@ -235,6 +234,7 @@ onUnmounted(() => {
           :placeholder="t('views.login.loginForm.email')"
           name="email"
           size="large"
+          :prefix-icon="User"
         />
       </el-form-item>
       <el-form-item style="border: none">
@@ -362,6 +362,7 @@ onUnmounted(() => {
 
     .logo-img {
       height: 80px;
+      opacity: 0.8;
     }
 
     .logo-title {
@@ -488,6 +489,19 @@ onUnmounted(() => {
 }
 </style>
 <style scoped>
+.login-container:deep(.el-input .el-input__wrapper) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.login-container:deep(.el-input .el-input__wrapper .el-input__prefix),
+.login-container:deep(.el-input .el-input__wrapper .el-input__inner) {
+  color: #ffffff;
+}
+
+.login-container:deep(.el-button) {
+  background: rgba(64, 158, 255, 0.1);
+}
+
 .mobile-warning:deep(.el-alert .el-alert__description) {
   font-size: 1.2rem;
 }

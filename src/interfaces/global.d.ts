@@ -7,6 +7,7 @@ declare global {
     VUE_APP_INIT_BAIDU_TONGJI?: string;
     threeJSApp?: any;
     initCanvas?: () => void;
+    resetCanvas?: () => void;
     disposeCanvas?: () => void;
     _hmt?: Array;
     'vue3-sfc-loader'?: { loadModule };

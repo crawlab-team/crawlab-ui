@@ -18,7 +18,7 @@ const getEventListener = (binding: DirectiveBinding<Track>): EventListener => {
   return listener;
 };
 
-const track: Directive<HTMLElement, Track> = {
+export const track: Directive<HTMLElement, Track> = {
   mounted(el, binding) {
     const { events } = binding.value;
     const _events: (keyof HTMLElementEventMap)[] = events ? events : ['click'];
@@ -34,5 +34,3 @@ const track: Directive<HTMLElement, Track> = {
     });
   },
 };
-
-export default track;

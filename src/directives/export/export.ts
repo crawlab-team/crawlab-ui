@@ -40,7 +40,7 @@ const getConditionsFromBinding = (
   return conditions;
 };
 
-const export_: Directive<HTMLElement, ExportDirective> = {
+export const export_: Directive<HTMLElement, ExportDirective> = {
   mounted(el, binding) {
     const getTarget = (): string => {
       let target: string;
@@ -173,5 +173,3 @@ const export_: Directive<HTMLElement, ExportDirective> = {
     el.addEventListener('click', onClickExport);
   },
 };
-
-export default export_;

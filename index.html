@@ -7,11 +7,8 @@
   <link href="favicon.ico" rel="icon">
   <title>Crawlab</title>
   <link href="css/style.css" rel="stylesheet">
-  <link href="css/font-awesome.min.css" rel="stylesheet">
-  <script type="application/javascript" src="https://buttons.github.io/buttons.js" async></script>
-  <script src="/node_modules/element-plus/dist/index.full.min.js"></script>
-  <script src="/node_modules/axios/dist/axios.min.js"></script>
-  <script src="three/three.min.js"></script>
+  <script type="application/javascript" src="three/three.min.js"></script>
+  <script type="application/javascript" src="three/loaders/SVGLoader.js"></script>
   <script type="application/javascript" src="js/login-canvas-three.js"></script>
 </head>
 <body>
@@ -19,32 +16,16 @@
   <strong>We're sorry but the site doesn't work properly without JavaScript enabled.
     Please enable it to continue.</strong>
 </noscript>
-<div id="loading-placeholder">
-  <div style="margin-bottom: 150px">
-    <div class="title-wrapper">
-      <h3 class="title">
-        <span>C</span>
-        <span>R</span>
-        <span>A</span>
-        <span>W</span>
-        <span>L</span>
-        <span>A</span>
-        <span>B</span>
-      </h3>
-    </div>
-    <div class="sub-title-wrapper">
-      <span class="sub-title"><i class="fa fa-cloud-download"></i> Easy Crawling</span>
-      <span class="sub-title"><i class="fa fa-diamond"></i> Better Management</span>
-      <span class="sub-title"><i class="fa fa-dollar"></i> Gain Data Value</span>
-      <span class="sub-title"><i class="fa fa-server"></i> Good Scalability</span>
-    </div>
-    <div class="loading-text">
-      Loading...
-    </div>
-  </div>
-</div>
+<div id="login-canvas"></div>
+<script>
+  window.onload = function() {
+    if (window.initCanvas) {
+      window.initCanvas();
+    }
+  };
+</script>
 <div id="app"></div>
-<script type="module" src="/src/main.ts"></script>
+<script type="module" src="./src/main.ts"></script>
 <!-- built files will be auto injected -->
 </body>
 </html>
