@@ -63,13 +63,13 @@ const onConfirm = () => {
     <template #title>
       <div
         class="title-wrapper"
-        style="display: flex; color: var(--cl-info-color)"
+        style="display: flex; color: var(--cl-info-color); align-items: center"
       >
         <cl-icon :icon="['fa', 'exchange-alt']" />
         <label style="margin-left: 10px; margin-right: 10px">
           {{ t('components.git.diff.title') }}:
         </label>
-        <span>
+        <span style="font-size: 16px">
           {{ state.activeFilePath }}
         </span>
       </div>

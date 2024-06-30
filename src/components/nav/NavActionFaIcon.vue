@@ -3,13 +3,14 @@ defineOptions({ name: 'ClNavActionFaIcon' });
 defineProps<{
   tooltip?: string;
   icon: Icon;
+  color?: string;
 }>();
 </script>
 
 <template>
   <cl-nav-action-item class="nav-action-fa-icon" is-label>
     <el-tooltip :content="tooltip" :disabled="!tooltip">
-      <font-awesome-icon :icon="icon" class="title" />
+      <cl-icon :icon="icon" :color="color" class="title" />
     </el-tooltip>
   </cl-nav-action-item>
 </template>

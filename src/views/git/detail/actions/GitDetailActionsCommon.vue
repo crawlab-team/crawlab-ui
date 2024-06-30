@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailActionsCommon' });
+import { ElMessage, ElMessageBox, ElMessageBoxOptions } from 'element-plus';
 import {
   GIT_STATUS_PULLING,
   GIT_STATUS_PUSHING,
@@ -10,7 +11,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import { ElMessage, ElMessageBox, ElMessageBoxOptions } from 'element-plus';
+import useGit from '@/components/git/useGit';
 
 const t = translate;
 
@@ -19,6 +20,8 @@ const router = useRouter();
 const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
+
+const { getGitIcon } = useGit(store);
 
 // git form
 const gitForm = computed<Git>(() => state.form);
@@ -192,7 +195,8 @@ const loading = computed(
 <template>
   <cl-nav-action-group>
     <cl-nav-action-fa-icon
-      :icon="['fab', 'git']"
+      :icon="getGitIcon(gitForm).icon"
+      :color="getGitIcon(gitForm).color"
       :tooltip="t('components.git.actions.title')"
     />
     <cl-nav-action-item>

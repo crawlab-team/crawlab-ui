@@ -1,7 +1,7 @@
 import { computed, h } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ElPopover } from 'element-plus';
+import { ElTooltip } from 'element-plus';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -9,7 +9,6 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
   FILTER_OP_CONTAINS,
-  GIT_STATUS_READY,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import { sendEvent } from '@/admin/umeng';
@@ -19,6 +18,7 @@ import {
   setupListComponent,
   translate,
 } from '@/utils';
+import useGit from '@/components/git/useGit';
 import NavLink from '@/components/nav/NavLink.vue';
 import GitStatus from '@/components/git/GitStatus.vue';
 import ClTag from '@/components/tag/Tag.vue';
@@ -41,6 +41,8 @@ const useGitList = () => {
 
   // action functions
   const { deleteByIdConfirm } = actionFunctions;
+
+  const { getGitIcon } = useGit(store);
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -81,23 +83,6 @@ const useGitList = () => {
       ],
     },
   ]);
-
-  const getGitIcon = (row: Git): { icon: Icon; color?: string } => {
-    if (row.url?.includes('github')) {
-      return { icon: ['fab', 'github'], color: '#0d1117' };
-    } else if (row.url?.includes('bitbucket')) {
-      return { icon: ['fab', 'bitbucket'], color: '#0052cc' };
-    } else if (row.url?.includes('gitlab')) {
-      return { icon: ['fab', 'gitlab'], color: '#E24329' };
-    } else if (row.url?.includes('amazonaws')) {
-      return { icon: ['fab', 'aws'], color: '#232f3e' };
-    } else {
-      return {
-        icon: ['fab', 'git'],
-        color: 'var(--cl-info-medium-dark-color)',
-      };
-    }
-  };
 
   // table columns
   const tableColumns = computed<TableColumns<Git>>(
