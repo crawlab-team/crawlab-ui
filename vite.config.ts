@@ -53,6 +53,9 @@ export default defineConfig({
         },
       },
     },
+    watch: {
+      include: 'src/**',
+    },
   },
   resolve: {
     dedupe: ['vue'],
@@ -62,7 +65,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['monaco-editor'],
   },
-  plugins: [vue(), dynamicImport(), visualizer({ open: true })],
+  plugins: [vue(), dynamicImport(), visualizer({ open: false })],
   server: {
     cors: true,
   },

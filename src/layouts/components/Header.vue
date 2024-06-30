@@ -165,8 +165,8 @@ const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
                 @click="onLogout"
               >
                 <span v-locate="'logout'">{{
-                  t('layouts.components.header.logout')
-                }}</span>
+                    t('layouts.components.header.logout')
+                  }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
