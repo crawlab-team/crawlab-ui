@@ -188,4 +188,11 @@ interface LComponentsGit {
   diff: {
     title: string;
   };
+  providers: {
+    github: string;
+    bitbucket: string;
+    gitlab: string;
+    aws: string;
+    git: string;
+  };
 }

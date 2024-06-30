@@ -82,6 +82,23 @@ const useGitList = () => {
     },
   ]);
 
+  const getGitIcon = (row: Git): { icon: Icon; color?: string } => {
+    if (row.url?.includes('github')) {
+      return { icon: ['fab', 'github'], color: '#0d1117' };
+    } else if (row.url?.includes('bitbucket')) {
+      return { icon: ['fab', 'bitbucket'], color: '#0052cc' };
+    } else if (row.url?.includes('gitlab')) {
+      return { icon: ['fab', 'gitlab'], color: '#E24329' };
+    } else if (row.url?.includes('amazonaws')) {
+      return { icon: ['fab', 'aws'], color: '#232f3e' };
+    } else {
+      return {
+        icon: ['fab', 'git'],
+        color: 'var(--cl-info-medium-dark-color)',
+      };
+    }
+  };
+
   // table columns
   const tableColumns = computed<TableColumns<Git>>(
     () =>
@@ -105,7 +122,8 @@ const useGitList = () => {
               },
               [
                 h(ClIcon, {
-                  icon: ['fab', 'git'],
+                  icon: getGitIcon(row).icon,
+                  color: getGitIcon(row).color,
                 }),
                 h(NavLink, {
                   path: `/gits/${row._id}`,

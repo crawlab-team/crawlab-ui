@@ -37,17 +37,27 @@ const tableColumns = computed<Column<GitLog>[]>(() => {
       title: t('components.git.logs.table.columns.reference'),
       width: 120,
       cellRenderer: ({ rowData }: { rowData: GitLog }) => {
-        return rowData.refs?.map(r =>
-          h(Tag, {
-            label: r.name,
-            icon:
-              r.type === GIT_REF_TYPE_BRANCH
-                ? ['fa', 'code-branch']
-                : ['fa', 'tag'],
-            effect: r.type === GIT_REF_TYPE_BRANCH ? 'dark' : 'light',
-            type: r.type === GIT_REF_TYPE_BRANCH ? 'primary' : 'success',
-            tooltip: `${r.type}: ${r.name}`,
-          })
+        return h(
+          'div',
+          {
+            style: {
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '5px',
+            },
+          },
+          rowData.refs?.map(r =>
+            h(Tag, {
+              label: r.name,
+              icon:
+                r.type === GIT_REF_TYPE_BRANCH
+                  ? ['fa', 'code-branch']
+                  : ['fa', 'tag'],
+              effect: r.type === GIT_REF_TYPE_BRANCH ? 'dark' : 'light',
+              type: r.type === GIT_REF_TYPE_BRANCH ? 'primary' : 'success',
+              tooltip: `${r.type}: ${r.name}`,
+            })
+          )
         );
       },
     },

@@ -188,6 +188,13 @@ const git: LComponentsGit = {
   diff: {
     title: 'File Diff',
   },
+  providers: {
+    github: 'GitHub',
+    bitbucket: 'Bitbucket',
+    gitlab: 'GitLab',
+    aws: 'AWS',
+    git: 'Git',
+  },
 };
 
 export default git;
