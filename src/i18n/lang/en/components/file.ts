@@ -97,6 +97,13 @@ const file: LComponentsFile = {
     },
   },
   rootDirectory: 'Root Directory',
+  diff: {
+    title: 'File Diff',
+    form: {
+      original: 'Original',
+      modified: 'Modified',
+    },
+  },
 };
 
 export default file;

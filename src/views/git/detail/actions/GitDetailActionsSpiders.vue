@@ -31,7 +31,7 @@ const onCreate = async (spider: Spider) => {
   try {
     await store.dispatch(`${ns}/createSpider`, { id: activeId.value, spider });
   } catch (e) {
-    ElMessage.error(e.message);
+    ElMessage.error((e as Error).message);
   } finally {
     createLoading.value = false;
     dialogVisible.value = false;

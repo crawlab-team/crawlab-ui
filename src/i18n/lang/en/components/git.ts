@@ -168,6 +168,7 @@ const git: LComponentsGit = {
       actions: {
         add: 'Add',
         rollback: 'Rollback',
+        diff: 'Show Diff',
       },
       empty: 'Nothing to commit, work tree clean',
     },
@@ -183,6 +184,9 @@ const git: LComponentsGit = {
       },
     },
     gitRootPath: 'Git Root Path',
+  },
+  diff: {
+    title: 'File Diff',
   },
 };
 

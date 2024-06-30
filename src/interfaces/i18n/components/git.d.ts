@@ -168,6 +168,7 @@ interface LComponentsGit {
       actions: {
         add: string;
         rollback: string;
+        diff: string;
       };
       empty: string;
     };
@@ -183,5 +184,8 @@ interface LComponentsGit {
       };
     };
     gitRootPath: string;
+  };
+  diff: {
+    title: string;
   };
 }

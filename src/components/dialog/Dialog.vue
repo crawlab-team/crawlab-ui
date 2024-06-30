@@ -7,6 +7,7 @@ withDefaults(
     visible: boolean;
     modalClass?: string;
     title?: string;
+    titleIcon?: Icon;
     top?: string;
     width?: string;
     zIndex?: number;
@@ -40,17 +41,24 @@ const onConfirm = () => {
 
 <template>
   <el-dialog
-    :custom-class="[className, visible ? 'visible' : 'hidden'].join(' ')"
+    :custom-class="
+      ['cl-dialog', className, visible ? 'visible' : 'hidden'].join(' ')
+    "
     :modal-class="modalClass"
     :before-close="onClose"
     :model-value="visible"
+    :title="title"
     :top="top"
     :width="width"
     :z-index="zIndex"
   >
     <slot />
     <template #title>
-      <div v-html="title" />
+      <slot v-if="$slots.title" name="title" />
+      <div v-else-if="titleIcon">
+        <cl-icon :icon="titleIcon" />
+        <span class="title">{{ title }}</span>
+      </div>
     </template>
     <template #footer>
       <slot name="prefix" />
@@ -78,4 +86,10 @@ const onConfirm = () => {
   </el-dialog>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-dialog {
+  .title {
+    margin-left: 10px;
+  }
+}
+</style>

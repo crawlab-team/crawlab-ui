@@ -1,4 +1,4 @@
-type DialogKey = 'create' | 'edit' | 'run' | 'uploadFiles' | 'logs';
+type DialogKey = 'create' | 'edit' | 'run' | 'uploadFiles' | 'logs' | 'diff';
 
 interface DialogVisible {
   createEdit: boolean;

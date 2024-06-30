@@ -95,6 +95,13 @@ const file: LComponentsFile = {
     },
   },
   rootDirectory: '根目录',
+  diff: {
+    title: '文件差异',
+    form: {
+      original: '原始',
+      modified: '修改',
+    },
+  },
 };
 
 export default file;

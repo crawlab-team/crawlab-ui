@@ -95,4 +95,11 @@ interface LComponentsFile {
     };
   };
   rootDirectory: string;
+  diff: {
+    title: string;
+    form: {
+      original: string;
+      modified: string;
+    };
+  };
 }

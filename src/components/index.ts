@@ -32,6 +32,7 @@ import EnvironmentForm from './environment/EnvironmentForm.vue';
 import useEnvironment from './environment/useEnvironment';
 import ExportForm from './export/ExportForm.vue';
 import FileActions from './file/FileActions.vue';
+import FileDiff from './file/FileDiff.vue';
 import FileEditor from './file/FileEditor.vue';
 import FileEditorCreateWithAiDialog from './file/FileEditorCreateWithAiDialog.vue';
 import FileEditorNavMenu from './file/FileEditorNavMenu.vue';
@@ -58,6 +59,7 @@ import CreateEditGitDialog from './git/CreateEditGitDialog.vue';
 import CreateGitBranchDialog from './git/CreateGitBranchDialog.vue';
 import CreateGitSpiderDialog from './git/CreateGitSpiderDialog.vue';
 import GitBranchSelect from './git/GitBranchSelect.vue';
+import GitFileDiffDialog from './git/GitFileDiffDialog.vue';
 import GitFileStatus from './git/GitFileStatus.vue';
 import GitForm from './git/GitForm.vue';
 import GitLogsBox from './git/GitLogsBox.vue';
@@ -187,6 +189,7 @@ export {
   useEnvironment as useEnvironment,
   ExportForm as ClExportForm,
   FileActions as ClFileActions,
+  FileDiff as ClFileDiff,
   FileEditor as ClFileEditor,
   FileEditorCreateWithAiDialog as ClFileEditorCreateWithAiDialog,
   FileEditorNavMenu as ClFileEditorNavMenu,
@@ -213,6 +216,7 @@ export {
   CreateGitBranchDialog as ClCreateGitBranchDialog,
   CreateGitSpiderDialog as ClCreateGitSpiderDialog,
   GitBranchSelect as ClGitBranchSelect,
+  GitFileDiffDialog as ClGitFileDiffDialog,
   GitFileStatus as ClGitFileStatus,
   GitForm as ClGitForm,
   GitLogsBox as ClGitLogsBox,

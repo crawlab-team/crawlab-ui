@@ -14,7 +14,8 @@ interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
   gitRemoteBranches: GitRef[];
   gitChanges: GitChange[];
   gitLogs: GitLog[];
-  gitTags: GitRef[];
+  gitDiff: GitDiff;
+  activeFilePath?: string;
 }
 
 interface GitStoreGetters extends BaseStoreGetters<Git> {
@@ -40,8 +41,10 @@ interface GitStoreMutations
   resetGitChanges: StoreMutation<GitStoreState>;
   setGitLogs: StoreMutation<GitStoreState, GitLog[]>;
   resetGitLogs: StoreMutation<GitStoreState>;
-  setGitTags: StoreMutation<GitStoreState, GitRef[]>;
-  resetGitTags: StoreMutation<GitStoreState>;
+  setGitDiff: StoreMutation<GitStoreState, GitDiff>;
+  resetGitDiff: StoreMutation<GitStoreState>;
+  setActiveFilePath: StoreMutation<GitStoreState, string>;
+  resetActiveFilePath: StoreMutation<GitStoreState>;
 }
 
 interface GitStoreActions
@@ -72,9 +75,9 @@ interface GitStoreActions
   pull: StoreAction<GitStoreState, { id: string }>;
   push: StoreAction<GitStoreState, { id: string }>;
   getLogs: StoreAction<GitStoreState, { id: string }>;
-  getGitTags: StoreAction<GitStoreState, { id: string }>;
   gitCheckoutTag: StoreAction<GitStoreState, { id: string; tag: string }>;
   gitPull: StoreAction<GitStoreState, { id: string }>;
   gitCommit: StoreAction<GitStoreState, { id: string; commit_message: string }>;
   createSpider: StoreAction<GitStoreState, { id: string; spider: Spider }>;
+  getFileDiff: StoreAction<GitStoreState, { id: string; path: string }>;
 }

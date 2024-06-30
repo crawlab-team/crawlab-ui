@@ -10,7 +10,7 @@ const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
 </script>
 
 <template>
-  <el-container class="basic-layout">
+  <el-container class="normal-layout">
     <cl-sidebar />
     <el-container
       :class="sidebarCollapsed ? 'collapsed' : ''"
@@ -26,7 +26,7 @@ const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
 </template>
 
 <style lang="scss" scoped>
-.basic-layout {
+.normal-layout {
   height: 100vh;
 
   .container {

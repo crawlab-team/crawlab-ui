@@ -28,14 +28,9 @@ export declare global {
     remote_track?: string;
   }
 
-  interface GitData {
-    current_branch?: string;
-    branches?: GitRef[];
-    changes?: GitChange[];
-    logs?: GitLog[];
-    tags?: GitRef[];
-    ignore?: string[];
-    git?: Git;
+  interface GitDiff {
+    current_content?: string;
+    parent_content?: string;
   }
 
   interface Git extends BaseModel {

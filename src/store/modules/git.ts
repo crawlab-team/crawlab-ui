@@ -57,7 +57,8 @@ const state = {
   gitRemoteBranches: [],
   gitChanges: [],
   gitLogs: [],
-  gitTags: [],
+  gitDiff: {},
+  activeFilePath: undefined,
 } as GitStoreState;
 
 const getters = {
@@ -117,11 +118,17 @@ const mutations = {
   resetGitLogs: (state: GitStoreState) => {
     state.gitLogs = [];
   },
-  setGitTags: (state: GitStoreState, refs: GitRef[]) => {
-    state.gitTags = refs;
+  setGitDiff: (state: GitStoreState, diff: GitDiff) => {
+    state.gitDiff = diff;
   },
-  resetGitTags: (state: GitStoreState) => {
-    state.gitTags = [];
+  resetGitDiff: (state: GitStoreState) => {
+    state.gitDiff = {};
+  },
+  setActiveFilePath: (state: GitStoreState, path: string) => {
+    state.activeFilePath = path;
+  },
+  resetActiveFilePath: (state: GitStoreState) => {
+    state.activeFilePath = undefined;
   },
 } as GitStoreMutations;
 
@@ -271,15 +278,6 @@ const actions = {
     commit('setGitLogs', res?.data || []);
     return res;
   },
-  getGitTags: async (
-    { state, commit }: StoreActionContext<GitStoreState>,
-    { id }: { id: string }
-  ) => {
-    const res = await get(`${endpoint}/${id}/git/tags`);
-    if (JSON.stringify(state.gitTags) === JSON.stringify(res?.data)) return;
-    commit('setGitTags', res?.data || []);
-    return res;
-  },
   gitCheckoutTag: async (
     _: StoreActionContext<GitStoreState>,
     { id, tag }: { id: string; tag: string }
@@ -307,6 +305,16 @@ const actions = {
     { id, spider }: { id: string; spider: Spider }
   ) => {
     return await post(`${endpoint}/${id}/spiders`, spider);
+  },
+  getFileDiff: async (
+    { state, commit }: StoreActionContext<GitStoreState>,
+    { id }: { id: string }
+  ) => {
+    const res = await get(`${endpoint}/${id}/files/diff`, {
+      path: state.activeFilePath,
+    });
+    commit('setGitDiff', res?.data);
+    return res;
   },
 } as GitStoreActions;
 

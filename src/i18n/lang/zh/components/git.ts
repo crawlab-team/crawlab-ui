@@ -168,6 +168,7 @@ const git: LComponentsGit = {
       actions: {
         add: '添加',
         rollback: '回滚',
+        diff: '查看变更 (Diff)',
       },
       empty: '没有需要提交的内容, 工作区是干净的',
     },
@@ -183,6 +184,9 @@ const git: LComponentsGit = {
       },
     },
     gitRootPath: 'Git 仓库路径',
+  },
+  diff: {
+    title: '文件变更',
   },
 };
 

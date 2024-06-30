@@ -104,7 +104,7 @@ const tableColumns = computed<TableColumns<GitChange>>(() => {
       key: TABLE_COLUMN_NAME_ACTIONS,
       className: TABLE_COLUMN_NAME_ACTIONS,
       label: t('components.table.columns.actions'),
-      width: '150',
+      width: '200',
       icon: ['fa', 'tools'],
       fixed: 'right',
       buttons: [
@@ -141,6 +141,16 @@ const tableColumns = computed<TableColumns<GitChange>>(() => {
             } catch (e: any) {
               ElMessage.error(e.message);
             }
+          },
+        },
+        {
+          type: 'primary',
+          size: 'small',
+          icon: ['fa', 'exchange-alt'],
+          tooltip: t('components.git.changes.table.actions.diff'),
+          onClick: (row: GitChange) => {
+            store.commit(`${ns}/setActiveFilePath`, row.path);
+            store.commit(`${ns}/showDialog`, 'diff');
           },
         },
       ],

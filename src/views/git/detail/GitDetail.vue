@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ClGitFileDiffDialog from '@/components/git/GitFileDiffDialog.vue';
+
 defineOptions({ name: 'ClGitDetail' });
 import { computed, watch, onBeforeUnmount, onBeforeMount, provide } from 'vue';
 import { useStore } from 'vuex';
@@ -143,6 +145,7 @@ provide<{ (item: FileNavItem): void }>(
   <!-- Dialogs (handled by store) -->
   <cl-upload-git-files-dialog />
   <cl-create-git-branch-dialog />
+  <cl-git-file-diff-dialog />
   <!-- ./Dialogs -->
 
   <!-- Boxes -->
