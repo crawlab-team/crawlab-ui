@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import ClGitPath from '@/components/git/GitPath.vue';
-
 defineOptions({ name: 'ClSpiderDetailActionsCommon' });
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { isPro } from '@/utils';
-import { sendEvent } from '@/admin/umeng';
 import useSpider from '@/components/spider/useSpider';
 
 const router = useRouter();
@@ -22,8 +19,6 @@ const { activeDialogKey, form } = useSpider(store);
 
 const onRun = () => {
   store.commit(`${ns}/showDialog`, 'run');
-
-  sendEvent('click_spider_detail_actions_run');
 };
 </script>
 

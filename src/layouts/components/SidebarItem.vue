@@ -21,7 +21,6 @@ const onMenuItemClick = (item: MenuItem) => {
   <!-- no sub menu items -->
   <el-menu-item
     v-if="!item.children"
-    v-track="'click_sidebar_menu_item'"
     :index="item.path"
     @click="onMenuItemClick(item)"
   >

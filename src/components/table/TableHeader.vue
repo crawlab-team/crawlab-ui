@@ -6,7 +6,6 @@ import { computed, reactive, ref } from 'vue';
 import { ASCENDING, DESCENDING } from '@/constants/sort';
 import { FILTER_OP_NOT_SET } from '@/constants/filter';
 import { translate } from '@/utils';
-import { sendEvent } from '@/admin/umeng';
 
 const props = defineProps<{
   column: TableColumn;
@@ -110,8 +109,6 @@ const actions = computed<TableColumnButton[]>(() => {
       onClick: () => {
         dialogVisible.value = true;
         actionStatusMap.sort.focused = true;
-
-        sendEvent('click_table_header_sort_show');
       },
     });
   }
@@ -124,8 +121,6 @@ const actions = computed<TableColumnButton[]>(() => {
       onClick: () => {
         dialogVisible.value = true;
         actionStatusMap.filter.focused = true;
-
-        sendEvent('click_table_header_filter_show');
       },
     });
   }
@@ -137,8 +132,6 @@ const hideDialog = () => {
   dialogVisible.value = false;
   actionStatusMap.filter.focused = false;
   actionStatusMap.sort.focused = false;
-
-  sendEvent('click_table_header_dialog_hide');
 };
 
 const clearDialog = () => {
@@ -157,8 +150,6 @@ const clearDialog = () => {
 
   // emit
   emit('change', column, undefined, undefined);
-
-  sendEvent('click_table_header_dialog_clear');
 };
 
 const onDialogCancel = () => {
@@ -192,8 +183,6 @@ const onDialogApply = (value: TableHeaderDialogValue) => {
 
   // emit
   emit('change', column, sortData.value, filterData.value);
-
-  sendEvent('click_table_header_dialog_apply');
 };
 
 const hasDialog = computed<boolean>(() => {

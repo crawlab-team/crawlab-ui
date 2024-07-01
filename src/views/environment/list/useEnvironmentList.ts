@@ -3,7 +3,6 @@ import { ElMessageBox } from 'element-plus';
 import useEnvironmentService from '@/services/environment/environmentService';
 import { getStore } from '@/store';
 import { onListFilterChangeByKey, translate } from '@/utils';
-import { getRouter } from '@/router';
 import {
   ACTION_COPY,
   ACTION_FILTER,
@@ -12,7 +11,6 @@ import {
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import { useList } from '@/layouts/content';
-import { sendEvent } from '@/admin/umeng';
 
 // i18n
 const t = translate;

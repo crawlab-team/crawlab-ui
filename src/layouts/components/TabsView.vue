@@ -86,13 +86,7 @@ onMounted(() => {
       @d-end="onDragDrop"
     >
       <template v-slot="{ item }">
-        <cl-tab
-          v-track="{
-            code: 'click_tabs_view_click_tab',
-            params: { path: item.path },
-          }"
-          :tab="item"
-        />
+        <cl-tab :tab="item" />
       </template>
     </cl-draggable-list>
 

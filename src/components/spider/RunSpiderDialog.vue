@@ -7,7 +7,6 @@ import useNode from '@/components/node/useNode';
 import { TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useTask from '@/components/task/useTask';
 import { ElMessage } from 'element-plus';
-import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils';
 
 // i18n
@@ -54,8 +53,6 @@ const title = computed<string>(() => {
 
 const onClose = () => {
   store.commit(`${ns}/hideDialog`);
-
-  sendEvent('click_run_spider_dialog_close');
 };
 
 const onConfirm = async () => {
@@ -67,11 +64,6 @@ const onConfirm = async () => {
   store.commit(`${ns}/hideDialog`);
   ElMessage.success(t('components.spider.message.success.scheduleTask'));
   await store.dispatch(`${ns}/getList`);
-
-  sendEvent('click_run_spider_dialog_confirm', {
-    mode: options.value?.mode,
-    priority: options.value?.priority,
-  });
 };
 
 const updateOptions = () => {

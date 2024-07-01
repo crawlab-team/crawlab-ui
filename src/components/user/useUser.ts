@@ -1,4 +1,4 @@
-import { computed, readonly } from 'vue';
+import { computed } from 'vue';
 import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
 import useUserService from '@/services/user/userService';
@@ -6,7 +6,6 @@ import { getDefaultFormComponentData } from '@/utils/form';
 import { getModeOptions } from '@/utils/task';
 import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils/i18n';
 
 // i18n
@@ -66,9 +65,6 @@ const useUser = (store: Store<RootStoreState>) => {
         cancelButtonClass: 'edit-user-password-cancel-btn',
       }
     );
-
-    sendEvent('click_user_form_change_password');
-
     await store.dispatch(`${ns}/changePassword`, { id, password: value });
     ElMessage.success(t('common.message.success.save'));
   };

@@ -3,7 +3,6 @@ import { Store } from 'vuex';
 import useFormTable from '@/components/form/formTable';
 import { EMPTY_OBJECT_ID } from '@/utils/mongo';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 
 // i18n
 const t = translate;
@@ -155,15 +154,9 @@ export const useForm = (
         case 'create':
           console.debug('create', form.value);
           res = await create(form.value);
-          sendEvent('click_form_create_confirm', {
-            ns,
-          });
           break;
         case 'edit':
           res = await updateById(form.value._id as string, form.value);
-          sendEvent('click_form_edit_confirm', {
-            ns,
-          });
           break;
         default:
           console.error(

@@ -10,18 +10,10 @@ import {
 } from '@/constants/action';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import { getRouter } from '@/router';
 
 // i18n
 const t = translate;
-
-export const getDefaultTableDataWithTotal = (): TableDataWithTotal => {
-  return {
-    data: [],
-    total: 0,
-  };
-};
 
 export const getTableWidth = (el?: Element): number | undefined => {
   const elTable = el || document.querySelector('.table');
@@ -96,10 +88,8 @@ export const getActionColumn = (
           type: 'primary',
           icon: ['fa', 'search'],
           tooltip: t('common.actions.view'),
-          onClick: (row: BaseModel) => {
-            router.push(`${endpoint}/${row._id}`);
-
-            sendEvent('click_table_row_action_view');
+          onClick: async (row: BaseModel) => {
+            await router.push(`${endpoint}/${row._id}`);
           },
         });
         break;
@@ -111,8 +101,6 @@ export const getActionColumn = (
           onClick: (row: BaseModel) => {
             store.commit(`${ns}/setForm`, row);
             store.commit(`${ns}/showDialog`, 'edit');
-
-            sendEvent('click_table_row_action_edit');
           },
         });
         break;
@@ -125,8 +113,6 @@ export const getActionColumn = (
           onClick: (row: BaseModel) => {
             // TODO: implement
             // console.log('clone', row);
-
-            sendEvent('click_table_row_action_clone');
           },
         });
         break;
@@ -137,15 +123,10 @@ export const getActionColumn = (
           icon: ['fa', 'trash-alt'],
           tooltip: t('common.actions.delete'),
           onClick: async (row: BaseModel) => {
-            sendEvent('click_table_row_action_delete');
-
             const res = await ElMessageBox.confirm(
               t('common.messageBox.confirm.delete'),
               t('common.actions.delete')
             );
-
-            sendEvent('click_table_row_action_delete_confirm');
-
             if (res) {
               await store.dispatch(`${ns}/deleteById`, row._id as string);
             }
@@ -162,8 +143,6 @@ export const getActionColumn = (
           onClick: async (row: BaseModel) => {
             store.commit(`${ns}/setForm`, row);
             store.commit(`${ns}/showDialog`, 'run');
-
-            sendEvent('click_table_row_action_run');
           },
         });
         break;
@@ -176,8 +155,6 @@ export const getActionColumn = (
           onClick: async (row: BaseModel) => {
             // TODO: implement
             // console.log('cancel', row);
-
-            sendEvent('click_table_row_action_cancel');
           },
         });
         break;

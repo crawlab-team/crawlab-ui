@@ -94,7 +94,6 @@ const siteTitle = computed<Setting>(() => systemState.siteTitle);
     :class="sidebarCollapsed ? 'collapsed' : ''"
     class="sidebar-toggle"
     @click="toggleSidebar"
-    v-track="'click_sidebar_toggle'"
   >
     <font-awesome-icon v-if="!sidebarCollapsed" :icon="['fas', 'outdent']" />
     <font-awesome-icon v-else :icon="['fas', 'indent']" />

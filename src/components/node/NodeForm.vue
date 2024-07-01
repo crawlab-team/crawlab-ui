@@ -3,7 +3,6 @@ defineOptions({ name: 'ClNodeForm' });
 import { useStore } from 'vuex';
 import useNode from '@/components/node/useNode';
 import { useI18n } from 'vue-i18n';
-import { sendEvent } from '@/admin/umeng';
 
 defineProps<{
   readonly?: boolean;
@@ -16,10 +15,6 @@ const { t } = useI18n();
 const store = useStore();
 
 const { form, formRef, isSelectiveForm, isFormItemDisabled } = useNode(store);
-
-const onEnabledChange = (value: boolean) => {
-  sendEvent(value ? 'click_node_form_enable' : 'click_node_form_disable');
-};
 </script>
 
 <template>
@@ -102,7 +97,6 @@ const onEnabledChange = (value: boolean) => {
         v-locate="'enabled'"
         v-model="form.enabled"
         :disabled="isFormItemDisabled('enabled')"
-        @change="onEnabledChange"
       />
     </cl-form-item>
     <cl-form-item

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { getRootDirectoryOptions } from '@/utils/file';
-
 defineOptions({ name: 'ClUploadFilesDialog' });
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
-import { sendEvent } from '@/admin/umeng';
 import { getOSPathSeparator } from '@/utils';
+import { getRootDirectoryOptions } from '@/utils/file';
 import { FILE_ROOT, FILE_UPLOAD_MODE_DIR } from '@/constants';
 
 const props = defineProps<{
@@ -118,8 +116,6 @@ const onUploadConfirm = async () => {
   const { ns } = props;
   confirmLoading.value = true;
   try {
-    sendEvent('click_spider_detail_actions_upload_confirm');
-
     await uploadFiles();
     ElMessage.success(t('common.message.success.upload'));
   } catch (e: any) {
@@ -133,8 +129,6 @@ const onUploadConfirm = async () => {
 const onFilesChange = (fileList: FileWithPath[]) => {
   if (!fileList.length) return;
   files.value = fileList;
-
-  sendEvent('click_spider_detail_actions_files_change');
 };
 
 const onTargetDirectoryChange = (dir: string) => {

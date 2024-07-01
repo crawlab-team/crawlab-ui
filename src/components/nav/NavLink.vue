@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNavLink' });
 import { useRouter } from 'vue-router';
-import { sendEvent } from '@/admin/umeng';
 
 const props = defineProps<{
   path?: string;
@@ -26,12 +25,6 @@ const onClick = () => {
     router.push(path);
   }
   emit('click');
-
-  sendEvent('click_nav_link', {
-    path,
-    external,
-    currentPath: router.currentRoute.value.path,
-  });
 };
 </script>
 

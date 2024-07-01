@@ -7,7 +7,6 @@ import { useRouter } from 'vue-router';
 import UserRole from '@/components/user/UserRole.vue';
 import { USERNAME_ADMIN } from '@/constants/user';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -57,8 +56,6 @@ const useUserList = () => {
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
-
-            sendEvent('click_user_list_new');
           },
         },
       ],
@@ -152,10 +149,8 @@ const useUserList = () => {
             type: 'primary',
             icon: ['fa', 'search'],
             tooltip: t('common.actions.view'),
-            onClick: (row: User) => {
-              router.push(`/users/${row._id}`);
-
-              sendEvent('click_user_list_actions_view');
+            onClick: async (row: User) => {
+              await router.push(`/users/${row._id}`);
             },
             action: ACTION_VIEW,
           },

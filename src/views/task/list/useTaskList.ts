@@ -6,7 +6,6 @@ import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import useList from '@/layouts/content/list/useList';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import { getStatusOptions, isCancellable } from '@/utils/task';
 import useRequest from '@/services/request';
 import NavLink from '@/components/nav/NavLink.vue';
@@ -89,8 +88,6 @@ const useTaskList = () => {
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
-
-            sendEvent('click_task_list_new');
           },
         },
       ],
@@ -223,10 +220,8 @@ const useTaskList = () => {
             return h(NodeType, {
               isMaster: node?.is_master,
               label: node?.name,
-              onClick: () => {
-                router.push(`/nodes/${node?._id}`);
-
-                sendEvent('click_task_list_actions_view');
+              onClick: async () => {
+                await router.push(`/nodes/${node?._id}`);
               },
             } as NodeTypeProps);
           },
@@ -398,9 +393,8 @@ const useTaskList = () => {
               results: row.stat.result_count,
               status: row.status,
               clickable: true,
-              onClick: () => {
-                router.push(`/tasks/${row._id}/data`);
-                sendEvent('click_task_list_actions_view_data');
+              onClick: async () => {
+                await router.push(`/tasks/${row._id}/data`);
               },
             });
           },
@@ -418,10 +412,8 @@ const useTaskList = () => {
               size: 'small',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: row => {
-                router.push(`/tasks/${row._id}`);
-
-                sendEvent('click_task_list_actions_view');
+              onClick: async row => {
+                await router.push(`/tasks/${row._id}`);
               },
               action: ACTION_VIEW,
             },
@@ -431,10 +423,8 @@ const useTaskList = () => {
               size: 'small',
               icon: ['fa', 'file-alt'],
               tooltip: t('common.actions.viewLogs'),
-              onClick: row => {
-                router.push(`/tasks/${row._id}/logs`);
-
-                sendEvent('click_task_list_actions_view_logs');
+              onClick: async row => {
+                await router.push(`/tasks/${row._id}/logs`);
               },
               action: ACTION_VIEW_LOGS,
             },
@@ -445,16 +435,11 @@ const useTaskList = () => {
               icon: ['fa', 'redo'],
               tooltip: t('common.actions.restart'),
               onClick: async row => {
-                sendEvent('click_task_list_actions_restart');
-
                 await ElMessageBox.confirm(
                   t('common.messageBox.confirm.restart'),
                   t('common.actions.restart'),
                   { type: 'warning', confirmButtonClass: 'restart-confirm-btn' }
                 );
-
-                sendEvent('click_task_list_actions_restart_confirm');
-
                 await post(`/tasks/${row._id}/restart`);
                 await ElMessage.success(t('common.message.success.restart'));
                 await store.dispatch(`task/getList`);
@@ -467,10 +452,8 @@ const useTaskList = () => {
               size: 'small',
               icon: ['fa', 'database'],
               tooltip: t('common.actions.viewData'),
-              onClick: row => {
-                router.push(`/tasks/${row._id}/data`);
-
-                sendEvent('click_task_list_actions_view_data');
+              onClick: async row => {
+                await router.push(`/tasks/${row._id}/data`);
               },
               action: ACTION_VIEW_DATA,
             },
@@ -482,8 +465,6 @@ const useTaskList = () => {
                   icon: ['fa', 'stop'],
                   tooltip: t('common.actions.cancel'),
                   onClick: async (row: Task) => {
-                    sendEvent('click_task_list_actions_cancel');
-
                     await ElMessageBox.confirm(
                       t('common.messageBox.confirm.cancel'),
                       t('common.actions.cancel'),
@@ -492,9 +473,6 @@ const useTaskList = () => {
                         confirmButtonClass: 'cancel-confirm-btn',
                       }
                     );
-
-                    sendEvent('click_task_list_actions_cancel_confirm');
-
                     ElMessage.info(t('common.message.info.cancel'));
                     await post(`/tasks/${row._id}/cancel`);
                     await store.dispatch(`${ns}/getList`);

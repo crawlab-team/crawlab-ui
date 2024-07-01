@@ -6,7 +6,6 @@ import * as monaco from 'monaco-editor';
 import { FILE_ROOT } from '@/constants/file';
 import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';
 import { useI18n } from 'vue-i18n';
-import { sendEvent } from '@/admin/umeng';
 import { getLanguageByFileName } from '@/utils';
 
 // tab content cache
@@ -200,8 +199,6 @@ const updateTabs = (item?: FileNavItem) => {
 
 const onNavItemClick = (item: FileNavItem) => {
   emit('node-click', item);
-
-  sendEvent('click_file_editor_nav_menu_item_click');
 };
 
 const onNavItemDbClick = (item: FileNavItem) => {
@@ -210,20 +207,14 @@ const onNavItemDbClick = (item: FileNavItem) => {
 
   // update tabs
   updateTabs(item);
-
-  sendEvent('click_file_editor_nav_menu_item_dbclick');
 };
 
 const onNavItemDrop = (draggingItem: FileNavItem, dropItem: FileNavItem) => {
   emit('node-drop', draggingItem, dropItem);
-
-  sendEvent('click_file_editor_nav_menu_item_drop');
 };
 
 const onContextMenuNewFile = (item: FileNavItem, name: string) => {
   emit('ctx-menu-new-file', item, name);
-
-  sendEvent('click_file_editor_nav_menu_item_context_menu_new_file');
 };
 
 const onContextMenuNewFileWithAi = (item: FileNavItem) => {
@@ -233,46 +224,18 @@ const onContextMenuNewFileWithAi = (item: FileNavItem) => {
 
 const onContextMenuNewDirectory = (item: FileNavItem, name: string) => {
   emit('ctx-menu-new-directory', item, name);
-
-  sendEvent('click_file_editor_nav_menu_item_context_menu_new_directory');
 };
 
 const onContextMenuRename = (item: FileNavItem, name: string) => {
   emit('ctx-menu-rename', item, name);
-
-  sendEvent('click_file_editor_nav_menu_item_context_menu_rename');
 };
 
 const onContextMenuClone = (item: FileNavItem, name: string) => {
   emit('ctx-menu-clone', item, name);
-
-  sendEvent('click_file_editor_nav_menu_item_context_menu_clone');
 };
 
 const onContextMenuDelete = (item: FileNavItem) => {
   emit('ctx-menu-delete', item);
-
-  sendEvent('click_file_editor_nav_menu_item_context_menu_delete');
-};
-
-const onContentChange = (content: string) => {
-  if (!activeFileItem.value) return;
-  emit('content-change', content);
-
-  // update in cache
-  updateContentCache(activeFileItem.value, content);
-
-  sendEvent('click_file_editor_content_change');
-};
-
-const onTabClick = (tab: FileNavItem) => {
-  store.commit(`${ns}/setActiveFileNavItem`, tab);
-  emit('tab-click', tab);
-
-  // get from cache and update content
-  getContentCache(tab);
-
-  sendEvent('click_file_editor_tab_click');
 };
 
 const closeTab = (tab: FileNavItem) => {
@@ -303,8 +266,6 @@ const closeTab = (tab: FileNavItem) => {
 
 const onTabClose = (tab: FileNavItem) => {
   closeTab(tab);
-
-  sendEvent('click_file_editor_tab_close');
 };
 
 const onTabCloseOthers = (tab: FileNavItem) => {
@@ -313,8 +274,6 @@ const onTabCloseOthers = (tab: FileNavItem) => {
 
   // clear cache and update current tab content
   deleteOtherContentCache(tab);
-
-  sendEvent('click_file_editor_tab_close_others');
 };
 
 const onTabCloseAll = () => {
@@ -323,33 +282,23 @@ const onTabCloseAll = () => {
 
   // clear cache
   clearContentCache();
-
-  sendEvent('click_file_editor_tab_close_all');
 };
 
 const onTabDragEnd = (newTabs: FileNavItem[]) => {
   tabs.value = newTabs;
-
-  sendEvent('click_file_editor_tab_dragend');
 };
 
 const onShowMoreShow = () => {
   showMoreContextMenuVisible.value = true;
-
-  sendEvent('click_file_editor_showmore_show');
 };
 
 const onShowMoreHide = () => {
   showMoreContextMenuVisible.value = false;
-
-  sendEvent('click_file_editor_showmore_hide');
 };
 
 const onClickShowMoreContextMenuItem = (tab: FileNavItem) => {
   store.commit(`${ns}/setActiveFileNavItem`, tab);
   emit('tab-click', tab);
-
-  sendEvent('click_file_editor_showmore_click_context_menu_item');
 };
 
 const keyMapSave = () => {
@@ -363,10 +312,6 @@ const addSaveKeyMap = () => {
 
 const onToggleNavMenu = () => {
   navMenuCollapsed.value = !navMenuCollapsed.value;
-
-  sendEvent('click_file_editor_nav_menu_toggle', {
-    collapse: !navMenuCollapsed.value,
-  });
 };
 
 const update = async () => {
@@ -382,14 +327,10 @@ watch(() => JSON.stringify(activeFileItem.value), update);
 
 const onDropFiles = (files: InputFile[]) => {
   emit('drop-files', files);
-
-  sendEvent('click_file_editor_drop_files');
 };
 
 const onFileSearch = (value: string) => {
   fileSearchString.value = value;
-
-  sendEvent('click_file_editor_file_search');
 };
 
 const initEditor = async () => {

@@ -6,7 +6,6 @@ import NavLink from '@/components/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
 import { TAB_NAME_SPIDERS } from '@/constants/tab';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -134,10 +133,8 @@ const useProjectList = () => {
               type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: row => {
-                router.push(`/projects/${row._id}`);
-
-                sendEvent('click_project_list_actions_view');
+              onClick: async row => {
+                await router.push(`/projects/${row._id}`);
               },
               action: ACTION_VIEW,
             },

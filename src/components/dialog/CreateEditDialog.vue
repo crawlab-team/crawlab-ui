@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClCreateEditDialog' });
 import { computed, provide } from 'vue';
-import { sendEvent } from '@/admin/umeng';
 import { emptyArrayFunc, translate } from '@/utils';
 
 const props = withDefaults(
@@ -45,8 +44,6 @@ const computedTitle = computed<string>(() => {
 const onClose = () => {
   const { actionFunctions } = props;
   actionFunctions?.onClose?.();
-
-  sendEvent('click_create_edit_dialog_close');
 };
 
 const onConfirm = () => {

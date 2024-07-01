@@ -87,7 +87,6 @@ const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
         />
         <el-link
           v-if="systemInfo.edition === 'global.edition.community'"
-          v-track="{ code: 'click_header_pro' }"
           class="item"
           :href="`https://www.crawlab.cn/${locale}/#pricing`"
           target="_blank"
@@ -97,7 +96,6 @@ const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
           {{ t('global.upgrade.pro') }}
         </el-link>
         <el-link
-          v-track="{ code: 'click_header_docs' }"
           class="item"
           :href="`https://docs.crawlab.cn/${locale}/`"
           target="_blank"
@@ -116,20 +114,12 @@ const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
-                v-track="{
-                  code: 'click_header_lang',
-                  params: { locale: 'en' },
-                }"
                 :class="locale === 'en' ? 'active' : ''"
                 @click="() => setLang('en')"
               >
                 {{ t('global.lang', [], { locale: 'en' }) }}
               </el-dropdown-item>
               <el-dropdown-item
-                v-track="{
-                  code: 'click_header_lang',
-                  params: { locale: 'zh' },
-                }"
                 :class="locale === 'zh' ? 'active' : ''"
                 @click="() => setLang('zh')"
               >
@@ -148,25 +138,16 @@ const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-track="{ code: 'click_header_disclaimer' }"
-                @click="onClickDisclaimer"
-              >
+              <el-dropdown-item @click="onClickDisclaimer">
                 {{ t('layouts.components.header.disclaimer') }}
               </el-dropdown-item>
-              <el-dropdown-item
-                v-track="{ code: 'click_header_my_settings' }"
-                @click="onClickMySettings"
-              >
+              <el-dropdown-item @click="onClickMySettings">
                 {{ t('layouts.components.header.mySettings') }}
               </el-dropdown-item>
-              <el-dropdown-item
-                v-track="{ code: 'click_header_logout' }"
-                @click="onLogout"
-              >
+              <el-dropdown-item @click="onLogout">
                 <span v-locate="'logout'">{{
-                    t('layouts.components.header.logout')
-                  }}</span>
+                  t('layouts.components.header.logout')
+                }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

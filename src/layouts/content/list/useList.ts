@@ -7,7 +7,6 @@ import {
   FILTER_OP_NOT_SET,
 } from '@/constants/filter';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 
 // i18n
 const t = translate;
@@ -81,7 +80,6 @@ const useList = <T = any>(
     getAll: () => store.dispatch(`${ns}/getAllList`),
     deleteList: (ids: string[]) => store.dispatch(`${ns}/deleteList`, ids),
     deleteByIdConfirm: async (row: BaseModel) => {
-      sendEvent('click_list_layout_actions_delete', { ns });
       await ElMessageBox.confirm(
         t('common.messageBox.confirm.delete'),
         t('common.actions.delete'),
@@ -90,7 +88,6 @@ const useList = <T = any>(
           confirmButtonClass: 'el-button--danger delete-confirm-btn',
         }
       );
-      sendEvent('click_list_layout_actions_delete_confirm', { ns });
       await store.dispatch(`${ns}/deleteById`, row._id);
       ElMessage.success(t('common.message.success.delete'));
       await store.dispatch(`${ns}/getList`);

@@ -5,7 +5,6 @@ import { useStore } from 'vuex';
 import { plainClone } from '@/utils/object';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { sendEvent } from '@/admin/umeng';
 
 const { t } = useI18n();
 
@@ -35,16 +34,12 @@ const resetOptions = () => {
 const onClose = () => {
   store.commit(`${storeNamespace}/setEditorSettingsDialogVisible`, false);
   resetOptions();
-
-  sendEvent('click_file_editor_settings_dialog_close');
 };
 
 const onConfirm = () => {
   store.commit(`${storeNamespace}/setEditorOptions`, options.value);
   store.commit(`${storeNamespace}/setEditorSettingsDialogVisible`, false);
   resetOptions();
-
-  sendEvent('click_file_editor_settings_dialog_confirm');
 };
 
 onBeforeMount(() => {

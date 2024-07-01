@@ -1,4 +1,4 @@
-import { computed, h, resolveDynamicComponent } from 'vue';
+import { computed, h } from 'vue';
 import { useStore } from 'vuex';
 import {
   getDefaultUseListOptions,
@@ -27,7 +27,6 @@ import {
   NODE_STATUS_UNREGISTERED,
 } from '@/constants/node';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -103,11 +102,6 @@ const useNodeList = () => {
               title,
               message,
             });
-
-            // TODO: implement active nodes creation later
-            // commit(`${ns}/showDialog`, 'create');
-
-            sendEvent('click_node_list_new');
           },
         },
       ],
@@ -321,10 +315,6 @@ const useNodeList = () => {
                   id: row._id,
                   form: row,
                 });
-
-                value
-                  ? sendEvent('click_node_list_enable')
-                  : sendEvent('click_node_list_disable');
               },
             } as SwitchProps);
           },
@@ -365,10 +355,8 @@ const useNodeList = () => {
               type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: row => {
-                router.push(`/nodes/${row._id}`);
-
-                sendEvent('click_node_list_actions_view');
+              onClick: async row => {
+                await router.push(`/nodes/${row._id}`);
               },
               action: ACTION_VIEW,
             },
@@ -388,8 +376,6 @@ const useNodeList = () => {
               tooltip: t('common.actions.delete'),
               disabled: (row: Node) => !!row.active,
               onClick: async (row: Node) => {
-                sendEvent('click_node_list_actions_delete');
-
                 const res = await ElMessageBox.confirm(
                   t('common.messageBox.confirm.delete'),
                   t('common.actions.delete'),
@@ -398,9 +384,6 @@ const useNodeList = () => {
                     confirmButtonClass: 'el-button--danger',
                   }
                 );
-
-                sendEvent('click_node_list_actions_delete_confirm');
-
                 if (res) {
                   await deleteById(row._id as string);
                 }

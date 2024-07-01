@@ -16,6 +16,5 @@ declare global {
     _t?: (path: string, args?: any) => string;
     _tc?: (path: string, c: number, args?: any) => string;
     _tp?: (pluginName: string, path: string) => string;
-    SimpleMDE: any;
   }
 }

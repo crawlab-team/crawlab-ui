@@ -5,7 +5,6 @@ import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import useClipboard from 'vue-clipboard3';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_COPY,
@@ -48,15 +47,10 @@ const useTokenList = () => {
           icon: ['fa', 'plus'],
           type: 'success',
           onClick: async () => {
-            sendEvent('click_token_list_new');
-
             const res = await ElMessageBox.prompt(
               t('views.tokens.messageBox.prompt.create'),
               t('common.actions.create')
             );
-
-            sendEvent('click_token_list_new_confirm');
-
             const name = res.value;
             const token = {
               name,
@@ -133,10 +127,6 @@ const useTokenList = () => {
               : t('common.actions.hide'),
             onClick: async (row: Token) => {
               row._visible = !row._visible;
-
-              row._visible
-                ? sendEvent('click_token_list_actions_hide')
-                : sendEvent('click_token_list_actions_show');
             },
             action: ACTION_VIEW,
           },
@@ -149,8 +139,6 @@ const useTokenList = () => {
               if (!row.token) return;
               await toClipboard(row.token);
               ElMessage.success(t('common.message.success.copy'));
-
-              sendEvent('click_token_list_actions_copy');
             },
             action: ACTION_COPY,
           },

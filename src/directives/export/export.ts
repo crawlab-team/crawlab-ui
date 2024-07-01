@@ -1,10 +1,9 @@
 import { Directive, ref, h } from 'vue';
-import ExportForm from '@/components/export/ExportForm.vue';
-import { sendEvent } from '@/admin/umeng';
-import { downloadData, translate } from '@/utils';
 import { ElMessageBox, ElNotification, NotificationHandle } from 'element-plus';
-import useExportService from '@/services/export/exportService';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { downloadData, translate } from '@/utils';
+import useExportService from '@/services/export/exportService';
+import ExportForm from '@/components/export/ExportForm.vue';
 
 export type ExportType = 'csv' | 'json';
 
@@ -166,8 +165,6 @@ export const export_: Directive<HTMLElement, ExportDirective> = {
 
       // poll and download
       await pollAndDownload(exportId);
-
-      sendEvent('click_spider_detail_actions_export');
     };
 
     el.addEventListener('click', onClickExport);

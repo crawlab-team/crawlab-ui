@@ -7,7 +7,6 @@ import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useNode from '@/components/node/useNode';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
-import { sendEvent } from '@/admin/umeng';
 import useTask from '@/components/task/useTask';
 
 const { t } = useI18n();
@@ -43,11 +42,6 @@ const onEnabledChange = async (value: boolean) => {
     await store.dispatch(`${ns}/disable`, form.value._id);
     ElMessage.success(t('components.schedule.message.success.disable'));
   }
-
-  value
-    ? sendEvent('click_schedule_form_enable')
-    : sendEvent('click_schedule_form_disable');
-
   await store.dispatch(`${ns}/getList`);
 };
 </script>

@@ -12,7 +12,6 @@ import Switch from '@/components/switch/Switch.vue';
 import useSpider from '@/components/spider/useSpider';
 import useTask from '@/components/task/useTask';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -73,8 +72,6 @@ const useScheduleList = () => {
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
-
-            sendEvent('click_schedule_list_new');
           },
         },
       ],
@@ -254,11 +251,6 @@ const useScheduleList = () => {
                     t('components.schedule.message.success.disable')
                   );
                 }
-
-                value
-                  ? sendEvent('click_schedule_list_enable')
-                  : sendEvent('click_schedule_list_disable');
-
                 await store.dispatch(`${ns}/getList`);
               },
             } as SwitchProps);
@@ -296,10 +288,8 @@ const useScheduleList = () => {
               type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: row => {
-                router.push(`/schedules/${row._id}`);
-
-                sendEvent('click_schedule_list_actions_view');
+              onClick: async row => {
+                await router.push(`/schedules/${row._id}`);
               },
               action: ACTION_VIEW,
             },
@@ -319,8 +309,6 @@ const useScheduleList = () => {
               icon: ['fa', 'play'],
               tooltip: t('common.actions.run'),
               onClick: async row => {
-                sendEvent('click_schedule_list_actions_run');
-
                 await ElMessageBox.confirm(
                   t('common.messageBox.confirm.run'),
                   t('common.actions.run'),
@@ -330,7 +318,6 @@ const useScheduleList = () => {
                     cancelButtonText: t('common.actions.cancel'),
                   }
                 );
-                sendEvent('click_schedule_list_actions_run_confirm');
                 await store.dispatch('task/create', {
                   mode: row.mode,
                   priority: row.priority,

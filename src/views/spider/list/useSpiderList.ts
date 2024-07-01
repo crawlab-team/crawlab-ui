@@ -2,7 +2,6 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { computed, h } from 'vue';
 import { translate } from '@/utils/i18n';
-import { sendEvent } from '@/admin/umeng';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -71,8 +70,6 @@ const useSpiderList = () => {
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
-
-            sendEvent('click_spider_list_new');
           },
         },
       ],
@@ -254,8 +251,6 @@ const useSpiderList = () => {
               onClick: (row: Spider) => {
                 store.commit(`${ns}/setForm`, row);
                 store.commit(`${ns}/showDialog`, 'run');
-
-                sendEvent('click_spider_list_actions_run');
               },
               className: 'run-btn',
               action: ACTION_RUN,
@@ -265,10 +260,8 @@ const useSpiderList = () => {
               size: 'small',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: (row: Spider) => {
-                router.push(`/spiders/${row._id}`);
-
-                sendEvent('click_spider_list_actions_view');
+              onClick: async (row: Spider) => {
+                await router.push(`/spiders/${row._id}`);
               },
               className: 'view-btn',
               action: ACTION_VIEW,
@@ -281,8 +274,6 @@ const useSpiderList = () => {
               onClick: (row: Spider) => {
                 store.commit(`${ns}/setForm`, row);
                 store.commit(`${ns}/showDialog`, 'uploadFiles');
-
-                sendEvent('click_spider_list_actions_upload_files');
               },
               className: 'upload-files-btn',
               action: ACTION_UPLOAD,
@@ -292,10 +283,8 @@ const useSpiderList = () => {
               size: 'small',
               icon: ['fa', 'database'],
               tooltip: t('common.actions.viewData'),
-              onClick: (row: Spider) => {
-                router.push(`/spiders/${row._id}/data`);
-
-                sendEvent('click_spider_list_actions_view_data');
+              onClick: async (row: Spider) => {
+                await router.push(`/spiders/${row._id}/data`);
               },
               className: 'view-data-btn',
               action: ACTION_VIEW_DATA,

@@ -8,9 +8,8 @@ import { getI18n } from '@/i18n';
 import { initBaiduTonji } from '@/admin/baidu';
 import { getRouter } from '@/router';
 import { initRequest } from '@/services/request';
-import { initUmeng } from '@/admin/umeng';
 import { setGlobalLang } from '@/utils/i18n';
-import { track, locate, auth, export_ } from '@/directives';
+import { locate, auth, export_ } from '@/directives';
 import { initClarity } from '@/admin/clarity';
 import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
@@ -28,7 +27,6 @@ export const getDefaultCreateAppOptions = (): CreateAppOptions => {
     loadCrawlabUI: true,
     loadI18n: true,
     loadFontAwesome: true,
-    loadTrack: true,
     loadLocate: true,
     loadAuth: true,
     loadExport: true,
@@ -58,15 +56,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
 
   // baidu tongji
   if (options.initBaiduTongji) initBaiduTonji();
-
-  // umeng
-  if (options.initUmeng) {
-    try {
-      await initUmeng();
-    } finally {
-      console.info('initialized umeng');
-    }
-  }
 
   // clarity
   if (options.initClarity) initClarity();
@@ -109,7 +98,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   }
   if (options.loadFontAwesome)
     app.component('font-awesome-icon', FontAwesomeIcon);
-  if (options.loadTrack) app.directive('track', track);
   if (options.loadLocate) app.directive('locate', locate);
   if (options.loadAuth) app.directive('auth', auth);
   if (options.loadExport) app.directive('export', export_);

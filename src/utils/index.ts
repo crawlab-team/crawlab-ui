@@ -1,4 +1,3 @@
-export * from './admin';
 export * from './array';
 export * from './auth';
 export * from './auto';

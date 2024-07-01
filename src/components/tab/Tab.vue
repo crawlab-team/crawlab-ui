@@ -133,17 +133,7 @@ const onClose = (event: Event) => {
     <span v-if="showTitle" class="title">
       {{ t(title || '') }}
     </span>
-    <span
-      v-track="{
-        code: 'click_tabs_view_close_tab',
-        params: {
-          path: () => tab?.path,
-        },
-      }"
-      v-if="showClose"
-      class="close-btn"
-      @click="event => onClose(event)"
-    >
+    <span v-if="showClose" class="close-btn" @click="event => onClose(event)">
       <el-icon>
         <close />
       </el-icon>

@@ -1,13 +1,10 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { computed, watch, provide, ref } from 'vue';
-import { plainClone } from '@/utils/object';
 import { getRoutePathByDepth, getTabName } from '@/utils/route';
 import { ElMessage } from 'element-plus';
-import { sendEvent } from '@/admin/umeng';
 import { translate } from '@/utils/i18n';
 import { debounce } from '@/utils';
-import { TAB_NAME_CHANGES } from '@/constants';
 
 // i18n
 const t = translate;
@@ -83,8 +80,6 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
       `${primaryRoutePath.value}/${item.id}/${activeTabName.value}`
     );
     await getForm();
-
-    sendEvent('click_detail_layout_nav_sidebar_select');
   };
 
   const onNavSidebarToggle = (value: boolean) => {
@@ -93,10 +88,6 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     } else {
       store.commit(`${ns}/expandSidebar`);
     }
-
-    sendEvent('click_detail_layout_nav_sidebar_toggle', {
-      collapse: value,
-    });
   };
 
   const onActionsToggle = () => {
@@ -106,18 +97,10 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     } else {
       store.commit(`${ns}/collapseActions`);
     }
-
-    sendEvent('click_detail_layout_actions_toggle', {
-      collapse: !actionsCollapsed.value,
-    });
   };
 
-  const onNavTabsSelect = (tabName: string) => {
-    router.push(`${primaryRoutePath.value}/${activeId.value}/${tabName}`);
-
-    sendEvent('click_detail_layout_nav_tabs_select', {
-      tabName,
-    });
+  const onNavTabsSelect = async (tabName: string) => {
+    await router.push(`${primaryRoutePath.value}/${activeId.value}/${tabName}`);
   };
 
   const onNavTabsToggle = () => {
@@ -126,16 +109,10 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     } else {
       store.commit(`${ns}/expandSidebar`);
     }
-
-    sendEvent('click_detail_layout_nav_tabs_toggle', {
-      collapse: !sidebarCollapsed.value,
-    });
   };
 
-  const onBack = () => {
-    router.push(`${primaryRoutePath.value}`);
-
-    sendEvent('click_detail_layout_on_back');
+  const onBack = async () => {
+    await router.push(`${primaryRoutePath.value}`);
   };
 
   const onSave = async () => {
@@ -155,8 +132,6 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
 
     // after save
     afterSave.value.map(fn => fn());
-
-    sendEvent('click_detail_layout_on_save');
   };
 
   // get form when active id changes

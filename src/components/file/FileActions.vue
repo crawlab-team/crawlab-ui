@@ -1,9 +1,8 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClFileActions' });
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
-import { sendEvent } from '@/admin/umeng';
 import { downloadData } from '@/utils';
 
 const props = defineProps<{
@@ -16,26 +15,14 @@ const { t } = useI18n();
 
 // store
 const store = useStore();
-const { common: commonState } = store.state as RootStoreState;
-
-const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
 const onClickUpload = () => {
   const { ns } = props;
   store.commit(`${ns}/showDialog`, 'uploadFiles');
-
-  sendEvent('click_detail_actions_upload');
 };
 
 const onOpenFilesSettings = () => {
   store.commit(`file/setEditorSettingsDialogVisible`, true);
-
-  sendEvent('click_detail_actions_files_settings');
-};
-
-const onOpenCreateWithAi = async () => {
-  store.commit('file/resetEditorFileNavItem');
-  store.commit(`file/setEditorCreateWithAiDialogVisible`, true);
 };
 
 const exportLoading = ref(false);
@@ -50,7 +37,6 @@ const onClickExport = async () => {
   } finally {
     exportLoading.value = false;
   }
-  sendEvent('click_detail_actions_files_export');
 };
 </script>
 

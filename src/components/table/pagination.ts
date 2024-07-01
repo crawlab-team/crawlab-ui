@@ -1,5 +1,3 @@
-import { sendEvent } from '@/admin/umeng';
-
 const usePagination = (props: TableProps, emit: Function) => {
   const onCurrentChange = (page: number) => {
     const { pageSize } = props;
@@ -7,10 +5,6 @@ const usePagination = (props: TableProps, emit: Function) => {
       page,
       size: pageSize,
     } as TablePagination);
-
-    sendEvent('click_table_pagination_change_page', {
-      page: () => page,
-    });
   };
 
   const onSizeChange = (size: number) => {
@@ -19,10 +13,6 @@ const usePagination = (props: TableProps, emit: Function) => {
       page,
       size,
     } as TablePagination);
-
-    sendEvent('click_table_pagination_change_size', {
-      size: () => size,
-    });
   };
 
   return {

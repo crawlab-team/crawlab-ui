@@ -1,7 +1,6 @@
 import { computed, h } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ElTooltip } from 'element-plus';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -11,7 +10,6 @@ import {
   FILTER_OP_CONTAINS,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
-import { sendEvent } from '@/admin/umeng';
 import { useList } from '@/layouts/content';
 import {
   onListFilterChangeByKey,
@@ -190,10 +188,8 @@ const useGitList = () => {
               type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: (row: Git) => {
-                router.push(`/gits/${row._id}`);
-
-                sendEvent('click_git_list_actions_view');
+              onClick: async (row: Git) => {
+                await router.push(`/gits/${row._id}`);
               },
               action: ACTION_VIEW,
             },

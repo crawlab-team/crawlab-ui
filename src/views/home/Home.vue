@@ -236,12 +236,6 @@ onMounted(async () => {
         :span="24 / Math.min(metrics.length, 4)"
       >
         <cl-metric
-          v-track="{
-            code: 'click_home',
-            params: {
-              metricName: m.name,
-            },
-          }"
           :icon="m.icon"
           :title="m.name"
           :value="m.value"
