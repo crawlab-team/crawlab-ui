@@ -1,0 +1,10 @@
+export declare const DATA_FIELD_TYPE_GENERAL = "general";
+export declare const DATA_FIELD_TYPE_NUMERIC = "numeric";
+export declare const DATA_FIELD_TYPE_TIME = "time";
+export declare const DATA_FIELD_TYPE_CURRENCY = "currency";
+export declare const DATA_FIELD_TYPE_URL = "url";
+export declare const DATA_FIELD_TYPE_IMAGE = "image";
+export declare const DATA_FIELD_TYPE_AUDIO = "audio";
+export declare const DATA_FIELD_TYPE_VIDEO = "video";
+export declare const DATA_FIELD_TYPE_HTML = "html";
+export declare const DATA_FIELD_TYPE_LONG_TEXT = "long-text";

@@ -1,0 +1,13 @@
+export declare const TAB_NAME_OVERVIEW = "overview";
+export declare const TAB_NAME_FILES = "files";
+export declare const TAB_NAME_GIT = "git";
+export declare const TAB_NAME_TASKS = "tasks";
+export declare const TAB_NAME_SETTINGS = "settings";
+export declare const TAB_NAME_LOGS = "logs";
+export declare const TAB_NAME_SPIDERS = "spiders";
+export declare const TAB_NAME_DATA = "data";
+export declare const TAB_NAME_SCHEDULES = "schedules";
+export declare const TAB_NAME_DEPENDENCIES = "dependencies";
+export declare const TAB_NAME_TRIGGERS = "triggers";
+export declare const TAB_NAME_TEMPLATE = "template";
+export declare const TAB_NAME_CHANGES = "changes";

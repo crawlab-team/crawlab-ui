@@ -1,0 +1,10 @@
+export declare const TASK_STATUS_PENDING = "pending";
+export declare const TASK_STATUS_RUNNING = "running";
+export declare const TASK_STATUS_FINISHED = "finished";
+export declare const TASK_STATUS_ERROR = "error";
+export declare const TASK_STATUS_CANCELLED = "cancelled";
+export declare const TASK_STATUS_ABNORMAL = "abnormal";
+export declare const TASK_MODE_RANDOM = "random";
+export declare const TASK_MODE_ALL_NODES = "all-nodes";
+export declare const TASK_MODE_SELECTED_NODES = "selected-nodes";
+export declare const TASK_MODE_SELECTED_NODE_TAGS = "selected-node-tags";

@@ -1,0 +1,13 @@
+export declare const FILTER_OP_NOT_SET = "ns";
+export declare const FILTER_OP_CONTAINS = "c";
+export declare const FILTER_OP_NOT_CONTAINS = "nc";
+export declare const FILTER_OP_REGEX = "r";
+export declare const FILTER_OP_EQUAL = "eq";
+export declare const FILTER_OP_NOT_EQUAL = "ne";
+export declare const FILTER_OP_IN = "in";
+export declare const FILTER_OP_NOT_IN = "nin";
+export declare const FILTER_OP_GREATER_THAN = "gt";
+export declare const FILTER_OP_GREATER_THAN_EQUAL = "gte";
+export declare const FILTER_OP_LESS_THAN = "lt";
+export declare const FILTER_OP_LESS_THAN_EQUAL = "lte";
+export declare const FILTER_OP_SEARCH = "s";

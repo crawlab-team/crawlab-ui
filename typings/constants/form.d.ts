@@ -1,0 +1,9 @@
+export declare const FORM_FIELD_TYPE_INPUT = "input";
+export declare const FORM_FIELD_TYPE_INPUT_PASSWORD = "input-password";
+export declare const FORM_FIELD_TYPE_INPUT_TEXTAREA = "input-text-area";
+export declare const FORM_FIELD_TYPE_INPUT_WITH_BUTTON = "input-with-button";
+export declare const FORM_FIELD_TYPE_SELECT = "select";
+export declare const FORM_FIELD_TYPE_TAG_INPUT = "tag-input";
+export declare const FORM_FIELD_TYPE_TAG_SELECT = "tags-select";
+export declare const FORM_FIELD_TYPE_CHECK_TAG_GROUP = "check-tag-group";
+export declare const FORM_FIELD_TYPE_SWITCH = "switch";

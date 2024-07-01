@@ -1,0 +1,9 @@
+export declare const TABLE_COLUMN_NAME_ACTIONS = "actions";
+export declare const TABLE_ACTION_ADD = "add";
+export declare const TABLE_ACTION_DELETE = "delete";
+export declare const TABLE_ACTION_EDIT = "edit";
+export declare const TABLE_ACTION_EXPORT = "export";
+export declare const TABLE_ACTION_CUSTOMIZE_COLUMNS = "customize-columns";
+export declare const TABLE_PAGINATION_POSITION_TOP = "top";
+export declare const TABLE_PAGINATION_POSITION_BOTTOM = "bottom";
+export declare const TABLE_PAGINATION_POSITION_ALL = "all";

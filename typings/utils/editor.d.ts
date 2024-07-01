@@ -1,0 +1,1 @@
+export declare const getLanguageByFileName: (name?: string) => "html" | "json" | "text" | "python" | "markdown" | "javascript" | "typescript" | "java" | "go" | "csharp" | "php" | "ruby" | "rust" | "shell" | "sql" | "css" | "yaml" | "xml";

@@ -1,0 +1,11 @@
+import { Router, RouteRecordRaw } from 'vue-router';
+export declare function getDefaultRoutes(): Array<RouteRecordRaw>;
+export declare function getDefaultSidebarMenuItems(): MenuItem[];
+export declare function getDefaultHiddenMenuItems(): MenuItem[];
+export declare function getDefaultMenuItems(): MenuItem[];
+export declare function getRootRoute(routes: Array<RouteRecordRaw>): RouteRecordRaw | undefined;
+export declare function getRouteByName(routes: Array<RouteRecordRaw>, name: string): RouteRecordRaw | undefined;
+export declare function replaceRouteByName(routes: Array<RouteRecordRaw>, name: string, component: any): void;
+export declare function addRoutes(route: RouteRecordRaw, routes: Array<RouteRecordRaw>): void;
+export declare function createRouter(rootRoutes?: Array<RouteRecordRaw>, routes?: Array<RouteRecordRaw>, allRoutes?: Array<RouteRecordRaw>, options?: CreateRouterOptions): Router;
+export declare function getRouter(rootRoutes?: Array<RouteRecordRaw>, routes?: Array<RouteRecordRaw>, allRoutes?: Array<RouteRecordRaw>, options?: CreateRouterOptions): Router;

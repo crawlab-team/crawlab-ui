@@ -1,0 +1,13 @@
+export declare const DATA_SOURCE_TYPE_MONGO = "mongo";
+export declare const DATA_SOURCE_TYPE_MYSQL = "mysql";
+export declare const DATA_SOURCE_TYPE_POSTGRESQL = "postgresql";
+export declare const DATA_SOURCE_TYPE_MSSQL = "mssql";
+export declare const DATA_SOURCE_TYPE_SQLITE = "sqlite";
+export declare const DATA_SOURCE_TYPE_COCKROACHDB = "cockroachdb";
+export declare const DATA_SOURCE_TYPE_ELASTICSEARCH = "elasticsearch";
+export declare const DATA_SOURCE_TYPE_KAFKA = "kafka";
+export declare const DATA_SOURCE_STATUS_ONLINE = "on";
+export declare const DATA_SOURCE_STATUS_OFFLINE = "off";
+export declare const DATA_SOURCE_CONNECT_TYPE_STANDARD = "standard";
+export declare const DATA_SOURCE_CONNECT_TYPE_URL = "url";
+export declare const DATA_SOURCE_CONNECT_TYPE_HOSTS = "hosts";
