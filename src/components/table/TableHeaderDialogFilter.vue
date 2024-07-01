@@ -3,7 +3,6 @@ import { getDefaultFilterCondition } from '@/components/filter/filter';
 
 defineOptions({ name: 'ClTableHeaderDialogFilter' });
 import { computed, ref, watch } from 'vue';
-import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
 import { debounce } from '@/utils/debounce';
 import { Search } from '@element-plus/icons-vue';
 import { emptyArrayFunc, translate } from '@/utils';

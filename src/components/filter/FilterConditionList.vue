@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { getDefaultFilterCondition } from '@/components/filter/filter';
-
 defineOptions({ name: 'ClFilterConditionList' });
-import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
+import { getDefaultFilterCondition } from '@/components/filter/filter';
 
 const props = defineProps<{
   conditions?: FilterConditionData[];

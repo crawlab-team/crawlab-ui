@@ -1,26 +1,7 @@
 import { ComputedRef, Ref } from 'vue';
 import Table from '@/components/table/Table.vue';
 
-declare global {
-  interface ListLayoutProps {
-    navActions: ListActionGroup[];
-    tableColumns: TableColumns;
-    tableData: TableData;
-    tablePagination: TablePagination;
-    tableActionsPrefix: ListActionButton[];
-    tableActionsSuffix: ListActionButton[];
-    tableListFilter: FilterConditionData[];
-    tableListSort: SortData[];
-    actionFunctions: ListLayoutActionFunctions;
-    noActions: boolean;
-    selectableFunction: TableSelectableFunction;
-    visibleButtons: BuiltInTableActionButtonName[];
-    tablePaginationLayout?: string;
-    tableLoading?: boolean;
-    tablePaginationPosition?: TablePaginationPosition;
-    embedded?: boolean;
-  }
-
+export declare global {
   interface ListLayoutComponentData<T = any> {
     navActions?: Ref<ListActionGroup[]>;
     tableColumns?: Ref<TableColumns<T>>;

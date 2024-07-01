@@ -85,17 +85,17 @@ const onNewBranch = async () => {
       inputValidator: (value: string) => {
         if (!value) {
           return t(
-            'components.git.common.messageBox.prompt.branch.new.validate.notEmpty'
+            'components.git.common.messageBox.prompt.branch.new.validate.notEmpty',
           );
         }
         if (value === currentBranch.value?.name) {
           return t(
-            'components.git.common.messageBox.prompt.branch.new.validate.notSame'
+            'components.git.common.messageBox.prompt.branch.new.validate.notSame',
           );
         }
         return true;
       },
-    }
+    },
   );
   if (!targetBranch) return;
   const sourceBranch = currentBranch.value?.name;
@@ -125,7 +125,7 @@ const onDeleteBranch = async (branch: string) => {
         'label',
         // { style: 'margin-left: 5px;color: var(--cl-danger-color)' },
         { style: { marginLeft: '5px', color: 'var(--cl-danger-color)' } },
-        [branch]
+        [branch],
       ),
     ]) as any;
   const confirm = await ElMessageBox.confirm(message, {
@@ -164,14 +164,13 @@ const onNewTag = async (tag: string) => {
 };
 
 const onClickPull = async () => {
-  console.debug('onClickPull');
   if (pullLoading.value) return;
   await onPull();
 };
 
 const onClickCommit = async () => {
   if (activeTabName.value !== TAB_NAME_CHANGES) {
-    router.push(`/gits/${activeId.value}/changes`);
+    await router.push(`/gits/${activeId.value}/changes`);
   } else {
     if (commitLoading.value) return;
     await onCommit();
@@ -188,7 +187,7 @@ const loading = computed(
     branchSelectLoading.value ||
     pullLoading.value ||
     commitLoading.value ||
-    pushLoading.value
+    pushLoading.value,
 );
 </script>
 
@@ -202,16 +201,19 @@ const loading = computed(
     <cl-nav-action-item>
       <cl-git-status
         v-if="pullLoading"
+        :id="activeId"
         size="large"
         :status="GIT_STATUS_PULLING"
       />
       <cl-git-status
         v-else-if="pushLoading"
+        :id="activeId"
         size="large"
         :status="GIT_STATUS_PUSHING"
       />
       <cl-git-status
         v-else
+        :id="activeId"
         size="large"
         :status="gitForm.status"
         :error="gitForm.error"

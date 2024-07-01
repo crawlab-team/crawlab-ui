@@ -8,7 +8,6 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_FILTER_SELECT,
 } from '@/constants/action';
-import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
 
 const props = withDefaults(
   defineProps<{

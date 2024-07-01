@@ -5,7 +5,6 @@ import { plainClone } from '@/utils/object';
 import { FILTER_OP_NOT_SET } from '@/constants/filter';
 import { ClickOutside as vClickOutside } from 'element-plus';
 import { useI18n } from 'vue-i18n';
-import { FilterConditionData } from '@/components/filter/FilterCondition.vue';
 
 const props = defineProps<{
   visible?: boolean;
