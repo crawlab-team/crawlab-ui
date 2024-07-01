@@ -4,7 +4,12 @@ import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
 import { visualizer } from 'rollup-plugin-visualizer';
 
-export default defineConfig({
+const plugins = [vue(), dynamicImport()];
+if (process.env.NODE_ENV === 'analyze') {
+  plugins.push(visualizer({ open: true, gzipSize: true }));
+}
+
+const config = defineConfig({
   build: {
     lib: {
       name: 'crawlab-ui',
@@ -49,24 +54,35 @@ export default defineConfig({
           '@fortawesome/vue-fontawesome': 'FontAwesomeVue',
           echarts: 'Echarts',
           'atom-material-icons': 'AtomMaterialIcons',
-          'monaco-editor': 'monaco',
+          'monaco-editor': 'monaco-editor',
         },
       },
     },
-    watch: {
-      include: 'src/**',
-    },
-  },
-  resolve: {
-    dedupe: ['vue'],
-    alias: [{ find: '@', replacement: resolve(__dirname, 'src') }],
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss'],
   },
   optimizeDeps: {
-    include: ['monaco-editor'],
+    include: ['element-plus', 'echarts', 'monaco-editor'],
   },
-  plugins: [vue(), dynamicImport(), visualizer({ open: false })],
+  resolve: {
+    dedupe: ['vue', 'vue-router', 'vuex', 'axios', 'element-plus', 'echarts'],
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      echarts: 'echarts/dist/echarts.min.js',
+    },
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss'],
+  },
+  plugins,
   server: {
     cors: true,
   },
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  config.build = {
+    ...config.build,
+    watch: {
+      include: ['src/**', 'public', 'index.html'],
+    },
+  };
+}
+
+export default config;

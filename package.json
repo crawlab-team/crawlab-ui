@@ -34,7 +34,7 @@
     }
   },
   "scripts": {
-    "dev": "pnpm run build --watch",
+    "dev": "pnpm run build --mode development",
     "serve": "vite",
     "serve:local": "vite serve --port=8081 --mode local",
     "serve:dist": "serve dist",
