@@ -65,45 +65,43 @@ async function genVueTypes(
     .filter(exclude)
     .filter(include);
 
-  await Promise.all(
-    filePaths.map(async file => {
-      try {
-        if (file.endsWith('.vue')) {
-          // .vue file
-          const content = await fs.promises.readFile(file, 'utf-8');
-          const sfc = vueCompiler.parse(content);
-          const { script, scriptSetup } = sfc.descriptor;
-          if (script || scriptSetup) {
-            let content = '';
-            let isTS = false;
-            if (script && script.content) {
-              content += script.content;
-              if (script.lang === 'ts') isTS = true;
-            }
-            if (scriptSetup) {
-              const compiled = vueCompiler.compileScript(sfc.descriptor, {
-                id: 'xxx',
-              });
-              content += compiled.content;
-              if (scriptSetup.lang === 'ts') isTS = true;
-            }
-            const sourceFile = project.createSourceFile(
-              path.relative(process.cwd(), file) + (isTS ? '.ts' : '.js'),
-              content
-            );
-            sourceFiles.push(sourceFile);
+  filePaths.forEach(file => {
+    try {
+      if (file.endsWith('.vue')) {
+        // .vue file
+        const content = fs.readFileSync(file, 'utf-8');
+        const sfc = vueCompiler.parse(content);
+        const { script, scriptSetup } = sfc.descriptor;
+        if (script || scriptSetup) {
+          let content = '';
+          let isTS = false;
+          if (script && script.content) {
+            content += script.content;
+            if (script.lang === 'ts') isTS = true;
           }
-        } else if (file.endsWith('.ts')) {
-          // .ts file
-          const sourceFile = project.addSourceFileAtPath(file);
+          if (scriptSetup) {
+            const compiled = vueCompiler.compileScript(sfc.descriptor, {
+              id: 'xxx',
+            });
+            content += compiled.content;
+            if (scriptSetup.lang === 'ts') isTS = true;
+          }
+          const sourceFile = project.createSourceFile(
+            path.relative(process.cwd(), file) + (isTS ? '.ts' : '.js'),
+            content
+          );
           sourceFiles.push(sourceFile);
         }
-      } catch (e) {
-        console.error(e);
-        throw e;
+      } else if (file.endsWith('.ts')) {
+        // .ts file
+        const sourceFile = project.addSourceFileAtPath(file);
+        sourceFiles.push(sourceFile);
       }
-    })
-  );
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
+  });
   log(
     `Found valid source files: ${sourceFiles.length}/${filePaths.length}`,
     'success'
