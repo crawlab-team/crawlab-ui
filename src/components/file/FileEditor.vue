@@ -238,6 +238,22 @@ const onContextMenuDelete = (item: FileNavItem) => {
   emit('ctx-menu-delete', item);
 };
 
+const onContentChange = (content: string) => {
+  if (!activeFileItem.value) return;
+  emit('content-change', content);
+
+  // update in cache
+  updateContentCache(activeFileItem.value, content);
+};
+
+const onTabClick = (tab: FileNavItem) => {
+  store.commit(`${ns}/setActiveFileNavItem`, tab);
+  emit('tab-click', tab);
+
+  // get from cache and update content
+  getContentCache(tab);
+};
+
 const closeTab = (tab: FileNavItem) => {
   const idx = tabs.value.findIndex(t => t.path === tab.path);
   if (idx !== -1) {

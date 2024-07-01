@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitFileStatus' });
-import { computed } from 'vue';
+import { computed, StyleValue } from 'vue';
 import { emptyObjectFunc } from '@/utils/func';
 
 const props = withDefaults(
@@ -12,7 +12,7 @@ const props = withDefaults(
   }
 );
 
-const fileNameStyle = computed<Partial<CSSStyleDeclaration>>(() => {
+const fileNameStyle = computed<StyleValue>(() => {
   const { fileStatus } = props;
   const { worktree, staging } = fileStatus;
   let label = staging;

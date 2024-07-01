@@ -34,10 +34,9 @@ async function genVueTypes(
 ) {
   const options = {
     compilerOptions: {
-      allowJs: true,
+      allowJs: false,
       declaration: true,
       emitDeclarationOnly: true,
-      // noEmitOnError: true,
       noEmitOnError: false,
       outDir,
       paths: {
@@ -51,21 +50,18 @@ async function genVueTypes(
   };
   const project = new Project(options);
 
-  const sourceFiles = [];
-
   const start = Date.now();
 
   log('Getting all files...', 'info');
-  const filePaths = klawSync(root, {
-    nodir: true,
-  })
+  const filePaths = klawSync(root, { nodir: true })
     .map(item => item.path)
     .filter(path => !DEMO_RE.test(path))
     .filter(path => !TEST_RE.test(path))
     .filter(exclude)
     .filter(include);
 
-  filePaths.forEach(file => {
+  filePaths.forEach((file, i) => {
+    let sourceFile;
     try {
       if (file.endsWith('.vue')) {
         // .vue file
@@ -86,66 +82,42 @@ async function genVueTypes(
             content += compiled.content;
             if (scriptSetup.lang === 'ts') isTS = true;
           }
-          const sourceFile = project.createSourceFile(
+          sourceFile = project.createSourceFile(
             path.relative(process.cwd(), file) + (isTS ? '.ts' : '.js'),
             content
           );
-          sourceFiles.push(sourceFile);
         }
       } else if (file.endsWith('.ts')) {
         // .ts file
-        const sourceFile = project.addSourceFileAtPath(file);
-        sourceFiles.push(sourceFile);
+        const content = fs.readFileSync(file, 'utf-8');
+        sourceFile = project.createSourceFile(
+          path.relative(process.cwd(), file),
+          content
+        );
+      }
+
+      if (!sourceFile) return;
+
+      log(`Processing ${sourceFile.getFilePath()}`, 'info');
+      const emitOutput = sourceFile.getEmitOutput({ emitOnlyDtsFiles: true });
+      log(`Emitting ${sourceFile.getFilePath()}`, 'info');
+      const outputFiles = emitOutput.getOutputFiles();
+      outputFiles.forEach(outputFile => {
+        const filepath = outputFile.getFilePath();
+        fs.mkdirSync(path.dirname(filepath), {
+          recursive: true,
+        });
+        fs.writeFileSync(filepath, outputFile.getText(), 'utf8');
+      });
+
+      if (((i + 1) % 100 === 0 && i > 0) || i + 1 === filePaths.length) {
+        log(`Processed: ${i + 1}/${filePaths.length}`, 'info');
       }
     } catch (e) {
       console.error(e);
       throw e;
     }
   });
-  log(
-    `Found valid source files: ${sourceFiles.length}/${filePaths.length}`,
-    'success'
-  );
-
-  log('Checking files...', 'info');
-  const diagnostics = project.getPreEmitDiagnostics();
-  console.log(project.formatDiagnosticsWithColorAndContext(diagnostics));
-  if (diagnostics.length) {
-    log(`Files checked with ${diagnostics.length} errors`, 'warn');
-  } else {
-    log('Files checked without errors', 'success');
-  }
-
-  await project.emit({
-    emitOnlyDtsFiles: true,
-  });
-
-  // iterate source files
-  log('Parsing files...', 'info');
-  await Promise.all(
-    sourceFiles.map(async sourceFile => {
-      const emitOutput = sourceFile.getEmitOutput();
-      const outputFiles = emitOutput.getOutputFiles();
-      log(
-        `Generating definition for file: ${sourceFile.getBaseName()} (output files: ${outputFiles.length})`,
-        'info'
-      );
-
-      await Promise.all(
-        outputFiles.map(async outputFile => {
-          const filepath = outputFile.getFilePath();
-          await fs.promises.mkdir(path.dirname(filepath), {
-            recursive: true,
-          });
-          await fs.promises.writeFile(filepath, outputFile.getText(), 'utf8');
-          log(
-            `Definition for file: ${sourceFile.getBaseName()} generated`,
-            'success'
-          );
-        })
-      );
-    })
-  );
   log('All definition files generated', 'success');
 
   // export interfaces in typings/index.d.ts

@@ -218,7 +218,7 @@ const hasDialog = computed<boolean>(() => {
             v-for="{ key, tooltip, isHtml, icon, onClick } in actions"
             :key="key + JSON.stringify(icon)"
             :icon="icon"
-            :status="actionStatusMap[key]"
+            :status="actionStatusMap[key as keyof TableHeaderActionStatusMap]"
             :tooltip="tooltip"
             :is-html="isHtml"
             @click="onClick"

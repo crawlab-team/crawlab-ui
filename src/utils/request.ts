@@ -31,7 +31,7 @@ export const downloadURI = (uri: string, name: string) => {
 export const downloadData = (
   data: string | ArrayBuffer,
   name: string,
-  type: string
+  type?: string
 ) => {
   let blobArr: any[] = [data];
   let options: BlobPropertyBag = {};

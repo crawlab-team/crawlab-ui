@@ -14,8 +14,8 @@ export const getI18n = (): LI18n => {
         zh: zh as any,
       },
       fallbackLocale: 'en',
-      missingWarn: process.env.NODE_ENV === 'development',
-      fallbackWarn: process.env.NODE_ENV === 'development',
+      missingWarn: (import.meta.env.VITE_APP_ENV || '') === 'development',
+      fallbackWarn: (import.meta.env.VITE_APP_ENV || '') === 'development',
     });
   }
 

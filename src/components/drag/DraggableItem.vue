@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClDraggableItem' });
 import { computed } from 'vue';
-import { DraggableItemData } from '@/components/drag/drag';
 
 const props = defineProps<{
   item: DraggableItemData;

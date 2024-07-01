@@ -4,7 +4,6 @@ import dialog from './dialog';
 import transfer from './transfer';
 import nav from './nav';
 import tab from './tab';
-import input from './input';
 import git from './git';
 import empty from './empty';
 import form from './form';
@@ -32,7 +31,6 @@ const components: LComponents = {
   transfer,
   nav,
   tab,
-  input,
   git,
   empty,
   form,

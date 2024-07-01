@@ -15,7 +15,7 @@ export interface NavActionBackProps {
 withDefaults(defineProps<NavActionBackProps>(), {
   buttonType: 'label',
   label: 'components.nav.actions.back',
-  icon: ['fa', 'undo'],
+  icon: () => ['fa', 'undo'],
   type: 'primary',
   size: 'default',
   disabled: false,

@@ -83,7 +83,7 @@ const storeContext = inject<ListStoreContext<BaseModel>>('store-context');
 
 // export conditions
 const conditions = () => {
-  const state = storeContext?.state;
+  const state = storeContext?.state as BaseStoreState;
   return state?.tableListFilter || [];
 };
 </script>

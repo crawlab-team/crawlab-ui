@@ -11,7 +11,6 @@ const {
   activeDialogKey,
   confirmDisabled,
   confirmLoading,
-  createEditDialogTabName,
   createEditDialogVisible,
 } = useSpider(store);
 </script>
@@ -19,7 +18,6 @@ const {
 <template>
   <cl-create-edit-dialog
     :type="activeDialogKey"
-    :tab-name="createEditDialogTabName"
     :visible="createEditDialogVisible"
     :action-functions="actionFunctions"
     :confirm-disabled="confirmDisabled"

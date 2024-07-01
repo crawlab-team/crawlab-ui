@@ -11,7 +11,6 @@ declare global {
     disposeCanvas?: () => void;
     _hmt?: Array;
     'vue3-sfc-loader'?: { loadModule };
-    aplus_queue: { action: string; arguments: any[] }[];
     _app?: App;
     _t?: (path: string, args?: any) => string;
     _tc?: (path: string, c: number, args?: any) => string;

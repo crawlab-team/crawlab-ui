@@ -1,7 +1,7 @@
 <template>
   <cl-dependency-lang
     lang="node"
-    :path-func="name => `https://npmjs.com/package/${name}`"
+    :path-func="(name: string) => `https://npmjs.com/package/${name}`"
     :icon="['fab', 'node']"
   />
 </template>

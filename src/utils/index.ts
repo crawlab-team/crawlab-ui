@@ -3,7 +3,6 @@ export * from './auth';
 export * from './auto';
 export * from './editor';
 export * from './color';
-export * from './date';
 export * from './debounce';
 export * from './dom';
 export * from './form';

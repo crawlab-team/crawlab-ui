@@ -1,42 +1,38 @@
-<script lang="ts">
-import { defineComponent, onBeforeMount, ref, watch } from 'vue';
+<script setup lang="ts">
+defineOptions({ name: 'ClDependencySettingForm' });
+import { onBeforeMount, ref, watch } from 'vue';
 import { translate } from '@/utils';
+
+const props = withDefaults(
+  defineProps<{
+    form: EnvDepsSetting;
+  }>(),
+  {
+    form: () => ({}),
+  }
+);
+
+const emit = defineEmits<{
+  (e: 'change', value: EnvDepsSetting): void;
+}>();
 
 const t = translate;
 
-export default defineComponent({
-  name: 'DependencySettingForm',
-  props: {
-    form: {
-      type: Object,
-      default: () => {},
-    },
-  },
-  emits: ['change'],
-  setup(props, { emit }) {
-    const internalForm = ref({});
+const internalForm = ref<EnvDepsSetting>({});
 
-    const onChange = () => {
-      emit('change', internalForm.value);
-    };
+const onChange = () => {
+  emit('change', internalForm.value);
+};
 
-    watch(
-      () => props.form,
-      () => {
-        internalForm.value = { ...props.form };
-      }
-    );
+watch(
+  () => props.form,
+  () => {
+    internalForm.value = { ...props.form };
+  }
+);
 
-    onBeforeMount(() => {
-      internalForm.value = { ...props.form };
-    });
-
-    return {
-      internalForm,
-      onChange,
-      t,
-    };
-  },
+onBeforeMount(() => {
+  internalForm.value = { ...props.form };
 });
 </script>
 

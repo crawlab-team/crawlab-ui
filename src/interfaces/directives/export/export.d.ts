@@ -1,4 +1,6 @@
 export declare global {
+  type ExportType = 'csv' | 'json';
+
   type ExportDirectiveTarget = string | (() => string);
 
   type ExportDirectiveConditions =

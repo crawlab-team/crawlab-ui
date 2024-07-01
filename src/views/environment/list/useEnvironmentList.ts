@@ -18,7 +18,7 @@ const t = translate;
 const useEnvironmentList = () => {
   // store
   const ns = 'environment';
-  const store = getStore<RootStoreState>();
+  const store = getStore();
   const { commit } = store;
 
   // services

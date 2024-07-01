@@ -137,7 +137,7 @@ export declare global {
   }
 
   interface TableColumnButton {
-    key: 'filter' | 'sort';
+    key?: 'filter' | 'sort';
     type?: string;
     size?: string;
     icon?: Icon | TableValueFunction;

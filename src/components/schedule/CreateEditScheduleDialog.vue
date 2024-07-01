@@ -11,7 +11,6 @@ const {
   activeDialogKey,
   confirmDisabled,
   confirmLoading,
-  createEditDialogTabName,
   createEditDialogVisible,
   formRules,
 } = useSchedule(store);
@@ -22,7 +21,6 @@ const {
     :action-functions="actionFunctions"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
-    :tab-name="createEditDialogTabName"
     :type="activeDialogKey"
     :visible="createEditDialogVisible"
     :form-rules="formRules"

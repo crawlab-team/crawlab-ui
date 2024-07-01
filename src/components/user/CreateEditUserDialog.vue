@@ -10,7 +10,6 @@ const {
   actionFunctions,
   confirmDisabled,
   confirmLoading,
-  createEditDialogTabName,
   createEditDialogVisible,
   formRules,
   activeDialogKey,
@@ -23,7 +22,6 @@ const {
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
     :form-rules="formRules"
-    :tab-name="createEditDialogTabName"
     :type="activeDialogKey"
     :visible="createEditDialogVisible"
   >

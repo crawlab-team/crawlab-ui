@@ -18,7 +18,6 @@ import CreateEditDialog from './dialog/CreateEditDialog.vue';
 import Dialog from './dialog/Dialog.vue';
 import DraggableItem from './drag/DraggableItem.vue';
 import DraggableList from './drag/DraggableList.vue';
-import * as drag from './drag/drag';
 import CreateEditDataSourceDialog from './ds/CreateEditDataSourceDialog.vue';
 import DataSourceConnectType from './ds/DataSourceConnectType.vue';
 import DataSourceForm from './ds/DataSourceForm.vue';
@@ -112,7 +111,6 @@ import RunSpiderDialog from './spider/RunSpiderDialog.vue';
 import SpiderForm from './spider/SpiderForm.vue';
 import SpiderStat from './spider/SpiderStat.vue';
 import SpiderTag from './spider/SpiderTag.vue';
-import SpiderType from './spider/SpiderType.vue';
 import UploadSpiderFilesDialog from './spider/UploadSpiderFilesDialog.vue';
 import useSpider from './spider/useSpider';
 import Switch from './switch/Switch.vue';
@@ -175,7 +173,6 @@ export {
   Dialog as ClDialog,
   DraggableItem as ClDraggableItem,
   DraggableList as ClDraggableList,
-  drag as drag,
   CreateEditDataSourceDialog as ClCreateEditDataSourceDialog,
   DataSourceConnectType as ClDataSourceConnectType,
   DataSourceForm as ClDataSourceForm,
@@ -269,7 +266,6 @@ export {
   SpiderForm as ClSpiderForm,
   SpiderStat as ClSpiderStat,
   SpiderTag as ClSpiderTag,
-  SpiderType as ClSpiderType,
   UploadSpiderFilesDialog as ClUploadSpiderFilesDialog,
   useSpider as useSpider,
   Switch as ClSwitch,

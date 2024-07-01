@@ -45,7 +45,7 @@ const cls = computed<string>(() => {
         <div class="title" :class="type">
           <div v-if="loading || icon" class="icon-wrapper">
             <cl-icon v-if="loading" :icon="['fa', 'spinner']" spinning />
-            <cl-icon v-else :icon="icon" />
+            <cl-icon v-else :icon="icon || ''" />
           </div>
           <template v-if="$slots.title">
             <slot name="title" />

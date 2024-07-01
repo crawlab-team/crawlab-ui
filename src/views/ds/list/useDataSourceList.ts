@@ -42,7 +42,7 @@ const useDataSourceList = () => {
 
   // store
   const ns = 'ds';
-  const store = getStore<RootStoreState>();
+  const store = getStore();
   const { commit } = store;
 
   // services
@@ -191,7 +191,7 @@ const useDataSourceList = () => {
         return h(DataSourceStatus, {
           status: row.status,
           error: row.error,
-        } as DataSourceStatusProps);
+        });
       },
       hasFilter: true,
       allowFilterItems: true,

@@ -8,7 +8,6 @@ const store = useStore();
 
 const {
   activeDialogKey,
-  createEditDialogTabName,
   createEditDialogVisible,
   actionFunctions,
   formList,
@@ -20,7 +19,6 @@ const {
 <template>
   <cl-create-edit-dialog
     :type="activeDialogKey"
-    :tab-name="createEditDialogTabName"
     :visible="createEditDialogVisible"
     :action-functions="actionFunctions"
     :batch-form-data="formList"

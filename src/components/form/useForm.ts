@@ -16,7 +16,7 @@ export const useForm = (
   const { formRef, formTableFieldRefsMap } = data;
 
   // state
-  const state = store.state[ns];
+  const state = store.state[ns as keyof RootStoreState] as BaseStoreState;
 
   // get new form
   const getNewForm = state.newFormFn;

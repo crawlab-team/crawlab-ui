@@ -16,7 +16,6 @@ export declare global {
     spider: SpiderStoreState;
     task: TaskStoreState;
     file: FileStoreState;
-    tag: TagStoreState;
     dataCollection: DataCollectionStoreState;
     schedule: ScheduleStoreState;
     user: UserStoreState;

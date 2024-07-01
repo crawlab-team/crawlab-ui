@@ -11,7 +11,7 @@ const props = withDefaults(
   defineProps<{
     status?: DataSourceStatus;
     error?: string;
-    size: BasicSize;
+    size?: BasicSize;
   }>(),
   {
     status: DATA_SOURCE_STATUS_ONLINE,

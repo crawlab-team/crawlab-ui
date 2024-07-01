@@ -55,7 +55,7 @@ const { form, formRef, formRules, isSelectiveForm, isFormItemDisabled } =
       required
     >
       <el-input
-        v-if="(isSelectiveForm || !isDetail) && !isMySettings"
+        v-if="isSelectiveForm || !isDetail"
         v-locate="'password'"
         v-model="form.password"
         :disabled="isFormItemDisabled('password')"

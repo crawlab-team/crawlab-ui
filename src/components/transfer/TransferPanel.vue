@@ -3,7 +3,6 @@ defineOptions({ name: 'ClTransferPanel' });
 import { computed, ref, watch } from 'vue';
 import { Search } from '@element-plus/icons-vue';
 import { translate } from '@/utils';
-import { DraggableItemData } from '@/components/drag/DraggableItem.vue';
 
 const props = withDefaults(
   defineProps<{

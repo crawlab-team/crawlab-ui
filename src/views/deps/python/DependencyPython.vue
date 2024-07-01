@@ -1,7 +1,7 @@
 <template>
   <cl-dependency-lang
     lang="python"
-    :path-func="name => `https://pypi.org/project/${name}`"
+    :path-func="(name: string) => `https://pypi.org/project/${name}`"
     :icon="['fab', 'python']"
   />
 </template>

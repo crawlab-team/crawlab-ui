@@ -2,7 +2,6 @@
 defineOptions({ name: 'ClTransfer' });
 import { computed, ref } from 'vue';
 import { translate } from '@/utils';
-import { DraggableItemData } from '@/components/drag/drag';
 
 const props = defineProps<{
   value: string[];

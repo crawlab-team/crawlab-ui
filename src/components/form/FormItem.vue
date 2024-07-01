@@ -30,9 +30,9 @@ const formContext = inject<FormContext>('form-context', {} as FormContext);
 
 // store context
 const storeContext = inject<ListStoreContext<BaseModel>>('store-context');
-const ns = storeContext?.namespace;
+const ns = storeContext?.namespace as ListStoreNamespace;
 const store = storeContext?.store;
-const state = storeContext?.state;
+const state = storeContext?.state as BaseStoreState;
 const isSelectiveForm = computed<boolean | undefined>(
   () => state?.isSelectiveForm
 );

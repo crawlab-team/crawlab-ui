@@ -26,7 +26,7 @@ export const getPriorityLabel = (priority: number): string => {
   }
 };
 
-export const isCancellable = (status: TaskStatus): boolean => {
+export const isCancellable = (status?: TaskStatus): boolean => {
   switch (status) {
     case TASK_STATUS_PENDING:
     case TASK_STATUS_RUNNING:

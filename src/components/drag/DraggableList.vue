@@ -1,9 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClDraggableList' });
-import {
-  DraggableItemData,
-  DraggableListInternalItems,
-} from '@/components/drag/drag';
 import { computed, reactive, ref } from 'vue';
 import { plainClone } from '@/utils/object';
 

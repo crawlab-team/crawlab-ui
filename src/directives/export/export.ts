@@ -5,8 +5,6 @@ import { downloadData, translate } from '@/utils';
 import useExportService from '@/services/export/exportService';
 import ExportForm from '@/components/export/ExportForm.vue';
 
-export type ExportType = 'csv' | 'json';
-
 // i18n
 const t = translate;
 
@@ -72,17 +70,13 @@ export const export_: Directive<HTMLElement, ExportDirective> = {
     // notifications
     const notifications = new Map<string, NotificationHandle>();
 
-    // export polling interval cache
-    const exportPollingIntervalCache = new Map<string, any>();
-
     // export type
     const exportType = ref<ExportType>('csv');
 
     const pollAndDownload = async (exportId: string) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       let exp = exportCache.get(exportId);
-      if (!exp) {
-        exportPollingIntervalCache.delete(exportId);
+      if (!exp?.type) {
         return;
       }
       const res = await getExport(exp?.type, exportId);

@@ -2,7 +2,6 @@
 defineOptions({ name: 'ClExportForm' });
 import { onBeforeMount, ref } from 'vue';
 import { translate } from '@/utils';
-import { ExportType } from '@/directives/export/export';
 
 const props = defineProps<{
   defaultType?: ExportType;

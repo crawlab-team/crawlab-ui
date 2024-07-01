@@ -11,7 +11,7 @@ export const useFormTable = (
   const { formTableFieldRefsMap } = data;
 
   // state
-  const state = store.state[ns];
+  const state = store.state[ns as keyof RootStoreState] as BaseStoreState;
 
   // form list
   const formList = computed(() => state.formList);

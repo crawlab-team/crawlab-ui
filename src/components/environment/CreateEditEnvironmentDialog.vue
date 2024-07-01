@@ -8,7 +8,6 @@ const {
   activeDialogKey,
   confirmDisabled,
   confirmLoading,
-  createEditDialogTabName,
   createEditDialogVisible,
 } = useEnvironment(getStore());
 </script>
@@ -18,7 +17,6 @@ const {
     :action-functions="actionFunctions"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
-    :tab-name="createEditDialogTabName"
     :type="activeDialogKey"
     :visible="createEditDialogVisible"
     no-batch

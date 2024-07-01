@@ -57,7 +57,7 @@ const useList = <T = any>(
   opts?: UseListOptions<T>
 ): ListLayoutComponentData => {
   // store state
-  const state = store.state[ns] as BaseStoreState;
+  const state = store.state[ns as keyof RootStoreState] as BaseStoreState;
 
   // table
   const tableData = computed<TableData<T>>(

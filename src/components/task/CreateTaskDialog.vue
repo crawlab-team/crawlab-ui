@@ -15,7 +15,6 @@ const {
   formList,
   confirmDisabled,
   confirmLoading,
-  createEditDialogTabName,
   activeDialogKey,
   createEditDialogVisible,
 } = useTask(store);
@@ -27,7 +26,6 @@ const {
     :batch-form-data="formList"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
-    :tab-name="createEditDialogTabName"
     :type="activeDialogKey"
     :visible="createEditDialogVisible"
     :title="title"

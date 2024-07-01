@@ -30,29 +30,30 @@ const genInterfaces = async moduleName => {
     if (!f.endsWith('.d.ts')) return;
     files.push(f);
   });
-  log(`Found ${files.length} files`, 'info');
+  log(`Found ${files.length} files.`, 'info');
 
   log('Generating definitions...', 'info');
-  await Promise.all(
-    files.map(async f => {
-      // output file path
-      const outputFilePath = f.replace(modulePath, outputDirPath);
+  files.forEach((f, i) => {
+    // output file path
+    const outputFilePath = f.replace(modulePath, outputDirPath);
 
-      // output file directory path
-      const outputFileDirPath = path.dirname(outputFilePath);
+    // output file directory path
+    const outputFileDirPath = path.dirname(outputFilePath);
 
-      // create directory if not exists
-      if (!fs.existsSync(outputFileDirPath)) {
-        fs.mkdirSync(outputFileDirPath, {
-          recursive: true,
-        });
-      }
+    // create directory if not exists
+    if (!fs.existsSync(outputFileDirPath)) {
+      fs.mkdirSync(outputFileDirPath, {
+        recursive: true,
+      });
+    }
 
-      // copy file
-      fs.copyFileSync(f, outputFilePath);
-      log(`Definition for file: ${path.basename(f)} generated`, 'success');
-    })
-  );
+    // copy file
+    fs.copyFileSync(f, outputFilePath);
+
+    if (((i + 1) % 100 === 0 && i > 0) || i + 1 === files.length) {
+      log(`Processed: ${i + 1}/${files.length}`, 'info');
+    }
+  });
   log('All definition files generated', 'success');
 
   const end = Date.now();

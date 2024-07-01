@@ -14,9 +14,9 @@ export declare global {
 }
 
 // export modules interfaces.
-// NOTE: please note we excluded components and views as they are already exported from .vue files
 export * from './common';
 export * from './components';
+export * from './views';
 export * from './directives';
 export * from './element';
 export * from './i18n';

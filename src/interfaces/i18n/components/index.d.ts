@@ -7,7 +7,6 @@ export declare global {
     transfer: LComponentsTransfer;
     nav: LComponentsNav;
     tab: LComponentsTab;
-    input: LComponentsInput;
     git: LComponentsGit;
     empty: LComponentsEmpty;
     form: LComponentsForm;

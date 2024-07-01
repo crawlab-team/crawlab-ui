@@ -18,7 +18,6 @@ import '@/styles/index.scss';
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
     initBaiduTongji: true,
-    initUmeng: false,
     initClarity: false,
     initDemo: false,
     loadStore: true,
@@ -77,13 +76,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   // app
   const app = createApp(AppComp);
 
-  // initialize plugins
-  // try {
-  //   await initPlugins(router, store);
-  // } catch (e) {
-  //   console.warn(e);
-  // }
-
   // initialize request
   initRequest(router);
 
@@ -98,9 +90,9 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   }
   if (options.loadFontAwesome)
     app.component('font-awesome-icon', FontAwesomeIcon);
-  if (options.loadLocate) app.directive('locate', locate);
-  if (options.loadAuth) app.directive('auth', auth);
-  if (options.loadExport) app.directive('export', export_);
+  if (options.loadLocate) app.directive('locate', locate as any);
+  if (options.loadAuth) app.directive('auth', auth as any);
+  if (options.loadExport) app.directive('export', export_ as any);
 
   // mount
   if (options.mount)

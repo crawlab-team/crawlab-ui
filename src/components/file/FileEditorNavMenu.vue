@@ -476,8 +476,8 @@ const fileSearchString = ref<string>('');
             </div>
             <template v-if="highlightTagFn?.(data)">
               <el-tooltip
-                :content="highlightTagFn(data).tooltip"
-                :disabled="!highlightTagFn(data).tooltip"
+                :content="highlightTagFn?.(data)?.tooltip"
+                :disabled="!highlightTagFn?.(data)?.tooltip"
               >
                 <div
                   class="nav-item-suffix"
@@ -489,8 +489,8 @@ const fileSearchString = ref<string>('');
                   "
                 >
                   <cl-icon
-                    :icon="highlightTagFn(data).icon"
-                    :color="highlightTagFn(data).color"
+                    :icon="highlightTagFn?.(data)?.icon"
+                    :color="highlightTagFn?.(data)?.color"
                   />
                 </div>
               </el-tooltip>
