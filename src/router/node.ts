@@ -1,5 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
-import { TAB_NAME_OVERVIEW, TAB_NAME_TASKS } from '@/constants/tab';
+import {
+  TAB_NAME_MONITORING,
+  TAB_NAME_OVERVIEW,
+  TAB_NAME_TASKS,
+} from '@/constants/tab';
 
 const endpoint = 'nodes';
 
@@ -26,6 +30,11 @@ export default [
         path: TAB_NAME_TASKS,
         component: () =>
           import('@/views/node/detail/tabs/NodeDetailTabTasks.vue'),
+      },
+      {
+        path: TAB_NAME_MONITORING,
+        component: () =>
+          import('@/views/node/detail/tabs/NodeDetailTabMonitoring.vue'),
       },
     ],
   },

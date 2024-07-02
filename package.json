@@ -33,7 +33,7 @@
     }
   },
   "scripts": {
-    "dev": "pnpm run build --mode development",
+    "dev": "vite build --watch --mode development",
     "serve": "vite",
     "serve:local": "vite serve --port=8081 --mode local",
     "serve:dist": "serve dist",
@@ -50,9 +50,7 @@
     "build:docker": "vite build --mode docker",
     "build:local": "vite build --mode local",
     "build:lib": "vite build",
-    "build:lib:watch": "vite build --target lib --mode production --watch src/index.ts",
-    "build:lib:local": "vite build --target lib --mode local src/index.ts",
-    "build:lib:analyze": "vite build --target lib --mode analyze src/index.ts",
+    "build:lib:analyze": "vite build --mode analyze",
     "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit",
     "lint": "vite lint",
     "test": "jest"
@@ -77,6 +75,7 @@
     "async-validator": "^4.2.5",
     "atom-material-icons": "^3.0.0",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
     "core-js": "^3.37.1",
     "crawlab-vue3-dropzone": "3.0.3",
     "cron-parser": "^4.9.0",

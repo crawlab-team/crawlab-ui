@@ -98,6 +98,7 @@ const common: LCommon = {
     references: '引用',
     changes: '变更',
     ignore: '忽略',
+    monitoring: '监控',
   },
   status: {
     unassigned: '未指定',

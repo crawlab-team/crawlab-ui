@@ -4,7 +4,11 @@ import {
   getDefaultStoreMutations,
   getDefaultStoreState,
 } from '@/utils/store';
-import { TAB_NAME_OVERVIEW, TAB_NAME_TASKS } from '@/constants/tab';
+import {
+  TAB_NAME_MONITORING,
+  TAB_NAME_OVERVIEW,
+  TAB_NAME_TASKS,
+} from '@/constants/tab';
 
 const state = {
   ...getDefaultStoreState<CNode>('node'),
@@ -18,6 +22,7 @@ const state = {
   tabs: [
     { id: TAB_NAME_OVERVIEW, title: 'common.tabs.overview' },
     { id: TAB_NAME_TASKS, title: 'common.tabs.tasks' },
+    { id: TAB_NAME_MONITORING, title: 'common.tabs.monitoring' },
   ],
 } as NodeStoreState;
 

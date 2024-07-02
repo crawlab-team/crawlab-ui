@@ -111,6 +111,7 @@ export declare global {
       references: string;
       changes: string;
       ignore: string;
+      monitoring: string;
     };
     status: {
       unassigned: string;

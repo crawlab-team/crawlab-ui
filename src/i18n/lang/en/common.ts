@@ -98,6 +98,7 @@ const common: LCommon = {
     references: 'References',
     changes: 'Changes',
     ignore: 'Ignore',
+    monitoring: 'Monitoring',
   },
   status: {
     unassigned: 'Unassigned',

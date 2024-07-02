@@ -14,6 +14,7 @@ import {
   TAB_NAME_TRIGGERS,
   TAB_NAME_TEMPLATE,
   TAB_NAME_CHANGES,
+  TAB_NAME_MONITORING,
 } from '@/constants';
 import { translate } from '@/utils';
 
@@ -75,6 +76,8 @@ const getIcon = (item: NavItem): Icon => {
       return ['fa', 'file-code'];
     case TAB_NAME_CHANGES:
       return ['fa', 'code-commit'];
+    case TAB_NAME_MONITORING:
+      return ['fa', 'tachometer-alt'];
     default:
       return ['fa', 'circle'];
   }

@@ -46,7 +46,7 @@ const config = defineConfig({
           vuex: 'Vuex',
           axios: 'axios',
           'element-plus': 'ElementPlus',
-          '@element/icons': 'ElementIcons',
+          '@element/vue-icons': 'ElementVueIcons',
           '@fortawesome/fontawesome-svg-core': 'FontAwesomeSvgCore',
           '@fortawesome/free-brands-svg-icons': 'FontAwesomeBrandsSvgIcons',
           '@fortawesome/free-regular-svg-icons': 'FontAwesomeRegularSvgIcons',

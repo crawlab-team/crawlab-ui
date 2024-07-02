@@ -11,3 +11,4 @@ export const TAB_NAME_DEPENDENCIES = 'dependencies';
 export const TAB_NAME_TRIGGERS = 'triggers';
 export const TAB_NAME_TEMPLATE = 'template';
 export const TAB_NAME_CHANGES = 'changes';
+export const TAB_NAME_MONITORING = 'monitoring';
