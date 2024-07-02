@@ -3,16 +3,7 @@ import fs from 'fs';
 import rd from 'rd';
 import os from 'os';
 
-const EXPORT_MODULES = [
-  'components',
-  'views',
-  'directives',
-  'layouts',
-  // 'services',
-  // 'store',
-  // 'utils',
-  // 'constants',
-];
+const EXPORT_MODULES = ['components', 'views', 'directives', 'layouts'];
 
 const COMPONENT_PREFIX = 'Cl';
 const INDEX_COMP_NAME = 'index';
