@@ -40,6 +40,32 @@ const node: LComponentsNode = {
       available: '所有执行器均可用',
     },
   },
+  metric: {
+    select: {
+      placeholder: '选择指标',
+    },
+    metrics: {
+      cpu_usage_percent: 'CPU 使用率 (%)',
+      total_memory: '总内存 (字节)',
+      available_memory: '可用内存 (字节)',
+      used_memory: '已用内存 (字节)',
+      used_memory_percent: '已用内存 (%)',
+      total_disk: '总磁盘 (字节)',
+      available_disk: '可用磁盘 (字节)',
+      used_disk: '已用磁盘 (字节)',
+      used_disk_percent: '已用磁盘 (%)',
+      disk_read_bytes_rate: '磁盘读取 IO (字节/秒)',
+      disk_write_bytes_rate: '磁盘写入 IO (字节/秒)',
+      network_bytes_sent_rate: '网络发送 IO (字节/秒)',
+      network_bytes_recv_rate: '网络接收 IO (字节/秒)',
+    },
+    timeRanges: {
+      '1h': '1 小时',
+      '1d': '1 天',
+      '7d': '7 天',
+      '30d': '30 天',
+    },
+  },
 };
 
 export default node;

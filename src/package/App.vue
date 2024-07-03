@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClApp' });
 import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import en from 'element-plus/es/locale/lang/en';
@@ -19,6 +18,7 @@ onBeforeMount(() => {
   // system info
   store.dispatch('common/getSystemInfo');
 });
+defineOptions({ name: 'ClApp' });
 </script>
 
 <template>

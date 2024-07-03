@@ -1,4 +1,5 @@
-import { createApp, type App } from 'vue';
+import { createApp } from 'vue';
+import type { App } from '@vue/runtime-dom';
 import ElementPlus from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { installer as CrawlabUI } from '@/package/index';
@@ -14,12 +15,12 @@ import { initClarity } from '@/admin/clarity';
 import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
 import '@/styles/index.scss';
+import { initChartJS } from '@/utils/chart';
 
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
     initBaiduTongji: true,
     initClarity: false,
-    initDemo: false,
     loadStore: true,
     loadRouter: true,
     loadElementPlus: true,
@@ -74,10 +75,13 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   );
 
   // app
-  const app = createApp(AppComp);
+  const app: App = createApp(AppComp);
 
   // initialize request
   initRequest(router);
+
+  // initialize chart.js
+  initChartJS();
 
   // load modules
   if (options.loadElementPlus) app.use(ElementPlus);

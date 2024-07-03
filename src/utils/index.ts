@@ -19,8 +19,6 @@ export * from './request';
 export * from './result';
 export * from './route';
 export * from './service';
-export * from './sfc';
-export * from './sleep';
 export * from './stats';
 export * from './store';
 export * from './string';

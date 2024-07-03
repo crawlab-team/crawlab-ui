@@ -229,7 +229,7 @@ defineOptions({ name: 'ClHome' });
 
 <template>
   <div class="home">
-    <el-row class="row-overview-metrics">
+    <el-row v-if="false" class="row-overview-metrics">
       <el-col
         v-for="(m, i) in metrics"
         :key="i"
@@ -245,10 +245,10 @@ defineOptions({ name: 'ClHome' });
         />
       </el-col>
     </el-row>
-    <el-row class="row-line-chart">
+    <el-row v-if="false" class="row-line-chart">
       <cl-line-chart :config="dailyConfig" is-time-series label-key="date" />
     </el-row>
-    <el-row class="row-pie-chart">
+    <el-row v-if="false" class="row-pie-chart">
       <el-col :span="8">
         <cl-pie-chart
           :config="tasksByStatusConfig"
