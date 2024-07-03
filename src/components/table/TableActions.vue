@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTableActions' });
 import { inject } from 'vue';
 import { ACTION_DELETE, ACTION_EDIT } from '@/constants/action';
 import {
@@ -86,6 +85,7 @@ const conditions = () => {
   const state = storeContext?.state as BaseStoreState;
   return state?.tableListFilter || [];
 };
+defineOptions({ name: 'ClTableActions' });
 </script>
 
 <template>

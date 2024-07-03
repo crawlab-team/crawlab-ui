@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClResultDedupFieldsDialog' });
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
@@ -43,6 +42,7 @@ const onDialogConfirm = async () => {
   await ElMessage.success(t('common.message.success.update'));
   onDialogClose();
 };
+defineOptions({ name: 'ClResultDedupFieldsDialog' });
 </script>
 
 <template>

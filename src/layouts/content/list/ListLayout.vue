@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClListLayout' });
 import { computed, onMounted, provide, ref, watch } from 'vue';
 import { emptyArrayFunc, emptyObjectFunc } from '@/utils/func';
 import { getMd5 } from '@/utils/hash';
@@ -105,6 +104,7 @@ const tableColumnsHash = computed<string>(() => {
   const { tableColumns } = props;
   return getMd5(JSON.stringify(tableColumns));
 });
+defineOptions({ name: 'ClListLayout' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClForm' });
 import { computed, provide, reactive, ref } from 'vue';
 
 const props = withDefaults(
@@ -49,6 +48,7 @@ defineExpose({
   resetFields,
   clearValidate,
 });
+defineOptions({ name: 'ClForm' });
 </script>
 
 <template>

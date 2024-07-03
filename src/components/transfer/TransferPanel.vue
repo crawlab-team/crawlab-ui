@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTransferPanel' });
 import { computed, ref, watch } from 'vue';
 import { Search } from '@element-plus/icons-vue';
 import { translate } from '@/utils';
@@ -69,6 +68,7 @@ watch(
       checked?.length > 0 && checked?.length < data?.length;
   }
 );
+defineOptions({ name: 'ClTransferPanel' });
 </script>
 
 <template>

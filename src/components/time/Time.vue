@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTime' });
 import { computed } from 'vue';
 import TimeAgo, { LocaleData } from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -36,6 +35,7 @@ const label = computed<string | undefined>(() => {
     return dayjs(time).format(format);
   }
 });
+defineOptions({ name: 'ClTime' });
 </script>
 
 <template>

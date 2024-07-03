@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClLogsView' });
 import { ref, computed } from 'vue';
 
 const props = defineProps<{
@@ -28,6 +27,7 @@ const scrollToBottom = () => {
 defineExpose({
   scrollToBottom,
 });
+defineOptions({ name: 'ClLogsView' });
 </script>
 
 <template>

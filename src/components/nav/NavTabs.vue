@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavTabs' });
 import {
   TAB_NAME_OVERVIEW,
   TAB_NAME_FILES,
@@ -82,6 +81,7 @@ const getIcon = (item: NavItem): Icon => {
       return ['fa', 'circle'];
   }
 };
+defineOptions({ name: 'ClNavTabs' });
 </script>
 
 <template>

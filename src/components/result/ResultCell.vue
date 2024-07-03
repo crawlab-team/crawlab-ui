@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClResultCell' });
 import { computed } from 'vue';
 import {
   DATA_FIELD_TYPE_GENERAL,
@@ -80,6 +79,7 @@ const cls = computed<string>(() => {
   cls.push(type);
   return cls.join(' ');
 });
+defineOptions({ name: 'ClResultCell' });
 </script>
 
 <template>

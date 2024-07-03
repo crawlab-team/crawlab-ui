@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClRangePicker' });
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { Dayjs } from 'dayjs';
 
@@ -62,6 +61,7 @@ watch(
     internalValue.value.value = internalRange.value;
   }
 );
+defineOptions({ name: 'ClRangePicker' });
 </script>
 
 <template>

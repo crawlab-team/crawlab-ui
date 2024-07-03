@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavSidebarList' });
 const props = defineProps<{
   activeKey: string;
   items: NavItem[];
@@ -15,6 +14,7 @@ const onSelect = (id: string) => {
     props.items?.findIndex(item => item.id === id)
   );
 };
+defineOptions({ name: 'ClNavSidebarList' });
 </script>
 
 <template>

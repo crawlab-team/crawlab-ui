@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClEmpty' });
 import { translate } from '@/utils';
 
 const t = translate;
@@ -12,6 +11,7 @@ withDefaults(
     description: 'components.empty.noDataAvailable',
   }
 );
+defineOptions({ name: 'ClEmpty' });
 </script>
 
 <template>

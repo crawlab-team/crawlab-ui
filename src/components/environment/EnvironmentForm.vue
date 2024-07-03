@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClEnvironmentForm' });
 import { getStore } from '@/store';
 import useEnvironment from '@/components/environment/useEnvironment';
 import { useI18n } from 'vue-i18n';
@@ -16,6 +15,7 @@ const store = getStore();
 
 const { form, formRef, isSelectiveForm, isFormItemDisabled } =
   useEnvironment(store);
+defineOptions({ name: 'ClEnvironmentForm' });
 </script>
 
 <template>

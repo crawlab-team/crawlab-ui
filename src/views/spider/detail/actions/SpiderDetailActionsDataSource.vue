@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderDetailActionsDataSource' });
 import { computed, onBeforeMount, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { getStore } from '@/store';
@@ -37,6 +36,7 @@ onBeforeMount(async () => {
   const res = await get<DataSource>(`/spiders/${id.value}/data-source`);
   dsId.value = res.data?._id;
 });
+defineOptions({ name: 'ClSpiderDetailActionsDataSource' });
 </script>
 
 <template>

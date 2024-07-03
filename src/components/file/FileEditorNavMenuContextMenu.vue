@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileEditorNavMenuContextMenu' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
@@ -80,6 +79,7 @@ const items = computed<ContextMenuItem[]>(() => [
     action: () => emit('delete'),
   },
 ]);
+defineOptions({ name: 'ClFileEditorNavMenuContextMenu' });
 </script>
 
 <template>

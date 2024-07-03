@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderList' });
 import useSpiderList from '@/views/spider/list/useSpiderList';
 
 defineProps<{
@@ -18,6 +17,7 @@ const {
   actionFunctions,
   tableActionsPrefix,
 } = useSpiderList();
+defineOptions({ name: 'ClSpiderList' });
 </script>
 
 <template>

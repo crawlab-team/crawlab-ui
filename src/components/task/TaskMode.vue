@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskMode' });
 import { computed } from 'vue';
 import {
   TASK_MODE_ALL_NODES,
@@ -70,6 +69,7 @@ const tooltip = computed<string>(() => {
       return t('components.task.mode.tooltip.unknown');
   }
 });
+defineOptions({ name: 'ClTaskMode' });
 </script>
 
 <template>

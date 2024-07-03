@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditNodeDialog' });
 import { useStore } from 'vuex';
 import useNode from '@/components/node/useNode';
 
@@ -13,6 +12,7 @@ const {
   confirmLoading,
   createEditDialogVisible,
 } = useNode(store);
+defineOptions({ name: 'ClCreateEditNodeDialog' });
 </script>
 
 <template>

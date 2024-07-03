@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClInstallForm' });
 import { onBeforeMount, ref, watch } from 'vue';
 import { translate } from '@/utils';
 import useRequest from '@/services/request';
@@ -72,6 +71,7 @@ const getVersions = async () => {
 };
 watch(() => props.visible, getVersions);
 onBeforeMount(getVersions);
+defineOptions({ name: 'ClInstallForm' });
 </script>
 
 <template>

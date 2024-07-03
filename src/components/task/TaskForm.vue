@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskForm' });
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/useSpider';
@@ -97,6 +96,7 @@ const onCancel = async () => {
 };
 
 const noNodeId = computed<boolean>(() => isZeroObjectId(form.value.node_id));
+defineOptions({ name: 'ClTaskForm' });
 </script>
 
 <template>

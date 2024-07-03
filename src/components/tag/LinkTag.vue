@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClLinkTag' });
 import { useRouter } from 'vue-router';
 
 interface TagProps {
@@ -35,6 +34,7 @@ const onClick = () => {
     router.push(path);
   }
 };
+defineOptions({ name: 'ClLinkTag' });
 </script>
 
 <template>

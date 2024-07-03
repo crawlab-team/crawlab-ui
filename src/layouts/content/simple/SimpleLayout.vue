@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSimpleLayout' });
 withDefaults(
   defineProps<{
     background?: string;
@@ -9,6 +8,7 @@ withDefaults(
     background: '#ffffff',
   }
 );
+defineOptions({ name: 'ClSimpleLayout' });
 </script>
 
 <template>

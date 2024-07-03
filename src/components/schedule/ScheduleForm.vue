@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClScheduleForm' });
 import { useStore } from 'vuex';
 import useSchedule from '@/components/schedule/useSchedule';
 import useSpider from '@/components/spider/useSpider';
@@ -44,6 +43,7 @@ const onEnabledChange = async (value: boolean) => {
   }
   await store.dispatch(`${ns}/getList`);
 };
+defineOptions({ name: 'ClScheduleForm' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavActions' });
 import { computed, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -51,6 +50,7 @@ onMounted(() => {
   updateHeight();
   unmounted.value = false;
 });
+defineOptions({ name: 'ClNavActions' });
 </script>
 
 <template>

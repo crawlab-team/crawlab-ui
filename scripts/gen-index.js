@@ -88,20 +88,31 @@ function genIndex(moduleName) {
 
 function addComponentName(content, componentName) {
   const setupScriptTagRegex = /(<script\s+setup[^>]*lang=["']ts["'][^>]*>)/;
-  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?/;
+  const setupEndScriptTagRegex = /(<\/script>)/;
+  const defineOptionsRegex = /defineOptions\(\{[^}]*}\);?\n/;
   const newDefineOptions = `defineOptions({ name: '${COMPONENT_PREFIX}${componentName}' });`;
+
+  // Default to returning the original content
+  let newContent = content;
 
   // Check if the script setup tag exists
   if (setupScriptTagRegex.test(content)) {
     if (defineOptionsRegex.test(content)) {
-      // If defineOptions exists, update it
-      return content.replace(defineOptionsRegex, newDefineOptions);
+      // If defineOptions exists, remove it and add to end of the script setup tag
+      newContent = newContent.replace(defineOptionsRegex, '');
+      newContent = newContent.replace(
+        setupEndScriptTagRegex,
+        `${newDefineOptions}\n$1`
+      );
     } else {
       // If defineOptions does not exist, add it after the script setup tag
-      return content.replace(setupScriptTagRegex, `$1\n${newDefineOptions}`);
+      newContent = newContent.replace(
+        setupEndScriptTagRegex,
+        `${newDefineOptions}\n$1`
+      );
     }
   }
-  return content; // Return original content if no <script setup> tag found
+  return newContent; // Return original content if no <script setup> tag found
 }
 
 // gen module index.ts

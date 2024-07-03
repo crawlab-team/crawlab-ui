@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTableCell' });
 import { h } from 'vue';
 import FaIconButton from '@/components/button/FaIconButton.vue';
 import { useRoute } from 'vue-router';
@@ -87,6 +86,7 @@ const getChildren = () => {
 };
 
 const root = h('div', getChildren());
+defineOptions({ name: 'ClTableCell' });
 </script>
 
 <template>

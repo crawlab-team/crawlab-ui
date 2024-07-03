@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitForm' });
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
@@ -75,6 +74,7 @@ watch(
     }
   }
 );
+defineOptions({ name: 'ClGitForm' });
 </script>
 
 <template>

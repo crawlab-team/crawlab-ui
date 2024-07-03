@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileTab' });
 import { onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
@@ -215,6 +214,7 @@ onBeforeUnmount(() => {
   store.commit(`${ns}/resetDefaultFilePaths`);
   store.commit(`${ns}/resetFileNavItems`);
 });
+defineOptions({ name: 'ClFileTab' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitFileDiffDialog' });
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
@@ -49,6 +48,7 @@ const onConfirm = () => {
   store.commit(`${ns}/resetGitDiff`);
   store.commit(`${ns}/resetActiveFilePath`);
 };
+defineOptions({ name: 'ClGitFileDiffDialog' });
 </script>
 
 <template>

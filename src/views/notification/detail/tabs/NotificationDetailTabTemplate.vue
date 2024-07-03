@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNotificationDetailTabTemplate' });
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
@@ -61,6 +60,7 @@ watch(
 const onTitleChange = (title: string) => {
   store.commit(`${ns}/setTemplateTitle`, title);
 };
+defineOptions({ name: 'ClNotificationDetailTabTemplate' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileEditorSettingsDialog' });
 import { computed, onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
 import { plainClone } from '@/utils/object';
@@ -49,6 +48,7 @@ onBeforeMount(() => {
 onBeforeRouteLeave(() => {
   store.commit(`${storeNamespace}/setEditorSettingsDialogVisible`, false);
 });
+defineOptions({ name: 'ClFileEditorSettingsDialog' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClContextMenuList' });
 
 interface ContextMenuItem {
   title: string;
@@ -21,6 +20,7 @@ const onClick = (item: ContextMenuItem) => {
   item.action();
   emit('hide');
 };
+defineOptions({ name: 'ClContextMenuList' });
 </script>
 
 <template>

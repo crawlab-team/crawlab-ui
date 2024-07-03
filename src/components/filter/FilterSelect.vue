@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFilterSelect' });
 import { computed, onBeforeMount, ref } from 'vue';
 import useRequest from '@/services/request';
 import { cloneArray, prependAllToSelectOptions } from '@/utils';
@@ -47,6 +46,7 @@ const getOptions = async () => {
 };
 
 onBeforeMount(getOptions);
+defineOptions({ name: 'ClFilterSelect' });
 </script>
 
 <template>

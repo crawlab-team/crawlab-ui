@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileEditorCreateWithAiDialog' });
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { onBeforeRouteLeave } from 'vue-router';
@@ -108,6 +107,7 @@ const onConfirm = async () => {
 onBeforeRouteLeave(() => {
   store.commit(`${storeNamespace}/setEditorCreateWithAiDialogVisible`, false);
 });
+defineOptions({ name: 'ClFileEditorCreateWithAiDialog' });
 </script>
 
 <template>

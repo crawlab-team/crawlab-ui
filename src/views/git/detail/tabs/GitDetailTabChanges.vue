@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitDetailTabChanges' });
 import { computed, h, ref, watch, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
@@ -180,6 +179,7 @@ const getChanges = debounce(async () => {
 watch(currentBranch, getChanges);
 watch(activeId, getChanges);
 onBeforeMount(getChanges);
+defineOptions({ name: 'ClGitDetailTabChanges' });
 </script>
 
 <template>

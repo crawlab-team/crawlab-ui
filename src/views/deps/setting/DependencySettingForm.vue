@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDependencySettingForm' });
 import { onBeforeMount, ref, watch } from 'vue';
 import { translate } from '@/utils';
 
@@ -34,6 +33,7 @@ watch(
 onBeforeMount(() => {
   internalForm.value = { ...props.form };
 });
+defineOptions({ name: 'ClDependencySettingForm' });
 </script>
 
 <template>

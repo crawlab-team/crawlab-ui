@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNodeType' });
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -27,6 +26,7 @@ const icon = computed<string[]>(() => {
   const { isMaster } = props;
   return isMaster ? ['fa', 'home'] : ['fa', 'server'];
 });
+defineOptions({ name: 'ClNodeType' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNodeActive' });
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -20,6 +19,7 @@ const icon = computed<string[]>(() => {
   const { active } = props;
   return active ? ['fa', 'check-circle'] : ['fa', 'times-circle'];
 });
+defineOptions({ name: 'ClNodeActive' });
 </script>
 
 <template>

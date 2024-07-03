@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSidebar' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
@@ -87,6 +86,7 @@ const toggleSidebar = () => {
 const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
 const siteTitle = computed<Setting>(() => systemState.siteTitle);
+defineOptions({ name: 'ClSidebar' });
 </script>
 
 <template>

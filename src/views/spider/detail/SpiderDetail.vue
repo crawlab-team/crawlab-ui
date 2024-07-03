@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderDetail' });
 import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
@@ -14,6 +13,7 @@ onBeforeMount(async () => {
 
   store.commit(`${ns}/setAfterSave`, [saveFile]);
 });
+defineOptions({ name: 'ClSpiderDetail' });
 </script>
 
 <template>

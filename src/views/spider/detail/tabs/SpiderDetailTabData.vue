@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderDetailTabData' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/useSpider';
@@ -11,6 +10,7 @@ const { spider: state } = store.state;
 const displayAllFields = computed<boolean>(() => state.dataDisplayAllFields);
 
 const { form } = useSpider(store);
+defineOptions({ name: 'ClSpiderDetailTabData' });
 </script>
 
 <template>

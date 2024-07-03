@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskDetailActionsCommon' });
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import { isCancellable } from '@/utils/task';
@@ -82,6 +81,7 @@ const getTotalDuration = () => {
   }
 };
 const totalDuration = computed<number>(() => getTotalDuration());
+defineOptions({ name: 'ClTaskDetailActionsCommon' });
 </script>
 
 <template>

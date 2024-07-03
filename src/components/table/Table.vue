@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTable' });
 import { inject, ref, computed } from 'vue';
 import { ElTable } from 'element-plus';
 import useColumn from '@/components/table/column';
@@ -103,6 +102,7 @@ defineExpose({
   clearSelection,
   checkAll,
 });
+defineOptions({ name: 'ClTable' });
 </script>
 
 <template>

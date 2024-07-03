@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitBranchSelect' });
 import { computed, ref, watch } from 'vue';
 import { emptyArrayFunc, translate } from '@/utils';
 
@@ -120,6 +119,7 @@ const onDeleteBranch = (value: string, event: Event) => {
   selectRef.value?.blur();
   emit('delete-branch', value);
 };
+defineOptions({ name: 'ClGitBranchSelect' });
 </script>
 
 <template>

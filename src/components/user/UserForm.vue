@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClUserForm' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
@@ -23,6 +22,7 @@ const isDetail = computed<boolean>(() => !!activeId.value);
 
 const { form, formRef, formRules, isSelectiveForm, isFormItemDisabled } =
   useUser(store);
+defineOptions({ name: 'ClUserForm' });
 </script>
 
 <template>

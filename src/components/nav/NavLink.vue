@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavLink' });
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
@@ -26,6 +25,7 @@ const onClick = () => {
   }
   emit('click');
 };
+defineOptions({ name: 'ClNavLink' });
 </script>
 
 <template>

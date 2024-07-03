@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNodeRunners' });
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -66,6 +65,7 @@ const data = computed<TagProps>(() => {
     };
   }
 });
+defineOptions({ name: 'ClNodeRunners' });
 </script>
 
 <template>

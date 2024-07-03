@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClResultList' });
 import { computed, h, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants';
@@ -136,6 +135,7 @@ onBeforeUnmount(() => {
   store.commit(`${ns}/resetResultTablePagination`);
   store.commit(`${ns}/resetResultTableFilter`);
 });
+defineOptions({ name: 'ClResultList' });
 </script>
 
 <template>

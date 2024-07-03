@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTransfer' });
 import { computed, ref } from 'vue';
 import { translate } from '@/utils';
 
@@ -83,6 +82,7 @@ const onRightDrag = (items: DraggableItemData[]) => {
   const newValue = items.map(d => d.key);
   change(newValue);
 };
+defineOptions({ name: 'ClTransfer' });
 </script>
 
 <template>

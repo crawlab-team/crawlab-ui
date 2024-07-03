@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditScheduleDialog' });
 import { useStore } from 'vuex';
 import useSchedule from '@/components/schedule/useSchedule';
 
@@ -14,6 +13,7 @@ const {
   createEditDialogVisible,
   formRules,
 } = useSchedule(store);
+defineOptions({ name: 'ClCreateEditScheduleDialog' });
 </script>
 
 <template>

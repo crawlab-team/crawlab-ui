@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileEditorNavTabsContextMenu' });
 import { readonly } from 'vue';
 import { translate } from '@/utils';
 
@@ -44,6 +43,7 @@ const items = readonly<ContextMenuItem[]>([
     action: () => emit('close-all'),
   },
 ]);
+defineOptions({ name: 'ClFileEditorNavTabsContextMenu' });
 </script>
 
 <template>

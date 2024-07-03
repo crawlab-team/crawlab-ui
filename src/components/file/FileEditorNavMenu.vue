@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileEditorNavMenu' });
 import {
   computed,
   onBeforeUnmount,
@@ -357,6 +356,7 @@ onBeforeUnmount(() => {
 
 const showSettings = ref<boolean>(false);
 const fileSearchString = ref<string>('');
+defineOptions({ name: 'ClFileEditorNavMenu' });
 </script>
 
 <template>

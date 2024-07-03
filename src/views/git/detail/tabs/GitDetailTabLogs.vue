@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitDetailTabLogs' });
 import { computed, h, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
@@ -104,6 +103,7 @@ watch(activeId, () => {
   getLogs();
 });
 onBeforeMount(getLogs);
+defineOptions({ name: 'ClGitDetailTabLogs' });
 </script>
 
 <template>

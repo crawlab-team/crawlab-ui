@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ClGitFileDiffDialog from '@/components/git/GitFileDiffDialog.vue';
 
-defineOptions({ name: 'ClGitDetail' });
 import { computed, watch, onBeforeUnmount, onBeforeMount, provide } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -126,6 +125,7 @@ provide<{ (item: FileNavItem): void }>(
     router.push(`/spiders/${spider._id}`);
   }
 );
+defineOptions({ name: 'ClGitDetail' });
 </script>
 
 <template>

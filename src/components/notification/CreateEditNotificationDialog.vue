@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditNotificationDialog' });
 import { useStore } from 'vuex';
 import useNotification from '@/components/notification/notification';
 
@@ -13,6 +12,7 @@ const {
   confirmLoading,
   createEditDialogVisible,
 } = useNotification(store);
+defineOptions({ name: 'ClCreateEditNotificationDialog' });
 </script>
 
 <template>

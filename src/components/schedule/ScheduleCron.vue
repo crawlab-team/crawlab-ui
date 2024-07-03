@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClScheduleCron' });
 import { computed } from 'vue';
 import { CronExpression, parseExpression } from 'cron-parser';
 import cronstrue from 'cronstrue/i18n';
@@ -91,6 +90,7 @@ const data = computed<TagProps>(() => {
     type: 'primary',
   };
 });
+defineOptions({ name: 'ClScheduleCron' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditDialog' });
 import { computed, provide } from 'vue';
 import { emptyArrayFunc, translate } from '@/utils';
 
@@ -56,6 +55,7 @@ provide<CreateEditDialogActionFunctions | undefined>(
   props.actionFunctions
 );
 provide<FormRuleItem[] | undefined>('form-rules', props.formRules);
+defineOptions({ name: 'ClCreateEditDialog' });
 </script>
 
 <template>

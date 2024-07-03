@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFilterConditionList' });
 import { getDefaultFilterCondition } from '@/components/filter/filter';
 
 const props = defineProps<{
@@ -24,6 +23,7 @@ const onDelete = (index: number) => {
   }
   emit('change', conditions);
 };
+defineOptions({ name: 'ClFilterConditionList' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDataSourceStatus' });
 import { computed } from 'vue';
 import {
   DATA_SOURCE_STATUS_OFFLINE,
@@ -50,6 +49,7 @@ const data = computed<TagProps>(() => {
       };
   }
 });
+defineOptions({ name: 'ClDataSourceStatus' });
 </script>
 
 <template>

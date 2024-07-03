@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileUpload' });
 import { computed, ref, watch } from 'vue';
 import {
   FILE_ROOT,
@@ -88,6 +87,7 @@ const onDirFilesChange = (e: Event) => {
 const onClickUploadDir = () => {
   fileInput.value?.click();
 };
+defineOptions({ name: 'ClFileUpload' });
 </script>
 
 <template>

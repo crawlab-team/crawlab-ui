@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileEditorNavTabs' });
 import { computed, onMounted, ref, watch } from 'vue';
 import { Close } from '@element-plus/icons-vue';
 
@@ -103,6 +102,7 @@ onMounted(() => {
   // update tabs widths
   updateWidths();
 });
+defineOptions({ name: 'ClFileEditorNavTabs' });
 </script>
 
 <template>

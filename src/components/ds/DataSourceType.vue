@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDataSourceType' });
 import { computed } from 'vue';
 import {
   DATA_SOURCE_TYPE_MONGO,
@@ -83,6 +82,7 @@ const data = computed<TagProps>(() => {
       };
   }
 });
+defineOptions({ name: 'ClDataSourceType' });
 </script>
 
 <template>

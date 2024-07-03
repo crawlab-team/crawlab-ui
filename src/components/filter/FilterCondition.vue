@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFilterCondition' });
 import { conditionTypesOptions } from '@/components/filter/filter';
 import { computed } from 'vue';
 import { FILTER_OP_NOT_SET } from '@/constants/filter';
@@ -43,6 +42,7 @@ const onValueChange = (conditionValue: string) => {
 const onDelete = () => {
   emit('delete');
 };
+defineOptions({ name: 'ClFilterCondition' });
 </script>
 
 <template>

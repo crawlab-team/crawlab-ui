@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClInputList' });
 import { ref, watch } from 'vue';
 import { cloneArray, translate } from '@/utils';
 
@@ -59,6 +58,7 @@ watch(
     internalModelValue.value = props.modelValue || [''];
   }
 );
+defineOptions({ name: 'ClInputList' });
 </script>
 
 <template>

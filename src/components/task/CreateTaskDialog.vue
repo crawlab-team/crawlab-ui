@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateTaskDialog' });
 import { useStore } from 'vuex';
 import useTask from '@/components/task/useTask';
 
@@ -18,6 +17,7 @@ const {
   activeDialogKey,
   createEditDialogVisible,
 } = useTask(store);
+defineOptions({ name: 'ClCreateTaskDialog' });
 </script>
 
 <template>

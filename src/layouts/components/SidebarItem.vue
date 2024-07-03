@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSidebarItem' });
 import { useI18n } from 'vue-i18n';
 
 defineProps<{
@@ -15,6 +14,7 @@ const { t } = useI18n();
 const onMenuItemClick = (item: MenuItem) => {
   emit('click', item);
 };
+defineOptions({ name: 'ClSidebarItem' });
 </script>
 
 <template>

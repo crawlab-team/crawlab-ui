@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditGitDialog' });
 import { useStore } from 'vuex';
 import useGit from '@/components/git/useGit';
 
@@ -14,6 +13,7 @@ const {
   confirmDisabled,
   confirmLoading,
 } = useGit(store);
+defineOptions({ name: 'ClCreateEditGitDialog' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavSidebar' });
 import { computed, ref } from 'vue';
 import { ElMenu } from 'element-plus';
 import { emptyArrayFunc } from '@/utils/func';
@@ -86,6 +85,7 @@ const scroll = (id: string) => {
 defineExpose({
   scroll,
 });
+defineOptions({ name: 'ClNavSidebar' });
 </script>
 
 <template>

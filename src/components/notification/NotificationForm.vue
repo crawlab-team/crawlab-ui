@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNotificationForm' });
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import useNotification from '@/components/notification/notification';
@@ -19,6 +18,7 @@ const { t } = useI18n();
 const store = useStore();
 
 const { form, formRef, isSelectiveForm } = useNotification(store);
+defineOptions({ name: 'ClNotificationForm' });
 </script>
 
 <template>

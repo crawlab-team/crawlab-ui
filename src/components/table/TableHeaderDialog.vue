@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTableHeaderDialog' });
 import { computed, ref, watch } from 'vue';
 import { plainClone } from '@/utils/object';
 import { FILTER_OP_NOT_SET } from '@/constants/filter';
@@ -128,6 +127,7 @@ watch(
     }
   }
 );
+defineOptions({ name: 'ClTableHeaderDialog' });
 </script>
 
 <template>

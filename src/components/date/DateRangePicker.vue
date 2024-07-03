@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDateRangePicker' });
 import { computed } from 'vue';
 import dayjs, { Dayjs } from 'dayjs';
 import { translate } from '@/utils';
@@ -110,6 +109,7 @@ const optionItems = computed<RangeItem[]>(() => {
       }) as RangeItem
   );
 });
+defineOptions({ name: 'ClDateRangePicker' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitLogsBox' });
 
 import { translate } from '@/utils';
 
@@ -11,6 +10,7 @@ defineProps<{
 }>();
 
 const t = translate;
+defineOptions({ name: 'ClGitLogsBox' });
 </script>
 
 <template>

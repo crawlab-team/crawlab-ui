@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDraggableList' });
 import { computed, reactive, ref } from 'vue';
 import { plainClone } from '@/utils/object';
 
@@ -78,6 +77,7 @@ const onTabDragLeave = (item: DraggableItemData) => {
     return;
   internalItems.targetItem = undefined;
 };
+defineOptions({ name: 'ClDraggableList' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditDataSourceDialog' });
 import { getStore } from '@/store';
 import useDataSource from '@/components/ds/useDataSource';
 
@@ -12,6 +11,7 @@ const {
   confirmLoading,
   createEditDialogVisible,
 } = useDataSource(store);
+defineOptions({ name: 'ClCreateEditDataSourceDialog' });
 </script>
 
 <template>

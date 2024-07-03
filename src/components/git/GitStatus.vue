@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitStatus' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import {
@@ -93,6 +92,7 @@ const onRetry = async () => {
   await store.dispatch(`${ns}/cloneGit`, { id });
   emit('retry');
 };
+defineOptions({ name: 'ClGitStatus' });
 </script>
 
 <template>

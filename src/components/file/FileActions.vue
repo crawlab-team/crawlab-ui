@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileActions' });
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
@@ -38,6 +37,7 @@ const onClickExport = async () => {
     exportLoading.value = false;
   }
 };
+defineOptions({ name: 'ClFileActions' });
 </script>
 
 <template>

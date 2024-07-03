@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNodeDetailTabMonitoring' });
 import { onMounted, ref } from 'vue';
 import dayjs from 'dayjs';
 import { ChartConfiguration } from 'chart.js/dist/types';
@@ -103,6 +102,7 @@ const renderChart = () => {
 onMounted(getMonitoringData);
 
 const canvasRef = ref<HTMLCanvasElement>();
+defineOptions({ name: 'ClNodeDetailTabMonitoring' });
 </script>
 
 <template>

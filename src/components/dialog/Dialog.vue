@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDialog' });
 import { translate } from '@/utils';
 
 withDefaults(
@@ -37,6 +36,7 @@ const onClose = () => {
 const onConfirm = () => {
   emit('confirm');
 };
+defineOptions({ name: 'ClDialog' });
 </script>
 
 <template>

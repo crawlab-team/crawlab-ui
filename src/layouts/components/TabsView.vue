@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTabsView' });
 import { computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
@@ -75,6 +74,7 @@ onMounted(() => {
   // update tabs
   updateTabs(currentPath.value);
 });
+defineOptions({ name: 'ClTabsView' });
 </script>
 
 <template>

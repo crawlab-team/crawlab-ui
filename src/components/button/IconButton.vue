@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClIconButton' });
 
 interface ButtonProps {
   tooltip?: string;
@@ -22,6 +21,7 @@ defineProps<
     icon: string;
   }
 >();
+defineOptions({ name: 'ClIconButton' });
 </script>
 
 <template>

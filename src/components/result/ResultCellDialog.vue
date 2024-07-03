@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClResultCellDialog' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
@@ -27,6 +26,7 @@ const onClose = () => {
   store.commit(`${ns}/resetResultDialogType`);
   store.commit(`${ns}/resetResultDialogKey`);
 };
+defineOptions({ name: 'ClResultCellDialog' });
 </script>
 
 <template>

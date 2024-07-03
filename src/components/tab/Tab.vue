@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTab' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -122,6 +121,7 @@ const onClose = (event: Event) => {
     }
   }
 };
+defineOptions({ name: 'ClTab' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClHeader' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -68,6 +67,7 @@ const onClickMySettings = () => {
 };
 
 const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
+defineOptions({ name: 'ClHeader' });
 </script>
 
 <template>

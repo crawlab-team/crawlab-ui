@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditEnvironmentDialog' });
 import useEnvironment from '@/components/environment/useEnvironment';
 import { getStore } from '@/store';
 
@@ -10,6 +9,7 @@ const {
   confirmLoading,
   createEditDialogVisible,
 } = useEnvironment(getStore());
+defineOptions({ name: 'ClCreateEditEnvironmentDialog' });
 </script>
 
 <template>

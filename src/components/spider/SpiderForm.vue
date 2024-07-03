@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderForm' });
 
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
@@ -82,6 +81,7 @@ const validate = async () => {
 defineExpose({
   validate,
 });
+defineOptions({ name: 'ClSpiderForm' });
 </script>
 
 <template>

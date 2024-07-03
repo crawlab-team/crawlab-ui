@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClUserRole' });
 import { computed } from 'vue';
 import { ROLE_ADMIN } from '@/constants/user';
 
@@ -25,6 +24,7 @@ const icon = computed<string[]>(() => {
   const { role } = props;
   return role === ROLE_ADMIN ? ['fa', 'star'] : ['fa', 'user'];
 });
+defineOptions({ name: 'ClUserRole' });
 </script>
 
 <template>

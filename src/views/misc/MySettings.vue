@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClMySettings' });
 import { onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
 import { plainClone } from '@/utils/object';
@@ -30,6 +29,7 @@ const onSave = async () => {
   ElMessage.success(t('common.message.success.save'));
   await store.dispatch(`${ns}/getMe`);
 };
+defineOptions({ name: 'ClMySettings' });
 </script>
 
 <template>

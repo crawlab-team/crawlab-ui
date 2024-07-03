@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClContextMenu' });
 import { ClickOutside as vClickOutside } from 'element-plus';
 
 interface ContextMenuProps {
@@ -22,6 +21,7 @@ const onClickOutside = () => {
   if (props.clicking) return;
   emit('hide');
 };
+defineOptions({ name: 'ClContextMenu' });
 </script>
 
 <template>

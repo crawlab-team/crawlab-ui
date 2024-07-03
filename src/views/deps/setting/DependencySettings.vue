@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDependencySettings' });
 import { defineComponent, computed, ref, h } from 'vue';
 import { ElMessage } from 'element-plus';
 import useRequest from '@/services/request';
@@ -110,6 +109,7 @@ const onDialogConfirm = async () => {
 const onFormChange = (value: any) => {
   form.value = { ...value };
 };
+defineOptions({ name: 'ClDependencySettings' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditUserDialog' });
 import { useStore } from 'vuex';
 import useUser from '@/components/user/useUser';
 
@@ -14,6 +13,7 @@ const {
   formRules,
   activeDialogKey,
 } = useUser(store);
+defineOptions({ name: 'ClCreateEditUserDialog' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitLogsDialog' });
 import { ref, watch, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
@@ -39,6 +38,7 @@ const update = () => {
 };
 watch(dialogVisible, update);
 onMounted(update);
+defineOptions({ name: 'ClGitLogsDialog' });
 </script>
 
 <template>

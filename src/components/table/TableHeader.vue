@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { conditionTypesMap } from '@/components/filter/filter';
 
-defineOptions({ name: 'ClTableHeader' });
 import { computed, reactive, ref } from 'vue';
 import { ASCENDING, DESCENDING } from '@/constants/sort';
 import { FILTER_OP_NOT_SET } from '@/constants/filter';
@@ -190,6 +189,7 @@ const hasDialog = computed<boolean>(() => {
 
   return !!hasSort || !!hasFilter;
 });
+defineOptions({ name: 'ClTableHeader' });
 </script>
 
 <template>

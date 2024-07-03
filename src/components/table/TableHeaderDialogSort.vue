@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTableHeaderDialogSort' });
 import { ASCENDING, DESCENDING, UNSORTED } from '@/constants/sort';
 import { translate } from '@/utils';
 
@@ -25,6 +24,7 @@ const onChange = (value: SortDirection) => {
 const onClear = () => {
   emit('change');
 };
+defineOptions({ name: 'ClTableHeaderDialogSort' });
 </script>
 
 <template>

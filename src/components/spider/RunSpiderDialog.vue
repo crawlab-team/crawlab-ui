@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClRunSpiderDialog' });
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/useSpider';
@@ -72,6 +71,7 @@ const updateOptions = () => {
 
 watch(() => spider.value, updateOptions);
 onBeforeMount(updateOptions);
+defineOptions({ name: 'ClRunSpiderDialog' });
 </script>
 
 <template>

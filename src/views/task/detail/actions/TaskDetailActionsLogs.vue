@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskDetailActionsLogs' });
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
@@ -33,6 +32,7 @@ const onAutoUpdateChange = (value: boolean) => {
     store.commit(`${ns}/disableLogAutoUpdate`);
   }
 };
+defineOptions({ name: 'ClTaskDetailActionsLogs' });
 </script>
 
 <template>

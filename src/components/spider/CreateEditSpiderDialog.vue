@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditSpiderDialog' });
 import { useStore } from 'vuex';
 import useSpider from '@/components/spider/useSpider';
 
@@ -13,6 +12,7 @@ const {
   confirmLoading,
   createEditDialogVisible,
 } = useSpider(store);
+defineOptions({ name: 'ClCreateEditSpiderDialog' });
 </script>
 
 <template>

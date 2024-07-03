@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClExportForm' });
 import { onBeforeMount, ref } from 'vue';
 import { translate } from '@/utils';
 
@@ -24,6 +23,7 @@ const onExportTypeChange = (value: string) => {
 onBeforeMount(() => {
   exportType.value = props.defaultType;
 });
+defineOptions({ name: 'ClExportForm' });
 </script>
 
 <template>

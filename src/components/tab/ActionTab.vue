@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClActionTab' });
 
 import { translate } from '@/utils';
 
@@ -17,6 +16,7 @@ const t = translate;
 const onClick = () => {
   emit('click');
 };
+defineOptions({ name: 'ClActionTab' });
 </script>
 
 <template>

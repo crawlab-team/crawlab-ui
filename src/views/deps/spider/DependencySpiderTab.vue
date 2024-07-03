@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDependencySpiderTab' });
 import { computed, defineComponent, h, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -333,6 +332,7 @@ const onInstallByConfig = async () => {
   await post(`${endpoint}/spiders/${id}/install`, data);
   ElMessage.success(t('common.messageBox.success.startInstall'));
 };
+defineOptions({ name: 'ClDependencySpiderTab' });
 </script>
 
 <template>

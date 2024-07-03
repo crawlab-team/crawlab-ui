@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { getDefaultFilterCondition } from '@/components/filter/filter';
 
-defineOptions({ name: 'ClTableHeaderDialogFilter' });
 import { computed, ref, watch } from 'vue';
 import { debounce } from '@/utils/debounce';
 import { Search } from '@element-plus/icons-vue';
@@ -115,6 +114,7 @@ watch(
     }
   }
 );
+defineOptions({ name: 'ClTableHeaderDialogFilter' });
 </script>
 
 <template>

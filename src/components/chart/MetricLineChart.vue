@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClMetricLineChart' });
 import { computed } from 'vue';
 import { plainClone } from '@/utils/object';
 
@@ -39,6 +38,7 @@ const config = computed<EChartsConfig>(() => {
 });
 
 const title = computed<string>(() => `Metric: ${props.metric}`);
+defineOptions({ name: 'ClMetricLineChart' });
 </script>
 
 <template>

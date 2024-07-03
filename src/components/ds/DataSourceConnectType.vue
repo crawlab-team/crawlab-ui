@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDataSourceConnectType' });
 import { computed } from 'vue';
 import {
   DATA_SOURCE_CONNECT_TYPE_STANDARD,
@@ -48,6 +47,7 @@ const data = computed<TagProps>(() => {
       };
   }
 });
+defineOptions({ name: 'ClDataSourceConnectType' });
 </script>
 
 <template>

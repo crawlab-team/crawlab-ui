@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDraggableItem' });
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -24,6 +23,7 @@ const classes = computed(() => {
   if (dragging.value) cls.push('dragging');
   return cls;
 });
+defineOptions({ name: 'ClDraggableItem' });
 </script>
 
 <template>

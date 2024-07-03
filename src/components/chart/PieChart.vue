@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClPieChart' });
 import { computed, onMounted, ref, watch, StyleValue } from 'vue';
 import { init } from 'echarts';
 import { useI18n } from 'vue-i18n';
@@ -119,6 +118,7 @@ watch(() => locale.value, render);
 onMounted(() => {
   render();
 });
+defineOptions({ name: 'ClPieChart' });
 </script>
 
 <template>

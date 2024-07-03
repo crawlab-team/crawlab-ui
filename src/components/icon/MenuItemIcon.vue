@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClMenuItemIcon' });
 import { computed } from 'vue';
 import useIcon from '@/components/icon/icon';
 
@@ -19,6 +18,7 @@ const fontSize = computed(() => {
   const { size } = props;
   return getFontSize(size);
 });
+defineOptions({ name: 'ClMenuItemIcon' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCheckTag' });
 import { computed, ref } from 'vue';
 
 interface TagProps {
@@ -83,6 +82,7 @@ const onMouseEnter = () => {
 const onMouseLeave = () => {
   isHover.value = false;
 };
+defineOptions({ name: 'ClCheckTag' });
 </script>
 
 <template>

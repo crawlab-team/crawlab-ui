@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitDetailActionsChanges' });
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
@@ -20,6 +19,7 @@ const {
   pushLoading,
   onPush,
 } = useGitDetail();
+defineOptions({ name: 'ClGitDetailActionsChanges' });
 </script>
 
 <template>

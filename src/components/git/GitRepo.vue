@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitRepo' });
 import { translate } from '@/utils';
 
 defineProps<{
@@ -12,6 +11,7 @@ const emit = defineEmits<{
 }>();
 
 const t = translate;
+defineOptions({ name: 'ClGitRepo' });
 </script>
 
 <template>

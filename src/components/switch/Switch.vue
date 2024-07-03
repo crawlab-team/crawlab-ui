@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSwitch' });
 import { ref, computed, h, watch } from 'vue';
 import IconComp from '@/components/icon/Icon.vue';
 
@@ -59,6 +58,7 @@ const style = computed<string>(() => {
   const { activeColor, inactiveColor } = props;
   return `--el-switch-on-color: ${activeColor}; --el-switch-off-color: ${inactiveColor}`;
 });
+defineOptions({ name: 'ClSwitch' });
 </script>
 
 <template>

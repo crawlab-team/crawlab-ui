@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClBox' });
 import { computed } from 'vue';
 
 const props = withDefaults(
@@ -27,6 +26,7 @@ const cls = computed<string>(() => {
   const { position } = props;
   return [position].join(' ');
 });
+defineOptions({ name: 'ClBox' });
 </script>
 
 <template>

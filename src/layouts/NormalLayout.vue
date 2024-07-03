@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNormalLayout' });
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 
@@ -7,6 +6,7 @@ const store = useStore();
 const { layout: state } = store.state as RootStoreState;
 
 const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
+defineOptions({ name: 'ClNormalLayout' });
 </script>
 
 <template>

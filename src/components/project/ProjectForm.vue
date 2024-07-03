@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClProjectForm' });
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import useProject from '@/components/project/useProject';
@@ -11,6 +10,7 @@ const { t } = useI18n();
 const store = useStore();
 const { form, formRef, formRules, isSelectiveForm, isFormItemDisabled } =
   useProject(store);
+defineOptions({ name: 'ClProjectForm' });
 </script>
 
 <template>

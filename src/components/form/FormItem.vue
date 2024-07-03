@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFormItem' });
 import { computed, inject, onMounted, ref, StyleValue, watch } from 'vue';
 import { RuleItem } from 'async-validator';
 import { cloneArray } from '@/utils/object';
@@ -114,6 +113,7 @@ onMounted(() => {
     }
   }
 });
+defineOptions({ name: 'ClFormItem' });
 </script>
 
 <template>

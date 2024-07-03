@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDataSourceForm' });
 import { computed } from 'vue';
 import { getStore } from '@/store';
 import useDataSource from '@/components/ds/useDataSource';
@@ -38,6 +37,7 @@ const { activeId } = useDataSourceDetail();
 const onChangePassword = () => onChangePasswordFunc(activeId.value);
 
 const isDetail = computed<boolean>(() => !!activeId.value);
+defineOptions({ name: 'ClDataSourceForm' });
 </script>
 
 <template>

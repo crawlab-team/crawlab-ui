@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTableHeaderAction' });
 import { computed } from 'vue';
 
 const props = withDefaults(
@@ -31,6 +30,7 @@ const classes = computed<string[]>(() => {
 const onClick = () => {
   emit('click');
 };
+defineOptions({ name: 'ClTableHeaderAction' });
 </script>
 
 <template>

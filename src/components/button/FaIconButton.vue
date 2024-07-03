@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFaIconButton' });
 import { computed } from 'vue';
 
 interface ButtonProps {
@@ -36,6 +35,7 @@ const cls = computed<string>(() => {
   if (className) classes.push(className);
   return classes.join(' ');
 });
+defineOptions({ name: 'ClFaIconButton' });
 </script>
 
 <template>

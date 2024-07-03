@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFormTableField' });
 import {
   computed,
   inject,
@@ -105,6 +104,7 @@ onMounted(() => {
   // register form ref
   onRegister?.(formRef);
 });
+defineOptions({ name: 'ClFormTableField' });
 </script>
 
 <template>

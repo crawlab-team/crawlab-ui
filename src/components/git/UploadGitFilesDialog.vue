@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClUploadGitFilesDialog' });
 import { useStore } from 'vuex';
 import useGitService from '@/services/git/gitService';
 import useGitDetail from '@/views/git/detail/useGitDetail';
@@ -9,6 +8,7 @@ const ns = 'git';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
 const { activeId } = useGitDetail();
+defineOptions({ name: 'ClUploadGitFilesDialog' });
 </script>
 
 <template>

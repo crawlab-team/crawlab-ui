@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitFileStatus' });
 import { computed, StyleValue } from 'vue';
 import { emptyObjectFunc } from '@/utils/func';
 
@@ -41,6 +40,7 @@ const fileNameStyle = computed<StyleValue>(() => {
       return {};
   }
 });
+defineOptions({ name: 'ClGitFileStatus' });
 </script>
 
 <template>

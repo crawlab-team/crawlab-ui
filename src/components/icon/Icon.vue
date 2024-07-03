@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClIcon' });
 import { ref, computed, onMounted } from 'vue';
 import useIcon from '@/components/icon/icon';
 
@@ -48,6 +47,7 @@ onMounted(async () => {
     }
   }
 });
+defineOptions({ name: 'ClIcon' });
 </script>
 
 <template>

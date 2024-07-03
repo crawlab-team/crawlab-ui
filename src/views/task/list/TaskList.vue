@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskList' });
 import useTaskList from '@/views/task/list/useTaskList';
 
 defineProps<{
@@ -15,6 +14,7 @@ const {
   tablePagination,
   actionFunctions,
 } = useTaskList();
+defineOptions({ name: 'ClTaskList' });
 </script>
 
 <template>

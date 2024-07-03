@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskCommand' });
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -59,6 +58,7 @@ const data = computed<TagProps>(() => {
 <div style="color: ${color.value};font-weight: 600">${cmd.value || '-'}</div>`,
   };
 });
+defineOptions({ name: 'ClTaskCommand' });
 </script>
 
 <template>

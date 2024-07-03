@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClConfirmDialog' });
 import { ref } from 'vue';
 import { voidAsyncFunc } from '@/utils/func';
 
@@ -36,6 +35,7 @@ const onConfirm = async () => {
   visible.value = false;
   emit('confirm');
 };
+defineOptions({ name: 'ClConfirmDialog' });
 </script>
 
 <template>

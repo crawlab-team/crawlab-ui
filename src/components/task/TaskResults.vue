@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskResults' });
 import { computed } from 'vue';
 import { isCancellable } from '@/utils/task';
 import { TASK_STATUS_PENDING } from '@/constants/task';
@@ -53,6 +52,7 @@ const data = computed<TagProps>(() => {
     }
   }
 });
+defineOptions({ name: 'ClTaskResults' });
 </script>
 
 <template>

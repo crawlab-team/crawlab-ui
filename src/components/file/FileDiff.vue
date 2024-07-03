@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileDiff' });
 import { ref, computed, watch, onMounted, onBeforeMount } from 'vue';
 import * as monaco from 'monaco-editor';
 import { getLanguageByFileName, translate } from '@/utils';
@@ -88,6 +87,7 @@ watch(() => JSON.stringify(props.diff), updateEditorContent);
 onBeforeMount(() => {
   diffEditor?.dispose();
 });
+defineOptions({ name: 'ClFileDiff' });
 </script>
 
 <template>

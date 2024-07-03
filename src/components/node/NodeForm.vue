@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNodeForm' });
 import { useStore } from 'vuex';
 import useNode from '@/components/node/useNode';
 import { useI18n } from 'vue-i18n';
@@ -15,6 +14,7 @@ const { t } = useI18n();
 const store = useStore();
 
 const { form, formRef, isSelectiveForm, isFormItemDisabled } = useNode(store);
+defineOptions({ name: 'ClNodeForm' });
 </script>
 
 <template>

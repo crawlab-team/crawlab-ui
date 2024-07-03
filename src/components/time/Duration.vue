@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDuration' });
 import { computed, PropType } from 'vue';
 import humanizeDuration from 'humanize-duration';
 import { getLanguage } from '@/utils/i18n';
@@ -32,6 +31,7 @@ const label = computed<string>(() => {
     language,
   });
 });
+defineOptions({ name: 'ClDuration' });
 </script>
 
 <template>

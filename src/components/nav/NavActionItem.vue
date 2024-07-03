@@ -1,9 +1,9 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavActionItem' });
 defineProps<{
   isLabel?: boolean;
   label?: string;
 }>();
+defineOptions({ name: 'ClNavActionItem' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClUploadSpiderFilesDialog' });
 import { useStore } from 'vuex';
 import useSpiderService from '@/services/spider/spiderService';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
@@ -9,6 +8,7 @@ const ns = 'spider';
 const store = useStore();
 const { spider: state } = store.state as RootStoreState;
 const { activeId } = useSpiderDetail();
+defineOptions({ name: 'ClUploadSpiderFilesDialog' });
 </script>
 
 <template>

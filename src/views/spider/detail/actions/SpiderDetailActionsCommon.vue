@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderDetailActionsCommon' });
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -20,6 +19,7 @@ const { activeDialogKey, form } = useSpider(store);
 const onRun = () => {
   store.commit(`${ns}/showDialog`, 'run');
 };
+defineOptions({ name: 'ClSpiderDetailActionsCommon' });
 </script>
 
 <template>

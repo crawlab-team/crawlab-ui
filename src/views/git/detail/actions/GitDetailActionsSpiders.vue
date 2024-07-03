@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitDetailActionsSpiders' });
 
 import { ref } from 'vue';
 import { useStore } from 'vuex';
@@ -37,6 +36,7 @@ const onCreate = async (spider: Spider) => {
     dialogVisible.value = false;
   }
 };
+defineOptions({ name: 'ClGitDetailActionsSpiders' });
 </script>
 
 <template>

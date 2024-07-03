@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClDetailTabList' });
 import { computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -46,6 +45,7 @@ onBeforeUnmount(() => {
   store.commit(`${ns}/resetTableListFilter`);
   store.commit(`${ns}/resetTableData`);
 });
+defineOptions({ name: 'ClDetailTabList' });
 </script>
 
 <template>

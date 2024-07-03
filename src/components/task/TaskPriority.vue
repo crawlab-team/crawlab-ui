@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTaskPriority' });
 import { computed } from 'vue';
 import { getPriorityLabel } from '@/utils/task';
 
@@ -48,6 +47,7 @@ const data = computed<TagProps>(() => {
     };
   }
 });
+defineOptions({ name: 'ClTaskPriority' });
 </script>
 
 <template>

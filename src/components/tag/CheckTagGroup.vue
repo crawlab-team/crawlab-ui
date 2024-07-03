@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCheckTagGroup' });
 import { computed, onBeforeMount, reactive, watch } from 'vue';
 
 export interface CheckTagGroupProps {
@@ -37,6 +36,7 @@ const updateCheckedMap = () => {
 
 onBeforeMount(updateCheckedMap);
 watch(() => props.modelValue, updateCheckedMap);
+defineOptions({ name: 'ClCheckTagGroup' });
 </script>
 
 <template>

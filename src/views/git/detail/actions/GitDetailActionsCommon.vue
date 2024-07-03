@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitDetailActionsCommon' });
 import { ElMessage, ElMessageBox, ElMessageBoxOptions } from 'element-plus';
 import {
   GIT_STATUS_PULLING,
@@ -189,6 +188,7 @@ const loading = computed(
     commitLoading.value ||
     pushLoading.value
 );
+defineOptions({ name: 'ClGitDetailActionsCommon' });
 </script>
 
 <template>

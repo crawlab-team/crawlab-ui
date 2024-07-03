@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateGitSpiderDialog' });
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { FILE_ROOT } from '@/constants';
@@ -61,6 +60,7 @@ watch(
     }
   }
 );
+defineOptions({ name: 'ClCreateGitSpiderDialog' });
 </script>
 
 <template>

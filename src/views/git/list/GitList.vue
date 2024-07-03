@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitList' });
 import useGitList from '@/views/git/list/useGitList';
 
 const {
@@ -10,6 +9,7 @@ const {
   tableData,
   tableTotal,
 } = useGitList();
+defineOptions({ name: 'ClGitList' });
 </script>
 
 <template>

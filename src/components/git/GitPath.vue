@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitPath' });
 
 import { translate } from '@/utils';
 import { FILE_ROOT } from '@/constants';
@@ -8,6 +7,7 @@ const t = translate;
 defineProps<{
   path?: string;
 }>();
+defineOptions({ name: 'ClGitPath' });
 </script>
 
 <template>

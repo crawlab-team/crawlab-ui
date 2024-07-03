@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClAtomMaterialIcon' });
 import { computed } from 'vue';
 import {
   getFileIconFromName,
@@ -16,6 +15,7 @@ const html = computed<string>(() => {
   const icon = isDir ? getFolderIconFromName(name) : getFileIconFromName(name);
   return icon.default;
 });
+defineOptions({ name: 'ClAtomMaterialIcon' });
 </script>
 
 <template>

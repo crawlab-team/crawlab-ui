@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClLabelButton' });
 
 interface ButtonProps {
   tooltip?: string;
@@ -27,6 +26,7 @@ defineProps<
 const emit = defineEmits<{
   (e: 'click'): void;
 }>();
+defineOptions({ name: 'ClLabelButton' });
 </script>
 
 <template>

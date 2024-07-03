@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClGitDetailTabFiles' });
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { debounce } from '@/utils';
@@ -30,6 +29,7 @@ watch(activeId, getFiles);
 const onFileChange = () => {
   store.dispatch(`${ns}/getChanges`, { id: activeId.value });
 };
+defineOptions({ name: 'ClGitDetailTabFiles' });
 </script>
 
 <template>

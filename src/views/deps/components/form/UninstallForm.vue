@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClUninstallForm' });
 import { ref } from 'vue';
 import { translate } from '@/utils';
 
@@ -37,6 +36,7 @@ const onClose = () => {
   emit('close');
   reset();
 };
+defineOptions({ name: 'ClUninstallForm' });
 </script>
 
 <template>

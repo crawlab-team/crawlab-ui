@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavActionButton' });
 
 interface ButtonProps {
   tooltip?: string;
@@ -28,6 +27,7 @@ withDefaults(
   >(),
   {}
 );
+defineOptions({ name: 'ClNavActionButton' });
 </script>
 
 <template>

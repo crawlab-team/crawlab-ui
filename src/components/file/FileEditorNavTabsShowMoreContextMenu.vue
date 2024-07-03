@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFileEditorNavTabsShowMoreContextMenu' });
 import { computed } from 'vue';
 
 interface ContextMenuProps {
@@ -38,6 +37,7 @@ const items = computed<ContextMenuItem[]>(() => {
     }) || [];
   return contextMenuItems;
 });
+defineOptions({ name: 'ClFileEditorNavTabsShowMoreContextMenu' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClFilterInput' });
 import { ref } from 'vue';
 import { debounce } from '@/utils';
 
@@ -22,6 +21,7 @@ const onClear = () => {
   internalModelValue.value = undefined;
   emit('change', internalModelValue.value);
 };
+defineOptions({ name: 'ClFilterInput' });
 </script>
 
 <template>

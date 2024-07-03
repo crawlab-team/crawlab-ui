@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderDetailTabFiles' });
 import { useStore } from 'vuex';
 import useSpiderService from '@/services/spider/spiderService';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
@@ -10,6 +9,7 @@ const store = useStore();
 const { spider: state } = store.state as RootStoreState;
 
 const { activeId } = useSpiderDetail();
+defineOptions({ name: 'ClSpiderDetailTabFiles' });
 </script>
 
 <template>

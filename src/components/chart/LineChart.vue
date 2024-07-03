@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClLineChart' });
 import { computed, onMounted, onUnmounted, ref, watch, StyleValue } from 'vue';
 import { init } from 'echarts';
 import { translate } from '@/utils/i18n';
@@ -170,6 +169,7 @@ onMounted(() => {
 onUnmounted(() => {
   destroy();
 });
+defineOptions({ name: 'ClLineChart' });
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClNavSidebarTree' });
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -37,6 +36,7 @@ const getClass = (item: NavItem): string | undefined => {
     return;
   }
 };
+defineOptions({ name: 'ClNavSidebarTree' });
 </script>
 
 <template>

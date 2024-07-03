@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClCreateEditProjectDialog' });
 import { useStore } from 'vuex';
 import useProject from '@/components/project/useProject';
 
@@ -14,6 +13,7 @@ const {
   confirmDisabled,
   confirmLoading,
 } = useProject(store);
+defineOptions({ name: 'ClCreateEditProjectDialog' });
 </script>
 
 <template>

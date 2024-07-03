@@ -1,5 +1,4 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClTokenList' });
 import useTokenList from '@/views/token/list/useTokenList';
 
 defineProps<{
@@ -15,6 +14,7 @@ const {
   tableData,
   tableTotal,
 } = useTokenList();
+defineOptions({ name: 'ClTokenList' });
 </script>
 
 <template>

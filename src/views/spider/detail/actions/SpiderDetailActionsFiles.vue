@@ -1,9 +1,9 @@
 <script setup lang="ts">
-defineOptions({ name: 'ClSpiderDetailActionsFiles' });
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 
 const ns = 'spider';
 const { activeId } = useSpiderDetail();
+defineOptions({ name: 'ClSpiderDetailActionsFiles' });
 </script>
 
 <template>
