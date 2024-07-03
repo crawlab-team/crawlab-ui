@@ -44,7 +44,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     select: (value: TableData<TableAnyRowData>) => void;
     edit: (value: TableData<TableAnyRowData>) => void;
     delete: (value: TableData<TableAnyRowData>) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     navActions: ListActionGroup[];
     rowKey: string | ((row: any) => string);
     tableColumns: TableColumns;

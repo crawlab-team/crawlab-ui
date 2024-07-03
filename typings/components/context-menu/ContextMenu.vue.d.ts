@@ -14,7 +14,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     placement: string;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     hide: () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ContextMenuProps>, {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ContextMenuProps>, {
     placement: string;
 }>>> & {
     onHide?: (() => any) | undefined;

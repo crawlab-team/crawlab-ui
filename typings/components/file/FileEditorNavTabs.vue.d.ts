@@ -12,7 +12,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
     "tab-close-all": () => void;
     "tab-dragend": (items: FileNavItem[]) => void;
     "show-more": () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     activeTab?: FileNavItem;
     tabs?: FileNavItem[];
     styles?: FileEditorStyles;

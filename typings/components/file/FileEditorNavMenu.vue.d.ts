@@ -19,7 +19,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     "drop-files": (files: InputFile[]) => void;
     search: (value: string) => void;
     "toggle-nav-menu": () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     loading?: boolean;
     navMenuCollapsed?: boolean;
     activeItem?: FileNavItem;

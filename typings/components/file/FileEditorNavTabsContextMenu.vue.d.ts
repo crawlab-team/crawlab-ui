@@ -13,7 +13,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     close: () => void;
     "close-others": () => void;
     "close-all": () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ContextMenuProps>, {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ContextMenuProps>, {
     placement: string;
 }>>> & {
     onClose?: (() => any) | undefined;

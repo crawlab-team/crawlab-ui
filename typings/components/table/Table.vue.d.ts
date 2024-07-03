@@ -45,7 +45,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     "header-change": (data: TableColumn<any>, sort: SortData, filter: FilterConditionData[]) => void;
     "pagination-change": (data: TablePagination) => void;
     "selection-change": (data: TableData<TableAnyRowData>) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     data: TableData;
     columns: TableColumn[];
     selectedColumnKeys: string[];
@@ -88,12 +88,12 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
 }, {
     data: TableData;
     columns: TableColumn[];
+    page: number;
+    border: boolean;
     visibleButtons: BuiltInTableActionButtonName[];
     rowKey: string | ((row: any) => string);
-    page: number;
     total: number;
     pageSize: number;
-    border: boolean;
     selectedColumnKeys: string[];
     paginationLayout: string;
     paginationPosition: TablePaginationPosition;

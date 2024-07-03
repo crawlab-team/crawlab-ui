@@ -12,7 +12,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
     cancel: () => void;
     clear: () => void;
     apply: (value: TableHeaderDialogValue) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     visible?: boolean;
     column: TableColumn;
     actionStatusMap: TableHeaderActionStatusMap;

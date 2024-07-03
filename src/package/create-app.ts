@@ -1,4 +1,4 @@
-import { createApp, App } from 'vue';
+import { createApp, type App } from 'vue';
 import ElementPlus from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { installer as CrawlabUI } from '@/package/index';
@@ -88,15 +88,17 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
     app.use(getI18n());
     setGlobalLang((window.localStorage.getItem('lang') as Lang) || 'en');
   }
-  if (options.loadFontAwesome)
+  if (options.loadFontAwesome) {
     app.component('font-awesome-icon', FontAwesomeIcon);
+  }
   if (options.loadLocate) app.directive('locate', locate as any);
   if (options.loadAuth) app.directive('auth', auth as any);
   if (options.loadExport) app.directive('export', export_ as any);
 
   // mount
-  if (options.mount)
+  if (options.mount) {
     app.mount(typeof options.mount === 'string' ? options.mount : '#app');
+  }
 
   return app;
 };

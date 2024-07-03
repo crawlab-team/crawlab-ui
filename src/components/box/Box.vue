@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ClIcon from '@/components/icon/Icon.vue';
-
 defineOptions({ name: 'ClBox' });
 import { computed } from 'vue';
 

@@ -3,10 +3,9 @@ defineOptions({ name: 'ClGitBranchSelect' });
 import { computed, ref, watch } from 'vue';
 import { emptyArrayFunc, translate } from '@/utils';
 
-const model = defineModel<string>();
-
 const props = withDefaults(
   defineProps<{
+    modelValue?: string;
     localBranches: GitRef[];
     remoteBranches: GitRef[];
     disabled?: boolean;
@@ -20,7 +19,9 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void;
   (e: 'select-local', value: string): void;
+  (e: 'select-remote', value: string): void;
   (e: 'select-remote', value: string): void;
   (e: 'new-branch'): void;
   (e: 'delete-branch', value: string): void;
@@ -31,6 +32,20 @@ const emit = defineEmits<{
 }>();
 
 const t = translate;
+
+const internalModelValue = ref(props.modelValue);
+watch(
+  () => props.modelValue,
+  value => {
+    internalModelValue.value = value;
+  }
+);
+watch(
+  () => internalModelValue.value,
+  value => {
+    emit('update:modelValue', value);
+  }
+);
 
 const localBranchOptions = computed(() => {
   const { localBranches } = props;
@@ -112,7 +127,7 @@ const onDeleteBranch = (value: string, event: Event) => {
     <el-select
       ref="selectRef"
       popper-class="git-branch-select-dropdown"
-      v-model="model"
+      v-model="internalModelValue"
       :disabled="disabled || loading"
       :placeholder="t('components.git.branches.select')"
       @change="onSelect"

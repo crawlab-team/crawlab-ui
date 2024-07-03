@@ -30,7 +30,7 @@ export const initRequest = (router?: Router) => {
           if (msgBoxVisible) return;
           msgBoxVisible = true;
           setTimeout(() => (msgBoxVisible = false), 5000);
-          router?.push('/login');
+          await router?.push('/login');
           ElNotification({
             title: t('common.status.unauthorized'),
             message: t('common.notification.loggedOut'),
@@ -38,7 +38,7 @@ export const initRequest = (router?: Router) => {
           });
         } else {
           // token not exists, redirect to login page
-          router?.push('/login');
+          await router?.push('/login');
         }
       } else {
         // other errors

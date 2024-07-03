@@ -8,7 +8,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     select: (item: NavItem<any>) => void;
     check: (item: NavItem<any>, checked: boolean, checkedNodes: NavItem<any>[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     activeKey: string;
     items: NavItem[];
     showCheckbox: boolean;

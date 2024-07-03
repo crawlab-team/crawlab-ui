@@ -24,11 +24,11 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
     close: () => void;
     mouseenter: () => void;
     mouseleave: () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<TagProps>>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<TagProps>>> & {
+    onClose?: (() => any) | undefined;
     onClick?: (() => any) | undefined;
     onMouseenter?: (() => any) | undefined;
     onMouseleave?: (() => any) | undefined;
-    onClose?: (() => any) | undefined;
 }, {}, {}>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;

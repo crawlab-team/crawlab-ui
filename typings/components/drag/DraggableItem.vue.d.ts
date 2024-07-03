@@ -11,7 +11,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
     "d-end": (item: DraggableItemData) => void;
     "d-enter": (item: DraggableItemData) => void;
     "d-leave": (item: DraggableItemData) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     item: DraggableItemData;
     dragging?: boolean;
 }>>> & {

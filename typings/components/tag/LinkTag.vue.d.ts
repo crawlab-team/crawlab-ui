@@ -19,7 +19,7 @@ interface TagProps {
 interface LinkTagProps extends TagProps {
     path?: string;
 }
-declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<LinkTagProps>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<LinkTagProps>>>, {}, {}>;
+declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<LinkTagProps>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<LinkTagProps>>>, {}, {}>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToOption<T> = {

@@ -85,17 +85,17 @@ const onNewBranch = async () => {
       inputValidator: (value: string) => {
         if (!value) {
           return t(
-            'components.git.common.messageBox.prompt.branch.new.validate.notEmpty',
+            'components.git.common.messageBox.prompt.branch.new.validate.notEmpty'
           );
         }
         if (value === currentBranch.value?.name) {
           return t(
-            'components.git.common.messageBox.prompt.branch.new.validate.notSame',
+            'components.git.common.messageBox.prompt.branch.new.validate.notSame'
           );
         }
         return true;
       },
-    },
+    }
   );
   if (!targetBranch) return;
   const sourceBranch = currentBranch.value?.name;
@@ -125,7 +125,7 @@ const onDeleteBranch = async (branch: string) => {
         'label',
         // { style: 'margin-left: 5px;color: var(--cl-danger-color)' },
         { style: { marginLeft: '5px', color: 'var(--cl-danger-color)' } },
-        [branch],
+        [branch]
       ),
     ]) as any;
   const confirm = await ElMessageBox.confirm(message, {
@@ -187,7 +187,7 @@ const loading = computed(
     branchSelectLoading.value ||
     pullLoading.value ||
     commitLoading.value ||
-    pushLoading.value,
+    pushLoading.value
 );
 </script>
 

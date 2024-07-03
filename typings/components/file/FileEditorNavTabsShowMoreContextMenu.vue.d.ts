@@ -11,7 +11,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     hide: () => void;
     "tab-click": (tab: FileNavItem) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<ContextMenuProps & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<ContextMenuProps & {
     tabs?: FileNavItem[];
 }>>> & {
     onHide?: (() => any) | undefined;

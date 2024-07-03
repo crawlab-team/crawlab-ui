@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import { Ref } from '@vue/runtime-dom';
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     form: any;
     formRules?: FormRuleItem[];
@@ -14,7 +14,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     placeholder: string;
     onChange: () => void;
     onRegister: () => void;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     form: any;
     formRules?: FormRuleItem[];
     prop: string;

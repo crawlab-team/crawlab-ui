@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClNodeDetailTabMonitoring' });
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import dayjs from 'dayjs';
 import { ChartConfiguration } from 'chart.js/dist/types';
 import { Chart, registerables } from 'chart.js';
@@ -35,7 +35,7 @@ const getMonitoringData = async () => {
 const renderChart = () => {
   // 准备数据集
   const labels = timeSeriesData.value.map((data: any) => {
-    return new Date(data._id).getTime();
+    return new Date(data._id);
   });
   const values = timeSeriesData.value.map((data: any) => {
     console.debug('data', data.cpu_usage_percent);
@@ -60,9 +60,23 @@ const renderChart = () => {
     type: 'line',
     data: data,
     options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Node Monitoring',
+        },
+      },
       scales: {
         x: {
           type: 'time',
+          time: {
+            tooltipFormat: 'll HH:mm',
+          },
           title: {
             display: true,
             text: 'Time',

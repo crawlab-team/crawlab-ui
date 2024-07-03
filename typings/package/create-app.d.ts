@@ -1,4 +1,4 @@
-import { App } from 'vue';
+import { type App } from '@vue/runtime-dom';
 import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
 import '@/styles/index.scss';

@@ -1,2 +1,2 @@
-import { Directive } from 'vue';
+import { Directive } from '@vue/runtime-dom';
 export declare const auth: Directive<HTMLElement, Auth>;

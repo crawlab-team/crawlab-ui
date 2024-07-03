@@ -1,6 +1,6 @@
 declare function __VLS_template(): {
     default?(_: {
-        item: DraggableItemData;
+        item: true | DraggableItemData[] | import("@vue/reactivity").ReactiveEffect<DraggableItemData[]>;
     }): any;
 };
 declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
@@ -10,7 +10,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     itemKey: string;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "d-end": (items: DraggableItemData[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     items: DraggableItemData[];
     itemKey: string;
 }>, {

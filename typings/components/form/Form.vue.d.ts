@@ -19,7 +19,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     clearValidate: () => any;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     validate: () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     model?: FormModel;
     inline?: boolean;
     labelWidth?: string;
@@ -35,9 +35,9 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     onValidate?: (() => any) | undefined;
 }, {
     size: string;
+    grid: number;
     inline: boolean;
     labelWidth: string;
-    grid: number;
 }, {}>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;

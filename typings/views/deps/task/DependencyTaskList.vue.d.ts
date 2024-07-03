@@ -1,13 +1,13 @@
-declare const _default: import("vue").DefineComponent<{
+declare const _default: import("@vue/runtime-core").DefineComponent<{
     type: {
         type: StringConstructor;
     };
 }, {
-    dialogVisible: import("vue").Ref<{
+    dialogVisible: import("@vue/reactivity").Ref<{
         logs: boolean;
     }>;
-    tableColumns: import("vue").ComputedRef<TableColumns<EnvDepsTask>>;
-    tableData: import("vue").Ref<{
+    tableColumns: import("@vue/reactivity").ComputedRef<TableColumns<EnvDepsTask>>;
+    tableData: import("@vue/reactivity").Ref<{
         [x: string]: any;
         status?: string;
         error?: string;
@@ -20,14 +20,14 @@ declare const _default: import("vue").DefineComponent<{
         update_ts?: string;
         _id?: string;
     }[]>;
-    tablePagination: import("vue").Ref<{
+    tablePagination: import("@vue/reactivity").Ref<{
         page: number;
         size: number;
     }>;
-    tableTotal: import("vue").Ref<number>;
+    tableTotal: import("@vue/reactivity").Ref<number>;
     onPaginationChange: (pagination: TablePagination) => void;
     getList: () => Promise<void>;
-    logs: import("vue").Ref<{
+    logs: import("@vue/reactivity").Ref<{
         [x: string]: any;
         task_id?: string;
         content?: string;
@@ -36,7 +36,7 @@ declare const _default: import("vue").DefineComponent<{
     }[]>;
     onLogsClose: () => void;
     t: (path: string, number?: any, args?: Record<string, any>) => string;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}, unknown, {}, {}, import("@vue/runtime-core").ComponentOptionsMixin, import("@vue/runtime-core").ComponentOptionsMixin, {}, string, import("@vue/runtime-core").PublicProps, Readonly<import("@vue/runtime-core").ExtractPropTypes<{
     type: {
         type: StringConstructor;
     };

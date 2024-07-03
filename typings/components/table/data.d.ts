@@ -1,4 +1,4 @@
 declare const useData: (data: TableData) => {
-    tableData: import("vue").ComputedRef<TableData<TableAnyRowData>>;
+    tableData: import("@vue/reactivity").ComputedRef<TableData<TableAnyRowData>>;
 };
 export default useData;

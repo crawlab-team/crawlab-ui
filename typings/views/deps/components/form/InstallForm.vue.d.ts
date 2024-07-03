@@ -12,7 +12,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
         version: string;
     }) => void;
     close: () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     visible?: boolean;
     lang?: string;
     names?: string[];

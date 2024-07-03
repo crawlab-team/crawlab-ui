@@ -1,12 +1,12 @@
-declare const _default: import("vue").DefineComponent<{
+declare const _default: import("@vue/runtime-core").DefineComponent<{
     action: {
         type: StringConstructor;
     };
 }, {
-    type: import("vue").ComputedRef<"primary" | "danger" | "info">;
-    icon: import("vue").ComputedRef<string[]>;
-    actionName: import("vue").ComputedRef<string>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+    type: import("@vue/reactivity").ComputedRef<"primary" | "danger" | "info">;
+    icon: import("@vue/reactivity").ComputedRef<string[]>;
+    actionName: import("@vue/reactivity").ComputedRef<string>;
+}, unknown, {}, {}, import("@vue/runtime-core").ComponentOptionsMixin, import("@vue/runtime-core").ComponentOptionsMixin, {}, string, import("@vue/runtime-core").PublicProps, Readonly<import("@vue/runtime-core").ExtractPropTypes<{
     action: {
         type: StringConstructor;
     };

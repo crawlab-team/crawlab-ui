@@ -1,16 +1,16 @@
 declare const useNotificationDetail: () => {
-    form: import("vue").ComputedRef<BaseModel>;
-    triggersList: import("vue").ComputedRef<any[]>;
-    navItems: import("vue").ComputedRef<NavItem<BaseModel>[]>;
-    activeId: import("vue").ComputedRef<string>;
-    navSidebar: import("vue").Ref<{
+    form: import("@vue/reactivity").ComputedRef<BaseModel>;
+    triggersList: import("@vue/reactivity").ComputedRef<any[]>;
+    navItems: import("@vue/reactivity").ComputedRef<NavItem<BaseModel>[]>;
+    activeId: import("@vue/reactivity").ComputedRef<string>;
+    navSidebar: import("@vue/reactivity").Ref<{
         scroll: (id: string) => void;
     } | null>;
-    navActions: import("vue").Ref<{
+    navActions: import("@vue/reactivity").Ref<{
         getHeight: () => string;
     } | null>;
-    showActionsToggleTooltip: import("vue").Ref<boolean>;
-    tabs: import("vue").ComputedRef<{
+    showActionsToggleTooltip: import("@vue/reactivity").Ref<boolean>;
+    tabs: import("@vue/reactivity").ComputedRef<{
         title: string;
         disabled: boolean;
         id: string;
@@ -26,10 +26,10 @@ declare const useNotificationDetail: () => {
         value?: any;
         children?: NavItem<any>[] | undefined;
     }[]>;
-    activeTabName: import("vue").ComputedRef<string>;
-    sidebarCollapsed: import("vue").ComputedRef<boolean>;
-    actionsCollapsed: import("vue").ComputedRef<boolean>;
-    contentContainerStyle: import("vue").ComputedRef<{
+    activeTabName: import("@vue/reactivity").ComputedRef<string>;
+    sidebarCollapsed: import("@vue/reactivity").ComputedRef<boolean>;
+    actionsCollapsed: import("@vue/reactivity").ComputedRef<boolean>;
+    contentContainerStyle: import("@vue/reactivity").ComputedRef<{
         height: string;
     }>;
     getForm: () => ReturnType<() => Promise<any>> extends Promise<any> ? Promise<ReturnType<() => Promise<any>>> : ReturnType<() => Promise<any>>;

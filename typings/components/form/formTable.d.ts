@@ -1,5 +1,5 @@
 import { Store } from 'vuex';
-import { Ref } from 'vue';
+import { Ref } from '@vue/runtime-dom';
 export declare const useFormTable: (ns: ListStoreNamespace, store: Store<RootStoreState>, services: Services<BaseModel>, data: FormComponentData<BaseModel>) => {
     onAdd: (index: number) => void;
     onClone: (index: number) => void;

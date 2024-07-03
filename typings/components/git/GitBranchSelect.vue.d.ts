@@ -1,18 +1,15 @@
-declare let __VLS_typeProps: {
+declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+    modelValue?: string;
     localBranches: GitRef[];
     remoteBranches: GitRef[];
     disabled?: boolean;
     loading?: boolean;
     className?: string;
-};
-type __VLS_PublicProps = {
-    modelValue?: string;
-} & typeof __VLS_typeProps;
-declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<__VLS_PublicProps>, {
+}>, {
     localBranches: () => never[];
     remoteBranches: () => never[];
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    "update:modelValue": (modelValue: string) => void;
+    "update:modelValue": (value: string) => void;
     "select-local": (value: string) => void;
     "select-remote": (value: string) => void;
     "new-branch": () => void;
@@ -21,11 +18,18 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     pull: () => void;
     commit: () => void;
     push: () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<__VLS_PublicProps>, {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+    modelValue?: string;
+    localBranches: GitRef[];
+    remoteBranches: GitRef[];
+    disabled?: boolean;
+    loading?: boolean;
+    className?: string;
+}>, {
     localBranches: () => never[];
     remoteBranches: () => never[];
 }>>> & {
-    "onUpdate:modelValue"?: ((modelValue: string) => any) | undefined;
+    "onUpdate:modelValue"?: ((value: string) => any) | undefined;
     onPull?: (() => any) | undefined;
     onCommit?: (() => any) | undefined;
     onPush?: (() => any) | undefined;

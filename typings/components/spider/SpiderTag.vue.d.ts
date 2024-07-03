@@ -1,12 +1,12 @@
-import { PropType } from 'vue';
-declare const _default: import("vue").DefineComponent<{
+import { PropType } from '@vue/runtime-dom';
+declare const _default: import("@vue/runtime-core").DefineComponent<{
     spider: {
         type: PropType<Spider>;
         required: true;
     };
 }, {
-    path: import("vue").ComputedRef<string>;
-}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+    path: import("@vue/reactivity").ComputedRef<string>;
+}, unknown, {}, {}, import("@vue/runtime-core").ComponentOptionsMixin, import("@vue/runtime-core").ComponentOptionsMixin, {}, string, import("@vue/runtime-core").PublicProps, Readonly<import("@vue/runtime-core").ExtractPropTypes<{
     spider: {
         type: PropType<Spider>;
         required: true;

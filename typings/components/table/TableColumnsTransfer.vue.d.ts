@@ -7,13 +7,13 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     change: (value: string[]) => void;
     sort: (value: string[]) => void;
     confirm: (value: string[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     visible?: boolean;
     columns?: TableColumn[];
     selectedColumnKeys?: string[];
 }>>> & {
-    onChange?: ((value: string[]) => any) | undefined;
     onClose?: (() => any) | undefined;
+    onChange?: ((value: string[]) => any) | undefined;
     onConfirm?: ((value: string[]) => any) | undefined;
     onSort?: ((value: string[]) => any) | undefined;
 }, {}, {}>;

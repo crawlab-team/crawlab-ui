@@ -21,14 +21,14 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     size: string;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     click: (event: Event) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ButtonProps>, {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ButtonProps>, {
     type: string;
     size: string;
 }>>> & {
     onClick?: ((event: Event) => any) | undefined;
 }, {
-    size: BasicSize;
     type: BasicType;
+    size: BasicSize;
 }, {}>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;

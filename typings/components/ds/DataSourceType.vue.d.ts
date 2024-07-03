@@ -2,7 +2,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     dataSource?: DataSource;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     click: () => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     dataSource?: DataSource;
 }>>> & {
     onClick?: (() => any) | undefined;

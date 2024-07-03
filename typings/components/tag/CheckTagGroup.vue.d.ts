@@ -7,7 +7,7 @@ export interface CheckTagGroupProps {
 declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<CheckTagGroupProps>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:model-value": (value: string[]) => void;
     change: (value: string[]) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<CheckTagGroupProps>>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<CheckTagGroupProps>>> & {
     onChange?: ((value: string[]) => any) | undefined;
     "onUpdate:model-value"?: ((value: string[]) => any) | undefined;
 }, {}, {}>;

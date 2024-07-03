@@ -9,7 +9,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     size: string;
     icon: () => string[];
     type: string;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     duration?: number;
     isTag?: boolean;
     size?: BasicSize;
@@ -21,9 +21,9 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     icon: () => string[];
     type: string;
 }>>>, {
+    type: BasicType;
     icon: Icon;
     size: BasicSize;
-    type: BasicType;
 }, {}>;
 export default _default;
 type __VLS_WithDefaults<P, D> = {
