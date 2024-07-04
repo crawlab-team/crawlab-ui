@@ -153,7 +153,7 @@ defineOptions({ name: 'ClNavTabs' });
       line-height: var(--cl-nav-tabs-height);
       color: var(--cl-info-medium-dark-color);
 
-      &:hover {
+      &:not(.is-disabled):hover {
         color: var(--cl-primary-color);
         background: inherit;
       }

@@ -21,9 +21,9 @@ const getCurrentMetricsData = async () => {
 
 const getTagType = (percent?: number) => {
   if (percent === undefined) return 'default';
-  if (percent < 20) return 'success';
-  if (percent < 50) return 'primary';
-  if (percent < 80) return 'warning';
+  if (percent < 30) return 'success';
+  if (percent < 70) return 'primary';
+  if (percent < 90) return 'warning';
   return 'danger';
 };
 
