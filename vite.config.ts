@@ -30,7 +30,6 @@ export default defineConfig(({ mode }) => {
           '@fortawesome/free-regular-svg-icons',
           '@fortawesome/free-solid-svg-icons',
           '@fortawesome/vue-fontawesome',
-          'echarts',
           'atom-material-icons',
           'monaco-editor',
           'chart.js',
@@ -61,7 +60,6 @@ export default defineConfig(({ mode }) => {
             '@fortawesome/free-regular-svg-icons': 'FontAwesomeRegularSvgIcons',
             '@fortawesome/free-solid-svg-icons': 'FontAwesomeSolidSvgIcons',
             '@fortawesome/vue-fontawesome': 'FontAwesomeVue',
-            echarts: 'Echarts',
             'atom-material-icons': 'AtomMaterialIcons',
             'monaco-editor': 'monaco-editor',
             'chart.js': 'ChartJS',
@@ -82,13 +80,12 @@ export default defineConfig(({ mode }) => {
       },
     },
     optimizeDeps: {
-      include: ['element-plus', 'echarts', 'monaco-editor'],
+      include: ['element-plus', 'monaco-editor'],
     },
     resolve: {
-      dedupe: ['vue', 'vue-router', 'vuex', 'axios', 'element-plus', 'echarts'],
+      dedupe: ['vue', 'vue-router', 'vuex', 'axios', 'element-plus'],
       alias: {
         '@': resolve(__dirname, 'src'),
-        echarts: 'echarts/dist/echarts.min.js',
       },
       extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss'],
     },

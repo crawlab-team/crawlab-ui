@@ -40,7 +40,7 @@ defineOptions({ name: 'ClMetric' });
   >
     <div class="background" />
     <div class="icon">
-      <font-awesome-icon :icon="icon" />
+      <cl-icon :icon="icon" />
     </div>
     <div class="info">
       <div class="title">

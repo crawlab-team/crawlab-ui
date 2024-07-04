@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import useRequest from '@/services/request';
+import { computed, onMounted, ref } from 'vue';
 import dayjs from 'dayjs';
-import { spanDateRange } from '@/utils/stats';
 import { useRouter } from 'vue-router';
+import { ChartData, ChartOptions } from 'chart.js';
 import {
   TASK_STATUS_CANCELLED,
   TASK_STATUS_ERROR,
@@ -11,7 +10,12 @@ import {
   TASK_STATUS_PENDING,
   TASK_STATUS_RUNNING,
 } from '@/constants/task';
-import { getColorByKey } from '@/utils';
+import useRequest from '@/services/request';
+import { getColorByKey, translate } from '@/utils';
+import { spanDateRange } from '@/utils/stats';
+import { colorPalette } from '@/utils/chart';
+
+const t = translate;
 
 const { get } = useRequest();
 
@@ -88,72 +92,161 @@ const metrics = ref<MetricMeta[]>([
   },
 ]);
 
-const dailyConfig = ref<EChartsConfig>({
-  dataMetas: [
-    {
-      key: 'tasks',
-      name: 'views.home.metrics.tasks',
-      yAxisIndex: 0,
-    },
-    {
-      key: 'results',
-      name: 'views.home.metrics.results',
-      yAxisIndex: 1,
-    },
-  ],
-  data: [],
-  option: {
-    title: {
-      text: 'views.home.dailyConfig.title',
-    },
-    yAxis: [
-      { name: 'views.home.metrics.tasks', position: 'left' },
-      { name: 'views.home.metrics.results', position: 'right' },
+const dailyData = ref([]);
+const dailyChartData = computed<ChartData>(() => {
+  return {
+    labels: spanDateRange(
+      dateRange.value.start,
+      dateRange.value.end,
+      dailyData.value,
+      '_id'
+    ).map((d: any) => d._id),
+    datasets: [
+      {
+        label: t('views.home.metrics.tasks'),
+        data: dailyData.value.map((d: any) => d.tasks || 0),
+        borderColor: getColorByKey('primary'),
+        backgroundColor: getColorByKey('primary'),
+        yAxisID: 'y',
+      },
+      {
+        label: t('views.home.metrics.results'),
+        data: dailyData.value.map((d: any) => d.results || 0),
+        borderColor: getColorByKey('success'),
+        backgroundColor: getColorByKey('success'),
+        yAxisID: 'y1',
+      },
     ],
-    color: [getColorByKey('primary'), getColorByKey('success')],
-  },
+  };
 });
-
-const tasksByStatusConfig = ref<EChartsConfig>({
-  data: [],
-  option: {
+const dailyChartOptions = ref<ChartOptions>({
+  plugins: {
     title: {
-      text: 'views.home.tasksByStatusConfig.title',
+      text: t('views.home.dailyConfig.title'),
     },
   },
-  itemStyleColorFunc: ({ data }: any) => {
-    const { name } = data;
-    switch (name) {
-      case TASK_STATUS_PENDING:
-        return getColorByKey('primary');
-      case TASK_STATUS_RUNNING:
-        return getColorByKey('warning');
-      case TASK_STATUS_FINISHED:
-        return getColorByKey('success');
-      case TASK_STATUS_ERROR:
-        return getColorByKey('danger');
-      case TASK_STATUS_CANCELLED:
-        return getColorByKey('info-medium');
-      default:
-        return 'red';
-    }
-  },
-});
-
-const tasksByNodeConfig = ref<EChartsConfig>({
-  data: [],
-  option: {
-    title: {
-      text: 'views.home.tasksByNodeConfig.title',
+  scales: {
+    x: {
+      type: 'time',
+      time: {
+        unit: 'day',
+      },
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: t('views.home.metrics.tasks'),
+      },
+      type: 'linear',
+      display: true,
+      position: 'left',
+    },
+    y1: {
+      title: {
+        display: true,
+        text: t('views.home.metrics.results'),
+      },
+      type: 'linear',
+      type: 'linear',
+      display: true,
+      position: 'right',
+      gridLines: {
+        drawOnChartArea: false, // 仅显示一侧的网格线
+      },
     },
   },
 });
 
-const tasksBySpiderConfig = ref<EChartsConfig>({
-  data: [],
-  option: {
+const getTaskStatusColorByLabel = (label: string) => {
+  switch (label) {
+    case TASK_STATUS_PENDING:
+      return getColorByKey('primary');
+    case TASK_STATUS_RUNNING:
+      return getColorByKey('warning');
+    case TASK_STATUS_FINISHED:
+      return getColorByKey('success');
+    case TASK_STATUS_ERROR:
+      return getColorByKey('danger');
+    case TASK_STATUS_CANCELLED:
+      return getColorByKey('info-medium');
+    default:
+      return 'red';
+  }
+};
+
+const tasksByStatusData = ref([]);
+const tasksByStatusChartData = computed<ChartData>(() => {
+  return {
+    labels: tasksByStatusData.value.map((d: any) =>
+      t('components.task.status.label.' + d.status)
+    ),
+    datasets: [
+      {
+        label: t('views.home.metrics.tasks'),
+        data: tasksByStatusData.value.map((d: any) => d.tasks),
+        backgroundColor: tasksByStatusData.value.map((d: any) =>
+          getTaskStatusColorByLabel(d.status)
+        ),
+      },
+    ],
+  };
+});
+const tasksByStatusChartOptions = ref<ChartOptions>({
+  plugins: {
     title: {
-      text: 'views.home.tasksBySpiderConfig.title',
+      display: true,
+      text: t('views.home.tasksByStatusConfig.title'),
+    },
+  },
+});
+
+const tasksByNodeData = ref([]);
+const tasksByNodeChartData = computed<ChartData>(() => {
+  return {
+    labels: tasksByNodeData.value.map((d: any) => d.node_name),
+    datasets: [
+      {
+        label: t('views.home.metrics.tasks'),
+        data: tasksByNodeData.value.map((d: any) => d.tasks),
+        backgroundColor: tasksByNodeData.value.map(
+          (_: any, index: number) => colorPalette[index % colorPalette.length]
+        ),
+      },
+    ],
+  };
+});
+const tasksByNodeChartOptions = ref<ChartOptions>({
+  plugins: {
+    title: {
+      display: true,
+      text: t('views.home.tasksByNodeConfig.title'),
+    },
+  },
+});
+
+const tasksBySpiderData = ref([]);
+const tasksBySpiderChartData = computed<ChartData>(() => {
+  return {
+    labels: tasksBySpiderData.value.map((d: any) => d.spider_name),
+    datasets: [
+      {
+        label: t('views.home.metrics.tasks'),
+        data: tasksBySpiderData.value.map((d: any) => d.tasks),
+        backgroundColor: tasksBySpiderData.value.map(
+          (_: any, index: number) => colorPalette[index % colorPalette.length]
+        ),
+      },
+    ],
+  };
+});
+const tasksBySpiderChartOptions = ref<ChartOptions>({
+  plugins: {
+    title: {
+      display: true,
+      text: t('views.home.tasksBySpiderConfig.title'),
     },
   },
 });
@@ -171,16 +264,14 @@ const getDaily = async () => {
   // TODO: filter by date range?
   const { start, end } = dateRange.value;
   const res = await get(`/stats/daily`);
-  dailyConfig.value.data = spanDateRange(start, end, res?.data || [], 'date');
+  dailyData.value = spanDateRange(start, end, res?.data || [], 'date');
 };
 
 const getTasks = async () => {
-  // TODO: filter by date range?
-  const { start, end } = dateRange.value;
   const res = await get(`/stats/tasks`);
-  tasksByStatusConfig.value.data = res?.data.by_status;
-  tasksByNodeConfig.value.data = res?.data.by_node;
-  tasksBySpiderConfig.value.data = res?.data.by_spider;
+  tasksByStatusData.value = res?.data.by_status;
+  tasksByNodeData.value = res?.data.by_node;
+  tasksBySpiderData.value = res?.data.by_spider;
 };
 
 const getData = async () =>
@@ -224,12 +315,13 @@ const getColor = (m: MetricMeta) => {
 onMounted(async () => {
   await getData();
 });
+
 defineOptions({ name: 'ClHome' });
 </script>
 
 <template>
   <div class="home">
-    <el-row v-if="false" class="row-overview-metrics">
+    <el-row class="row-overview-metrics">
       <el-col
         v-for="(m, i) in metrics"
         :key="i"
@@ -245,29 +337,33 @@ defineOptions({ name: 'ClHome' });
         />
       </el-col>
     </el-row>
-    <el-row v-if="false" class="row-line-chart">
-      <cl-line-chart :config="dailyConfig" is-time-series label-key="date" />
+    <el-row class="row-line-chart">
+      <cl-chart
+        type="line"
+        :data="dailyChartData"
+        :options="dailyChartOptions"
+      />
     </el-row>
-    <el-row v-if="false" class="row-pie-chart">
+    <el-row class="row-pie-chart">
       <el-col :span="8">
-        <cl-pie-chart
-          :config="tasksByStatusConfig"
-          label-key="status"
-          value-key="tasks"
+        <cl-chart
+          type="pie"
+          :data="tasksByStatusChartData"
+          :options="tasksByStatusChartOptions"
         />
       </el-col>
       <el-col :span="8">
-        <cl-pie-chart
-          :config="tasksByNodeConfig"
-          label-key="node_name"
-          value-key="tasks"
+        <cl-chart
+          type="pie"
+          :data="tasksByNodeChartData"
+          :options="tasksByNodeChartOptions"
         />
       </el-col>
       <el-col :span="8">
-        <cl-pie-chart
-          :config="tasksBySpiderConfig"
-          label-key="spider_name"
-          value-key="tasks"
+        <cl-chart
+          type="pie"
+          :data="tasksBySpiderChartData"
+          :options="tasksBySpiderChartOptions"
         />
       </el-col>
     </el-row>

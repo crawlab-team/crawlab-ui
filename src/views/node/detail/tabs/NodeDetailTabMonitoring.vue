@@ -4,9 +4,10 @@ import dayjs from 'dayjs';
 import { ChartData, ChartOptions } from 'chart.js';
 import useRequest from '@/services/request';
 import { translate } from '@/utils';
-import useDetail from '@/layouts/content/detail/useDetail';
 import { getTimeUnitParts } from '@/utils/time';
 import { formatBytes } from '@/utils/metric';
+import { colorPalette } from '@/utils/chart';
+import useDetail from '@/layouts/content/detail/useDetail';
 import ClEmpty from '@/components/empty/Empty.vue';
 
 const { get } = useRequest();
@@ -158,19 +159,6 @@ const metricOptions = computed<SelectOption[]>(() => {
   });
 });
 
-const colorPalettes = [
-  '#409eff',
-  '#e6a23c',
-  '#67c23a',
-  '#f56c6c',
-  '#909399',
-  '#0bb2d4',
-  '#9c27b0',
-  '#ff5722',
-  '#795548',
-  '#607d8b',
-];
-
 const getLineChartData = (name: keyof Metric): ChartData<string, number> => {
   if (!metricsTimeSeriesData.value?.length) return { labels: [], datasets: [] };
   const labels: string[] = metricsTimeSeriesData.value.map(
@@ -182,7 +170,7 @@ const getLineChartData = (name: keyof Metric): ChartData<string, number> => {
   return {
     labels,
     datasets: metrics?.map((m, index) => {
-      const color = colorPalettes[index % colorPalettes.length];
+      const color = colorPalette[index % colorPalette.length];
       const data: number[] = metricsTimeSeriesData.value.map(
         (metric: Metric) => metric[m]
       );
