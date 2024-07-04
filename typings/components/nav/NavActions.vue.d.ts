@@ -4,7 +4,10 @@ declare function __VLS_template(): {
 declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     collapsed?: boolean;
     minHeight?: string;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}>, {
+    getHeight: () => string | undefined;
+    updateHeight: () => void;
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     collapsed?: boolean;
     minHeight?: string;
 }>>>, {}, {}>;

@@ -1,4 +1,4 @@
-declare const _default: import("@vue/runtime-core").DefineComponent<{}, {
-    id: import("@vue/reactivity").ComputedRef<string | string[]>;
-}, {}, {}, {}, import("@vue/runtime-core").ComponentOptionsMixin, import("@vue/runtime-core").ComponentOptionsMixin, {}, string, import("@vue/runtime-core").PublicProps, Readonly<import("@vue/runtime-core").ExtractPropTypes<{}>>, {}, {}>;
+declare const _default: import("vue").DefineComponent<{}, {
+    id: import("vue").ComputedRef<string | string[]>;
+}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{}>>, {}, {}>;
 export default _default;

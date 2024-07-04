@@ -1,2 +1,2 @@
-import { ComponentOptionsMixin } from '@vue/runtime-dom';
+import { ComponentOptionsMixin } from 'vue';
 export declare const mapElements: (elements: any) => [string, ComponentOptionsMixin][];

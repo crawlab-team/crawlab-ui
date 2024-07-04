@@ -1,36 +1,36 @@
 declare const useGitDetail: () => {
-    tabs: import("@vue/reactivity").ComputedRef<NavItem<any>[]>;
-    currentBranch: import("@vue/reactivity").ComputedRef<GitRef | undefined>;
-    gitLocalBranches: import("@vue/reactivity").ComputedRef<GitRef[]>;
-    gitLocalBranchesDict: import("@vue/reactivity").ComputedRef<Record<string, GitRef>>;
-    gitRemoteBranches: import("@vue/reactivity").ComputedRef<GitRef[] | undefined>;
-    gitRemoteBranchesDict: import("@vue/reactivity").ComputedRef<Record<string, GitRef>>;
-    isDisabled: import("@vue/reactivity").ComputedRef<boolean>;
-    commitLoading: import("@vue/reactivity").Ref<boolean>;
+    tabs: import("vue").ComputedRef<NavItem<any>[]>;
+    currentBranch: import("vue").ComputedRef<GitRef | undefined>;
+    gitLocalBranches: import("vue").ComputedRef<GitRef[]>;
+    gitLocalBranchesDict: import("vue").ComputedRef<Record<string, GitRef>>;
+    gitRemoteBranches: import("vue").ComputedRef<GitRef[] | undefined>;
+    gitRemoteBranchesDict: import("vue").ComputedRef<Record<string, GitRef>>;
+    isDisabled: import("vue").ComputedRef<boolean>;
+    commitLoading: import("vue").Ref<boolean>;
     onCommit: () => Promise<void>;
-    rollbackLoading: import("@vue/reactivity").Ref<boolean>;
+    rollbackLoading: import("vue").Ref<boolean>;
     onRollback: () => Promise<void>;
-    pullLoading: import("@vue/reactivity").Ref<boolean>;
-    pullBoxVisible: import("@vue/reactivity").Ref<boolean>;
-    pullBoxLogs: import("@vue/reactivity").Ref<string[]>;
+    pullLoading: import("vue").Ref<boolean>;
+    pullBoxVisible: import("vue").Ref<boolean>;
+    pullBoxLogs: import("vue").Ref<string[]>;
     onPull: () => Promise<void>;
-    pushLoading: import("@vue/reactivity").Ref<boolean>;
-    pushBoxVisible: import("@vue/reactivity").Ref<boolean>;
-    pushBoxLogs: import("@vue/reactivity").Ref<string[]>;
+    pushLoading: import("vue").Ref<boolean>;
+    pushBoxVisible: import("vue").Ref<boolean>;
+    pushBoxLogs: import("vue").Ref<string[]>;
     onPush: () => Promise<void>;
-    navItems: import("@vue/reactivity").ComputedRef<NavItem<BaseModel>[]>;
-    activeId: import("@vue/reactivity").ComputedRef<string>;
-    navSidebar: import("@vue/reactivity").Ref<{
+    navItems: import("vue").ComputedRef<NavItem<BaseModel>[]>;
+    activeId: import("vue").ComputedRef<string>;
+    navSidebar: import("vue").Ref<{
         scroll: (id: string) => void;
     } | null>;
-    navActions: import("@vue/reactivity").Ref<{
+    navActions: import("vue").Ref<{
         getHeight: () => string;
     } | null>;
-    showActionsToggleTooltip: import("@vue/reactivity").Ref<boolean>;
-    activeTabName: import("@vue/reactivity").ComputedRef<string>;
-    sidebarCollapsed: import("@vue/reactivity").ComputedRef<boolean>;
-    actionsCollapsed: import("@vue/reactivity").ComputedRef<boolean>;
-    contentContainerStyle: import("@vue/reactivity").ComputedRef<{
+    showActionsToggleTooltip: import("vue").Ref<boolean>;
+    activeTabName: import("vue").ComputedRef<string>;
+    sidebarCollapsed: import("vue").ComputedRef<boolean>;
+    actionsCollapsed: import("vue").ComputedRef<boolean>;
+    contentContainerStyle: import("vue").ComputedRef<{
         height: string;
     }>;
     getForm: () => ReturnType<() => Promise<any>> extends Promise<any> ? Promise<ReturnType<() => Promise<any>>> : ReturnType<() => Promise<any>>;

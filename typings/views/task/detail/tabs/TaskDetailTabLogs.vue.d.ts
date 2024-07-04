@@ -1,10 +1,10 @@
-declare const _default: import("@vue/runtime-core").DefineComponent<{}, {
-    editorRef: import("@vue/reactivity").Ref<HTMLDivElement | undefined>;
-    page: import("@vue/reactivity").ComputedRef<number>;
-    size: import("@vue/reactivity").ComputedRef<number>;
-    total: import("@vue/reactivity").ComputedRef<number>;
-    pageSizes: import("@vue/reactivity").Ref<number[]>;
+declare const _default: import("vue").DefineComponent<{}, {
+    editorRef: import("vue").Ref<HTMLDivElement | undefined>;
+    page: import("vue").ComputedRef<number>;
+    size: import("vue").ComputedRef<number>;
+    total: import("vue").ComputedRef<number>;
+    pageSizes: import("vue").Ref<number[]>;
     onPageChange: (page: number) => void;
     onSizeChange: (size: number) => void;
-}, {}, {}, {}, import("@vue/runtime-core").ComponentOptionsMixin, import("@vue/runtime-core").ComponentOptionsMixin, {}, string, import("@vue/runtime-core").PublicProps, Readonly<import("@vue/runtime-core").ExtractPropTypes<{}>>, {}, {}>;
+}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{}>>, {}, {}>;
 export default _default;

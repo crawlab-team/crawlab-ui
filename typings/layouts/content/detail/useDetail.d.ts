@@ -1,14 +1,14 @@
 declare const useDetail: <T = BaseModel>(ns: ListStoreNamespace) => {
-    navItems: import("@vue/reactivity").ComputedRef<NavItem<T>[]>;
-    activeId: import("@vue/reactivity").ComputedRef<string>;
-    navSidebar: import("@vue/reactivity").Ref<{
+    navItems: import("vue").ComputedRef<NavItem<T>[]>;
+    activeId: import("vue").ComputedRef<string>;
+    navSidebar: import("vue").Ref<{
         scroll: (id: string) => void;
     } | null>;
-    navActions: import("@vue/reactivity").Ref<{
+    navActions: import("vue").Ref<{
         getHeight: () => string;
     } | null>;
-    showActionsToggleTooltip: import("@vue/reactivity").Ref<boolean>;
-    tabs: import("@vue/reactivity").ComputedRef<{
+    showActionsToggleTooltip: import("vue").Ref<boolean>;
+    tabs: import("vue").ComputedRef<{
         title: string;
         disabled: boolean;
         id: string;
@@ -24,10 +24,10 @@ declare const useDetail: <T = BaseModel>(ns: ListStoreNamespace) => {
         value?: any;
         children?: NavItem<any>[] | undefined;
     }[]>;
-    activeTabName: import("@vue/reactivity").ComputedRef<string>;
-    sidebarCollapsed: import("@vue/reactivity").ComputedRef<boolean>;
-    actionsCollapsed: import("@vue/reactivity").ComputedRef<boolean>;
-    contentContainerStyle: import("@vue/reactivity").ComputedRef<{
+    activeTabName: import("vue").ComputedRef<string>;
+    sidebarCollapsed: import("vue").ComputedRef<boolean>;
+    actionsCollapsed: import("vue").ComputedRef<boolean>;
+    contentContainerStyle: import("vue").ComputedRef<{
         height: string;
     }>;
     getForm: () => ReturnType<() => Promise<any>> extends Promise<any> ? Promise<ReturnType<() => Promise<any>>> : ReturnType<() => Promise<any>>;

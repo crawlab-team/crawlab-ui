@@ -17,8 +17,8 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
 }>, {
     confirmFunc: () => Promise<void>;
 }>>> & {
-    onCancel?: (() => any) | undefined;
     onConfirm?: (() => any) | undefined;
+    onCancel?: (() => any) | undefined;
 }, {
     confirmFunc: () => Promise<void>;
 }, {}>;

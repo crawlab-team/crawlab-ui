@@ -1,4 +1,4 @@
-import { Ref } from '@vue/runtime-dom';
+import { Ref } from 'vue';
 declare const useAction: (emit: Function, table: Ref, actionFunctions?: ListLayoutActionFunctions) => {
     selection: Ref<TableAnyRowData[]>;
     onSelectionChange: (value: TableData) => void;

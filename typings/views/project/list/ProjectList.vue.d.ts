@@ -1,9 +1,9 @@
-declare const _default: import("@vue/runtime-core").DefineComponent<{}, {
-    navActions: import("@vue/reactivity").Ref<ListActionGroup[]> | undefined;
-    tableColumns: import("@vue/reactivity").Ref<TableColumns<any>> | undefined;
-    tableData: import("@vue/reactivity").Ref<TableData<any>>;
-    tableTotal: import("@vue/reactivity").Ref<number>;
-    tablePagination: import("@vue/reactivity").Ref<TablePagination>;
+declare const _default: import("vue").DefineComponent<{}, {
+    navActions: import("vue").Ref<ListActionGroup[]> | undefined;
+    tableColumns: import("vue").Ref<TableColumns<any>> | undefined;
+    tableData: import("vue").Ref<TableData<any>>;
+    tableTotal: import("vue").Ref<number>;
+    tablePagination: import("vue").Ref<TablePagination>;
     actionFunctions: ListLayoutActionFunctions;
-}, {}, {}, {}, import("@vue/runtime-core").ComponentOptionsMixin, import("@vue/runtime-core").ComponentOptionsMixin, {}, string, import("@vue/runtime-core").PublicProps, Readonly<import("@vue/runtime-core").ExtractPropTypes<{}>>, {}, {}>;
+}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{}>>, {}, {}>;
 export default _default;

@@ -1,6 +1,6 @@
 declare function __VLS_template(): {
     default?(_: {
-        item: true | DraggableItemData[] | import("@vue/reactivity").ReactiveEffect<DraggableItemData[]>;
+        item: DraggableItemData;
     }): any;
 };
 declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{

@@ -1,4 +1,4 @@
-import { Ref } from '@vue/runtime-dom';
+import { Ref } from 'vue';
 import { Store } from 'vuex';
 export declare const getDefaultUseListOptions: <T = any>(navActions: Ref<ListActionGroup[]>, tableColumns: Ref<TableColumns<T>>) => UseListOptions<T>;
 export declare const setupGetAllList: (store: Store<RootStoreState>, allListNamespaces: ListStoreNamespace[]) => void;

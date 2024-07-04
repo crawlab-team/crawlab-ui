@@ -1,12 +1,12 @@
 declare const useEnvironmentList: () => {
-    navActions?: import("@vue/reactivity").Ref<ListActionGroup[]>;
-    tableColumns?: import("@vue/reactivity").Ref<TableColumns<any>> | undefined;
-    tableData: import("@vue/reactivity").Ref<TableData<any>>;
-    tableTotal: import("@vue/reactivity").Ref<number>;
-    tablePagination: import("@vue/reactivity").Ref<TablePagination>;
-    tableListFilter: import("@vue/reactivity").Ref<FilterConditionData[]>;
-    tableListSort: import("@vue/reactivity").Ref<SortData[]>;
+    navActions?: import("vue").Ref<ListActionGroup[]>;
+    tableColumns?: import("vue").Ref<TableColumns<any>> | undefined;
+    tableData: import("vue").Ref<TableData<any>>;
+    tableTotal: import("vue").Ref<number>;
+    tablePagination: import("vue").Ref<TablePagination>;
+    tableListFilter: import("vue").Ref<FilterConditionData[]>;
+    tableListSort: import("vue").Ref<SortData[]>;
     actionFunctions: ListLayoutActionFunctions;
-    activeDialogKey: import("@vue/reactivity").ComputedRef<DialogKey | undefined>;
+    activeDialogKey: import("vue").ComputedRef<DialogKey | undefined>;
 };
 export default useEnvironmentList;

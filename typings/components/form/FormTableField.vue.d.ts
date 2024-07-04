@@ -1,4 +1,4 @@
-import { Ref } from '@vue/runtime-dom';
+import { Ref } from 'vue';
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     form: any;
     formRules?: FormRuleItem[];

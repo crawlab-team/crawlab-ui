@@ -1,13 +1,13 @@
-declare const _default: import("@vue/runtime-core").DefineComponent<{
+declare const _default: import("vue").DefineComponent<{
     type: {
         type: StringConstructor;
     };
 }, {
-    dialogVisible: import("@vue/reactivity").Ref<{
+    dialogVisible: import("vue").Ref<{
         logs: boolean;
     }>;
-    tableColumns: import("@vue/reactivity").ComputedRef<TableColumns<EnvDepsTask>>;
-    tableData: import("@vue/reactivity").Ref<{
+    tableColumns: import("vue").ComputedRef<TableColumns<EnvDepsTask>>;
+    tableData: import("vue").Ref<{
         [x: string]: any;
         status?: string;
         error?: string;
@@ -20,14 +20,14 @@ declare const _default: import("@vue/runtime-core").DefineComponent<{
         update_ts?: string;
         _id?: string;
     }[]>;
-    tablePagination: import("@vue/reactivity").Ref<{
+    tablePagination: import("vue").Ref<{
         page: number;
         size: number;
     }>;
-    tableTotal: import("@vue/reactivity").Ref<number>;
+    tableTotal: import("vue").Ref<number>;
     onPaginationChange: (pagination: TablePagination) => void;
     getList: () => Promise<void>;
-    logs: import("@vue/reactivity").Ref<{
+    logs: import("vue").Ref<{
         [x: string]: any;
         task_id?: string;
         content?: string;
@@ -36,7 +36,7 @@ declare const _default: import("@vue/runtime-core").DefineComponent<{
     }[]>;
     onLogsClose: () => void;
     t: (path: string, number?: any, args?: Record<string, any>) => string;
-}, unknown, {}, {}, import("@vue/runtime-core").ComponentOptionsMixin, import("@vue/runtime-core").ComponentOptionsMixin, {}, string, import("@vue/runtime-core").PublicProps, Readonly<import("@vue/runtime-core").ExtractPropTypes<{
+}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
     type: {
         type: StringConstructor;
     };

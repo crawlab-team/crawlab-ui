@@ -35,8 +35,8 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     onValidate?: (() => any) | undefined;
 }, {
     size: string;
-    grid: number;
     inline: boolean;
+    grid: number;
     labelWidth: string;
 }, {}>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;

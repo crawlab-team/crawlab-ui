@@ -87,9 +87,9 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     "onPagination-change"?: ((data: TablePagination) => any) | undefined;
 }, {
     data: TableData;
-    columns: TableColumn[];
     page: number;
     border: boolean;
+    columns: TableColumn[];
     visibleButtons: BuiltInTableActionButtonName[];
     rowKey: string | ((row: any) => string);
     total: number;
