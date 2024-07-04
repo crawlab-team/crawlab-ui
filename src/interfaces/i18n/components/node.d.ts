@@ -59,9 +59,22 @@ interface LComponentsNode {
       network_bytes_sent_rate: string;
       network_bytes_recv_rate: string;
     };
+    groups: {
+      disk_io_bytes_rate: string;
+      network_io_bytes_rate: string;
+    };
+    timeUnits: {
+      s: string;
+      m: string;
+      h: string;
+      d: string;
+      w: string;
+      M: string;
+      y: string;
+    };
     timeRanges: {
       '1h': string;
-      '1d': string;
+      '24h': string;
       '7d': string;
       '30d': string;
     };

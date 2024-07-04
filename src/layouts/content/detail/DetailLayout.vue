@@ -49,6 +49,7 @@ const {
   showActionsToggleTooltip,
   tabs: defaultTabs,
   contentContainerStyle,
+  navActions,
   onNavSidebarSelect,
   onNavSidebarToggle,
   onNavTabsSelect,
@@ -72,6 +73,8 @@ onMounted(() => {
   if (!navSidebar.value) return;
   navSidebar.value.scroll(activeId.value);
 });
+
+onMounted(() => {});
 
 // reset form before unmount
 onBeforeUnmount(() => {

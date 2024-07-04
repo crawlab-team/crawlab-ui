@@ -5,6 +5,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 import useRequest from '@/services/request';
 import { translate } from '@/utils';
 import useDetail from '@/layouts/content/detail/useDetail';
+import { getTimeUnitParts } from '@/utils/time';
 
 const { get } = useRequest();
 
@@ -15,13 +16,13 @@ const ns = 'node';
 const { activeId } = useDetail<CNode>(ns);
 
 const timeRange = ref<string>('1h');
-const timeRanges = ['1h', '1d', '7d', '30d'];
-const timeUnits = ['5m', '15m', '6h', '1d'];
+const timeRanges = ['1h', '24h', '7d', '30d'];
+const timeUnits = ['5m', '1h', '6h', '1d'];
 const timeRangeOptions = computed<SelectOption[]>(() => {
   return timeRanges.map((value, index) => {
     const label = t('components.node.metric.timeRanges.' + value);
     const timeUnit = timeUnits[index];
-    const groups = timeUnit.match(/(\d+)([a-z])/);
+    const groups = timeRange.value.match(/(\d+)([a-z])/);
     const num = parseInt(groups[1]);
     const unit = groups[2];
     const start = dayjs().add(-num, unit).toISOString();
@@ -46,9 +47,7 @@ const startEnd = computed(() => {
   return { start, end };
 });
 const spanGaps = computed(() => {
-  const groups = timeUnit.value.match(/(\d+)([a-z])/);
-  const num = parseInt(groups[1]);
-  const unit = groups[2];
+  const { num, unit } = getTimeUnitParts(timeUnit.value);
   switch (unit) {
     case 'm':
       return num * 60 * 1000;
@@ -58,34 +57,105 @@ const spanGaps = computed(() => {
       return num * 24 * 60 * 60 * 1000;
   }
 });
+const timeTooltipFormat = computed(() => {
+  const { unit } = getTimeUnitParts(timeUnit.value);
+  switch (unit) {
+    case 'm':
+      return 'LLL dd HH:mm:ss';
+    case 'h':
+      return 'LLL dd HH:mm';
+    case 'd':
+      return 'LLL dd';
+  }
+});
+const timeDisplayFormats = computed(() => {
+  const { unit } = getTimeUnitParts(timeUnit.value);
+  switch (unit) {
+    case 'm':
+    case 'h':
+      return {
+        minute: 'HH:mm',
+        hour: 'HH:mm',
+        day: 'MMM dd',
+      };
+    case 'd':
+      return {
+        minute: 'HH:mm',
+        hour: 'HH:mm',
+        day: 'MMM dd',
+      };
+  }
+});
 
-const allMetricNames = [
-  'cpu_usage_percent',
-  'total_memory',
-  'available_memory',
-  'used_memory',
-  'used_memory_percent',
-  'total_disk',
-  'available_disk',
-  'used_disk',
-  'used_disk_percent',
-  'disk_read_bytes_rate',
-  'disk_write_bytes_rate',
-  'network_bytes_sent_rate',
-  'network_bytes_recv_rate',
+const allMetricGroups: MetricGroup[] = [
+  {
+    name: 'cpu_usage_percent', // 'cpu_usage_percent
+    label: t('components.node.metric.metrics.cpu_usage_percent'),
+    metrics: ['cpu_usage_percent'],
+  },
+  {
+    name: 'used_memory_percent',
+    label: t('components.node.metric.metrics.used_memory_percent'),
+    metrics: ['used_memory_percent'],
+  },
+  {
+    name: 'used_disk_percent',
+    label: t('components.node.metric.metrics.used_disk_percent'),
+    metrics: ['used_disk_percent'],
+  },
+  {
+    name: 'disk_io_bytes_rate',
+    label: t('components.node.metric.groups.disk_io_bytes_rate'),
+    metrics: ['disk_read_bytes_rate', 'disk_write_bytes_rate'],
+  },
+  {
+    name: 'network_io_bytes_rate',
+    label: t('components.node.metric.groups.network_io_bytes_rate'),
+    metrics: ['network_bytes_recv_rate', 'network_bytes_sent_rate'],
+  },
+  {
+    name: 'total_memory',
+    label: t('components.node.metric.metrics.total_memory'),
+    metrics: ['total_memory'],
+  },
+  {
+    name: 'available_memory',
+    label: t('components.node.metric.metrics.available_memory'),
+    metrics: ['available_memory'],
+  },
+  {
+    name: 'used_memory',
+    label: t('components.node.metric.metrics.used_memory'),
+    metrics: ['used_memory'],
+  },
+  {
+    name: 'total_disk',
+    label: t('components.node.metric.metrics.total_disk'),
+    metrics: ['total_disk'],
+  },
+  {
+    label: t('components.node.metric.metrics.available_disk'),
+    metrics: ['available_disk'],
+  },
+  {
+    name: 'used_disk',
+    label: t('components.node.metric.metrics.used_disk'),
+    metrics: ['used_disk'],
+  },
 ];
 
-const metricNames = ref<keyof Metric[]>([
+const metricGroups = ref<string[]>([
   'cpu_usage_percent',
   'used_memory_percent',
   'used_disk_percent',
+  'disk_io_bytes_rate',
+  'network_io_bytes_rate',
 ]);
 
 const metricOptions = computed<SelectOption[]>(() => {
-  return allMetricNames.map(value => ({
-    value,
-    label: t('components.node.metric.metrics.' + value),
-  }));
+  return allMetricGroups.map(({ label, name: value }: MetricGroup) => {
+    return { label, value };
+  });
 });
 
 const metricsTimeSeriesData = ref<Metric[]>([]);
@@ -98,40 +168,67 @@ const getMetricsTimeSeriesData = async () => {
       start,
       end,
       time_unit: timeUnit.value,
-      metric_names: metricNames.value.join(','),
+      metric_names: metricGroups.value
+        .map(groupName => {
+          const metricGroup = allMetricGroups.find(
+            ({ name }) => name === groupName
+          );
+          return metricGroup?.metrics?.join(',');
+        })
+        .filter(m => !!m)
+        .join(','),
     }
   );
   metricsTimeSeriesData.value = res.data;
 };
 
+const colorPalettes = [
+  '#409eff',
+  '#e6a23c',
+  '#67c23a',
+  '#f56c6c',
+  '#909399',
+  '#0bb2d4',
+  '#9c27b0',
+  '#ff5722',
+  '#795548',
+  '#607d8b',
+];
+
 const getLineChartData = (name: keyof Metric): ChartData<string, number> => {
   const labels: string[] = metricsTimeSeriesData.value.map(
     ({ _id }: Metric) => new Date(_id)
   );
-  const data: number[] = metricsTimeSeriesData.value.map(
-    (metric: Metric) => metric[name]
+  const { metrics } = allMetricGroups.find(
+    ({ name: groupName }) => groupName === name
   );
-
   return {
     labels,
-    datasets: [
-      {
-        label: t('components.node.metric.metrics.' + name),
+    datasets: metrics?.map((m, index) => {
+      const color = colorPalettes[index % colorPalettes.length];
+      const data: number[] = metricsTimeSeriesData.value.map(
+        (metric: Metric) => metric[m]
+      );
+      return {
+        label: t('components.node.metric.metrics.' + m),
         data,
-        borderColor: '#409eff',
-        backgroundColor: '#409eff',
+        borderColor: color,
+        backgroundColor: color,
         spanGaps: spanGaps.value, // 允许跨越空数据点
         tension: 0.1,
-      },
-    ],
+      };
+    }),
   };
 };
 
-const getLineChartOptions = (name: keyof Metric): ChartOptions<'line'> => {
+const getLineChartOptions = (groupName: string): ChartOptions<'line'> => {
+  const { label, name } = allMetricGroups.find(
+    ({ name }) => name === groupName
+  );
   return {
     plugins: {
       title: {
-        text: t('components.node.metric.metrics.' + name),
+        text: label,
         padding: {
           bottom: 20,
         },
@@ -143,8 +240,13 @@ const getLineChartOptions = (name: keyof Metric): ChartOptions<'line'> => {
         callbacks: {
           label: function (tooltipItem) {
             let value: string;
-            if (name.match(/(percent|rate)$/)) {
+            if (name.match(/(percent)$/)) {
               value = Math.round(tooltipItem.raw) + '%';
+            } else if (name.match(/(rate)$/)) {
+              value =
+                formatBytes(tooltipItem.raw) +
+                ' / ' +
+                t('components.node.metric.timeUnits.s');
             } else {
               value = formatBytes(tooltipItem.raw);
             }
@@ -158,16 +260,11 @@ const getLineChartOptions = (name: keyof Metric): ChartOptions<'line'> => {
         type: 'time',
         time: {
           minUnit: 'minute',
-          tooltipFormat: 'LLL dd HH:mm',
-          displayFormats: {
-            minute: 'HH:mm',
-            hour: 'HH:mm',
-            day: 'MMM DD',
-          },
+          tooltipFormat: timeTooltipFormat.value,
+          displayFormats: timeDisplayFormats.value,
         },
         ticks: {
           source: 'auto',
-          stepSize: 5,
         },
         title: {
           display: false,
@@ -180,9 +277,11 @@ const getLineChartOptions = (name: keyof Metric): ChartOptions<'line'> => {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            if (name.match(/(percent|rate)$/)) {
+            if (name.match(/(percent)$/)) {
+              if (!value) return '0%';
               return Math.round(value) + '%';
             } else {
+              if (!value) return 0;
               return formatBytes(value);
             }
           },
@@ -211,7 +310,7 @@ onBeforeMount(() => {
 onBeforeMount(() => {
   clearInterval(handle);
 });
-watch(metricNames, getMetricsTimeSeriesData);
+watch(metricGroups, getMetricsTimeSeriesData);
 watch(timeUnit, getMetricsTimeSeriesData);
 
 defineOptions({ name: 'ClNodeDetailTabMonitoring' });
@@ -222,6 +321,9 @@ defineOptions({ name: 'ClNodeDetailTabMonitoring' });
     <div class="control-panel">
       <div class="time-range-select">
         <el-select v-model="timeRange">
+          <template #prefix>
+            <cl-icon :icon="['fa', 'clock']" />
+          </template>
           <el-option
             v-for="{ value, label } in timeRangeOptions"
             :value="value"
@@ -231,12 +333,18 @@ defineOptions({ name: 'ClNodeDetailTabMonitoring' });
       </div>
       <div class="metric-select">
         <el-select
-          v-model="metricNames"
+          v-model="metricGroups"
           multiple
           filterable
           clearable
+          collapse-tags
+          collapse-tags-tooltip
+          :max-collapse-tags="3"
           :placeholder="t('components.node.metric.select.placeholder')"
         >
+          <template #prefix>
+            <cl-icon :icon="['fa', 'line-chart']" />
+          </template>
           <el-option
             v-for="{ label, value } in metricOptions"
             :label="label"
@@ -245,41 +353,53 @@ defineOptions({ name: 'ClNodeDetailTabMonitoring' });
         </el-select>
       </div>
     </div>
-    <el-space wrap>
-      <el-card
-        v-for="name in metricNames"
-        v-if="getLineChartData(name)?.labels?.length"
-        shadow="hover"
-      >
-        <cl-chart
-          type="line"
-          :data="getLineChartData(name)"
-          :options="getLineChartOptions(name)"
-        />
-      </el-card>
-    </el-space>
+    <div class="metric-list">
+      <el-space wrap>
+        <el-card
+          v-for="name in metricGroups"
+          v-if="metricsTimeSeriesData?.length"
+          shadow="hover"
+        >
+          <cl-chart
+            type="line"
+            :data="getLineChartData(name)"
+            :options="getLineChartOptions(name)"
+          />
+        </el-card>
+      </el-space>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .node-detail-tab-monitoring {
-  margin: 20px;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  position: relative;
 
   .control-panel {
+    padding: 10px;
+    position: sticky;
+    top: 0;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
+    border-bottom: 1px solid var(--el-border-color);
+    background-color: #ffffff;
 
     .time-range-select {
-      flex: 0 0 200px;
+      flex: 0 0 160px;
     }
 
     .metric-select {
       flex: 1;
     }
+  }
+
+  .metric-list {
+    padding: 10px;
   }
 }
 </style>

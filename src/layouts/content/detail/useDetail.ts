@@ -55,8 +55,11 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
   });
 
   const contentContainerStyle = computed(() => {
+    const navActionsHeight = navActions.value
+      ? ` - ${navActions.value?.getHeight()}`
+      : '';
     return {
-      height: `calc(100% - var(--cl-nav-tabs-height) - 1px${navActions.value ? ' - ' + navActions.value.getHeight() : ''})`,
+      height: `calc(100% - var(--cl-nav-tabs-height) - 1px${navActionsHeight})`,
     };
   });
 

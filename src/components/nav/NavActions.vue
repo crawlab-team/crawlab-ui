@@ -6,10 +6,10 @@ const props = defineProps<{
   minHeight?: string;
 }>();
 
-const originalHeight = ref<string | null>(null);
+const originalHeight = ref<string>();
 const height = ref<string>();
 
-const navActions = ref<HTMLDivElement | null>(null);
+const navActions = ref<HTMLDivElement>();
 
 const unmounted = ref<boolean>(true);
 
@@ -20,7 +20,6 @@ const collapsed = computed<boolean>(() => {
 
 const style = computed(() => {
   return {
-    // height: height.value,
     minHeight: height.value,
   };
 });
@@ -32,11 +31,15 @@ const classes = computed<string[]>(() => {
   return cls;
 });
 
+const getHeight = () => {
+  return height.value;
+};
+
 const updateHeight = () => {
   if (!collapsed.value) {
-    if (originalHeight.value === null) {
+    if (!originalHeight.value) {
       if (!navActions.value) return;
-      originalHeight.value = `calc(${window.getComputedStyle(navActions.value).height} - 1px)`;
+      originalHeight.value = window.getComputedStyle(navActions.value).height;
     }
     height.value = originalHeight.value;
   } else {
@@ -50,6 +53,12 @@ onMounted(() => {
   updateHeight();
   unmounted.value = false;
 });
+
+defineExpose({
+  getHeight,
+  updateHeight,
+});
+
 defineOptions({ name: 'ClNavActions' });
 </script>
 
