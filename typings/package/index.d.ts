@@ -1,2 +1,2 @@
-export declare const installer: import("@vue/runtime-core").Plugin;
+export declare const installer: import("vue").Plugin;
 export { default as createApp } from './create-app';
