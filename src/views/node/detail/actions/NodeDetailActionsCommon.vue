@@ -49,7 +49,7 @@ defineOptions({ name: 'ClNodeDetailActionsCommon' });
           size="large"
           :icon="['fa', 'microchip']"
           :type="getTagType(currentMetricsData?.cpu_usage_percent)"
-          :label="Math.round(currentMetricsData?.cpu_usage_percent) + '%'"
+          :label="Math.round(currentMetricsData?.cpu_usage_percent || 0) + '%'"
         >
           <template #tooltip>
             <div>
@@ -61,7 +61,7 @@ defineOptions({ name: 'ClNodeDetailActionsCommon' });
                   color: `var(--cl-${getTagType(currentMetricsData?.cpu_usage_percent)}-color)`,
                 }"
               >
-                {{ Math.round(currentMetricsData?.cpu_usage_percent) }}%
+                {{ Math.round(currentMetricsData?.cpu_usage_percent || 0) }}%
               </span>
             </div>
           </template>
@@ -72,7 +72,7 @@ defineOptions({ name: 'ClNodeDetailActionsCommon' });
           size="large"
           :icon="['fa', 'memory']"
           :type="getTagType(currentMetricsData?.used_memory_percent)"
-          :label="`${formatBytes(currentMetricsData?.used_memory)} / ${formatBytes(currentMetricsData?.total_memory)} (${Math.round(currentMetricsData?.used_memory_percent)}%)`"
+          :label="`${formatBytes(currentMetricsData?.used_memory)} / ${formatBytes(currentMetricsData?.total_memory)} (${Math.round(currentMetricsData?.used_memory_percent || 0)}%)`"
         >
           <template #tooltip>
             <div>
@@ -85,7 +85,7 @@ defineOptions({ name: 'ClNodeDetailActionsCommon' });
                 }"
               >
                 {{ formatBytes(currentMetricsData?.used_memory) }} ({{
-                  Math.round(currentMetricsData?.used_memory_percent)
+                  Math.round(currentMetricsData?.used_memory_percent || 0)
                 }}%)
               </span>
             </div>
@@ -105,7 +105,7 @@ defineOptions({ name: 'ClNodeDetailActionsCommon' });
           size="large"
           :icon="['fa', 'hdd']"
           :type="getTagType(currentMetricsData?.used_disk_percent)"
-          :label="`${formatBytes(currentMetricsData?.used_disk)} / ${formatBytes(currentMetricsData?.total_disk)} (${Math.round(currentMetricsData?.used_disk_percent)}%)`"
+          :label="`${formatBytes(currentMetricsData?.used_disk)} / ${formatBytes(currentMetricsData?.total_disk)} (${Math.round(currentMetricsData?.used_disk_percent || 0)}%)`"
         >
           <template #tooltip>
             <div>
@@ -118,7 +118,7 @@ defineOptions({ name: 'ClNodeDetailActionsCommon' });
                 }"
               >
                 {{ formatBytes(currentMetricsData?.used_disk) }} ({{
-                  Math.round(currentMetricsData?.used_disk_percent)
+                  Math.round(currentMetricsData?.used_disk_percent || 0)
                 }}%)
               </span>
             </div>

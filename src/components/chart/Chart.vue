@@ -8,8 +8,8 @@ import { ChartData, ChartOptions, ChartTypeRegistry } from 'chart.js';
 const props = withDefaults(
   defineProps<{
     type: keyof ChartTypeRegistry;
-    data?: ChartData<string, number>;
-    options?: ChartOptions<keyof ChartOptions>;
+    data?: ChartData;
+    options?: ChartOptions;
     height?: string | number;
     width?: string | number;
     minHeight?: string | number;
@@ -56,7 +56,7 @@ defineOptions({ name: 'ClChart' });
 </script>
 
 <template>
-  <div class="chart" :style="style">
+  <div v-if="data && computedOptions" class="chart" :style="style">
     <chart :type="type" :data="data" :options="computedOptions" />
   </div>
 </template>

@@ -92,7 +92,7 @@ const metrics = ref<MetricMeta[]>([
   },
 ]);
 
-const dailyData = ref([]);
+const dailyData = ref<any[]>([]);
 const dailyChartData = computed<ChartData>(() => {
   return {
     labels: spanDateRange(
@@ -150,12 +150,8 @@ const dailyChartOptions = ref<ChartOptions>({
         text: t('views.home.metrics.results'),
       },
       type: 'linear',
-      type: 'linear',
       display: true,
       position: 'right',
-      gridLines: {
-        drawOnChartArea: false, // 仅显示一侧的网格线
-      },
     },
   },
 });

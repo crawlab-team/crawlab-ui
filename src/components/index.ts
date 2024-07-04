@@ -5,7 +5,6 @@ import IconButton from './button/IconButton.vue';
 import LabelButton from './button/LabelButton.vue';
 import Chart from './chart/Chart.vue';
 import Metric from './chart/Metric.vue';
-import MetricLineChart from './chart/MetricLineChart.vue';
 import ContextMenu from './context-menu/ContextMenu.vue';
 import ContextMenuList from './context-menu/ContextMenuList.vue';
 import * as date from './date/date';
@@ -159,7 +158,6 @@ export {
   LabelButton as ClLabelButton,
   Chart as ClChart,
   Metric as ClMetric,
-  MetricLineChart as ClMetricLineChart,
   ContextMenu as ClContextMenu,
   ContextMenuList as ClContextMenuList,
   date as date,

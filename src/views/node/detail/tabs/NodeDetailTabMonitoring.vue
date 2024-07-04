@@ -21,14 +21,17 @@ const { activeId } = useDetail<CNode>(ns);
 const timeRange = ref<string>('1h');
 const timeRanges = ['1h', '24h', '7d', '30d'];
 const timeUnits = ['5m', '1h', '6h', '1d'];
-const timeRangeOptions = computed<SelectOption[]>(() => {
+const timeRangeOptions = computed<any[]>(() => {
   return timeRanges.map((value, index) => {
     const label = t('components.node.metric.timeRanges.' + value);
     const timeUnit = timeUnits[index];
     const groups = timeRange.value.match(/(\d+)([a-z])/);
-    const num = parseInt(groups[1]);
-    const unit = groups[2];
-    const start = dayjs().add(-num, unit).toISOString();
+    if (!groups) return {};
+    const num = parseInt(groups[1]) as number;
+    const unit = groups[2] as string;
+    const start = dayjs()
+      .add(-num, unit as string)
+      .toISOString();
     const end = dayjs().toISOString();
     return {
       value,
@@ -44,9 +47,8 @@ const timeUnit = computed(() => {
     ?.timeUnit;
 });
 const startEnd = computed(() => {
-  const { start, end } = timeRangeOptions.value.find(
-    ({ value }) => value === timeRange.value
-  );
+  const { start, end } =
+    timeRangeOptions.value.find(({ value }) => value === timeRange.value) || {};
   return { start, end };
 });
 const spanGaps = computed(() => {
@@ -137,6 +139,7 @@ const allMetricGroups: MetricGroup[] = [
     metrics: ['total_disk'],
   },
   {
+    name: 'available_disk',
     label: t('components.node.metric.metrics.available_disk'),
     metrics: ['available_disk'],
   },
@@ -159,37 +162,36 @@ const metricOptions = computed<SelectOption[]>(() => {
   });
 });
 
-const getLineChartData = (name: keyof Metric): ChartData<string, number> => {
+const getLineChartData = (name: string): ChartData => {
   if (!metricsTimeSeriesData.value?.length) return { labels: [], datasets: [] };
-  const labels: string[] = metricsTimeSeriesData.value.map(
-    ({ _id }: Metric) => new Date(_id)
+  const labels: Date[] = metricsTimeSeriesData.value.map(
+    ({ _id }: Metric) => new Date(_id as string)
   );
-  const { metrics } = allMetricGroups.find(
-    ({ name: groupName }) => groupName === name
-  );
+  const { metrics } =
+    allMetricGroups.find(({ name: groupName }) => groupName === name) || {};
   return {
     labels,
-    datasets: metrics?.map((m, index) => {
-      const color = colorPalette[index % colorPalette.length];
-      const data: number[] = metricsTimeSeriesData.value.map(
-        (metric: Metric) => metric[m]
-      );
-      return {
-        label: t('components.node.metric.metrics.' + m),
-        data,
-        borderColor: color,
-        backgroundColor: color,
-        spanGaps: spanGaps.value, // 允许跨越空数据点
-        tension: 0.1,
-      };
-    }),
+    datasets:
+      metrics?.map((m: keyof Metric, index: number) => {
+        const color = colorPalette[index % colorPalette.length];
+        const data: number[] = metricsTimeSeriesData.value.map(
+          (metric: Metric) => metric[m] as number
+        );
+        return {
+          label: t('components.node.metric.metrics.' + m),
+          data,
+          borderColor: color,
+          backgroundColor: color,
+          spanGaps: spanGaps.value, // 允许跨越空数据点
+          tension: 0.1,
+        };
+      }) || [],
   };
 };
 
 const getLineChartOptions = (groupName: string): ChartOptions<'line'> => {
-  const { label, name } = allMetricGroups.find(
-    ({ name }) => name === groupName
-  );
+  const { label, name } =
+    allMetricGroups.find(({ name }) => name === groupName) || {};
   return {
     plugins: {
       title: {
@@ -205,15 +207,15 @@ const getLineChartOptions = (groupName: string): ChartOptions<'line'> => {
         callbacks: {
           label: function (tooltipItem) {
             let value: string;
-            if (name.match(/(percent)$/)) {
-              value = Math.round(tooltipItem.raw) + '%';
-            } else if (name.match(/(rate)$/)) {
+            if (name?.match(/(percent)$/)) {
+              value = Math.round(tooltipItem.raw as number) + '%';
+            } else if (name?.match(/(rate)$/)) {
               value =
-                formatBytes(tooltipItem.raw) +
+                formatBytes(tooltipItem.raw as number) +
                 ' / ' +
                 t('components.node.metric.timeUnits.s');
             } else {
-              value = formatBytes(tooltipItem.raw);
+              value = formatBytes(tooltipItem.raw as number);
             }
             return tooltipItem.dataset.label + ': ' + value;
           },
@@ -242,7 +244,8 @@ const getLineChartOptions = (groupName: string): ChartOptions<'line'> => {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            if (name.match(/(percent)$/)) {
+            if (typeof value !== 'number') return value;
+            if (name?.match(/(percent)$/)) {
               if (!value) return '0%';
               return Math.round(value) + '%';
             } else {
@@ -280,7 +283,7 @@ const getMetricsTimeSeriesData = async () => {
         .join(','),
     }
   );
-  metricsTimeSeriesData.value = res.data;
+  metricsTimeSeriesData.value = res.data || [];
 };
 
 let handle: number;

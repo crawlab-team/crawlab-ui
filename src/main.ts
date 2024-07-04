@@ -6,6 +6,7 @@ import { createApp } from '@/package';
 
   // create app
   createApp(options).then(app => {
+    // @ts-ignore
     window._app = app;
   });
 })();

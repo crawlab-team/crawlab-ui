@@ -75,7 +75,7 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   );
 
   // app
-  const app: App = createApp(AppComp);
+  const app = createApp(AppComp);
 
   // initialize request
   initRequest(router);
@@ -84,12 +84,12 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   initChartJS();
 
   // load modules
-  if (options.loadElementPlus) app.use(ElementPlus);
-  if (options.loadCrawlabUI) app.use(CrawlabUI);
-  if (options.loadStore) app.use(store);
-  if (options.loadRouter) app.use(router);
+  if (options.loadElementPlus) app.use(ElementPlus as any);
+  if (options.loadCrawlabUI) app.use(CrawlabUI as any);
+  if (options.loadStore) app.use(store as any);
+  if (options.loadRouter) app.use(router as any);
   if (options.loadI18n) {
-    app.use(getI18n());
+    app.use(getI18n() as any);
     setGlobalLang((window.localStorage.getItem('lang') as Lang) || 'en');
   }
   if (options.loadFontAwesome) {
@@ -104,7 +104,7 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
     app.mount(typeof options.mount === 'string' ? options.mount : '#app');
   }
 
-  return app;
+  return app as any;
 };
 
 export default _createApp;

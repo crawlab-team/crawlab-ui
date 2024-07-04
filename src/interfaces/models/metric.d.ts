@@ -32,4 +32,10 @@ export declare global {
     network_bytes_sent_rate?: number;
     network_bytes_recv_rate?: number;
   }
+
+  interface MetricGroup {
+    name: string;
+    label: string;
+    metrics: (keyof Metric)[];
+  }
 }

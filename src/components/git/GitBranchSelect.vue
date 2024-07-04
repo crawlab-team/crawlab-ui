@@ -161,7 +161,7 @@ defineOptions({ name: 'ClGitBranchSelect' });
               :icon="['fa', 'trash']"
               size="small"
               type="danger"
-              :disabled="model === op.value"
+              :disabled="modelValue === op.value"
               @click="
                 (event: Event) => onDeleteBranch(op.value as string, event)
               "
