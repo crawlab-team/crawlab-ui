@@ -1,4 +1,4 @@
-import { computed, h } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import {
   getDefaultUseListOptions,
@@ -13,7 +13,7 @@ import {
   TABLE_ACTION_CUSTOMIZE_COLUMNS,
   TABLE_ACTION_EXPORT,
 } from '@/constants/table';
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import useNodeService from '@/services/node/nodeService';
 import NavLink from '@/components/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
@@ -71,32 +71,30 @@ const useNodeList = () => {
           icon: ['fa', 'plus'],
           type: 'success',
           onClick: async () => {
-            const message = h('div', [
-              h(
-                'div',
-                {
-                  style: {
+            const message = (
+              <div>
+                <div
+                  style={{
                     fontSize: '16px',
                     marginBottom: '10px',
                     lineHeight: '1.5',
-                  },
-                },
-                [t('views.nodes.notice.create.content')]
-              ),
-              h(
-                'a',
-                {
-                  href: t('views.nodes.notice.create.link.url'),
-                  style: {
+                  }}
+                >
+                  {t('views.nodes.notice.create.content')}
+                </div>
+                <a
+                  href={t('views.nodes.notice.create.link.url')}
+                  target="_blank"
+                  style={{
                     color: '#409eff',
                     fontSize: '16px',
                     fontWeight: '600',
-                  },
-                  target: '_blank',
-                },
-                [t('views.nodes.notice.create.link.label')]
-              ),
-            ]);
+                  }}
+                >
+                  {t('views.nodes.notice.create.link.label')}
+                </a>
+              </div>
+            );
             const title = t('views.nodes.notice.create.title');
             await ElMessageBox({
               title,
@@ -198,11 +196,9 @@ const useNodeList = () => {
           label: t('views.nodes.table.columns.name'),
           icon: ['fa', 'font'],
           width: '150',
-          value: (row: Node) =>
-            h(NavLink, {
-              path: `/nodes/${row._id}`,
-              label: row.name,
-            }),
+          value: (row: Node) => (
+            <NavLink path={`/nodes/${row._id}`} label={row.name} />
+          ),
           hasSort: true,
           hasFilter: true,
           allowFilterSearch: true,
@@ -214,7 +210,7 @@ const useNodeList = () => {
           icon: ['fa', 'list'],
           width: '150',
           value: (row: Node) => {
-            return h(NodeType, { isMaster: row.is_master } as NodeTypeProps);
+            return <NodeType isMaster={row.is_master} />;
           },
           hasFilter: true,
           allowFilterItems: true,
@@ -230,7 +226,7 @@ const useNodeList = () => {
           icon: ['fa', 'heartbeat'],
           width: '150',
           value: (row: Node) => {
-            return h(NodeStatus, { status: row.status });
+            return <NodeStatus status={row.status} />;
           },
           hasFilter: true,
           allowFilterItems: true,
@@ -290,33 +286,44 @@ const useNodeList = () => {
               ![NODE_STATUS_ONLINE, NODE_STATUS_OFFLINE].includes(row.status)
             )
               return;
-            return h(NodeRunners, {
-              available: row.available_runners,
-              max: row.max_runners,
-            } as NodeRunnersProps);
+            return (
+              <NodeRunners
+                available={row.available_runners}
+                max={row.max_runners}
+              />
+            );
           },
         },
         {
-          key: 'enabled', // enabled
+          key: 'enabled',
           className: 'enabled',
           label: t('views.nodes.table.columns.enabled'),
           icon: ['fa', 'toggle-on'],
           width: '120',
           value: (row: Node) => {
-            return h(Switch, {
-              modelValue: row.enabled,
-              disabled: !isAllowedAction(
-                router.currentRoute.value.path,
-                ACTION_ENABLE
-              ),
-              'onUpdate:modelValue': async (value: boolean) => {
-                row.enabled = value;
-                await store.dispatch(`${ns}/updateById`, {
-                  id: row._id,
-                  form: row,
-                });
-              },
-            } as SwitchProps);
+            return (
+              <Switch
+                modelValue={row.enabled}
+                disabled={
+                  !isAllowedAction(
+                    router.currentRoute.value.path,
+                    ACTION_ENABLE
+                  )
+                }
+                onUpdate:modelValue={async (value: boolean) => {
+                  row.enabled = value;
+                  await store.dispatch(`${ns}/updateById`, {
+                    id: row._id,
+                    form: row,
+                  });
+                  if (row.enabled) {
+                    ElMessage.success(t('common.message.success.enabled'));
+                  } else {
+                    ElMessage.success(t('common.message.success.disabled'));
+                  }
+                }}
+              />
+            );
           },
           hasFilter: true,
           allowFilterItems: true,
@@ -325,16 +332,6 @@ const useNodeList = () => {
             { label: t('common.control.disabled'), value: false },
           ],
         },
-        // {
-        //   key: 'tags',
-        //   className: 'tags',
-        //   label: t('views.nodes.table.columns.tags'),
-        //   icon: ['fa', 'hashtag'],
-        //   value: ({tags}: Node) => {
-        //     return h(TagList, {tags});
-        //   },
-        //   width: '150',
-        // },
         {
           key: 'description',
           className: 'description',

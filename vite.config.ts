@@ -2,6 +2,7 @@ import { resolve } from 'path';
 import { defineConfig, UserConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dynamicImport from 'vite-plugin-dynamic-import';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(({ mode }) => {
@@ -89,7 +90,7 @@ export default defineConfig(({ mode }) => {
       },
       extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss'],
     },
-    plugins: [vue(), dynamicImport()],
+    plugins: [vue(), dynamicImport(), vueJsx()],
     server: {
       cors: true,
     },

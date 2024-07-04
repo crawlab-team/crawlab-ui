@@ -20,7 +20,7 @@ const makeInstaller = (
   const apps: App[] = [];
 
   // install function
-  const install = (app: App) => {
+  const install = (app: App<Element>) => {
     // skip if already exists in apps
     if (apps.includes(app)) return;
 

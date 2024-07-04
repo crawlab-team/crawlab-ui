@@ -38,18 +38,17 @@ function processFile(filePath, moduleName) {
     readFileAndModify(filePath, compName);
     return { importLine, exportLine };
   } else if (
-    filePath.endsWith('.ts') &&
-    // !['components', 'layouts', 'views'].includes(moduleName) &&
+    (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) &&
     fileName !== INDEX_COMP_NAME
   ) {
-    let compName = fileName.replace('.ts', '');
+    let compName = fileName.replace(/.tsx?$/, '');
     compName += compName === 'export' ? '_' : '';
 
     let importLine;
     if (compName.startsWith('use')) {
-      importLine = `import ${compName} from '${relPath.replace('.ts', '')}';`;
+      importLine = `import ${compName} from '${relPath.replace(/.tsx?$/, '')}';`;
     } else {
-      importLine = `import * as ${compName} from '${relPath.replace('.ts', '')}';`;
+      importLine = `import * as ${compName} from '${relPath.replace(/.tsx?$/, '')}';`;
     }
     const exportLine = `${compName} as ${compName},`;
     return { importLine, exportLine };

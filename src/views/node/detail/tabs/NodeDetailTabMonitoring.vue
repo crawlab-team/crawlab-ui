@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
-import dayjs from 'dayjs';
+import dayjs, { UnitTypeShort } from 'dayjs';
 import { ChartData, ChartOptions } from 'chart.js';
 import useRequest from '@/services/request';
 import { translate } from '@/utils';
@@ -28,10 +28,8 @@ const timeRangeOptions = computed<any[]>(() => {
     const groups = timeRange.value.match(/(\d+)([a-z])/);
     if (!groups) return {};
     const num = parseInt(groups[1]) as number;
-    const unit = groups[2] as string;
-    const start = dayjs()
-      .add(-num, unit as string)
-      .toISOString();
+    const unit = groups[2] as UnitTypeShort;
+    const start = dayjs().add(-num, unit).toISOString();
     const end = dayjs().toISOString();
     return {
       value,

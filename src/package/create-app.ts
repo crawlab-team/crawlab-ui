@@ -1,5 +1,4 @@
-import { createApp } from 'vue';
-import type { App } from '@vue/runtime-dom';
+import { createApp, App } from 'vue';
 import ElementPlus from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { installer as CrawlabUI } from '@/package/index';
@@ -104,7 +103,7 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
     app.mount(typeof options.mount === 'string' ? options.mount : '#app');
   }
 
-  return app as any;
+  return app;
 };
 
 export default _createApp;
