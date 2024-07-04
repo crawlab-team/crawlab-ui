@@ -78,6 +78,10 @@ const node: LComponentsNode = {
       '7d': '过去 7 天',
       '30d': '过去 30 天',
     },
+    noData: {
+      label: '无数据',
+      tooltip: '该节点暂无最近的监控数据',
+    },
   },
 };
 

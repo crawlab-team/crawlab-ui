@@ -78,5 +78,9 @@ interface LComponentsNode {
       '7d': string;
       '30d': string;
     };
+    noData: {
+      label: string;
+      tooltip: string;
+    };
   };
 }

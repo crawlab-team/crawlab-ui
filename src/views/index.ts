@@ -34,6 +34,7 @@ import Home from './home/Home.vue';
 import Login from './login/Login.vue';
 import Disclaimer from './misc/Disclaimer.vue';
 import MySettings from './misc/MySettings.vue';
+import NodeDetailActionsCommon from './node/detail/actions/NodeDetailActionsCommon.vue';
 import NodeDetail from './node/detail/NodeDetail.vue';
 import NodeDetailTabMonitoring from './node/detail/tabs/NodeDetailTabMonitoring.vue';
 import NodeDetailTabOverview from './node/detail/tabs/NodeDetailTabOverview.vue';
@@ -128,6 +129,7 @@ export {
   Login as ClLogin,
   Disclaimer as ClDisclaimer,
   MySettings as ClMySettings,
+  NodeDetailActionsCommon as ClNodeDetailActionsCommon,
   NodeDetail as ClNodeDetail,
   NodeDetailTabMonitoring as ClNodeDetailTabMonitoring,
   NodeDetailTabOverview as ClNodeDetailTabOverview,

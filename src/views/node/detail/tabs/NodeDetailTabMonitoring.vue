@@ -6,6 +6,8 @@ import useRequest from '@/services/request';
 import { translate } from '@/utils';
 import useDetail from '@/layouts/content/detail/useDetail';
 import { getTimeUnitParts } from '@/utils/time';
+import { formatBytes } from '@/utils/metric';
+import ClEmpty from '@/components/empty/Empty.vue';
 
 const { get } = useRequest();
 
@@ -143,7 +145,6 @@ const allMetricGroups: MetricGroup[] = [
     metrics: ['used_disk'],
   },
 ];
-
 const metricGroups = ref<string[]>([
   'cpu_usage_percent',
   'used_memory_percent',
@@ -151,36 +152,11 @@ const metricGroups = ref<string[]>([
   'disk_io_bytes_rate',
   'network_io_bytes_rate',
 ]);
-
 const metricOptions = computed<SelectOption[]>(() => {
   return allMetricGroups.map(({ label, name: value }: MetricGroup) => {
     return { label, value };
   });
 });
-
-const metricsTimeSeriesData = ref<Metric[]>([]);
-
-const getMetricsTimeSeriesData = async () => {
-  const { start, end } = startEnd.value;
-  const res = await get<Metric[]>(
-    `/nodes/${activeId.value}/metrics/time-range`,
-    {
-      start,
-      end,
-      time_unit: timeUnit.value,
-      metric_names: metricGroups.value
-        .map(groupName => {
-          const metricGroup = allMetricGroups.find(
-            ({ name }) => name === groupName
-          );
-          return metricGroup?.metrics?.join(',');
-        })
-        .filter(m => !!m)
-        .join(','),
-    }
-  );
-  metricsTimeSeriesData.value = res.data;
-};
 
 const colorPalettes = [
   '#409eff',
@@ -196,6 +172,7 @@ const colorPalettes = [
 ];
 
 const getLineChartData = (name: keyof Metric): ChartData<string, number> => {
+  if (!metricsTimeSeriesData.value?.length) return { labels: [], datasets: [] };
   const labels: string[] = metricsTimeSeriesData.value.map(
     ({ _id }: Metric) => new Date(_id)
   );
@@ -295,11 +272,27 @@ const getLineChartOptions = (groupName: string): ChartOptions<'line'> => {
   };
 };
 
-const formatBytes = (bytes: number) => {
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) return '0 Byte';
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i];
+const metricsTimeSeriesData = ref<Metric[]>([]);
+const getMetricsTimeSeriesData = async () => {
+  const { start, end } = startEnd.value;
+  const res = await get<Metric[]>(
+    `/nodes/${activeId.value}/metrics/time-range`,
+    {
+      start,
+      end,
+      time_unit: timeUnit.value,
+      metric_names: metricGroups.value
+        .map(groupName => {
+          const metricGroup = allMetricGroups.find(
+            ({ name }) => name === groupName
+          );
+          return metricGroup?.metrics?.join(',');
+        })
+        .filter(m => !!m)
+        .join(','),
+    }
+  );
+  metricsTimeSeriesData.value = res.data;
 };
 
 let handle: number;
@@ -307,11 +300,12 @@ onBeforeMount(getMetricsTimeSeriesData);
 onBeforeMount(() => {
   handle = setInterval(getMetricsTimeSeriesData, 60 * 1000);
 });
-onBeforeMount(() => {
+onBeforeUnmount(() => {
   clearInterval(handle);
 });
 watch(metricGroups, getMetricsTimeSeriesData);
 watch(timeUnit, getMetricsTimeSeriesData);
+watch(activeId, getMetricsTimeSeriesData);
 
 defineOptions({ name: 'ClNodeDetailTabMonitoring' });
 </script>
@@ -354,12 +348,8 @@ defineOptions({ name: 'ClNodeDetailTabMonitoring' });
       </div>
     </div>
     <div class="metric-list">
-      <el-space wrap>
-        <el-card
-          v-for="name in metricGroups"
-          v-if="metricsTimeSeriesData?.length"
-          shadow="hover"
-        >
+      <el-space v-if="metricsTimeSeriesData?.length" wrap>
+        <el-card v-for="name in metricGroups" shadow="hover">
           <cl-chart
             type="line"
             :data="getLineChartData(name)"
@@ -367,6 +357,7 @@ defineOptions({ name: 'ClNodeDetailTabMonitoring' });
           />
         </el-card>
       </el-space>
+      <cl-empty v-else />
     </div>
   </div>
 </template>

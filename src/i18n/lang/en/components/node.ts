@@ -78,6 +78,10 @@ const node: LComponentsNode = {
       '7d': 'Past 7 Days',
       '30d': 'Past 30 Days',
     },
+    noData: {
+      label: 'No Data',
+      tooltip: 'No recent monitoring data available for this node',
+    },
   },
 };
 
