@@ -7,11 +7,15 @@ import { TAB_NAME_MONITORING } from '@/constants';
 const ns = 'node';
 const store = useStore();
 const { common: commonState } = store.state as RootStoreState;
-onBeforeMount(() => {
+const updateDisabledTabKeys = () => {
   if (!isPro()) {
     store.commit(`${ns}/setDisabledTabKeys`, [TAB_NAME_MONITORING]);
+  } else {
+    store.commit(`${ns}/setDisabledTabKeys`, []);
   }
-});
+};
+onBeforeMount(updateDisabledTabKeys);
+watch(() => commonState.systemInfo, updateDisabledTabKeys);
 
 defineOptions({ name: 'ClNodeDetail' });
 </script>

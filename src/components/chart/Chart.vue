@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { StyleValue } from '@vue/runtime-dom';
+import { computed, StyleValue } from 'vue';
 import { merge } from 'lodash';
 import { Chart } from 'vue-chartjs';
 import { ChartData, ChartOptions, ChartTypeRegistry } from 'chart.js';
