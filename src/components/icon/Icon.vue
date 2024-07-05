@@ -42,7 +42,6 @@ onMounted(async () => {
     if (azureIcons[azureIconPath]) {
       azureIcons[azureIconPath]().then((module: any) => {
         iconComponent.value = module.default;
-        console.debug(module, iconComponent.value);
       });
     }
   }
