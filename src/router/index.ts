@@ -22,6 +22,7 @@ import system from '@/router/system';
 import misc from '@/router/misc';
 import { initRouterAuth } from '@/router/hooks/auth';
 import { ROUTER_ROOT_NAME_ROOT } from '@/constants/router';
+import { ClNormalLayout } from '@/layouts';
 
 export function getDefaultRoutes(): Array<RouteRecordRaw> {
   return [
@@ -30,7 +31,7 @@ export function getDefaultRoutes(): Array<RouteRecordRaw> {
       path: '/',
       redirect: '/home',
       name: ROUTER_ROOT_NAME_ROOT,
-      component: () => import('@/layouts/NormalLayout.vue'),
+      component: () => ClNormalLayout,
       children: [
         ...home,
         ...node,

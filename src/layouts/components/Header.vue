@@ -3,8 +3,9 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { setGlobalLang } from '@/utils/i18n';
 import { ArrowDown } from '@element-plus/icons-vue';
+import { setGlobalLang } from '@/utils/i18n';
+import { isPro } from '@/utils';
 
 // i18n
 const { t, locale } = useI18n();
@@ -16,13 +17,16 @@ const router = useRouter();
 const store = useStore();
 
 // store states
-const { layout: layoutState, common: commonState } =
-  store.state as RootStoreState;
+const { layout: layoutState } = store.state as RootStoreState;
 
 // whether side is collapsed
 const sidebarCollapsed = computed(() => {
   return layoutState.sidebarCollapsed;
 });
+
+const onClickGitHubStar = () => {
+  window.open(`https://www.crawlab.cn/${locale.value}/#pricing`);
+};
 
 // language name
 const langName = computed<string>(() => {
@@ -66,7 +70,6 @@ const onClickMySettings = () => {
   router.push('/misc/my-settings');
 };
 
-const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 defineOptions({ name: 'ClHeader' });
 </script>
 
@@ -75,26 +78,22 @@ defineOptions({ name: 'ClHeader' });
     <el-header height="var(--cl-header-height)" class="header">
       <div class="left"></div>
       <div class="right">
-        <iframe
-          v-if="systemInfo.edition === 'global.edition.community'"
-          class="item"
-          src="https://ghbtns.com/github-btn.html?user=crawlab-team&repo=crawlab&type=star&count=true"
-          frameborder="0"
-          scrolling="0"
-          width="105"
-          height="20"
-          title="GitHub"
-        />
-        <el-link
-          v-if="systemInfo.edition === 'global.edition.community'"
-          class="item"
-          :href="`https://www.crawlab.cn/${locale}/#pricing`"
-          target="_blank"
-          type="warning"
-        >
-          <font-awesome-icon class="icon" :icon="['fa', 'arrow-up']" />
-          {{ t('global.upgrade.pro') }}
-        </el-link>
+        <template v-if="!isPro()">
+          <div class="item">
+            <cl-label-button
+              class-name="item"
+              :icon="['fa', 'arrow-up']"
+              size="small"
+              type="warning"
+              :label="t('global.upgrade.pro.label')"
+              :tooltip="t('global.upgrade.pro.tooltip')"
+              @click="onClickGitHubStar"
+            />
+          </div>
+          <div class="item">
+            <cl-git-hub-star-badge />
+          </div>
+        </template>
         <el-link
           class="item"
           :href="`https://docs.crawlab.cn/${locale}/`"
@@ -205,5 +204,10 @@ defineOptions({ name: 'ClHeader' });
       }
     }
   }
+}
+</style>
+<style scoped>
+.header-container:deep(.button-wrapper) {
+  margin-right: 0;
 }
 </style>

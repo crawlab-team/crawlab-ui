@@ -1,3 +1,4 @@
+import GitHubStarBadge from './badge/GitHubStarBadge.vue';
 import Box from './box/Box.vue';
 import Button from './button/Button.vue';
 import FaIconButton from './button/FaIconButton.vue';
@@ -151,6 +152,7 @@ import UserRole from './user/UserRole.vue';
 import useUser from './user/useUser';
 
 export {
+  GitHubStarBadge as ClGitHubStarBadge,
   Box as ClBox,
   Button as ClButton,
   FaIconButton as ClFaIconButton,

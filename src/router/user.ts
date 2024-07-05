@@ -1,11 +1,12 @@
 import { RouteRecordRaw } from 'vue-router';
 import { TAB_NAME_OVERVIEW } from '@/constants/tab';
+import { ClUserDetail, ClUserDetailTabOverview, ClUserList } from '@/views';
 
 export default [
   {
     name: 'UserList',
     path: 'users',
-    component: () => import('@/views/user/list/UserList.vue'),
+    component: () => ClUserList,
   },
   {
     name: 'UserDetail',
@@ -13,12 +14,11 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => import('@/views/user/detail/UserDetail.vue'),
+    component: () => ClUserDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import('@/views/user/detail/tabs/UserDetailTabOverview.vue'),
+        component: () => ClUserDetailTabOverview,
       },
     ],
   },

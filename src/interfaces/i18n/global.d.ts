@@ -9,9 +9,14 @@ export declare global {
     title: string;
     subTitle: string;
     upgrade: {
-      pro: string;
+      pro: {
+        label: string;
+        tooltip: string;
+      };
     };
     docs: string;
-    github: string;
+    github: {
+      star: string;
+    };
   }
 }

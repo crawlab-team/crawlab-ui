@@ -4,6 +4,13 @@ import {
   TAB_NAME_LOGS,
   TAB_NAME_OVERVIEW,
 } from '@/constants/tab';
+import {
+  ClTaskDetail,
+  ClTaskDetailTabData,
+  ClTaskDetailTabLogs,
+  ClTaskDetailTabOverview,
+  ClTaskList,
+} from '@/views';
 
 const endpoint = 'tasks';
 
@@ -11,7 +18,7 @@ export default [
   {
     name: 'TaskList',
     path: endpoint,
-    component: () => import('@/views/task/list/TaskList.vue'),
+    component: () => ClTaskList,
   },
   {
     name: 'TaskDetail',
@@ -19,22 +26,19 @@ export default [
     redirect: to => {
       return { path: to.path + '/overview' };
     },
-    component: () => import('@/views/task/detail/TaskDetail.vue'),
+    component: () => ClTaskDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import('@/views/task/detail/tabs/TaskDetailTabOverview.vue'),
+        component: () => ClTaskDetailTabOverview,
       },
       {
         path: TAB_NAME_LOGS,
-        component: () =>
-          import('@/views/task/detail/tabs/TaskDetailTabLogs.vue'),
+        component: () => ClTaskDetailTabLogs,
       },
       {
         path: TAB_NAME_DATA,
-        component: () =>
-          import('@/views/task/detail/tabs/TaskDetailTabData.vue'),
+        component: () => ClTaskDetailTabData,
       },
     ],
   },

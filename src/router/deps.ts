@@ -1,4 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
+import {
+  ClDependencyNode,
+  ClDependencyPython,
+  ClDependencySettings,
+} from '@/views';
 
 const endpoint = 'deps';
 
@@ -13,16 +18,16 @@ export default [
   {
     name: 'DepsSettings',
     path: `${endpoint}/settings`,
-    component: () => import('@/views/deps/setting/DependencySettings.vue'),
+    component: () => ClDependencySettings,
   },
   {
     name: 'DepsPython',
     path: `${endpoint}/python`,
-    component: () => import('@/views/deps/python/DependencyPython.vue'),
+    component: () => ClDependencyPython,
   },
   {
     name: 'DepsNode',
     path: `${endpoint}/node`,
-    component: () => import('@/views/deps/node/DependencyNode.vue'),
+    component: () => ClDependencyNode,
   },
 ] as Array<RouteRecordRaw>;

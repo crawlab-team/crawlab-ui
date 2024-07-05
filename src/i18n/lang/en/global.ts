@@ -8,10 +8,15 @@ const global: LGlobal = {
   title: 'Crawlab',
   subTitle: 'Distributed Web Crawler Platform',
   upgrade: {
-    pro: 'Upgrade to Pro Edition',
+    pro: {
+      label: 'Upgrade Pro Edition',
+      tooltip: 'Upgrade to Crawlab Pro to unlock more powerful features',
+    },
   },
   docs: 'Docs',
-  github: 'GitHub',
+  github: {
+    star: 'Star Crawlab on GitHub',
+  },
 };
 
 export default global;

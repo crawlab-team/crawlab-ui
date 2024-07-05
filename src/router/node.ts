@@ -4,6 +4,13 @@ import {
   TAB_NAME_OVERVIEW,
   TAB_NAME_TASKS,
 } from '@/constants/tab';
+import {
+  ClNodeDetail,
+  ClNodeDetailTabMonitoring,
+  ClNodeDetailTabOverview,
+  ClNodeDetailTabTasks,
+  ClNodeList,
+} from '@/views';
 
 const endpoint = 'nodes';
 
@@ -11,7 +18,7 @@ export default [
   {
     name: 'NodeList',
     path: endpoint,
-    component: () => import('@/views/node/list/NodeList.vue'),
+    component: () => ClNodeList,
   },
   {
     name: 'NodeDetail',
@@ -19,22 +26,19 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => import('@/views/node/detail/NodeDetail.vue'),
+    component: ClNodeDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import('@/views/node/detail/tabs/NodeDetailTabOverview.vue'),
+        component: () => ClNodeDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
-        component: () =>
-          import('@/views/node/detail/tabs/NodeDetailTabTasks.vue'),
+        component: () => ClNodeDetailTabTasks,
       },
       {
         path: TAB_NAME_MONITORING,
-        component: () =>
-          import('@/views/node/detail/tabs/NodeDetailTabMonitoring.vue'),
+        component: () => ClNodeDetailTabMonitoring,
       },
     ],
   },

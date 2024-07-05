@@ -6,6 +6,15 @@ import {
   TAB_NAME_LOGS,
   TAB_NAME_SPIDERS,
 } from '@/constants/tab';
+import {
+  ClGitDetail,
+  ClGitDetailTabChanges,
+  ClGitDetailTabFiles,
+  ClGitDetailTabLogs,
+  ClGitDetailTabOverview,
+  ClGitDetailTabSpiders,
+  ClGitList,
+} from '@/views';
 
 const endpoint = 'gits';
 
@@ -13,7 +22,7 @@ export default [
   {
     name: 'GitList',
     path: endpoint,
-    component: () => import('@/views/git/list/GitList.vue'),
+    component: () => ClGitList,
   },
   {
     name: 'GitDetail',
@@ -21,31 +30,27 @@ export default [
     redirect: to => {
       return { path: to.path + '/overview' };
     },
-    component: () => import('@/views/git/detail/GitDetail.vue'),
+    component: () => ClGitDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import('@/views/git/detail/tabs/GitDetailTabOverview.vue'),
+        component: () => ClGitDetailTabOverview,
       },
       {
         path: TAB_NAME_FILES,
-        component: () =>
-          import('@/views/git/detail/tabs/GitDetailTabFiles.vue'),
+        component: () => ClGitDetailTabFiles,
       },
       {
         path: TAB_NAME_LOGS,
-        component: () => import('@/views/git/detail/tabs/GitDetailTabLogs.vue'),
+        component: () => ClGitDetailTabLogs,
       },
       {
         path: TAB_NAME_CHANGES,
-        component: () =>
-          import('@/views/git/detail/tabs/GitDetailTabChanges.vue'),
+        component: () => ClGitDetailTabChanges,
       },
       {
         path: TAB_NAME_SPIDERS,
-        component: () =>
-          import('@/views/git/detail/tabs/GitDetailTabSpiders.vue'),
+        component: () => ClGitDetailTabSpiders,
       },
     ],
   },

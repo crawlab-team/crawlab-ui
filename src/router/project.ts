@@ -1,5 +1,11 @@
 import { RouteRecordRaw } from 'vue-router';
 import { TAB_NAME_OVERVIEW, TAB_NAME_SPIDERS } from '@/constants/tab';
+import {
+  ClProjectDetail,
+  ClProjectDetailTabOverview,
+  ClProjectDetailTabSpiders,
+  ClProjectList,
+} from '@/views';
 
 const endpoint = 'projects';
 
@@ -7,7 +13,7 @@ export default [
   {
     name: 'ProjectList',
     path: endpoint,
-    component: () => import('@/views/project/list/ProjectList.vue'),
+    component: () => ClProjectList,
   },
   {
     name: 'ProjectDetail',
@@ -15,17 +21,15 @@ export default [
     redirect: to => {
       return { path: to.path + '/overview' };
     },
-    component: () => import('@/views/project/detail/ProjectDetail.vue'),
+    component: () => ClProjectDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import('@/views/project/detail/tabs/ProjectDetailTabOverview.vue'),
+        component: () => ClProjectDetailTabOverview,
       },
       {
         path: TAB_NAME_SPIDERS,
-        component: () =>
-          import('@/views/project/detail/tabs/ProjectDetailTabSpiders.vue'),
+        component: () => ClProjectDetailTabSpiders,
       },
     ],
   },

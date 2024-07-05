@@ -1,11 +1,17 @@
 import { RouteRecordRaw } from 'vue-router';
 import { TAB_NAME_OVERVIEW, TAB_NAME_TASKS } from '@/constants/tab';
+import {
+  ClScheduleDetail,
+  ClScheduleDetailTabOverview,
+  ClScheduleDetailTabTasks,
+  ClScheduleList,
+} from '@/views';
 
 export default [
   {
     name: 'ScheduleList',
     path: 'schedules',
-    component: () => import('@/views/schedule/list/ScheduleList.vue'),
+    component: () => ClScheduleList,
   },
   {
     name: 'ScheduleDetail',
@@ -13,17 +19,15 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => import('@/views/schedule/detail/ScheduleDetail.vue'),
+    component: () => ClScheduleDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import('@/views/schedule/detail/tabs/ScheduleDetailTabOverview.vue'),
+        component: () => ClScheduleDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
-        component: () =>
-          import('@/views/schedule/detail/tabs/ScheduleDetailTabTasks.vue'),
+        component: () => ClScheduleDetailTabTasks,
       },
     ],
   },

@@ -6,6 +6,6 @@ export default [
   {
     name: 'Login',
     path: endpoint,
-    component: () => import('@/views/login/Login.vue'),
+    component: () => ClLogin,
   },
 ] as Array<RouteRecordRaw>;

@@ -4,6 +4,13 @@ import {
   TAB_NAME_TRIGGERS,
   TAB_NAME_TEMPLATE,
 } from '@/constants';
+import {
+  ClNotificationDetail,
+  ClNotificationDetailTabOverview,
+  ClNotificationDetailTabTemplate,
+  ClNotificationDetailTabTriggers,
+  ClNotificationList,
+} from '@/views';
 
 const endpoint = 'notifications';
 
@@ -11,7 +18,7 @@ export default [
   {
     name: 'NotificationList',
     path: `${endpoint}`,
-    component: () => import('@/views/notification/list/NotificationList.vue'),
+    component: () => ClNotificationList,
   },
   {
     name: 'NotificationDetail',
@@ -19,29 +26,19 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () =>
-      import('@/views/notification/detail/NotificationDetail.vue'),
+    component: () => ClNotificationDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import(
-            '@/views/notification/detail/tabs/NotificationDetailTabOverview.vue'
-          ),
+        component: () => ClNotificationDetailTabOverview,
       },
       {
         path: TAB_NAME_TRIGGERS,
-        component: () =>
-          import(
-            '@/views/notification/detail/tabs/NotificationDetailTabTriggers.vue'
-          ),
+        component: () => ClNotificationDetailTabTriggers,
       },
       {
         path: TAB_NAME_TEMPLATE,
-        component: () =>
-          import(
-            '@/views/notification/detail/tabs/NotificationDetailTabTemplate.vue'
-          ),
+        component: () => ClNotificationDetailTabTemplate,
       },
     ],
   },

@@ -1,8 +1,10 @@
 import { RouteRecordRaw } from 'vue-router';
-import DataSourceList from '@/views/ds/list/DataSourceList.vue';
-import DataSourceDetail from '@/views/ds/detail/DataSourceDetail.vue';
-import DataSourceDetailTabOverview from '@/views/ds/detail/tabs/DataSourceDetailTabOverview.vue';
 import { TAB_NAME_OVERVIEW } from '@/constants';
+import {
+  ClDataSourceDetail,
+  ClDataSourceDetailTabOverview,
+  ClDataSourceList,
+} from '@/views';
 
 const endpoint = 'data-sources';
 
@@ -10,7 +12,7 @@ export default [
   {
     name: 'DataSourceList',
     path: endpoint,
-    component: DataSourceList,
+    component: ClDataSourceList,
   },
   {
     name: 'DataSourceDetail',
@@ -18,11 +20,11 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: DataSourceDetail,
+    component: ClDataSourceDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: DataSourceDetailTabOverview,
+        component: ClDataSourceDetailTabOverview,
       },
     ],
   },

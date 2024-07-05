@@ -8,12 +8,23 @@ import {
   TAB_NAME_SETTINGS,
   TAB_NAME_TASKS,
 } from '@/constants/tab';
+import {
+  ClDependencySpiderTab,
+  ClSpiderDetail,
+  ClSpiderDetailTabData,
+  ClSpiderDetailTabFiles,
+  ClSpiderDetailTabOverview,
+  ClSpiderDetailTabSchedules,
+  ClSpiderDetailTabSettings,
+  ClSpiderDetailTabTasks,
+  ClSpiderList,
+} from '@/views';
 
 export default [
   {
     name: 'SpiderList',
     path: 'spiders',
-    component: () => import('@/views/spider/list/SpiderList.vue'),
+    component: () => ClSpiderList,
   },
   {
     name: 'SpiderDetail',
@@ -21,42 +32,35 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => import('@/views/spider/detail/SpiderDetail.vue'),
-
+    component: () => ClSpiderDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () =>
-          import('@/views/spider/detail/tabs/SpiderDetailTabOverview.vue'),
+        component: () => ClSpiderDetailTabOverview,
       },
       {
         path: TAB_NAME_FILES,
-        component: () =>
-          import('@/views/spider/detail/tabs/SpiderDetailTabFiles.vue'),
+        component: () => ClSpiderDetailTabFiles,
       },
       {
         path: TAB_NAME_TASKS,
-        component: () =>
-          import('@/views/spider/detail/tabs/SpiderDetailTabTasks.vue'),
+        component: () => ClSpiderDetailTabTasks,
       },
       {
         path: TAB_NAME_SCHEDULES,
-        component: () =>
-          import('@/views/spider/detail/tabs/SpiderDetailTabSchedules.vue'),
+        component: () => ClSpiderDetailTabSchedules,
       },
       {
         path: TAB_NAME_DATA,
-        component: () =>
-          import('@/views/spider/detail/tabs/SpiderDetailTabData.vue'),
+        component: () => ClSpiderDetailTabData,
       },
       {
         path: TAB_NAME_SETTINGS,
-        component: () =>
-          import('@/views/spider/detail/tabs/SpiderDetailTabSettings.vue'),
+        component: () => ClSpiderDetailTabSettings,
       },
       {
         path: TAB_NAME_DEPENDENCIES,
-        component: () => import('@/views/deps/spider/DependencySpiderTab.vue'),
+        component: () => ClDependencySpiderTab,
       },
     ],
   },

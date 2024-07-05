@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import EnvironmentList from '@/views/environment/list/EnvironmentList.vue';
+import { ClEnvironmentList } from '@/views';
 
 const endpoint = 'environments';
 
@@ -7,6 +7,6 @@ export default [
   {
     name: 'EnvironmentList',
     path: endpoint,
-    component: EnvironmentList,
+    component: ClEnvironmentList,
   },
 ] as Array<RouteRecordRaw>;

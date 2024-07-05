@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { translate } from '@/utils';
+import { isPro, translate } from '@/utils';
 
 interface ContextMenuProps {
   visible?: boolean;
@@ -47,11 +47,7 @@ const items = computed<ContextMenuItem[]>(() => [
   {
     title: t('components.file.editor.navMenu.newFileWithAi'),
     icon: ['fa', 'robot'],
-    className:
-      'new-file-with-ai' +
-      (systemInfo.value.edition === 'global.edition.community'
-        ? ' disabled'
-        : ''),
+    className: 'new-file-with-ai' + (isPro() ? ' disabled' : ''),
     action: () => emit('new-file-with-ai'),
   },
   {
