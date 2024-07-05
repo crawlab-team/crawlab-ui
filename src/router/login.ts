@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
+import { ClLogin } from '@/views';
 
 const endpoint = '/login';
 
