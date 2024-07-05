@@ -22,7 +22,7 @@ export default [
   {
     name: 'GitList',
     path: endpoint,
-    component: () => ClGitList,
+    component: async () => ClGitList,
   },
   {
     name: 'GitDetail',
@@ -30,27 +30,27 @@ export default [
     redirect: to => {
       return { path: to.path + '/overview' };
     },
-    component: () => ClGitDetail,
+    component: async () => ClGitDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClGitDetailTabOverview,
+        component: async () => ClGitDetailTabOverview,
       },
       {
         path: TAB_NAME_FILES,
-        component: () => ClGitDetailTabFiles,
+        component: async () => ClGitDetailTabFiles,
       },
       {
         path: TAB_NAME_LOGS,
-        component: () => ClGitDetailTabLogs,
+        component: async () => ClGitDetailTabLogs,
       },
       {
         path: TAB_NAME_CHANGES,
-        component: () => ClGitDetailTabChanges,
+        component: async () => ClGitDetailTabChanges,
       },
       {
         path: TAB_NAME_SPIDERS,
-        component: () => ClGitDetailTabSpiders,
+        component: async () => ClGitDetailTabSpiders,
       },
     ],
   },

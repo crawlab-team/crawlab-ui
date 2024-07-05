@@ -18,16 +18,16 @@ export default [
   {
     name: 'DepsSettings',
     path: `${endpoint}/settings`,
-    component: () => ClDependencySettings,
+    component: async () => ClDependencySettings,
   },
   {
     name: 'DepsPython',
     path: `${endpoint}/python`,
-    component: () => ClDependencyPython,
+    component: async () => ClDependencyPython,
   },
   {
     name: 'DepsNode',
     path: `${endpoint}/node`,
-    component: () => ClDependencyNode,
+    component: async () => ClDependencyNode,
   },
 ] as Array<RouteRecordRaw>;

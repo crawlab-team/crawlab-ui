@@ -12,7 +12,7 @@ export default [
   {
     name: 'DataSourceList',
     path: endpoint,
-    component: () => ClDataSourceList,
+    component: async () => ClDataSourceList,
   },
   {
     name: 'DataSourceDetail',
@@ -20,11 +20,11 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => ClDataSourceDetail,
+    component: async () => ClDataSourceDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClDataSourceDetailTabOverview,
+        component: async () => ClDataSourceDetailTabOverview,
       },
     ],
   },

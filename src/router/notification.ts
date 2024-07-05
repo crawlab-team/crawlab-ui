@@ -18,7 +18,7 @@ export default [
   {
     name: 'NotificationList',
     path: `${endpoint}`,
-    component: () => ClNotificationList,
+    component: async () => ClNotificationList,
   },
   {
     name: 'NotificationDetail',
@@ -26,19 +26,19 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => ClNotificationDetail,
+    component: async () => ClNotificationDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClNotificationDetailTabOverview,
+        component: async () => ClNotificationDetailTabOverview,
       },
       {
         path: TAB_NAME_TRIGGERS,
-        component: () => ClNotificationDetailTabTriggers,
+        component: async () => ClNotificationDetailTabTriggers,
       },
       {
         path: TAB_NAME_TEMPLATE,
-        component: () => ClNotificationDetailTabTemplate,
+        component: async () => ClNotificationDetailTabTemplate,
       },
     ],
   },

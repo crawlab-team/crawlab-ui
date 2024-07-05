@@ -7,6 +7,6 @@ export default [
   {
     name: 'TokenList',
     path: endpoint,
-    component: () => ClTokenList,
+    component: async () => ClTokenList,
   },
 ] as Array<RouteRecordRaw>;

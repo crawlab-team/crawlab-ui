@@ -7,6 +7,6 @@ export default [
   {
     name: 'SystemDetail',
     path: endpoint,
-    component: () => ClSystemDetail,
+    component: async () => ClSystemDetail,
   },
 ] as Array<RouteRecordRaw>;

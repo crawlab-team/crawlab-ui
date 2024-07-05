@@ -7,11 +7,11 @@ export default [
   {
     name: 'Disclaimer',
     path: `${endpoint}/disclaimer`,
-    component: () => ClDisclaimer,
+    component: async () => ClDisclaimer,
   },
   {
     name: 'MySettings',
     path: `${endpoint}/my-settings`,
-    component: () => ClMySettings,
+    component: async () => ClMySettings,
   },
 ] as Array<RouteRecordRaw>;

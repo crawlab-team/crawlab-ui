@@ -24,7 +24,7 @@ export default [
   {
     name: 'SpiderList',
     path: 'spiders',
-    component: () => ClSpiderList,
+    component: async () => ClSpiderList,
   },
   {
     name: 'SpiderDetail',
@@ -32,35 +32,35 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => ClSpiderDetail,
+    component: async () => ClSpiderDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClSpiderDetailTabOverview,
+        component: async () => ClSpiderDetailTabOverview,
       },
       {
         path: TAB_NAME_FILES,
-        component: () => ClSpiderDetailTabFiles,
+        component: async () => ClSpiderDetailTabFiles,
       },
       {
         path: TAB_NAME_TASKS,
-        component: () => ClSpiderDetailTabTasks,
+        component: async () => ClSpiderDetailTabTasks,
       },
       {
         path: TAB_NAME_SCHEDULES,
-        component: () => ClSpiderDetailTabSchedules,
+        component: async () => ClSpiderDetailTabSchedules,
       },
       {
         path: TAB_NAME_DATA,
-        component: () => ClSpiderDetailTabData,
+        component: async () => ClSpiderDetailTabData,
       },
       {
         path: TAB_NAME_SETTINGS,
-        component: () => ClSpiderDetailTabSettings,
+        component: async () => ClSpiderDetailTabSettings,
       },
       {
         path: TAB_NAME_DEPENDENCIES,
-        component: () => ClDependencySpiderTab,
+        component: async () => ClDependencySpiderTab,
       },
     ],
   },

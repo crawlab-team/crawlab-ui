@@ -13,7 +13,7 @@ export default [
   {
     name: 'ProjectList',
     path: endpoint,
-    component: () => ClProjectList,
+    component: async () => ClProjectList,
   },
   {
     name: 'ProjectDetail',
@@ -21,15 +21,15 @@ export default [
     redirect: to => {
       return { path: to.path + '/overview' };
     },
-    component: () => ClProjectDetail,
+    component: async () => ClProjectDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClProjectDetailTabOverview,
+        component: async () => ClProjectDetailTabOverview,
       },
       {
         path: TAB_NAME_SPIDERS,
-        component: () => ClProjectDetailTabSpiders,
+        component: async () => ClProjectDetailTabSpiders,
       },
     ],
   },

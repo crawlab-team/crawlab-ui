@@ -7,6 +7,6 @@ export default [
   {
     name: 'EnvironmentList',
     path: endpoint,
-    component: () => ClEnvironmentList,
+    component: async () => ClEnvironmentList,
   },
 ] as Array<RouteRecordRaw>;

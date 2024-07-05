@@ -18,7 +18,7 @@ export default [
   {
     name: 'NodeList',
     path: endpoint,
-    component: () => ClNodeList,
+    component: async () => ClNodeList,
   },
   {
     name: 'NodeDetail',
@@ -26,19 +26,19 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => ClNodeDetail,
+    component: async () => ClNodeDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClNodeDetailTabOverview,
+        component: async () => ClNodeDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
-        component: () => ClNodeDetailTabTasks,
+        component: async () => ClNodeDetailTabTasks,
       },
       {
         path: TAB_NAME_MONITORING,
-        component: () => ClNodeDetailTabMonitoring,
+        component: async () => ClNodeDetailTabMonitoring,
       },
     ],
   },

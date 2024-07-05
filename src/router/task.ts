@@ -18,7 +18,7 @@ export default [
   {
     name: 'TaskList',
     path: endpoint,
-    component: () => ClTaskList,
+    component: async () => ClTaskList,
   },
   {
     name: 'TaskDetail',
@@ -26,19 +26,19 @@ export default [
     redirect: to => {
       return { path: to.path + '/overview' };
     },
-    component: () => ClTaskDetail,
+    component: async () => ClTaskDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClTaskDetailTabOverview,
+        component: async () => ClTaskDetailTabOverview,
       },
       {
         path: TAB_NAME_LOGS,
-        component: () => ClTaskDetailTabLogs,
+        component: async () => ClTaskDetailTabLogs,
       },
       {
         path: TAB_NAME_DATA,
-        component: () => ClTaskDetailTabData,
+        component: async () => ClTaskDetailTabData,
       },
     ],
   },

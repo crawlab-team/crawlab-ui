@@ -6,7 +6,7 @@ export default [
   {
     name: 'UserList',
     path: 'users',
-    component: () => ClUserList,
+    component: async () => ClUserList,
   },
   {
     name: 'UserDetail',
@@ -14,11 +14,11 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => ClUserDetail,
+    component: async () => ClUserDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClUserDetailTabOverview,
+        component: async () => ClUserDetailTabOverview,
       },
     ],
   },

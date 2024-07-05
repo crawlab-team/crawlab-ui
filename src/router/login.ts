@@ -7,6 +7,6 @@ export default [
   {
     name: 'Login',
     path: endpoint,
-    component: () => ClLogin,
+    component: async () => ClLogin,
   },
 ] as Array<RouteRecordRaw>;

@@ -31,7 +31,7 @@ export function getDefaultRoutes(): Array<RouteRecordRaw> {
       path: '/',
       redirect: '/home',
       name: ROUTER_ROOT_NAME_ROOT,
-      component: () => ClNormalLayout,
+      component: async () => ClNormalLayout,
       children: [
         ...home,
         ...node,

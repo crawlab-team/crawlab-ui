@@ -11,7 +11,7 @@ export default [
   {
     name: 'ScheduleList',
     path: 'schedules',
-    component: () => ClScheduleList,
+    component: async () => ClScheduleList,
   },
   {
     name: 'ScheduleDetail',
@@ -19,15 +19,15 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: () => ClScheduleDetail,
+    component: async () => ClScheduleDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        component: () => ClScheduleDetailTabOverview,
+        component: async () => ClScheduleDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
-        component: () => ClScheduleDetailTabTasks,
+        component: async () => ClScheduleDetailTabTasks,
       },
     ],
   },
