@@ -109,8 +109,10 @@ const updateEditorOptions = () => {
 };
 
 const updateEditorContent = () => {
+  if (editor?.getValue() === content.value) return;
   editor?.setValue(content.value || '');
 };
+watch(content, updateEditorContent);
 
 const getContentCache = (tab: FileNavItem) => {
   if (!tab.path) return;
