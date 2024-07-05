@@ -96,7 +96,7 @@
     "point-cluster": "^3.1.8",
     "showdown": "^2.1.0",
     "url-join": "^4.0.1",
-    "vue": "~3.3",
+    "vue": "^3.4",
     "vue-chartjs": "^5.3.1",
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "9.13.1",

@@ -7,7 +7,9 @@
     "jsx": "preserve",
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment",
-    "types": ["vite/client"],
+    "types": [
+      "vite/client"
+    ],
     "importHelpers": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
