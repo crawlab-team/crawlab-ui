@@ -26,7 +26,6 @@ const computedOptions = computed<SelectOption[]>(() => {
 });
 
 const onChange = (value: any) => {
-  if (value === '') return;
   emit('change', value);
 };
 

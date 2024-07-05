@@ -26,7 +26,7 @@ export default [
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: ClNodeDetail,
+    component: () => ClNodeDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,

@@ -111,7 +111,7 @@ defineOptions({ name: 'ClFileUpload' });
           <el-radio
             v-for="{ value, label } in modeOptions"
             :key="value"
-            :label="value"
+            :value="value"
             :class="value"
           >
             {{ label }}

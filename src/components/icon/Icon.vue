@@ -6,7 +6,7 @@ const props = withDefaults(
   defineProps<{
     icon: Icon;
     spinning?: boolean;
-    size: IconSize;
+    size?: IconSize;
     color?: string;
   }>(),
   {

@@ -52,7 +52,7 @@ defineOptions({ name: 'ClFaIconButton' });
     :class-name="cls"
     @click="(event: Event) => emit('click', event)"
   >
-    <cl-icon :icon="icon" :spin="spin" />
+    <cl-icon :icon="icon" :spinning="spin" />
     <div v-if="badgeIcon" class="badge-icon">
       <cl-icon :icon="badgeIcon" />
     </div>

@@ -5,7 +5,7 @@ const props = withDefaults(
   defineProps<{
     tooltip?: string | Record<string, string>;
     isHtml?: boolean;
-    icon: string | string[];
+    icon?: string | string[];
     status?: TableHeaderActionStatus;
   }>(),
   {
@@ -39,7 +39,9 @@ defineOptions({ name: 'ClTableHeaderAction' });
       <template v-if="isHtml" #content>
         <div v-html="tooltip" />
       </template>
-      <cl-icon :icon="icon" />
+      <div>
+        <cl-icon :icon="icon" />
+      </div>
     </el-tooltip>
   </span>
 </template>

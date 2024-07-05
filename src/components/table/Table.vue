@@ -16,18 +16,18 @@ const props = withDefaults(
   defineProps<{
     data: TableData;
     columns: TableColumn[];
-    selectedColumnKeys: string[];
-    total: number;
-    page: number;
-    pageSize: number;
-    rowKey: string | ((row: any) => string);
+    selectedColumnKeys?: string[];
+    total?: number;
+    page?: number;
+    pageSize?: number;
+    rowKey?: string | ((row: any) => string);
     selectable?: boolean;
-    visibleButtons: BuiltInTableActionButtonName[];
+    visibleButtons?: BuiltInTableActionButtonName[];
     hideFooter?: boolean;
     selectableFunction?: TableSelectableFunction;
-    paginationLayout: string;
+    paginationLayout?: string;
     loading?: boolean;
-    paginationPosition: TablePaginationPosition;
+    paginationPosition?: TablePaginationPosition;
     height?: string | number;
     maxHeight?: string | number;
     embedded?: boolean;

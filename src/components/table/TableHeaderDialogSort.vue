@@ -41,11 +41,11 @@ defineOptions({ name: 'ClTableHeaderDialogSort' });
       </el-tooltip>
     </div>
     <el-radio-group :model-value="value" type="primary" @change="onChange">
-      <el-radio-button :label="ASCENDING" class="sort-btn">
+      <el-radio-button :value="ASCENDING" class="sort-btn">
         <cl-icon :icon="['fa', 'sort-amount-up']" />
         {{ t('components.table.header.dialog.sort.ascending') }}
       </el-radio-button>
-      <el-radio-button :label="DESCENDING" class="sort-btn">
+      <el-radio-button :value="DESCENDING" class="sort-btn">
         <cl-icon :icon="['fa', 'sort-amount-down-alt']" />
         {{ t('components.table.header.dialog.sort.descending') }}
       </el-radio-button>

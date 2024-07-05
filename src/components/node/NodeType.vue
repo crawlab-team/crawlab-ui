@@ -9,9 +9,9 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-const type = computed<string>(() => {
+const type = computed<BasicType>(() => {
   const { isMaster } = props;
-  return isMaster ? '' : 'warning';
+  return isMaster ? 'primary' : 'warning';
 });
 
 const computedLabel = computed<string>(() => {

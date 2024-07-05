@@ -6,7 +6,7 @@ const props = withDefaults(
   defineProps<{
     available?: number;
     max?: number;
-    size: BasicSize;
+    size?: BasicSize;
   }>(),
   {
     size: 'default',

@@ -24,12 +24,6 @@ const makeInstaller = (
     // skip if already exists in apps
     if (apps.includes(app)) return;
 
-    // install Element-Plus
-    app.use(ElementPlus);
-
-    // install vue-fontawesome
-    app.component('font-awesome-icon', FontAwesomeIcon);
-
     // add to apps
     apps.push(app);
 

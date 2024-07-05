@@ -142,7 +142,7 @@ defineOptions({ name: 'ClTableHeaderDialogFilter' });
           <el-checkbox
             v-for="(item, $index) in filteredItems"
             :key="$index"
-            :label="item.value"
+            :value="item.value"
             class="item"
           >
             {{ item.label }}

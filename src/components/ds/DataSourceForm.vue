@@ -95,13 +95,13 @@ defineOptions({ name: 'ClDataSourceForm' });
         :disabled="isFormItemDisabled('connect_type')"
         @change="onConnectTypeChange"
       >
-        <el-radio label="standard"
+        <el-radio value="standard"
           >{{ t('components.ds.connectType.label.standard') }}
         </el-radio>
-        <el-radio label="url"
+        <el-radio value="url"
           >{{ t('components.ds.connectType.label.url') }}
         </el-radio>
-        <el-radio label="hosts"
+        <el-radio value="hosts"
           >{{ t('components.ds.connectType.label.hosts') }}
         </el-radio>
       </el-radio-group>

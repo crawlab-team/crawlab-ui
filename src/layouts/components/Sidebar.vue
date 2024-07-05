@@ -144,7 +144,7 @@ defineOptions({ name: 'ClSidebar' });
         :default-openeds="openedIndexes"
         @select="onMenuItemClick"
       >
-        <template v-for="item in menuItems" :key="$index">
+        <template v-for="(item, $index) in menuItems" :key="$index">
           <cl-sidebar-item :item="item" />
         </template>
       </el-menu>

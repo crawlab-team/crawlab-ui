@@ -28,16 +28,16 @@ export default defineComponent({
     <el-form label-width="150px">
       <el-form-item :label="t('views.notification.triggers.taskTrigger')">
         <el-radio-group v-model="form.task_trigger">
-          <el-radio label="task_finish">
+          <el-radio value="task_finish">
             {{ t('views.notification.triggers.taskTriggerFinish') }}
           </el-radio>
-          <el-radio label="task_error">
+          <el-radio value="task_error">
             {{ t('views.notification.triggers.taskTriggerError') }}
           </el-radio>
-          <el-radio label="task_empty_results">
+          <el-radio value="task_empty_results">
             {{ t('views.notification.triggers.taskTriggerEmptyResults') }}
           </el-radio>
-          <el-radio label="task_never">
+          <el-radio value="task_never">
             {{ t('views.notification.triggers.taskTriggerNever') }}
           </el-radio>
         </el-radio-group>

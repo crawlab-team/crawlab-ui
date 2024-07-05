@@ -1,3 +1,5 @@
+const THREE = window.THREE;
+
 class ThreeJSApp {
   constructor() {
     this.frameId = null;
@@ -110,7 +112,7 @@ class ThreeJSApp {
     for (let i = 0; i < 10; i++) {
       const geometry = new THREE.IcosahedronGeometry(1);
       const material = new THREE.MeshStandardMaterial({
-        shading: THREE.SmoothShading,
+        flatShading: THREE.SmoothShading,
         color: 0x111111,
         transparent: false,
         opacity: 1,

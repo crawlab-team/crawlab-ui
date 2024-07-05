@@ -10,21 +10,21 @@ import {
 
 const props = withDefaults(
   defineProps<{
-    navActions: ListActionGroup[];
-    rowKey: string | ((row: any) => string);
+    navActions?: ListActionGroup[];
+    rowKey?: string | ((row: any) => string);
     tableColumns: TableColumns;
     tableData: TableData;
-    tableTotal: number;
-    tablePagination: TablePagination;
-    tableListFilter: FilterConditionData[];
-    tableListSort: SortData[];
-    tableActionsPrefix: ListActionButton[];
-    tableActionsSuffix: ListActionButton[];
-    tableFilter: any;
+    tableTotal?: number;
+    tablePagination?: TablePagination;
+    tableListFilter?: FilterConditionData[];
+    tableListSort?: SortData[];
+    tableActionsPrefix?: ListActionButton[];
+    tableActionsSuffix?: ListActionButton[];
+    tableFilter?: any;
     actionFunctions?: ListLayoutActionFunctions;
-    noActions: boolean;
-    selectableFunction: TableSelectableFunction;
-    visibleButtons: BuiltInTableActionButtonName[];
+    noActions?: boolean;
+    selectableFunction?: TableSelectableFunction;
+    visibleButtons?: BuiltInTableActionButtonName[];
     tablePaginationLayout?: string;
     tableLoading?: boolean;
     tablePaginationPosition?: TablePaginationPosition;
