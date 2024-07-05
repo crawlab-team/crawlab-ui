@@ -143,6 +143,7 @@ const dailyChartOptions = ref<ChartOptions>({
       type: 'linear',
       display: true,
       position: 'left',
+      min: 0,
     },
     y1: {
       title: {
@@ -152,6 +153,7 @@ const dailyChartOptions = ref<ChartOptions>({
       type: 'linear',
       display: true,
       position: 'right',
+      min: 0,
     },
   },
 });
