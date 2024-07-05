@@ -12,6 +12,14 @@ function isWindows() {
   return os.platform() === 'win32';
 }
 
+function getModulePath(moduleName) {
+  let modulePath = path.resolve(`./src/${moduleName}`);
+  if (isWindows()) {
+    modulePath = modulePath.replace(/\\/g, '/');
+  }
+  return modulePath;
+}
+
 function readFileAndModify(filePath, componentName) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   let newFileContent = '';
@@ -55,36 +63,6 @@ function processFile(filePath, moduleName) {
   }
 }
 
-function getModulePath(moduleName) {
-  let modulePath = path.resolve(`./src/${moduleName}`);
-  if (isWindows()) {
-    modulePath = modulePath.replace(/\\/g, '/');
-  }
-  return modulePath;
-}
-
-function genIndex(moduleName) {
-  const modulePath = getModulePath(moduleName);
-  const importExportLines = [];
-
-  const processEachFile = filePath => {
-    const lines = processFile(filePath, moduleName);
-    if (lines) importExportLines.push(lines);
-  };
-
-  rd.eachSync(modulePath, (f, s) => {
-    processEachFile(f.replace(/\\/g, '/'));
-  });
-
-  const importLines = importExportLines.map(line => line.importLine).join('\n');
-  const exportLines = importExportLines
-    .map(line => `  ${line.exportLine}`)
-    .join('\n');
-
-  const content = `${importLines}\n\nexport {\n${exportLines}\n};\n`;
-  fs.writeFileSync(`${modulePath}/index.ts`, content);
-}
-
 function addComponentName(content, componentName) {
   const setupScriptTagRegex = /(<script\s+setup[^>]*lang=["']ts["'][^>]*>)/;
   const setupEndScriptTagRegex = /(<\/script>)/;
@@ -112,6 +90,35 @@ function addComponentName(content, componentName) {
     }
   }
   return newContent; // Return original content if no <script setup> tag found
+}
+
+function genIndex(moduleName) {
+  const modulePath = getModulePath(moduleName);
+  const importExportLines = [];
+
+  const processEachFile = filePath => {
+    const lines = processFile(filePath, moduleName);
+    if (lines) importExportLines.push(lines);
+  };
+
+  // sort import lines by file name
+  importExportLines.sort((a, b) => {
+    const aName = a.importLine.match(/import (.*) from/)[1];
+    const bName = b.importLine.match(/import (.*) from/)[1];
+    return aName.localeCompare(bName);
+  });
+
+  rd.eachSync(modulePath, (f, s) => {
+    processEachFile(f.replace(/\\/g, '/'));
+  });
+
+  const importLines = importExportLines.map(line => line.importLine).join('\n');
+  const exportLines = importExportLines
+    .map(line => `  ${line.exportLine}`)
+    .join('\n');
+
+  const content = `${importLines}\n\nexport {\n${exportLines}\n};\n`;
+  fs.writeFileSync(`${modulePath}/index.ts`, content);
 }
 
 // gen module index.ts
