@@ -49,13 +49,6 @@ const data = computed(() => {
       };
     case GIT_STATUS_READY:
       return {
-        label: t('components.git.status.label.cloning'),
-        tooltip: t('components.git.status.tooltip.cloning'),
-        type: 'warning',
-        icon: ['fa', 'spinner'],
-        spinning: true,
-      };
-      return {
         label: t('components.git.status.label.ready'),
         tooltip: t('components.git.status.tooltip.ready'),
         type: 'success',
