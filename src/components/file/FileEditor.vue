@@ -7,9 +7,6 @@ import FileEditorNavTabs from '@/components/file/FileEditorNavTabs.vue';
 import { useI18n } from 'vue-i18n';
 import { getLanguageByFileName } from '@/utils';
 
-// tab content cache
-const editorTabContentCache = new Map<string, string>();
-
 const props = defineProps<{
   ns: ListStoreNamespace;
   content: string;
@@ -47,6 +44,9 @@ const { t } = useI18n();
 const ns = props.ns;
 const store = useStore();
 const { file: fileState } = store.state as RootStoreState;
+
+// tab content cache
+const editorTabContentCache = new Map<string, string>();
 
 const fileEditor = ref<HTMLDivElement>();
 
