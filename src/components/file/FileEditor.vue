@@ -21,7 +21,6 @@ const emit = defineEmits<{
   (e: 'node-db-click', item: FileNavItem): void;
   (e: 'node-drop', draggingItem: FileNavItem, dropItem: FileNavItem): void;
   (e: 'ctx-menu-new-file', item: FileNavItem, name: string): void;
-  (e: 'ctx-menu-new-file-with-ai', item: FileNavItem): void;
   (e: 'ctx-menu-new-directory', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-rename', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-clone', item: FileNavItem, name: string): void;
@@ -218,13 +217,12 @@ const onContextMenuNewFile = (item: FileNavItem, name: string) => {
   emit('ctx-menu-new-file', item, name);
 };
 
-const onContextMenuNewFileWithAi = (item: FileNavItem) => {
-  console.debug(item);
-  emit('ctx-menu-new-file-with-ai', item);
-};
-
 const onContextMenuNewDirectory = (item: FileNavItem, name: string) => {
   emit('ctx-menu-new-directory', item, name);
+};
+
+const onContextMenuUploadFiles = (item: FileNavItem) => {
+  emit('ctx-menu-upload-files', item);
 };
 
 const onContextMenuRename = (item: FileNavItem, name: string) => {
@@ -405,8 +403,8 @@ defineOptions({ name: 'ClFileEditor' });
       @node-db-click="onNavItemDbClick"
       @node-drop="onNavItemDrop"
       @ctx-menu-new-file="onContextMenuNewFile"
-      @ctx-menu-new-file-with-ai="onContextMenuNewFileWithAi"
       @ctx-menu-new-directory="onContextMenuNewDirectory"
+      @ctx-menu-upload-files="onContextMenuUploadFiles"
       @ctx-menu-rename="onContextMenuRename"
       @ctx-menu-clone="onContextMenuClone"
       @ctx-menu-delete="onContextMenuDelete"
@@ -430,10 +428,10 @@ defineOptions({ name: 'ClFileEditor' });
           <el-tooltip
             :content="t('components.file.editor.sidebar.toggle.showFiles')"
           >
-            <span class="action-icon expand-files" @click="onToggleNavMenu">
+            <div class="action-icon expand-files" @click="onToggleNavMenu">
               <div class="background" />
               <cl-icon :icon="['fa', 'bars']" />
-            </span>
+            </div>
           </el-tooltip>
         </template>
       </cl-file-editor-nav-tabs>
@@ -459,10 +457,10 @@ defineOptions({ name: 'ClFileEditor' });
         >
           <div :style="{ ...styles.default }" class="nav-tabs-suffix">
             <el-tooltip :content="t('components.file.editor.sidebar.showMore')">
-              <span class="action-icon" @click.prevent="onShowMoreShow">
+              <div class="action-icon" @click.prevent="onShowMoreShow">
                 <div class="background" />
                 <cl-icon :icon="['fa', 'angle-down']" />
-              </span>
+              </div>
             </el-tooltip>
           </div>
         </cl-file-editor-nav-tabs-show-more-context-menu>

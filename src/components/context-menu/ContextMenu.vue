@@ -21,6 +21,7 @@ const onClickOutside = () => {
   if (props.clicking) return;
   emit('hide');
 };
+
 defineOptions({ name: 'ClContextMenu' });
 </script>
 
@@ -29,6 +30,7 @@ defineOptions({ name: 'ClContextMenu' });
     :placement="placement"
     :show-arrow="false"
     :visible="visible"
+    transition="0"
     popper-class="context-menu"
   >
     <template #default>

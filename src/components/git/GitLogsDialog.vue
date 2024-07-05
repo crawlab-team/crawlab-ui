@@ -30,7 +30,6 @@ const update = () => {
     }, 5000);
     setTimeout(() => {
       logsViewRef.value?.scrollToBottom();
-      console.debug(logsViewRef.value?.scrollToBottom);
     }, 0);
   } else {
     clearInterval(handle);

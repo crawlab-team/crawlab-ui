@@ -14,6 +14,7 @@ const props = defineProps<{
   form: BaseModel;
   services: FileServices<BaseModel>;
   fileNavItems: FileNavItem[];
+  defaultTargetDirectory?: string;
 }>();
 
 // i18n
@@ -26,7 +27,13 @@ const files = ref<FileWithPath[]>([]);
 
 const mode = ref<FileUploadMode>(FILE_UPLOAD_MODE_DIR);
 
-const targetDirectory = ref<string>(FILE_ROOT);
+const targetDirectory = ref<string>(props.defaultTargetDirectory || FILE_ROOT);
+watch(
+  () => props.defaultTargetDirectory,
+  value => {
+    targetDirectory.value = value || FILE_ROOT;
+  }
+);
 
 const fileUploadVisible = computed(
   () => props.activeDialogKey === 'uploadFiles'

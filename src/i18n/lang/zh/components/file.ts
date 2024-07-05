@@ -8,8 +8,8 @@ const file: LComponentsFile = {
     },
     navMenu: {
       newFile: '新建文件',
-      newFileWithAi: '用 AI 新建文件',
       newDirectory: '新建目录',
+      uploadFiles: '上传文件',
       rename: '重命名',
       duplicate: '复制',
       delete: '删除',

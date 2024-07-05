@@ -30,8 +30,8 @@ const emit = defineEmits<{
   (e: 'node-click', item: FileNavItem): void;
   (e: 'node-db-click', item: FileNavItem): void;
   (e: 'ctx-menu-new-file', item: FileNavItem, name: string): void;
-  (e: 'ctx-menu-new-file-with-ai', item: FileNavItem): void;
   (e: 'ctx-menu-new-directory', item: FileNavItem, name: string): void;
+  (e: 'ctx-menu-upload-files', item: FileNavItem): void;
   (e: 'ctx-menu-rename', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-clone', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-delete', item: FileNavItem): void;
@@ -156,11 +156,6 @@ const onNodeContextMenuNewFile = async (item: FileNavItem) => {
   emit('ctx-menu-new-file', item, res.value);
 };
 
-const onNodeContextMenuNewFileWithAi = async (item: FileNavItem) => {
-  console.debug(item);
-  emit('ctx-menu-new-file-with-ai', item);
-};
-
 const onNodeContextMenuNewDirectory = async (item: FileNavItem) => {
   const res = await ElMessageBox.prompt(
     t('components.file.editor.messageBox.prompt.newDirectory'),
@@ -173,6 +168,10 @@ const onNodeContextMenuNewDirectory = async (item: FileNavItem) => {
     }
   );
   emit('ctx-menu-new-directory', item, res.value);
+};
+
+const onNodeContextMenuUploadFiles = async (item: FileNavItem) => {
+  emit('ctx-menu-upload-files', item);
 };
 
 const onNodeContextMenuRename = async (item: FileNavItem) => {
@@ -388,18 +387,18 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
           v-if="false"
           :content="t('components.file.editor.sidebar.settings')"
         >
-          <span class="action-icon" @click="showSettings = true">
+          <div class="action-icon" @click="showSettings = true">
             <div class="background" />
             <cl-icon :icon="['fa', 'cog']" />
-          </span>
+          </div>
         </el-tooltip>
         <el-tooltip
           :content="t('components.file.editor.sidebar.toggle.hideFiles')"
         >
-          <span class="action-icon" @click="emit('toggle-nav-menu')">
+          <div class="action-icon" @click="emit('toggle-nav-menu')">
             <div class="background" />
             <cl-icon :icon="['fa', 'minus']" />
-          </span>
+          </div>
         </el-tooltip>
       </div>
     </div>
@@ -422,7 +421,7 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
         icon-class="fa fa-angle-right"
         :style="{ ...styles?.default }"
         :default-expanded-keys="computedDefaultExpandedKeys"
-        draggable
+        :draggable="true"
         @node-drag-enter="onNodeDragEnter"
         @node-drag-leave="onNodeDragLeave"
         @node-drag-end="onNodeDragEnd"
@@ -434,15 +433,16 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
       >
         <template #default="{ data }: { data: FileNavItem }">
           <cl-file-editor-nav-menu-context-menu
+            :active-item="activeContextMenuItem"
             :clicking="contextMenuClicking"
             :visible="isShowContextMenu(data)"
             @hide="onNodeContextMenuHide"
+            @new-file="onNodeContextMenuNewFile(data)"
+            @new-directory="onNodeContextMenuNewDirectory(data)"
+            @upload-files="onNodeContextMenuUploadFiles(data)"
+            @rename="onNodeContextMenuRename(data)"
             @clone="onNodeContextMenuClone(data)"
             @delete="onNodeContextMenuDelete(data)"
-            @rename="onNodeContextMenuRename(data)"
-            @new-file="onNodeContextMenuNewFile(data)"
-            @new-file-with-ai="onNodeContextMenuNewFileWithAi(data)"
-            @new-directory="onNodeContextMenuNewDirectory(data)"
           >
             <div
               v-bind="getBindDir(data)"
@@ -530,6 +530,7 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
     }
 
     .action-icon {
+      display: inline;
       cursor: pointer;
     }
   }

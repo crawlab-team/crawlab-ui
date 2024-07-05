@@ -114,11 +114,6 @@ const onContextMenuNewFile = async (item: FileNavItem, name: string) => {
   await openFile(path);
 };
 
-const onContextMenuNewFileWithAi = async (item: FileNavItem) => {
-  store.commit('file/setEditorFileNavItem', item);
-  store.commit(`file/setEditorCreateWithAiDialogVisible`, true);
-};
-
 const onContextMenuNewDirectory = async (item: FileNavItem, name: string) => {
   const { activeId } = props;
   if (!item.path) return;
@@ -126,6 +121,12 @@ const onContextMenuNewDirectory = async (item: FileNavItem, name: string) => {
   await saveDir(activeId, path);
   emit('file-change', item.path);
   await listRootDir(activeId);
+};
+
+const onContextMenuUploadFiles = async (item: FileNavItem) => {
+  const { ns } = props;
+  store.commit(`${ns}/setActiveFileNavItem`, item);
+  store.commit(`${ns}/showDialog`, 'uploadFiles');
 };
 
 const onContextMenuRename = async (item: FileNavItem, name: string) => {
@@ -231,8 +232,8 @@ defineOptions({ name: 'ClFileTab' });
     @node-db-click="onNavItemDbClick"
     @node-drop="onNavItemDrop"
     @ctx-menu-new-file="onContextMenuNewFile"
-    @ctx-menu-new-file-with-ai="onContextMenuNewFileWithAi"
     @ctx-menu-new-directory="onContextMenuNewDirectory"
+    @ctx-menu-upload-files="onContextMenuUploadFiles"
     @ctx-menu-rename="onContextMenuRename"
     @ctx-menu-clone="onContextMenuClone"
     @ctx-menu-delete="onContextMenuDelete"

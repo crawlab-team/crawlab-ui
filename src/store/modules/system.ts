@@ -17,10 +17,8 @@ export default {
     getSiteTitle: async ({ state }: StoreActionContext<SystemStoreState>) => {
       const res = await get('/settings/site_title');
       state.siteTitle = res.data;
-      console.debug(state.siteTitle);
     },
     saveSiteTitle: async ({ state }: StoreActionContext<SystemStoreState>) => {
-      console.debug(state.siteTitle);
       await put('/settings/site_title', state.siteTitle);
     },
   },

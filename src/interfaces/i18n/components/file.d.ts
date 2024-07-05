@@ -8,8 +8,8 @@ interface LComponentsFile {
     };
     navMenu: {
       newFile: string;
-      newFileWithAi: string;
       newDirectory: string;
+      uploadFiles: string;
       rename: string;
       duplicate: string;
       delete: string;

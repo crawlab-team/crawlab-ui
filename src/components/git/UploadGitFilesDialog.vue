@@ -19,6 +19,7 @@ defineOptions({ name: 'ClUploadGitFilesDialog' });
     :form="state.form"
     :services="useGitService(store)"
     :file-nav-items="state.fileNavItems"
+    :default-target-directory="state.activeNavItem?.path"
   />
 </template>
 

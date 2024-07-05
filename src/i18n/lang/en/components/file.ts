@@ -8,8 +8,8 @@ const file: LComponentsFile = {
     },
     navMenu: {
       newFile: 'New File',
-      newFileWithAi: 'New File with AI',
       newDirectory: 'New Directory',
+      uploadFiles: 'Upload Files',
       rename: 'Rename',
       duplicate: 'Duplicate',
       delete: 'Delete',

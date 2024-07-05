@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 interface ContextMenuItem {
   title: string;
   icon?: Icon;
@@ -15,7 +14,8 @@ const emit = defineEmits<{
   (e: 'hide'): void;
 }>();
 
-const onClick = (item: ContextMenuItem) => {
+const onClick = (event: Event, item: ContextMenuItem) => {
+  event.stopPropagation();
   if (!item.action) return;
   item.action();
   emit('hide');
@@ -29,7 +29,7 @@ defineOptions({ name: 'ClContextMenuList' });
       v-for="(item, $index) in items"
       :key="$index"
       :class="['context-menu-item', item.className].join(' ')"
-      @click="onClick(item)"
+      @click="event => onClick(event, item)"
     >
       <span class="prefix">
         <template v-if="item.icon">

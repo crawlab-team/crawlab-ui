@@ -58,6 +58,12 @@ const modeOptions = computed<FileUploadModeOption[]>(() => [
 ]);
 
 const internalDirectory = ref<string>(props.targetDirectory);
+watch(
+  () => props.targetDirectory,
+  value => {
+    internalDirectory.value = value;
+  }
+);
 
 const uploadRef = ref<typeof ElUpload>();
 

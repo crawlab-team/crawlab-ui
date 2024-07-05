@@ -51,7 +51,6 @@ export const useForm = (
   const readonlyFormFields = computed<string[]>(() => state.readonlyFormFields);
 
   const validateForm = async () => {
-    console.debug(formRef.value);
     return await formRef.value?.validate();
   };
 
@@ -127,7 +126,6 @@ export const useForm = (
     // validate
     try {
       const valid = await validateForm();
-      console.debug(valid);
       if (!valid) return;
     } catch (ex) {
       console.error(ex);
@@ -152,7 +150,6 @@ export const useForm = (
       let res: HttpResponse;
       switch (activeDialogKey.value) {
         case 'create':
-          console.debug('create', form.value);
           res = await create(form.value);
           break;
         case 'edit':
