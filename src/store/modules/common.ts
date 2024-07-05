@@ -7,7 +7,7 @@ export default {
   namespaced: true,
   state: {
     lang: localStorage.getItem('lang') || 'en',
-    systemInfo: undefined,
+    systemInfo: JSON.parse(localStorage.getItem('systemInfo') || '{}'),
   } as CommonStoreState,
   getters: {
     isPro: (state: CommonStoreState) => {
@@ -20,6 +20,7 @@ export default {
     },
     setSystemInfo: (state: CommonStoreState, info: SystemInfo) => {
       state.systemInfo = plainClone(info);
+      localStorage.setItem('systemInfo', JSON.stringify(info));
     },
   } as CommonStoreMutations,
   actions: {
