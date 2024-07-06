@@ -6,11 +6,11 @@ import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
-    storeNamespace: ListStoreNamespace;
-    noSidebar: boolean;
-    navItemNameKey: string;
-    showBackButton: boolean;
-    showSaveButton: boolean;
+    storeNamespace?: ListStoreNamespace;
+    noSidebar?: boolean;
+    navItemNameKey?: string;
+    showBackButton?: boolean;
+    showSaveButton?: boolean;
     tabs?: NavItem[];
   }>(),
   {

@@ -52,7 +52,7 @@ export default {
           return !(
             ['/notifications', '/environments', '/system', '/deps'].includes(
               d.path
-            ) && isPro()
+            ) && !isPro()
           );
         })
         .filter(d => {

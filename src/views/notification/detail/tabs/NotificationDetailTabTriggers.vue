@@ -18,13 +18,6 @@ export default defineComponent({
 
 <template>
   <div class="notification-detail-tab-triggers">
-    <!--    <cl-transfer-->
-    <!--      v-if="triggersList && triggersEnabled"-->
-    <!--      :titles="triggersTitles"-->
-    <!--      :data="triggersList"-->
-    <!--      :value="triggersEnabled"-->
-    <!--      @change="onTriggersChange"-->
-    <!--    />-->
     <el-form label-width="150px">
       <el-form-item :label="t('views.notification.triggers.taskTrigger')">
         <el-radio-group v-model="form.task_trigger">

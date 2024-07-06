@@ -2,11 +2,11 @@
 import { ACTION_BACK, ACTION_SAVE } from '@/constants';
 import { translate } from '@/utils';
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    disabled: boolean;
-    showBackButton: boolean;
-    showSaveButton: boolean;
+    disabled?: boolean;
+    showBackButton?: boolean;
+    showSaveButton?: boolean;
   }>(),
   {
     disabled: false,

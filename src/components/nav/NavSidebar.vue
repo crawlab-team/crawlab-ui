@@ -6,16 +6,16 @@ import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
-    type: NavSidebarType;
-    collapsed: boolean;
-    showActions: boolean;
-    items: NavItem[];
-    activeKey: string;
-    showCheckbox: boolean;
-    defaultCheckedKeys: string[];
-    defaultExpandedKeys: string[];
-    defaultExpandAll: boolean;
-    noSearch: boolean;
+    type?: NavSidebarType;
+    collapsed?: boolean;
+    showActions?: boolean;
+    items?: NavItem[];
+    activeKey?: string;
+    showCheckbox?: boolean;
+    defaultCheckedKeys?: string[];
+    defaultExpandedKeys?: string[];
+    defaultExpandAll?: boolean;
+    noSearch?: boolean;
   }>(),
   {
     type: 'list',
