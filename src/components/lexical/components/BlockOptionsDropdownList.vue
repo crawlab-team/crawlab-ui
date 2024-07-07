@@ -15,25 +15,16 @@ import { $wrapNodes } from '@lexical/selection';
 import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
 import { $createCodeNode } from '@lexical/code';
 
-type BlockType =
-  | 'code'
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'ol'
-  | 'paragraph'
-  | 'quote'
-  | 'ul';
-
 const props = defineProps<{
+  visible?: boolean;
   editor: LexicalEditor;
   toolbarRef: HTMLDivElement | null;
   blockType: BlockType;
 }>();
 
-const emit = defineEmits(['update:showBlockOptionsDropDown']);
+const emit = defineEmits<{
+  (e: 'hide'): void;
+}>();
 
 const dropDownRef = ref<HTMLDivElement | null>(null);
 
@@ -52,7 +43,7 @@ function handle(event: Event) {
     !dropDownRef.value?.contains(target) &&
     !props.toolbarRef?.contains(target)
   )
-    emit('update:showBlockOptionsDropDown', false);
+    emit('hide');
 }
 
 onMounted(() => {
@@ -74,7 +65,7 @@ function formatParagraph() {
         $wrapNodes(selection, () => $createParagraphNode());
     });
   }
-  emit('update:showBlockOptionsDropDown', false);
+  emit('hide');
 }
 
 function formatLargeHeading() {
@@ -87,7 +78,7 @@ function formatLargeHeading() {
         $wrapNodes(selection, () => $createHeadingNode('h1'));
     });
   }
-  emit('update:showBlockOptionsDropDown', false);
+  emit('hide');
 }
 
 function formatSmallHeading() {
@@ -100,7 +91,7 @@ function formatSmallHeading() {
         $wrapNodes(selection, () => $createHeadingNode('h2'));
     });
   }
-  emit('update:showBlockOptionsDropDown', false);
+  emit('hide');
 }
 
 function formatBulletList() {
@@ -109,7 +100,7 @@ function formatBulletList() {
     editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
   else editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
 
-  emit('update:showBlockOptionsDropDown', false);
+  emit('hide');
 }
 
 function formatNumberedList() {
@@ -118,7 +109,7 @@ function formatNumberedList() {
     editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
   else editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
 
-  emit('update:showBlockOptionsDropDown', false);
+  emit('hide');
 }
 
 function formatQuote() {
@@ -131,7 +122,7 @@ function formatQuote() {
         $wrapNodes(selection, () => $createQuoteNode());
     });
   }
-  emit('update:showBlockOptionsDropDown', false);
+  emit('hide');
 }
 
 function formatCode() {
@@ -144,8 +135,10 @@ function formatCode() {
         $wrapNodes(selection, () => $createCodeNode());
     });
   }
-  emit('update:showBlockOptionsDropDown', false);
+  emit('hide');
 }
+
+defineOptions({ name: 'ClBlockOptionsDropdownList' });
 </script>
 
 <template>
@@ -180,7 +173,7 @@ function formatCode() {
       <span class="text">Quote</span>
       <span v-if="blockType === 'quote'" class="active" />
     </button>
-    <button class="item" @click="formatCode">
+    <button v-if="false" class="item" @click="formatCode">
       <span class="icon code" />
       <span class="text">Code Block</span>
       <span v-if="blockType === 'code'" class="active" />

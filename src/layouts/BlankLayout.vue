@@ -1,10 +1,5 @@
-<script>
-export default {
-  name: 'BlankLayout',
-  setup() {
-    return {};
-  },
-};
+<script setup lang="ts">
+defineOptions({ name: 'ClBlankLayout' });
 </script>
 
 <template>
@@ -13,7 +8,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.blank-layout {
-}
-</style>
+<style scoped></style>
