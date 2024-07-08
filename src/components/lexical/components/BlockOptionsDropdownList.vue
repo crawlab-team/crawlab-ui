@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
+import { ClickOutside as vClickOutside } from 'element-plus';
 import {
   $createParagraphNode,
   $getSelection,
@@ -170,11 +171,16 @@ const options: BlockOption[] = [
   { type: 'code', label: 'Code Block', onClick: formatCode },
 ];
 
+const onClickOutside = (event: Event) => {
+  event.stopPropagation();
+  emit('hide');
+};
+
 defineOptions({ name: 'ClBlockOptionsDropdownList' });
 </script>
 
 <template>
-  <div ref="dropDownRef" class="dropdown">
+  <div v-click-outside="onClickOutside" ref="dropDownRef" class="dropdown">
     <button
       v-for="option in options"
       :key="option.type"

@@ -1,13 +1,14 @@
 <script setup lang="ts">
-const tableForm = defineModel<TableForm>();
+const tableForm = defineModel<TableForm>({ required: true });
 
-const props = defineProps<{
+defineProps<{
   visible?: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: 'confirm'): void;
 }>();
+defineOptions({ name: 'ClInsertTableDialog' });
 </script>
 
 <template>

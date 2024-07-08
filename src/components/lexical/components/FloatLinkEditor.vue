@@ -101,7 +101,7 @@ const showLinkEditor = debounce(() => {
   if (nativeSelection?.anchorNode === rootElement) {
     let inner = rootElement;
     while (inner.firstElementChild) {
-      inner = inner.firstElementChild;
+      inner = inner.firstElementChild as HTMLElement;
     }
     rect = inner.getBoundingClientRect();
   } else {
@@ -143,8 +143,8 @@ const updateLinkEditor = () => {
   }
 
   linkForm.value = {
-    text: linkParent.getTextContent().trim() || '',
-    url: linkParent.getURL()?.trim() || '',
+    text: linkParent?.getTextContent().trim() || '',
+    url: linkParent?.getURL()?.trim() || '',
   };
   originalLinkForm.value = plainClone(linkForm.value);
   showLinkEditor();

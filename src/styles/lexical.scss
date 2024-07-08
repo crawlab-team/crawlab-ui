@@ -290,7 +290,7 @@
 }
 
 .toolbar button.toolbar-item.active {
-  background-color: rgba(223, 232, 250, 0.3);
+  background-color: #eee;
 }
 
 .toolbar button.toolbar-item.active i {
@@ -620,6 +620,10 @@ i.redo {
 
 .icon.table {
   background-image: url(../assets/lexical/images/icons/table.svg);
+}
+
+.icon.image {
+  background-image: url(../assets/lexical/images/icons/image.svg);
 }
 
 i.bold {

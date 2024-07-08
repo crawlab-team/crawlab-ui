@@ -19,7 +19,7 @@ import {
   applyTableHandlers,
 } from '@lexical/table';
 import { $insertFirst, $insertNodeToNearestRoot } from '@lexical/utils';
-import type { ElementNode, LexicalEditor, NodeKey } from 'lexical';
+import type { LexicalEditor, LexicalNode, NodeKey } from 'lexical';
 import {
   $getNodeByKey,
   $isTextNode,
@@ -29,6 +29,7 @@ import {
 import invariant from 'tiny-invariant';
 import useMounted from '../composables/useMounted';
 import useEffect from '../composables/useEffect';
+import { ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -44,28 +45,14 @@ const props = withDefaults(
   }
 );
 
-let startX = 0;
-let startWidth = 0;
-const onMouseMove = event => {
-  // if (this.resizingColumnIndex !== null) {
-  //   const dx = event.clientX - this.startX;
-  //   const newWidth = this.startWidth + dx;
-  //   if (newWidth > 30 && newWidth < 500) {
-  //     this.columns[this.resizingColumnIndex].width = newWidth;
-  //   }
-  // }
+const startX = ref(0);
+const startWidth = ref(0);
+const isResizing = ref(false);
+const resetResize = () => {
+  isResizing.value = false;
+  startX.value = 0;
+  startWidth.value = 0;
 };
-const onMouseUp = () => {
-  document.removeEventListener('mousemove', onMouseMove);
-  document.removeEventListener('mouseup', onMouseUp);
-};
-const onMouseDown = event => {
-  startX = event.clientX;
-  startWidth = Number(event.target.style.width.replace('px', ''));
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
-};
-
 useMounted(() => {
   const { editor } = props;
 
@@ -100,16 +87,52 @@ useMounted(() => {
 
   const tableSelections = new Map<NodeKey, TableObserver>();
 
-  const initializeResizableTableCellNodes = (tableNode: TableNode) => {
-    tableNode.getChildren().forEach((rowNode: ElementNode) => {
-      rowNode.getChildren().forEach((cellNode: TableCellNode) => {
-        // TODO: implement this
-        // cellElement.addEventListener('mousedown', event => {
-        //   if (event.offsetX > cellElement.offsetWidth - 10) {
-        //     onMouseDown(event);
-        //   }
-        // });
+  const initializeResizableTableCellNodes = (tableNode: LexicalNode) => {
+    const tableElement = editor.getElementByKey(tableNode.getKey());
+    const thElements = tableElement?.querySelectorAll('th') || [];
+    thElements.forEach((th, index) => {
+      // head cells
+      th.addEventListener('mousedown', e => {
+        startX.value = e.pageX;
+        startWidth.value = th.offsetWidth;
+        tableElement?.setAttribute('class', 'resizing');
+        document.addEventListener('mousemove', onTableCellMouseMove);
+        document.addEventListener('mouseup', onTableCellMouseUp);
       });
+
+      // body cells
+      tableElement
+        ?.querySelectorAll(`td:nth-child(${index + 1})`)
+        .forEach(td => {
+          (td as HTMLTableCellElement).addEventListener(
+            'mousedown',
+            (e: MouseEvent) => {
+              startX.value = e.pageX;
+              startWidth.value = th.offsetWidth;
+              document.addEventListener('mousemove', onTableCellMouseMove);
+              document.addEventListener('mouseup', onTableCellMouseUp);
+            }
+          );
+        });
+
+      const onTableCellMouseMove = (e: MouseEvent) => {
+        e.stopPropagation();
+        if (editor.isEditable()) {
+          editor.setEditable(false);
+          isResizing.value = true;
+        }
+        if (!isResizing.value) return;
+        const newWidth = startWidth.value + (e.pageX - startX.value);
+        th.style.width = `${newWidth}px`;
+      };
+
+      const onTableCellMouseUp = () => {
+        resetResize();
+        editor.setEditable(true);
+        tableElement?.removeAttribute('class');
+        document.removeEventListener('mousemove', onTableCellMouseMove);
+        document.removeEventListener('mouseup', onTableCellMouseUp);
+      };
     });
   };
 

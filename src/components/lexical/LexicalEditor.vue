@@ -8,8 +8,8 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
-import ClLexicalTablePlugin from '@/components/lexical/plugins/LexicalTablePlugin.vue';
 import { EditorThemeClasses } from 'lexical/LexicalEditor';
+import ClLexicalImagePlugin from '@/components/lexical/plugins/LexicalImagePlugin.vue';
 
 // const props = withDefaults(
 //   defineProps<{
@@ -86,10 +86,6 @@ const theme: EditorThemeClasses = {
     url: 'editor-tokenOperator',
     variable: 'editor-tokenVariable',
   },
-  table: {
-    table: 'PlaygroundEditorTheme__table',
-    td: 'PlaygroundEditorTheme__tableCell',
-  },
 };
 
 const initialEditorConfig: CreateEditorArgs = {
@@ -102,10 +98,10 @@ const initialEditorConfig: CreateEditorArgs = {
     CodeNode,
     CodeHighlightNode,
     TableNode,
-    TableCellNode,
     TableRowNode,
-    AutoLinkNode,
+    TableCellNode,
     LinkNode,
+    AutoLinkNode,
   ],
   editable: true,
   theme,
@@ -147,6 +143,7 @@ defineOptions({ name: 'ClLexicalEditor' });
       <cl-lexical-auto-link-plugin :editor="editor" />
       <cl-lexical-auto-focus-plugin :editor="editor" />
       <cl-lexical-table-plugin :editor="editor" />
+      <cl-lexical-image-plugin :editor="editor" />
       <cl-lexical-on-change-plugin
         :editor="editor"
         @change="onEditorContentChange"
@@ -176,6 +173,7 @@ defineOptions({ name: 'ClLexicalEditor' });
   text-align: start;
   padding: 6px 8px;
   outline: none;
+  user-select: none;
 }
 
 .editor-container:deep(th) {
@@ -193,5 +191,11 @@ defineOptions({ name: 'ClLexicalEditor' });
   bottom: 0;
   width: 5px;
   z-index: 1;
+}
+
+.editor-container:deep(table.resizing),
+.editor-container:deep(table.resizing *),
+.editor-container:deep(table.resizing *::after) {
+  user-select: none;
 }
 </style>

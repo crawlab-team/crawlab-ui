@@ -11,6 +11,8 @@ import {
   REDO_COMMAND,
   SELECTION_CHANGE_COMMAND,
   UNDO_COMMAND,
+  RangeSelection,
+  $createParagraphNode,
 } from 'lexical';
 import { $isParentElementRTL } from '@lexical/selection';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
@@ -19,11 +21,17 @@ import { $isHeadingNode } from '@lexical/rich-text';
 import { $isLinkNode } from '@lexical/link';
 import { $isCodeNode, getDefaultCodeLanguage } from '@lexical/code';
 import { TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { $isTableSelection, INSERT_TABLE_COMMAND } from '@lexical/table';
+import {
+  $isTableSelection,
+  INSERT_TABLE_COMMAND,
+  TableSelection,
+} from '@lexical/table';
 import BlockOptionsDropdownList from '../components/BlockOptionsDropdownList.vue';
 import InsertOptionsDropdownList from '../components/InsertOptionsDropdownList.vue';
 import FloatLinkEditor from '../components/FloatLinkEditor.vue';
 import InsertTableDialog from '../components/InsertTableDialog.vue';
+import InsertImageDialog from '../components/InsertImageDialog.vue';
+import { INSERT_IMAGE_COMMAND } from '@/components/lexical/utils/image';
 
 const props = defineProps<{
   editor: LexicalEditor;
@@ -61,7 +69,7 @@ const insertButtonRef = ref<HTMLButtonElement | null>(null);
 
 const canUndo = ref(false);
 const canRedo = ref(false);
-const blockType = ref<BlockType>('paragraph');
+const blockType = ref<keyof typeof blockTypeToBlockName>('paragraph');
 const selectedElementKey = ref();
 const codeLanguage = ref('');
 const isRTL = ref(false);
@@ -71,13 +79,18 @@ const isItalic = ref(false);
 const isUnderline = ref(false);
 const isStrikethrough = ref(false);
 const isCode = ref(false);
+const isLeft = ref(false);
+const isCenter = ref(false);
+const isRight = ref(false);
+const isJustify = ref(false);
 const showBlockOptionsDropdown = ref(false);
 const showInsertOptionsDropdown = ref(false);
 const showInsertTableDialog = ref(false);
+const showInsertImageDialog = ref(false);
 
-function updateToolbar() {
+const updateToolbar = () => {
   const { editor } = props;
-  const selection = $getSelection();
+  const selection = $getSelection() as RangeSelection | TableSelection;
   if (!selection) return;
   const anchorNode = selection.anchor.getNode();
   const focusNode = selection.focus.getNode();
@@ -100,7 +113,7 @@ function updateToolbar() {
         codeLanguage.value = element.getLanguage() || getDefaultCodeLanguage();
       }
     }
-    if (blockType.value === 'root') {
+    if ((blockType.value as any) === 'root') {
       blockType.value = 'paragraph';
     }
   }
@@ -117,7 +130,11 @@ function updateToolbar() {
   isCode.value = selection.hasFormat('code');
   isRTL.value = $isParentElementRTL(selection);
   isLink.value = $isLinkNode(focusNode.getParent());
-}
+  isLeft.value = elementDOM?.style.textAlign === 'left';
+  isCenter.value = elementDOM?.style.textAlign === 'center';
+  isRight.value = elementDOM?.style.textAlign === 'right';
+  isJustify.value = elementDOM?.style.textAlign === 'justify';
+};
 
 let unregisterMergeListener: () => void;
 
@@ -169,8 +186,27 @@ const tableForm = ref<TableForm>({
 });
 const insertTable = () => {
   const { editor } = props;
-  editor.dispatchCommand(INSERT_TABLE_COMMAND, { ...tableForm.value });
+  editor.dispatchCommand(INSERT_TABLE_COMMAND, {
+    rows: tableForm.value.rows.toString(),
+    columns: tableForm.value.columns.toString(),
+    includeHeaders: tableForm.value.includeHeaders,
+  });
+  editor.update(() => {
+    const selection = $getSelection();
+    selection?.insertNodes([$createParagraphNode()]);
+  });
   showInsertTableDialog.value = false;
+};
+
+const imageForm = ref<ImageForm>({
+  src: '',
+});
+const insertImage = () => {
+  const { editor } = props;
+  editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+    src: imageForm.value.src,
+  });
+  showInsertImageDialog.value = false;
 };
 
 watch(codeLanguage, value => {
@@ -279,29 +315,30 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     <Teleport to="body">
       <FloatLinkEditor v-if="isLink" :editor="editor" :priority="LowPriority" />
     </Teleport>
+    <div class="divider" />
     <button
-      class="toolbar-item spaced"
+      :class="`toolbar-item spaced ${isLeft ? 'active' : ''}`"
       aria-label="Left Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')"
     >
       <i class="format left-align" />
     </button>
     <button
-      class="toolbar-item spaced"
+      :class="`toolbar-item spaced ${isCenter ? 'active' : ''}`"
       aria-label="Center Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')"
     >
       <i class="format center-align" />
     </button>
     <button
-      class="toolbar-item spaced"
+      :class="`toolbar-item spaced ${isRight ? 'active' : ''}`"
       aria-label="Right Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')"
     >
       <i class="format right-align" />
     </button>
     <button
-      class="toolbar-item"
+      :class="`toolbar-item spaced ${isJustify ? 'active' : ''}`"
       aria-label="Justify Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')"
     >
@@ -327,12 +364,19 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
         :button-ref="insertButtonRef"
         @hide="showInsertOptionsDropdown = false"
         @insert-table="showInsertTableDialog = true"
+        @insert-image="showInsertImageDialog = true"
       />
       <InsertTableDialog
         :visible="showInsertTableDialog"
         v-model="tableForm"
         @close="showInsertTableDialog = false"
         @confirm="insertTable"
+      />
+      <InsertImageDialog
+        :visible="showInsertImageDialog"
+        v-model="imageForm"
+        @close="showInsertImageDialog = false"
+        @confirm="insertImage"
       />
     </Teleport>
   </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
+import { ClickOutside as vClickOutside } from 'element-plus';
 import { LexicalEditor } from 'lexical';
 
 const props = defineProps<{
@@ -12,6 +13,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'hide'): void;
   (e: 'insertTable'): void;
+  (e: 'insertImage'): void;
 }>();
 
 const dropDownRef = ref<HTMLDivElement | null>(null);
@@ -49,18 +51,34 @@ const insertTable = () => {
   emit('insertTable');
 };
 
-const options: BlockOption[] = [
+const insertImage = () => {
+  emit('hide');
+  emit('insertImage');
+};
+
+const options: InsertOption[] = [
   { type: 'table', label: 'Table', onClick: insertTable },
+  { type: 'image', label: 'Image', onClick: insertImage },
 ];
+
+const onClickOutside = (event: Event) => {
+  event.stopPropagation();
+  emit('hide');
+};
 
 defineOptions({ name: 'ClInsertOptionsDropdownList' });
 </script>
 
 <template>
-  <div ref="dropDownRef" class="dropdown">
-    <button class="item" @click="insertTable">
-      <span class="icon table" />
-      <span class="text">Table</span>
+  <div v-click-outside="onClickOutside" ref="dropDownRef" class="dropdown">
+    <button
+      v-for="option in options"
+      :key="option.type"
+      class="item"
+      @click="option.onClick"
+    >
+      <span :class="`icon ${option.type}`" />
+      <span class="text">{{ option.label }}</span>
     </button>
   </div>
 </template>
