@@ -25,11 +25,11 @@ useMounted(() => {
     editor.registerCommand(
       TOGGLE_LINK_COMMAND,
       payload => {
-        if (payload === null) {
+        if (!payload) {
           $toggleLink(payload);
           return true;
         } else if (typeof payload === 'string') {
-          if (props.validateUrl === undefined || props.validateUrl(payload)) {
+          if (!props.validateUrl || props.validateUrl(payload)) {
             $toggleLink(payload);
             return true;
           }
@@ -42,7 +42,7 @@ useMounted(() => {
       },
       COMMAND_PRIORITY_LOW
     ),
-    props.validateUrl !== undefined
+    props.validateUrl
       ? editor.registerCommand(
           PASTE_COMMAND,
           event => {
@@ -51,7 +51,7 @@ useMounted(() => {
               !$isRangeSelection(selection) ||
               selection.isCollapsed() ||
               !(event instanceof ClipboardEvent) ||
-              event.clipboardData == null
+              !event.clipboardData
             )
               return false;
 

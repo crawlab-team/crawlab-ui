@@ -138,7 +138,6 @@ defineOptions({ name: 'ClLexicalEditor' });
       </cl-lexical-rich-text-plugin>
       <cl-lexical-list-plugin :editor="editor" />
       <cl-lexical-link-plugin :editor="editor" />
-      <cl-lexical-clickable-link-plugin :editor="editor" />
       <cl-lexical-auto-link-plugin :editor="editor" />
       <cl-lexical-auto-focus-plugin :editor="editor" />
       <cl-lexical-on-change-plugin

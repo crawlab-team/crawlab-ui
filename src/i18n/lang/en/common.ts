@@ -35,6 +35,8 @@ const common: LCommon = {
     change: 'Change',
     manage: 'Manage',
     inferDataFieldsTypes: 'Infer Data Fields Types',
+    unlink: 'Unlink',
+    goto: 'Go To',
   },
   messageBox: {
     confirm: {

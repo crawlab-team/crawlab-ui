@@ -4,7 +4,6 @@ import {
   type LexicalEditor,
   $getNodeByKey,
   $getSelection,
-  $isRangeSelection,
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
   FORMAT_ELEMENT_COMMAND,
@@ -71,38 +70,36 @@ const showBlockOptionsDropDown = ref(false);
 function updateToolbar() {
   const { editor } = props;
   const selection = $getSelection();
-  if ($isRangeSelection(selection)) {
-    const anchorNode = selection.anchor.getNode();
-    const element =
-      anchorNode.getKey() === 'root'
-        ? anchorNode
-        : anchorNode.getTopLevelElementOrThrow();
-    const elementKey = element.getKey();
-    const elementDOM = editor.getElementByKey(elementKey);
-    if (elementDOM) {
-      selectedElementKey.value = elementKey;
-      if ($isListNode(element)) {
-        const parentList = $getNearestNodeOfType(anchorNode, ListNode);
-        blockType.value = parentList ? parentList.getTag() : element.getTag();
-      } else if ($isLinkNode(element)) {
-        isLink.value = true;
-      } else {
-        blockType.value = $isHeadingNode(element)
-          ? element.getTag()
-          : (element.getType() as any);
-        if ($isCodeNode(element))
-          codeLanguage.value =
-            element.getLanguage() || getDefaultCodeLanguage();
-      }
+  if (!selection) return;
+  const anchorNode = selection.anchor.getNode();
+  const focusNode = selection.focus.getNode();
+  const element =
+    anchorNode.getKey() === 'root'
+      ? anchorNode
+      : anchorNode.getTopLevelElementOrThrow();
+  const elementKey = element.getKey();
+  const elementDOM = editor.getElementByKey(elementKey);
+  if (elementDOM) {
+    selectedElementKey.value = elementKey;
+    if ($isListNode(element)) {
+      const parentList = $getNearestNodeOfType(anchorNode, ListNode);
+      blockType.value = parentList ? parentList.getTag() : element.getTag();
+    } else {
+      blockType.value = $isHeadingNode(element)
+        ? element.getTag()
+        : (element.getType() as any);
+      if ($isCodeNode(element))
+        codeLanguage.value = element.getLanguage() || getDefaultCodeLanguage();
     }
-    // Update text format
-    isBold.value = selection.hasFormat('bold');
-    isItalic.value = selection.hasFormat('italic');
-    isUnderline.value = selection.hasFormat('underline');
-    isStrikethrough.value = selection.hasFormat('strikethrough');
-    isCode.value = selection.hasFormat('code');
-    isRTL.value = $isParentElementRTL(selection);
   }
+  // Update text format
+  isBold.value = selection.hasFormat('bold');
+  isItalic.value = selection.hasFormat('italic');
+  isUnderline.value = selection.hasFormat('underline');
+  isStrikethrough.value = selection.hasFormat('strikethrough');
+  isCode.value = selection.hasFormat('code');
+  isRTL.value = $isParentElementRTL(selection);
+  isLink.value = $isLinkNode(focusNode.getParent());
 }
 
 let unregisterMergeListener: () => void;

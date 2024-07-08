@@ -35,6 +35,8 @@ const common: LCommon = {
     change: '更改',
     manage: '管理',
     inferDataFieldsTypes: '推断数据字段类型',
+    unlink: '取消链接',
+    goto: '访问',
   },
   messageBox: {
     confirm: {

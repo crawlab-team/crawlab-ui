@@ -11,8 +11,6 @@ const t = translate;
 
 // initialize request
 export const initRequest = (router?: Router) => {
-  // TODO: request interception
-
   // response interception
   let msgBoxVisible = false;
   axios.interceptors.response.use(
@@ -70,6 +68,7 @@ const useRequest = () => {
   const request = async <R = any>(opts: AxiosRequestConfig): Promise<R> => {
     // base url
     const baseURL = getRequestBaseUrl();
+    console.debug(baseURL);
 
     // headers
     const headers = getHeaders();

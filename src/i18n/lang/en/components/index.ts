@@ -9,6 +9,7 @@ import empty from './empty';
 import form from './form';
 import file from './file';
 import date from './date';
+import lexical from './lexical';
 import metric from './metric';
 import export_ from './export';
 import result from './result';
@@ -36,6 +37,7 @@ const components: LComponents = {
   form,
   file,
   date,
+  lexical,
   metric,
   export: export_,
   result,
