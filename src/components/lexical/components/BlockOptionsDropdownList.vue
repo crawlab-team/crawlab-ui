@@ -19,6 +19,7 @@ const props = defineProps<{
   visible?: boolean;
   editor: LexicalEditor;
   toolbarRef: HTMLDivElement | null;
+  buttonRef: HTMLButtonElement | null;
   blockType: BlockType;
 }>();
 
@@ -29,8 +30,9 @@ const emit = defineEmits<{
 const dropDownRef = ref<HTMLDivElement | null>(null);
 
 onMounted(() => {
-  if (props.toolbarRef && dropDownRef.value) {
-    const { top, left } = props.toolbarRef.getBoundingClientRect();
+  const { toolbarRef, buttonRef } = props;
+  if (toolbarRef && buttonRef && dropDownRef.value) {
+    const { top, left } = buttonRef.getBoundingClientRect();
     dropDownRef.value.style.top = `${top + 40}px`;
     dropDownRef.value.style.left = `${left}px`;
   }
@@ -55,7 +57,7 @@ onUnmounted(() => {
   document.removeEventListener('click', handle);
 });
 
-function formatParagraph() {
+const formatParagraph = () => {
   const { editor } = props;
   if (props.blockType !== 'paragraph') {
     editor.update(() => {
@@ -66,117 +68,122 @@ function formatParagraph() {
     });
   }
   emit('hide');
-}
+};
 
-function formatLargeHeading() {
+const formatH1 = () => {
   const { editor } = props;
   if (props.blockType !== 'h1') {
     editor.update(() => {
       const selection = $getSelection();
-
-      if ($isRangeSelection(selection))
+      if ($isRangeSelection(selection)) {
         $wrapNodes(selection, () => $createHeadingNode('h1'));
+      }
     });
   }
   emit('hide');
-}
+};
 
-function formatSmallHeading() {
+const formatH2 = () => {
   const { editor } = props;
   if (props.blockType !== 'h2') {
     editor.update(() => {
       const selection = $getSelection();
-
-      if ($isRangeSelection(selection))
+      if ($isRangeSelection(selection)) {
         $wrapNodes(selection, () => $createHeadingNode('h2'));
+      }
     });
   }
   emit('hide');
-}
+};
 
-function formatBulletList() {
+const formatH3 = () => {
   const { editor } = props;
-  if (props.blockType !== 'ul')
+  if (props.blockType !== 'h3') {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $wrapNodes(selection, () => $createHeadingNode('h3'));
+      }
+    });
+  }
+  emit('hide');
+};
+
+const formatBulletList = () => {
+  const { editor } = props;
+  if (props.blockType !== 'ul') {
     editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
-  else editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+  } else {
+    editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+  }
 
   emit('hide');
-}
+};
 
-function formatNumberedList() {
+const formatNumberedList = () => {
   const { editor } = props;
-  if (props.blockType !== 'ol')
+  if (props.blockType !== 'ol') {
     editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
-  else editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+  } else {
+    editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+  }
 
   emit('hide');
-}
+};
 
-function formatQuote() {
+const formatQuote = () => {
   const { editor } = props;
   if (props.blockType !== 'quote') {
     editor.update(() => {
       const selection = $getSelection();
 
-      if ($isRangeSelection(selection))
+      if ($isRangeSelection(selection)) {
         $wrapNodes(selection, () => $createQuoteNode());
+      }
     });
   }
   emit('hide');
-}
+};
 
-function formatCode() {
+const formatCode = () => {
   const { editor } = props;
   if (props.blockType !== 'code') {
     editor.update(() => {
       const selection = $getSelection();
 
-      if ($isRangeSelection(selection))
+      if ($isRangeSelection(selection)) {
         $wrapNodes(selection, () => $createCodeNode());
+      }
     });
   }
   emit('hide');
-}
+};
+
+const options: BlockOption[] = [
+  { type: 'paragraph', label: 'Normal', onClick: formatParagraph },
+  { type: 'h1', label: 'Heading 1', onClick: formatH1 },
+  { type: 'h2', label: 'Heading 2', onClick: formatH2 },
+  { type: 'h3', label: 'Heading 3', onClick: formatH3 },
+  { type: 'ul', label: 'Bullet List', onClick: formatBulletList },
+  { type: 'ol', label: 'Numbered List', onClick: formatNumberedList },
+  { type: 'quote', label: 'Quote', onClick: formatQuote },
+  { type: 'code', label: 'Code Block', onClick: formatCode },
+];
 
 defineOptions({ name: 'ClBlockOptionsDropdownList' });
 </script>
 
 <template>
   <div ref="dropDownRef" class="dropdown">
-    <button class="item" @click="formatParagraph">
-      <span class="icon paragraph" />
-      <span class="text">Normal</span>
-      <span v-if="blockType === 'paragraph'" class="active" />
-    </button>
-    <button class="item" @click="formatLargeHeading">
-      <span class="icon large-heading" />
-      <span class="text">Large Heading</span>
-      <span v-if="blockType === 'h1'" class="active" />
-    </button>
-    <button class="item" @click="formatSmallHeading">
-      <span class="icon small-heading" />
-      <span class="text">Small Heading</span>
-      <span v-if="blockType === 'h2'" class="active" />
-    </button>
-    <button class="item" @click="formatBulletList">
-      <span class="icon bullet-list" />
-      <span class="text">Bullet List</span>
-      <span v-if="blockType === 'ul'" class="active" />
-    </button>
-    <button class="item" @click="formatNumberedList">
-      <span class="icon numbered-list" />
-      <span class="text">Numbered List</span>
-      <span v-if="blockType === 'ol'" class="active" />
-    </button>
-    <button class="item" @click="formatQuote">
-      <span class="icon quote" />
-      <span class="text">Quote</span>
-      <span v-if="blockType === 'quote'" class="active" />
-    </button>
-    <button v-if="false" class="item" @click="formatCode">
-      <span class="icon code" />
-      <span class="text">Code Block</span>
-      <span v-if="blockType === 'code'" class="active" />
+    <button
+      v-for="option in options"
+      :key="option.type"
+      class="item"
+      :class="{ active: blockType === option.type }"
+      @click="option.onClick"
+    >
+      <span :class="`icon ${option.type}`" />
+      <span class="text">{{ option.label }}</span>
     </button>
   </div>
 </template>

@@ -1,5 +1,4 @@
 export const getRequestBaseUrl = (): string => {
-  console.debug(import.meta.env.VITE_APP_API_BASE_URL);
   return import.meta.env.VITE_APP_API_BASE_URL || 'http://localhost:8000';
 };
 

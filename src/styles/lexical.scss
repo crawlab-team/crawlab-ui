@@ -186,19 +186,32 @@
   font-size: 24px;
   color: rgb(5, 5, 5);
   font-weight: 400;
-  margin: 0;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
   padding: 0;
 }
 
 .editor-heading-h2 {
-  font-size: 15px;
+  font-size: 20px;
   color: rgb(101, 103, 107);
   font-weight: 700;
-  margin: 0;
-  margin-top: 10px;
+  margin: 10px 0 0;
   padding: 0;
-  text-transform: uppercase;
+}
+
+.editor-heading-h3 {
+  font-size: 16px;
+  color: rgb(101, 103, 107);
+  font-weight: 600;
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.editor-heading-h4 {
+  font-size: 14px;
+  color: rgb(101, 103, 107);
+  font-weight: 500;
+  margin: 10px 0 0;
+  padding: 0;
 }
 
 .editor-quote {
@@ -241,6 +254,7 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   vertical-align: middle;
+  border-bottom: 1px solid var(--el-border-color);
 }
 
 .toolbar button.toolbar-item {
@@ -263,7 +277,6 @@
 
 .toolbar button.toolbar-item i.format {
   background-size: contain;
-  display: inline-block;
   height: 18px;
   width: 18px;
   margin-top: 2px;
@@ -317,7 +330,6 @@
 .toolbar .toolbar-item .text {
   display: flex;
   line-height: 20px;
-  width: 200px;
   vertical-align: middle;
   font-size: 14px;
   color: #777;
@@ -416,14 +428,15 @@ i.chevron-down {
   box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
   inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   border-radius: 8px;
-  min-width: 100px;
   min-height: 40px;
   background-color: #fff;
 }
 
 .dropdown .item {
   margin: 0 8px 0 8px;
-  padding: 8px;
+  padding: 8px 20px 8px 8px;
+  max-width: 250px;
+  min-width: 250px;
   color: #050505;
   cursor: pointer;
   line-height: 16px;
@@ -436,7 +449,6 @@ i.chevron-down {
   background-color: #fff;
   border-radius: 8px;
   border: 0;
-  min-width: 268px;
 }
 
 .dropdown .item .active {
@@ -454,6 +466,7 @@ i.chevron-down {
   margin-bottom: 8px;
 }
 
+.dropdown .item.active,
 .dropdown .item:hover {
   background-color: #eee;
 }
@@ -462,7 +475,6 @@ i.chevron-down {
   display: flex;
   line-height: 20px;
   flex-grow: 1;
-  width: 200px;
 }
 
 .dropdown .item .icon {
@@ -572,14 +584,16 @@ i.redo {
   background-image: url(../assets/lexical/images/icons/text-paragraph.svg);
 }
 
-.icon.large-heading,
 .icon.h1 {
   background-image: url(../assets/lexical/images/icons/type-h1.svg);
 }
 
-.icon.small-heading,
 .icon.h2 {
   background-image: url(../assets/lexical/images/icons/type-h2.svg);
+}
+
+.icon.h3 {
+  background-image: url(../assets/lexical/images/icons/type-h3.svg);
 }
 
 .icon.bullet-list,
@@ -598,6 +612,14 @@ i.redo {
 
 .icon.code {
   background-image: url(../assets/lexical/images/icons/code.svg);
+}
+
+.icon.plus {
+  background-image: url(../assets/lexical/images/icons/plus.svg);
+}
+
+.icon.table {
+  background-image: url(../assets/lexical/images/icons/table.svg);
 }
 
 i.bold {

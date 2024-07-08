@@ -74,8 +74,10 @@ import MenuItemIcon from './icon/MenuItemIcon.vue';
 import InputList from './input/InputList.vue';
 import BlockOptionsDropdownList from './lexical/components/BlockOptionsDropdownList.vue';
 import FloatLinkEditor from './lexical/components/FloatLinkEditor.vue';
+import InsertOptionsDropdownList from './lexical/components/InsertOptionsDropdownList.vue';
 import useCanShowPlaceholder from './lexical/composables/useCanShowPlaceholder';
 import useDecorators from './lexical/composables/useDecorators';
+import useEffect from './lexical/composables/useEffect';
 import useList from './lexical/composables/useList';
 import useMounted from './lexical/composables/useMounted';
 import useRichTextSetup from './lexical/composables/useRichTextSetup';
@@ -89,7 +91,9 @@ import LexicalLinkPlugin from './lexical/plugins/LexicalLinkPlugin.vue';
 import LexicalListPlugin from './lexical/plugins/LexicalListPlugin.vue';
 import LexicalOnChangePlugin from './lexical/plugins/LexicalOnChangePlugin.vue';
 import LexicalRichTextPlugin from './lexical/plugins/LexicalRichTextPlugin.vue';
+import LexicalTablePlugin from './lexical/plugins/LexicalTablePlugin.vue';
 import LexicalToolbarPlugin from './lexical/plugins/LexicalToolbarPlugin.vue';
+import * as autoLink from './lexical/utils/autoLink';
 import * as getSelectedNode from './lexical/utils/getSelectedNode';
 import DetailTabList from './list/DetailTabList.vue';
 import NavActionBack from './nav/NavActionBack.vue';
@@ -247,8 +251,10 @@ export {
   InputList as ClInputList,
   BlockOptionsDropdownList as ClBlockOptionsDropdownList,
   FloatLinkEditor as ClFloatLinkEditor,
+  InsertOptionsDropdownList as ClInsertOptionsDropdownList,
   useCanShowPlaceholder as useCanShowPlaceholder,
   useDecorators as useDecorators,
+  useEffect as useEffect,
   useList as useList,
   useMounted as useMounted,
   useRichTextSetup as useRichTextSetup,
@@ -262,7 +268,9 @@ export {
   LexicalListPlugin as ClLexicalListPlugin,
   LexicalOnChangePlugin as ClLexicalOnChangePlugin,
   LexicalRichTextPlugin as ClLexicalRichTextPlugin,
+  LexicalTablePlugin as ClLexicalTablePlugin,
   LexicalToolbarPlugin as ClLexicalToolbarPlugin,
+  autoLink as autoLink,
   getSelectedNode as getSelectedNode,
   DetailTabList as ClDetailTabList,
   NavActionBack as ClNavActionBack,

@@ -8,6 +8,8 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
+import ClLexicalTablePlugin from '@/components/lexical/plugins/LexicalTablePlugin.vue';
+import { EditorThemeClasses } from 'lexical/LexicalEditor';
 
 // const props = withDefaults(
 //   defineProps<{
@@ -18,7 +20,7 @@ import { createEmptyHistoryState, registerHistory } from '@lexical/history';
 //   }
 // );
 
-const theme = {
+const theme: EditorThemeClasses = {
   ltr: 'ltr',
   rtl: 'rtl',
   placeholder: 'editor-placeholder',
@@ -84,6 +86,10 @@ const theme = {
     url: 'editor-tokenOperator',
     variable: 'editor-tokenVariable',
   },
+  table: {
+    table: 'PlaygroundEditorTheme__table',
+    td: 'PlaygroundEditorTheme__tableCell',
+  },
 };
 
 const initialEditorConfig: CreateEditorArgs = {
@@ -140,6 +146,7 @@ defineOptions({ name: 'ClLexicalEditor' });
       <cl-lexical-link-plugin :editor="editor" />
       <cl-lexical-auto-link-plugin :editor="editor" />
       <cl-lexical-auto-focus-plugin :editor="editor" />
+      <cl-lexical-table-plugin :editor="editor" />
       <cl-lexical-on-change-plugin
         :editor="editor"
         @change="onEditorContentChange"
@@ -148,4 +155,43 @@ defineOptions({ name: 'ClLexicalEditor' });
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped>
+.editor-container:deep(table) {
+  border-collapse: collapse;
+  border-spacing: 0;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  table-layout: fixed;
+  width: max-content;
+  margin: 0 25px 30px 0;
+}
+
+.editor-container:deep(th),
+.editor-container:deep(td) {
+  position: relative;
+  border: 1px solid #bbb;
+  width: 75px;
+  min-width: 75px;
+  vertical-align: top;
+  text-align: start;
+  padding: 6px 8px;
+  outline: none;
+}
+
+.editor-container:deep(th) {
+  background-color: #f2f3f5;
+  text-align: start;
+}
+
+.editor-container:deep(th::after),
+.editor-container:deep(td::after) {
+  cursor: col-resize;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  z-index: 1;
+}
+</style>

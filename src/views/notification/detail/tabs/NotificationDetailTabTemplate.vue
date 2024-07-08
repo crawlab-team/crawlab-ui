@@ -57,7 +57,13 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
 <style scoped>
 .notification-detail-tab-template .title:deep(.el-input__wrapper) {
   border: none;
+  border-radius: 0;
   border-bottom: 1px solid var(--el-border-color-light);
   box-shadow: none;
+  height: 45px;
+}
+
+.notification-detail-tab-template .title:deep(.el-input__inner) {
+  height: 100%;
 }
 </style>

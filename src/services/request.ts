@@ -68,7 +68,6 @@ const useRequest = () => {
   const request = async <R = any>(opts: AxiosRequestConfig): Promise<R> => {
     // base url
     const baseURL = getRequestBaseUrl();
-    console.debug(baseURL);
 
     // headers
     const headers = getHeaders();

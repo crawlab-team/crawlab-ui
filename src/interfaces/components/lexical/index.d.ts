@@ -1,5 +1,6 @@
 export declare global {
   type BlockType =
+    | 'root'
     | 'code'
     | 'h1'
     | 'h2'
@@ -10,4 +11,16 @@ export declare global {
     | 'paragraph'
     | 'quote'
     | 'ul';
+
+  interface BlockOption {
+    type: BlockType;
+    label: string;
+    onClick: () => void;
+  }
+
+  interface TableForm {
+    rows: number;
+    columns: number;
+    includeHeaders: boolean;
+  }
 }

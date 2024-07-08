@@ -19,8 +19,11 @@ import { $isHeadingNode } from '@lexical/rich-text';
 import { $isLinkNode } from '@lexical/link';
 import { $isCodeNode, getDefaultCodeLanguage } from '@lexical/code';
 import { TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { $isTableSelection, INSERT_TABLE_COMMAND } from '@lexical/table';
 import BlockOptionsDropdownList from '../components/BlockOptionsDropdownList.vue';
+import InsertOptionsDropdownList from '../components/InsertOptionsDropdownList.vue';
 import FloatLinkEditor from '../components/FloatLinkEditor.vue';
+import InsertTableDialog from '../components/InsertTableDialog.vue';
 
 const props = defineProps<{
   editor: LexicalEditor;
@@ -34,6 +37,7 @@ const supportedBlockTypes = new Set([
   'code',
   'h1',
   'h2',
+  'h3',
   'ul',
   'ol',
 ]);
@@ -52,6 +56,8 @@ const blockTypeToBlockName = {
 };
 
 const toolbarRef = ref<HTMLDivElement | null>(null);
+const blockButtonRef = ref<HTMLButtonElement | null>(null);
+const insertButtonRef = ref<HTMLButtonElement | null>(null);
 
 const canUndo = ref(false);
 const canRedo = ref(false);
@@ -65,7 +71,9 @@ const isItalic = ref(false);
 const isUnderline = ref(false);
 const isStrikethrough = ref(false);
 const isCode = ref(false);
-const showBlockOptionsDropDown = ref(false);
+const showBlockOptionsDropdown = ref(false);
+const showInsertOptionsDropdown = ref(false);
+const showInsertTableDialog = ref(false);
 
 function updateToolbar() {
   const { editor } = props;
@@ -88,10 +96,19 @@ function updateToolbar() {
       blockType.value = $isHeadingNode(element)
         ? element.getTag()
         : (element.getType() as any);
-      if ($isCodeNode(element))
+      if ($isCodeNode(element)) {
         codeLanguage.value = element.getLanguage() || getDefaultCodeLanguage();
+      }
+    }
+    if (blockType.value === 'root') {
+      blockType.value = 'paragraph';
     }
   }
+
+  if ($isTableSelection(selection)) {
+    return;
+  }
+
   // Update text format
   isBold.value = selection.hasFormat('bold');
   isItalic.value = selection.hasFormat('italic');
@@ -139,11 +156,22 @@ onMounted(() => {
   );
 });
 
-function insertLink() {
+const insertLink = () => {
   const { editor } = props;
   if (!isLink.value) editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
   else editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
-}
+};
+
+const tableForm = ref<TableForm>({
+  rows: 5,
+  columns: 5,
+  includeHeaders: true,
+});
+const insertTable = () => {
+  const { editor } = props;
+  editor.dispatchCommand(INSERT_TABLE_COMMAND, { ...tableForm.value });
+  showInsertTableDialog.value = false;
+};
 
 watch(codeLanguage, value => {
   const { editor } = props;
@@ -180,11 +208,13 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     >
       <i class="format redo" />
     </button>
+    <div class="divider" />
     <template v-if="supportedBlockTypes.has(blockType)">
       <button
+        ref="blockButtonRef"
         class="toolbar-item block-controls"
         aria-label="Formatting Options"
-        @click="showBlockOptionsDropDown = !showBlockOptionsDropDown"
+        @click="showBlockOptionsDropdown = !showBlockOptionsDropdown"
       >
         <span :class="`icon block-type ${blockType}`" />
         <span class="text">{{ blockTypeToBlockName[blockType] }}</span>
@@ -192,14 +222,16 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
       </button>
       <Teleport to="body">
         <BlockOptionsDropdownList
-          v-if="showBlockOptionsDropDown"
-          :visible="showBlockOptionsDropDown"
+          v-if="showBlockOptionsDropdown"
+          :visible="showBlockOptionsDropdown"
           :editor="editor"
           :block-type="blockType"
           :toolbar-ref="toolbarRef"
-          @hide="showBlockOptionsDropDown = false"
+          :button-ref="blockButtonRef"
+          @hide="showBlockOptionsDropdown = false"
         />
       </Teleport>
+      <div class="divider" />
     </template>
     <button
       :class="`toolbar-item spaced ${isBold ? 'active' : ''}`"
@@ -275,5 +307,33 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     >
       <i class="format justify-align" />
     </button>
+    <div class="divider" />
+    <button
+      ref="insertButtonRef"
+      class="toolbar-item insert-controls"
+      aria-label="Insert Options"
+      @click="showInsertOptionsDropdown = !showInsertOptionsDropdown"
+    >
+      <span class="icon plus" />
+      <span class="text">Insert</span>
+      <i class="chevron-down" />
+    </button>
+    <Teleport to="body">
+      <InsertOptionsDropdownList
+        v-if="showInsertOptionsDropdown"
+        :visible="showInsertOptionsDropdown"
+        :editor="editor"
+        :toolbar-ref="toolbarRef"
+        :button-ref="insertButtonRef"
+        @hide="showInsertOptionsDropdown = false"
+        @insert-table="showInsertTableDialog = true"
+      />
+      <InsertTableDialog
+        :visible="showInsertTableDialog"
+        v-model="tableForm"
+        @close="showInsertTableDialog = false"
+        @confirm="insertTable"
+      />
+    </Teleport>
   </div>
 </template>
