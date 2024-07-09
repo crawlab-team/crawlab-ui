@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createEditor, CreateEditorArgs } from 'lexical';
+import { createEditor, CreateEditorArgs, EditorThemeClasses } from 'lexical';
 import type { EditorState } from 'lexical';
 import { HeadingNode, QuoteNode, registerRichText } from '@lexical/rich-text';
 import { ListItemNode, ListNode } from '@lexical/list';
@@ -8,17 +8,7 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
-import { EditorThemeClasses } from 'lexical/LexicalEditor';
-import ClLexicalImagePlugin from '@/components/lexical/plugins/LexicalImagePlugin.vue';
-
-// const props = withDefaults(
-//   defineProps<{
-//     editorThemePrefix?: string;
-//   }>(),
-//   {
-//     editorThemePrefix: 'LexicalEditorTheme',
-//   }
-// );
+import { ImageNode } from '@/components/lexical/nodes/ImageNode';
 
 const theme: EditorThemeClasses = {
   ltr: 'ltr',
@@ -97,11 +87,12 @@ const initialEditorConfig: CreateEditorArgs = {
     QuoteNode,
     CodeNode,
     CodeHighlightNode,
+    LinkNode,
+    AutoLinkNode,
     TableNode,
     TableRowNode,
     TableCellNode,
-    LinkNode,
-    AutoLinkNode,
+    ImageNode,
   ],
   editable: true,
   theme,

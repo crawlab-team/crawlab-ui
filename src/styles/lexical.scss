@@ -451,6 +451,19 @@ i.chevron-down {
   border: 0;
 }
 
+.dropdown .item:disabled {
+  cursor: not-allowed;
+  color: #999;
+}
+
+.dropdown .item:disabled:hover {
+  background-color: #fff;
+}
+
+.dropdown .item:disabled .icon {
+  opacity: 0.5;
+}
+
 .dropdown .item .active {
   display: flex;
   width: 20px;

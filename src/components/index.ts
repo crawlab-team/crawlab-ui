@@ -98,7 +98,6 @@ import LexicalTablePlugin from './lexical/plugins/LexicalTablePlugin.vue';
 import LexicalToolbarPlugin from './lexical/plugins/LexicalToolbarPlugin.vue';
 import * as autoLink from './lexical/utils/autoLink';
 import * as getSelectedNode from './lexical/utils/getSelectedNode';
-import * as image from './lexical/utils/image';
 import DetailTabList from './list/DetailTabList.vue';
 import NavActionBack from './nav/NavActionBack.vue';
 import NavActionButton from './nav/NavActionButton.vue';

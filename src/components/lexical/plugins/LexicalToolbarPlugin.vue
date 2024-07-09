@@ -31,7 +31,7 @@ import InsertOptionsDropdownList from '../components/InsertOptionsDropdownList.v
 import FloatLinkEditor from '../components/FloatLinkEditor.vue';
 import InsertTableDialog from '../components/InsertTableDialog.vue';
 import InsertImageDialog from '../components/InsertImageDialog.vue';
-import { INSERT_IMAGE_COMMAND } from '@/components/lexical/utils/image';
+import { INSERT_IMAGE_COMMAND } from '@/components/lexical/nodes/ImageNode';
 
 const props = defineProps<{
   editor: LexicalEditor;

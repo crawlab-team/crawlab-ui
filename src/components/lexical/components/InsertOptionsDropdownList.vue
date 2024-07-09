@@ -58,7 +58,7 @@ const insertImage = () => {
 
 const options: InsertOption[] = [
   { type: 'table', label: 'Table', onClick: insertTable },
-  { type: 'image', label: 'Image', onClick: insertImage },
+  { type: 'image', label: 'Image', onClick: insertImage, disabled: true },
 ];
 
 const onClickOutside = (event: Event) => {
@@ -75,6 +75,7 @@ defineOptions({ name: 'ClInsertOptionsDropdownList' });
       v-for="option in options"
       :key="option.type"
       class="item"
+      :disabled="option.disabled"
       @click="option.onClick"
     >
       <span :class="`icon ${option.type}`" />
