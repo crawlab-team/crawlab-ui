@@ -70,12 +70,10 @@ const positionEditorElement = (
   rect: DOMRect | null
 ) => {
   if (!rect) {
-    console.debug('Hide editor');
     editor.style.opacity = '0';
     editor.style.top = '-1000px';
     editor.style.left = '-1000px';
   } else {
-    console.debug('Show editor');
     editor.style.opacity = '1';
     editor.style.top = `${rect.top + rect.height + window.scrollY + 10}px`;
     editor.style.left = `${

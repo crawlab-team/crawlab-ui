@@ -18,6 +18,7 @@ export declare global {
   interface BaseOption {
     label: string;
     disabled?: boolean;
+    icon?: Icon;
     onClick: () => void;
   }
 
@@ -59,4 +60,12 @@ export declare global {
   }
 
   type InsertImagePayload = Readonly<ImagePayload>;
+
+  interface VariableForm {
+    name: string;
+  }
+
+  interface InsertVariableCommandPayload {
+    name: string;
+  }
 }

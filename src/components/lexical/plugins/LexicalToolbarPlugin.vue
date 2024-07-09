@@ -29,9 +29,11 @@ import {
 import BlockOptionsDropdownList from '../components/BlockOptionsDropdownList.vue';
 import InsertOptionsDropdownList from '../components/InsertOptionsDropdownList.vue';
 import FloatLinkEditor from '../components/FloatLinkEditor.vue';
+import InsertVariableDialog from '../components/InsertVariableDialog.vue';
 import InsertTableDialog from '../components/InsertTableDialog.vue';
 import InsertImageDialog from '../components/InsertImageDialog.vue';
 import { INSERT_IMAGE_COMMAND } from '@/components/lexical/nodes/ImageNode';
+import { INSERT_VARIABLE_COMMAND } from '@/components/lexical/composables/useVariableSetup';
 
 const props = defineProps<{
   editor: LexicalEditor;
@@ -85,6 +87,7 @@ const isRight = ref(false);
 const isJustify = ref(false);
 const showBlockOptionsDropdown = ref(false);
 const showInsertOptionsDropdown = ref(false);
+const showInsertVariableDialog = ref(false);
 const showInsertTableDialog = ref(false);
 const showInsertImageDialog = ref(false);
 
@@ -179,6 +182,16 @@ const insertLink = () => {
   else editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
 };
 
+const variableForm = ref<VariableForm>({
+  name: '',
+});
+const insertVariable = () => {
+  const { editor } = props;
+  editor.dispatchCommand(INSERT_VARIABLE_COMMAND, {
+    name: variableForm.value.name,
+  });
+};
+
 const tableForm = ref<TableForm>({
   rows: 5,
   columns: 5,
@@ -195,7 +208,6 @@ const insertTable = () => {
     const selection = $getSelection();
     selection?.insertNodes([$createParagraphNode()]);
   });
-  showInsertTableDialog.value = false;
 };
 
 const imageForm = ref<ImageForm>({
@@ -206,7 +218,6 @@ const insertImage = () => {
   editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
     src: imageForm.value.src,
   });
-  showInsertImageDialog.value = false;
 };
 
 watch(codeLanguage, value => {
@@ -363,20 +374,64 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
         :toolbar-ref="toolbarRef"
         :button-ref="insertButtonRef"
         @hide="showInsertOptionsDropdown = false"
+        @insert-variable="showInsertVariableDialog = true"
         @insert-table="showInsertTableDialog = true"
         @insert-image="showInsertImageDialog = true"
+      />
+      <InsertVariableDialog
+        :visible="showInsertVariableDialog"
+        v-model="variableForm"
+        @close="
+          () => {
+            showInsertVariableDialog = false;
+            variableForm.name = '';
+          }
+        "
+        @confirm="
+          () => {
+            insertVariable();
+            showInsertVariableDialog = false;
+            variableForm.name = '';
+          }
+        "
       />
       <InsertTableDialog
         :visible="showInsertTableDialog"
         v-model="tableForm"
-        @close="showInsertTableDialog = false"
-        @confirm="insertTable"
+        @close="
+          () => {
+            showInsertTableDialog = false;
+            tableForm.rows = 5;
+            tableForm.columns = 5;
+            tableForm.includeHeaders = true;
+          }
+        "
+        @confirm="
+          () => {
+            insertTable();
+            showInsertTableDialog = false;
+            tableForm.rows = 5;
+            tableForm.columns = 5;
+            tableForm.includeHeaders = true;
+          }
+        "
       />
       <InsertImageDialog
         :visible="showInsertImageDialog"
         v-model="imageForm"
-        @close="showInsertImageDialog = false"
-        @confirm="insertImage"
+        @close="
+          () => {
+            showInsertImageDialog = false;
+            imageForm.src = '';
+          }
+        "
+        @confirm="
+          () => {
+            insertImage();
+            showInsertImageDialog = false;
+            imageForm.src = '';
+          }
+        "
       />
     </Teleport>
   </div>
