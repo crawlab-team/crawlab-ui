@@ -156,6 +156,7 @@ defineOptions({ name: 'ClSidebar' });
 <style scoped>
 .sidebar {
   position: relative;
+  width: var(--cl-sidebar-width);
   overflow-x: hidden;
   overflow-y: auto;
   user-select: none;
