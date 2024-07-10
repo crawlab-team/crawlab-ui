@@ -116,10 +116,11 @@ defineOptions({ name: 'ClSidebar' });
           <img class="logo-img" alt="logo-img" :src="logo" />
           <div class="logo-sub-title">
             <div class="logo-sub-title-block">
-              {{ t(systemInfo.edition || '') }}
+              <span>{{ t(systemInfo.edition || '') }}</span>
+              <cl-icon :icon="['far', 'gem']" />
             </div>
             <div class="logo-sub-title-block">
-              {{ systemInfo.version }}
+              <span>{{ systemInfo.version }}</span>
             </div>
           </div>
         </div>
@@ -152,9 +153,11 @@ defineOptions({ name: 'ClSidebar' });
   </el-aside>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .sidebar {
+  position: relative;
   overflow-x: hidden;
+  overflow-y: auto;
   user-select: none;
   background-color: var(--cl-menu-bg);
 
@@ -172,6 +175,10 @@ defineOptions({ name: 'ClSidebar' });
   }
 
   .logo-container {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 999;
     display: inline-block;
     height: var(--cl-header-height);
     width: var(--cl-sidebar-width);
@@ -238,12 +245,19 @@ defineOptions({ name: 'ClSidebar' });
           align-items: center;
           height: 12px;
           line-height: 12px;
+
+          &:deep(.icon) {
+            margin-left: 3px;
+          }
         }
       }
     }
   }
 
   .sidebar-menu {
+    position: absolute;
+    top: var(--cl-header-height);
+    left: 0;
     width: var(--cl-sidebar-width);
     height: calc(100vh - var(--cl-header-height));
     margin: 0;
@@ -252,7 +266,7 @@ defineOptions({ name: 'ClSidebar' });
 
     .el-menu {
       border-right: none;
-      width: inherit !important;
+      width: 100%;
       height: calc(100vh - var(--cl-header-height));
       transition: none !important;
     }
