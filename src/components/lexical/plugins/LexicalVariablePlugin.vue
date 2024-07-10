@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type LexicalEditor } from 'lexical';
 import useVariableSetup from '@/components/lexical/composables/useVariableSetup';
-import useMounted from '@/components/lexical/composables/useMounted';
+import useMounted from '@/components/lexical/composables/useLexicalMounted';
 import invariant from 'tiny-invariant';
 import { VariableNode } from '@/components/lexical/nodes/VariableNode';
 

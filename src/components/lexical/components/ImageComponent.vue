@@ -23,7 +23,7 @@ import {
   RIGHT_CLICK_IMAGE_COMMAND,
 } from '@/components/lexical/nodes/ImageNode';
 import brokenImage from '@/assets/lexical/images/image-broken.svg';
-import useEffect from '../composables/useEffect';
+import useEffect from '../composables/useLexicalEffect';
 import { mergeRegister } from '@lexical/utils';
 
 const props = defineProps<{

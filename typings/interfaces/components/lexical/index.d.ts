@@ -1,4 +1,5 @@
 import { InsertTableCommandPayloadHeaders } from '@lexical/table';
+import { LexicalEditor, NodeKey } from 'lexical';
 
 export declare global {
   type BlockType =
@@ -16,6 +17,8 @@ export declare global {
 
   interface BaseOption {
     label: string;
+    disabled?: boolean;
+    icon?: Icon;
     onClick: () => void;
   }
 
@@ -41,5 +44,28 @@ export declare global {
 
   interface ImageForm {
     src: string;
+  }
+
+  interface ImagePayload {
+    editor: LexicalEditor;
+    altText: string;
+    caption?: LexicalEditor;
+    height?: number;
+    key?: NodeKey;
+    maxWidth?: number;
+    showCaption?: boolean;
+    src: string;
+    width?: number;
+    captionsEnabled?: boolean;
+  }
+
+  type InsertImagePayload = Readonly<ImagePayload>;
+
+  interface VariableForm {
+    name: string;
+  }
+
+  interface InsertVariableCommandPayload {
+    name: string;
   }
 }

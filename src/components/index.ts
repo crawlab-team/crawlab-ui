@@ -8,10 +8,10 @@ import Chart from './chart/Chart.vue';
 import Metric from './chart/Metric.vue';
 import ContextMenu from './context-menu/ContextMenu.vue';
 import ContextMenuList from './context-menu/ContextMenuList.vue';
-import * as date from './date/date';
 import DateRangePicker from './date/DateRangePicker.vue';
 import DateTimeRangePicker from './date/DateTimeRangePicker.vue';
 import RangePicker from './date/RangePicker.vue';
+import * as date from './date/date';
 import ConfirmDialog from './dialog/ConfirmDialog.vue';
 import CreateEditDialog from './dialog/CreateEditDialog.vue';
 import Dialog from './dialog/Dialog.vue';
@@ -33,7 +33,6 @@ import FileActions from './file/FileActions.vue';
 import FileDiff from './file/FileDiff.vue';
 import FileEditor from './file/FileEditor.vue';
 import FileEditorCreateWithAiDialog from './file/FileEditorCreateWithAiDialog.vue';
-import * as fileEditorDropZone from './file/fileEditorDropZone';
 import FileEditorNavMenu from './file/FileEditorNavMenu.vue';
 import FileEditorNavMenuContextMenu from './file/FileEditorNavMenuContextMenu.vue';
 import FileEditorNavTabs from './file/FileEditorNavTabs.vue';
@@ -43,15 +42,16 @@ import FileEditorSettingsDialog from './file/FileEditorSettingsDialog.vue';
 import FileTab from './file/FileTab.vue';
 import FileUpload from './file/FileUpload.vue';
 import UploadFilesDialog from './file/UploadFilesDialog.vue';
-import * as filter from './filter/filter';
+import * as fileEditorDropZone from './file/fileEditorDropZone';
 import FilterCondition from './filter/FilterCondition.vue';
 import FilterConditionList from './filter/FilterConditionList.vue';
 import FilterInput from './filter/FilterInput.vue';
 import FilterSelect from './filter/FilterSelect.vue';
+import * as filter from './filter/filter';
 import Form from './form/Form.vue';
 import FormItem from './form/FormItem.vue';
-import * as formTable from './form/formTable';
 import FormTableField from './form/FormTableField.vue';
+import * as formTable from './form/formTable';
 import useForm from './form/useForm';
 import CreateEditGitDialog from './git/CreateEditGitDialog.vue';
 import CreateGitBranchDialog from './git/CreateGitBranchDialog.vue';
@@ -68,24 +68,27 @@ import GitStatus from './git/GitStatus.vue';
 import UploadGitFilesDialog from './git/UploadGitFilesDialog.vue';
 import useGit from './git/useGit';
 import AtomMaterialIcon from './icon/AtomMaterialIcon.vue';
-import * as icon from './icon/icon';
 import Icon from './icon/Icon.vue';
 import MenuItemIcon from './icon/MenuItemIcon.vue';
+import * as icon from './icon/icon';
 import InputList from './input/InputList.vue';
+import LexicalEditor from './lexical/LexicalEditor.vue';
 import BlockOptionsDropdownList from './lexical/components/BlockOptionsDropdownList.vue';
 import FloatLinkEditor from './lexical/components/FloatLinkEditor.vue';
 import ImageComponent from './lexical/components/ImageComponent.vue';
 import InsertImageDialog from './lexical/components/InsertImageDialog.vue';
 import InsertOptionsDropdownList from './lexical/components/InsertOptionsDropdownList.vue';
 import InsertTableDialog from './lexical/components/InsertTableDialog.vue';
+import InsertVariableDialog from './lexical/components/InsertVariableDialog.vue';
 import useCanShowPlaceholder from './lexical/composables/useCanShowPlaceholder';
 import useDecorators from './lexical/composables/useDecorators';
 import useLexicalEffect from './lexical/composables/useLexicalEffect';
 import useLexicalList from './lexical/composables/useLexicalList';
 import useLexicalMounted from './lexical/composables/useLexicalMounted';
 import useRichTextSetup from './lexical/composables/useRichTextSetup';
-import LexicalEditor from './lexical/LexicalEditor.vue';
+import useVariableSetup from './lexical/composables/useVariableSetup';
 import * as ImageNode from './lexical/nodes/ImageNode';
+import * as VariableNode from './lexical/nodes/VariableNode';
 import LexicalAutoFocusPlugin from './lexical/plugins/LexicalAutoFocusPlugin.vue';
 import LexicalAutoLinkPlugin from './lexical/plugins/LexicalAutoLinkPlugin.vue';
 import LexicalClickableLinkPlugin from './lexical/plugins/LexicalClickableLinkPlugin.vue';
@@ -98,7 +101,7 @@ import LexicalOnChangePlugin from './lexical/plugins/LexicalOnChangePlugin.vue';
 import LexicalRichTextPlugin from './lexical/plugins/LexicalRichTextPlugin.vue';
 import LexicalTablePlugin from './lexical/plugins/LexicalTablePlugin.vue';
 import LexicalToolbarPlugin from './lexical/plugins/LexicalToolbarPlugin.vue';
-import LexicalTypeheadMenu from './lexical/plugins/LexicalVariablePlugin.vue';
+import LexicalVariablePlugin from './lexical/plugins/LexicalVariablePlugin.vue';
 import * as autoLink from './lexical/utils/autoLink';
 import * as getSelectedNode from './lexical/utils/getSelectedNode';
 import DetailTabList from './list/DetailTabList.vue';
@@ -122,8 +125,8 @@ import NodeStatus from './node/NodeStatus.vue';
 import NodeType from './node/NodeType.vue';
 import useNode from './node/useNode';
 import CreateEditNotificationDialog from './notification/CreateEditNotificationDialog.vue';
-import * as notification from './notification/notification';
 import NotificationForm from './notification/NotificationForm.vue';
+import * as notification from './notification/notification';
 import CreateEditProjectDialog from './project/CreateEditProjectDialog.vue';
 import ProjectForm from './project/ProjectForm.vue';
 import useProject from './project/useProject';
@@ -144,12 +147,6 @@ import useSpider from './spider/useSpider';
 import Switch from './switch/Switch.vue';
 import ActionTab from './tab/ActionTab.vue';
 import Tab from './tab/Tab.vue';
-import * as action from './table/action';
-import * as column from './table/column';
-import * as data from './table/data';
-import * as header from './table/header';
-import * as pagination from './table/pagination';
-import * as store from './table/store';
 import Table from './table/Table.vue';
 import TableActions from './table/TableActions.vue';
 import TableCell from './table/TableCell.vue';
@@ -159,6 +156,12 @@ import TableHeaderAction from './table/TableHeaderAction.vue';
 import TableHeaderDialog from './table/TableHeaderDialog.vue';
 import TableHeaderDialogFilter from './table/TableHeaderDialogFilter.vue';
 import TableHeaderDialogSort from './table/TableHeaderDialogSort.vue';
+import * as action from './table/action';
+import * as column from './table/column';
+import * as data from './table/data';
+import * as header from './table/header';
+import * as pagination from './table/pagination';
+import * as store from './table/store';
 import CheckTag from './tag/CheckTag.vue';
 import CheckTagGroup from './tag/CheckTagGroup.vue';
 import LinkTag from './tag/LinkTag.vue';
@@ -191,10 +194,10 @@ export {
   Metric as ClMetric,
   ContextMenu as ClContextMenu,
   ContextMenuList as ClContextMenuList,
-  date as date,
   DateRangePicker as ClDateRangePicker,
   DateTimeRangePicker as ClDateTimeRangePicker,
   RangePicker as ClRangePicker,
+  date as date,
   ConfirmDialog as ClConfirmDialog,
   CreateEditDialog as ClCreateEditDialog,
   Dialog as ClDialog,
@@ -216,7 +219,6 @@ export {
   FileDiff as ClFileDiff,
   FileEditor as ClFileEditor,
   FileEditorCreateWithAiDialog as ClFileEditorCreateWithAiDialog,
-  fileEditorDropZone as fileEditorDropZone,
   FileEditorNavMenu as ClFileEditorNavMenu,
   FileEditorNavMenuContextMenu as ClFileEditorNavMenuContextMenu,
   FileEditorNavTabs as ClFileEditorNavTabs,
@@ -226,15 +228,16 @@ export {
   FileTab as ClFileTab,
   FileUpload as ClFileUpload,
   UploadFilesDialog as ClUploadFilesDialog,
-  filter as filter,
+  fileEditorDropZone as fileEditorDropZone,
   FilterCondition as ClFilterCondition,
   FilterConditionList as ClFilterConditionList,
   FilterInput as ClFilterInput,
   FilterSelect as ClFilterSelect,
+  filter as filter,
   Form as ClForm,
   FormItem as ClFormItem,
-  formTable as formTable,
   FormTableField as ClFormTableField,
+  formTable as formTable,
   useForm as useForm,
   CreateEditGitDialog as ClCreateEditGitDialog,
   CreateGitBranchDialog as ClCreateGitBranchDialog,
@@ -251,24 +254,27 @@ export {
   UploadGitFilesDialog as ClUploadGitFilesDialog,
   useGit as useGit,
   AtomMaterialIcon as ClAtomMaterialIcon,
-  icon as icon,
   Icon as ClIcon,
   MenuItemIcon as ClMenuItemIcon,
+  icon as icon,
   InputList as ClInputList,
+  LexicalEditor as ClLexicalEditor,
   BlockOptionsDropdownList as ClBlockOptionsDropdownList,
   FloatLinkEditor as ClFloatLinkEditor,
   ImageComponent as ClImageComponent,
   InsertImageDialog as ClInsertImageDialog,
   InsertOptionsDropdownList as ClInsertOptionsDropdownList,
   InsertTableDialog as ClInsertTableDialog,
+  InsertVariableDialog as ClInsertVariableDialog,
   useCanShowPlaceholder as useCanShowPlaceholder,
   useDecorators as useDecorators,
   useLexicalEffect as useLexicalEffect,
   useLexicalList as useLexicalList,
   useLexicalMounted as useLexicalMounted,
   useRichTextSetup as useRichTextSetup,
-  LexicalEditor as ClLexicalEditor,
+  useVariableSetup as useVariableSetup,
   ImageNode as ImageNode,
+  VariableNode as VariableNode,
   LexicalAutoFocusPlugin as ClLexicalAutoFocusPlugin,
   LexicalAutoLinkPlugin as ClLexicalAutoLinkPlugin,
   LexicalClickableLinkPlugin as ClLexicalClickableLinkPlugin,
@@ -281,7 +287,7 @@ export {
   LexicalRichTextPlugin as ClLexicalRichTextPlugin,
   LexicalTablePlugin as ClLexicalTablePlugin,
   LexicalToolbarPlugin as ClLexicalToolbarPlugin,
-  LexicalTypeheadMenu as ClLexicalTypeheadMenu,
+  LexicalVariablePlugin as ClLexicalVariablePlugin,
   autoLink as autoLink,
   getSelectedNode as getSelectedNode,
   DetailTabList as ClDetailTabList,
@@ -305,8 +311,8 @@ export {
   NodeType as ClNodeType,
   useNode as useNode,
   CreateEditNotificationDialog as ClCreateEditNotificationDialog,
-  notification as notification,
   NotificationForm as ClNotificationForm,
+  notification as notification,
   CreateEditProjectDialog as ClCreateEditProjectDialog,
   ProjectForm as ClProjectForm,
   useProject as useProject,
@@ -327,12 +333,6 @@ export {
   Switch as ClSwitch,
   ActionTab as ClActionTab,
   Tab as ClTab,
-  action as action,
-  column as column,
-  data as data,
-  header as header,
-  pagination as pagination,
-  store as store,
   Table as ClTable,
   TableActions as ClTableActions,
   TableCell as ClTableCell,
@@ -342,6 +342,12 @@ export {
   TableHeaderDialog as ClTableHeaderDialog,
   TableHeaderDialogFilter as ClTableHeaderDialogFilter,
   TableHeaderDialogSort as ClTableHeaderDialogSort,
+  action as action,
+  column as column,
+  data as data,
+  header as header,
+  pagination as pagination,
+  store as store,
   CheckTag as ClCheckTag,
   CheckTagGroup as ClCheckTagGroup,
   LinkTag as ClLinkTag,

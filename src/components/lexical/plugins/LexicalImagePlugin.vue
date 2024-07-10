@@ -15,7 +15,7 @@ import {
   DROP_COMMAND,
   type LexicalEditor,
 } from 'lexical';
-import useEffect from '../composables/useEffect';
+import useEffect from '../composables/useLexicalEffect';
 import {
   $createImageNode,
   $isImageNode,

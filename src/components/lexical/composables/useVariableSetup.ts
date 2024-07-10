@@ -50,6 +50,7 @@ export default (editor: LexicalEditor) => {
         } else {
           throw new Error('No selection or root node found');
         }
+        return true;
       },
       COMMAND_PRIORITY_EDITOR
     )
