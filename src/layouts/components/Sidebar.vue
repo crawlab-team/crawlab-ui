@@ -7,6 +7,7 @@ import logoIcon from '@/assets/svg/logo-icon-white.svg';
 import { getPrimaryPath } from '@/utils/path';
 import { useI18n } from 'vue-i18n';
 import urljoin from 'url-join';
+import { isPro } from '@/utils';
 
 const router = useRouter();
 
@@ -117,7 +118,7 @@ defineOptions({ name: 'ClSidebar' });
           <div class="logo-sub-title">
             <div class="logo-sub-title-block">
               <span>{{ t(systemInfo.edition || '') }}</span>
-              <cl-icon :icon="['far', 'gem']" />
+              <cl-icon v-if="isPro()" :icon="['far', 'gem']" />
             </div>
             <div class="logo-sub-title-block">
               <span>{{ systemInfo.version }}</span>
