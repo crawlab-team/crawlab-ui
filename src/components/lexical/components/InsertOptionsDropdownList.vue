@@ -12,6 +12,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'hide'): void;
+  (e: 'insertVariable'): void;
   (e: 'insertTable'): void;
   (e: 'insertImage'): void;
 }>();
@@ -46,6 +47,11 @@ onUnmounted(() => {
   document.removeEventListener('click', handle);
 });
 
+const insertVariable = () => {
+  emit('hide');
+  emit('insertVariable');
+};
+
 const insertTable = () => {
   emit('hide');
   emit('insertTable');
@@ -57,8 +63,14 @@ const insertImage = () => {
 };
 
 const options: InsertOption[] = [
+  {
+    type: 'variable',
+    label: 'Variable',
+    onClick: insertVariable,
+    icon: ['fa', 'dollar'],
+  },
   { type: 'table', label: 'Table', onClick: insertTable },
-  { type: 'image', label: 'Image', onClick: insertImage },
+  { type: 'image', label: 'Image', onClick: insertImage, disabled: true },
 ];
 
 const onClickOutside = (event: Event) => {
@@ -75,9 +87,13 @@ defineOptions({ name: 'ClInsertOptionsDropdownList' });
       v-for="option in options"
       :key="option.type"
       class="item"
+      :disabled="option.disabled"
       @click="option.onClick"
     >
-      <span :class="`icon ${option.type}`" />
+      <span v-if="!option.icon" :class="`icon ${option.type}`" />
+      <span v-else class="icon">
+        <cl-icon :icon="option.icon" />
+      </span>
       <span class="text">{{ option.label }}</span>
     </button>
   </div>

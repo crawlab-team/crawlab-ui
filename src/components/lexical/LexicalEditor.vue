@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createEditor, CreateEditorArgs } from 'lexical';
+import { createEditor, CreateEditorArgs, EditorThemeClasses } from 'lexical';
 import type { EditorState } from 'lexical';
 import { HeadingNode, QuoteNode, registerRichText } from '@lexical/rich-text';
 import { ListItemNode, ListNode } from '@lexical/list';
@@ -8,17 +8,10 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
-import { EditorThemeClasses } from 'lexical/LexicalEditor';
-import ClLexicalImagePlugin from '@/components/lexical/plugins/LexicalImagePlugin.vue';
-
-// const props = withDefaults(
-//   defineProps<{
-//     editorThemePrefix?: string;
-//   }>(),
-//   {
-//     editorThemePrefix: 'LexicalEditorTheme',
-//   }
-// );
+import { ImageNode } from '@/components/lexical/nodes/ImageNode';
+import ClLexicalTypeheadMenu from '@/components/lexical/plugins/LexicalVariablePlugin.vue';
+import ClLexicalVariablePlugin from '@/components/lexical/plugins/LexicalVariablePlugin.vue';
+import { VariableNode } from '@/components/lexical/nodes/VariableNode';
 
 const theme: EditorThemeClasses = {
   ltr: 'ltr',
@@ -97,11 +90,13 @@ const initialEditorConfig: CreateEditorArgs = {
     QuoteNode,
     CodeNode,
     CodeHighlightNode,
+    LinkNode,
+    AutoLinkNode,
+    VariableNode,
     TableNode,
     TableRowNode,
     TableCellNode,
-    LinkNode,
-    AutoLinkNode,
+    ImageNode,
   ],
   editable: true,
   theme,
@@ -144,6 +139,7 @@ defineOptions({ name: 'ClLexicalEditor' });
       <cl-lexical-auto-focus-plugin :editor="editor" />
       <cl-lexical-table-plugin :editor="editor" />
       <cl-lexical-image-plugin :editor="editor" />
+      <cl-lexical-variable-plugin :editor="editor" />
       <cl-lexical-on-change-plugin
         :editor="editor"
         @change="onEditorContentChange"
@@ -197,5 +193,18 @@ defineOptions({ name: 'ClLexicalEditor' });
 .editor-container:deep(table.resizing *),
 .editor-container:deep(table.resizing *::after) {
   user-select: none;
+}
+
+.editor-container:deep(.variable) {
+  padding: 3px;
+  margin: 0 5px;
+  color: var(--cl-warning-color);
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.editor-container:deep(.variable.active) {
+  background-color: var(--cl-warning-plain-color);
 }
 </style>
