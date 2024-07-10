@@ -13,7 +13,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     width: string;
     minHeight: string;
     minWidth: string;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     type: keyof ChartTypeRegistry;
     data?: ChartData;
     options?: ChartOptions;
@@ -29,10 +29,10 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     minWidth: string;
 }>>>, {
     type: keyof ChartTypeRegistry;
-    height: string | number;
     width: string | number;
-    minHeight: string | number;
+    height: string | number;
     minWidth: string | number;
+    minHeight: string | number;
 }, {}>;
 export default _default;
 type __VLS_WithDefaults<P, D> = {

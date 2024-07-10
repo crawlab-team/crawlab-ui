@@ -1,7 +1,7 @@
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    disabled: boolean;
-    showBackButton: boolean;
-    showSaveButton: boolean;
+    disabled?: boolean;
+    showBackButton?: boolean;
+    showSaveButton?: boolean;
 }>, {
     disabled: boolean;
     showBackButton: boolean;
@@ -9,17 +9,17 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     back: () => void;
     save: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    disabled: boolean;
-    showBackButton: boolean;
-    showSaveButton: boolean;
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+    disabled?: boolean;
+    showBackButton?: boolean;
+    showSaveButton?: boolean;
 }>, {
     disabled: boolean;
     showBackButton: boolean;
     showSaveButton: boolean;
 }>>> & {
-    onBack?: (() => any) | undefined;
     onSave?: (() => any) | undefined;
+    onBack?: (() => any) | undefined;
 }, {
     disabled: boolean;
     showBackButton: boolean;

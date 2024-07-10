@@ -22,7 +22,7 @@ interface CheckTagProps extends TagProps {
 declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<CheckTagProps>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:model-value": (value: boolean) => void;
     change: (value: boolean) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<CheckTagProps>>> & {
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<CheckTagProps>>> & {
     onChange?: ((value: boolean) => any) | undefined;
     "onUpdate:model-value"?: ((value: boolean) => any) | undefined;
 }, {}, {}>;

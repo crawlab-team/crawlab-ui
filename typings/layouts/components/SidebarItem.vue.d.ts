@@ -2,7 +2,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     item: MenuItem;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     click: (item: MenuItem) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     item: MenuItem;
 }>>> & {
     onClick?: ((item: MenuItem) => any) | undefined;

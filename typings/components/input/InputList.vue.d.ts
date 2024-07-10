@@ -11,7 +11,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     actionSize: string;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "update:model-value": (value: string[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     modelValue: string[];
     placeholder: string;
     size: BasicSize;
@@ -25,8 +25,8 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>>> & {
     "onUpdate:model-value"?: ((value: string[]) => any) | undefined;
 }, {
-    size: BasicSize;
     placeholder: string;
+    size: BasicSize;
     modelValue: string[];
     actionSize: BasicSize;
 }, {}>;

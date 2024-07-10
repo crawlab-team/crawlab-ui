@@ -8,7 +8,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     change: (value: TableHeaderDialogFilterData) => void;
     clear: () => void;
     enter: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     column?: TableColumn;
     searchString?: string;
     conditions: FilterConditionData[];

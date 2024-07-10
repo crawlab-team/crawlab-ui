@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { LexicalEditor } from 'lexical';
-import useMounted from '../composables/useMounted';
+import useMounted from '../composables/useLexicalMounted';
 
 const props = withDefaults(
   defineProps<{

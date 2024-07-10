@@ -1,7 +1,7 @@
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     tooltip?: string | Record<string, string>;
     isHtml?: boolean;
-    icon: string | string[];
+    icon?: string | string[];
     status?: TableHeaderActionStatus;
 }>, {
     status: () => {
@@ -10,10 +10,10 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     };
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     click: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     tooltip?: string | Record<string, string>;
     isHtml?: boolean;
-    icon: string | string[];
+    icon?: string | string[];
     status?: TableHeaderActionStatus;
 }>, {
     status: () => {

@@ -22,7 +22,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     type: string;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     change: (value?: RangeItem | undefined) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<RangePickerProps>, {
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<RangePickerProps>, {
     type: string;
 }>>> & {
     onChange?: ((value?: RangeItem | undefined) => any) | undefined;

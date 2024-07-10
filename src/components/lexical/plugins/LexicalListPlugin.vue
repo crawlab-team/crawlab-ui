@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LexicalEditor } from 'lexical';
-import useList from '../composables/useList';
+import useList from '../composables/useLexicalList';
 
 const props = defineProps<{
   editor: LexicalEditor;

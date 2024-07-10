@@ -1,4 +1,5 @@
 interface ContextMenuProps {
+    activeItem?: FileNavItem;
     visible?: boolean;
     placement: string;
     clicking?: boolean;
@@ -11,21 +12,21 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     hide: () => void;
     "new-file": () => void;
-    "new-file-with-ai": () => void;
     "new-directory": () => void;
+    "upload-files": () => void;
     rename: () => void;
     clone: () => void;
     delete: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ContextMenuProps>, {
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<ContextMenuProps>, {
     placement: string;
 }>>> & {
-    onHide?: (() => any) | undefined;
     onClone?: (() => any) | undefined;
     onDelete?: (() => any) | undefined;
+    onHide?: (() => any) | undefined;
     onRename?: (() => any) | undefined;
     "onNew-file"?: (() => any) | undefined;
-    "onNew-file-with-ai"?: (() => any) | undefined;
     "onNew-directory"?: (() => any) | undefined;
+    "onUpload-files"?: (() => any) | undefined;
 }, {
     placement: string;
 }, {}>;

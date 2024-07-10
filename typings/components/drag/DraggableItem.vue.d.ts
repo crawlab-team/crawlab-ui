@@ -11,12 +11,12 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
     "d-end": (item: DraggableItemData) => void;
     "d-enter": (item: DraggableItemData) => void;
     "d-leave": (item: DraggableItemData) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     item: DraggableItemData;
     dragging?: boolean;
 }>>> & {
-    "onD-start"?: ((item: DraggableItemData) => any) | undefined;
     "onD-end"?: ((item: DraggableItemData) => any) | undefined;
+    "onD-start"?: ((item: DraggableItemData) => any) | undefined;
     "onD-enter"?: ((item: DraggableItemData) => any) | undefined;
     "onD-leave"?: ((item: DraggableItemData) => any) | undefined;
 }, {}, {}>;

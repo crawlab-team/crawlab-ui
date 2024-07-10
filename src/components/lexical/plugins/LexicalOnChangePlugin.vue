@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { EditorState, LexicalEditor } from 'lexical';
-import useMounted from '../composables/useMounted';
+import useMounted from '../composables/useLexicalMounted';
 
 const props = withDefaults(
   defineProps<{

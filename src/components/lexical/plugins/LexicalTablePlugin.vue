@@ -27,8 +27,8 @@ import {
   COMMAND_PRIORITY_EDITOR,
 } from 'lexical';
 import invariant from 'tiny-invariant';
-import useMounted from '../composables/useMounted';
-import useEffect from '../composables/useEffect';
+import useMounted from '../composables/useLexicalMounted';
+import useLexicalEffect from '../composables/useLexicalEffect';
 import { ref } from 'vue';
 
 const props = withDefaults(
@@ -194,7 +194,7 @@ useMounted(() => {
 });
 
 // Unmerge cells when the feature isn't enabled
-useEffect(() => {
+useLexicalEffect(() => {
   const { editor } = props;
 
   if (props.hasCellMerge) return;
@@ -249,7 +249,7 @@ useEffect(() => {
   });
 });
 
-useEffect(() => {
+useLexicalEffect(() => {
   const { editor } = props;
 
   if (props.hasCellBackgroundColor) return;

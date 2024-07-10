@@ -9,7 +9,7 @@ import {
 } from '@lexical/list';
 import { mergeRegister } from '@lexical/utils';
 import { COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND } from 'lexical';
-import useMounted from './useMounted';
+import useMounted from './useLexicalMounted';
 
 export default (editor: LexicalEditor) => {
   useMounted(() => {

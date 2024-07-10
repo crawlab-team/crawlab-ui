@@ -17,7 +17,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     confirmDisabled: boolean;
     confirmLoading: boolean;
     formRules: () => never[];
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     visible: boolean;
     type: CreateEditDialogType;
     width: string;
@@ -34,12 +34,12 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     confirmLoading: boolean;
     formRules: () => never[];
 }>>>, {
-    visible: boolean;
     type: CreateEditDialogType;
+    visible: boolean;
     width: string;
-    confirmDisabled: boolean;
     confirmLoading: boolean;
     formRules: FormRuleItem[];
+    confirmDisabled: boolean;
 }, {}>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;

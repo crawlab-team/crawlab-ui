@@ -9,7 +9,7 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     select: (index: string) => void;
     toggle: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     items?: NavItem[];
     activeKey?: string;
     collapsed?: boolean;

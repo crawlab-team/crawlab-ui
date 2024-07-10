@@ -10,15 +10,15 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     confirm: () => void;
     cancel: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     confirmFunc: () => Promise<void>;
     title: string;
     content?: string;
 }>, {
     confirmFunc: () => Promise<void>;
 }>>> & {
-    onConfirm?: (() => any) | undefined;
     onCancel?: (() => any) | undefined;
+    onConfirm?: (() => any) | undefined;
 }, {
     confirmFunc: () => Promise<void>;
 }, {}>;

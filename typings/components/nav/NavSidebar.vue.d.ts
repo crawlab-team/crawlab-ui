@@ -1,14 +1,14 @@
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    type: NavSidebarType;
-    collapsed: boolean;
-    showActions: boolean;
-    items: NavItem[];
-    activeKey: string;
-    showCheckbox: boolean;
-    defaultCheckedKeys: string[];
-    defaultExpandedKeys: string[];
-    defaultExpandAll: boolean;
-    noSearch: boolean;
+    type?: NavSidebarType;
+    collapsed?: boolean;
+    showActions?: boolean;
+    items?: NavItem[];
+    activeKey?: string;
+    showCheckbox?: boolean;
+    defaultCheckedKeys?: string[];
+    defaultExpandedKeys?: string[];
+    defaultExpandAll?: boolean;
+    noSearch?: boolean;
 }>, {
     type: string;
     collapsed: boolean;
@@ -25,17 +25,17 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     select: (item: NavItem<any>) => void;
     check: (item: NavItem<any>, checked: boolean, items: NavItem<any>[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    type: NavSidebarType;
-    collapsed: boolean;
-    showActions: boolean;
-    items: NavItem[];
-    activeKey: string;
-    showCheckbox: boolean;
-    defaultCheckedKeys: string[];
-    defaultExpandedKeys: string[];
-    defaultExpandAll: boolean;
-    noSearch: boolean;
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+    type?: NavSidebarType;
+    collapsed?: boolean;
+    showActions?: boolean;
+    items?: NavItem[];
+    activeKey?: string;
+    showCheckbox?: boolean;
+    defaultCheckedKeys?: string[];
+    defaultExpandedKeys?: string[];
+    defaultExpandAll?: boolean;
+    noSearch?: boolean;
 }>, {
     type: string;
     collapsed: boolean;
@@ -52,14 +52,14 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     onCheck?: ((item: NavItem<any>, checked: boolean, items: NavItem<any>[]) => any) | undefined;
 }, {
     type: NavSidebarType;
-    items: NavItem[];
+    defaultExpandedKeys: string[];
     defaultExpandAll: boolean;
     collapsed: boolean;
-    defaultExpandedKeys: string[];
+    items: NavItem[];
+    activeKey: string;
     defaultCheckedKeys: string[];
     showCheckbox: boolean;
     showActions: boolean;
-    activeKey: string;
     noSearch: boolean;
 }, {}>;
 export default _default;

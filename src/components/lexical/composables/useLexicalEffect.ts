@@ -4,7 +4,7 @@ import { watchEffect } from 'vue';
 /**
  * @internal
  */
-export default function useEffect(
+export default function useLexicalEffect(
   cb: () => (() => any) | undefined,
   options?: WatchOptionsBase
 ) {

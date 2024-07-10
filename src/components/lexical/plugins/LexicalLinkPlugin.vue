@@ -10,7 +10,7 @@ import {
 import type { LexicalEditor } from 'lexical';
 import invariant from 'tiny-invariant';
 import { mergeRegister } from '@lexical/utils';
-import useMounted from '../composables/useMounted';
+import useMounted from '../composables/useLexicalMounted';
 
 const props = defineProps<{
   editor: LexicalEditor;

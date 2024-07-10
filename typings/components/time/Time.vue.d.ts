@@ -6,7 +6,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     time: () => Date;
     ago: boolean;
     format: string;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     time: Date | string;
     ago: boolean;
     format: string;
@@ -16,8 +16,8 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     format: string;
 }>>>, {
     time: Date | string;
-    format: string;
     ago: boolean;
+    format: string;
 }, {}>;
 export default _default;
 type __VLS_WithDefaults<P, D> = {

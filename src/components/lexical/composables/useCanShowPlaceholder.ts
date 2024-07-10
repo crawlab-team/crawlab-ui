@@ -2,7 +2,7 @@ import { readonly, ref } from 'vue';
 import type { LexicalEditor } from 'lexical';
 import { $canShowPlaceholderCurry } from '@lexical/text';
 import { mergeRegister } from '@lexical/utils';
-import useMounted from './useMounted';
+import useMounted from './useLexicalMounted';
 
 function canShowPlaceholderFromCurrentEditorState(
   editor: LexicalEditor

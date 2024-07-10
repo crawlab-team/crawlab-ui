@@ -16,7 +16,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     disabled: boolean;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     click: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<NavActionBackProps>, {
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<NavActionBackProps>, {
     buttonType: string;
     label: string;
     icon: () => string[];
@@ -26,11 +26,11 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>>> & {
     onClick?: (() => any) | undefined;
 }, {
+    label: string;
+    disabled: boolean;
     type: BasicType;
     icon: Icon;
-    label: string;
     size: BasicSize;
-    disabled: boolean;
     buttonType: ButtonType;
 }, {}>;
 export default _default;

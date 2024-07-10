@@ -2,23 +2,23 @@ declare function __VLS_template(): {
     actions?(_: {}): any;
 };
 declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    storeNamespace: ListStoreNamespace;
-    noSidebar: boolean;
-    navItemNameKey: string;
-    showBackButton: boolean;
-    showSaveButton: boolean;
+    storeNamespace?: ListStoreNamespace;
+    noSidebar?: boolean;
+    navItemNameKey?: string;
+    showBackButton?: boolean;
+    showSaveButton?: boolean;
     tabs?: NavItem[];
 }>, {
     noSidebar: boolean;
     navItemNameKey: string;
     showSaveButton: boolean;
     showBackButton: boolean;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    storeNamespace: ListStoreNamespace;
-    noSidebar: boolean;
-    navItemNameKey: string;
-    showBackButton: boolean;
-    showSaveButton: boolean;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+    storeNamespace?: ListStoreNamespace;
+    noSidebar?: boolean;
+    navItemNameKey?: string;
+    showBackButton?: boolean;
+    showSaveButton?: boolean;
     tabs?: NavItem[];
 }>, {
     noSidebar: boolean;
@@ -26,10 +26,10 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     showSaveButton: boolean;
     showBackButton: boolean;
 }>>>, {
-    noSidebar: boolean;
-    navItemNameKey: string;
     showBackButton: boolean;
     showSaveButton: boolean;
+    noSidebar: boolean;
+    navItemNameKey: string;
 }, {}>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;

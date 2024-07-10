@@ -1,7 +1,7 @@
 import type { LexicalEditor } from 'lexical';
 import type { DefineComponent } from 'vue';
 import { Teleport, computed, h, shallowRef, unref } from 'vue';
-import useMounted from './useMounted';
+import useMounted from './useLexicalMounted';
 
 export default (editor: LexicalEditor) => {
   const decorators = shallowRef<Record<string, DefineComponent>>(

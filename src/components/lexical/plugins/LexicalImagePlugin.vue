@@ -6,7 +6,7 @@ import {
   COMMAND_PRIORITY_EDITOR,
   type LexicalEditor,
 } from 'lexical';
-import useMounted from '@/components/lexical/composables/useMounted';
+import useMounted from '@/components/lexical/composables/useLexicalMounted';
 import { INSERT_IMAGE_COMMAND } from '@/components/lexical/utils/image';
 
 const props = defineProps<{

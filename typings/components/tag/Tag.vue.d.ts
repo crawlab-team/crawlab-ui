@@ -24,9 +24,9 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_TypePropsToOp
     close: () => void;
     mouseenter: () => void;
     mouseleave: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<TagProps>>> & {
-    onClose?: (() => any) | undefined;
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<TagProps>>> & {
     onClick?: (() => any) | undefined;
+    onClose?: (() => any) | undefined;
     onMouseenter?: (() => any) | undefined;
     onMouseleave?: (() => any) | undefined;
 }, {}, {}>;

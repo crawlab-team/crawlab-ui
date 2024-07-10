@@ -44,6 +44,7 @@ import useNodeList from './node/list/useNodeList';
 import NotificationDetail from './notification/detail/NotificationDetail.vue';
 import NotificationDetailTabOverview from './notification/detail/tabs/NotificationDetailTabOverview.vue';
 import NotificationDetailTabTemplate from './notification/detail/tabs/NotificationDetailTabTemplate.vue';
+import NotificationDetailTabTemplateLegacy from './notification/detail/tabs/NotificationDetailTabTemplateLegacy.vue';
 import NotificationDetailTabTriggers from './notification/detail/tabs/NotificationDetailTabTriggers.vue';
 import useNotificationDetail from './notification/detail/useNotificationDetail';
 import NotificationList from './notification/list/NotificationList.vue';
@@ -139,6 +140,7 @@ export {
   NotificationDetail as ClNotificationDetail,
   NotificationDetailTabOverview as ClNotificationDetailTabOverview,
   NotificationDetailTabTemplate as ClNotificationDetailTabTemplate,
+  NotificationDetailTabTemplateLegacy as ClNotificationDetailTabTemplateLegacy,
   NotificationDetailTabTriggers as ClNotificationDetailTabTriggers,
   useNotificationDetail as useNotificationDetail,
   NotificationList as ClNotificationList,

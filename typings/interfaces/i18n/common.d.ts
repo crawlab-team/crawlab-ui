@@ -48,6 +48,8 @@ export declare global {
       change: string;
       manage: string;
       inferDataFieldsTypes: string;
+      unlink: string;
+      goto: string;
     };
     messageBox: {
       confirm: {

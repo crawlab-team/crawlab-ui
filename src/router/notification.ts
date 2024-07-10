@@ -8,6 +8,7 @@ import {
   ClNotificationDetail,
   ClNotificationDetailTabOverview,
   ClNotificationDetailTabTemplate,
+  ClNotificationDetailTabTemplateLegacy,
   ClNotificationDetailTabTriggers,
   ClNotificationList,
 } from '@/views';
@@ -38,7 +39,8 @@ export default [
       },
       {
         path: TAB_NAME_TEMPLATE,
-        component: async () => ClNotificationDetailTabTemplate,
+        // component: async () => ClNotificationDetailTabTemplate,
+        component: async () => ClNotificationDetailTabTemplateLegacy,
       },
     ],
   },

@@ -6,7 +6,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     size: string;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     click: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     priority: number;
     size: string;
 }>, {
@@ -15,8 +15,8 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>>> & {
     onClick?: (() => any) | undefined;
 }, {
-    size: string;
     priority: number;
+    size: string;
 }, {}>;
 export default _default;
 type __VLS_WithDefaults<P, D> = {

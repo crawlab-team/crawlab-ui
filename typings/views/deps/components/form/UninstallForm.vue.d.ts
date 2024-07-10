@@ -9,7 +9,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
         nodeIds: string[];
     }) => void;
     close: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     visible?: boolean;
     names?: string[];
     nodes?: any[];

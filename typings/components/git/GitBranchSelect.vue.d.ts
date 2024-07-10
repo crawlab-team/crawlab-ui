@@ -18,7 +18,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     pull: () => void;
     commit: () => void;
     push: () => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
     modelValue?: string;
     localBranches: GitRef[];
     remoteBranches: GitRef[];
@@ -29,10 +29,10 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     localBranches: () => never[];
     remoteBranches: () => never[];
 }>>> & {
-    "onUpdate:modelValue"?: ((value: string) => any) | undefined;
-    onPull?: (() => any) | undefined;
     onCommit?: (() => any) | undefined;
+    onPull?: (() => any) | undefined;
     onPush?: (() => any) | undefined;
+    "onUpdate:modelValue"?: ((value: string) => any) | undefined;
     "onSelect-local"?: ((value: string) => any) | undefined;
     "onSelect-remote"?: ((value: string) => any) | undefined;
     "onNew-branch"?: (() => any) | undefined;

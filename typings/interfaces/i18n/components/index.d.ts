@@ -12,6 +12,7 @@ export declare global {
     form: LComponentsForm;
     file: LComponentsFile;
     date: LComponentsDate;
+    lexical: LComponentsLexical;
     metric: LComponentsMetric;
     export: LComponentsExport;
     result: LComponentsResult;

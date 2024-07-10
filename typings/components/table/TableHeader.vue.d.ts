@@ -3,7 +3,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     index?: number;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     change: (column: TableColumn<any>, sort?: SortData | undefined, filter?: TableHeaderDialogFilterData | undefined) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     column: TableColumn;
     index?: number;
 }>>> & {

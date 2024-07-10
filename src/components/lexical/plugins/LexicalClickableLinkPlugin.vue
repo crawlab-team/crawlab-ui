@@ -9,7 +9,7 @@ import {
 } from 'lexical';
 import { $isLinkNode } from '@lexical/link';
 import { $findMatchingParent, isHTMLAnchorElement } from '@lexical/utils';
-import useMounted from '../composables/useMounted';
+import useMounted from '../composables/useLexicalMounted';
 
 const props = withDefaults(
   defineProps<{

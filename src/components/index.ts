@@ -80,9 +80,9 @@ import InsertOptionsDropdownList from './lexical/components/InsertOptionsDropdow
 import InsertTableDialog from './lexical/components/InsertTableDialog.vue';
 import useCanShowPlaceholder from './lexical/composables/useCanShowPlaceholder';
 import useDecorators from './lexical/composables/useDecorators';
-import useEffect from './lexical/composables/useEffect';
-import useList from './lexical/composables/useList';
-import useMounted from './lexical/composables/useMounted';
+import useLexicalEffect from './lexical/composables/useLexicalEffect';
+import useLexicalList from './lexical/composables/useLexicalList';
+import useLexicalMounted from './lexical/composables/useLexicalMounted';
 import useRichTextSetup from './lexical/composables/useRichTextSetup';
 import LexicalAutoFocusPlugin from './lexical/plugins/LexicalAutoFocusPlugin.vue';
 import LexicalAutoLinkPlugin from './lexical/plugins/LexicalAutoLinkPlugin.vue';
@@ -261,9 +261,9 @@ export {
   InsertTableDialog as ClInsertTableDialog,
   useCanShowPlaceholder as useCanShowPlaceholder,
   useDecorators as useDecorators,
-  useEffect as useEffect,
-  useList as useList,
-  useMounted as useMounted,
+  useLexicalEffect as useLexicalEffect,
+  useLexicalList as useLexicalList,
+  useLexicalMounted as useLexicalMounted,
   useRichTextSetup as useRichTextSetup,
   LexicalAutoFocusPlugin as ClLexicalAutoFocusPlugin,
   LexicalAutoLinkPlugin as ClLexicalAutoLinkPlugin,

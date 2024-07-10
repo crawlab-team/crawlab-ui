@@ -11,7 +11,6 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     "node-db-click": (item: FileNavItem) => void;
     "node-drop": (draggingItem: FileNavItem, dropItem: FileNavItem) => void;
     "ctx-menu-new-file": (item: FileNavItem, name: string) => void;
-    "ctx-menu-new-file-with-ai": (item: FileNavItem) => void;
     "ctx-menu-new-directory": (item: FileNavItem, name: string) => void;
     "ctx-menu-rename": (item: FileNavItem, name: string) => void;
     "ctx-menu-clone": (item: FileNavItem, name: string) => void;
@@ -20,7 +19,7 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     "save-file": (item: FileNavItem) => void;
     "drop-files": (files: InputFile[]) => void;
     "create-with-ai": (name: string, sourceCode: string, item?: FileNavItem | undefined) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_TypePropsToOption<{
     ns: ListStoreNamespace;
     content: string;
     navItems: FileNavItem[];
@@ -34,7 +33,6 @@ declare const _default: import("vue").DefineComponent<__VLS_TypePropsToOption<{
     "onNode-db-click"?: ((item: FileNavItem) => any) | undefined;
     "onNode-drop"?: ((draggingItem: FileNavItem, dropItem: FileNavItem) => any) | undefined;
     "onCtx-menu-new-file"?: ((item: FileNavItem, name: string) => any) | undefined;
-    "onCtx-menu-new-file-with-ai"?: ((item: FileNavItem) => any) | undefined;
     "onCtx-menu-new-directory"?: ((item: FileNavItem, name: string) => any) | undefined;
     "onCtx-menu-rename"?: ((item: FileNavItem, name: string) => any) | undefined;
     "onCtx-menu-clone"?: ((item: FileNavItem, name: string) => any) | undefined;
