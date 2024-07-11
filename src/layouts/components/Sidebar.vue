@@ -159,7 +159,6 @@ defineOptions({ name: 'ClSidebar' });
   position: relative;
   width: var(--cl-sidebar-width);
   overflow-x: hidden;
-  overflow-y: auto;
   user-select: none;
   background-color: var(--cl-menu-bg);
 
@@ -177,7 +176,7 @@ defineOptions({ name: 'ClSidebar' });
   }
 
   .logo-container {
-    position: sticky;
+    position: absolute;
     top: 0;
     left: 0;
     z-index: 999;
@@ -192,7 +191,6 @@ defineOptions({ name: 'ClSidebar' });
 
     .logo {
       display: flex;
-      align-items: center;
       height: 100%;
 
       .logo-img {
@@ -260,6 +258,7 @@ defineOptions({ name: 'ClSidebar' });
     position: absolute;
     top: var(--cl-header-height);
     left: 0;
+    overflow-y: auto;
     width: var(--cl-sidebar-width);
     height: calc(100vh - var(--cl-header-height));
     margin: 0;
@@ -271,6 +270,24 @@ defineOptions({ name: 'ClSidebar' });
       width: 100%;
       height: calc(100vh - var(--cl-header-height));
       transition: none !important;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &:hover::-webkit-scrollbar {
+      display: block;
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--cl-menu-bg);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--cl-sub-menu-bg);
+      border-radius: 3px;
     }
   }
 }
