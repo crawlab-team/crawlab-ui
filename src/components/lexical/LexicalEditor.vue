@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createEditor, CreateEditorArgs, EditorThemeClasses } from 'lexical';
-import type { EditorState } from 'lexical';
+import type { EditorState, LexicalEditor } from 'lexical';
 import { HeadingNode, QuoteNode, registerRichText } from '@lexical/rich-text';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
@@ -9,9 +9,10 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
 import { ImageNode } from '@/components/lexical/nodes/ImageNode';
-import ClLexicalTypeheadMenu from '@/components/lexical/plugins/LexicalVariablePlugin.vue';
-import ClLexicalVariablePlugin from '@/components/lexical/plugins/LexicalVariablePlugin.vue';
 import { VariableNode } from '@/components/lexical/nodes/VariableNode';
+import { onMounted } from 'vue';
+
+const modelValue = defineModel<string>();
 
 const theme: EditorThemeClasses = {
   ltr: 'ltr',
@@ -108,7 +109,9 @@ const initialEditorConfig: CreateEditorArgs = {
   },
 };
 
-const editor = createEditor(initialEditorConfig);
+let editor: LexicalEditor | null;
+editor = createEditor(initialEditorConfig);
+
 mergeRegister(
   registerRichText(editor),
   registerHistory(editor, createEmptyHistoryState(), 300)
@@ -122,7 +125,7 @@ defineOptions({ name: 'ClLexicalEditor' });
 </script>
 
 <template>
-  <div class="editor-container">
+  <div v-if="editor" class="editor-container">
     <cl-lexical-toolbar-plugin :editor="editor" />
     <div class="editor-inner">
       <cl-lexical-rich-text-plugin :editor="editor">

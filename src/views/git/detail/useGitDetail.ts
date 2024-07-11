@@ -155,6 +155,29 @@ const useGitDetail = () => {
   };
 
   const onPull = async () => {
+    pullLoading.value = true;
+    try {
+      const res = await store.dispatch(`${ns}/pull`, {
+        id: id.value,
+      });
+      if (res.data) {
+        ElMessage.info(res.data);
+      } else {
+        ElMessage.success(t('components.git.common.message.success.pull'));
+      }
+      if (activeTabName.value === TAB_NAME_FILES) {
+        await store.dispatch(`${ns}/listDir`, { id: id.value });
+      } else if (activeTabName.value === TAB_NAME_LOGS) {
+        await store.dispatch(`${ns}/getLogs`, { id: id.value });
+      }
+    } catch (e: any) {
+      ElMessage.error(e.message);
+    } finally {
+      pullLoading.value = false;
+    }
+  };
+
+  const onPullWs = async () => {
     const ws = new WebSocket(
       getRequestBaseUrlWs() + `/gits/${id.value}/pull/ws`
     );
@@ -193,6 +216,30 @@ const useGitDetail = () => {
   };
 
   const onPush = async () => {
+    pushLoading.value = true;
+    try {
+      const res = await store.dispatch(`${ns}/push`, {
+        id: id.value,
+      });
+      if (res.data) {
+        ElMessage.info(res.data);
+      } else {
+        ElMessage.success(t('components.git.common.message.success.push'));
+      }
+      if (activeTabName.value === TAB_NAME_LOGS) {
+        await Promise.all([
+          store.dispatch(`${ns}/getLogs`, { id: id.value }),
+          store.dispatch(`${ns}/getRemoteBranches`, { id: id.value }),
+        ]);
+      }
+    } catch (e: any) {
+      ElMessage.error(e.message);
+    } finally {
+      pushLoading.value = false;
+    }
+  };
+
+  const onPushWs = async () => {
     const ws = new WebSocket(
       getRequestBaseUrlWs() + `/gits/${id.value}/push/ws`
     );

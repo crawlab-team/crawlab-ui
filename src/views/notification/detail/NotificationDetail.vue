@@ -1,19 +1,18 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { TAB_NAME_TEMPLATE } from '@/constants';
 import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
-export default defineComponent({
-  name: 'NotificationDetail',
-  setup() {
-    return {
-      ...useNotificationDetail(),
-    };
-  },
-});
+const { activeTabName } = useNotificationDetail();
 </script>
 
 <template>
-  <cl-detail-layout store-namespace="notification" />
+  <cl-detail-layout store-namespace="notification">
+    <template #actions>
+      <cl-notification-detail-actions-template
+        v-if="activeTabName === TAB_NAME_TEMPLATE"
+      />
+    </template>
+  </cl-detail-layout>
 </template>
 
 <style scoped></style>

@@ -20,7 +20,7 @@ const git: LComponentsGit = {
       success: {
         checkout: '切换至 {branch}',
         pull: '成功拉取代码',
-        commit: '成果提交 {fileCount} 个文件',
+        commit: '成功提交 {fileCount} 个文件',
         push: '成功推送代码',
       },
     },

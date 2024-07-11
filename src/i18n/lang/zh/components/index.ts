@@ -13,6 +13,7 @@ import lexical from './lexical';
 import metric from './metric';
 import export_ from './export';
 import result from './result';
+import notification from './notification';
 
 import node from './node';
 import project from './project';
@@ -41,6 +42,7 @@ const components: LComponents = {
   metric,
   export: export_,
   result,
+  notification,
 
   node,
   project,

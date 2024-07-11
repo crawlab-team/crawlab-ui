@@ -1,7 +1,9 @@
 export declare global {
-  interface SelectOption {
+  interface SelectOption<T = any> {
     label?: string;
-    value?: any;
+    value?: T;
+    icon?: Icon;
+    disabled?: boolean;
     children?: SelectOption[];
   }
 }

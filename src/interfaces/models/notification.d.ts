@@ -26,4 +26,6 @@ export declare global {
   interface NotificationSettingMobile {
     webhook?: string;
   }
+
+  type NotificationTemplateMode = 'rich-text' | 'markdown';
 }
