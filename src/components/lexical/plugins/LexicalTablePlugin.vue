@@ -87,10 +87,16 @@ useMounted(() => {
 
   const tableSelections = new Map<NodeKey, TableObserver>();
 
-  const initializeResizableTableCellNodes = (tableNode: LexicalNode) => {
+  const initializeResizableTableCellNodes = (tableNode: TableNode) => {
+    const tableHeadCellNodes = tableNode
+      .getFirstChild<TableRowNode>()
+      .getChildren<TableCellNode>()
+      .filter(cell => !!$isTableCellNode(cell));
     const tableElement = editor.getElementByKey(tableNode.getKey());
     const thElements = tableElement?.querySelectorAll('th') || [];
     thElements.forEach((th, index) => {
+      const tableHeadCellNode = tableHeadCellNodes[index];
+
       // head cells
       th.addEventListener('mousedown', e => {
         startX.value = e.pageX;
@@ -123,7 +129,10 @@ useMounted(() => {
         }
         if (!isResizing.value) return;
         const newWidth = startWidth.value + (e.pageX - startX.value);
-        th.style.width = `${newWidth}px`;
+        // th.style.width = `${newWidth}px`;
+        editor?.update(() => {
+          tableHeadCellNode.setWidth(newWidth);
+        });
       };
 
       const onTableCellMouseUp = () => {

@@ -3,13 +3,11 @@
   position: relative;
   font-weight: 400;
   text-align: left;
-  display: flex;
-  flex-direction: column;
   height: 100%;
 }
 
 .editor-inner {
-  flex: 1;
+  height: calc(100% - 45px);
   background: #fff;
   position: relative;
 }
@@ -106,9 +104,7 @@
   padding: 8px 8px 8px 52px;
   line-height: 1.53;
   font-size: 13px;
-  margin: 0;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin: 8px 0;
   tab-size: 2;
   /* white-space: pre; */
   overflow-x: auto;
@@ -173,8 +169,7 @@
 }
 
 .editor-paragraph {
-  margin: 0;
-  margin-bottom: 8px;
+  margin: 0 0 8px;
   position: relative;
 }
 
@@ -215,8 +210,7 @@
 }
 
 .editor-quote {
-  margin: 0;
-  margin-left: 20px;
+  margin: 0 0 0 20px;
   font-size: 15px;
   color: rgb(101, 103, 107);
   border-left-color: rgb(206, 208, 212);
@@ -227,8 +221,7 @@
 
 .editor-list-ol {
   padding: 0;
-  margin: 0;
-  margin-left: 16px;
+  margin: 0 0 0 16px;
 }
 
 .editor-list-ul {
@@ -250,6 +243,7 @@
   display: flex;
   margin-bottom: 1px;
   background: #fff;
+  height: 45px;
   padding: 4px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;

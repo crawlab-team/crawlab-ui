@@ -3,6 +3,7 @@ import { TAB_NAME_TEMPLATE } from '@/constants';
 import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
 const { activeTabName } = useNotificationDetail();
+defineOptions({ name: 'ClNotificationDetail' });
 </script>
 
 <template>

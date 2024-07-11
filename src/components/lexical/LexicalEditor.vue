@@ -1,18 +1,48 @@
 <script setup lang="ts">
-import { createEditor, CreateEditorArgs, EditorThemeClasses } from 'lexical';
-import type { EditorState, LexicalEditor } from 'lexical';
+import {
+  $getRoot,
+  $getSelection,
+  $insertNodes,
+  $nodesOfType,
+  COMMAND_PRIORITY_LOW,
+  createEditor,
+  CreateEditorArgs,
+  EditorThemeClasses,
+  KEY_DOWN_COMMAND,
+  RootNode,
+} from 'lexical';
+import type { LexicalEditor } from 'lexical';
 import { HeadingNode, QuoteNode, registerRichText } from '@lexical/rich-text';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
-import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import {
+  $getTableCellNodeFromLexicalNode,
+  $isTableNode,
+  TableCellNode,
+  TableNode,
+  TableRowNode,
+} from '@lexical/table';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
 import { ImageNode } from '@/components/lexical/nodes/ImageNode';
 import { VariableNode } from '@/components/lexical/nodes/VariableNode';
-import { onMounted } from 'vue';
+import { $convertFromMarkdownString } from '@lexical/markdown';
+import useLexicalMounted from '@/components/lexical/composables/useLexicalMounted';
+import { MARKDOWN_TRANSFORMERS } from '@/components/lexical/utils/markdownTransformers';
+import { $generateNodesFromDOM } from '@lexical/html';
+import { watch } from 'vue';
 
 const modelValue = defineModel<string>();
+
+const props = defineProps<{
+  id?: string;
+  markdownContent?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: 'save'): void;
+}>();
 
 const theme: EditorThemeClasses = {
   ltr: 'ltr',
@@ -112,13 +142,37 @@ const initialEditorConfig: CreateEditorArgs = {
 let editor: LexicalEditor | null;
 editor = createEditor(initialEditorConfig);
 
+const onKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+    console.debug(event);
+    // emit('save');
+  }
+  return false;
+};
+
 mergeRegister(
   registerRichText(editor),
   registerHistory(editor, createEmptyHistoryState(), 300)
 );
 
-const onEditorContentChange = (editorState: EditorState) => {
-  // console.log(editorState);
+useLexicalMounted(() => {
+  editor?.registerCommand(KEY_DOWN_COMMAND, onKeyDown, COMMAND_PRIORITY_LOW);
+
+  const editorStateJSONObject = JSON.parse(modelValue.value)?.editorState;
+  console.debug(editorStateJSONObject);
+  if (editorStateJSONObject?.root?.children?.length > 0) {
+    const editorStateString = JSON.stringify(editorStateJSONObject);
+    const editorState = editor?.parseEditorState(editorStateString);
+    editor?.setEditorState(editorState);
+  } else if (props.markdownContent) {
+    editor?.update(() => {
+      $convertFromMarkdownString(props.markdownContent, MARKDOWN_TRANSFORMERS);
+    });
+  }
+});
+
+const onContentChange = value => {
+  modelValue.value = value;
 };
 
 defineOptions({ name: 'ClLexicalEditor' });
@@ -143,71 +197,96 @@ defineOptions({ name: 'ClLexicalEditor' });
       <cl-lexical-table-plugin :editor="editor" />
       <cl-lexical-image-plugin :editor="editor" />
       <cl-lexical-variable-plugin :editor="editor" />
-      <cl-lexical-on-change-plugin
-        :editor="editor"
-        @change="onEditorContentChange"
-      />
+      <cl-lexical-on-change-plugin :editor="editor" @change="onContentChange" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.editor-container:deep(table) {
-  border-collapse: collapse;
-  border-spacing: 0;
-  overflow-y: scroll;
-  overflow-x: scroll;
-  table-layout: fixed;
-  width: max-content;
-  margin: 0 25px 30px 0;
-}
+.editor-container {
+  .editor-inner {
+    flex: 0;
 
-.editor-container:deep(th),
-.editor-container:deep(td) {
-  position: relative;
-  border: 1px solid #bbb;
-  width: 75px;
-  min-width: 75px;
-  vertical-align: top;
-  text-align: start;
-  padding: 6px 8px;
-  outline: none;
-  user-select: none;
-}
+    .editor-input {
+      overflow: auto;
 
-.editor-container:deep(th) {
-  background-color: #f2f3f5;
-  text-align: start;
-}
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
-.editor-container:deep(th::after),
-.editor-container:deep(td::after) {
-  cursor: col-resize;
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 5px;
-  z-index: 1;
-}
+      &:hover::-webkit-scrollbar {
+        display: block;
+        width: 6px;
+      }
 
-.editor-container:deep(table.resizing),
-.editor-container:deep(table.resizing *),
-.editor-container:deep(table.resizing *::after) {
-  user-select: none;
-}
+      &::-webkit-scrollbar-track {
+        background-color: #ffffff;
+      }
 
-.editor-container:deep(.variable) {
-  padding: 3px;
-  margin: 0 5px;
-  color: var(--cl-warning-color);
-  text-decoration: underline;
-  font-style: italic;
-  cursor: pointer;
-}
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--cl-info-light-color);
+        border-radius: 3px;
+      }
 
-.editor-container:deep(.variable.active) {
-  background-color: var(--cl-warning-plain-color);
+      &:deep(table) {
+        border-collapse: collapse;
+        border-spacing: 0;
+        overflow-y: scroll;
+        overflow-x: scroll;
+        table-layout: fixed;
+        width: max-content;
+        margin: 0 25px 30px 0;
+      }
+
+      &:deep(th),
+      &:deep(td) {
+        position: relative;
+        border: 1px solid #bbb;
+        width: 75px;
+        min-width: 75px;
+        vertical-align: top;
+        text-align: start;
+        padding: 6px 8px;
+        outline: none;
+        user-select: none;
+      }
+
+      &:deep(th) {
+        background-color: #f2f3f5;
+        text-align: start;
+      }
+
+      &:deep(th::after),
+      &:deep(td::after) {
+        cursor: col-resize;
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        z-index: 1;
+      }
+
+      &:deep(table.resizing),
+      &:deep(table.resizing *),
+      &:deep(table.resizing *::after) {
+        user-select: none;
+      }
+
+      &:deep(.variable) {
+        padding: 3px;
+        margin: 0 5px;
+        color: var(--cl-warning-color);
+        text-decoration: underline;
+        font-style: italic;
+        cursor: pointer;
+      }
+
+      &:deep(.variable.active) {
+        background-color: var(--cl-warning-plain-color);
+      }
+    }
+  }
 }
 </style>

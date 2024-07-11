@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import type { EditorState, LexicalEditor } from 'lexical';
+import {
+  $getRoot,
+  EditorState,
+  LexicalEditor,
+  SerializedEditor,
+} from 'lexical';
 import useMounted from '../composables/useLexicalMounted';
+import { $generateHtmlFromNodes } from '@lexical/html';
 
 const props = withDefaults(
   defineProps<{
@@ -15,13 +21,13 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'change', editorState: EditorState): void;
+  (e: 'change', jsonString: string): void;
 }>();
 
 useMounted(() => {
   const { editor } = props;
   return editor.registerUpdateListener(
-    ({ editorState, dirtyElements, dirtyLeaves, prevEditorState }) => {
+    ({ _, dirtyElements, dirtyLeaves, prevEditorState }) => {
       if (
         props.ignoreSelectionChange &&
         dirtyElements.size === 0 &&
@@ -31,7 +37,14 @@ useMounted(() => {
 
       if (props.ignoreInitialChange && prevEditorState.isEmpty()) return;
 
-      emit('change', editorState);
+      editor?.getEditorState().read(() => {
+        // const htmlString = $generateHtmlFromNodes(editor);
+        emit('change', JSON.stringify(editor.toJSON()));
+      });
+      // editor?.update(() => {
+      //   const htmlString = $generateHtmlFromNodes(editor);
+      //   emit('change', htmlString);
+      // });
     }
   );
 });

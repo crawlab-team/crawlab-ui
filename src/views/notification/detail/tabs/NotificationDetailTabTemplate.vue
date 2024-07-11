@@ -3,7 +3,11 @@ import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useNotification from '@/components/notification/notification';
-import ClNotificationMarkdownEditor from '@/components/notification/NotificationMarkdownEditor.vue';
+import ClNotificationMarkdownEditor from '@/components/markdown/MarkdownEditor.vue';
+import { $convertFromMarkdownString } from '@lexical/markdown';
+import * as monaco from 'monaco-editor';
+import { ElMessage } from 'element-plus';
+import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
 const t = translate;
 
@@ -12,15 +16,15 @@ const ns = 'notification';
 const store = useStore();
 const { notification: state } = store.state as RootStoreState;
 
-const { form } = useNotification(store);
+const { activeId } = useNotificationDetail();
 
 const internalTitle = ref();
 onMounted(() => {
-  const { title } = form.value;
+  const { title } = state.form;
   internalTitle.value = title;
 });
 watch(
-  () => form.value.title,
+  () => state.form.title,
   title => {
     internalTitle.value = title;
   }
@@ -29,17 +33,48 @@ const onTitleChange = (title: string) => {
   store.commit(`${ns}/setTemplateTitle`, title);
 };
 
-const internalContent = ref();
+const templateMarkdown = ref<string>('');
+const templateRichText = ref<string>('');
 onMounted(() => {
-  const { template } = form.value;
-  internalContent.value = template;
+  templateMarkdown.value = state.form.template_markdown;
+  templateRichText.value = state.form.template_rich_text;
 });
 watch(
-  () => form.value.template,
-  content => {
-    internalContent.value = content;
+  () => state.form.template_markdown,
+  value => (templateMarkdown.value = value)
+);
+watch(templateMarkdown, () => {
+  store.commit(`${ns}/setForm`, {
+    ...state.form,
+    template_markdown: templateMarkdown.value,
+  });
+});
+watch(
+  () => state.form.template_rich_text,
+  value => (templateRichText.value = value)
+);
+watch(templateRichText, () => {
+  store.commit(`${ns}/setForm`, {
+    ...state.form,
+    template_rich_text: templateRichText.value,
+  });
+});
+watch(
+  () => state.form.template_mode,
+  mode => {
+    if (mode === 'markdown') {
+    } else if (mode === 'rich-text') {
+    }
   }
 );
+
+const onSave = async () => {
+  await store.dispatch(`${ns}/updateById`, {
+    id: activeId.value,
+    form: state.form,
+  });
+  ElMessage.success(t('common.message.success.save'));
+};
 
 defineOptions({ name: 'ClNotificationDetailTabTemplate' });
 </script>
@@ -53,11 +88,21 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
       @input="onTitleChange"
     />
     <div class="editor-wrapper">
-      <template v-if="state.templateMode === 'markdown'">
-        <cl-notification-markdown-editor v-model="internalContent" />
+      <template v-if="state.form.template_mode === 'markdown'">
+        <cl-notification-markdown-editor
+          v-model="templateMarkdown"
+          :id="state.form._id"
+          :rich-text-content="templateRichText"
+          @save="onSave"
+        />
       </template>
-      <template v-else-if="state.templateMode === 'rich-text'">
-        <cl-lexical-editor v-model="internalContent" />
+      <template v-else-if="state.form.template_mode === 'rich-text'">
+        <cl-lexical-editor
+          v-model="templateRichText"
+          :id="state.form._id"
+          :markdown-content="templateMarkdown"
+          @save="onSave"
+        />
       </template>
     </div>
   </div>

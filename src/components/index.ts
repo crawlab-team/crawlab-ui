@@ -105,6 +105,7 @@ import LexicalVariablePlugin from './lexical/plugins/LexicalVariablePlugin.vue';
 import * as autoLink from './lexical/utils/autoLink';
 import * as getSelectedNode from './lexical/utils/getSelectedNode';
 import DetailTabList from './list/DetailTabList.vue';
+import MarkdownEditor from './markdown/MarkdownEditor.vue';
 import NavActionBack from './nav/NavActionBack.vue';
 import NavActionButton from './nav/NavActionButton.vue';
 import NavActionFaIcon from './nav/NavActionFaIcon.vue';
@@ -127,7 +128,6 @@ import useNode from './node/useNode';
 import CreateEditNotificationDialog from './notification/CreateEditNotificationDialog.vue';
 import * as notification from './notification/notification';
 import NotificationForm from './notification/NotificationForm.vue';
-import NotificationMarkdownEditor from './notification/NotificationMarkdownEditor.vue';
 import CreateEditProjectDialog from './project/CreateEditProjectDialog.vue';
 import ProjectForm from './project/ProjectForm.vue';
 import useProject from './project/useProject';
@@ -292,6 +292,7 @@ export {
   autoLink as autoLink,
   getSelectedNode as getSelectedNode,
   DetailTabList as ClDetailTabList,
+  MarkdownEditor as ClMarkdownEditor,
   NavActionBack as ClNavActionBack,
   NavActionButton as ClNavActionButton,
   NavActionFaIcon as ClNavActionFaIcon,
@@ -314,7 +315,6 @@ export {
   CreateEditNotificationDialog as ClCreateEditNotificationDialog,
   notification as notification,
   NotificationForm as ClNotificationForm,
-  NotificationMarkdownEditor as ClNotificationMarkdownEditor,
   CreateEditProjectDialog as ClCreateEditProjectDialog,
   ProjectForm as ClProjectForm,
   useProject as useProject,

@@ -45,7 +45,6 @@ const state = {
     { id: TAB_NAME_TRIGGERS, title: t('common.tabs.triggers') },
     { id: TAB_NAME_TEMPLATE, title: t('common.tabs.template') },
   ],
-  templateMode: 'markdown',
   triggersList: [],
 } as NotificationStoreState;
 
@@ -55,12 +54,6 @@ const getters = {
 
 const mutations = {
   ...getDefaultStoreMutations<NotificationSetting>(),
-  setTemplateMode: (
-    state: NotificationStoreState,
-    mode: NotificationTemplateMode
-  ) => {
-    state.templateMode = mode;
-  },
   setTriggersList: (state: NotificationStoreState, triggersList: string[]) => {
     state.triggersList = triggersList;
   },
@@ -80,10 +73,10 @@ const mutations = {
     state.form.title = '';
   },
   setTemplateContent: (state: NotificationStoreState, template: string) => {
-    state.form.template = template;
+    state.form.template_markdown = template;
   },
   resetTemplateContent: (state: NotificationStoreState) => {
-    state.form.template = '';
+    state.form.template_markdown = '';
   },
 } as NotificationStoreMutations;
 

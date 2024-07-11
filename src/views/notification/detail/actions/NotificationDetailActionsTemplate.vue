@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { translate } from '@/utils';
 import { useStore } from 'vuex';
 
@@ -9,7 +9,7 @@ const ns = 'notification';
 const store = useStore();
 const { notification: state } = store.state as RootStoreState;
 
-const templateMode = ref<NotificationTemplateMode>(state.templateMode);
+const templateMode = ref<NotificationTemplateMode>(state.form.template_mode);
 const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
   {
     label: t('components.notification.template.modes.markdown'),
@@ -20,12 +20,26 @@ const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
     label: t('components.notification.template.modes.richText'),
     value: 'rich-text',
     icon: ['fa', 'file-word'],
-    disabled: true,
   },
 ];
+watch(
+  () => state.form.template_mode,
+  mode => {
+    templateMode.value = mode || 'markdown';
+    if (!state.form.template_mode) {
+      store.commit(`${ns}/setForm`, {
+        ...state.form,
+        template_mode: templateMode.value,
+      });
+    }
+  }
+);
 
 const onTemplateModeChange = (mode: NotificationTemplateMode) => {
-  store.commit(`${ns}/setTemplateMode`, mode);
+  store.commit(`${ns}/setForm`, {
+    ...state.form,
+    template_mode: mode,
+  });
 };
 
 defineOptions({ name: 'ClNotificationDetailActionsTemplate' });
