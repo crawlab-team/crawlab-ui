@@ -31,36 +31,44 @@ const onTitleChange = (title: string) => {
 
 const templateMarkdown = ref<string>();
 const templateRichText = ref<string>();
+const templateRichTextJson = ref<string>();
 onMounted(() => {
   templateMarkdown.value = state.form.template_markdown;
   templateRichText.value = state.form.template_rich_text;
+  templateRichTextJson.value = state.form.template_rich_text_json;
 });
+
 watch(
   () => state.form.template_markdown,
   value => (templateMarkdown.value = value)
 );
-watch(templateMarkdown, () => {
-  store.commit(`${ns}/setForm`, {
-    ...state.form,
-    template_markdown: templateMarkdown.value,
-  });
-});
 watch(
   () => state.form.template_rich_text,
   value => (templateRichText.value = value)
 );
-watch(templateRichText, () => {
+watch(
+  () => state.form.template_rich_text_json,
+  value => (templateRichTextJson.value = value)
+);
+watch(templateMarkdown, value => {
   store.commit(`${ns}/setForm`, {
     ...state.form,
-    template_rich_text: templateRichText.value,
-  });
+    template_markdown: value,
+  } as NotificationSetting);
 });
 watch(
-  () => state.form.template_mode,
-  mode => {
-    if (mode === 'markdown') {
-    } else if (mode === 'rich-text') {
-    }
+  () =>
+    JSON.stringify({
+      templateRichText: templateRichText.value,
+      templateRichTextJson: templateRichTextJson.value,
+    }),
+  () => {
+    console.debug(templateRichText.value);
+    store.commit(`${ns}/setForm`, {
+      ...state.form,
+      template_rich_text: templateRichText.value,
+      template_rich_text_json: templateRichTextJson.value,
+    } as NotificationSetting);
   }
 );
 
@@ -94,7 +102,8 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
       </template>
       <template v-else-if="state.form.template_mode === 'rich-text'">
         <cl-lexical-editor
-          v-model="templateRichText"
+          v-model:text="templateRichText"
+          v-model:json="templateRichTextJson"
           :id="state.form._id"
           :markdown-content="templateMarkdown"
           @save="onSave"

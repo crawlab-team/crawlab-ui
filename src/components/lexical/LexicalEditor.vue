@@ -33,7 +33,8 @@ import { MARKDOWN_TRANSFORMERS } from '@/components/lexical/utils/markdownTransf
 import { $generateNodesFromDOM } from '@lexical/html';
 import { watch } from 'vue';
 
-const modelValue = defineModel<string>();
+const modelValue = defineModel<string>('text');
+const modelValueJson = defineModel<string>('json');
 
 const props = defineProps<{
   id?: string;
@@ -157,7 +158,7 @@ mergeRegister(
 
 const initEditor = async () => {
   const editorStateJSONObject = JSON.parse(
-    modelValue.value || '{}'
+    modelValueJson.value || '{}'
   )?.editorState;
   if (editorStateJSONObject?.root?.children?.length > 0) {
     const editorStateString = JSON.stringify(editorStateJSONObject);
@@ -183,10 +184,6 @@ useLexicalMounted(() => {
 });
 watch(modelValue, initEditor);
 
-const onContentChange = (value: string) => {
-  modelValue.value = value;
-};
-
 defineOptions({ name: 'ClLexicalEditor' });
 </script>
 
@@ -209,7 +206,11 @@ defineOptions({ name: 'ClLexicalEditor' });
       <cl-lexical-table-plugin :editor="editor" />
       <cl-lexical-image-plugin :editor="editor" />
       <cl-lexical-variable-plugin :editor="editor" />
-      <cl-lexical-on-change-plugin :editor="editor" @change="onContentChange" />
+      <cl-lexical-on-change-plugin
+        :editor="editor"
+        @change-rich-text="(value: string) => (modelValue = value)"
+        @change-rich-text-json="(value: string) => (modelValueJson = value)"
+      />
     </div>
   </div>
 </template>

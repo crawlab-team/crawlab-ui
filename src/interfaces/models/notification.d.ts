@@ -9,6 +9,7 @@ export declare global {
     template_mode?: NotificationTemplateMode;
     template_markdown?: string;
     template_rich_text?: string;
+    template_rich_text_json?: string;
     task_trigger?: string;
     mail?: NotificationSettingMail;
     mobile?: NotificationSettingMobile;

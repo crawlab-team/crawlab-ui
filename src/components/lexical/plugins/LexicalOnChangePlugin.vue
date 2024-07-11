@@ -21,7 +21,8 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'change', jsonString: string): void;
+  (e: 'change-rich-text', value: string): void;
+  (e: 'change-rich-text-json', value: string): void;
 }>();
 
 useMounted(() => {
@@ -38,13 +39,9 @@ useMounted(() => {
       if (props.ignoreInitialChange && prevEditorState.isEmpty()) return;
 
       editor?.getEditorState().read(() => {
-        // const htmlString = $generateHtmlFromNodes(editor);
-        emit('change', JSON.stringify(editor.toJSON()));
+        emit('change-rich-text', $generateHtmlFromNodes(editor));
+        emit('change-rich-text-json', JSON.stringify(editor.toJSON()));
       });
-      // editor?.update(() => {
-      //   const htmlString = $generateHtmlFromNodes(editor);
-      //   emit('change', htmlString);
-      // });
     }
   );
 });
