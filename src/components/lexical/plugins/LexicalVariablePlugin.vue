@@ -19,13 +19,3 @@ useMounted(() => {
 
 defineOptions({ name: 'ClLexicalVariablePlugin' });
 </script>
-
-<template>
-  <el-popover v-model:visible="visible" placement="bottom" width="300">
-    <template #reference>
-      <div class="typehead-menu"></div>
-    </template>
-  </el-popover>
-</template>
-
-<style scoped lang="scss"></style>
