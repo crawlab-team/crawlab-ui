@@ -2,10 +2,6 @@
 import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
-import useNotification from '@/components/notification/notification';
-import ClNotificationMarkdownEditor from '@/components/markdown/MarkdownEditor.vue';
-import { $convertFromMarkdownString } from '@lexical/markdown';
-import * as monaco from 'monaco-editor';
 import { ElMessage } from 'element-plus';
 import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
@@ -33,8 +29,8 @@ const onTitleChange = (title: string) => {
   store.commit(`${ns}/setTemplateTitle`, title);
 };
 
-const templateMarkdown = ref<string>('');
-const templateRichText = ref<string>('');
+const templateMarkdown = ref<string>();
+const templateRichText = ref<string>();
 onMounted(() => {
   templateMarkdown.value = state.form.template_markdown;
   templateRichText.value = state.form.template_rich_text;
@@ -89,7 +85,7 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
     />
     <div class="editor-wrapper">
       <template v-if="state.form.template_mode === 'markdown'">
-        <cl-notification-markdown-editor
+        <cl-markdown-editor
           v-model="templateMarkdown"
           :id="state.form._id"
           :rich-text-content="templateRichText"

@@ -165,18 +165,25 @@ const initEditor = async () => {
     editor?.setEditorState(editorState);
   } else if (props.markdownContent) {
     editor?.update(() => {
-      $convertFromMarkdownString(props.markdownContent, MARKDOWN_TRANSFORMERS);
+      $convertFromMarkdownString(
+        props.markdownContent || '',
+        MARKDOWN_TRANSFORMERS
+      );
     });
   }
 };
 
 useLexicalMounted(() => {
-  editor?.registerCommand(KEY_DOWN_COMMAND, onKeyDown, COMMAND_PRIORITY_LOW);
   initEditor();
+  return editor?.registerCommand(
+    KEY_DOWN_COMMAND,
+    onKeyDown,
+    COMMAND_PRIORITY_LOW
+  );
 });
 watch(modelValue, initEditor);
 
-const onContentChange = value => {
+const onContentChange = (value: string) => {
   modelValue.value = value;
 };
 

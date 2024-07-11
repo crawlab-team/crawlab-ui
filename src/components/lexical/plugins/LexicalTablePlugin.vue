@@ -18,13 +18,19 @@ import {
   TableRowNode,
   applyTableHandlers,
 } from '@lexical/table';
-import { $insertFirst, $insertNodeToNearestRoot } from '@lexical/utils';
-import type { LexicalEditor, LexicalNode, NodeKey } from 'lexical';
+import {
+  $insertFirst,
+  $insertNodeToNearestRoot,
+  mergeRegister,
+} from '@lexical/utils';
 import {
   $getNodeByKey,
   $isTextNode,
   $nodesOfType,
   COMMAND_PRIORITY_EDITOR,
+  createCommand,
+  type LexicalEditor,
+  type NodeKey,
 } from 'lexical';
 import invariant from 'tiny-invariant';
 import useMounted from '../composables/useLexicalMounted';
@@ -47,12 +53,17 @@ const props = withDefaults(
 
 const startX = ref(0);
 const startWidth = ref(0);
+const endWidth = ref(0);
 const isResizing = ref(false);
 const resetResize = () => {
   isResizing.value = false;
   startX.value = 0;
   startWidth.value = 0;
 };
+
+const SET_TABLE_CELL_WIDTH_COMMAND =
+  createCommand<SetTableHeadCellWidthPayload>('SET_TABLE_CELL_WIDTH_COMMAND');
+
 useMounted(() => {
   const { editor } = props;
 
@@ -63,22 +74,36 @@ useMounted(() => {
     );
   }
 
-  return editor.registerCommand<InsertTableCommandPayload>(
-    INSERT_TABLE_COMMAND,
-    ({ columns, rows, includeHeaders }) => {
-      const tableNode = $createTableNodeWithDimensions(
-        Number(rows),
-        Number(columns),
-        includeHeaders
-      );
-      $insertNodeToNearestRoot(tableNode);
+  return mergeRegister(
+    editor.registerCommand<InsertTableCommandPayload>(
+      INSERT_TABLE_COMMAND,
+      ({ columns, rows, includeHeaders }) => {
+        const tableNode = $createTableNodeWithDimensions(
+          Number(rows),
+          Number(columns),
+          includeHeaders
+        );
+        $insertNodeToNearestRoot(tableNode);
 
-      const firstDescendant = tableNode.getFirstDescendant();
-      if ($isTextNode(firstDescendant)) firstDescendant.select();
+        const firstDescendant = tableNode.getFirstDescendant();
+        if ($isTextNode(firstDescendant)) firstDescendant.select();
 
-      return true;
-    },
-    COMMAND_PRIORITY_EDITOR
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    ),
+    editor.registerCommand(
+      SET_TABLE_CELL_WIDTH_COMMAND,
+      ({ nodeKey, width }) => {
+        editor.update(() => {
+          const tableCellNode = $getNodeByKey<TableCellNode>(nodeKey);
+          console.debug(tableCellNode, width);
+          tableCellNode?.setWidth(width);
+        });
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    )
   );
 });
 
@@ -88,10 +113,11 @@ useMounted(() => {
   const tableSelections = new Map<NodeKey, TableObserver>();
 
   const initializeResizableTableCellNodes = (tableNode: TableNode) => {
-    const tableHeadCellNodes = tableNode
-      .getFirstChild<TableRowNode>()
-      .getChildren<TableCellNode>()
-      .filter(cell => !!$isTableCellNode(cell));
+    const tableHeadCellNodes =
+      tableNode
+        .getFirstChild<TableRowNode>()
+        ?.getChildren<TableCellNode>()
+        ?.filter(cell => !!$isTableCellNode(cell)) || [];
     const tableElement = editor.getElementByKey(tableNode.getKey());
     const thElements = tableElement?.querySelectorAll('th') || [];
     thElements.forEach((th, index) => {
@@ -129,10 +155,8 @@ useMounted(() => {
         }
         if (!isResizing.value) return;
         const newWidth = startWidth.value + (e.pageX - startX.value);
-        // th.style.width = `${newWidth}px`;
-        editor?.update(() => {
-          tableHeadCellNode.setWidth(newWidth);
-        });
+        th.style.width = `${newWidth}px`;
+        endWidth.value = newWidth;
       };
 
       const onTableCellMouseUp = () => {
@@ -141,6 +165,10 @@ useMounted(() => {
         tableElement?.removeAttribute('class');
         document.removeEventListener('mousemove', onTableCellMouseMove);
         document.removeEventListener('mouseup', onTableCellMouseUp);
+        editor.dispatchCommand(SET_TABLE_CELL_WIDTH_COMMAND, {
+          nodeKey: tableHeadCellNode.getKey(),
+          width: endWidth.value,
+        });
       };
     });
   };

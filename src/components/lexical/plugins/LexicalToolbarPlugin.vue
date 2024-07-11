@@ -214,10 +214,10 @@ const imageForm = ref<ImageForm>({
   src: '',
 });
 const insertImage = () => {
-  const { editor } = props;
-  editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-    src: imageForm.value.src,
-  });
+  // const { editor } = props;
+  // editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+  //   src: imageForm.value.src,
+  // });
 };
 
 watch(codeLanguage, value => {

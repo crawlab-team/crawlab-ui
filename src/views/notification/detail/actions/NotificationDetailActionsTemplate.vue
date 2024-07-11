@@ -9,7 +9,9 @@ const ns = 'notification';
 const store = useStore();
 const { notification: state } = store.state as RootStoreState;
 
-const templateMode = ref<NotificationTemplateMode>(state.form.template_mode);
+const templateMode = ref<NotificationTemplateMode>(
+  state.form.template_mode || 'markdown'
+);
 const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
   {
     label: t('components.notification.template.modes.markdown'),

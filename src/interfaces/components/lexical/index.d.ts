@@ -38,6 +38,11 @@ export declare global {
     includeHeaders?: InsertTableCommandPayloadHeaders;
   }
 
+  interface SetTableHeadCellWidthPayload {
+    nodeKey: NodeKey;
+    width: number;
+  }
+
   interface InsertImageCommandPayload {
     src: string;
   }
