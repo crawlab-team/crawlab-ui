@@ -52,37 +52,39 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
       :placeholder="t('views.notification.settings.form.title')"
       @input="onTitleChange"
     />
-    <template v-if="state.templateMode === 'markdown'">
-      <cl-notification-markdown-editor v-model="internalContent" />
-    </template>
-    <template v-else-if="state.templateMode === 'rich-text'">
-      <cl-lexical-editor v-model="internalContent" />
-    </template>
+    <div class="editor-wrapper">
+      <template v-if="state.templateMode === 'markdown'">
+        <cl-notification-markdown-editor v-model="internalContent" />
+      </template>
+      <template v-else-if="state.templateMode === 'rich-text'">
+        <cl-lexical-editor v-model="internalContent" />
+      </template>
+    </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-.notification-detail-tab-template {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  .editor {
-    flex: 1;
-    padding: 20px;
-  }
-}
-</style>
 <style scoped>
-.notification-detail-tab-template .title:deep(.el-input__wrapper) {
-  border: none;
-  border-radius: 0;
-  border-bottom: 1px solid var(--el-border-color-light);
-  box-shadow: none;
-  height: 45px;
-}
-
-.notification-detail-tab-template .title:deep(.el-input__inner) {
+.notification-detail-tab-template {
   height: 100%;
+
+  .title {
+    height: 45px;
+
+    &:deep(.el-input__wrapper) {
+      border: none;
+      border-radius: 0;
+      border-bottom: 1px solid var(--el-border-color-light);
+      box-shadow: none;
+    }
+
+    &:deep(.el-input__input) {
+      height: 100%;
+    }
+  }
+
+  .editor-wrapper {
+    padding: 10px 0 0;
+    height: calc(100% - 45px - 10px);
+  }
 }
 </style>

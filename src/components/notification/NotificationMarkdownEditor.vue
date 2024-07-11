@@ -51,7 +51,6 @@ defineOptions({ name: 'ClNotificationMarkdownEditor' });
   width: 100%;
 
   .editor {
-    padding: 10px 0 0;
     height: 100%;
   }
 }
