@@ -43,28 +43,29 @@ watch(
 
 const initEditor = async () => {
   if (!editorRef.value) return;
-  editor = monaco.editor.create(editorRef.value, {
-    language: 'markdown',
-    lineNumbers: 'off',
-    lineNumbersMinChars: 0,
-    lineDecorationsWidth: 0,
-    scrollBeyondLastLine: false,
-    minimap: { enabled: false },
-    automaticLayout: true,
-  });
+  if (!editor) {
+    editor = monaco.editor.create(editorRef.value, {
+      language: 'markdown',
+      lineNumbers: 'off',
+      lineNumbersMinChars: 0,
+      lineDecorationsWidth: 0,
+      scrollBeyondLastLine: false,
+      minimap: { enabled: false },
+      automaticLayout: true,
+    });
 
-  addSaveKeyMap();
+    addSaveKeyMap();
+
+    editor.onDidChangeModelContent(() => {
+      modelValue.value = editor?.getValue() || '';
+    });
+  }
 
   editor.setValue(modelValue.value || '');
-
-  editor.onDidChangeModelContent(() => {
-    modelValue.value = editor?.getValue() || '';
-  });
 };
 
-onMounted(() => {
-  initEditor();
-});
+onMounted(initEditor);
+watch(modelValue, initEditor);
 
 onBeforeUnmount(() => {
   editor?.dispose();

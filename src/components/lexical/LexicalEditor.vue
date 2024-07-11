@@ -155,11 +155,10 @@ mergeRegister(
   registerHistory(editor, createEmptyHistoryState(), 300)
 );
 
-useLexicalMounted(() => {
-  editor?.registerCommand(KEY_DOWN_COMMAND, onKeyDown, COMMAND_PRIORITY_LOW);
-
-  const editorStateJSONObject = JSON.parse(modelValue.value)?.editorState;
-  console.debug(editorStateJSONObject);
+const initEditor = async () => {
+  const editorStateJSONObject = JSON.parse(
+    modelValue.value || '{}'
+  )?.editorState;
   if (editorStateJSONObject?.root?.children?.length > 0) {
     const editorStateString = JSON.stringify(editorStateJSONObject);
     const editorState = editor?.parseEditorState(editorStateString);
@@ -169,7 +168,13 @@ useLexicalMounted(() => {
       $convertFromMarkdownString(props.markdownContent, MARKDOWN_TRANSFORMERS);
     });
   }
+};
+
+useLexicalMounted(() => {
+  editor?.registerCommand(KEY_DOWN_COMMAND, onKeyDown, COMMAND_PRIORITY_LOW);
+  initEditor();
 });
+watch(modelValue, initEditor);
 
 const onContentChange = value => {
   modelValue.value = value;
