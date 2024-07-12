@@ -191,6 +191,7 @@ defineOptions({ name: 'ClSidebar' });
 
     .logo {
       display: flex;
+      align-items: center;
       height: 100%;
 
       .logo-img {

@@ -43,8 +43,8 @@ watch<NotificationSetting>(
     if (currentForm._id !== previousForm._id) {
       templateMarkdown.value = currentForm.template_markdown;
       richTextPayload.value = {
-        richTextContent: currentForm.template_rich_text,
-        richTextContentJson: currentForm.template_rich_text_json,
+        richTextContent: currentForm.template_rich_text || '',
+        richTextContentJson: currentForm.template_rich_text_json || '',
       };
       return;
     }
@@ -58,7 +58,7 @@ watch<NotificationSetting>(
         //   template_markdown: '',
         // });
       } else if (currentForm.template_mode === 'rich-text') {
-        store.commit<NotificationSetting>(`${ns}/setForm`, {
+        store.commit(`${ns}/setForm`, {
           ...state.form,
           template_rich_text: '',
           template_rich_text_json: '',
@@ -72,19 +72,20 @@ watch<NotificationSetting>(
       templateMarkdown.value = currentForm.template_markdown;
     }
     if (currentForm.template_rich_text !== previousForm.template_rich_text) {
-      richTextPayload.value.richTextContent = currentForm.template_rich_text;
+      richTextPayload.value.richTextContent =
+        currentForm.template_rich_text || '';
     }
     if (
       currentForm.template_rich_text_json !==
       previousForm.template_rich_text_json
     ) {
       richTextPayload.value.richTextContentJson =
-        currentForm.template_rich_text_json;
+        currentForm.template_rich_text_json || '';
     }
   }
 );
 watch(templateMarkdown, value => {
-  store.commit<NotificationSetting>(`${ns}/setForm`, {
+  store.commit(`${ns}/setForm`, {
     ...state.form,
     template_markdown: value,
   });
@@ -93,7 +94,7 @@ watch(
   () => JSON.stringify(richTextPayload.value),
   () => {
     if (!richTextPayload.value) return;
-    store.commit<NotificationSetting>(`${ns}/setForm`, {
+    store.commit(`${ns}/setForm`, {
       ...state.form,
       template_rich_text: richTextPayload.value.richTextContent,
       template_rich_text_json: richTextPayload.value.richTextContentJson,
