@@ -30,44 +30,75 @@ const onTitleChange = (title: string) => {
 };
 
 const templateMarkdown = ref<string>();
-const templateRichText = ref<string>();
-const templateRichTextJson = ref<string>();
-onMounted(() => {
-  templateMarkdown.value = state.form.template_markdown;
-  templateRichText.value = state.form.template_rich_text;
-  templateRichTextJson.value = state.form.template_rich_text_json;
+const richTextPayload = ref<RichTextPayload>({
+  richTextContent: '',
+  richTextContentJson: '',
 });
 
-watch(
-  () => state.form.template_markdown,
-  value => (templateMarkdown.value = value)
-);
-watch(
-  () => state.form.template_rich_text,
-  value => (templateRichText.value = value)
-);
-watch(
-  () => state.form.template_rich_text_json,
-  value => (templateRichTextJson.value = value)
+// watch changes
+watch<NotificationSetting>(
+  () => state.form,
+  (currentForm, previousForm) => {
+    // page change
+    if (currentForm._id !== previousForm._id) {
+      templateMarkdown.value = currentForm.template_markdown;
+      richTextPayload.value = {
+        richTextContent: currentForm.template_rich_text,
+        richTextContentJson: currentForm.template_rich_text_json,
+      };
+      return;
+    }
+
+    // template mode change
+    if (currentForm.template_mode !== previousForm.template_mode) {
+      console.debug(currentForm.template_mode, previousForm.template_mode);
+      if (currentForm.template_mode === 'markdown') {
+        // store.commit<NotificationSetting>(`${ns}/setForm`, {
+        //   ...state.form,
+        //   template_markdown: '',
+        // });
+      } else if (currentForm.template_mode === 'rich-text') {
+        store.commit<NotificationSetting>(`${ns}/setForm`, {
+          ...state.form,
+          template_rich_text: '',
+          template_rich_text_json: '',
+        });
+      }
+      return;
+    }
+
+    // form values change
+    if (currentForm.template_markdown !== previousForm.template_markdown) {
+      templateMarkdown.value = currentForm.template_markdown;
+    }
+    if (currentForm.template_rich_text !== previousForm.template_rich_text) {
+      richTextPayload.value.richTextContent = currentForm.template_rich_text;
+    }
+    if (
+      currentForm.template_rich_text_json !==
+      previousForm.template_rich_text_json
+    ) {
+      richTextPayload.value.richTextContentJson =
+        currentForm.template_rich_text_json;
+    }
+  }
 );
 watch(templateMarkdown, value => {
-  store.commit(`${ns}/setForm`, {
+  store.commit<NotificationSetting>(`${ns}/setForm`, {
     ...state.form,
     template_markdown: value,
-  } as NotificationSetting);
+  });
 });
 watch(
-  () =>
-    JSON.stringify({
-      templateRichText: templateRichText.value,
-      templateRichTextJson: templateRichTextJson.value,
-    }),
+  () => JSON.stringify(richTextPayload.value),
   () => {
-    console.debug(templateRichText.value);
-    store.commit(`${ns}/setForm`, {
+    // console.debug(JSON.parse(richTextPayload.value.richTextContentJson || '{}'));
+    if (!richTextPayload.value) return;
+    console.debug(richTextPayload.value);
+    store.commit<NotificationSetting>(`${ns}/setForm`, {
       ...state.form,
-      template_rich_text: templateRichText.value,
-      template_rich_text_json: templateRichTextJson.value,
+      template_rich_text: richTextPayload.value.richTextContent,
+      template_rich_text_json: richTextPayload.value.richTextContentJson,
     } as NotificationSetting);
   }
 );
@@ -96,17 +127,16 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
         <cl-markdown-editor
           v-model="templateMarkdown"
           :id="state.form._id"
-          :rich-text-content="templateRichText"
+          :rich-text-content="state.form.template_rich_text"
           @save="onSave"
         />
       </template>
       <template v-else-if="state.form.template_mode === 'rich-text'">
         <cl-lexical-editor
-          v-model:text="templateRichText"
-          v-model:json="templateRichTextJson"
-          :id="state.form._id"
-          :markdown-content="templateMarkdown"
+          v-model="richTextPayload"
+          :markdown-content="state.form.template_markdown"
           @save="onSave"
+          @change-markdown="(value: string) => (templateMarkdown = value)"
         />
       </template>
     </div>
@@ -133,7 +163,7 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
   }
 
   .editor-wrapper {
-    padding: 10px 0 0;
+    padding: 0;
     height: calc(100% - 45px - 10px);
   }
 }

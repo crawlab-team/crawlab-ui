@@ -1,48 +1,40 @@
 <script setup lang="ts">
 import {
-  $getRoot,
-  $getSelection,
-  $insertNodes,
-  $nodesOfType,
-  COMMAND_PRIORITY_LOW,
+  COMMAND_PRIORITY_EDITOR,
+  createCommand,
   createEditor,
   CreateEditorArgs,
   EditorThemeClasses,
   KEY_DOWN_COMMAND,
-  RootNode,
 } from 'lexical';
 import type { LexicalEditor } from 'lexical';
 import { HeadingNode, QuoteNode, registerRichText } from '@lexical/rich-text';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
-import {
-  $getTableCellNodeFromLexicalNode,
-  $isTableNode,
-  TableCellNode,
-  TableNode,
-  TableRowNode,
-} from '@lexical/table';
+import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
 import { ImageNode } from '@/components/lexical/nodes/ImageNode';
 import { VariableNode } from '@/components/lexical/nodes/VariableNode';
-import { $convertFromMarkdownString } from '@lexical/markdown';
+import {
+  $convertFromMarkdownString,
+  $convertToMarkdownString,
+} from '@lexical/markdown';
 import useLexicalMounted from '@/components/lexical/composables/useLexicalMounted';
 import { MARKDOWN_TRANSFORMERS } from '@/components/lexical/utils/markdownTransformers';
-import { $generateNodesFromDOM } from '@lexical/html';
-import { watch } from 'vue';
+import { editor } from 'monaco-editor';
+import { $generateHtmlFromNodes } from '@lexical/html';
 
-const modelValue = defineModel<string>('text');
-const modelValueJson = defineModel<string>('json');
+const modelValue = defineModel<RichTextPayload>({ required: true });
 
 const props = defineProps<{
-  id?: string;
   markdownContent?: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'save'): void;
+  (e: 'change-markdown', value: string): void;
 }>();
 
 const theme: EditorThemeClasses = {
@@ -143,22 +135,15 @@ const initialEditorConfig: CreateEditorArgs = {
 let editor: LexicalEditor | null;
 editor = createEditor(initialEditorConfig);
 
-const onKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
-    console.debug(event);
-    // emit('save');
-  }
-  return false;
-};
-
 mergeRegister(
   registerRichText(editor),
   registerHistory(editor, createEmptyHistoryState(), 300)
 );
 
-const initEditor = async () => {
+const initEditorState = async () => {
+  const { richTextContentJson } = modelValue.value || {};
   const editorStateJSONObject = JSON.parse(
-    modelValueJson.value || '{}'
+    richTextContentJson || '{}'
   )?.editorState;
   if (editorStateJSONObject?.root?.children?.length > 0) {
     const editorStateString = JSON.stringify(editorStateJSONObject);
@@ -175,14 +160,56 @@ const initEditor = async () => {
 };
 
 useLexicalMounted(() => {
-  initEditor();
-  return editor?.registerCommand(
-    KEY_DOWN_COMMAND,
-    onKeyDown,
-    COMMAND_PRIORITY_LOW
+  initEditorState();
+  return mergeRegister(
+    editor?.registerCommand<KeyboardEvent>(
+      KEY_DOWN_COMMAND,
+      onKeyDown,
+      COMMAND_PRIORITY_EDITOR
+    ),
+    editor?.registerCommand(
+      UPDATE_MARKDOWN_COMMAND,
+      () => {
+        editor?.update(() => {
+          const markdown = $convertToMarkdownString(MARKDOWN_TRANSFORMERS);
+          emit('change-markdown', markdown);
+        });
+      },
+      COMMAND_PRIORITY_EDITOR
+    ),
+    editor?.registerUpdateListener(
+      ({ _, dirtyElements, dirtyLeaves, prevEditorState }) => {
+        if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
+        if (prevEditorState.isEmpty()) return;
+
+        editor?.getEditorState().read(() => {
+          const richTextContent = $generateHtmlFromNodes(editor);
+          const richTextContentJson = JSON.stringify(editor?.toJSON());
+          // console.debug(richTextContent, richTextContentJson);
+          // debugger;
+          modelValue.value.richTextContent = richTextContent;
+          modelValue.value.richTextContentJson = richTextContentJson;
+          // console.debug(modelValue.value);
+        });
+
+        // editor?.dispatchCommand(UPDATE_MARKDOWN_COMMAND, {
+        //   richTextContent: modelValue.value?.richTextContent,
+        //   richTextContentJson: modelValue.value?.richTextContentJson,
+        // });
+      }
+    )
   );
 });
-watch(modelValue, initEditor);
+
+const UPDATE_MARKDOWN_COMMAND = createCommand('UPDATE_MARKDOWN_COMMAND');
+
+const onKeyDown = (event: KeyboardEvent) => {
+  event.preventDefault();
+  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+    emit('save');
+  }
+  return false;
+};
 
 defineOptions({ name: 'ClLexicalEditor' });
 </script>
@@ -206,11 +233,6 @@ defineOptions({ name: 'ClLexicalEditor' });
       <cl-lexical-table-plugin :editor="editor" />
       <cl-lexical-image-plugin :editor="editor" />
       <cl-lexical-variable-plugin :editor="editor" />
-      <cl-lexical-on-change-plugin
-        :editor="editor"
-        @change-rich-text="(value: string) => (modelValue = value)"
-        @change-rich-text-json="(value: string) => (modelValueJson = value)"
-      />
     </div>
   </div>
 </template>

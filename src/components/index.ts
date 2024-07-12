@@ -97,7 +97,6 @@ import * as LexicalDecoratedTeleports from './lexical/plugins/LexicalDecoratedTe
 import LexicalImagePlugin from './lexical/plugins/LexicalImagePlugin.vue';
 import LexicalLinkPlugin from './lexical/plugins/LexicalLinkPlugin.vue';
 import LexicalListPlugin from './lexical/plugins/LexicalListPlugin.vue';
-import LexicalOnChangePlugin from './lexical/plugins/LexicalOnChangePlugin.vue';
 import LexicalRichTextPlugin from './lexical/plugins/LexicalRichTextPlugin.vue';
 import LexicalTablePlugin from './lexical/plugins/LexicalTablePlugin.vue';
 import LexicalToolbarPlugin from './lexical/plugins/LexicalToolbarPlugin.vue';

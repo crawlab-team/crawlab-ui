@@ -33,14 +33,6 @@ watch(
   }
 );
 
-watch(
-  () => props.richTextContent,
-  value => {
-    const markdown = turndownService.turndown(value);
-    console.debug(markdown);
-  }
-);
-
 const initEditor = async () => {
   if (!editorRef.value) return;
   if (!editor) {
@@ -61,13 +53,26 @@ const initEditor = async () => {
     });
   }
 
-  editor.setValue(modelValue.value || '');
+  let handle = setInterval(() => {
+    if (modelValue.value) {
+      editor?.setValue(modelValue.value || '');
+    } else if (props.richTextContent) {
+      const markdown = turndownService.turndown(props.richTextContent);
+      editor?.setValue(markdown);
+    } else {
+      return;
+    }
+    clearInterval(handle);
+  }, 50);
 };
 
-onMounted(initEditor);
-watch(modelValue, initEditor);
+onMounted(() => {
+  console.debug('onMounted');
+  initEditor();
+});
 
 onBeforeUnmount(() => {
+  console.debug('onBeforeUnmount');
   editor?.dispose();
 });
 
@@ -82,6 +87,7 @@ defineOptions({ name: 'ClMarkdownEditor' });
 
 <style scoped>
 .markdown-editor {
+  padding-top: 10px;
   height: 100%;
   width: 100%;
 

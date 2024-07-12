@@ -73,4 +73,11 @@ export declare global {
   interface InsertVariableCommandPayload {
     name: string;
   }
+
+  interface RichTextPayload {
+    richTextContent: string;
+    richTextContentJson: string;
+  }
+
+  type UpdateRichTextContent = RichTextPayload;
 }

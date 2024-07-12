@@ -97,7 +97,6 @@ useMounted(() => {
       ({ nodeKey, width }) => {
         editor.update(() => {
           const tableCellNode = $getNodeByKey<TableCellNode>(nodeKey);
-          console.debug(tableCellNode, width);
           tableCellNode?.setWidth(width);
         });
         return true;
@@ -106,6 +105,12 @@ useMounted(() => {
     )
   );
 });
+
+const isEdge = (e: MouseEvent) => {
+  const cell = e.target as HTMLTableCellElement;
+  const rect = cell.getBoundingClientRect();
+  return e.clientX > rect.right - 10;
+};
 
 useMounted(() => {
   const { editor } = props;
@@ -124,7 +129,11 @@ useMounted(() => {
       const tableHeadCellNode = tableHeadCellNodes[index];
 
       // head cells
-      th.addEventListener('mousedown', e => {
+      th.addEventListener('mousedown', (e: MouseEvent) => {
+        if (e.target === tableElement || !isEdge(e)) {
+          return;
+        }
+
         startX.value = e.pageX;
         startWidth.value = th.offsetWidth;
         tableElement?.setAttribute('class', 'resizing');
@@ -134,17 +143,18 @@ useMounted(() => {
 
       // body cells
       tableElement
-        ?.querySelectorAll(`td:nth-child(${index + 1})`)
+        ?.querySelectorAll<HTMLTableCellElement>(`td:nth-child(${index + 1})`)
         .forEach(td => {
-          (td as HTMLTableCellElement).addEventListener(
-            'mousedown',
-            (e: MouseEvent) => {
-              startX.value = e.pageX;
-              startWidth.value = th.offsetWidth;
-              document.addEventListener('mousemove', onTableCellMouseMove);
-              document.addEventListener('mouseup', onTableCellMouseUp);
+          td.addEventListener('mousedown', (e: MouseEvent) => {
+            if (e.target === tableElement || !isEdge(e)) {
+              return;
             }
-          );
+
+            startX.value = e.pageX;
+            startWidth.value = th.offsetWidth;
+            document.addEventListener('mousemove', onTableCellMouseMove);
+            document.addEventListener('mouseup', onTableCellMouseUp);
+          });
         });
 
       const onTableCellMouseMove = (e: MouseEvent) => {
@@ -168,6 +178,9 @@ useMounted(() => {
         editor.dispatchCommand(SET_TABLE_CELL_WIDTH_COMMAND, {
           nodeKey: tableHeadCellNode.getKey(),
           width: endWidth.value,
+        });
+        editor.update(() => {
+          initializeResizableTableCellNodes(tableNode);
         });
       };
     });
