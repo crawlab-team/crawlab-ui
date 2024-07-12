@@ -23,6 +23,7 @@ import DataSourceForm from './ds/DataSourceForm.vue';
 import DataSourceStatus from './ds/DataSourceStatus.vue';
 import DataSourceType from './ds/DataSourceType.vue';
 import useDataSource from './ds/useDataSource';
+import EditorOptionsDropdownList from './editor/EditorOptionsDropdownList.vue';
 import Empty from './empty/Empty.vue';
 import ImgEmpty from './empty/ImgEmpty.vue';
 import CreateEditEnvironmentDialog from './environment/CreateEditEnvironmentDialog.vue';
@@ -103,8 +104,10 @@ import LexicalToolbarPlugin from './lexical/plugins/LexicalToolbarPlugin.vue';
 import LexicalVariablePlugin from './lexical/plugins/LexicalVariablePlugin.vue';
 import * as autoLink from './lexical/utils/autoLink';
 import * as getSelectedNode from './lexical/utils/getSelectedNode';
+import * as markdownTransformers from './lexical/utils/markdownTransformers';
 import DetailTabList from './list/DetailTabList.vue';
 import MarkdownEditor from './markdown/MarkdownEditor.vue';
+import MarkdownEditorToolbar from './markdown/MarkdownEditorToolbar.vue';
 import NavActionBack from './nav/NavActionBack.vue';
 import NavActionButton from './nav/NavActionButton.vue';
 import NavActionFaIcon from './nav/NavActionFaIcon.vue';
@@ -209,6 +212,7 @@ export {
   DataSourceStatus as ClDataSourceStatus,
   DataSourceType as ClDataSourceType,
   useDataSource as useDataSource,
+  EditorOptionsDropdownList as ClEditorOptionsDropdownList,
   Empty as ClEmpty,
   ImgEmpty as ClImgEmpty,
   CreateEditEnvironmentDialog as ClCreateEditEnvironmentDialog,
@@ -283,15 +287,16 @@ export {
   LexicalImagePlugin as ClLexicalImagePlugin,
   LexicalLinkPlugin as ClLexicalLinkPlugin,
   LexicalListPlugin as ClLexicalListPlugin,
-  LexicalOnChangePlugin as ClLexicalOnChangePlugin,
   LexicalRichTextPlugin as ClLexicalRichTextPlugin,
   LexicalTablePlugin as ClLexicalTablePlugin,
   LexicalToolbarPlugin as ClLexicalToolbarPlugin,
   LexicalVariablePlugin as ClLexicalVariablePlugin,
   autoLink as autoLink,
   getSelectedNode as getSelectedNode,
+  markdownTransformers as markdownTransformers,
   DetailTabList as ClDetailTabList,
   MarkdownEditor as ClMarkdownEditor,
+  MarkdownEditorToolbar as ClMarkdownEditorToolbar,
   NavActionBack as ClNavActionBack,
   NavActionButton as ClNavActionButton,
   NavActionFaIcon as ClNavActionFaIcon,

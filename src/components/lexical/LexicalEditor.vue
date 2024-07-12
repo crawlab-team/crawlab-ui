@@ -25,6 +25,8 @@ import useLexicalMounted from '@/components/lexical/composables/useLexicalMounte
 import { MARKDOWN_TRANSFORMERS } from '@/components/lexical/utils/markdownTransformers';
 import { editor } from 'monaco-editor';
 import { $generateHtmlFromNodes } from '@lexical/html';
+import { watch } from 'vue';
+import { debounce } from 'lodash';
 
 const modelValue = defineModel<RichTextPayload>({ required: true });
 
@@ -135,12 +137,36 @@ const initialEditorConfig: CreateEditorArgs = {
 let editor: LexicalEditor | null;
 editor = createEditor(initialEditorConfig);
 
+const UPDATE_MARKDOWN_COMMAND = createCommand('UPDATE_MARKDOWN_COMMAND');
+const onKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault();
+    emit('save');
+  }
+  return false;
+};
+
 mergeRegister(
   registerRichText(editor),
-  registerHistory(editor, createEmptyHistoryState(), 300)
+  registerHistory(editor, createEmptyHistoryState(), 300),
+  editor?.registerCommand<KeyboardEvent>(
+    KEY_DOWN_COMMAND,
+    onKeyDown,
+    COMMAND_PRIORITY_EDITOR
+  ),
+  editor?.registerCommand(
+    UPDATE_MARKDOWN_COMMAND,
+    () => {
+      editor?.update(() => {
+        const markdown = $convertToMarkdownString(MARKDOWN_TRANSFORMERS);
+        emit('change-markdown', markdown);
+      });
+    },
+    COMMAND_PRIORITY_EDITOR
+  )
 );
 
-const initEditorState = async () => {
+const initEditorState = debounce(() => {
   const { richTextContentJson } = modelValue.value || {};
   const editorStateJSONObject = JSON.parse(
     richTextContentJson || '{}'
@@ -149,6 +175,7 @@ const initEditorState = async () => {
     const editorStateString = JSON.stringify(editorStateJSONObject);
     const editorState = editor?.parseEditorState(editorStateString);
     editor?.setEditorState(editorState);
+    updateMarkdown();
   } else if (props.markdownContent) {
     editor?.update(() => {
       $convertFromMarkdownString(
@@ -157,59 +184,33 @@ const initEditorState = async () => {
       );
     });
   }
-};
-
-useLexicalMounted(() => {
-  initEditorState();
-  return mergeRegister(
-    editor?.registerCommand<KeyboardEvent>(
-      KEY_DOWN_COMMAND,
-      onKeyDown,
-      COMMAND_PRIORITY_EDITOR
-    ),
-    editor?.registerCommand(
-      UPDATE_MARKDOWN_COMMAND,
-      () => {
-        editor?.update(() => {
-          const markdown = $convertToMarkdownString(MARKDOWN_TRANSFORMERS);
-          emit('change-markdown', markdown);
-        });
-      },
-      COMMAND_PRIORITY_EDITOR
-    ),
-    editor?.registerUpdateListener(
-      ({ _, dirtyElements, dirtyLeaves, prevEditorState }) => {
-        if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
-        if (prevEditorState.isEmpty()) return;
-
-        editor?.getEditorState().read(() => {
-          const richTextContent = $generateHtmlFromNodes(editor);
-          const richTextContentJson = JSON.stringify(editor?.toJSON());
-          // console.debug(richTextContent, richTextContentJson);
-          // debugger;
-          modelValue.value.richTextContent = richTextContent;
-          modelValue.value.richTextContentJson = richTextContentJson;
-          // console.debug(modelValue.value);
-        });
-
-        // editor?.dispatchCommand(UPDATE_MARKDOWN_COMMAND, {
-        //   richTextContent: modelValue.value?.richTextContent,
-        //   richTextContentJson: modelValue.value?.richTextContentJson,
-        // });
-      }
-    )
-  );
 });
+useLexicalMounted(initEditorState);
+watch(modelValue, initEditorState);
 
-const UPDATE_MARKDOWN_COMMAND = createCommand('UPDATE_MARKDOWN_COMMAND');
-
-const onKeyDown = (event: KeyboardEvent) => {
-  event.preventDefault();
-  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
-    emit('save');
-  }
-  return false;
+const updateMarkdown = () => {
+  editor?.dispatchCommand(UPDATE_MARKDOWN_COMMAND, {
+    richTextContent: modelValue.value?.richTextContent,
+    richTextContentJson: modelValue.value?.richTextContentJson,
+  });
 };
+
+mergeRegister(
+  editor?.registerUpdateListener(
+    ({ _, dirtyElements, dirtyLeaves, prevEditorState }) => {
+      if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
+      if (prevEditorState.isEmpty()) return;
+
+      editor?.getEditorState().read(() => {
+        const richTextContent = $generateHtmlFromNodes(editor);
+        const richTextContentJson = JSON.stringify(editor?.toJSON());
+        modelValue.value.richTextContent = richTextContent;
+        modelValue.value.richTextContentJson = richTextContentJson;
+        updateMarkdown();
+      });
+    }
+  )
+);
 
 defineOptions({ name: 'ClLexicalEditor' });
 </script>

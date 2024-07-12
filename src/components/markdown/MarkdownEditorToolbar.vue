@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+
 const props = withDefaults(
   defineProps<{
-    showHistory: boolean;
+    editor?: monaco.editor.IStandaloneCodeEditor;
+    content?: string;
   }>(),
   {
     showHistory: true,
@@ -9,6 +12,8 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
+  (e: 'undo'): void;
+  (e: 'redo'): void;
   (e: 'bold'): void;
   (e: 'italic'): void;
   (e: 'underline'): void;
@@ -16,30 +21,39 @@ const emit = defineEmits<{
   (e: 'link'): void;
 }>();
 
-defineOptions({ name: 'ClEditorToolbar' });
+const canUndo = ref(false);
+const canRedo = ref(false);
+const updateUndoRedo = () => {
+  const { editor } = props;
+  if (!editor) return false;
+  const model = editor.getModel();
+  canUndo.value = model.canUndo(model.uri);
+  canRedo.value = model.canRedo(model.uri);
+};
+watch(() => props.content, updateUndoRedo);
+
+defineOptions({ name: 'ClMarkdownEditorToolbar' });
 </script>
 
 <template>
   <div ref="toolbarRef" class="toolbar">
-    <template v-if="showHistory">
-      <button
-        :disabled="!canUndo"
-        class="toolbar-item spaced"
-        aria-label="Undo"
-        @click="editor.dispatchCommand(UNDO_COMMAND, undefined)"
-      >
-        <i class="format undo" />
-      </button>
-      <button
-        :disabled="!canRedo"
-        class="toolbar-item spaced"
-        aria-label="Redo"
-        @click="editor.dispatchCommand(REDO_COMMAND, undefined)"
-      >
-        <i class="format redo" />
-      </button>
-      <div class="divider" />
-    </template>
+    <button
+      :disabled="!canUndo"
+      class="toolbar-item spaced"
+      aria-label="Undo"
+      @click="emit('undo')"
+    >
+      <i class="format undo" />
+    </button>
+    <button
+      :disabled="!canRedo"
+      class="toolbar-item spaced"
+      aria-label="Redo"
+      @click="emit('redo')"
+    >
+      <i class="format redo" />
+    </button>
+    <div class="divider" />
     <button
       class="toolbar-item spaced"
       aria-label="Format Bold"
@@ -56,20 +70,13 @@ defineOptions({ name: 'ClEditorToolbar' });
     </button>
     <button
       class="toolbar-item spaced"
-      aria-label="Format Underline"
-      @click="emit('underline')"
-    >
-      <i class="format underline" />
-    </button>
-    <button
-      class="toolbar-item spaced"
       aria-label="Format Strikethrough"
       @click="emit('strikethrough')"
     >
       <i class="format strikethrough" />
     </button>
     <button
-      class="`toolbar-item spaced"
+      class="toolbar-item spaced"
       aria-label="Insert Link"
       @click="emit('link')"
     >

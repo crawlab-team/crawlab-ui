@@ -32,7 +32,6 @@ import FloatLinkEditor from '../components/FloatLinkEditor.vue';
 import InsertVariableDialog from '../components/InsertVariableDialog.vue';
 import InsertTableDialog from '../components/InsertTableDialog.vue';
 import InsertImageDialog from '../components/InsertImageDialog.vue';
-import { INSERT_IMAGE_COMMAND } from '@/components/lexical/nodes/ImageNode';
 import { INSERT_VARIABLE_COMMAND } from '@/components/lexical/composables/useVariableSetup';
 
 const props = defineProps<{

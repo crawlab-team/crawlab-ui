@@ -51,8 +51,8 @@ watch<NotificationSetting>(
 
     // template mode change
     if (currentForm.template_mode !== previousForm.template_mode) {
-      console.debug(currentForm.template_mode, previousForm.template_mode);
       if (currentForm.template_mode === 'markdown') {
+        console.debug();
         // store.commit<NotificationSetting>(`${ns}/setForm`, {
         //   ...state.form,
         //   template_markdown: '',
@@ -92,9 +92,7 @@ watch(templateMarkdown, value => {
 watch(
   () => JSON.stringify(richTextPayload.value),
   () => {
-    // console.debug(JSON.parse(richTextPayload.value.richTextContentJson || '{}'));
     if (!richTextPayload.value) return;
-    console.debug(richTextPayload.value);
     store.commit<NotificationSetting>(`${ns}/setForm`, {
       ...state.form,
       template_rich_text: richTextPayload.value.richTextContent,
@@ -159,6 +157,10 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
 
     &:deep(.el-input__input) {
       height: 100%;
+    }
+
+    &:deep(.el-input__inner) {
+      font-size: 16px;
     }
   }
 

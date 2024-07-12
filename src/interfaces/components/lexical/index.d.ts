@@ -22,6 +22,8 @@ export declare global {
     onClick: () => void;
   }
 
+  type EditorOption = BaseOption;
+
   interface BlockOption extends BaseOption {
     type: BlockType;
   }

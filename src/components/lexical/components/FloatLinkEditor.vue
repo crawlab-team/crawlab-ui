@@ -37,10 +37,7 @@ const formRules = ref<FormRules>({
     {
       validator: (rule, value) => {
         return matchers.some(matcher => {
-          const result = !!matcher(value);
-          // debugger;
-          console.debug(result, matcher(value), value);
-          return result;
+          return !!matcher(value);
         });
       },
       message: t('components.lexical.link.validate.urlInvalid'),
