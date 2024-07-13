@@ -9,6 +9,8 @@ interface LViewsNotification {
       title: string;
       template: string;
       templateContent: string;
+      triggerTarget: string;
+      trigger: string;
       mail: {
         smtp: {
           server: string;
@@ -32,12 +34,23 @@ interface LViewsNotification {
       mobile: string;
     };
   };
+  triggerTargets: {
+    task: string;
+    node: string;
+  };
   triggers: {
-    taskTrigger: string;
-    taskTriggerFinish: string;
-    taskTriggerError: string;
-    taskTriggerEmptyResults: string;
-    taskTriggerNever: string;
+    task: {
+      finish: string;
+      error: string;
+      emptyResults: string;
+      never: string;
+    };
+    node: {
+      statusChange: string;
+      online: string;
+      offline: string;
+      never: string;
+    };
   };
   tabs: {
     overview: string;

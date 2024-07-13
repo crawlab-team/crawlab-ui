@@ -1,4 +1,16 @@
 export declare global {
+  type NotificationTriggerTarget = 'task' | 'node';
+
+  type NotificationTrigger =
+    | 'task_finish'
+    | 'task_error'
+    | 'task_empty_results'
+    | 'task_never'
+    | 'node_status_change'
+    | 'node_online'
+    | 'node_offline'
+    | 'node_never';
+
   interface NotificationSetting extends BaseModel {
     type?: string;
     name?: string;
@@ -12,6 +24,8 @@ export declare global {
     template_rich_text?: string;
     template_rich_text_json?: string;
     task_trigger?: string;
+    trigger_target?: NotificationTriggerTarget;
+    trigger?: NotificationTrigger;
     mail?: NotificationSettingMail;
     mobile?: NotificationSettingMobile;
   }

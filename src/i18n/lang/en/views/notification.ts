@@ -19,6 +19,8 @@ const notification: LViewsNotification = {
       title: 'Title',
       template: 'Template',
       templateContent: 'Template Content',
+      triggerTarget: 'Trigger Target',
+      trigger: 'Trigger',
       mail: {
         smtp: {
           server: 'SMTP Server',
@@ -42,12 +44,23 @@ const notification: LViewsNotification = {
       mobile: 'Mobile',
     },
   },
+  triggerTargets: {
+    task: 'Task',
+    node: 'Node',
+  },
   triggers: {
-    taskTrigger: 'Task Trigger',
-    taskTriggerFinish: 'Trigger when the task finishes',
-    taskTriggerError: 'Trigger when the task fails',
-    taskTriggerEmptyResults: 'Trigger when the task has empty results',
-    taskTriggerNever: 'Never trigger',
+    task: {
+      finish: 'Trigger when the task finishes',
+      error: 'Trigger when the task fails',
+      emptyResults: 'Trigger when the task has empty results',
+      never: 'Never trigger',
+    },
+    node: {
+      statusChange: 'Trigger when the node status changes',
+      online: 'Trigger when the node comes online',
+      offline: 'Trigger when the node goes offline',
+      never: 'Never trigger',
+    },
   },
   tabs: {
     overview: 'Overview',
