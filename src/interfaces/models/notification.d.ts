@@ -6,6 +6,7 @@ export declare global {
     enabled?: boolean;
     global?: boolean;
     title?: string;
+    template?: string; // legacy template content
     template_mode?: NotificationTemplateMode;
     template_markdown?: string;
     template_rich_text?: string;

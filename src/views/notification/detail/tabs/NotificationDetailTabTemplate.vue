@@ -46,18 +46,21 @@ watch<NotificationSetting>(
         richTextContent: currentForm.template_rich_text || '',
         richTextContentJson: currentForm.template_rich_text_json || '',
       };
+
+      // compatibility with legacy template
+      if (
+        currentForm.template_mode === 'markdown' &&
+        currentForm.template &&
+        !currentForm.template_markdown
+      ) {
+        templateMarkdown.value = currentForm.template;
+      }
       return;
     }
 
     // template mode change
     if (currentForm.template_mode !== previousForm.template_mode) {
-      if (currentForm.template_mode === 'markdown') {
-        console.debug();
-        // store.commit<NotificationSetting>(`${ns}/setForm`, {
-        //   ...state.form,
-        //   template_markdown: '',
-        // });
-      } else if (currentForm.template_mode === 'rich-text') {
+      if (currentForm.template_mode === 'rich-text') {
         store.commit(`${ns}/setForm`, {
           ...state.form,
           template_rich_text: '',
@@ -125,8 +128,7 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
       <template v-if="state.form.template_mode === 'markdown'">
         <cl-markdown-editor
           v-model="templateMarkdown"
-          :id="state.form._id"
-          :rich-text-content="state.form.template_rich_text"
+          :id="activeId"
           @save="onSave"
         />
       </template>

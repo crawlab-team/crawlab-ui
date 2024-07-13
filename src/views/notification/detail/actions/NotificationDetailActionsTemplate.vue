@@ -10,7 +10,9 @@ const ns = 'notification';
 const store = useStore();
 const { notification: state } = store.state as RootStoreState;
 
-const templateMode = ref<NotificationTemplateMode>(state.form.template_mode);
+const templateMode = ref<NotificationTemplateMode | undefined>(
+  state.form.template_mode
+);
 const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
   {
     label: t('components.notification.template.modes.markdown'),
@@ -21,6 +23,7 @@ const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
     label: t('components.notification.template.modes.richText'),
     value: 'rich-text',
     icon: ['fa', 'file-word'],
+    disabled: true,
   },
 ];
 watch(
@@ -42,7 +45,12 @@ const onTemplateModeClick = async (event: MouseEvent) => {
     '.el-segmented__item'
   );
   if (!itemElement) return;
-  if (itemElement.classList.contains('is-selected')) return;
+  if (
+    new Set(itemElement.classList).intersection(
+      new Set(['is-selected', 'is-disabled'])
+    ).size > 0
+  )
+    return;
   await ElMessageBox.confirm(
     <div>
       <p>Are you sure to continue?</p>
@@ -58,7 +66,9 @@ const onTemplateModeClick = async (event: MouseEvent) => {
   const dataValueElement =
     itemElement.querySelector<HTMLElement>('.data-value');
   if (!dataValueElement) return;
-  templateMode.value = dataValueElement.getAttribute('data-value');
+  templateMode.value = dataValueElement.getAttribute(
+    'data-value'
+  ) as NotificationTemplateMode;
   store.commit(`${ns}/setForm`, {
     ...state.form,
     template_mode: templateMode.value,
@@ -79,7 +89,7 @@ defineOptions({ name: 'ClNotificationDetailActionsTemplate' });
       >
         <template #default="{ item }">
           <cl-icon :icon="item.icon" />
-          <span style="margin-left: 5px">{{ item.label }}</span>
+          <span>{{ item.label }}</span>
           <div class="data-value hidden" :data-value="item.value" />
         </template>
       </el-segmented>
@@ -91,6 +101,10 @@ defineOptions({ name: 'ClNotificationDetailActionsTemplate' });
 .nav-action-group {
   &:deep(.el-segmented) {
     margin: 0;
+  }
+
+  &:deep(.icon) {
+    margin-right: 5px;
   }
 }
 </style>

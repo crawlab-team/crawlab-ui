@@ -23,7 +23,6 @@ import {
 } from '@lexical/markdown';
 import useLexicalMounted from '@/components/lexical/composables/useLexicalMounted';
 import { MARKDOWN_TRANSFORMERS } from '@/components/lexical/utils/markdownTransformers';
-import { editor } from 'monaco-editor';
 import { $generateHtmlFromNodes } from '@lexical/html';
 import { watch } from 'vue';
 import { debounce } from 'lodash';
@@ -161,6 +160,7 @@ mergeRegister(
         const markdown = $convertToMarkdownString(MARKDOWN_TRANSFORMERS);
         emit('change-markdown', markdown);
       });
+      return false;
     },
     COMMAND_PRIORITY_EDITOR
   )
@@ -197,7 +197,7 @@ const updateMarkdown = () => {
 
 mergeRegister(
   editor?.registerUpdateListener(
-    ({ _, dirtyElements, dirtyLeaves, prevEditorState }) => {
+    ({ dirtyElements, dirtyLeaves, prevEditorState }) => {
       if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
       if (prevEditorState.isEmpty()) return;
 

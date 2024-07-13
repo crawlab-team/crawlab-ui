@@ -1,22 +1,18 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import * as monaco from 'monaco-editor';
-import TurndownService from 'turndown';
-import ClMarkdownEditorToolbar from '@/components/markdown/MarkdownEditorToolbar.vue';
 import { ElMessageBox } from 'element-plus';
+import { debounce } from 'lodash';
 
 const modelValue = defineModel<string>();
 
 const props = defineProps<{
-  id?: string;
-  richTextContent?: string;
+  id: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'save'): void;
 }>();
-
-const turndownService = new TurndownService();
 
 const editorRef = ref();
 
@@ -28,14 +24,7 @@ const addSaveKeyMap = () => {
   );
 };
 
-watch(
-  () => props.id,
-  () => {
-    editor?.setValue(modelValue.value || '');
-  }
-);
-
-const initEditor = async () => {
+const initEditor = debounce(async () => {
   if (!editorRef.value) return;
   if (!editor) {
     editor = monaco.editor.create(editorRef.value, {
@@ -58,19 +47,21 @@ const initEditor = async () => {
   let handle = setInterval(() => {
     if (modelValue.value) {
       editor?.setValue(modelValue.value || '');
-    } else if (props.richTextContent) {
-      const markdown = turndownService.turndown(props.richTextContent);
-      editor?.setValue(markdown);
     } else {
       return;
     }
     clearInterval(handle);
   }, 50);
-};
-
-onMounted(() => {
-  initEditor();
 });
+onMounted(initEditor);
+watch(
+  () => props.id,
+  () => {
+    editor?.dispose();
+    editor = null;
+    initEditor();
+  }
+);
 
 onBeforeUnmount(() => {
   editor?.dispose();
@@ -87,11 +78,14 @@ const onEdit = async (
 
   if (!editor) return;
   const model = editor.getModel();
+  if (!model) return;
   let range = editor?.getSelection();
-  if (range.isEmpty()) {
+  if (!range || range.isEmpty()) {
     const position = editor.getPosition();
+    if (!position) return;
     const wordInfo = model.getWordAtPosition(position);
-    range = new monaco.Range(
+    if (!wordInfo) return;
+    range = new monaco.Selection(
       position.lineNumber,
       wordInfo.startColumn,
       position.lineNumber,
@@ -126,8 +120,8 @@ defineOptions({ name: 'ClMarkdownEditor' });
     <cl-markdown-editor-toolbar
       :editor="editor"
       :content="modelValue"
-      @undo="editor?.trigger(editor?.getModel().uri, 'undo')"
-      @redo="editor?.trigger(editor?.getModel().uri, 'redo')"
+      @undo="editor?.trigger(editor?.getModel()?.uri.toString(), 'undo', null)"
+      @redo="editor?.trigger(editor?.getModel()?.uri.toString(), 'redo', null)"
       @bold="onEdit(value => `**${value}**`)"
       @italic="onEdit(value => `_${value}_`)"
       @strikethrough="onEdit(value => `~~${value}~~`)"

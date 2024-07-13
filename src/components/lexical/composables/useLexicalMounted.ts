@@ -3,7 +3,7 @@ import { onMounted, onUnmounted } from 'vue';
 /**
  * @internal
  */
-export default (cb: () => undefined | (() => any)) => {
+export default (cb: Function) => {
   let unregister: (() => void) | undefined;
 
   onMounted(() => {
