@@ -50,6 +50,7 @@ const common: LCommon = {
       deleteSelected: 'Are you sure to delete selected items?',
       proceed: 'Are you sure to proceed?',
       create: 'Are you sure to create?',
+      continue: 'Are you sure to continue?',
     },
   },
   message: {

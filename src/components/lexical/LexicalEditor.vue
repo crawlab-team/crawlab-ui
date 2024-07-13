@@ -171,6 +171,7 @@ const initEditorState = debounce(() => {
   const editorStateJSONObject = JSON.parse(
     richTextContentJson || '{}'
   )?.editorState;
+  console.debug(editorStateJSONObject);
   if (editorStateJSONObject?.root?.children?.length > 0) {
     const editorStateString = JSON.stringify(editorStateJSONObject);
     const editorState = editor?.parseEditorState(editorStateString);

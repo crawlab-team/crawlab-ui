@@ -39,36 +39,27 @@ watch(
   }
 );
 
-const onTemplateModeClick = async (event: MouseEvent) => {
+const onTemplateModeClick = async (
+  event: MouseEvent,
+  option: SelectOption<NotificationTemplateMode>
+) => {
   event.preventDefault();
-  const itemElement = (event.target as HTMLElement).closest<HTMLElement>(
-    '.el-segmented__item'
-  );
-  if (!itemElement) return;
-  if (
-    new Set(itemElement.classList).intersection(
-      new Set(['is-selected', 'is-disabled'])
-    ).size > 0
-  )
-    return;
+  if (option.value === templateMode.value || option.disabled) return;
   await ElMessageBox.confirm(
     <div>
-      <p>Are you sure to continue?</p>
+      <p>{t('common.messageBox.confirm.continue')}</p>
       <p>
-        <strong>NOTE: Some styles might be lost.</strong>
+        <strong>
+          {t('components.notification.template.mode.change.note')}
+        </strong>
       </p>
     </div>,
-    'Change Mode',
+    t('components.notification.template.mode.change.label'),
     {
       type: 'warning',
     }
   );
-  const dataValueElement =
-    itemElement.querySelector<HTMLElement>('.data-value');
-  if (!dataValueElement) return;
-  templateMode.value = dataValueElement.getAttribute(
-    'data-value'
-  ) as NotificationTemplateMode;
+  templateMode.value = option.value;
   store.commit(`${ns}/setForm`, {
     ...state.form,
     template_mode: templateMode.value,
@@ -82,17 +73,17 @@ defineOptions({ name: 'ClNotificationDetailActionsTemplate' });
   <cl-nav-action-group>
     <cl-nav-action-fa-icon :icon="['fa', 'file-code']" />
     <cl-nav-action-item>
-      <el-segmented
-        v-model="templateMode"
-        :options="templateModeOptions"
-        @click="onTemplateModeClick"
-      >
-        <template #default="{ item }">
-          <cl-icon :icon="item.icon" />
-          <span>{{ item.label }}</span>
-          <div class="data-value hidden" :data-value="item.value" />
-        </template>
-      </el-segmented>
+      <el-radio-group :model-value="templateMode">
+        <el-radio-button
+          v-for="op in templateModeOptions"
+          :key="op.value"
+          :value="op.value"
+          @click="(event: MouseEvent) => onTemplateModeClick(event, op)"
+        >
+          <cl-icon :icon="op.icon" />
+          <span>{{ op.label }}</span>
+        </el-radio-button>
+      </el-radio-group>
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>

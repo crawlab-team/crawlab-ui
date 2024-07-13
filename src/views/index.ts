@@ -42,6 +42,7 @@ import NodeDetailTabTasks from './node/detail/tabs/NodeDetailTabTasks.vue';
 import NodeList from './node/list/NodeList.vue';
 import useNodeList from './node/list/useNodeList';
 import NotificationDetail from './notification/detail/NotificationDetail.vue';
+import NotificationDetailActionsCommon from './notification/detail/actions/NotificationDetailActionsCommon.vue';
 import NotificationDetailActionsTemplate from './notification/detail/actions/NotificationDetailActionsTemplate.vue';
 import NotificationDetailTabOverview from './notification/detail/tabs/NotificationDetailTabOverview.vue';
 import NotificationDetailTabTemplate from './notification/detail/tabs/NotificationDetailTabTemplate.vue';
@@ -139,6 +140,7 @@ export {
   NodeList as ClNodeList,
   useNodeList as useNodeList,
   NotificationDetail as ClNotificationDetail,
+  NotificationDetailActionsCommon as ClNotificationDetailActionsCommon,
   NotificationDetailActionsTemplate as ClNotificationDetailActionsTemplate,
   NotificationDetailTabOverview as ClNotificationDetailTabOverview,
   NotificationDetailTabTemplate as ClNotificationDetailTabTemplate,

@@ -5,5 +5,7 @@ export declare global {
     icon?: Icon;
     disabled?: boolean;
     children?: SelectOption[];
+
+    [key: string]: any;
   }
 }

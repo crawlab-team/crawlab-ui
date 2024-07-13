@@ -1,7 +1,8 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
+import { ElMessageBox } from 'element-plus';
 
 const ns = 'notification';
 const store = useStore();
@@ -72,6 +73,27 @@ watch<NotificationSetting>(
   }
 );
 
+const onTriggerTargetClick = async (
+  event: MouseEvent,
+  target: NotificationTriggerTarget
+) => {
+  event.stopPropagation();
+  if (target === triggerTarget.value) return;
+  await ElMessageBox.confirm(
+    <div>
+      <p>Are you sure to continue?</p>
+      <p>
+        <strong>NOTE: Some variables might be unavailable.</strong>
+      </p>
+    </div>,
+    'Change Trigger Target',
+    {
+      type: 'warning',
+    }
+  );
+  triggerTarget.value = target;
+};
+
 defineOptions({ name: 'ClNotificationDetailTabTriggers' });
 </script>
 
@@ -81,44 +103,60 @@ defineOptions({ name: 'ClNotificationDetailTabTriggers' });
       <el-form-item
         :label="t('views.notification.settings.form.triggerTarget')"
       >
-        <el-radio-group v-model="triggerTarget">
-          <el-radio value="task">
+        <el-radio-group :model-value="triggerTarget">
+          <el-radio-button
+            value="task"
+            @click="(event: MouseEvent) => onTriggerTargetClick(event, 'task')"
+          >
+            <cl-icon :icon="['fa', 'tasks']" />
             {{ t('views.notification.triggerTargets.task') }}
-          </el-radio>
-          <el-radio value="node">
+          </el-radio-button>
+          <el-radio-button
+            value="node"
+            @click="(event: MouseEvent) => onTriggerTargetClick(event, 'node')"
+          >
+            <cl-icon :icon="['fa', 'server']" />
             {{ t('views.notification.triggerTargets.node') }}
-          </el-radio>
+          </el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item :label="t('views.notification.settings.form.trigger')">
         <el-radio-group v-model="trigger">
           <template v-if="triggerTarget === 'task'">
-            <el-radio value="task_finish">
+            <el-radio-button value="task_finish">
+              <cl-icon :icon="['fa', 'check-circle']" />
               {{ t('views.notification.triggers.task.finish') }}
-            </el-radio>
-            <el-radio value="task_error">
+            </el-radio-button>
+            <el-radio-button value="task_error">
+              <cl-icon :icon="['fa', 'times-circle']" />
               {{ t('views.notification.triggers.task.error') }}
-            </el-radio>
-            <el-radio value="task_empty_results">
+            </el-radio-button>
+            <el-radio-button value="task_empty_results">
+              <cl-icon :icon="['fa', 'exclamation-circle']" />
               {{ t('views.notification.triggers.task.emptyResults') }}
-            </el-radio>
-            <el-radio value="task_never">
+            </el-radio-button>
+            <el-radio-button value="task_never">
+              <cl-icon :icon="['fa', 'ban']" />
               {{ t('views.notification.triggers.task.never') }}
-            </el-radio>
+            </el-radio-button>
           </template>
           <template v-else-if="triggerTarget === 'node'">
-            <el-radio value="node_status_change">
+            <el-radio-button value="node_status_change">
+              <cl-icon :icon="['fa', 'exchange-alt']" />
               {{ t('views.notification.triggers.node.statusChange') }}
-            </el-radio>
-            <el-radio value="node_online">
+            </el-radio-button>
+            <el-radio-button value="node_online">
+              <cl-icon :icon="['fa', 'check-circle']" />
               {{ t('views.notification.triggers.node.online') }}
-            </el-radio>
-            <el-radio value="node_offline">
+            </el-radio-button>
+            <el-radio-button value="node_offline">
+              <cl-icon :icon="['fa', 'times-circle']" />
               {{ t('views.notification.triggers.node.offline') }}
-            </el-radio>
-            <el-radio value="node_never">
+            </el-radio-button>
+            <el-radio-button value="node_never">
+              <cl-icon :icon="['fa', 'ban']" />
               {{ t('views.notification.triggers.node.never') }}
-            </el-radio>
+            </el-radio-button>
           </template>
         </el-radio-group>
       </el-form-item>

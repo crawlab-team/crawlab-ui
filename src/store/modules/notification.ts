@@ -42,7 +42,6 @@ const state = {
   },
   tabs: [
     { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
-    { id: TAB_NAME_TRIGGERS, title: t('common.tabs.triggers') },
     { id: TAB_NAME_TEMPLATE, title: t('common.tabs.template') },
   ],
   triggersList: [],

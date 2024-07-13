@@ -1,15 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
-import {
-  TAB_NAME_OVERVIEW,
-  TAB_NAME_TRIGGERS,
-  TAB_NAME_TEMPLATE,
-} from '@/constants';
+import { TAB_NAME_OVERVIEW, TAB_NAME_TEMPLATE } from '@/constants';
 import {
   ClNotificationDetail,
   ClNotificationDetailTabOverview,
   ClNotificationDetailTabTemplate,
-  // ClNotificationDetailTabTemplateLegacy,
-  ClNotificationDetailTabTriggers,
   ClNotificationList,
 } from '@/views';
 
@@ -34,13 +28,8 @@ export default [
         component: async () => ClNotificationDetailTabOverview,
       },
       {
-        path: TAB_NAME_TRIGGERS,
-        component: async () => ClNotificationDetailTabTriggers,
-      },
-      {
         path: TAB_NAME_TEMPLATE,
         component: async () => ClNotificationDetailTabTemplate,
-        // component: async () => ClNotificationDetailTabTemplateLegacy,
       },
     ],
   },

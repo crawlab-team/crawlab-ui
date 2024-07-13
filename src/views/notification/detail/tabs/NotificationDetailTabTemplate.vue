@@ -35,6 +35,7 @@ const richTextPayload = ref<RichTextPayload>({
   richTextContentJson: '',
 });
 onMounted(() => {
+  console.debug(state.form);
   templateMarkdown.value = state.form.template_markdown;
   richTextPayload.value = {
     richTextContent: state.form.template_rich_text || '',
@@ -51,20 +52,6 @@ watch<NotificationSetting>(
         richTextContent: currentForm.template_rich_text || '',
         richTextContentJson: currentForm.template_rich_text_json || '',
       };
-
-      // compatibility with legacy template
-      if (
-        currentForm.template_mode === 'markdown' &&
-        currentForm.template &&
-        !currentForm.template_markdown
-      ) {
-        templateMarkdown.value = currentForm.template;
-        store.commit(`${ns}/setForm`, {
-          ...state.form,
-          template_markdown: templateMarkdown.value,
-          template: undefined,
-        });
-      }
       return;
     }
 

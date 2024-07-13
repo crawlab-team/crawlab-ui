@@ -63,6 +63,7 @@ export declare global {
         deleteSelected: string;
         proceed: string;
         create: string;
+        continue: string;
       };
     };
     message: {
