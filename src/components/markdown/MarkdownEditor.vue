@@ -45,11 +45,8 @@ const initEditor = debounce(async () => {
   }
 
   let handle = setInterval(() => {
-    if (modelValue.value) {
-      editor?.setValue(modelValue.value || '');
-    } else {
-      return;
-    }
+    if (!modelValue.value) return;
+    editor?.setValue(modelValue.value || '');
     clearInterval(handle);
   }, 50);
 });
