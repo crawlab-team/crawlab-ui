@@ -1,5 +1,7 @@
 import {
   $applyNodeReplacement,
+  $getSelection,
+  $isRangeSelection,
   DecoratorNode,
   DOMConversionMap,
   DOMExportOutput,
@@ -7,6 +9,7 @@ import {
   ElementNode,
   LexicalEditor,
   LexicalNode,
+  RangeSelection,
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
@@ -61,21 +64,13 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   exportJSON(): SerializedVariableNode {
     return {
       name: this.__name,
+      type: VariableNode.getType(),
     };
   }
 
   createDOM(config: EditorConfig): HTMLElement {
     const currentElement = document.createElement('span');
     currentElement.classList.add('variable');
-    currentElement.addEventListener('click', () => {
-      currentElement.classList.toggle('active');
-      document
-        .querySelectorAll('.editor-container .variable')
-        .forEach(element => {
-          if (currentElement === element) return;
-          element.classList.remove('active');
-        });
-    });
     return currentElement;
   }
 
@@ -84,7 +79,10 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   }
 
   decorate(): JSX.Element {
-    return `\$${this.__name}`;
+    const backgroundColor = this.isSelected($getSelection())
+      ? 'lightblue'
+      : 'transparent';
+    return <span style={{ backgroundColor }}>${this.__name}</span>;
   }
 
   getName(): string {
@@ -100,11 +98,4 @@ export function $isVariableNode(
   node: LexicalNode | null | undefined
 ): node is VariableNode {
   return node instanceof VariableNode;
-}
-
-export function $findVariableNode(
-  node: ElementNode | null | undefined
-): VariableNode | null {
-  if (!node?.getChildren) return null;
-  return node.getChildren().find($isVariableNode);
 }

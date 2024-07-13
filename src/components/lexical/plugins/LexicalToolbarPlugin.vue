@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import {
-  type LexicalEditor,
   $getNodeByKey,
   $getSelection,
+  $createParagraphNode,
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
   FORMAT_ELEMENT_COMMAND,
@@ -11,8 +11,10 @@ import {
   REDO_COMMAND,
   SELECTION_CHANGE_COMMAND,
   UNDO_COMMAND,
-  RangeSelection,
-  $createParagraphNode,
+  type LexicalEditor,
+  type RangeSelection,
+  type NodeSelection,
+  $isNodeSelection,
 } from 'lexical';
 import { $isParentElementRTL } from '@lexical/selection';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
@@ -24,7 +26,7 @@ import { TOGGLE_LINK_COMMAND } from '@lexical/link';
 import {
   $isTableSelection,
   INSERT_TABLE_COMMAND,
-  TableSelection,
+  type TableSelection,
 } from '@lexical/table';
 import BlockOptionsDropdownList from '../components/BlockOptionsDropdownList.vue';
 import InsertOptionsDropdownList from '../components/InsertOptionsDropdownList.vue';
@@ -95,8 +97,15 @@ const showInsertImageDialog = ref(false);
 
 const updateToolbar = () => {
   const { editor } = props;
-  const selection = $getSelection() as RangeSelection | TableSelection;
-  if (!selection) return;
+  const selection = $getSelection() as
+    | RangeSelection
+    | TableSelection
+    | NodeSelection;
+
+  if (!selection || $isNodeSelection(selection)) {
+    return;
+  }
+
   const anchorNode = selection.anchor.getNode();
   const focusNode = selection.focus.getNode();
   const element =
@@ -354,7 +363,7 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
       @click="showInsertOptionsDropdown = !showInsertOptionsDropdown"
     >
       <span class="icon plus" />
-      <span class="text">Insert</span>
+      <span class="text">{{ t('components.editor.actions.insert') }}</span>
       <i class="chevron-down" />
     </button>
     <Teleport to="body">

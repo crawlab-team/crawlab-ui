@@ -171,7 +171,6 @@ const initEditorState = debounce(() => {
   const editorStateJSONObject = JSON.parse(
     richTextContentJson || '{}'
   )?.editorState;
-  console.debug(editorStateJSONObject);
   if (editorStateJSONObject?.root?.children?.length > 0) {
     const editorStateString = JSON.stringify(editorStateJSONObject);
     const editorState = editor?.parseEditorState(editorStateString);
@@ -312,8 +311,6 @@ defineOptions({ name: 'ClLexicalEditor' });
       }
 
       &:deep(.variable) {
-        padding: 3px;
-        margin: 0 5px;
         color: var(--cl-warning-color);
         text-decoration: underline;
         font-style: italic;

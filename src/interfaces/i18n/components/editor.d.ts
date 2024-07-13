@@ -5,6 +5,9 @@ interface LComponentsEditor {
     image: string;
     variable: string;
   };
+  actions: {
+    insert: string;
+  };
   toolbar: {
     history: {
       undo: string;

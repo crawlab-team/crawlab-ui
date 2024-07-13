@@ -35,7 +35,6 @@ const richTextPayload = ref<RichTextPayload>({
   richTextContentJson: '',
 });
 onMounted(() => {
-  console.debug(state.form);
   templateMarkdown.value = state.form.template_markdown;
   richTextPayload.value = {
     richTextContent: state.form.template_rich_text || '',
@@ -102,6 +101,14 @@ watch(
   }
 );
 
+const onTitleKeydown = (event: KeyboardEvent) => {
+  // ctrl/cmd + s
+  if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+    event.preventDefault();
+    onSave();
+  }
+};
+
 const onSave = async () => {
   await store.dispatch(`${ns}/updateById`, {
     id: activeId.value,
@@ -120,7 +127,14 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
       class="title"
       :placeholder="t('views.notification.settings.form.title')"
       @input="onTitleChange"
-    />
+      @keydown="onTitleKeydown"
+    >
+      <template #prefix>
+        <el-tooltip :content="t('views.notification.settings.form.title')">
+          <cl-icon :icon="['fa', 'heading']" />
+        </el-tooltip>
+      </template>
+    </el-input>
     <div class="editor-wrapper">
       <template v-if="state.form.template_mode === 'markdown'">
         <cl-markdown-editor

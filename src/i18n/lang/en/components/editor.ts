@@ -5,6 +5,9 @@ const editor: LComponentsEditor = {
     image: 'Image',
     variable: 'Variable',
   },
+  actions: {
+    insert: 'Insert',
+  },
   toolbar: {
     history: {
       undo: 'Undo',

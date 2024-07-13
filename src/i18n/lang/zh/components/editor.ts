@@ -5,6 +5,9 @@ const editor: LComponentsEditor = {
     image: '图片',
     variable: '变量',
   },
+  actions: {
+    insert: '插入',
+  },
   toolbar: {
     history: {
       undo: '撤销',
