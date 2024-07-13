@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { ClickOutside as vClickOutside } from 'element-plus';
 import { LexicalEditor } from 'lexical';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   visible?: boolean;
@@ -16,6 +17,8 @@ const emit = defineEmits<{
   (e: 'insertTable'): void;
   (e: 'insertImage'): void;
 }>();
+
+const t = translate;
 
 const dropDownRef = ref<HTMLDivElement | null>(null);
 
@@ -65,12 +68,21 @@ const insertImage = () => {
 const options: InsertOption[] = [
   {
     type: 'variable',
-    label: 'Variable',
+    label: t('components.editor.models.variable'),
     onClick: insertVariable,
     icon: ['fa', 'dollar'],
   },
-  { type: 'table', label: 'Table', onClick: insertTable },
-  { type: 'image', label: 'Image', onClick: insertImage, disabled: true },
+  {
+    type: 'table',
+    label: t('components.editor.models.table'),
+    onClick: insertTable,
+  },
+  {
+    type: 'image',
+    label: t('components.editor.models.image'),
+    onClick: insertImage,
+    disabled: true,
+  },
 ];
 
 const onClickOutside = (event: Event) => {

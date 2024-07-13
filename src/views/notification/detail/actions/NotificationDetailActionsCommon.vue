@@ -3,7 +3,6 @@ import { computed, ref, watch } from 'vue';
 import { ElMessageBox } from 'element-plus';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
-import ClIcon from '@/components/icon/Icon.vue';
 
 const t = translate;
 

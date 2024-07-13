@@ -33,10 +33,13 @@ import InsertVariableDialog from '../components/InsertVariableDialog.vue';
 import InsertTableDialog from '../components/InsertTableDialog.vue';
 import InsertImageDialog from '../components/InsertImageDialog.vue';
 import { INSERT_VARIABLE_COMMAND } from '@/components/lexical/composables/useVariableSetup';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   editor: LexicalEditor;
 }>();
+
+const t = translate;
 
 const LowPriority = 1;
 
@@ -52,16 +55,16 @@ const supportedBlockTypes = new Set([
 ]);
 
 const blockTypeToBlockName = {
-  code: 'Code Block',
-  h1: 'Large Heading',
-  h2: 'Small Heading',
-  h3: 'Heading',
-  h4: 'Heading',
-  h5: 'Heading',
-  ol: 'Numbered List',
-  paragraph: 'Normal',
-  quote: 'Quote',
-  ul: 'Bulleted List',
+  code: t('components.editor.toolbar.block.code'),
+  h1: t('components.editor.toolbar.block.h1'),
+  h2: t('components.editor.toolbar.block.h2'),
+  h3: t('components.editor.toolbar.block.h3'),
+  h4: t('components.editor.toolbar.block.h4'),
+  h5: t('components.editor.toolbar.block.h5'),
+  ol: t('components.editor.toolbar.block.ol'),
+  ul: t('components.editor.toolbar.block.ul'),
+  paragraph: t('components.editor.toolbar.block.paragraph'),
+  quote: t('components.editor.toolbar.block.quote'),
 };
 
 const toolbarRef = ref<HTMLDivElement | null>(null);
@@ -281,28 +284,24 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     </template>
     <button
       :class="`toolbar-item spaced ${isBold ? 'active' : ''}`"
-      aria-label="Format Bold"
       @click="editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')"
     >
       <i class="format bold" />
     </button>
     <button
       :class="`toolbar-item spaced ${isItalic ? 'active' : ''}`"
-      aria-label="Format Italics"
       @click="editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')"
     >
       <i class="format italic" />
     </button>
     <button
       :class="`toolbar-item spaced ${isUnderline ? 'active' : ''}`"
-      aria-label="Format Underline"
       @click="editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')"
     >
       <i class="format underline" />
     </button>
     <button
       :class="`toolbar-item spaced ${isStrikethrough ? 'active' : ''}`"
-      aria-label="Format Strikethrough"
       @click="editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')"
     >
       <i class="format strikethrough" />
@@ -310,14 +309,12 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     <button
       v-if="false"
       :class="`toolbar-item spaced ${isCode ? 'active' : ''}`"
-      aria-label="Insert Code"
       @click="editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')"
     >
       <i class="format code" />
     </button>
     <button
       :class="`toolbar-item spaced ${isLink ? 'active' : ''}`"
-      aria-label="Insert Link"
       @click="insertLink"
     >
       <i class="format link" />
@@ -328,28 +325,24 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     <div class="divider" />
     <button
       :class="`toolbar-item spaced ${isLeft ? 'active' : ''}`"
-      aria-label="Left Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')"
     >
       <i class="format left-align" />
     </button>
     <button
       :class="`toolbar-item spaced ${isCenter ? 'active' : ''}`"
-      aria-label="Center Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')"
     >
       <i class="format center-align" />
     </button>
     <button
       :class="`toolbar-item spaced ${isRight ? 'active' : ''}`"
-      aria-label="Right Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')"
     >
       <i class="format right-align" />
     </button>
     <button
       :class="`toolbar-item spaced ${isJustify ? 'active' : ''}`"
-      aria-label="Justify Align"
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')"
     >
       <i class="format justify-align" />
@@ -358,7 +351,6 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     <button
       ref="insertButtonRef"
       class="toolbar-item insert-controls"
-      aria-label="Insert Options"
       @click="showInsertOptionsDropdown = !showInsertOptionsDropdown"
     >
       <span class="icon plus" />

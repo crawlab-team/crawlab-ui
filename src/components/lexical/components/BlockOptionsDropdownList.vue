@@ -15,6 +15,7 @@ import {
 import { $wrapNodes } from '@lexical/selection';
 import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
 import { $createCodeNode } from '@lexical/code';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   visible?: boolean;
@@ -27,6 +28,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'hide'): void;
 }>();
+
+const t = translate;
 
 const dropDownRef = ref<HTMLDivElement | null>(null);
 
@@ -161,14 +164,46 @@ const formatCode = () => {
 };
 
 const options: BlockOption[] = [
-  { type: 'paragraph', label: 'Normal', onClick: formatParagraph },
-  { type: 'h1', label: 'Heading 1', onClick: formatH1 },
-  { type: 'h2', label: 'Heading 2', onClick: formatH2 },
-  { type: 'h3', label: 'Heading 3', onClick: formatH3 },
-  { type: 'ul', label: 'Bullet List', onClick: formatBulletList },
-  { type: 'ol', label: 'Numbered List', onClick: formatNumberedList },
-  { type: 'quote', label: 'Quote', onClick: formatQuote },
-  { type: 'code', label: 'Code Block', onClick: formatCode },
+  {
+    type: 'paragraph',
+    label: t('components.editor.toolbar.block.paragraph'),
+    onClick: formatParagraph,
+  },
+  {
+    type: 'h1',
+    label: t('components.editor.toolbar.block.h1'),
+    onClick: formatH1,
+  },
+  {
+    type: 'h2',
+    label: t('components.editor.toolbar.block.h2'),
+    onClick: formatH2,
+  },
+  {
+    type: 'h3',
+    label: t('components.editor.toolbar.block.h3'),
+    onClick: formatH3,
+  },
+  {
+    type: 'ul',
+    label: t('components.editor.toolbar.block.ul'),
+    onClick: formatBulletList,
+  },
+  {
+    type: 'ol',
+    label: t('components.editor.toolbar.block.ol'),
+    onClick: formatNumberedList,
+  },
+  {
+    type: 'quote',
+    label: t('components.editor.toolbar.block.quote'),
+    onClick: formatQuote,
+  },
+  {
+    type: 'code',
+    label: t('components.editor.toolbar.block.code'),
+    onClick: formatCode,
+  },
 ];
 
 const onClickOutside = (event: Event) => {

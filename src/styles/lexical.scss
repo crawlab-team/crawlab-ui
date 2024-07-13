@@ -258,7 +258,7 @@
   border-radius: 10px;
   padding: 8px;
   cursor: pointer;
-  vertical-align: middle;
+  align-items: center;
 }
 
 .toolbar button.toolbar-item:disabled {
@@ -336,10 +336,12 @@
 
 .toolbar .toolbar-item .icon {
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
   user-select: none;
-  margin-right: 8px;
+  margin-right: 5px;
   line-height: 16px;
   background-size: contain;
 }
@@ -484,8 +486,10 @@ i.chevron-down {
   flex-grow: 1;
 }
 
-.dropdown .item .icon {
-  display: flex;
+.dropdown .item .icon:not(svg) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
   user-select: none;

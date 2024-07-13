@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
@@ -21,6 +23,8 @@ const emit = defineEmits<{
   (e: 'link'): void;
 }>();
 
+const t = translate;
+
 const canUndo = ref(false);
 const canRedo = ref(false);
 const updateUndoRedo = () => {
@@ -40,7 +44,6 @@ defineOptions({ name: 'ClMarkdownEditorToolbar' });
     <button
       :disabled="!canUndo"
       class="toolbar-item spaced"
-      aria-label="Undo"
       @click="emit('undo')"
     >
       <i class="format undo" />
@@ -48,42 +51,47 @@ defineOptions({ name: 'ClMarkdownEditorToolbar' });
     <button
       :disabled="!canRedo"
       class="toolbar-item spaced"
-      aria-label="Redo"
       @click="emit('redo')"
     >
       <i class="format redo" />
     </button>
     <div class="divider" />
-    <button
-      class="toolbar-item spaced"
-      aria-label="Format Bold"
-      @click="emit('bold')"
-    >
+    <button class="toolbar-item spaced" @click="emit('bold')">
       <i class="format bold" />
     </button>
-    <button
-      class="toolbar-item spaced"
-      aria-label="Format Italics"
-      @click="emit('italic')"
-    >
+    <button class="toolbar-item spaced" @click="emit('italic')">
       <i class="format italic" />
     </button>
-    <button
-      class="toolbar-item spaced"
-      aria-label="Format Strikethrough"
-      @click="emit('strikethrough')"
-    >
+    <button class="toolbar-item spaced" @click="emit('strikethrough')">
       <i class="format strikethrough" />
     </button>
-    <button
-      class="toolbar-item spaced"
-      aria-label="Insert Link"
-      @click="emit('link')"
-    >
+    <button class="toolbar-item spaced" @click="emit('link')">
       <i class="format link" />
     </button>
     <div class="divider" />
+    <button
+      class="toolbar-item spaced"
+      aria-label="Insert Variable"
+      @click="emit('variable')"
+    >
+      <span class="icon">
+        <font-awesome-icon :icon="['fa', 'dollar']" style="font-size: 14px" />
+      </span>
+      <span class="text">
+        {{ t('components.editor.toolbar.insert.variable') }}
+      </span>
+    </button>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped>
+.toolbar {
+  button {
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+</style>

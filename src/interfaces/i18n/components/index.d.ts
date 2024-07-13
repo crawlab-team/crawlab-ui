@@ -19,6 +19,7 @@ export declare global {
     ds: LComponentsDataSource;
     environment: LComponentsEnvironment;
     notification: LComponentsNotification;
+    editor: LComponentsEditor;
 
     // model-related components
     node: LComponentsNode;

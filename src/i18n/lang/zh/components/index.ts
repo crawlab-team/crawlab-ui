@@ -14,6 +14,7 @@ import metric from './metric';
 import export_ from './export';
 import result from './result';
 import notification from './notification';
+import editor from './editor';
 
 import node from './node';
 import project from './project';
@@ -43,6 +44,7 @@ const components: LComponents = {
   export: export_,
   result,
   notification,
+  editor,
 
   node,
   project,

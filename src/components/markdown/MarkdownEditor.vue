@@ -18,6 +18,35 @@ const editorRef = ref();
 
 let editor: monaco.editor.IStandaloneCodeEditor | null = null;
 
+const initMarkdown = async () => {
+  // 获取现有的 Markdown 配置
+  const markdown = monaco.languages
+    .getLanguages()
+    .find(lang => lang.id === 'markdown');
+  if (markdown) {
+    const { language } = await markdown.loader();
+    language.tokenizer.root.push(
+      [/\$\{[^}]+}/, 'variable'],
+      [/\$[a-zA-Z_]\w*/, 'variable']
+    );
+  }
+
+  // 定义新的配色方案
+  monaco.editor.defineTheme('default', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      {
+        token: 'variable',
+        foreground: 'E6A23C',
+        fontStyle: 'italic',
+      },
+    ],
+    colors: {},
+  });
+  monaco.editor.setTheme('default');
+};
+
 const addSaveKeyMap = () => {
   editor?.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () =>
     emit('save')
@@ -27,6 +56,8 @@ const addSaveKeyMap = () => {
 const initEditor = debounce(async () => {
   if (!editorRef.value) return;
   if (!editor) {
+    await initMarkdown();
+
     editor = monaco.editor.create(editorRef.value, {
       language: 'markdown',
       lineNumbers: 'off',
