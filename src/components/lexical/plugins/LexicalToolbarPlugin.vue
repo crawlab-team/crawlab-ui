@@ -194,11 +194,13 @@ const insertLink = () => {
 };
 
 const variableForm = ref<VariableForm>({
+  category: 'task',
   name: '',
 });
 const insertVariable = () => {
   const { editor } = props;
   editor.dispatchCommand(INSERT_VARIABLE_COMMAND, {
+    category: variableForm.value.category,
     name: variableForm.value.name,
   });
 };
@@ -381,12 +383,7 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
       <InsertVariableDialog
         :visible="showInsertVariableDialog"
         v-model="variableForm"
-        @close="
-          () => {
-            showInsertVariableDialog = false;
-            variableForm.name = '';
-          }
-        "
+        @close="showInsertVariableDialog = false"
         @confirm="
           () => {
             insertVariable();

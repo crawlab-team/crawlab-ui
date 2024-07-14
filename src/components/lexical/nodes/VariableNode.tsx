@@ -1,32 +1,44 @@
+import { DefineComponent, h } from 'vue';
+import { JSX } from 'vue/jsx-runtime';
+import { ElTooltip } from 'element-plus';
 import {
   $applyNodeReplacement,
-  $getSelection,
-  $isRangeSelection,
   DecoratorNode,
-  DOMConversionMap,
   DOMExportOutput,
   EditorConfig,
-  ElementNode,
   LexicalEditor,
   LexicalNode,
-  RangeSelection,
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
-import { JSX } from 'vue/jsx-runtime';
+import { translate } from '@/utils';
+import { isValidVariable } from '@/utils/notification';
+
+const t = translate;
 
 export type SerializedVariableNode = Spread<
   {
+    category?: NotificationVariableCategory;
     name: string;
   },
   SerializedLexicalNode
 >;
 
 export class VariableNode extends DecoratorNode<JSX.Element> {
+  __category?: NotificationVariableCategory;
   __name: string;
 
-  constructor(name: string, key?: string) {
+  constructor({
+    category,
+    name,
+    key,
+  }: {
+    category?: NotificationVariableCategory;
+    name: string;
+    key?: string;
+  }) {
     super(key);
+    this.__category = category;
     this.__name = name;
   }
 
@@ -35,40 +47,35 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   }
 
   static clone(node: VariableNode): VariableNode {
-    return new VariableNode(node.__name, node.__key);
+    return new VariableNode({
+      category: node.__category,
+      name: node.__name,
+      key: node.__key,
+    });
   }
 
   static importJSON(serializedNode: SerializedVariableNode): VariableNode {
-    const { name } = serializedNode;
-    return $createVariableNode(name);
+    const { category, name } = serializedNode;
+    return $createVariableNode({ category, name });
   }
 
-  exportDOM(editor: LexicalEditor): DOMExportOutput {
+  exportDOM(_: LexicalEditor): DOMExportOutput {
     const element = document.createElement('span');
     element.classList.add('variable');
     element.innerText = this.__name;
     return { element };
   }
 
-  static importDOM(): DOMConversionMap | null {
-    return {
-      span: element => {
-        if (element.classList.contains('variable')) {
-          return $createVariableNode(this.__name);
-        }
-        return null;
-      },
-    };
-  }
-
   exportJSON(): SerializedVariableNode {
     return {
+      category: this.__category,
       name: this.__name,
       type: VariableNode.getType(),
+      version: 1,
     };
   }
 
-  createDOM(config: EditorConfig): HTMLElement {
+  createDOM(_: EditorConfig): HTMLElement {
     const currentElement = document.createElement('span');
     currentElement.classList.add('variable');
     return currentElement;
@@ -79,10 +86,34 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   }
 
   decorate(): JSX.Element {
-    const backgroundColor = this.isSelected($getSelection())
-      ? 'lightblue'
-      : 'transparent';
-    return <span style={{ backgroundColor }}>${this.__name}</span>;
+    const isValid = isValidVariable({
+      category: this.__category,
+      name: this.__name,
+    });
+    const tooltip = isValid ? (
+      <span>
+        {t(`components.notification.variableCategories.${this.__category}`)}:
+        {t(
+          `components.notification.variables.${this.__category}.${this.__name}`
+        )}
+      </span>
+    ) : (
+      t('components.notification.variables.invalid')
+    );
+    const color = isValid
+      ? 'var(--cl-warning-color)'
+      : 'var(--cl-danger-color)';
+    const label = this.__category
+      ? `$${this.__category}:${this.__name}`
+      : `$${this.__name}`;
+    return h(ElTooltip, null, {
+      default: <span style={{ color }}>{label}</span>,
+      content: tooltip,
+    });
+  }
+
+  getCategory(): string {
+    return this.__name;
   }
 
   getName(): string {
@@ -90,8 +121,14 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   }
 }
 
-export function $createVariableNode(name: string): VariableNode {
-  return $applyNodeReplacement(new VariableNode(name));
+export function $createVariableNode({
+  category,
+  name,
+}: {
+  category?: NotificationVariableCategory;
+  name: string;
+}): VariableNode {
+  return $applyNodeReplacement(new VariableNode({ category, name }));
 }
 
 export function $isVariableNode(

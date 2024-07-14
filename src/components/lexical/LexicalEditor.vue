@@ -158,6 +158,7 @@ mergeRegister(
     () => {
       editor?.update(() => {
         const markdown = $convertToMarkdownString(MARKDOWN_TRANSFORMERS);
+        console.debug(markdown);
         emit('change-markdown', markdown);
       });
       return false;
@@ -312,7 +313,6 @@ defineOptions({ name: 'ClLexicalEditor' });
 
       &:deep(.variable) {
         color: var(--cl-warning-color);
-        text-decoration: underline;
         font-style: italic;
         cursor: pointer;
       }

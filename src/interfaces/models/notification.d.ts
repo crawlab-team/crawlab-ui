@@ -46,4 +46,20 @@ export declare global {
   }
 
   type NotificationTemplateMode = 'rich-text' | 'markdown';
+
+  type NotificationVariableCategory =
+    | 'task'
+    | 'node'
+    | 'spider'
+    | 'git'
+    | 'project'
+    | 'schedule'
+    | 'user';
+
+  interface NotificationVariable {
+    category: NotificationVariableCategory;
+    name: string;
+    label?: string;
+    icon?: Icon;
+  }
 }

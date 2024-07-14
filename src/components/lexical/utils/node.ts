@@ -1,32 +1,37 @@
 import { $getRoot, $isTextNode } from 'lexical';
-import type { LexicalEditor, TextNode, ElementNode } from 'lexical';
+import type { ElementNode } from 'lexical';
 
 // 获取所有文本节点的函数
-export const getAllTextNodes = () => {
-  let textNodes: TextNode[] = [];
+export const getAllNodes = (checkNodeFn: (node: ElementNode) => boolean) => {
+  let allNodes: ElementNode[] = [];
   const root = $getRoot();
-  const nodes = root.getChildren();
+  const nodes = root.getChildren<ElementNode>();
   nodes.forEach(node => {
-    if ($isTextNode(node)) {
-      textNodes.push(node);
+    if (checkNodeFn(node)) {
+      allNodes.push(node);
     }
     // 如果节点有子节点，递归获取文本节点
-    getAllTextNodesRecursively(node, textNodes);
+    getAllNodesRecursively(node, allNodes, checkNodeFn);
   });
-  return textNodes;
+  return allNodes;
+};
+
+export const getAllTextNodes = () => {
+  return getAllNodes($isTextNode);
 };
 
 // 递归获取文本节点的辅助函数
-const getAllTextNodesRecursively = (
+const getAllNodesRecursively = (
   node: ElementNode,
-  textNodes: TextNode[]
+  allNodes: ElementNode[],
+  checkNodeFn: (node: ElementNode) => boolean
 ) => {
-  const children = node.getChildren?.() || [];
+  const children = node.getChildren<ElementNode>?.() || [];
   children.forEach(child => {
-    if ($isTextNode(child)) {
-      textNodes.push(child);
+    if (checkNodeFn(child)) {
+      allNodes.push(child);
     } else {
-      getAllTextNodesRecursively(child, textNodes);
+      getAllNodesRecursively(child, allNodes, checkNodeFn);
     }
   });
 };

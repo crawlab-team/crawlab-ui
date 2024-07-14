@@ -23,7 +23,7 @@ const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
     label: t('components.notification.template.modes.richText'),
     value: 'rich-text',
     icon: ['fa', 'file-word'],
-    // disabled: true,
+    disabled: true,
   },
 ];
 watch(

@@ -1,5 +1,4 @@
 import {
-  $applyNodeReplacement,
   $createParagraphNode,
   $createTextNode,
   $getRoot,
@@ -31,10 +30,11 @@ const variableRegex = /\$[a-zA-Z_]\w*/;
 
 const highlightVariables = (editor: LexicalEditor) => {
   editor.update(() => {
-    getAllTextNodes(editor).forEach(node => {
+    getAllTextNodes().forEach(node => {
       const text = node.getTextContent();
       if (variableRegex.test(text)) {
         const matches = text.match(variableRegex);
+        if (!matches) return;
 
         // convert text into array of nodes
         const nodes = [];
@@ -44,7 +44,7 @@ const highlightVariables = (editor: LexicalEditor) => {
           if (startIndex > index) {
             nodes.push($createTextNode(text.slice(index, startIndex)));
           }
-          nodes.push($createVariableNode(match.slice(1)));
+          nodes.push($createVariableNode({ name: match.slice(1) }));
           index = startIndex + match.length;
         }
         if (index < text.length) {
@@ -75,10 +75,10 @@ export default (editor: LexicalEditor) => {
     }),
     editor.registerCommand<InsertVariableCommandPayload>(
       INSERT_VARIABLE_COMMAND,
-      ({ name }) => {
+      ({ category, name }) => {
         const selection = $getSelection();
         const rootNode = $getRoot();
-        const variable = $createVariableNode(name);
+        const variable = $createVariableNode({ category, name });
         const paragraph = $createParagraphNode();
         paragraph.append(variable);
         if (selection) {

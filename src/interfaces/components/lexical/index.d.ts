@@ -69,10 +69,12 @@ export declare global {
   type InsertImagePayload = Readonly<ImagePayload>;
 
   interface VariableForm {
+    category?: NotificationVariableCategory;
     name: string;
   }
 
   interface InsertVariableCommandPayload {
+    category?: NotificationVariableCategory;
     name: string;
   }
 

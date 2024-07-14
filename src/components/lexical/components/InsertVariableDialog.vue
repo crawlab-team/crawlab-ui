@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import ClForm from '@/components/form/Form.vue';
+import { translate } from '@/utils';
+import ClFormItem from '@/components/form/FormItem.vue';
+import { allVariables } from '@/utils/notification';
 
-const variableForm = defineModel<VariableForm>({ required: true });
+const modelValue = defineModel<VariableForm>({
+  required: true,
+});
 
 const props = defineProps<{
   visible?: boolean;
@@ -13,15 +18,41 @@ const emit = defineEmits<{
   (e: 'confirm'): void;
 }>();
 
-const options: SelectOption[] = [
-  { value: 'variable1', label: 'Variable 1' },
-  { value: 'variable2', label: 'Variable 2' },
-  { value: 'variable3', label: 'Variable 3' },
-  { value: 'variable4', label: 'Variable 4' },
-  { value: 'variable5', label: 'Variable 5' },
-];
+const t = translate;
 
-const formRef = ref<typeof ClForm>();
+const formRef = ref();
+const formRules = {
+  name: [
+    {
+      required: true,
+      message: t(
+        'components.notification.dialog.insertVariable.formRules.variableEmpty'
+      ),
+    },
+  ],
+};
+
+const variableCategoryOptions = computed<
+  SelectOption<NotificationVariableCategory>[]
+>(() => {
+  return [
+    {
+      label: t('components.notification.variableCategories.task'),
+      value: 'task',
+      icon: ['fa', 'tasks'],
+    },
+    {
+      label: t('components.notification.variableCategories.node'),
+      value: 'node',
+      icon: ['fa', 'server'],
+    },
+    {
+      label: t('components.notification.variableCategories.spider'),
+      value: 'spider',
+      icon: ['fa', 'spider'],
+    },
+  ];
+});
 
 const onConfirm = async () => {
   await formRef.value?.validate();
@@ -30,33 +61,77 @@ const onConfirm = async () => {
 
 watch(
   () => props.visible,
-  () => {
-    if (!formRef.value) return;
-    if (props.visible) {
-      formRef.value.resetFields();
-      formRef.value.clearValidate();
-    }
-  }
+  () => {}
+);
+
+const variables = computed<NotificationVariable[]>(() =>
+  allVariables.filter(v => v.category === modelValue.value.category)
 );
 
 defineOptions({ name: 'ClInsertVariableDialog' });
 </script>
 
 <template>
-  <cl-dialog :visible="visible" @close="emit('close')" @confirm="onConfirm">
-    <cl-form ref="formRef" :model="variableForm">
-      <cl-form-item prop="name" :span="4" label="Variable URL" required>
-        <el-select v-model="variableForm.name">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+  <cl-dialog
+    :title="t('components.notification.dialog.insertVariable.title')"
+    :title-icon="['fa', 'dollar']"
+    :visible="visible"
+    @close="emit('close')"
+    @confirm="onConfirm"
+  >
+    <cl-form ref="formRef" :model="modelValue" :rules="formRules">
+      <cl-form-item
+        :span="4"
+        :label="
+          t(
+            'components.notification.dialog.insertVariable.form.variableCategory'
+          )
+        "
+      >
+        <el-radio-group v-model="modelValue.category">
+          <el-radio-button
+            v-for="op in variableCategoryOptions"
+            :key="op.value"
+            :value="op.value"
+          >
+            <span style="margin-right: 5px">
+              <cl-icon :icon="op.icon" />
+            </span>
+            <span>{{ op.label }}</span>
+          </el-radio-button>
+        </el-radio-group>
+      </cl-form-item>
+      <cl-form-item
+        :span="4"
+        :label="
+          t('components.notification.dialog.insertVariable.form.variable')
+        "
+        prop="name"
+        required
+      >
+        <el-check-tag
+          v-for="v in variables"
+          :key="v.name"
+          :checked="modelValue.name === v.name"
+          @change="
+            (checked: boolean) => (modelValue.name = checked ? v.name : '')
+          "
+        >
+          <span style="margin-right: 5px">
+            <cl-icon :icon="v.icon" />
+          </span>
+          <span>{{ v.label }}</span>
+        </el-check-tag>
       </cl-form-item>
     </cl-form>
   </cl-dialog>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped>
+.form {
+  &:deep(.el-check-tag) {
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+}
+</style>
