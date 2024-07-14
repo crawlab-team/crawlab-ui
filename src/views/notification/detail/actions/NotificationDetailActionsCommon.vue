@@ -125,26 +125,31 @@ const triggerOptions = computed<SelectOption<string>[]>(() => [
   {
     label: t('views.notification.triggerTargets.node'),
     icon: ['fa', 'server'],
+    disabled: true,
     children: [
       {
         label: t('views.notification.triggers.node.statusChange'),
         value: 'node_status_change',
         icon: ['fa', 'exchange-alt'],
+        disabled: true,
       },
       {
         label: t('views.notification.triggers.node.online'),
         value: 'node_online',
         icon: ['fa', 'check-circle'],
+        disabled: true,
       },
       {
         label: t('views.notification.triggers.node.offline'),
         value: 'node_offline',
         icon: ['fa', 'times-circle'],
+        disabled: true,
       },
       {
         label: t('views.notification.triggers.node.never'),
         value: 'node_never',
         icon: ['fa', 'ban'],
+        disabled: true,
       },
     ],
   },
@@ -163,7 +168,7 @@ const getTriggerTargetIcon = (value: NotificationTrigger) => {
 const getTriggerIcon = (value: NotificationTrigger) => {
   return triggerOptions.value
     .flatMap(o => o.children)
-    .find(o => o.value === value)?.icon;
+    .find(o => o?.value === value)?.icon;
 };
 
 defineOptions({ name: 'ClNotificationDetailActionsCommon' });
@@ -177,9 +182,10 @@ defineOptions({ name: 'ClNotificationDetailActionsCommon' });
     />
     <cl-nav-action-item>
       <el-tree-select
+        popper-class="notification-trigger-select"
         :model-value="trigger"
         :data="triggerOptions"
-        popper-class="notification-trigger-select"
+        accordion
         @change="onTriggerChange"
       >
         <template #label="{ value, label }">

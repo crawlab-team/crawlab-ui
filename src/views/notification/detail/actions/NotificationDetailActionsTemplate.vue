@@ -78,6 +78,7 @@ defineOptions({ name: 'ClNotificationDetailActionsTemplate' });
           v-for="op in templateModeOptions"
           :key="op.value"
           :value="op.value"
+          :disabled="op.disabled"
           @click="(event: MouseEvent) => onTemplateModeClick(event, op)"
         >
           <cl-icon :icon="op.icon" />
