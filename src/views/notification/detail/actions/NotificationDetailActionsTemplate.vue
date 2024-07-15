@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { translate } from '@/utils';
 import { useStore } from 'vuex';
 import { ElMessageBox } from 'element-plus';
+import { publish } from '@/utils/eventBus';
 
 const t = translate;
 
@@ -23,7 +24,7 @@ const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
     label: t('components.notification.template.modes.richText'),
     value: 'rich-text',
     icon: ['fa', 'file-word'],
-    disabled: true,
+    // disabled: true,
   },
 ];
 watch(
@@ -64,6 +65,9 @@ const onTemplateModeClick = async (
     ...state.form,
     template_mode: templateMode.value,
   });
+  if (templateMode.value === 'markdown') {
+    publish('update-markdown');
+  }
 };
 
 defineOptions({ name: 'ClNotificationDetailActionsTemplate' });

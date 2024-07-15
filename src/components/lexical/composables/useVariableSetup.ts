@@ -26,29 +26,31 @@ const resetVariables = () => {
   });
 };
 
-const variableRegex = /\$[a-zA-Z_]\w*/;
+const variableRegex = /(.*)\$\{(\w+):(\w+)\}(.*)/;
 
 const highlightVariables = (editor: LexicalEditor) => {
   editor.update(() => {
     getAllTextNodes().forEach(node => {
       const text = node.getTextContent();
       if (variableRegex.test(text)) {
+        // find matches
         const matches = text.match(variableRegex);
         if (!matches) return;
 
+        // extract parts
+        const preText = matches[1];
+        const category = matches[2];
+        const name = matches[3];
+        const postText = matches[4];
+
         // convert text into array of nodes
         const nodes = [];
-        let index = 0;
-        for (const match of matches) {
-          const startIndex = text.indexOf(match, index);
-          if (startIndex > index) {
-            nodes.push($createTextNode(text.slice(index, startIndex)));
-          }
-          nodes.push($createVariableNode({ name: match.slice(1) }));
-          index = startIndex + match.length;
+        if (preText) {
+          nodes.push($createTextNode(preText));
         }
-        if (index < text.length) {
-          nodes.push($createTextNode(text.slice(index)));
+        nodes.push($createVariableNode({ category, name }));
+        if (postText) {
+          nodes.push($createTextNode(postText));
         }
 
         // replace the text node with the array of nodes

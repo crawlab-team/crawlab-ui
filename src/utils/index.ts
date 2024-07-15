@@ -26,3 +26,4 @@ export * from './table';
 export * from './task';
 export * from './tree';
 export * from './validate';
+export * from './notification';

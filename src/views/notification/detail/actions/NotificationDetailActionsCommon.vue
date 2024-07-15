@@ -115,11 +115,6 @@ const triggerOptions = computed<SelectOption<string>[]>(() => [
         value: 'task_empty_results',
         icon: ['fa', 'exclamation-circle'],
       },
-      {
-        label: t('views.notification.triggers.task.never'),
-        value: 'task_never',
-        icon: ['fa', 'ban'],
-      },
     ],
   },
   {
@@ -143,12 +138,6 @@ const triggerOptions = computed<SelectOption<string>[]>(() => [
         label: t('views.notification.triggers.node.offline'),
         value: 'node_offline',
         icon: ['fa', 'times-circle'],
-        disabled: true,
-      },
-      {
-        label: t('views.notification.triggers.node.never'),
-        value: 'node_never',
-        icon: ['fa', 'ban'],
         disabled: true,
       },
     ],

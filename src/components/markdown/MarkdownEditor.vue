@@ -25,7 +25,7 @@ const initMarkdown = async () => {
     .find(lang => lang.id === 'markdown');
   if (markdown) {
     const { language } = await markdown.loader();
-    language.tokenizer.root.push([/\$[a-zA-Z_]\w*/, 'variable']);
+    language.tokenizer.root.push([/\$\{(\w+):(\w+)\}/, 'variable']);
   }
 
   // 定义新的配色方案

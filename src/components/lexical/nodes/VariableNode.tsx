@@ -86,16 +86,16 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   }
 
   decorate(): JSX.Element {
+    const category = this.getCategory();
+    const name = this.getName();
     const isValid = isValidVariable({
-      category: this.__category,
-      name: this.__name,
+      category,
+      name,
     });
     const tooltip = isValid ? (
       <span>
-        {t(`components.notification.variableCategories.${this.__category}`)}:
-        {t(
-          `components.notification.variables.${this.__category}.${this.__name}`
-        )}
+        {t(`components.notification.variableCategories.${category}`)}:
+        {t(`components.notification.variables.${category}.${name}`)}
       </span>
     ) : (
       t('components.notification.variables.invalid')
@@ -103,17 +103,19 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
     const color = isValid
       ? 'var(--cl-warning-color)'
       : 'var(--cl-danger-color)';
-    const label = this.__category
-      ? `$${this.__category}:${this.__name}`
-      : `$${this.__name}`;
+    const label = category ? `$\{${category}:${name}\}` : `$\{${name}\}`;
     return h(ElTooltip, null, {
-      default: <span style={{ color }}>{label}</span>,
+      default: (
+        <span class="variable-label" style={{ color }}>
+          {label}
+        </span>
+      ),
       content: tooltip,
     });
   }
 
   getCategory(): string {
-    return this.__name;
+    return this.__category;
   }
 
   getName(): string {

@@ -15,17 +15,18 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { mergeRegister } from '@lexical/utils';
 import { createEmptyHistoryState, registerHistory } from '@lexical/history';
-import { ImageNode } from '@/components/lexical/nodes/ImageNode';
-import { VariableNode } from '@/components/lexical/nodes/VariableNode';
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
 } from '@lexical/markdown';
+import { $generateHtmlFromNodes } from '@lexical/html';
+import { onBeforeMount, watch } from 'vue';
+import { debounce } from 'lodash';
+import { subscribe } from '@/utils/eventBus';
+import { ImageNode } from '@/components/lexical/nodes/ImageNode';
+import { VariableNode } from '@/components/lexical/nodes/VariableNode';
 import useLexicalMounted from '@/components/lexical/composables/useLexicalMounted';
 import { MARKDOWN_TRANSFORMERS } from '@/components/lexical/utils/markdownTransformers';
-import { $generateHtmlFromNodes } from '@lexical/html';
-import { watch } from 'vue';
-import { debounce } from 'lodash';
 
 const modelValue = defineModel<RichTextPayload>({ required: true });
 
@@ -176,7 +177,6 @@ const initEditorState = debounce(() => {
     const editorStateString = JSON.stringify(editorStateJSONObject);
     const editorState = editor?.parseEditorState(editorStateString);
     editor?.setEditorState(editorState);
-    updateMarkdown();
   } else if (props.markdownContent) {
     editor?.update(() => {
       $convertFromMarkdownString(
@@ -196,6 +196,10 @@ const updateMarkdown = () => {
   });
 };
 
+onBeforeMount(() => {
+  subscribe('update-markdown', updateMarkdown);
+});
+
 mergeRegister(
   editor?.registerUpdateListener(
     ({ dirtyElements, dirtyLeaves, prevEditorState }) => {
@@ -207,7 +211,6 @@ mergeRegister(
         const richTextContentJson = JSON.stringify(editor?.toJSON());
         modelValue.value.richTextContent = richTextContent;
         modelValue.value.richTextContentJson = richTextContentJson;
-        updateMarkdown();
       });
     }
   )
@@ -270,7 +273,7 @@ defineOptions({ name: 'ClLexicalEditor' });
         border-spacing: 0;
         overflow-y: scroll;
         overflow-x: scroll;
-        table-layout: fixed;
+        table-layout: auto;
         width: max-content;
         margin: 0 25px 30px 0;
       }
@@ -279,8 +282,7 @@ defineOptions({ name: 'ClLexicalEditor' });
       &:deep(td) {
         position: relative;
         border: 1px solid #bbb;
-        width: 75px;
-        min-width: 75px;
+        min-width: 150px;
         vertical-align: top;
         text-align: start;
         padding: 6px 8px;

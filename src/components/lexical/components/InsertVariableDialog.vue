@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import ClForm from '@/components/form/Form.vue';
-import { translate } from '@/utils';
-import ClFormItem from '@/components/form/FormItem.vue';
-import { allVariables } from '@/utils/notification';
+import { translate, allVariables } from '@/utils';
 
 const modelValue = defineModel<VariableForm>({
   required: true,
@@ -113,6 +110,7 @@ defineOptions({ name: 'ClInsertVariableDialog' });
           v-for="v in variables"
           :key="v.name"
           :checked="modelValue.name === v.name"
+          type="primary"
           @change="
             (checked: boolean) => (modelValue.name = checked ? v.name : '')
           "
@@ -130,6 +128,8 @@ defineOptions({ name: 'ClInsertVariableDialog' });
 <style scoped>
 .form {
   &:deep(.el-check-tag) {
+    //background-color: #ffffff;
+    //border: 1px solid var(--el-border-color);
     margin-right: 5px;
     margin-bottom: 5px;
   }
