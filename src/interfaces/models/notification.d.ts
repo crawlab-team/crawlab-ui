@@ -23,6 +23,7 @@ export declare global {
     template_markdown?: string;
     template_rich_text?: string;
     template_rich_text_json?: string;
+    template_theme?: string;
     task_trigger?: string;
     trigger_target?: NotificationTriggerTarget;
     trigger?: NotificationTrigger;

@@ -1,8 +1,9 @@
-import { DefineComponent, h } from 'vue';
+import { h } from 'vue';
 import { JSX } from 'vue/jsx-runtime';
 import { ElTooltip } from 'element-plus';
 import {
   $applyNodeReplacement,
+  $getNodeByKey,
   DecoratorNode,
   DOMExportOutput,
   EditorConfig,
@@ -10,6 +11,7 @@ import {
   LexicalNode,
   SerializedLexicalNode,
   Spread,
+  TextFormatType,
 } from 'lexical';
 import { translate } from '@/utils';
 import { isValidVariable } from '@/utils/notification';
@@ -20,13 +22,23 @@ export type SerializedVariableNode = Spread<
   {
     category?: NotificationVariableCategory;
     name: string;
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
+    strikethrough?: boolean;
+    selected?: boolean;
   },
   SerializedLexicalNode
 >;
 
 export class VariableNode extends DecoratorNode<JSX.Element> {
-  __category?: NotificationVariableCategory;
-  __name: string;
+  readonly __category?: NotificationVariableCategory;
+  readonly __name: string;
+  __bold: boolean;
+  __italic: boolean;
+  __underline: boolean;
+  __strikethrough: boolean;
+  __selected: boolean;
 
   constructor({
     category,
@@ -40,6 +52,11 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
     super(key);
     this.__category = category;
     this.__name = name;
+    this.__bold = false;
+    this.__italic = false;
+    this.__underline = false;
+    this.__strikethrough = false;
+    this.__selected = false;
   }
 
   static getType(): string {
@@ -60,9 +77,11 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   }
 
   exportDOM(_: LexicalEditor): DOMExportOutput {
+    const category = this.getCategory();
+    const name = this.getName();
     const element = document.createElement('span');
     element.classList.add('variable');
-    element.innerText = this.__name;
+    element.innerText = category ? `$\{${category}:${name}\}` : `$\{${name}\}`;
     return { element };
   }
 
@@ -85,7 +104,8 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
     return false;
   }
 
-  decorate(): JSX.Element {
+  decorate(editor): JSX.Element {
+    console.debug(Object.isFrozen(this));
     const category = this.getCategory();
     const name = this.getName();
     const isValid = isValidVariable({
@@ -106,12 +126,47 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
     const label = category ? `$\{${category}:${name}\}` : `$\{${name}\}`;
     return h(ElTooltip, null, {
       default: (
-        <span class="variable-label" style={{ color }}>
+        <span
+          class={{
+            'variable-label': true,
+            selected: this.getSelected(),
+          }}
+          style={{
+            color,
+            fontWeight: this.__bold ? 'bold' : 'normal',
+            fontStyle: this.__italic ? 'italic' : 'normal',
+            textDecoration: this.__underline ? 'underline' : 'none',
+            textDecorationLine: this.__strikethrough ? 'line-through' : 'none',
+          }}
+          onClick={() => {
+            editor.update(() => {
+              const node = $getNodeByKey(this.getKey()) as VariableNode;
+              node.setSelected(!node.getSelected());
+            });
+          }}
+        >
           {label}
         </span>
       ),
       content: tooltip,
     });
+  }
+
+  toggleFormat(formatType: TextFormatType): void {
+    switch (formatType) {
+      case 'bold':
+        this.setBold(!this.getBold());
+        break;
+      case 'italic':
+        this.setItalic(!this.getItalic());
+        break;
+      case 'underline':
+        this.setUnderline(!this.getUnderline());
+        break;
+      case 'strikethrough':
+        this.setStrikethrough(!this.getStrikethrough());
+        break;
+    }
   }
 
   getCategory(): string {
@@ -120,6 +175,46 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
 
   getName(): string {
     return this.__name;
+  }
+
+  getBold(): boolean {
+    return this.__bold;
+  }
+
+  getItalic(): boolean {
+    return this.__italic;
+  }
+
+  getUnderline(): boolean {
+    return this.__underline;
+  }
+
+  getStrikethrough(): boolean {
+    return this.__strikethrough;
+  }
+
+  getSelected(): boolean {
+    return this.__selected;
+  }
+
+  setBold(bold: boolean): void {
+    this.__bold = bold;
+  }
+
+  setItalic(italic: boolean): void {
+    this.__italic = italic;
+  }
+
+  setUnderline(underline: boolean): void {
+    this.__underline = underline;
+  }
+
+  setStrikethrough(strikethrough: boolean): void {
+    this.__strikethrough = strikethrough;
+  }
+
+  setSelected(selected: boolean): void {
+    this.__selected = selected;
   }
 }
 

@@ -5,6 +5,12 @@ const t = translate;
 export const allVariables: NotificationVariable[] = [
   {
     category: 'task',
+    name: 'id',
+    label: t('components.notification.variables.task.id'),
+    icon: ['fa', 'hashtag'],
+  },
+  {
+    category: 'task',
     name: 'status',
     label: t('components.notification.variables.task.status'),
     icon: ['fa', 'check-square'],
@@ -85,7 +91,7 @@ export const allVariables: NotificationVariable[] = [
     category: 'task',
     name: 'stat:resultCount',
     label: t('components.notification.variables.task.stat.resultCount'),
-    icon: ['fa', 'hashtag'],
+    icon: ['fa', 'chart-bar'],
   },
   {
     category: 'node',

@@ -46,6 +46,7 @@ interface LComponentsNotification {
   variables: {
     invalid: string;
     task: {
+      id: string;
       status: string;
       mode: string;
       cmd: string;

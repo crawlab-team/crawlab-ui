@@ -46,6 +46,7 @@ const notification: LComponentsNotification = {
   variables: {
     invalid: 'Invalid Variable',
     task: {
+      id: 'ID',
       status: 'Status',
       mode: 'Mode',
       cmd: 'Command',

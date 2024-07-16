@@ -7,11 +7,6 @@ import {
   $isRangeSelection,
   LexicalEditor,
 } from 'lexical';
-import {
-  INSERT_ORDERED_LIST_COMMAND,
-  INSERT_UNORDERED_LIST_COMMAND,
-  REMOVE_LIST_COMMAND,
-} from '@lexical/list';
 import { $wrapNodes } from '@lexical/selection';
 import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
 import { $createCodeNode } from '@lexical/code';
@@ -113,56 +108,6 @@ const formatH3 = () => {
   emit('hide');
 };
 
-const formatBulletList = () => {
-  const { editor } = props;
-  if (props.blockType !== 'ul') {
-    editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
-  } else {
-    editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
-  }
-
-  emit('hide');
-};
-
-const formatNumberedList = () => {
-  const { editor } = props;
-  if (props.blockType !== 'ol') {
-    editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
-  } else {
-    editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
-  }
-
-  emit('hide');
-};
-
-const formatQuote = () => {
-  const { editor } = props;
-  if (props.blockType !== 'quote') {
-    editor.update(() => {
-      const selection = $getSelection();
-
-      if ($isRangeSelection(selection)) {
-        $wrapNodes(selection, () => $createQuoteNode());
-      }
-    });
-  }
-  emit('hide');
-};
-
-const formatCode = () => {
-  const { editor } = props;
-  if (props.blockType !== 'code') {
-    editor.update(() => {
-      const selection = $getSelection();
-
-      if ($isRangeSelection(selection)) {
-        $wrapNodes(selection, () => $createCodeNode());
-      }
-    });
-  }
-  emit('hide');
-};
-
 const options: BlockOption[] = [
   {
     type: 'paragraph',
@@ -183,26 +128,6 @@ const options: BlockOption[] = [
     type: 'h3',
     label: t('components.editor.toolbar.block.h3'),
     onClick: formatH3,
-  },
-  {
-    type: 'ul',
-    label: t('components.editor.toolbar.block.ul'),
-    onClick: formatBulletList,
-  },
-  {
-    type: 'ol',
-    label: t('components.editor.toolbar.block.ol'),
-    onClick: formatNumberedList,
-  },
-  {
-    type: 'quote',
-    label: t('components.editor.toolbar.block.quote'),
-    onClick: formatQuote,
-  },
-  {
-    type: 'code',
-    label: t('components.editor.toolbar.block.code'),
-    onClick: formatCode,
   },
 ];
 

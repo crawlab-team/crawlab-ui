@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { onBeforeMount, onMounted, watch } from 'vue';
 import {
+  $createParagraphNode,
+  $getRoot,
+  $isParagraphNode,
   COMMAND_PRIORITY_EDITOR,
   createCommand,
   createEditor,
@@ -7,6 +11,7 @@ import {
   EditorThemeClasses,
   KEY_DOWN_COMMAND,
 } from 'lexical';
+import { debounce } from 'lodash';
 import type { LexicalEditor } from 'lexical';
 import { HeadingNode, QuoteNode, registerRichText } from '@lexical/rich-text';
 import { ListItemNode, ListNode } from '@lexical/list';
@@ -20,13 +25,12 @@ import {
   $convertToMarkdownString,
 } from '@lexical/markdown';
 import { $generateHtmlFromNodes } from '@lexical/html';
-import { onBeforeMount, watch } from 'vue';
-import { debounce } from 'lodash';
 import { subscribe } from '@/utils/eventBus';
 import { ImageNode } from '@/components/lexical/nodes/ImageNode';
 import { VariableNode } from '@/components/lexical/nodes/VariableNode';
 import useLexicalMounted from '@/components/lexical/composables/useLexicalMounted';
 import { MARKDOWN_TRANSFORMERS } from '@/components/lexical/utils/markdownTransformers';
+import '@/components/lexical/theme/default.css';
 
 const modelValue = defineModel<RichTextPayload>({ required: true });
 
@@ -105,6 +109,8 @@ const theme: EditorThemeClasses = {
     url: 'editor-tokenOperator',
     variable: 'editor-tokenVariable',
   },
+  table: 'editor-table',
+  tableCell: 'editor-cell',
 };
 
 const initialEditorConfig: CreateEditorArgs = {
@@ -195,10 +201,20 @@ const updateMarkdown = () => {
     richTextContentJson: modelValue.value?.richTextContentJson,
   });
 };
-
 onBeforeMount(() => {
   subscribe('update-markdown', updateMarkdown);
 });
+
+const addEmptyParagraph = () => {
+  editor?.update(() => {
+    const root = $getRoot();
+    const lastChild = root.getLastChild();
+    if (!$isParagraphNode(lastChild) || lastChild.getTextContent() !== '') {
+      root.append($createParagraphNode());
+    }
+  });
+};
+onMounted(addEmptyParagraph);
 
 mergeRegister(
   editor?.registerUpdateListener(
@@ -212,6 +228,8 @@ mergeRegister(
         modelValue.value.richTextContent = richTextContent;
         modelValue.value.richTextContentJson = richTextContentJson;
       });
+
+      addEmptyParagraph();
     }
   )
 );
@@ -244,11 +262,41 @@ defineOptions({ name: 'ClLexicalEditor' });
 
 <style scoped>
 .editor-container {
+  color: #000;
+  position: relative;
+  font-weight: 400;
+  text-align: left;
+  height: 100%;
+
   .editor-inner {
     flex: 0;
+    height: calc(100% - 45px);
+    background: #fff;
+    position: relative;
+
+    .editor-placeholder {
+      color: #999;
+      overflow: hidden;
+      position: absolute;
+      text-overflow: ellipsis;
+      top: 15px;
+      left: 10px;
+      font-size: 15px;
+      user-select: none;
+      display: inline-block;
+      pointer-events: none;
+    }
 
     .editor-input {
       overflow: auto;
+      height: 100%;
+      resize: none;
+      font-size: 15px;
+      position: relative;
+      tab-size: 1;
+      outline: 0;
+      padding: 15px 10px;
+      caret-color: #444;
 
       &::-webkit-scrollbar {
         display: none;
@@ -266,28 +314,6 @@ defineOptions({ name: 'ClLexicalEditor' });
       &::-webkit-scrollbar-thumb {
         background-color: var(--cl-info-light-color);
         border-radius: 3px;
-      }
-
-      &:deep(table) {
-        border-collapse: collapse;
-        border-spacing: 0;
-        overflow-y: scroll;
-        overflow-x: scroll;
-        table-layout: auto;
-        width: max-content;
-        margin: 0 25px 30px 0;
-      }
-
-      &:deep(th),
-      &:deep(td) {
-        position: relative;
-        border: 1px solid #bbb;
-        min-width: 150px;
-        vertical-align: top;
-        text-align: start;
-        padding: 6px 8px;
-        outline: none;
-        user-select: none;
       }
 
       &:deep(th) {
@@ -316,10 +342,9 @@ defineOptions({ name: 'ClLexicalEditor' });
       &:deep(.variable) {
         color: var(--cl-warning-color);
         font-style: italic;
-        cursor: pointer;
       }
 
-      &:deep(.variable.active) {
+      &:deep(.variable.selected) {
         background-color: var(--cl-warning-plain-color);
       }
     }

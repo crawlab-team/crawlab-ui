@@ -15,15 +15,28 @@ import {
   type RangeSelection,
   type NodeSelection,
   $isNodeSelection,
+  $isRangeSelection,
+  type TextFormatType,
 } from 'lexical';
-import { $isParentElementRTL } from '@lexical/selection';
+import { $isParentElementRTL, $wrapNodes } from '@lexical/selection';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
-import { $isListNode, ListNode } from '@lexical/list';
-import { $isHeadingNode } from '@lexical/rich-text';
+import {
+  $isListNode,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
+  REMOVE_LIST_COMMAND,
+} from '@lexical/list';
+import { $createQuoteNode, $isHeadingNode } from '@lexical/rich-text';
 import { $isLinkNode } from '@lexical/link';
-import { $isCodeNode, getDefaultCodeLanguage } from '@lexical/code';
+import {
+  $createCodeNode,
+  $isCodeNode,
+  getDefaultCodeLanguage,
+} from '@lexical/code';
 import { TOGGLE_LINK_COMMAND } from '@lexical/link';
 import {
+  $isTableCellNode,
   $isTableSelection,
   INSERT_TABLE_COMMAND,
   type TableSelection,
@@ -36,6 +49,8 @@ import InsertTableDialog from '../components/InsertTableDialog.vue';
 import InsertImageDialog from '../components/InsertImageDialog.vue';
 import { INSERT_VARIABLE_COMMAND } from '@/components/lexical/composables/useVariableSetup';
 import { translate } from '@/utils';
+import { $isVariableNode } from '@/components/lexical/nodes/VariableNode';
+import { $getTableNodeFromLexicalNodeOrThrow } from '@lexical/table/LexicalTableUtils';
 
 const props = defineProps<{
   editor: LexicalEditor;
@@ -52,8 +67,6 @@ const supportedBlockTypes = new Set([
   'h1',
   'h2',
   'h3',
-  'ul',
-  'ol',
 ]);
 
 const blockTypeToBlockName = {
@@ -63,8 +76,6 @@ const blockTypeToBlockName = {
   h3: t('components.editor.toolbar.block.h3'),
   h4: t('components.editor.toolbar.block.h4'),
   h5: t('components.editor.toolbar.block.h5'),
-  ol: t('components.editor.toolbar.block.ol'),
-  ul: t('components.editor.toolbar.block.ul'),
   paragraph: t('components.editor.toolbar.block.paragraph'),
   quote: t('components.editor.toolbar.block.quote'),
 };
@@ -78,17 +89,24 @@ const canRedo = ref(false);
 const blockType = ref<keyof typeof blockTypeToBlockName>('paragraph');
 const selectedElementKey = ref();
 const codeLanguage = ref('');
+
 const isRTL = ref(false);
 const isLink = ref(false);
 const isBold = ref(false);
 const isItalic = ref(false);
 const isUnderline = ref(false);
 const isStrikethrough = ref(false);
-const isCode = ref(false);
 const isLeft = ref(false);
 const isCenter = ref(false);
 const isRight = ref(false);
 const isJustify = ref(false);
+const isUnorderedList = ref(false);
+const isOrderedList = ref(false);
+const isCode = ref(false);
+const isQuote = ref(false);
+const isTable = ref(false);
+const isVariable = ref(false);
+
 const showBlockOptionsDropdown = ref(false);
 const showInsertOptionsDropdown = ref(false);
 const showInsertVariableDialog = ref(false);
@@ -125,6 +143,13 @@ const updateToolbar = () => {
         : (element.getType() as any);
       if ($isCodeNode(element)) {
         codeLanguage.value = element.getLanguage() || getDefaultCodeLanguage();
+      } else if (
+        $isTableSelection(selection) ||
+        $isTableCellNode(element.getParent())
+      ) {
+        isTable.value = true;
+      } else if ($isVariableNode(element)) {
+        isVariable.value = true;
       }
     }
     if ((blockType.value as any) === 'root') {
@@ -141,13 +166,16 @@ const updateToolbar = () => {
   isItalic.value = selection.hasFormat('italic');
   isUnderline.value = selection.hasFormat('underline');
   isStrikethrough.value = selection.hasFormat('strikethrough');
-  isCode.value = selection.hasFormat('code');
   isRTL.value = $isParentElementRTL(selection);
   isLink.value = $isLinkNode(focusNode.getParent());
   isLeft.value = elementDOM?.style.textAlign === 'left';
   isCenter.value = elementDOM?.style.textAlign === 'center';
   isRight.value = elementDOM?.style.textAlign === 'right';
   isJustify.value = elementDOM?.style.textAlign === 'justify';
+  isUnorderedList.value = blockType.value === 'ul';
+  isOrderedList.value = blockType.value === 'ol';
+  isCode.value = blockType.value === 'code';
+  isQuote.value = blockType.value === 'quote';
 };
 
 let unregisterMergeListener: () => void;
@@ -160,6 +188,25 @@ onMounted(() => {
         updateToolbar();
       });
     }),
+
+    // variable node format update
+    editor.registerCommand<TextFormatType>(
+      FORMAT_TEXT_COMMAND,
+      formatType => {
+        const selection = $getSelection();
+        console.debug(selection);
+        if (!$isNodeSelection(selection)) return false;
+        selection.getNodes().forEach(node => {
+          if ($isVariableNode(node)) {
+            node.toggleFormat(formatType);
+          }
+        });
+        return false;
+      },
+      LowPriority
+    ),
+
+    // default format update
     editor.registerCommand(
       SELECTION_CHANGE_COMMAND,
       () => {
@@ -168,6 +215,8 @@ onMounted(() => {
       },
       LowPriority
     ),
+
+    // undo/redo update
     editor.registerCommand(
       CAN_UNDO_COMMAND,
       payload => {
@@ -189,8 +238,11 @@ onMounted(() => {
 
 const insertLink = () => {
   const { editor } = props;
-  if (!isLink.value) editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
-  else editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+  if (!isLink.value) {
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
+  } else {
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+  }
 };
 
 const variableForm = ref<VariableForm>({
@@ -324,15 +376,6 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
     >
       <i class="format code" />
     </button>
-    <button
-      :class="`toolbar-item spaced ${isLink ? 'active' : ''}`"
-      @click="insertLink"
-    >
-      <i class="format link" />
-    </button>
-    <Teleport to="body">
-      <FloatLinkEditor v-if="isLink" :editor="editor" :priority="LowPriority" />
-    </Teleport>
     <div class="divider" />
     <button
       :class="`toolbar-item spaced ${isLeft ? 'active' : ''}`"
@@ -357,6 +400,82 @@ defineOptions({ name: 'ClLexicalToolbarPlugin' });
       @click="editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')"
     >
       <i class="format justify-align" />
+    </button>
+    <div class="divider" />
+    <button
+      :class="`toolbar-item spaced ${isUnorderedList ? 'active' : ''}`"
+      @click="
+        () => {
+          if (!isUnorderedList) {
+            editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+          } else {
+            editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+          }
+        }
+      "
+    >
+      <i class="format ul" />
+    </button>
+    <button
+      :class="`toolbar-item spaced ${isOrderedList ? 'active' : ''}`"
+      @click="
+        () => {
+          if (!isOrderedList) {
+            editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+          } else {
+            editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+          }
+        }
+      "
+    >
+      <i class="format ol" />
+    </button>
+    <button
+      :class="`toolbar-item spaced ${isLink ? 'active' : ''}`"
+      @click="insertLink"
+    >
+      <i class="format link" />
+    </button>
+    <Teleport to="body">
+      <FloatLinkEditor v-if="isLink" :editor="editor" :priority="LowPriority" />
+    </Teleport>
+    <button
+      :class="`toolbar-item spaced ${isCode ? 'active' : ''}`"
+      @click="
+        () => {
+          editor.update(() => {
+            const selection = $getSelection();
+
+            if ($isRangeSelection(selection)) {
+              $wrapNodes(selection, () => $createCodeNode());
+            }
+          });
+        }
+      "
+    >
+      <i class="format code" />
+    </button>
+    <button
+      :class="`toolbar-item spaced ${isQuote ? 'active' : ''}`"
+      @click="
+        () => {
+          editor.update(() => {
+            const selection = $getSelection();
+
+            if ($isRangeSelection(selection)) {
+              $wrapNodes(selection, () => $createQuoteNode());
+            }
+          });
+        }
+      "
+    >
+      <i class="format quote" />
+    </button>
+    <button
+      :class="`toolbar-item spaced ${isTable ? 'active' : ''}`"
+      @click="insertTable"
+    >
+      <i class="format table" />
     </button>
     <div class="divider" />
     <button

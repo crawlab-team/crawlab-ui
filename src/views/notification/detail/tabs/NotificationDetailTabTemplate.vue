@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { translate } from '@/utils';
 import { ElMessage } from 'element-plus';
+import { translate } from '@/utils';
 import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
 
 const t = translate;

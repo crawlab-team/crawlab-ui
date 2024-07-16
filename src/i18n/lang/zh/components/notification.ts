@@ -46,6 +46,7 @@ const notification: LComponentsNotification = {
   variables: {
     invalid: '无效变量',
     task: {
+      id: 'ID',
       status: '状态',
       mode: '模式',
       cmd: '命令',
