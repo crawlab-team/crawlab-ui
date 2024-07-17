@@ -21,7 +21,11 @@ export declare global {
           node: string;
         };
       };
-      notification: string;
+      notification: {
+        title: string;
+        settings: string;
+        channels: string;
+      };
       environment: string;
       system: string;
       misc: {

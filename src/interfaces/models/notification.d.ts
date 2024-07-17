@@ -12,11 +12,9 @@ export declare global {
     | 'node_never';
 
   interface NotificationSetting extends BaseModel {
-    type?: string;
     name?: string;
     description?: string;
     enabled?: boolean;
-    global?: boolean;
     title?: string;
     template?: string; // legacy template content
     template_mode?: NotificationTemplateMode;
@@ -27,23 +25,8 @@ export declare global {
     task_trigger?: string;
     trigger_target?: NotificationTriggerTarget;
     trigger?: NotificationTrigger;
-    mail?: NotificationSettingMail;
-    mobile?: NotificationSettingMobile;
-  }
-
-  interface NotificationSettingMail {
-    server?: string;
-    port?: string;
-    user?: string;
-    password?: string;
-    sender_email?: string;
-    sender_identity?: string;
-    to?: string;
-    cc?: string;
-  }
-
-  interface NotificationSettingMobile {
-    webhook?: string;
+    channel_ids?: string[];
+    channels?: NotificationChannel[];
   }
 
   type NotificationTemplateMode = 'rich-text' | 'markdown';
@@ -62,5 +45,23 @@ export declare global {
     name: string;
     label?: string;
     icon?: Icon;
+  }
+
+  type NotificationChannelType = 'mail' | 'im';
+
+  interface NotificationChannel extends BaseModel {
+    type?: NotificationChannelType;
+    name?: string;
+    description?: string;
+    provider?: string;
+    mail_settings?: {
+      smtp_server?: string;
+      smtp_port?: string;
+      smtp_from_email_address?: string;
+      smtp_from_email_password?: string;
+    };
+    im_settings?: {
+      webhook?: string;
+    };
   }
 }

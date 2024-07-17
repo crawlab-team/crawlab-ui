@@ -1,7 +1,6 @@
 import { computed, h } from 'vue';
 import { useStore } from 'vuex';
 import useList from '@/layouts/content/list/useList';
-import NavLink from '@/components/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
 import { translate } from '@/utils/i18n';
 import {
@@ -12,17 +11,19 @@ import {
   FILTER_OP_CONTAINS,
 } from '@/constants';
 import { onListFilterChangeByKey } from '@/utils';
-import Switch from '@/components/switch/Switch.vue';
 import useRequest from '@/services/request';
+import NavLink from '@/components/nav/NavLink.vue';
+import Switch from '@/components/switch/Switch.vue';
+import { ElMessage } from 'element-plus';
 
 const { post } = useRequest();
 
-const useNotificationList = () => {
+const useNotificationSettingList = () => {
   // router
   const router = useRouter();
 
   // store
-  const ns = 'notification';
+  const ns: ListStoreNamespace = 'notificationSetting';
   const store = useStore<RootStoreState>();
   const { commit } = store;
 
@@ -86,37 +87,44 @@ const useNotificationList = () => {
           label: t('views.notification.settings.form.name'),
           icon: ['fa', 'font'],
           width: '240',
-          value: (row: NotificationSetting) =>
-            h(NavLink, {
-              label: row.name,
-              path: `/notifications/${row._id}`,
-            }),
-        },
-        {
-          key: 'type',
-          label: t('views.notification.settings.form.type'),
-          icon: ['fa', 'list'],
-          width: '120',
-          value: (row: NotificationSetting) =>
-            t(`views.notification.settings.type.${row.type}`),
+          value: (row: NotificationSetting) => (
+            <NavLink
+              label={row.name}
+              path={`/notifications/settings/${row._id}`}
+            />
+          ),
         },
         {
           key: 'enabled',
           label: t('views.notification.settings.form.enabled'),
           icon: ['fa', 'toggle-on'],
           width: '120',
-          value: (row: NotificationSetting) =>
-            h(Switch, {
-              modelValue: row.enabled,
-              onChange: async value => {
+          value: (row: NotificationSetting) => (
+            <Switch
+              modelValue={row.enabled}
+              onChange={async (value: boolean) => {
                 if (!row._id) return;
                 if (!value) {
                   await post(`/notifications/settings/${row._id}/disable`);
+                  ElMessage.success(t('common.message.success.disabled'));
                 } else {
                   await post(`/notifications/settings/${row._id}/enable`);
+                  ElMessage.success(t('common.message.success.enabled'));
                 }
-              },
-            }),
+              }}
+            />
+          ),
+          // h(Switch, {
+          //   modelValue: row.enabled,
+          //   onChange: async value => {
+          //     if (!row._id) return;
+          //     if (!value) {
+          //       await post(`/notifications/settings/${row._id}/disable`);
+          //     } else {
+          //       await post(`/notifications/settings/${row._id}/enable`);
+          //     }
+          //   },
+          // }),
         },
         {
           key: 'description',
@@ -134,8 +142,8 @@ const useNotificationList = () => {
               type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: (row: NotificationSetting) => {
-                router.push(`/notifications/${row._id}`);
+              onClick: async (row: NotificationSetting) => {
+                await router.push(`/notifications/${row._id}`);
               },
             },
             {
@@ -164,4 +172,4 @@ const useNotificationList = () => {
   };
 };
 
-export default useNotificationList;
+export default useNotificationSettingList;

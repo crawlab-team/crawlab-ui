@@ -5,6 +5,10 @@ const layouts: LLayouts = {
       mySettings: 'My Settings',
       disclaimer: 'Disclaimer',
     },
+    sidebar: {
+      collapse: 'Collapse',
+      expand: 'Expand',
+    },
   },
   detailLayout: {
     navTabs: {

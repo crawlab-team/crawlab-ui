@@ -5,6 +5,10 @@ const layouts: LLayouts = {
       mySettings: '我的设置',
       disclaimer: '免责声明',
     },
+    sidebar: {
+      collapse: '折叠',
+      expand: '展开',
+    },
   },
   detailLayout: {
     navTabs: {

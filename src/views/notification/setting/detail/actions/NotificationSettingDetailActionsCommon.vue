@@ -160,7 +160,7 @@ const getTriggerIcon = (value: NotificationTrigger) => {
     .find(o => o?.value === value)?.icon;
 };
 
-defineOptions({ name: 'ClNotificationDetailActionsCommon' });
+defineOptions({ name: 'ClNotificationSettingDetailActionsCommon' });
 </script>
 
 <template>

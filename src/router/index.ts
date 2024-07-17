@@ -105,8 +105,20 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
     },
     {
       path: '/notifications',
-      title: 'router.menuItems.notification',
+      title: 'router.menuItems.notification.title',
       icon: ['fa', 'envelope'],
+      children: [
+        {
+          path: '/notifications/settings',
+          title: 'router.menuItems.notification.settings',
+          icon: ['fa', 'cog'],
+        },
+        {
+          path: '/notifications/channels',
+          title: 'router.menuItems.notification.channels',
+          icon: ['fa', 'broadcast-tower'],
+        },
+      ],
     },
     {
       path: '/environments',

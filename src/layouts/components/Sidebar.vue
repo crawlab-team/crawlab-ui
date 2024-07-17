@@ -8,6 +8,7 @@ import { getPrimaryPath } from '@/utils/path';
 import { useI18n } from 'vue-i18n';
 import urljoin from 'url-join';
 import { isPro } from '@/utils';
+import ClMenuItemIcon from '@/components/icon/MenuItemIcon.vue';
 
 const router = useRouter();
 
@@ -91,21 +92,21 @@ defineOptions({ name: 'ClSidebar' });
 </script>
 
 <template>
-  <span
-    :class="sidebarCollapsed ? 'collapsed' : ''"
-    class="sidebar-toggle"
-    @click="toggleSidebar"
-  >
-    <font-awesome-icon v-if="!sidebarCollapsed" :icon="['fas', 'outdent']" />
-    <font-awesome-icon v-else :icon="['fas', 'indent']" />
-  </span>
+  <!--  <span-->
+  <!--    :class="sidebarCollapsed ? 'collapsed' : ''"-->
+  <!--    class="sidebar-toggle"-->
+  <!--    @click="toggleSidebar"-->
+  <!--  >-->
+  <!--    <font-awesome-icon v-if="!sidebarCollapsed" :icon="['fas', 'outdent']" />-->
+  <!--    <font-awesome-icon v-else :icon="['fas', 'indent']" />-->
+  <!--  </span>-->
   <el-aside
     :class="sidebarCollapsed ? 'collapsed' : ''"
     class="sidebar"
     width="inherit"
   >
     <!-- Logo -->
-    <div class="logo-container">
+    <div class="sidebar-header">
       <div v-if="!sidebarCollapsed" class="logo">
         <div
           v-if="
@@ -133,7 +134,6 @@ defineOptions({ name: 'ClSidebar' });
         <img class="logo-img" alt="logo-img" :src="logoIcon" />
       </div>
     </div>
-    <!-- ./Logo -->
 
     <!-- Sidebar Menu -->
     <div class="sidebar-menu">
@@ -146,10 +146,42 @@ defineOptions({ name: 'ClSidebar' });
         :default-openeds="openedIndexes"
         @select="onMenuItemClick"
       >
-        <template v-for="(item, $index) in menuItems" :key="$index">
+        <template v-for="(item, index) in menuItems" :key="index">
           <cl-sidebar-item :item="item" />
         </template>
       </el-menu>
+    </div>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <div class="el-menu-item" @click="toggleSidebar">
+        <cl-menu-item-icon
+          :item="{
+            title: sidebarCollapsed
+              ? t('layouts.components.sidebar.expand')
+              : t('layouts.components.sidebar.collapse'),
+            icon: sidebarCollapsed
+              ? ['fa', 'angles-right']
+              : ['fa', 'angles-left'],
+          }"
+        />
+        <el-tooltip
+          :content="
+            sidebarCollapsed
+              ? t('layouts.components.sidebar.expand')
+              : t('layouts.components.sidebar.collapse')
+          "
+          :disabled="!sidebarCollapsed"
+        >
+          <span v-if="!sidebarCollapsed" class="menu-item-title">
+            {{
+              sidebarCollapsed
+                ? t('layouts.components.sidebar.expand')
+                : t('layouts.components.sidebar.collapse')
+            }}
+          </span>
+        </el-tooltip>
+      </div>
     </div>
   </el-aside>
 </template>
@@ -163,19 +195,21 @@ defineOptions({ name: 'ClSidebar' });
   background-color: var(--cl-menu-bg);
 
   &.collapsed {
-    .logo-container,
-    .sidebar-menu {
+    .sidebar-header,
+    .sidebar-menu,
+    .sidebar-footer {
       width: var(--cl-sidebar-width-collapsed);
     }
 
-    .logo-container {
+    .sidebar-header,
+    .sidebar-footer {
       padding: 0;
       display: flex;
       justify-content: center;
     }
   }
 
-  .logo-container {
+  .sidebar-header {
     position: absolute;
     top: 0;
     left: 0;
@@ -261,7 +295,7 @@ defineOptions({ name: 'ClSidebar' });
     left: 0;
     overflow-y: auto;
     width: var(--cl-sidebar-width);
-    height: calc(100vh - var(--cl-header-height));
+    height: calc(100vh - var(--cl-header-height) - 56px);
     margin: 0;
     padding: 0;
     transition: width var(--cl-sidebar-collapse-transition-duration);
@@ -289,6 +323,27 @@ defineOptions({ name: 'ClSidebar' });
     &::-webkit-scrollbar-thumb {
       background-color: var(--cl-sub-menu-bg);
       border-radius: 3px;
+    }
+  }
+
+  .sidebar-footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 56px;
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+    .el-menu-item {
+      color: var(--cl-menu-text);
+
+      &:hover {
+        background-color: var(--cl-menu-hover);
+      }
+
+      .menu-item-title {
+        margin-left: 6px;
+      }
     }
   }
 }

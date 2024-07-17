@@ -2,12 +2,12 @@
 import { watch } from 'vue';
 import { useStore } from 'vuex';
 import { TAB_NAME_TEMPLATE } from '@/constants';
-import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
+import useNotificationSettingDetail from '@/views/notification/setting/detail/useNotificationSettingDetail';
 
-const ns = 'notification';
+const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
-const { notification: state } = store.state as RootStoreState;
-const { activeTabName } = useNotificationDetail();
+const { notificationSetting: state } = store.state as RootStoreState;
+const { activeTabName } = useNotificationSettingDetail();
 
 watch<NotificationSetting>(
   () => state.form,
@@ -32,14 +32,14 @@ watch<NotificationSetting>(
   }
 );
 
-defineOptions({ name: 'ClNotificationDetail' });
+defineOptions({ name: 'ClNotificationSettingDetail' });
 </script>
 
 <template>
-  <cl-detail-layout store-namespace="notification">
+  <cl-detail-layout store-namespace="notificationSetting">
     <template #actions>
-      <cl-notification-detail-actions-common />
-      <cl-notification-detail-actions-template
+      <cl-notification-setting-detail-actions-common />
+      <cl-notification-setting-detail-actions-template
         v-if="activeTabName === TAB_NAME_TEMPLATE"
       />
     </template>

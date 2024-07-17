@@ -22,7 +22,8 @@ export declare global {
     token: TokenStoreState;
     plugin: PluginStoreState;
     git: GitStoreState;
-    notification: NotificationStoreState;
+    notificationSetting: NotificationSettingStoreState;
+    notificationChannel: NotificationChannelStoreState;
     ds: DataSourceStoreState;
     environment: EnvironmentStoreState;
     system: SystemStoreState;
@@ -168,7 +169,8 @@ export declare global {
     | 'token'
     | 'plugin'
     | 'git'
-    | 'notification'
+    | 'notificationSetting'
+    | 'notificationChannel'
     | 'ds'
     | 'environment';
   type ListStoreNamespace =
@@ -183,7 +185,8 @@ export declare global {
     | 'token'
     | 'plugin'
     | 'git'
-    | 'notification'
+    | 'notificationSetting'
+    | 'notificationChannel'
     | 'ds'
     | 'environment';
 

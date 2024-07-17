@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import useNotification from '@/components/notification/notification';
+import useNotificationSetting from '@/components/notification/useNotificationSetting';
 
 // store
 const store = useStore();
@@ -11,8 +11,8 @@ const {
   confirmDisabled,
   confirmLoading,
   createEditDialogVisible,
-} = useNotification(store);
-defineOptions({ name: 'ClCreateEditNotificationDialog' });
+} = useNotificationSetting(store);
+defineOptions({ name: 'ClCreateEditNotificationSettingDialog' });
 </script>
 
 <template>
@@ -24,7 +24,7 @@ defineOptions({ name: 'ClCreateEditNotificationDialog' });
     :confirm-loading="confirmLoading"
   >
     <template #default>
-      <cl-notification-form />
+      <cl-notification-setting-form />
     </template>
   </cl-create-edit-dialog>
 </template>

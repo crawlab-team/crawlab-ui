@@ -20,7 +20,11 @@ const router: LRouter = {
         node: 'Node.js',
       },
     },
-    notification: '消息通知',
+    notification: {
+      title: '消息通知',
+      settings: '通知配置',
+      channels: '通知渠道',
+    },
     environment: '环境变量',
     system: '系统设置',
     misc: {

@@ -1,14 +1,14 @@
 import { Store } from 'vuex';
 import { getDefaultService } from '@/utils/service';
 
-const useNotificationService = (
+const useNotificationSettingService = (
   store: Store<RootStoreState>
 ): Services<NotificationSetting> => {
-  const ns = 'notification';
+  const ns: ListStoreNamespace = 'notificationSetting';
 
   return {
     ...getDefaultService<NotificationSetting>(ns, store),
   };
 };
 
-export default useNotificationService;
+export default useNotificationSettingService;

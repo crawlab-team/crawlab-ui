@@ -2,28 +2,32 @@ import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 import { Store } from 'vuex';
 import useForm from '@/components/form/useForm';
-import useNotificationService from '@/services/notification/notificationService';
+import useNotificationSettingService from '@/services/notification/useNotificationSettingService';
 import { getDefaultFormComponentData } from '@/utils/form';
 
 // form component data
 const formComponentData = getDefaultFormComponentData<NotificationSetting>();
 
-const useNotification = (store: Store<RootStoreState>) => {
+const useNotificationSetting = (store: Store<RootStoreState>) => {
+  const { notificationSetting: state } = store.state as RootStoreState;
   // route
   const route = useRoute();
 
   // notification id
   const id = computed(() => route.params.id);
 
+  const form = computed(() => state.form);
+
   return {
     ...useForm(
-      'notification',
+      'notificationSetting',
       store,
-      useNotificationService(store),
+      useNotificationSettingService(store),
       formComponentData
     ),
     id,
+    form,
   };
 };
 
-export default useNotification;
+export default useNotificationSetting;

@@ -20,7 +20,11 @@ const router: LRouter = {
         node: 'Node.js',
       },
     },
-    notification: 'Notification',
+    notification: {
+      title: 'Notifications',
+      settings: 'Notification Settings',
+      channels: 'Notification Channels',
+    },
     environment: 'Environment',
     system: 'System Settings',
     misc: {

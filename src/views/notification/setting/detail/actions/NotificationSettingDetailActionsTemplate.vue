@@ -70,7 +70,7 @@ const onTemplateModeClick = async (
   }
 };
 
-defineOptions({ name: 'ClNotificationDetailActionsTemplate' });
+defineOptions({ name: 'ClNotificationSettingDetailActionsTemplate' });
 </script>
 
 <template>

@@ -6,6 +6,10 @@ export declare global {
         mySettings: string;
         logout: string;
       };
+      sidebar: {
+        expand: string;
+        collapse: string;
+      };
     };
     detailLayout: {
       navTabs: {

@@ -3,16 +3,16 @@ import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import { translate } from '@/utils';
-import useNotificationDetail from '@/views/notification/detail/useNotificationDetail';
+import useNotificationSettingDetail from '@/views/notification/setting/detail/useNotificationSettingDetail';
 
 const t = translate;
 
 // store
 const ns = 'notification';
 const store = useStore();
-const { notification: state } = store.state as RootStoreState;
+const { notificationSetting: state } = store.state as RootStoreState;
 
-const { activeId } = useNotificationDetail();
+const { activeId } = useNotificationSettingDetail();
 
 const internalTitle = ref();
 onMounted(() => {
@@ -117,11 +117,11 @@ const onSave = async () => {
   ElMessage.success(t('common.message.success.save'));
 };
 
-defineOptions({ name: 'ClNotificationDetailTabTemplate' });
+defineOptions({ name: 'ClNotificationSettingDetailTabTemplate' });
 </script>
 
 <template>
-  <div class="notification-detail-tab-template">
+  <div class="notification-setting-detail-tab-template">
     <el-input
       v-model="internalTitle"
       class="title"
@@ -156,7 +156,7 @@ defineOptions({ name: 'ClNotificationDetailTabTemplate' });
 </template>
 
 <style scoped>
-.notification-detail-tab-template {
+.notification-setting-detail-tab-template {
   height: 100%;
 
   .title {

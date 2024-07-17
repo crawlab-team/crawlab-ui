@@ -10,15 +10,15 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="notification-detail-tab-overview">
+  <div class="notification-setting-detail-tab-overview">
     <!-- Notification Form (handled by store) -->
-    <cl-notification-form />
+    <cl-notification-setting-form />
     <!-- ./Notification Form -->
   </div>
 </template>
 
 <style lang="scss" scoped>
-.notification-detail-tab-overview {
+.notification-setting-detail-tab-overview {
   margin: 20px;
 }
 </style>
