@@ -220,12 +220,8 @@ useEffect(() => {
       },
       COMMAND_PRIORITY_LOW
     ),
-    editor.registerCommand<MouseEvent>(
-      CLICK_COMMAND,
-      onClick,
-      COMMAND_PRIORITY_LOW
-    ),
-    editor.registerCommand<MouseEvent>(
+    editor.registerCommand(CLICK_COMMAND, onClick, COMMAND_PRIORITY_LOW),
+    editor.registerCommand(
       RIGHT_CLICK_IMAGE_COMMAND,
       onClick,
       COMMAND_PRIORITY_LOW

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, watch } from 'vue';
+import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import {
   $createParagraphNode,
   $getRoot,
+  $getSelection,
   $isParagraphNode,
   COMMAND_PRIORITY_EDITOR,
   createCommand,
@@ -153,13 +154,37 @@ const onKeyDown = (event: KeyboardEvent) => {
 };
 
 mergeRegister(
+  // register rich text
   registerRichText(editor),
+
+  // register history
   registerHistory(editor, createEmptyHistoryState(), 300),
+
+  // keydown event
   editor?.registerCommand<KeyboardEvent>(
     KEY_DOWN_COMMAND,
     onKeyDown,
     COMMAND_PRIORITY_EDITOR
   ),
+
+  // update rich text
+  editor?.registerUpdateListener(
+    ({ dirtyElements, dirtyLeaves, prevEditorState }) => {
+      if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
+      if (prevEditorState.isEmpty()) return;
+
+      editor?.getEditorState().read(() => {
+        const richTextContent = $generateHtmlFromNodes(editor);
+        const richTextContentJson = JSON.stringify(editor?.toJSON());
+        modelValue.value.richTextContent = richTextContent;
+        modelValue.value.richTextContentJson = richTextContentJson;
+      });
+
+      addEmptyParagraph();
+    }
+  ),
+
+  // update markdown
   editor?.registerCommand(
     UPDATE_MARKDOWN_COMMAND,
     () => {
@@ -216,24 +241,6 @@ const addEmptyParagraph = () => {
 };
 onMounted(addEmptyParagraph);
 
-mergeRegister(
-  editor?.registerUpdateListener(
-    ({ dirtyElements, dirtyLeaves, prevEditorState }) => {
-      if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
-      if (prevEditorState.isEmpty()) return;
-
-      editor?.getEditorState().read(() => {
-        const richTextContent = $generateHtmlFromNodes(editor);
-        const richTextContentJson = JSON.stringify(editor?.toJSON());
-        modelValue.value.richTextContent = richTextContent;
-        modelValue.value.richTextContentJson = richTextContentJson;
-      });
-
-      addEmptyParagraph();
-    }
-  )
-);
-
 defineOptions({ name: 'ClLexicalEditor' });
 </script>
 
@@ -249,15 +256,15 @@ defineOptions({ name: 'ClLexicalEditor' });
           <div class="editor-placeholder">Enter some rich text...</div>
         </template>
       </cl-lexical-rich-text-plugin>
-      <cl-lexical-list-plugin :editor="editor" />
-      <cl-lexical-link-plugin :editor="editor" />
-      <cl-lexical-auto-link-plugin :editor="editor" />
-      <cl-lexical-auto-focus-plugin :editor="editor" />
-      <cl-lexical-table-plugin :editor="editor" />
-      <cl-lexical-image-plugin :editor="editor" />
-      <cl-lexical-variable-plugin :editor="editor" />
     </div>
   </div>
+  <cl-lexical-list-plugin :editor="editor" />
+  <cl-lexical-link-plugin :editor="editor" />
+  <cl-lexical-auto-link-plugin :editor="editor" />
+  <cl-lexical-auto-focus-plugin :editor="editor" />
+  <cl-lexical-table-plugin :editor="editor" />
+  <!--      <cl-lexical-image-plugin :editor="editor" />-->
+  <cl-lexical-variable-plugin :editor="editor" />
 </template>
 
 <style scoped>
@@ -273,8 +280,10 @@ defineOptions({ name: 'ClLexicalEditor' });
     height: calc(100% - 45px);
     background: #fff;
     position: relative;
+    display: flex;
 
     .editor-placeholder {
+      flex: 1;
       color: #999;
       overflow: hidden;
       position: absolute;
@@ -288,6 +297,7 @@ defineOptions({ name: 'ClLexicalEditor' });
     }
 
     .editor-input {
+      flex: 1;
       overflow: auto;
       height: 100%;
       resize: none;
@@ -338,15 +348,11 @@ defineOptions({ name: 'ClLexicalEditor' });
       &:deep(table.resizing *::after) {
         user-select: none;
       }
+    }
 
-      &:deep(.variable) {
-        color: var(--cl-warning-color);
-        font-style: italic;
-      }
-
-      &:deep(.variable.selected) {
-        background-color: var(--cl-warning-plain-color);
-      }
+    .editor-state {
+      flex: 0 0 360px;
+      font-size: 11px;
     }
   }
 }

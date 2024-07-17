@@ -69,7 +69,7 @@ useMounted(() => {
           COMMAND_PRIORITY_LOW
         )
       : () => {
-          // Don't paste arbritrary text as a link when there's no validate function
+          // Don't paste arbitrary text as a link when there's no validate function
         }
   );
 });

@@ -3,7 +3,6 @@ import { JSX } from 'vue/jsx-runtime';
 import { ElTooltip } from 'element-plus';
 import {
   $applyNodeReplacement,
-  $getNodeByKey,
   DecoratorNode,
   DOMExportOutput,
   EditorConfig,
@@ -15,25 +14,28 @@ import {
 } from 'lexical';
 import { translate } from '@/utils';
 import { isValidVariable } from '@/utils/notification';
+import { UPDATE_VARIABLE_COMMAND } from '@/components/lexical/composables/useVariableSetup';
 
 const t = translate;
 
 export type SerializedVariableNode = Spread<
   {
+    key?: string;
     category?: NotificationVariableCategory;
     name: string;
-    bold?: boolean;
-    italic?: boolean;
-    underline?: boolean;
-    strikethrough?: boolean;
-    selected?: boolean;
+    __bold?: boolean;
+    __italic?: boolean;
+    __underline?: boolean;
+    __strikethrough?: boolean;
+    __selected?: boolean;
   },
   SerializedLexicalNode
 >;
 
 export class VariableNode extends DecoratorNode<JSX.Element> {
-  readonly __category?: NotificationVariableCategory;
-  readonly __name: string;
+  readonly version = 1;
+  readonly category?: NotificationVariableCategory;
+  readonly name: string;
   __bold: boolean;
   __italic: boolean;
   __underline: boolean;
@@ -41,21 +43,21 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   __selected: boolean;
 
   constructor({
+    key,
     category,
     name,
-    key,
-  }: {
-    category?: NotificationVariableCategory;
-    name: string;
-    key?: string;
-  }) {
+    __bold,
+    __italic,
+    __underline,
+    __strikethrough,
+  }: SerializedVariableNode) {
     super(key);
-    this.__category = category;
-    this.__name = name;
-    this.__bold = false;
-    this.__italic = false;
-    this.__underline = false;
-    this.__strikethrough = false;
+    this.category = category;
+    this.name = name;
+    this.__bold = __bold || false;
+    this.__italic = __italic || false;
+    this.__underline = __underline || false;
+    this.__strikethrough = __strikethrough || false;
     this.__selected = false;
   }
 
@@ -65,15 +67,10 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
 
   static clone(node: VariableNode): VariableNode {
     return new VariableNode({
-      category: node.__category,
-      name: node.__name,
+      category: node.category,
+      name: node.name,
       key: node.__key,
     });
-  }
-
-  static importJSON(serializedNode: SerializedVariableNode): VariableNode {
-    const { category, name } = serializedNode;
-    return $createVariableNode({ category, name });
   }
 
   exportDOM(_: LexicalEditor): DOMExportOutput {
@@ -81,22 +78,40 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
     const name = this.getName();
     const element = document.createElement('span');
     element.classList.add('variable');
+    element.setAttribute('contenteditable', 'true');
     element.innerText = category ? `$\{${category}:${name}\}` : `$\{${name}\}`;
     return { element };
   }
 
+  static importJSON(serializedNode: SerializedVariableNode): VariableNode {
+    return $createVariableNode({ ...serializedNode });
+  }
+
   exportJSON(): SerializedVariableNode {
     return {
-      category: this.__category,
-      name: this.__name,
       type: VariableNode.getType(),
-      version: 1,
+      version: this.version,
+      category: this.category,
+      name: this.name,
+      __bold: this.__bold,
+      __italic: this.__italic,
+      __underline: this.__underline,
+      __strikethrough: this.__strikethrough,
+      __selected: this.__selected,
     };
+  }
+
+  onClick(editor: LexicalEditor) {
+    editor.dispatchCommand(UPDATE_VARIABLE_COMMAND, {
+      nodeKey: this.getKey(),
+      action: 'select',
+    } as UpdateVariableCommandPayload);
   }
 
   createDOM(_: EditorConfig): HTMLElement {
     const currentElement = document.createElement('span');
     currentElement.classList.add('variable');
+    currentElement.setAttribute('contenteditable', 'true');
     return currentElement;
   }
 
@@ -105,7 +120,7 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
   }
 
   decorate(editor): JSX.Element {
-    console.debug(Object.isFrozen(this));
+    const latest = this.getLatest();
     const category = this.getCategory();
     const name = this.getName();
     const isValid = isValidVariable({
@@ -123,109 +138,106 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
     const color = isValid
       ? 'var(--cl-warning-color)'
       : 'var(--cl-danger-color)';
+
+    const backgroundColor = latest.__selected
+      ? 'var(--cl-warning-plain-color)'
+      : '';
+    const fontWeight = latest.__bold ? 'bold' : 'normal';
+    const fontStyle = latest.__italic ? 'italic' : 'normal';
+    const textDecoration = [
+      latest.__underline && 'underline',
+      latest.__strikethrough && 'line-through',
+    ]
+      .filter(Boolean)
+      .join(' ');
     const label = category ? `$\{${category}:${name}\}` : `$\{${name}\}`;
     return h(ElTooltip, null, {
-      default: (
+      default: () => (
         <span
-          class={{
-            'variable-label': true,
-            selected: this.getSelected(),
-          }}
           style={{
             color,
-            fontWeight: this.__bold ? 'bold' : 'normal',
-            fontStyle: this.__italic ? 'italic' : 'normal',
-            textDecoration: this.__underline ? 'underline' : 'none',
-            textDecorationLine: this.__strikethrough ? 'line-through' : 'none',
+            backgroundColor,
+            fontWeight,
+            fontStyle,
+            textDecoration,
           }}
-          onClick={() => {
-            editor.update(() => {
-              const node = $getNodeByKey(this.getKey()) as VariableNode;
-              node.setSelected(!node.getSelected());
-            });
-          }}
+          onClick={() => latest.onClick(editor)}
         >
           {label}
         </span>
       ),
-      content: tooltip,
+      content: () => tooltip,
     });
   }
 
   toggleFormat(formatType: TextFormatType): void {
     switch (formatType) {
       case 'bold':
-        this.setBold(!this.getBold());
+        this.toggleBold();
         break;
       case 'italic':
-        this.setItalic(!this.getItalic());
+        this.toggleItalic();
         break;
       case 'underline':
-        this.setUnderline(!this.getUnderline());
+        this.toggleUnderline();
         break;
       case 'strikethrough':
-        this.setStrikethrough(!this.getStrikethrough());
+        this.toggleStrikethrough();
         break;
     }
   }
 
   getCategory(): string {
-    return this.__category;
+    return this.category;
   }
 
   getName(): string {
-    return this.__name;
+    return this.name;
   }
 
-  getBold(): boolean {
-    return this.__bold;
+  toggle(key, value?: boolean) {
+    const latest = this.getLatest().exportJSON();
+    const writable = this.getWritable();
+    for (const _key of Object.keys(latest)) {
+      if (_key.startsWith('__')) writable[_key] = latest[_key];
+    }
+    if (value === undefined) {
+      writable[key] = !latest[key];
+    } else {
+      writable[key] = value;
+    }
   }
 
-  getItalic(): boolean {
-    return this.__italic;
+  toggleBold() {
+    this.toggle('__bold');
   }
 
-  getUnderline(): boolean {
-    return this.__underline;
+  toggleItalic() {
+    this.toggle('__italic');
   }
 
-  getStrikethrough(): boolean {
-    return this.__strikethrough;
+  toggleUnderline() {
+    this.toggle('__underline');
   }
 
-  getSelected(): boolean {
-    return this.__selected;
+  toggleStrikethrough() {
+    this.toggle('__strikethrough');
   }
 
-  setBold(bold: boolean): void {
-    this.__bold = bold;
+  toggleSelected() {
+    this.toggle('__selected');
   }
 
-  setItalic(italic: boolean): void {
-    this.__italic = italic;
-  }
-
-  setUnderline(underline: boolean): void {
-    this.__underline = underline;
-  }
-
-  setStrikethrough(strikethrough: boolean): void {
-    this.__strikethrough = strikethrough;
-  }
-
-  setSelected(selected: boolean): void {
-    this.__selected = selected;
+  setSelected(value: boolean) {
+    this.toggle('__selected', value);
   }
 }
 
-export function $createVariableNode({
-  category,
-  name,
-}: {
-  category?: NotificationVariableCategory;
-  name: string;
-}): VariableNode {
-  return $applyNodeReplacement(new VariableNode({ category, name }));
+export function $createVariableNode(
+  params: SerializedVariableNode
+): VariableNode {
+  const node = new VariableNode({ ...params });
+  return $applyNodeReplacement(node);
 }
 
 export function $isVariableNode(

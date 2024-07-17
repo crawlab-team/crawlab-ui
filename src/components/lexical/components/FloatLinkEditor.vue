@@ -125,6 +125,7 @@ const resetLinkEditor = () => {
 
 const updateLinkEditor = () => {
   selection = $getSelection() as RangeSelection;
+  console.debug('selection', selection);
   if (!selection) {
     resetLinkEditor();
     return;
@@ -162,7 +163,7 @@ onMounted(() => {
       SELECTION_CHANGE_COMMAND,
       () => {
         updateLinkEditor();
-        return true;
+        return false;
       },
       props.priority
     )

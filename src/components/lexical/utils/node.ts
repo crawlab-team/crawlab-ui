@@ -1,11 +1,13 @@
-import { $getRoot, $isTextNode } from 'lexical';
+import { $getRoot, $isTextNode, TextNode } from 'lexical';
 import type { ElementNode } from 'lexical';
 
 // 获取所有文本节点的函数
-export const getAllNodes = (checkNodeFn: (node: ElementNode) => boolean) => {
-  let allNodes: ElementNode[] = [];
+export const getAllNodes = <T = ElementNode>(
+  checkNodeFn: (node: T) => boolean
+): T[] => {
+  let allNodes: T[] = [];
   const root = $getRoot();
-  const nodes = root.getChildren<ElementNode>();
+  const nodes = root.getChildren<T>();
   nodes.forEach(node => {
     if (checkNodeFn(node)) {
       allNodes.push(node);
@@ -16,22 +18,22 @@ export const getAllNodes = (checkNodeFn: (node: ElementNode) => boolean) => {
   return allNodes;
 };
 
-export const getAllTextNodes = () => {
-  return getAllNodes($isTextNode);
+export const getAllTextNodes = (): TextNode[] => {
+  return getAllNodes<TextNode>($isTextNode);
 };
 
 // 递归获取文本节点的辅助函数
-const getAllNodesRecursively = (
-  node: ElementNode,
-  allNodes: ElementNode[],
-  checkNodeFn: (node: ElementNode) => boolean
+const getAllNodesRecursively = <T = ElementNode>(
+  node: T,
+  allNodes: T[],
+  checkNodeFn: (node: T) => boolean
 ) => {
-  const children = node.getChildren<ElementNode>?.() || [];
+  const children = node.getChildren<T>?.() || [];
   children.forEach(child => {
     if (checkNodeFn(child)) {
       allNodes.push(child);
     } else {
-      getAllNodesRecursively(child, allNodes, checkNodeFn);
+      getAllNodesRecursively<T>(child, allNodes, checkNodeFn);
     }
   });
 };

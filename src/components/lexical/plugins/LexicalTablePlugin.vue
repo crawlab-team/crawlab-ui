@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type {
   HTMLTableElementWithWithTableSelectionState,
-  InsertTableCommandPayload,
   TableObserver,
 } from '@lexical/table';
 import {
@@ -63,6 +62,15 @@ const resetResize = () => {
 
 const SET_TABLE_CELL_WIDTH_COMMAND =
   createCommand<SetTableHeadCellWidthPayload>('SET_TABLE_CELL_WIDTH_COMMAND');
+const INITIALIZE_TABLE_NODE_COMMAND = createCommand<{ nodeKey: string }>(
+  'INITIALIZE_TABLE_NODE_COMMAND'
+);
+
+const isEdge = (e: MouseEvent) => {
+  const cell = e.target as HTMLTableCellElement;
+  const rect = cell.getBoundingClientRect();
+  return e.clientX > rect.right - 10;
+};
 
 useMounted(() => {
   const { editor } = props;
@@ -74,47 +82,6 @@ useMounted(() => {
     );
   }
 
-  return mergeRegister(
-    editor.registerCommand<InsertTableCommandPayload>(
-      INSERT_TABLE_COMMAND,
-      ({ columns, rows, includeHeaders }) => {
-        const tableNode = $createTableNodeWithDimensions(
-          Number(rows),
-          Number(columns),
-          includeHeaders
-        );
-        $insertNodeToNearestRoot(tableNode);
-
-        const firstDescendant = tableNode.getFirstDescendant();
-        if ($isTextNode(firstDescendant)) firstDescendant.select();
-
-        return true;
-      },
-      COMMAND_PRIORITY_EDITOR
-    ),
-    editor.registerCommand(
-      SET_TABLE_CELL_WIDTH_COMMAND,
-      ({ nodeKey, width }) => {
-        editor.update(() => {
-          const tableCellNode = $getNodeByKey<TableCellNode>(nodeKey);
-          tableCellNode?.setWidth(width);
-        });
-        return true;
-      },
-      COMMAND_PRIORITY_EDITOR
-    )
-  );
-});
-
-const isEdge = (e: MouseEvent) => {
-  const cell = e.target as HTMLTableCellElement;
-  const rect = cell.getBoundingClientRect();
-  return e.clientX > rect.right - 10;
-};
-
-useMounted(() => {
-  const { editor } = props;
-
   const tableSelections = new Map<NodeKey, TableObserver>();
 
   const initializeResizableTableCellNodes = (tableNode: TableNode) => {
@@ -124,7 +91,8 @@ useMounted(() => {
         ?.getChildren<TableCellNode>()
         ?.filter(cell => !!$isTableCellNode(cell)) || [];
     const tableElement = editor.getElementByKey(tableNode.getKey());
-    const thElements = tableElement?.querySelectorAll('th') || [];
+    if (!tableElement) return;
+    const thElements = tableElement.querySelectorAll('th') || [];
     thElements.forEach((th, index) => {
       const tableHeadCellNode = tableHeadCellNodes[index];
 
@@ -136,7 +104,7 @@ useMounted(() => {
 
         startX.value = e.pageX;
         startWidth.value = th.offsetWidth;
-        tableElement?.setAttribute('class', 'resizing');
+        tableElement.classList.add('resizing');
         document.addEventListener('mousemove', onTableCellMouseMove);
         document.addEventListener('mouseup', onTableCellMouseUp);
       });
@@ -172,15 +140,12 @@ useMounted(() => {
       const onTableCellMouseUp = () => {
         resetResize();
         editor.setEditable(true);
-        tableElement?.removeAttribute('class');
+        tableElement.classList.remove('resizing');
         document.removeEventListener('mousemove', onTableCellMouseMove);
         document.removeEventListener('mouseup', onTableCellMouseUp);
         editor.dispatchCommand(SET_TABLE_CELL_WIDTH_COMMAND, {
           nodeKey: tableHeadCellNode.getKey(),
           width: endWidth.value,
-        });
-        editor.update(() => {
-          initializeResizableTableCellNodes(tableNode);
         });
       };
     });
@@ -234,8 +199,54 @@ useMounted(() => {
     }
   );
 
+  const unregisterMergeListener = mergeRegister(
+    editor.registerCommand(
+      INSERT_TABLE_COMMAND,
+      ({ columns, rows, includeHeaders }) => {
+        const tableNode = $createTableNodeWithDimensions(
+          Number(rows),
+          Number(columns),
+          includeHeaders
+        );
+        $insertNodeToNearestRoot(tableNode);
+
+        const firstDescendant = tableNode.getFirstDescendant();
+        if ($isTextNode(firstDescendant)) firstDescendant.select();
+
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    ),
+    editor.registerCommand(
+      SET_TABLE_CELL_WIDTH_COMMAND,
+      ({ nodeKey, width }) => {
+        editor.update(() => {
+          const tableCellNode = $getNodeByKey<TableCellNode>(nodeKey);
+          tableCellNode?.setWidth(width);
+        });
+        editor.dispatchCommand(INITIALIZE_TABLE_NODE_COMMAND, { nodeKey });
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    ),
+    editor.registerCommand(
+      INITIALIZE_TABLE_NODE_COMMAND,
+      ({ nodeKey }) => {
+        editor.update(() => {
+          const tableNode = $getNodeByKey<TableNode>(nodeKey);
+          if ($isTableNode(tableNode)) {
+            initializeTableNode(tableNode);
+          }
+        });
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    )
+  );
+
   return () => {
     unregisterMutationListener();
+    unregisterMergeListener();
     // Hook might be called multiple times so cleaning up tables listeners as well,
     // as it'll be reinitialized during recurring call
     for (const [, tableSelection] of tableSelections)
@@ -286,7 +297,7 @@ useLexicalEffect(() => {
               'Expected TableNode cell to be a TableCellNode'
             );
             const newCell = $createTableCellNode(cell.__headerState);
-            if (lastRowCell !== null) lastRowCell.insertAfter(newCell);
+            if (lastRowCell) lastRowCell.insertAfter(newCell);
             else $insertFirst(row, newCell);
           }
         }

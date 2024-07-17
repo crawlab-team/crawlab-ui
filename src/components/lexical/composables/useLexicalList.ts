@@ -1,14 +1,14 @@
 import type { LexicalEditor } from 'lexical';
+import { COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND } from 'lexical';
 import {
   $handleListInsertParagraph,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
-  REMOVE_LIST_COMMAND,
   insertList,
+  REMOVE_LIST_COMMAND,
   removeList,
 } from '@lexical/list';
 import { mergeRegister } from '@lexical/utils';
-import { COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND } from 'lexical';
 import useMounted from './useLexicalMounted';
 
 export default (editor: LexicalEditor) => {
@@ -41,11 +41,7 @@ export default (editor: LexicalEditor) => {
       editor.registerCommand(
         INSERT_PARAGRAPH_COMMAND,
         () => {
-          const hasHandledInsertParagraph = $handleListInsertParagraph();
-
-          if (hasHandledInsertParagraph) return true;
-
-          return false;
+          return $handleListInsertParagraph();
         },
         COMMAND_PRIORITY_LOW
       )

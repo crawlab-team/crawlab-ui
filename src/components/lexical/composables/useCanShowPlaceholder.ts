@@ -4,13 +4,13 @@ import { $canShowPlaceholderCurry } from '@lexical/text';
 import { mergeRegister } from '@lexical/utils';
 import useMounted from './useLexicalMounted';
 
-function canShowPlaceholderFromCurrentEditorState(
+const canShowPlaceholderFromCurrentEditorState = (
   editor: LexicalEditor
-): boolean {
+): boolean => {
   return editor
     .getEditorState()
     .read($canShowPlaceholderCurry(editor.isComposing()));
-}
+};
 
 export default (editor: LexicalEditor) => {
   const initialState = editor
@@ -19,9 +19,9 @@ export default (editor: LexicalEditor) => {
 
   const canShowPlaceholder = ref(initialState);
 
-  function resetCanShowPlaceholder() {
+  const resetCanShowPlaceholder = () => {
     canShowPlaceholder.value = canShowPlaceholderFromCurrentEditorState(editor);
-  }
+  };
 
   useMounted(() => {
     return mergeRegister(

@@ -1,30 +1,43 @@
 import {
+  $createNodeSelection,
   $createParagraphNode,
+  $createRangeSelection,
   $createTextNode,
+  $getNodeByKey,
   $getRoot,
   $getSelection,
+  $isNodeSelection,
+  $isRangeSelection,
+  $setSelection,
   COMMAND_PRIORITY_EDITOR,
+  COMMAND_PRIORITY_LOW,
   createCommand,
+  FORMAT_TEXT_COMMAND,
   type LexicalEditor,
+  NodeSelection,
+  RangeSelection,
+  SELECTION_CHANGE_COMMAND,
+  type TextFormatType,
 } from 'lexical';
 import { mergeRegister } from '@lexical/utils';
-import { onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import {
   $createVariableNode,
   $isVariableNode,
+  VariableNode,
 } from '@/components/lexical/nodes/VariableNode';
-import { getAllTextNodes } from '@/components/lexical/utils/node';
+import { getAllNodes, getAllTextNodes } from '@/components/lexical/utils/node';
+import { publish, subscribe } from '@/utils/eventBus';
+import useLexicalMounted from '@/components/lexical/composables/useLexicalMounted';
+import { $isTableSelection } from '@lexical/table';
 
 export const INSERT_VARIABLE_COMMAND =
   createCommand<InsertVariableCommandPayload>('INSERT_VARIABLE');
 
-let unregisterListener: () => void;
+export const UPDATE_VARIABLE_COMMAND =
+  createCommand<UpdateVariableCommandPayload>('UPDATE_VARIABLE');
 
-const resetVariables = () => {
-  document.querySelectorAll('.editor-container .variable').forEach(element => {
-    element.classList.remove('active');
-  });
-};
+let unregisterListener: () => void;
 
 const variableRegex = /(.*)\$\{(\w+):(\w+)\}(.*)/;
 
@@ -63,24 +76,45 @@ const highlightVariables = (editor: LexicalEditor) => {
   });
 };
 
+let activeVariableNodeKey: string | null = null;
+export const getActiveVariableNodeKey = () => {
+  return activeVariableNodeKey;
+};
+
 export default (editor: LexicalEditor) => {
   unregisterListener = mergeRegister(
-    editor.registerUpdateListener(({ editorState }) => {
-      editorState.read(() => {
-        resetVariables();
-        const selection = $getSelection();
-        if (!selection) return;
-        const variableNode = selection.getNodes().find($isVariableNode);
-        if (!variableNode) return;
-      });
+    // highlight variables on editor update
+    editor.registerUpdateListener(() => {
       highlightVariables(editor);
     }),
-    editor.registerCommand<InsertVariableCommandPayload>(
+
+    // on selection change
+    editor.registerCommand(
+      SELECTION_CHANGE_COMMAND,
+      () => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection) && !$isTableSelection(selection)) {
+          return;
+        }
+        getAllNodes<VariableNode>($isVariableNode).forEach(node => {
+          node.setSelected(false);
+        });
+        activeVariableNodeKey = null;
+        return false;
+      },
+      COMMAND_PRIORITY_EDITOR
+    ),
+
+    // insert variable command
+    editor.registerCommand(
       INSERT_VARIABLE_COMMAND,
       ({ category, name }) => {
         const selection = $getSelection();
         const rootNode = $getRoot();
-        const variable = $createVariableNode({ category, name });
+        const variable = $createVariableNode({
+          category,
+          name,
+        });
         const paragraph = $createParagraphNode();
         paragraph.append(variable);
         if (selection) {
@@ -90,6 +124,44 @@ export default (editor: LexicalEditor) => {
         } else {
           throw new Error('No selection or root node found');
         }
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    ),
+
+    // update variable command
+    editor.registerCommand(
+      UPDATE_VARIABLE_COMMAND,
+      ({ nodeKey, action, value }) => {
+        const node = $getNodeByKey(nodeKey);
+        if (!node || !$isVariableNode(node)) return;
+        switch (action) {
+          case 'select':
+            activeVariableNodeKey = nodeKey;
+            getAllNodes<VariableNode>($isVariableNode).forEach(node => {
+              node.setSelected(node.getKey() === nodeKey);
+            });
+            $setSelection(null);
+            break;
+          case 'format':
+            node.toggleFormat(value);
+            break;
+        }
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    ),
+
+    // variable node format update
+    editor.registerCommand(
+      FORMAT_TEXT_COMMAND,
+      formatType => {
+        if (!activeVariableNodeKey) return true;
+        editor.dispatchCommand(UPDATE_VARIABLE_COMMAND, {
+          nodeKey: activeVariableNodeKey,
+          action: 'format',
+          value: formatType,
+        } as UpdateVariableCommandPayload);
         return true;
       },
       COMMAND_PRIORITY_EDITOR

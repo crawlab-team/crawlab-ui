@@ -78,10 +78,35 @@ export declare global {
     name: string;
   }
 
+  interface UpdateVariableCommandPayload {
+    nodeKey: NodeKey;
+    action: 'select' | 'format';
+    value?: any;
+  }
+
   interface RichTextPayload {
     richTextContent: string;
     richTextContentJson: string;
   }
 
-  type UpdateRichTextContent = RichTextPayload;
+  interface ToolbarStates {
+    bold: boolean;
+    italic: boolean;
+    underline: boolean;
+    strikethrough: boolean;
+    left: boolean;
+    center: boolean;
+    right: boolean;
+    justify: boolean;
+    h1: boolean;
+    h2: boolean;
+    h3: boolean;
+    ol: boolean;
+    ul: boolean;
+    link: boolean;
+    quote: boolean;
+    code: boolean;
+    table: boolean;
+    variable: boolean;
+  }
 }
