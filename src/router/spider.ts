@@ -22,19 +22,19 @@ import { getIconByTabName, translate } from '@/utils';
 
 const t = translate;
 
+const endpoint = 'spiders';
+
 export default [
   {
     name: 'SpiderList',
-    path: 'spiders',
+    path: endpoint,
     title: t('layouts.routes.spiders.title'),
     icon: ['fa', 'spider'],
     component: async () => ClSpiderList,
   },
   {
     name: 'SpiderDetail',
-    path: 'spiders/:id',
-    title: t('layouts.routes.spiders.title'),
-    icon: ['fa', 'spider'],
+    path: `${endpoint}/:id`,
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
