@@ -83,9 +83,12 @@ const layouts: LLayouts = {
     },
     notifications: {
       title: 'Notifications',
-      tabs: {
-        settings: 'Settings',
-        templates: 'Templates',
+      settings: {
+        title: 'Settings',
+        tabs: {
+          overview: 'Overview',
+          template: 'Template',
+        },
       },
     },
     gits: {

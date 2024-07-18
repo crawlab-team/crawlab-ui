@@ -13,17 +13,23 @@ const endpoint = 'notifications';
 
 export default [
   {
+    path: endpoint,
+    title: t('layouts.routes.notifications.title'),
+    icon: ['fa', 'envelope'],
+    redirect: to => {
+      return { path: to.path + '/settings' };
+    },
+  },
+  {
     name: 'NotificationSettingList',
     path: `${endpoint}/settings`,
     title: t('layouts.routes.notifications.settings.title'),
-    icon: ['fa', 'envelope'],
+    icon: ['fa', 'cog'],
     component: async () => ClNotificationSettingList,
   },
   {
     name: 'NotificationSettingDetail',
     path: `${endpoint}/settings/:id`,
-    title: t('layouts.routes.notifications.settings.title'),
-    icon: ['fa', 'envelope'],
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },

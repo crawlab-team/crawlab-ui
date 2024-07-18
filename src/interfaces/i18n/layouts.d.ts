@@ -84,9 +84,12 @@ export declare global {
       };
       notification: {
         title: string;
-        tabs: {
-          settings: string;
-          templates: string;
+        settings: {
+          title: string;
+          tabs: {
+            overview: string;
+            template: string;
+          };
         };
       };
       gits: {

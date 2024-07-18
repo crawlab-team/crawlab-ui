@@ -82,10 +82,13 @@ const layouts: LLayouts = {
       },
     },
     notifications: {
-      title: '通知',
-      tabs: {
-        settings: '设置',
-        templates: '模板',
+      title: '消息通知',
+      settings: {
+        title: '通知配置',
+        tabs: {
+          overview: '概览',
+          template: '模板',
+        },
       },
     },
     gits: {
