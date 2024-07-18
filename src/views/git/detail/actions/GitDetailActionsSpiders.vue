@@ -1,12 +1,11 @@
 <script setup lang="ts">
-
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import useSpider from '@/components/spider/useSpider';
-import ClCreateGitSpiderDialog from '@/components/git/CreateGitSpiderDialog.vue';
+import useSpider from '@/components/core/spider/useSpider';
+import ClCreateGitSpiderDialog from '@/components/core/git/CreateGitSpiderDialog.vue';
 
 const t = translate;
 

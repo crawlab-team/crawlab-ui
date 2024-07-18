@@ -2,9 +2,9 @@
 import { computed, h, ref, watch, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
-import GitFileStatus from '@/components/git/GitFileStatus.vue';
-import Tag from '@/components/tag/Tag.vue';
-import Table from '@/components/table/Table.vue';
+import GitFileStatus from '@/components/core/git/GitFileStatus.vue';
+import Tag from '@/components/ui/tag/Tag.vue';
+import Table from '@/components/ui/table/Table.vue';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import { debounce, translate } from '@/utils';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants';

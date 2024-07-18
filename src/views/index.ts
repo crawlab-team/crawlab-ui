@@ -41,6 +41,8 @@ import NodeDetailTabOverview from './node/detail/tabs/NodeDetailTabOverview.vue'
 import NodeDetailTabTasks from './node/detail/tabs/NodeDetailTabTasks.vue';
 import NodeList from './node/list/NodeList.vue';
 import useNodeList from './node/list/useNodeList';
+import NotificationChannelList from './notification/channel/list/NotificationChannelList.vue';
+import useNotificationChannelList from './notification/channel/list/useNotificationChannelList';
 import NotificationSettingDetailActionsCommon from './notification/setting/detail/actions/NotificationSettingDetailActionsCommon.vue';
 import NotificationSettingDetailActionsTemplate from './notification/setting/detail/actions/NotificationSettingDetailActionsTemplate.vue';
 import NotificationSettingDetail from './notification/setting/detail/NotificationSettingDetail.vue';
@@ -137,6 +139,8 @@ export {
   NodeDetailTabTasks as ClNodeDetailTabTasks,
   NodeList as ClNodeList,
   useNodeList as useNodeList,
+  NotificationChannelList as ClNotificationChannelList,
+  useNotificationChannelList as useNotificationChannelList,
   NotificationSettingDetailActionsCommon as ClNotificationSettingDetailActionsCommon,
   NotificationSettingDetailActionsTemplate as ClNotificationSettingDetailActionsTemplate,
   NotificationSettingDetail as ClNotificationSettingDetail,

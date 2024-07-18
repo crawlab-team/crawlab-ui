@@ -5,8 +5,8 @@ import { useI18n } from 'vue-i18n';
 import { Column } from 'element-plus';
 import { debounce } from '@/utils';
 import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
-import Time from '@/components/time/Time.vue';
-import Tag from '@/components/tag/Tag.vue';
+import Time from '@/components/ui/time/Time.vue';
+import Tag from '@/components/ui/tag/Tag.vue';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 
 // i18n

@@ -10,7 +10,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import useGit from '@/components/git/useGit';
+import useGit from '@/components/core/git/useGit';
 
 const t = translate;
 

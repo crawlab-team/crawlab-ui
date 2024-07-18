@@ -16,11 +16,11 @@ import {
   setupListComponent,
   translate,
 } from '@/utils';
-import useGit from '@/components/git/useGit';
-import NavLink from '@/components/nav/NavLink.vue';
-import GitStatus from '@/components/git/GitStatus.vue';
-import ClTag from '@/components/tag/Tag.vue';
-import ClIcon from '@/components/icon/Icon.vue';
+import useGit from '@/components/core/git/useGit';
+import NavLink from '@/components/ui/nav/NavLink.vue';
+import GitStatus from '@/components/core/git/GitStatus.vue';
+import ClTag from '@/components/ui/tag/Tag.vue';
+import ClIcon from '@/components/ui/icon/Icon.vue';
 
 const useGitList = () => {
   // router

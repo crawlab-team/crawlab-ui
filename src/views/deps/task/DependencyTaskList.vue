@@ -12,10 +12,10 @@ import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useRequest from '@/services/request';
 import TaskAction from '@/views/deps/task/TaskAction.vue';
-import NodeType from '@/components/node/NodeType.vue';
-import TaskStatusComp from '@/components/task/TaskStatus.vue';
-import Tag from '@/components/tag/Tag.vue';
-import Time from '@/components/time/Time.vue';
+import NodeType from '@/components/core/node/NodeType.vue';
+import TaskStatusComp from '@/components/core/task/TaskStatus.vue';
+import Tag from '@/components/ui/tag/Tag.vue';
+import Time from '@/components/ui/time/Time.vue';
 
 const t = translate;
 

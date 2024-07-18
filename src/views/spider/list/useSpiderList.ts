@@ -18,12 +18,12 @@ import {
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import useList from '@/layouts/content/list/useList';
-import TaskStatus from '@/components/task/TaskStatus.vue';
-import NavLink from '@/components/nav/NavLink.vue';
-import Time from '@/components/time/Time.vue';
-import SpiderStat from '@/components/spider/SpiderStat.vue';
-import GitRepo from '@/components/git/GitRepo.vue';
-import useProject from '@/components/project/useProject';
+import TaskStatus from '@/components/core/task/TaskStatus.vue';
+import NavLink from '@/components/ui/nav/NavLink.vue';
+import Time from '@/components/ui/time/Time.vue';
+import SpiderStat from '@/components/core/spider/SpiderStat.vue';
+import GitRepo from '@/components/core/git/GitRepo.vue';
+import useProject from '@/components/core/project/useProject';
 import { EMPTY_OBJECT_ID, isPro } from '@/utils';
 
 const useSpiderList = () => {

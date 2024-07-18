@@ -5,8 +5,8 @@ import { Search } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useRequest from '@/services/request';
-import NavLink from '@/components/nav/NavLink.vue';
-import NodeType from '@/components/node/NodeType.vue';
+import NavLink from '@/components/ui/nav/NavLink.vue';
+import NodeType from '@/components/core/node/NodeType.vue';
 
 const props = defineProps<{
   lang: string;

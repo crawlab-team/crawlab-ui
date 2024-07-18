@@ -2,7 +2,7 @@
 import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import { isCancellable } from '@/utils/task';
-import useTask from '@/components/task/useTask';
+import useTask from '@/components/core/task/useTask';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import useRequest from '@/services/request';
 import useTaskDetail from '@/views/task/detail/useTaskDetail';

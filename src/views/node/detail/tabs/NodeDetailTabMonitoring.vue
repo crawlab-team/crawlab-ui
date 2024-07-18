@@ -8,7 +8,7 @@ import { getTimeUnitParts } from '@/utils/time';
 import { formatBytes } from '@/utils/metric';
 import { colorPalette } from '@/utils/chart';
 import useDetail from '@/layouts/content/detail/useDetail';
-import ClEmpty from '@/components/empty/Empty.vue';
+import ClEmpty from '@/components/ui/empty/Empty.vue';
 
 const { get } = useRequest();
 

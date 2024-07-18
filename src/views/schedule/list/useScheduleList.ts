@@ -3,14 +3,14 @@ import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { useStore } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import useList from '@/layouts/content/list/useList';
-import NavLink from '@/components/nav/NavLink.vue';
+import NavLink from '@/components/ui/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
-import TaskMode from '@/components/task/TaskMode.vue';
-import ScheduleCron from '@/components/schedule/ScheduleCron.vue';
-import Switch from '@/components/switch/Switch.vue';
-import useSpider from '@/components/spider/useSpider';
-import useTask from '@/components/task/useTask';
+import TaskMode from '@/components/core/task/TaskMode.vue';
+import ScheduleCron from '@/components/core/schedule/ScheduleCron.vue';
+import Switch from '@/components/ui/switch/Switch.vue';
+import useSpider from '@/components/core/spider/useSpider';
+import useTask from '@/components/core/task/useTask';
 import { translate } from '@/utils/i18n';
 import {
   ACTION_ADD,

@@ -6,6 +6,7 @@ import {
   ClNotificationSettingList,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
+import ClNotificationChannelList from '@/views/notification/channel/list/NotificationChannelList.vue';
 
 const t = translate;
 
@@ -48,5 +49,12 @@ export default [
         component: async () => ClNotificationSettingDetailTabTemplate,
       },
     ],
+  },
+  {
+    name: 'NotificationChannelList',
+    path: `${endpoint}/channels`,
+    title: t('layouts.routes.notifications.channels.title'),
+    icon: ['fa', 'broadcast-tower'],
+    component: async () => ClNotificationChannelList,
   },
 ] as Array<ExtendedRouterRecord>;

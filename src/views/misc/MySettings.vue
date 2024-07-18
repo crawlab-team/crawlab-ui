@@ -2,7 +2,7 @@
 import { onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
 import { plainClone } from '@/utils/object';
-import useUser from '@/components/user/useUser';
+import useUser from '@/components/core/user/useUser';
 import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';

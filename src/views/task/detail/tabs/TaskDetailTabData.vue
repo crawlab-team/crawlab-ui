@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, watch } from 'vue';
 import { useStore } from 'vuex';
-import useTask from '@/components/task/useTask';
+import useTask from '@/components/core/task/useTask';
 import useTaskDetail from '@/views/task/detail/useTaskDetail';
 import { FILTER_OP_EQUAL } from '@/constants';
 

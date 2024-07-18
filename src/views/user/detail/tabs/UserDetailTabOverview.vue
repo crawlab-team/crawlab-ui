@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import UserForm from '@/components/user/UserForm.vue';
 
 export default defineComponent({
   name: 'ProjectDetailTabOverview',

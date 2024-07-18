@@ -6,7 +6,7 @@ import {
   setupListComponent,
 } from '@/utils/list';
 import useList from '@/layouts/content/list/useList';
-import NodeType from '@/components/node/NodeType.vue';
+import NodeType from '@/components/core/node/NodeType.vue';
 import {
   TABLE_COLUMN_NAME_ACTIONS,
   TABLE_ACTION_EDIT,
@@ -15,11 +15,11 @@ import {
 } from '@/constants/table';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import useNodeService from '@/services/node/nodeService';
-import NavLink from '@/components/nav/NavLink.vue';
+import NavLink from '@/components/ui/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
-import NodeRunners from '@/components/node/NodeRunners.vue';
-import Switch from '@/components/switch/Switch.vue';
-import NodeStatus from '@/components/node/NodeStatus.vue';
+import NodeRunners from '@/components/core/node/NodeRunners.vue';
+import Switch from '@/components/ui/switch/Switch.vue';
+import NodeStatus from '@/components/core/node/NodeStatus.vue';
 import {
   NODE_STATUS_OFFLINE,
   NODE_STATUS_ONLINE,

@@ -91,6 +91,12 @@ export declare global {
             template: string;
           };
         };
+        channels: {
+          title: string;
+          tabs: {
+            overview: string;
+          };
+        };
       };
       gits: {
         title: string;

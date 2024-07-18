@@ -1,6 +1,6 @@
 import { computed, onBeforeMount, ref } from 'vue';
 import useDetail from '@/layouts/content/detail/useDetail';
-import useNotificationSetting from '@/components/notification/useNotificationSetting';
+import useNotificationSetting from '@/components/core/notification/setting/useNotificationSetting';
 import { useStore } from 'vuex';
 
 const useNotificationSettingDetail = () => {

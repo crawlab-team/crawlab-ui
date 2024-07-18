@@ -90,6 +90,12 @@ const layouts: LLayouts = {
           template: '模板',
         },
       },
+      channels: {
+        title: '通知渠道',
+        tabs: {
+          overview: '概览',
+        },
+      },
     },
     gits: {
       title: 'Git 仓库',

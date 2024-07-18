@@ -12,8 +12,8 @@ import {
 } from '@/constants';
 import { onListFilterChangeByKey } from '@/utils';
 import useRequest from '@/services/request';
-import NavLink from '@/components/nav/NavLink.vue';
-import Switch from '@/components/switch/Switch.vue';
+import NavLink from '@/components/ui/nav/NavLink.vue';
+import Switch from '@/components/ui/switch/Switch.vue';
 import { ElMessage } from 'element-plus';
 
 const { post } = useRequest();

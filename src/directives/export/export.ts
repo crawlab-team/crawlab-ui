@@ -3,7 +3,7 @@ import { ElMessageBox, ElNotification, NotificationHandle } from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { downloadData, translate } from '@/utils';
 import useExportService from '@/services/export/exportService';
-import ExportForm from '@/components/export/ExportForm.vue';
+import ExportForm from '@/components/ui/export/ExportForm.vue';
 
 // i18n
 const t = translate;

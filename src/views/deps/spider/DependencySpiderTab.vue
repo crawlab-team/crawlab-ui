@@ -5,9 +5,9 @@ import { useStore } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import useRequest from '@/services/request';
 import { translate } from '@/utils';
-import NavLink from '@/components/nav/NavLink.vue';
-import NodeType from '@/components/node/NodeType.vue';
-import Tag from '@/components/tag/Tag.vue';
+import NavLink from '@/components/ui/nav/NavLink.vue';
+import NodeType from '@/components/core/node/NodeType.vue';
+import Tag from '@/components/ui/tag/Tag.vue';
 
 const t = translate;
 

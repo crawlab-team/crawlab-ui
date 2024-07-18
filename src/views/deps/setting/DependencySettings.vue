@@ -3,7 +3,7 @@ import { defineComponent, computed, ref, h } from 'vue';
 import { ElMessage } from 'element-plus';
 import useRequest from '@/services/request';
 import { translate } from '@/utils';
-import ClNavLink from '@/components/nav/NavLink.vue';
+import ClNavLink from '@/components/ui/nav/NavLink.vue';
 
 const t = translate;
 

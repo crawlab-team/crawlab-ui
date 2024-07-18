@@ -3,7 +3,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { isPro } from '@/utils';
-import useSpider from '@/components/spider/useSpider';
+import useSpider from '@/components/core/spider/useSpider';
 
 const router = useRouter();
 

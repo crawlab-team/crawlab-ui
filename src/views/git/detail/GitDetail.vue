@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ClGitFileDiffDialog from '@/components/git/GitFileDiffDialog.vue';
+import ClGitFileDiffDialog from '@/components/core/git/GitFileDiffDialog.vue';
 
 import { computed, watch, onBeforeUnmount, onBeforeMount, provide } from 'vue';
 import { useStore } from 'vuex';
@@ -15,7 +15,7 @@ import {
 } from '@/constants';
 import { debounce, translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
-import useGit from '@/components/git/useGit';
+import useGit from '@/components/core/git/useGit';
 
 const t = translate;
 

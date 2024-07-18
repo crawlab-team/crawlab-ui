@@ -2,7 +2,7 @@
 import { computed, h, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants';
-import ResultCell from '@/components/result/ResultCell.vue';
+import ResultCell from '@/components/core/result/ResultCell.vue';
 import { getDataFieldIconByType } from '@/utils/dataFields';
 
 interface FilterConditionData {

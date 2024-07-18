@@ -90,6 +90,12 @@ const layouts: LLayouts = {
           template: 'Template',
         },
       },
+      channels: {
+        title: 'Channels',
+        tabs: {
+          overview: 'Overview',
+        },
+      },
     },
     gits: {
       title: 'Git Repo',

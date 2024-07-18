@@ -1,7 +1,7 @@
 import { useStore } from 'vuex';
 import useDetail from '@/layouts/content/detail/useDetail';
 import { setupGetAllList } from '@/utils/list';
-import useTask from '@/components/task/useTask';
+import useTask from '@/components/core/task/useTask';
 import { onBeforeUnmount } from 'vue';
 
 const useTaskDetail = () => {

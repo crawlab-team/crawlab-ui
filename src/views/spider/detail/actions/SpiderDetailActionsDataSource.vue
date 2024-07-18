@@ -4,8 +4,8 @@ import { ElMessage } from 'element-plus';
 import { getStore } from '@/store';
 import { EMPTY_OBJECT_ID, translate } from '@/utils';
 import useRequest from '@/services/request';
-import useDataSource from '@/components/ds/useDataSource';
-import useSpider from '@/components/spider/useSpider';
+import useDataSource from '@/components/core/ds/useDataSource';
+import useSpider from '@/components/core/spider/useSpider';
 
 const { get, post } = useRequest();
 

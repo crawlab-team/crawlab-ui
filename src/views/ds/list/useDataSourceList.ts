@@ -1,6 +1,6 @@
 import { computed, h } from 'vue';
 import { ElMessageBox } from 'element-plus';
-import DataSourceType from '@/components/ds/DataSourceType.vue';
+import DataSourceType from '@/components/core/ds/DataSourceType.vue';
 import useDataSourceService from '@/services/ds/dataSourceService';
 import {
   DATA_SOURCE_CONNECT_TYPE_HOSTS,
@@ -17,8 +17,8 @@ import {
   DATA_SOURCE_TYPE_POSTGRESQL,
   DATA_SOURCE_TYPE_SQLITE,
 } from '@/constants/ds';
-import DataSourceStatus from '@/components/ds/DataSourceStatus.vue';
-import DataSourceConnectType from '@/components/ds/DataSourceConnectType.vue';
+import DataSourceStatus from '@/components/core/ds/DataSourceStatus.vue';
+import DataSourceConnectType from '@/components/core/ds/DataSourceConnectType.vue';
 import { getStore } from '@/store';
 import { onListFilterChangeByKey, translate } from '@/utils';
 import { getRouter } from '@/router';

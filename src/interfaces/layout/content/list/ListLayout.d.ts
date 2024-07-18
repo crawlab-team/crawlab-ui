@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import Table from '@/components/table/Table.vue';
+import Table from '@/components/ui/table/Table.vue';
 
 export declare global {
   interface ListLayoutComponentData<T = any> {

@@ -2,7 +2,7 @@ import { computed, h } from 'vue';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { useStore } from 'vuex';
 import useList from '@/layouts/content/list/useList';
-import NavLink from '@/components/nav/NavLink.vue';
+import NavLink from '@/components/ui/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
 import { TAB_NAME_SPIDERS } from '@/constants/tab';
 import { translate } from '@/utils/i18n';

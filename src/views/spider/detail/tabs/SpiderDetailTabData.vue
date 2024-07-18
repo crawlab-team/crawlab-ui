@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import useSpider from '@/components/spider/useSpider';
+import useSpider from '@/components/core/spider/useSpider';
 
 // store
 const store = useStore();
