@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const running = computed<number>(() => {
   const { available, max } = props;

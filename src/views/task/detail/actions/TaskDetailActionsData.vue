@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import useSpider from '@/components/core/spider/useSpider';
 import useRequest from '@/services/request';
 import { FILTER_OP_EQUAL } from '@/constants';
 import { inferDataFieldTypes } from '@/utils/dataFields';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { translate } from '@/utils';
 
 const { get } = useRequest();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const ns = 'task';

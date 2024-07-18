@@ -179,10 +179,17 @@ defineOptions({ name: 'ClFormItem' });
 }
 </style>
 <style scoped>
-.form-item:deep(.form-item-content),
-.form-item:deep(.form-item-content > .el-select),
-.form-item:deep(.form-item-content > .el-autocomplete),
-.form-item:deep(.form-item-content > .el-input) {
-  width: 100%;
+.form-item {
+  &:deep(.form-item-content),
+  &:deep(.form-item-content > .el-select),
+  &:deep(.form-item-content > .el-autocomplete),
+  &:deep(.form-item-content > .el-input) {
+    width: 100%;
+  }
+
+  &:deep(.el-radio-group) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 </style>

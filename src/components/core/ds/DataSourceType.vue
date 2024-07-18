@@ -10,7 +10,7 @@ import {
   DATA_SOURCE_TYPE_ELASTICSEARCH,
   DATA_SOURCE_TYPE_KAFKA,
 } from '@/constants/ds';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   dataSource?: DataSource;
@@ -21,7 +21,7 @@ const emit = defineEmits<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 const data = computed<TagProps>(() => {
   const { dataSource } = props;

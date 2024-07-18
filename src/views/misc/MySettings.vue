@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
-import { plainClone } from '@/utils/object';
-import useUser from '@/components/core/user/useUser';
-import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
-import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
+import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
+import { translate, plainClone } from '@/utils';
+import useUser from '@/components/core/user/useUser';
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const ns = 'user';

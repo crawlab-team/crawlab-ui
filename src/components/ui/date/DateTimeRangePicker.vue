@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { getRangeItemOption } from '@/components/ui/date/date';
+import { translate } from '@/utils';
 
 interface DateRange {
   start: Dayjs;
@@ -41,7 +41,7 @@ withDefaults(defineProps<DateRangePickerProps>(), {
 
 const emit = defineEmits<DateRangePickerEmits>();
 
-const { t } = useI18n();
+const t = translate;
 
 const optionItems = computed<RangeItemOption[]>(
   () =>

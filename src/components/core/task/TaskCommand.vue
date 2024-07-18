@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   task: Task;
@@ -12,7 +12,7 @@ const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const getLabel = (s?: string, n = 12) => {
   if (!s) return;

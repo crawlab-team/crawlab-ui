@@ -3,9 +3,9 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
 import { plainClone } from '@/utils/object';
 import { onBeforeRouteLeave } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
-const { t } = useI18n();
+const t = translate;
 
 const storeNamespace = 'file';
 const store = useStore();

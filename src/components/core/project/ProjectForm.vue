@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
 import useProject from '@/components/core/project/useProject';
+import { translate } from '@/utils';
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = useStore();

@@ -7,11 +7,23 @@ const useIcon = () => {
     }
   };
 
+  const isSvg = (icon: Icon) => {
+    if (Array.isArray(icon)) {
+      return icon.length > 0 && icon[0] === 'svg';
+    } else if (typeof icon === 'string') {
+      return icon?.startsWith('svg');
+    } else {
+      return false;
+    }
+  };
+
   const isAzure = (icon: Icon) => {
     if (Array.isArray(icon)) {
       return icon.length > 0 && icon[0] === 'azure';
-    } else {
+    } else if (typeof icon === 'string') {
       return icon?.startsWith('azure');
+    } else {
+      return false;
     }
   };
 
@@ -33,6 +45,7 @@ const useIcon = () => {
   return {
     // public variables and methods
     isFaIcon,
+    isSvg,
     isAzure,
     getFontSize,
   };

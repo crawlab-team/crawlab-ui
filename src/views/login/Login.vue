@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { User, Lock } from '@element-plus/icons-vue';
 import logo from '@/assets/svg/logo-main.svg';
 import useRequest from '@/services/request';
 import { isValidUsername } from '@/utils/validate';
-import { setGlobalLang } from '@/utils/i18n';
+import { setGlobalLang, translate } from '@/utils/i18n';
 import { LOCAL_STORAGE_KEY_TOKEN } from '@/constants/localStorage';
 
 const { post } = useRequest();
@@ -24,7 +23,7 @@ const route = useRoute();
 const router = useRouter();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // loading
 const loading = ref<boolean>(false);

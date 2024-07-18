@@ -4,8 +4,7 @@ import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
 import { FILE_ROOT } from '@/constants/file';
 import FileEditorNavTabs from '@/components/ui/file/FileEditorNavTabs.vue';
-import { useI18n } from 'vue-i18n';
-import { getLanguageByFileName } from '@/utils';
+import { getLanguageByFileName, translate } from '@/utils';
 
 const props = defineProps<{
   ns: ListStoreNamespace;
@@ -37,7 +36,7 @@ const emit = defineEmits<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const ns = props.ns;

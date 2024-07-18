@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const ns = 'task';

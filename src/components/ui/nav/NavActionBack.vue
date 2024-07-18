@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 export interface NavActionBackProps {
   buttonType?: ButtonType;
@@ -24,7 +24,8 @@ defineEmits<{
   (e: 'click'): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
+
 defineOptions({ name: 'ClNavActionBack' });
 </script>
 

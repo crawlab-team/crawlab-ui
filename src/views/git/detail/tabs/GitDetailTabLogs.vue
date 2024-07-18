@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { computed, h, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
 import { Column } from 'element-plus';
-import { debounce } from '@/utils';
+import { debounce, translate } from '@/utils';
 import { GIT_REF_TYPE_BRANCH } from '@/constants/git';
 import Time from '@/components/ui/time/Time.vue';
 import Tag from '@/components/ui/tag/Tag.vue';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const ns = 'git';

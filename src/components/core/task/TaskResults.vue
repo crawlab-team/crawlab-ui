@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { isCancellable } from '@/utils/task';
 import { TASK_STATUS_PENDING } from '@/constants/task';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   results?: number;
@@ -12,7 +12,7 @@ const props = defineProps<{
   onClick?: () => void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const data = computed<TagProps>(() => {
   const { results, status } = props;

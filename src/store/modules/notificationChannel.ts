@@ -4,7 +4,7 @@ import {
   getDefaultStoreMutations,
   getDefaultStoreState,
 } from '@/utils/store';
-import { TAB_NAME_OVERVIEW, TAB_NAME_TEMPLATE } from '@/constants';
+import { TAB_NAME_OVERVIEW } from '@/constants';
 import { translate } from '@/utils/i18n';
 
 const t = translate;

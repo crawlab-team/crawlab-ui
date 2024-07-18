@@ -4,7 +4,7 @@ import {
   DATA_SOURCE_STATUS_OFFLINE,
   DATA_SOURCE_STATUS_ONLINE,
 } from '@/constants/ds';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
@@ -21,7 +21,7 @@ const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const data = computed<TagProps>(() => {
   const { status, error } = props;

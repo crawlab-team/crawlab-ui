@@ -53,7 +53,7 @@ defineOptions({ name: 'ClDialog' });
     :z-index="zIndex"
   >
     <slot />
-    <template #title>
+    <template #header>
       <slot v-if="$slots.title" name="title" />
       <div v-else-if="titleIcon">
         <cl-icon :icon="titleIcon" />

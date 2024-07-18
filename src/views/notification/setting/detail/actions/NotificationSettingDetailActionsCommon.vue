@@ -97,45 +97,45 @@ const onTriggerChange = async (value: NotificationTrigger) => {
 
 const triggerOptions = computed<SelectOption<string>[]>(() => [
   {
-    label: t('views.notification.triggerTargets.task'),
+    label: t('views.notification.settings.triggerTargets.task'),
     icon: ['fa', 'tasks'],
     children: [
       {
-        label: t('views.notification.triggers.task.finish'),
+        label: t('views.notification.settings.triggers.task.finish'),
         value: 'task_finish',
         icon: ['fa', 'flag-checkered'],
       },
       {
-        label: t('views.notification.triggers.task.error'),
+        label: t('views.notification.settings.triggers.task.error'),
         value: 'task_error',
         icon: ['fa', 'times'],
       },
       {
-        label: t('views.notification.triggers.task.emptyResults'),
+        label: t('views.notification.settings.triggers.task.emptyResults'),
         value: 'task_empty_results',
         icon: ['fa', 'exclamation-circle'],
       },
     ],
   },
   {
-    label: t('views.notification.triggerTargets.node'),
+    label: t('views.notification.settings.triggerTargets.node'),
     icon: ['fa', 'server'],
     disabled: true,
     children: [
       {
-        label: t('views.notification.triggers.node.statusChange'),
+        label: t('views.notification.settings.triggers.node.statusChange'),
         value: 'node_status_change',
         icon: ['fa', 'exchange-alt'],
         disabled: true,
       },
       {
-        label: t('views.notification.triggers.node.online'),
+        label: t('views.notification.settings.triggers.node.online'),
         value: 'node_online',
         icon: ['fa', 'check-circle'],
         disabled: true,
       },
       {
-        label: t('views.notification.triggers.node.offline'),
+        label: t('views.notification.settings.triggers.node.offline'),
         value: 'node_offline',
         icon: ['fa', 'times-circle'],
         disabled: true,

@@ -5,14 +5,14 @@ import {
   TASK_MODE_RANDOM,
   TASK_MODE_SELECTED_NODES,
 } from '@/constants/task';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   mode?: string;
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 const type = computed<string>(() => {
   const { mode } = props;

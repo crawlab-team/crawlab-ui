@@ -1,19 +1,31 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import useNotificationChannel from '@/components/core/notification/channel/useNotificationChannel';
+import { translate } from '@/utils';
+import { ref } from 'vue';
+import ClFormItem from '@/components/ui/form/FormItem.vue';
 
 defineProps<{
   readonly?: boolean;
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = useStore();
 
-const { form, formRef, isSelectiveForm } = useNotificationChannel(store);
+const {
+  form,
+  formRef,
+  isSelectiveForm,
+  typeOptions,
+  providerOptionGroups,
+  activeProviderOption,
+} = useNotificationChannel(store);
+
+const smtpPasswordVisible = ref(false);
+
 defineOptions({ name: 'ClNotificationChannelForm' });
 </script>
 
@@ -30,13 +42,130 @@ defineOptions({ name: 'ClNotificationChannelForm' });
         :placeholder="t('views.notification.channels.form.name')"
       />
     </cl-form-item>
+
     <cl-form-item
       :span="2"
-      :label="t('views.notification.channels.form.enabled')"
-      prop="enabled"
+      :label="t('views.notification.channels.form.provider')"
+      prop="provider"
+      required
     >
-      <cl-switch v-model="form.enabled" />
+      <el-select v-model="form.provider" filterable clearable>
+        <template #label>
+          <span class="icon-wrapper">
+            <cl-icon :icon="activeProviderOption.icon" />
+          </span>
+          {{ activeProviderOption.label }}
+        </template>
+        <el-option-group
+          v-for="group in providerOptionGroups"
+          :key="group.value"
+          :label="group.label"
+        >
+          <el-option
+            v-for="op in group.children"
+            :key="op.value"
+            :value="op.value"
+          >
+            <span class="icon-wrapper">
+              <cl-icon :icon="op.icon" />
+            </span>
+            {{ op.label }}
+          </el-option>
+        </el-option-group>
+      </el-select>
     </cl-form-item>
+
+    <cl-form-item
+      :span="2"
+      :offset="2"
+      :label="t('views.notification.channels.form.type')"
+      prop="type"
+      required
+    >
+      <el-radio-group v-model="form.type">
+        <el-radio-button
+          v-for="op in typeOptions"
+          :key="op.value"
+          :value="op.value"
+        >
+          <cl-icon :icon="op.icon" />
+          {{ op.label }}
+        </el-radio-button>
+      </el-radio-group>
+    </cl-form-item>
+
+    <template v-if="form.type === 'mail'">
+      <cl-form-item
+        :span="2"
+        :label="t('views.notification.channels.form.smtpServer')"
+        prop="smtp_port"
+        required
+      >
+        <el-input
+          v-model="form.smtp_server"
+          :placeholder="t('views.notification.channels.form.smtpServer')"
+        />
+      </cl-form-item>
+      <cl-form-item
+        :span="2"
+        :label="t('views.notification.channels.form.smtpPort')"
+        prop="smtp_port"
+        required
+      >
+        <el-input
+          v-model="form.smtp_port"
+          type="number"
+          :placeholder="t('views.notification.channels.form.smtpPort')"
+        />
+      </cl-form-item>
+      <cl-form-item
+        :span="2"
+        :label="t('views.notification.channels.form.smtpUsername')"
+        prop="smtp_username"
+        required
+      >
+        <el-input
+          v-model="form.smtp_username"
+          :placeholder="t('views.notification.channels.form.smtpUsername')"
+        />
+      </cl-form-item>
+      <cl-form-item
+        :span="2"
+        :label="t('views.notification.channels.form.smtpPassword')"
+        prop="smtp_password"
+        required
+      >
+        <el-input
+          v-model="form.smtp_password"
+          :type="smtpPasswordVisible ? 'text' : 'password'"
+          :placeholder="t('views.notification.channels.form.smtpPassword')"
+        >
+          <template #suffix>
+            <span
+              style="cursor: pointer"
+              @click="smtpPasswordVisible = !smtpPasswordVisible"
+            >
+              <cl-icon v-if="!smtpPasswordVisible" :icon="['fa', 'eye']" />
+              <cl-icon v-else :icon="['fa', 'eye-slash']" />
+            </span>
+          </template>
+        </el-input>
+      </cl-form-item>
+    </template>
+    <template v-else-if="form.type === 'im'">
+      <cl-form-item
+        :span="4"
+        :label="t('views.notification.channels.form.webhookUrl')"
+        prop="webhook_url"
+        required
+      >
+        <el-input
+          v-model="form.webhook_url"
+          :placeholder="t('views.notification.channels.form.webhookUrl')"
+        />
+      </cl-form-item>
+    </template>
+
     <cl-form-item
       :span="4"
       :label="t('views.notification.channels.form.description')"
@@ -51,4 +180,11 @@ defineOptions({ name: 'ClNotificationChannelForm' });
   </cl-form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.icon-wrapper {
+  display: inline-block;
+  text-align: center;
+  width: 18px;
+  margin-right: 2px;
+}
+</style>

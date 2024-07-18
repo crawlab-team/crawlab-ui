@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import useNode from '@/components/core/node/useNode';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 defineProps<{
   readonly?: boolean;
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = useStore();

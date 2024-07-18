@@ -5,8 +5,8 @@ import cronstrue from 'cronstrue/i18n';
 import dayjs from 'dayjs';
 import zh from 'dayjs/locale/zh.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import { useI18n } from 'vue-i18n';
 import { getI18n } from '@/i18n';
+import { translate } from '@/utils';
 
 dayjs.extend(localizedFormat);
 
@@ -17,7 +17,7 @@ const props = defineProps<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 const isValid = computed((): boolean => {
   const { cron } = props;

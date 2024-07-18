@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
 import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import useUser from '@/components/core/user/useUser';
 import useUserDetail from '@/views/user/detail/useUserDetail';
+import { translate } from '@/utils';
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = useStore();

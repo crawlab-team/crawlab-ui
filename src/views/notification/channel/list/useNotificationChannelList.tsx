@@ -1,8 +1,7 @@
 import { computed, h } from 'vue';
 import { useStore } from 'vuex';
-import useList from '@/layouts/content/list/useList';
 import { useRouter } from 'vue-router';
-import { translate } from '@/utils/i18n';
+import { ElMessage } from 'element-plus';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -10,11 +9,13 @@ import {
   ACTION_FILTER_SEARCH,
   FILTER_OP_CONTAINS,
 } from '@/constants';
-import { onListFilterChangeByKey } from '@/utils';
+import { onListFilterChangeByKey, translate } from '@/utils';
 import useRequest from '@/services/request';
+import useList from '@/layouts/content/list/useList';
 import NavLink from '@/components/ui/nav/NavLink.vue';
 import Switch from '@/components/ui/switch/Switch.vue';
-import { ElMessage } from 'element-plus';
+
+const t = translate;
 
 const { post } = useRequest();
 
@@ -23,15 +24,12 @@ const useNotificationChannelList = () => {
   const router = useRouter();
 
   // store
-  const ns: ListStoreNamespace = 'notificationSetting';
+  const ns: ListStoreNamespace = 'notificationChannel';
   const store = useStore<RootStoreState>();
   const { commit } = store;
 
-  // i18n
-  const t = translate;
-
   // use list
-  const { actionFunctions } = useList<NotificationSetting>(ns, store);
+  const { actionFunctions } = useList<NotificationChannel>(ns, store);
 
   // action functions
   const { deleteByIdConfirm } = actionFunctions;
@@ -46,8 +44,8 @@ const useNotificationChannelList = () => {
           id: 'add-btn',
           className: 'add-btn',
           buttonType: 'label',
-          label: t('views.notification.navActions.new.label'),
-          tooltip: t('views.notification.navActions.new.tooltip'),
+          label: t('views.notification.channels.navActions.new.label'),
+          tooltip: t('views.notification.channels.navActions.new.tooltip'),
           icon: ['fa', 'plus'],
           type: 'success',
           onClick: () => {
@@ -65,7 +63,7 @@ const useNotificationChannelList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t(
-            'views.notification.navActions.filter.search.placeholder'
+            'views.notification.channels.navActions.filter.search.placeholder'
           ),
           onChange: onListFilterChangeByKey(
             store,
@@ -79,56 +77,51 @@ const useNotificationChannelList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<NotificationSetting>>(
+  const tableColumns = computed<TableColumns<NotificationChannel>>(
     () =>
       [
         {
           key: 'name',
-          label: t('views.notification.settings.form.name'),
+          label: t('views.notification.channels.form.name'),
           icon: ['fa', 'font'],
           width: '240',
-          value: (row: NotificationSetting) => (
+          value: (row: NotificationChannel) => (
             <NavLink
               label={row.name}
-              path={`/notifications/settings/${row._id}`}
+              path={`/notifications/channels/${row._id}`}
             />
           ),
         },
         {
-          key: 'enabled',
-          label: t('views.notification.settings.form.enabled'),
-          icon: ['fa', 'toggle-on'],
+          key: 'type',
+          label: t('views.notification.channels.form.type'),
+          icon: ['fa', 'list'],
           width: '120',
-          value: (row: NotificationSetting) => (
+          value: (row: NotificationChannel) => (
             <Switch
               modelValue={row.enabled}
               onChange={async (value: boolean) => {
                 if (!row._id) return;
                 if (!value) {
-                  await post(`/notifications/settings/${row._id}/disable`);
+                  await post(`/notifications/channels/${row._id}/disable`);
                   ElMessage.success(t('common.message.success.disabled'));
                 } else {
-                  await post(`/notifications/settings/${row._id}/enable`);
+                  await post(`/notifications/channels/${row._id}/enable`);
                   ElMessage.success(t('common.message.success.enabled'));
                 }
               }}
             />
           ),
-          // h(Switch, {
-          //   modelValue: row.enabled,
-          //   onChange: async value => {
-          //     if (!row._id) return;
-          //     if (!value) {
-          //       await post(`/notifications/settings/${row._id}/disable`);
-          //     } else {
-          //       await post(`/notifications/settings/${row._id}/enable`);
-          //     }
-          //   },
-          // }),
+        },
+        {
+          key: 'provider',
+          label: t('views.notification.channels.form.provider'),
+          icon: ['fa', 'industry'],
+          width: '120',
         },
         {
           key: 'description',
-          label: t('views.notification.settings.form.description'),
+          label: t('views.notification.channels.form.description'),
           icon: ['fa', 'comment-alt'],
           width: 'auto',
         },
@@ -142,8 +135,8 @@ const useNotificationChannelList = () => {
               type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: async (row: NotificationSetting) => {
-                await router.push(`/notifications/settings/${row._id}`);
+              onClick: async (row: NotificationChannel) => {
+                await router.push(`/notifications/channels/${row._id}`);
               },
             },
             {
@@ -158,17 +151,17 @@ const useNotificationChannelList = () => {
           ],
           disableTransfer: true,
         },
-      ] as TableColumns<NotificationSetting>
+      ] as TableColumns<NotificationChannel>
   );
 
   // options
   const opts = {
     navActions,
     tableColumns,
-  } as UseListOptions<NotificationSetting>;
+  } as UseListOptions<NotificationChannel>;
 
   return {
-    ...useList<NotificationSetting>(ns, store, opts),
+    ...useList<NotificationChannel>(ns, store, opts),
   };
 };
 

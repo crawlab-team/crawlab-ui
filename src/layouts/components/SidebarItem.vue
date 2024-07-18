@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 defineProps<{
   item: MenuItem;
@@ -9,7 +9,7 @@ const emit = defineEmits<{
   (e: 'click', item: MenuItem): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const onMenuItemClick = (item: MenuItem) => {
   emit('click', item);

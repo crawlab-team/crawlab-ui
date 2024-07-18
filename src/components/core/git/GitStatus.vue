@@ -9,7 +9,7 @@ import {
   GIT_STATUS_PULLING,
   GIT_STATUS_PUSHING,
 } from '@/constants/git';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   id?: string;
@@ -23,7 +23,7 @@ const emit = defineEmits<{
   (e: 'retry'): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const ns = 'git';
 const store = useStore();

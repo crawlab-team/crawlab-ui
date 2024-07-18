@@ -2,10 +2,9 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
 import { ArrowDown, ArrowRight } from '@element-plus/icons-vue';
-import { setGlobalLang } from '@/utils/i18n';
-import { getNavMenuItems, isPro } from '@/utils';
+import { setGlobalLang, getNavMenuItems, isPro } from '@/utils';
+import { useI18n } from 'vue-i18n';
 
 // i18n
 const { t, locale } = useI18n();
@@ -92,7 +91,7 @@ defineOptions({ name: 'ClHeader' });
           >
             <router-link :to="item.path">
               <cl-icon :icon="item.icon" />
-              {{ t(item.title) }}
+              {{ item.title }}
             </router-link>
           </el-breadcrumb-item>
         </el-breadcrumb>

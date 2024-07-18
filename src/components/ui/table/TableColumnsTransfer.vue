@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   visible?: boolean;
@@ -16,7 +16,7 @@ const emit = defineEmits<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 const internalSelectedColumnKeys = ref<string[]>([]);
 

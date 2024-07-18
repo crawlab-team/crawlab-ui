@@ -8,7 +8,7 @@ import {
   TASK_STATUS_PENDING,
   TASK_STATUS_RUNNING,
 } from '@/constants/task';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   status: TaskStatus;
@@ -22,7 +22,7 @@ const emit = defineEmits<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 const data = computed<TagProps>(() => {
   const { status, error } = props;

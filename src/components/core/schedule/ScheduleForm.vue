@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
+import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useSchedule from '@/components/core/schedule/useSchedule';
 import useSpider from '@/components/core/spider/useSpider';
-import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useNode from '@/components/core/node/useNode';
-import { ElMessage } from 'element-plus';
-import { useI18n } from 'vue-i18n';
 import useTask from '@/components/core/task/useTask';
+import { translate } from '@/utils';
 
-const { t } = useI18n();
+const t = translate;
 
 // store
 const ns = 'schedule';

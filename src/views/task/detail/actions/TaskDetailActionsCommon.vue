@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { isCancellable } from '@/utils/task';
-import useTask from '@/components/core/task/useTask';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import useRequest from '@/services/request';
-import useTaskDetail from '@/views/task/detail/useTaskDetail';
 import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { TASK_STATUS_PENDING, TASK_STATUS_RUNNING } from '@/constants';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import dayjs from 'dayjs';
+import { TASK_STATUS_PENDING, TASK_STATUS_RUNNING } from '@/constants';
+import useRequest from '@/services/request';
+import { translate, isCancellable } from '@/utils';
+import useTask from '@/components/core/task/useTask';
+import useTaskDetail from '@/views/task/detail/useTaskDetail';
 
 const { post } = useRequest();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // router
 const router = useRouter();

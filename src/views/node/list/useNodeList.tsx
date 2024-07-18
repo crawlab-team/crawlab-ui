@@ -204,8 +204,8 @@ const useNodeList = () => {
           allowFilterSearch: true,
         },
         {
-          key: 'is_master', // is_master
-          className: 'is_master',
+          key: 'node_type', // is_master
+          className: 'node_type',
           label: t('views.nodes.table.columns.nodeType'),
           icon: ['fa', 'list'],
           width: '150',

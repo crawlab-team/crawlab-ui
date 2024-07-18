@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
-import { downloadData } from '@/utils';
+import { downloadData, translate } from '@/utils';
 
 const props = defineProps<{
   ns: ListStoreNamespace;
@@ -10,7 +9,7 @@ const props = defineProps<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = useStore();

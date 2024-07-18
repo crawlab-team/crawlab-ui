@@ -9,12 +9,12 @@ import {
   watch,
   inject,
 } from 'vue';
-import { useI18n } from 'vue-i18n';
 import Node from 'element-plus/es/components/tree/src/model/node';
 import { useDropzone } from 'crawlab-vue3-dropzone';
 import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
 import { ElMessageBox, ElTree } from 'element-plus';
 import { FILE_ROOT } from '@/constants';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   loading?: boolean;
@@ -41,7 +41,7 @@ const emit = defineEmits<{
   (e: 'toggle-nav-menu'): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const tree = ref<typeof ElTree>();
 

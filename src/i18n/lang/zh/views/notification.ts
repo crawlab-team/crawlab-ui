@@ -1,71 +1,108 @@
 const notification: LViewsNotification = {
-  navActions: {
-    new: {
-      label: '新建通知',
-      tooltip: '创建一个新的通知',
-    },
-    filter: {
-      search: {
-        placeholder: '搜索通知',
+  settings: {
+    navActions: {
+      new: {
+        label: '新建通知配置',
+        tooltip: '创建一个新的通知配置',
+      },
+      filter: {
+        search: {
+          placeholder: '搜索通知配置',
+        },
       },
     },
-  },
-  settings: {
     form: {
       name: '名称',
       description: '描述',
-      type: '类型',
       enabled: '是否启用',
       title: '标题',
       template: '模板',
       templateContent: '模板内容',
       triggerTarget: '触发目标',
       trigger: '触发器',
-      mail: {
-        smtp: {
-          server: 'SMTP 服务器',
-          port: 'SMTP 端口',
-          user: 'SMTP 用户',
-          password: 'SMTP 密码',
-          sender: {
-            email: '发件人邮箱',
-            identity: '发件人身份',
-          },
+      hasMail: '是否有邮件',
+      senderEmail: '发件人邮箱',
+      senderName: '发件人姓名',
+      mailTo: '发送至',
+      mailCc: '抄送',
+      mailBcc: '密送',
+    },
+    triggerTargets: {
+      task: '任务',
+      node: '节点',
+    },
+    triggers: {
+      task: {
+        finish: '任务完成时触发',
+        error: '任务失败时触发',
+        emptyResults: '任务结果为空时触发',
+        never: '从不触发',
+      },
+      node: {
+        statusChange: '节点状态变化时触发',
+        online: '节点上线时触发',
+        offline: '节点下线时触发',
+        never: '从不触发',
+      },
+    },
+    tabs: {
+      overview: '概览',
+      triggers: '触发器',
+      template: '模板',
+    },
+  },
+  channels: {
+    navActions: {
+      new: {
+        label: '新建通知渠道',
+        tooltip: '创建一个新的通知渠道',
+      },
+      filter: {
+        search: {
+          placeholder: '搜索通知渠道',
         },
-        to: '收件人',
-        cc: '抄送',
-      },
-      mobile: {
-        webhook: 'Webhook',
       },
     },
-    type: {
-      mail: '邮件',
-      mobile: '移动端',
+    form: {
+      type: '类型',
+      name: '名称',
+      description: '描述',
+      provider: '提供商',
+      smtpServer: 'SMTP 服务器',
+      smtpPort: 'SMTP 端口',
+      smtpUsername: 'SMTP 用户名',
+      smtpPassword: 'SMTP 密码',
+      webhookUrl: 'Webhook URL',
     },
-  },
-  triggerTargets: {
-    task: '任务',
-    node: '节点',
-  },
-  triggers: {
-    task: {
-      finish: '任务完成时触发',
-      error: '任务失败时触发',
-      emptyResults: '任务结果为空时触发',
-      never: '从不触发',
+    types: {
+      mail: '邮件 (Email)',
+      im: '即时通讯 (IM)',
     },
-    node: {
-      statusChange: '节点状态变化时触发',
-      online: '节点上线时触发',
-      offline: '节点下线时触发',
-      never: '从不触发',
+    providers: {
+      gmail: 'Gmail',
+      outlook: '微软邮箱 (Outlook)',
+      qq: 'QQ 邮箱',
+      '163': '163 邮箱',
+      icloud: 'iCloud 邮箱',
+      yahoo: 'Yahoo',
+      hotmail: 'Hotmail',
+      aol: 'AOL',
+      zoho: 'Zoho',
+      yandex: 'Yandex',
+      '126': '126 邮箱',
+      sina: '新浪邮箱',
+      sohu: '搜狐邮箱',
+      exmail: '腾讯企业邮箱',
+      wechat_work: '企业微信',
+      dingtalk: '钉钉',
+      lark: '飞书',
+      slack: 'Slack',
+      ms_teams: '微软团队 (Teams)',
+      telegram: '电报 (Telegram)',
+      discord: 'Discord',
+      whatsapp_business: 'WhatsApp 企业版',
+      facebook_messenger: '脸书信使',
     },
-  },
-  tabs: {
-    overview: '概览',
-    triggers: '触发器',
-    template: '模板',
   },
 };
 

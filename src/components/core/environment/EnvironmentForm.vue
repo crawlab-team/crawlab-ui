@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { getStore } from '@/store';
 import useEnvironment from '@/components/core/environment/useEnvironment';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 defineProps<{
   readonly?: boolean;
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = getStore();

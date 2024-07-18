@@ -2,20 +2,20 @@
 import { computed } from 'vue';
 import { getStore } from '@/store';
 import useDataSource from '@/components/core/ds/useDataSource';
-import { useI18n } from 'vue-i18n';
 import useDataSourceDetail from '@/views/ds/detail/useDataSourceDetail';
 import {
   DATA_SOURCE_CONNECT_TYPE_HOSTS,
   DATA_SOURCE_CONNECT_TYPE_STANDARD,
   DATA_SOURCE_CONNECT_TYPE_URL,
 } from '@/constants/ds';
+import { translate } from '@/utils';
 
 defineProps<{
   readonly?: boolean;
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = getStore();

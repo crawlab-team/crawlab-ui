@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus';
 import { FILE_ROOT } from '@/constants';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   ns: ListStoreNamespace;
@@ -21,7 +21,7 @@ const emit = defineEmits<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = useStore();

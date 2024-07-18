@@ -6,7 +6,7 @@ import {
   NODE_STATUS_REGISTERED,
   NODE_STATUS_UNREGISTERED,
 } from '@/constants/node';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   status: NodeStatus;
@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const data = computed<TagProps>(() => {
   const { status } = props;

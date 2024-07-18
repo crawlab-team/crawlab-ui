@@ -25,6 +25,12 @@ export declare global {
     task_trigger?: string;
     trigger_target?: NotificationTriggerTarget;
     trigger?: NotificationTrigger;
+    has_mail?: boolean;
+    sender_email?: string;
+    sender_name?: string;
+    mail_to?: string;
+    mail_cc?: string;
+    mail_bcc?: string;
     channel_ids?: string[];
     channels?: NotificationChannel[];
   }
@@ -54,14 +60,16 @@ export declare global {
     name?: string;
     description?: string;
     provider?: string;
-    mail_settings?: {
-      smtp_server?: string;
-      smtp_port?: string;
-      smtp_from_email_address?: string;
-      smtp_from_email_password?: string;
-    };
-    im_settings?: {
-      webhook?: string;
-    };
+    smtp_server?: string;
+    smtp_port?: string;
+    smtp_username?: string;
+    smtp_password?: string;
+    webhook?: string;
+  }
+
+  interface NotificationChannelProvider {
+    type: NotificationChannelType;
+    name: string;
+    icon: Icon;
   }
 }

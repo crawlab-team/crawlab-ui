@@ -14,7 +14,12 @@ const props = withDefaults(
   }
 );
 
-const { isFaIcon: _isFaIcon, isAzure: _isAzure, getFontSize } = useIcon();
+const {
+  isFaIcon: _isFaIcon,
+  isSvg: _isSvg,
+  isAzure: _isAzure,
+  getFontSize,
+} = useIcon();
 
 const fontSize = computed(() => {
   const { size } = props;
@@ -27,6 +32,12 @@ const isFaIcon = computed<boolean>(() => {
   return _isFaIcon(icon);
 });
 
+const isSvg = computed<boolean>(() => {
+  const { icon } = props;
+  if (!icon) return false;
+  return _isSvg(icon);
+});
+
 const isAzure = computed<boolean>(() => {
   const { icon } = props;
   if (!icon) return false;
@@ -36,7 +47,15 @@ const isAzure = computed<boolean>(() => {
 const iconComponent = ref<any>(null);
 
 onMounted(async () => {
-  if (isAzure.value) {
+  if (isSvg.value) {
+    const svgIcons = import.meta.glob('@/assets/svg/icons/*.svg');
+    const svgIconPath = `/src/assets/svg/icons/${props.icon[1]}.svg`;
+    if (svgIcons[svgIconPath]) {
+      svgIcons[svgIconPath]().then((module: any) => {
+        iconComponent.value = module.default;
+      });
+    }
+  } else if (isAzure.value) {
     const azureIcons = import.meta.glob('@/assets/svg/icons/azure/*.svg');
     const azureIconPath = `@/assets/svg/icons/azure/${props.icon[1]}.svg`;
     if (azureIcons[azureIconPath]) {
@@ -58,7 +77,8 @@ defineOptions({ name: 'ClIcon' });
       :style="{ fontSize, color }"
       class="icon"
     />
-    <component v-else-if="isAzure" :is="iconComponent"></component>
+    <component v-else-if="isSvg" :is="iconComponent" />
+    <component v-else-if="isAzure" :is="iconComponent" />
     <i
       v-else
       :class="[spinning ? 'fa-spin' : '', icon, 'icon']"

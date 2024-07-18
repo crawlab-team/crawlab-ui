@@ -1,30 +1,20 @@
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { Converter } from 'showdown';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
-export default defineComponent({
-  name: 'Disclaimer',
-  setup() {
-    // i18n
-    const { t } = useI18n();
+// i18n
+const t = translate;
 
-    // markdown-to-text converter
-    const converter = new Converter();
+// markdown-to-text converter
+const converter = new Converter();
 
-    // title
-    const title = computed<string>(() => t('views.misc.disclaimer.title'));
+// title
+const title = computed<string>(() => t('views.misc.disclaimer.title'));
 
-    // content
-    const content = computed<string>(() => {
-      return converter.makeHtml(t('views.misc.disclaimer.content'));
-    });
-
-    return {
-      title,
-      content,
-    };
-  },
+// content
+const content = computed<string>(() => {
+  return converter.makeHtml(t('views.misc.disclaimer.content'));
 });
 </script>
 

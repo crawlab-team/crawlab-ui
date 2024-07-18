@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { plainClone } from '@/utils/object';
 import { FILTER_OP_NOT_SET } from '@/constants/filter';
 import { ClickOutside as vClickOutside } from 'element-plus';
-import { useI18n } from 'vue-i18n';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   visible?: boolean;
@@ -21,7 +21,7 @@ const emit = defineEmits<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 const defaultInternalSort = { key: props.column.key } as SortData;
 const internalSort = ref<SortData>();

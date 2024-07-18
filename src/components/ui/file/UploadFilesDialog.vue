@@ -2,8 +2,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
-import { useI18n } from 'vue-i18n';
-import { getOSPathSeparator } from '@/utils';
+import { getOSPathSeparator, translate } from '@/utils';
 import { getRootDirectoryOptions } from '@/utils/file';
 import { FILE_ROOT, FILE_UPLOAD_MODE_DIR } from '@/constants';
 
@@ -18,7 +17,7 @@ const props = defineProps<{
 }>();
 
 // i18n
-const { t } = useI18n();
+const t = translate;
 
 // store
 const store = useStore();

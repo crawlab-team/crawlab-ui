@@ -1,8 +1,7 @@
 import { computed, h } from 'vue';
 import { useStore } from 'vuex';
-import useList from '@/layouts/content/list/useList';
 import { useRouter } from 'vue-router';
-import { translate } from '@/utils/i18n';
+import { ElMessage } from 'element-plus';
 import {
   ACTION_ADD,
   ACTION_DELETE,
@@ -10,11 +9,13 @@ import {
   ACTION_FILTER_SEARCH,
   FILTER_OP_CONTAINS,
 } from '@/constants';
-import { onListFilterChangeByKey } from '@/utils';
+import { onListFilterChangeByKey, translate } from '@/utils';
 import useRequest from '@/services/request';
+import useList from '@/layouts/content/list/useList';
 import NavLink from '@/components/ui/nav/NavLink.vue';
 import Switch from '@/components/ui/switch/Switch.vue';
-import { ElMessage } from 'element-plus';
+
+const t = translate;
 
 const { post } = useRequest();
 
@@ -26,9 +27,6 @@ const useNotificationSettingList = () => {
   const ns: ListStoreNamespace = 'notificationSetting';
   const store = useStore<RootStoreState>();
   const { commit } = store;
-
-  // i18n
-  const t = translate;
 
   // use list
   const { actionFunctions } = useList<NotificationSetting>(ns, store);
@@ -46,8 +44,8 @@ const useNotificationSettingList = () => {
           id: 'add-btn',
           className: 'add-btn',
           buttonType: 'label',
-          label: t('views.notification.navActions.new.label'),
-          tooltip: t('views.notification.navActions.new.tooltip'),
+          label: t('views.notification.settings.navActions.new.label'),
+          tooltip: t('views.notification.settings.navActions.new.tooltip'),
           icon: ['fa', 'plus'],
           type: 'success',
           onClick: () => {
@@ -65,7 +63,7 @@ const useNotificationSettingList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t(
-            'views.notification.navActions.filter.search.placeholder'
+            'views.notification.settings.navActions.filter.search.placeholder'
           ),
           onChange: onListFilterChangeByKey(
             store,
@@ -114,17 +112,6 @@ const useNotificationSettingList = () => {
               }}
             />
           ),
-          // h(Switch, {
-          //   modelValue: row.enabled,
-          //   onChange: async value => {
-          //     if (!row._id) return;
-          //     if (!value) {
-          //       await post(`/notifications/settings/${row._id}/disable`);
-          //     } else {
-          //       await post(`/notifications/settings/${row._id}/enable`);
-          //     }
-          //   },
-          // }),
         },
         {
           key: 'description',

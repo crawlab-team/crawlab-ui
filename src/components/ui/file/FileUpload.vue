@@ -6,8 +6,8 @@ import {
   FILE_UPLOAD_MODE_FILES,
 } from '@/constants/file';
 import { ElTreeSelect, ElUpload, UploadFile } from 'element-plus';
-import { useI18n } from 'vue-i18n';
 import { UploadFilled } from '@element-plus/icons-vue';
+import { translate } from '@/utils';
 
 const props = defineProps<{
   mode: FileUploadMode;
@@ -33,7 +33,7 @@ const IGNORE_FILE_PATTERN = [
   '\.nuxt',
 ];
 
-const { t } = useI18n();
+const t = translate;
 
 const fileInput = ref<HTMLInputElement>();
 

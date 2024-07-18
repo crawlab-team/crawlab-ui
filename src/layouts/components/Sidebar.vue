@@ -4,14 +4,18 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import logo from '@/assets/svg/logo-white.svg';
 import logoIcon from '@/assets/svg/logo-icon-white.svg';
-import { useI18n } from 'vue-i18n';
-import { getAllMenuItemPathMap, getPrimaryPath, isPro } from '@/utils';
+import {
+  getAllMenuItemPathMap,
+  getPrimaryPath,
+  isPro,
+  translate,
+} from '@/utils';
+
+const t = translate;
 
 const router = useRouter();
 
 const route = useRoute();
-
-const { t } = useI18n();
 
 const store = useStore();
 

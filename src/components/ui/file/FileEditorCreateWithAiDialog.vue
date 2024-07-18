@@ -2,9 +2,9 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { onBeforeRouteLeave } from 'vue-router';
-import { useI18n } from 'vue-i18n';
 import useRequest from '@/services/request';
 import { ElMessage } from 'element-plus';
+import { translate } from '@/utils';
 
 const { post } = useRequest();
 
@@ -12,7 +12,7 @@ const emit = defineEmits<{
   (e: 'create', fileName: string, sourceCode: string, item: any): void;
 }>();
 
-const { t } = useI18n();
+const t = translate;
 
 const storeNamespace = 'file';
 const store = useStore();
