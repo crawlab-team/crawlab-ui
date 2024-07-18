@@ -1,4 +1,3 @@
-import { RouteRecordRaw } from 'vue-router';
 import {
   TAB_NAME_MONITORING,
   TAB_NAME_OVERVIEW,
@@ -11,6 +10,9 @@ import {
   ClNodeDetailTabTasks,
   ClNodeList,
 } from '@/views';
+import { getIconByTabName, translate } from '@/utils';
+
+const t = translate;
 
 const endpoint = 'nodes';
 
@@ -18,6 +20,8 @@ export default [
   {
     name: 'NodeList',
     path: endpoint,
+    title: t('layouts.routes.nodes.title'),
+    icon: ['fa', 'server'],
     component: async () => ClNodeList,
   },
   {
@@ -30,16 +34,22 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
+        title: t('layouts.routes.nodes.tabs.overview'),
+        icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClNodeDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
+        title: t('layouts.routes.nodes.tabs.tasks'),
+        icon: getIconByTabName(TAB_NAME_TASKS),
         component: async () => ClNodeDetailTabTasks,
       },
       {
         path: TAB_NAME_MONITORING,
+        title: t('layouts.routes.nodes.tabs.monitoring'),
+        icon: getIconByTabName(TAB_NAME_MONITORING),
         component: async () => ClNodeDetailTabMonitoring,
       },
     ],
   },
-] as Array<RouteRecordRaw>;
+] as Array<ExtendedRouterRecord>;

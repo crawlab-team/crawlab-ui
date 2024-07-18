@@ -7,9 +7,9 @@ import { publish } from '@/utils/eventBus';
 
 const t = translate;
 
-const ns = 'notification';
+const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
-const { notification: state } = store.state as RootStoreState;
+const { notificationSetting: state } = store.state as RootStoreState;
 
 const templateMode = ref<NotificationTemplateMode | undefined>(
   state.form.template_mode

@@ -1,12 +1,5 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'NotificationDetailTabOverview',
-  setup() {
-    return {};
-  },
-});
+<script setup lang="ts">
+defineOptions({ name: 'ClNotificationSettingDetailTabOverview' });
 </script>
 
 <template>

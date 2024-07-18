@@ -44,7 +44,7 @@ export default {
       if (activeTabId === undefined) return;
       return tabs.find(d => d.id === activeTabId);
     },
-    sidebarMenuItems: state => {
+    sidebarMenuItems: (state: LayoutStoreState) => {
       return state.menuItems
         .filter(d => !d.hidden)
         .filter(d => {
@@ -61,7 +61,8 @@ export default {
           return state.navVisibleFn(d.path);
         });
     },
-    normalizedMenuItems: state => normalizeTree<MenuItem>(state.menuItems),
+    normalizedMenuItems: (state: LayoutStoreState) =>
+      normalizeTree<MenuItem>(state.menuItems),
   },
   mutations: {
     setMenuItems(state: LayoutStoreState, items: MenuItem[]) {

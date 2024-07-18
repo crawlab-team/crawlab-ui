@@ -1,33 +1,45 @@
-import { RouteRecordRaw } from 'vue-router';
 import {
   ClDependencyNode,
   ClDependencyPython,
   ClDependencySettings,
 } from '@/views';
+import { translate } from '@/utils';
+
+const t = translate;
 
 const endpoint = 'deps';
 
 export default [
   {
     name: 'Deps',
-    path: `${endpoint}`,
+    path: endpoint,
+    title: t('layouts.routes.dependencies.title'),
+    icon: ['fa', 'puzzle-piece'],
     redirect: to => {
       return { path: to.path + '/settings' };
     },
+    children: [
+      {
+        name: 'DepsSettings',
+        path: 'settings',
+        title: t('layouts.routes.dependencies.settings'),
+        icon: ['fa', 'cog'],
+        component: async () => ClDependencySettings,
+      },
+      {
+        name: 'DepsPython',
+        path: 'python',
+        title: t('layouts.routes.dependencies.lang.python'),
+        icon: ['fab', 'python'],
+        component: async () => ClDependencyPython,
+      },
+      {
+        name: 'DepsNode',
+        path: 'node',
+        title: t('layouts.routes.dependencies.lang.node'),
+        icon: ['fab', 'node'],
+        component: async () => ClDependencyNode,
+      },
+    ],
   },
-  {
-    name: 'DepsSettings',
-    path: `${endpoint}/settings`,
-    component: async () => ClDependencySettings,
-  },
-  {
-    name: 'DepsPython',
-    path: `${endpoint}/python`,
-    component: async () => ClDependencyPython,
-  },
-  {
-    name: 'DepsNode',
-    path: `${endpoint}/node`,
-    component: async () => ClDependencyNode,
-  },
-] as Array<RouteRecordRaw>;
+] as Array<ExtendedRouterRecord>;

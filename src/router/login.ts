@@ -9,4 +9,4 @@ export default [
     path: endpoint,
     component: async () => ClLogin,
   },
-] as Array<RouteRecordRaw>;
+] as Array<ExtendedRouterRecord>;

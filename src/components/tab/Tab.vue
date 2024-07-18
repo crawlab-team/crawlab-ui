@@ -3,8 +3,7 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { Close } from '@element-plus/icons-vue';
-import { translate } from '@/utils';
-import { getPrimaryPath } from '@/utils/path';
+import { getPrimaryPath, translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{

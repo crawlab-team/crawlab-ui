@@ -8,7 +8,7 @@ import useNotificationSettingDetail from '@/views/notification/setting/detail/us
 const t = translate;
 
 // store
-const ns = 'notification';
+const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
 const { notificationSetting: state } = store.state as RootStoreState;
 

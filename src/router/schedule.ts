@@ -1,4 +1,3 @@
-import { RouteRecordRaw } from 'vue-router';
 import { TAB_NAME_OVERVIEW, TAB_NAME_TASKS } from '@/constants/tab';
 import {
   ClScheduleDetail,
@@ -6,16 +5,23 @@ import {
   ClScheduleDetailTabTasks,
   ClScheduleList,
 } from '@/views';
+import { getIconByTabName, translate } from '@/utils';
+
+const t = translate;
+
+const endpoint = 'schedules';
 
 export default [
   {
     name: 'ScheduleList',
-    path: 'schedules',
+    path: endpoint,
+    title: t('layouts.routes.schedules.title'),
+    icon: ['fa', 'clock'],
     component: async () => ClScheduleList,
   },
   {
     name: 'ScheduleDetail',
-    path: 'schedules/:id',
+    path: `${endpoint}/:id`,
     redirect: to => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
@@ -23,12 +29,16 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
+        title: t('layouts.routes.schedules.tabs.overview'),
+        icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClScheduleDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
+        title: t('layouts.routes.schedules.tabs.tasks'),
+        icon: getIconByTabName(TAB_NAME_TASKS),
         component: async () => ClScheduleDetailTabTasks,
       },
     ],
   },
-] as Array<RouteRecordRaw>;
+] as Array<ExtendedRouterRecord>;

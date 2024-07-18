@@ -46,7 +46,6 @@ const {
   getForm,
   sidebarCollapsed,
   actionsCollapsed,
-  showActionsToggleTooltip,
   tabs: defaultTabs,
   contentContainerStyle,
   navActions,
@@ -54,7 +53,6 @@ const {
   onNavSidebarToggle,
   onNavTabsSelect,
   onNavTabsToggle,
-  onActionsToggle,
   onBack,
   onSave,
 } = useDetail(ns.value);
@@ -110,26 +108,7 @@ defineOptions({ name: 'ClDetailLayout' });
         class="nav-tabs"
         @select="onNavTabsSelect"
         @toggle="onNavTabsToggle"
-      >
-        <template #extra>
-          <el-tooltip
-            v-model="showActionsToggleTooltip"
-            :content="
-              actionsCollapsed
-                ? t('layouts.detailLayout.navTabs.toggle.tooltip.expand')
-                : t('layouts.detailLayout.navTabs.toggle.tooltip.collapse')
-            "
-          >
-            <div
-              :class="actionsCollapsed ? 'collapsed' : ''"
-              class="actions-toggle"
-              @click="onActionsToggle"
-            >
-              <font-awesome-icon :icon="['fa', 'angle-up']" class="icon" />
-            </div>
-          </el-tooltip>
-        </template>
-      </cl-nav-tabs>
+      />
       <cl-nav-actions
         ref="navActions"
         :collapsed="actionsCollapsed"

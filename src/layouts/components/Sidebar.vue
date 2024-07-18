@@ -4,11 +4,8 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import logo from '@/assets/svg/logo-white.svg';
 import logoIcon from '@/assets/svg/logo-icon-white.svg';
-import { getPrimaryPath } from '@/utils/path';
 import { useI18n } from 'vue-i18n';
-import urljoin from 'url-join';
-import { isPro } from '@/utils';
-import ClMenuItemIcon from '@/components/icon/MenuItemIcon.vue';
+import { getAllMenuItemPathMap, getPrimaryPath, isPro } from '@/utils';
 
 const router = useRouter();
 
@@ -32,34 +29,9 @@ const menuItems = computed<MenuItem[]>(
   () => store.getters['layout/sidebarMenuItems']
 );
 
-const getMenuItemPathMap = (
-  rootPath: string,
-  item: MenuItem
-): Map<string, string> => {
-  const paths = new Map<string, string>();
-  const itemPath = item.path?.startsWith('/')
-    ? item.path
-    : urljoin(rootPath, item.path || '');
-  paths.set(itemPath, rootPath);
-  if (item.children && item.children.length > 0) {
-    for (const subItem of item.children) {
-      getMenuItemPathMap(itemPath, subItem).forEach((parentPath, path) => {
-        paths.set(path, parentPath);
-      });
-    }
-  }
-  return paths;
-};
-
-const allMenuItemPathMap = computed<Map<string, string>>(() => {
-  const paths = new Map<string, string>();
-  for (const item of menuItems.value) {
-    getMenuItemPathMap('/', item).forEach((parentPath, path) => {
-      paths.set(path, parentPath);
-    });
-  }
-  return paths;
-});
+const allMenuItemPathMap = computed<Map<string, string>>(() =>
+  getAllMenuItemPathMap()
+);
 
 const activePath = computed<string>(() => {
   if (allMenuItemPathMap.value.has(route.path)) {
@@ -92,14 +64,6 @@ defineOptions({ name: 'ClSidebar' });
 </script>
 
 <template>
-  <!--  <span-->
-  <!--    :class="sidebarCollapsed ? 'collapsed' : ''"-->
-  <!--    class="sidebar-toggle"-->
-  <!--    @click="toggleSidebar"-->
-  <!--  >-->
-  <!--    <font-awesome-icon v-if="!sidebarCollapsed" :icon="['fas', 'outdent']" />-->
-  <!--    <font-awesome-icon v-else :icon="['fas', 'indent']" />-->
-  <!--  </span>-->
   <el-aside
     :class="sidebarCollapsed ? 'collapsed' : ''"
     class="sidebar"
@@ -155,16 +119,6 @@ defineOptions({ name: 'ClSidebar' });
     <!-- Footer -->
     <div class="sidebar-footer">
       <div class="el-menu-item" @click="toggleSidebar">
-        <cl-menu-item-icon
-          :item="{
-            title: sidebarCollapsed
-              ? t('layouts.components.sidebar.expand')
-              : t('layouts.components.sidebar.collapse'),
-            icon: sidebarCollapsed
-              ? ['fa', 'angles-right']
-              : ['fa', 'angles-left'],
-          }"
-        />
         <el-tooltip
           :content="
             sidebarCollapsed
@@ -173,13 +127,25 @@ defineOptions({ name: 'ClSidebar' });
           "
           :disabled="!sidebarCollapsed"
         >
-          <span v-if="!sidebarCollapsed" class="menu-item-title">
-            {{
-              sidebarCollapsed
-                ? t('layouts.components.sidebar.expand')
-                : t('layouts.components.sidebar.collapse')
-            }}
-          </span>
+          <div class="toggle-wrapper">
+            <cl-menu-item-icon
+              :item="{
+                title: sidebarCollapsed
+                  ? t('layouts.components.sidebar.expand')
+                  : t('layouts.components.sidebar.collapse'),
+                icon: sidebarCollapsed
+                  ? ['fa', 'angles-right']
+                  : ['fa', 'angles-left'],
+              }"
+            />
+            <span v-if="!sidebarCollapsed" class="menu-item-title">
+              {{
+                sidebarCollapsed
+                  ? t('layouts.components.sidebar.expand')
+                  : t('layouts.components.sidebar.collapse')
+              }}
+            </span>
+          </div>
         </el-tooltip>
       </div>
     </div>
@@ -190,7 +156,7 @@ defineOptions({ name: 'ClSidebar' });
 .sidebar {
   position: relative;
   width: var(--cl-sidebar-width);
-  overflow-x: hidden;
+  overflow: hidden;
   user-select: none;
   background-color: var(--cl-menu-bg);
 
@@ -335,14 +301,22 @@ defineOptions({ name: 'ClSidebar' });
     border-top: 1px solid rgba(0, 0, 0, 0.2);
 
     .el-menu-item {
+      width: var(--cl-sidebar-width);
       color: var(--cl-menu-text);
 
       &:hover {
         background-color: var(--cl-menu-hover);
       }
 
-      .menu-item-title {
-        margin-left: 6px;
+      .toggle-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        .menu-item-title {
+          margin-left: 6px;
+        }
       }
     }
   }

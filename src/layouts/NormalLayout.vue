@@ -17,7 +17,6 @@ defineOptions({ name: 'ClNormalLayout' });
       class="container"
     >
       <cl-header />
-      <cl-tabs-view />
       <div class="container-body">
         <router-view />
       </div>
@@ -46,9 +45,7 @@ defineOptions({ name: 'ClNormalLayout' });
 
     .container-body {
       background-color: var(--cl-container-bg);
-      height: calc(
-        100vh - var(--cl-header-height) - var(--cl-tabs-view-height)
-      );
+      height: calc(100vh - var(--cl-header-height));
       overflow: auto;
     }
   }

@@ -1,4 +1,3 @@
-import { RouteRecordRaw } from 'vue-router';
 import {
   TAB_NAME_OVERVIEW,
   TAB_NAME_FILES,
@@ -15,6 +14,9 @@ import {
   ClGitDetailTabSpiders,
   ClGitList,
 } from '@/views';
+import { getIconByTabName, translate } from '@/utils';
+
+const t = translate;
 
 const endpoint = 'gits';
 
@@ -22,6 +24,8 @@ export default [
   {
     name: 'GitList',
     path: endpoint,
+    title: t('layouts.routes.gits.title'),
+    icon: ['fab', 'git'],
     component: async () => ClGitList,
   },
   {
@@ -34,24 +38,34 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
+        title: t('layouts.routes.gits.tabs.overview'),
+        icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClGitDetailTabOverview,
       },
       {
         path: TAB_NAME_FILES,
+        title: t('layouts.routes.gits.tabs.files'),
+        icon: getIconByTabName(TAB_NAME_FILES),
         component: async () => ClGitDetailTabFiles,
       },
       {
         path: TAB_NAME_LOGS,
+        title: t('layouts.routes.gits.tabs.logs'),
+        icon: getIconByTabName(TAB_NAME_LOGS),
         component: async () => ClGitDetailTabLogs,
       },
       {
         path: TAB_NAME_CHANGES,
+        title: t('layouts.routes.gits.tabs.changes'),
+        icon: getIconByTabName(TAB_NAME_CHANGES),
         component: async () => ClGitDetailTabChanges,
       },
       {
         path: TAB_NAME_SPIDERS,
+        title: t('layouts.routes.gits.tabs.spiders'),
+        icon: getIconByTabName(TAB_NAME_SPIDERS),
         component: async () => ClGitDetailTabSpiders,
       },
     ],
   },
-] as Array<RouteRecordRaw>;
+] as Array<ExtendedRouterRecord>;

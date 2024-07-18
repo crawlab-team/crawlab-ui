@@ -6,9 +6,9 @@ import { translate } from '@/utils';
 
 const t = translate;
 
-const ns = 'notification';
+const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
-const { notification: state } = store.state as RootStoreState;
+const { notificationSetting: state } = store.state as RootStoreState;
 
 const getTriggerTarget = (
   trigger?: NotificationTrigger

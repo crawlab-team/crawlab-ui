@@ -24,7 +24,7 @@ import { initRouterAuth } from '@/router/hooks/auth';
 import { ROUTER_ROOT_NAME_ROOT } from '@/constants/router';
 import { ClNormalLayout } from '@/layouts';
 
-export function getDefaultRoutes(): Array<RouteRecordRaw> {
+export function getDefaultRoutes(): Array<ExtendedRouterRecord> {
   return [
     ...login,
     {
@@ -43,11 +43,11 @@ export function getDefaultRoutes(): Array<RouteRecordRaw> {
         ...token,
         ...deps,
         ...notification,
-        ...misc,
         ...git,
         ...ds,
         ...environment,
         ...system,
+        ...misc,
       ],
     },
   ];
@@ -153,13 +153,13 @@ export function getDefaultMenuItems(): MenuItem[] {
 }
 
 export function getRootRoute(
-  routes: Array<RouteRecordRaw>
+  routes: Array<ExtendedRouterRecord>
 ): RouteRecordRaw | undefined {
   return routes.find(r => r.name === ROUTER_ROOT_NAME_ROOT);
 }
 
 export function getRouteByName(
-  routes: Array<RouteRecordRaw>,
+  routes: Array<ExtendedRouterRecord>,
   name: string
 ): RouteRecordRaw | undefined {
   for (const route of routes) {
@@ -177,7 +177,7 @@ export function getRouteByName(
 }
 
 export function replaceRouteByName(
-  routes: Array<RouteRecordRaw>,
+  routes: Array<ExtendedRouterRecord>,
   name: string,
   component: any
 ) {
@@ -189,7 +189,7 @@ export function replaceRouteByName(
 
 export function addRoutes(
   route: RouteRecordRaw,
-  routes: Array<RouteRecordRaw>
+  routes: Array<ExtendedRouterRecord>
 ): void {
   if (!route.children) {
     route.children = [];
@@ -198,9 +198,9 @@ export function addRoutes(
 }
 
 export function createRouter(
-  rootRoutes?: Array<RouteRecordRaw>,
-  routes?: Array<RouteRecordRaw>,
-  allRoutes?: Array<RouteRecordRaw>,
+  rootRoutes?: Array<ExtendedRouterRecord>,
+  routes?: Array<ExtendedRouterRecord>,
+  allRoutes?: Array<ExtendedRouterRecord>,
   options?: CreateRouterOptions
 ): Router {
   // all routes
@@ -239,9 +239,9 @@ export function createRouter(
 let _router: Router;
 
 export function getRouter(
-  rootRoutes?: Array<RouteRecordRaw>,
-  routes?: Array<RouteRecordRaw>,
-  allRoutes?: Array<RouteRecordRaw>,
+  rootRoutes?: Array<ExtendedRouterRecord>,
+  routes?: Array<ExtendedRouterRecord>,
+  allRoutes?: Array<ExtendedRouterRecord>,
   options?: CreateRouterOptions
 ): Router {
   if (!_router) {

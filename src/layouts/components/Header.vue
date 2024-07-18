@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { ArrowDown } from '@element-plus/icons-vue';
+import { ArrowDown, ArrowRight } from '@element-plus/icons-vue';
 import { setGlobalLang } from '@/utils/i18n';
-import { isPro } from '@/utils';
+import { getNavMenuItems, isPro } from '@/utils';
 
 // i18n
 const { t, locale } = useI18n();
 
 // router
 const router = useRouter();
+
+const route = useRoute();
 
 // store
 const store = useStore();
@@ -70,13 +72,33 @@ const onClickMySettings = () => {
   router.push('/misc/my-settings');
 };
 
+const navMenuItems = computed<MenuItem[]>(() => getNavMenuItems(route.path));
+
 defineOptions({ name: 'ClHeader' });
 </script>
 
 <template>
   <div :class="sidebarCollapsed ? 'collapsed' : ''" class="header-container">
     <el-header height="var(--cl-header-height)" class="header">
-      <div class="left"></div>
+      <div class="left">
+        <el-breadcrumb :separator-icon="ArrowRight">
+          <el-breadcrumb-item to="/">
+            <cl-icon :icon="['fa', 'home']" />
+          </el-breadcrumb-item>
+          <el-breadcrumb-item
+            v-for="item in navMenuItems"
+            :key="item.path"
+            v-if="item?.path !== '/home'"
+          >
+            <router-link :to="item.path">
+              <cl-icon :icon="item.icon" />
+              {{ t(item.title) }}
+            </router-link>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <cl-tabs-view v-if="false" />
+      </div>
       <div class="right">
         <template v-if="!isPro()">
           <div class="item">

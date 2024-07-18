@@ -16,9 +16,9 @@ export declare global {
     loadExport?: boolean;
     mount?: boolean | string;
     store?: Store;
-    rootRoutes?: Array<RouteRecordRaw>;
-    routes?: Array<RouteRecordRaw>;
-    allRoutes?: Array<RouteRecordRaw>;
+    rootRoutes?: Array<ExtendedRouterRecord>;
+    routes?: Array<ExtendedRouterRecord>;
+    allRoutes?: Array<ExtendedRouterRecord>;
     createRouterOptions?: CreateRouterOptions;
   }
 }

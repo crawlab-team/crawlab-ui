@@ -1,7 +1,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { computed, watch, provide, ref } from 'vue';
-import { getRoutePathByDepth, getTabName } from '@/utils/route';
+import { getRoutePath, getTabName } from '@/utils/route';
 import { ElMessage } from 'element-plus';
 import { translate } from '@/utils/i18n';
 import { debounce } from '@/utils';
@@ -63,9 +63,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     };
   });
 
-  const primaryRoutePath = computed<string>(() =>
-    getRoutePathByDepth(route.path)
-  );
+  const primaryRoutePath = computed<string>(() => getRoutePath(route.path));
 
   const afterSave = computed<Function[]>(() => state.afterSave);
 

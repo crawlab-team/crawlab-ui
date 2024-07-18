@@ -143,7 +143,7 @@ const useNotificationSettingList = () => {
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async (row: NotificationSetting) => {
-                await router.push(`/notifications/${row._id}`);
+                await router.push(`/notifications/settings/${row._id}`);
               },
             },
             {

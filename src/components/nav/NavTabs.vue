@@ -1,21 +1,5 @@
 <script setup lang="ts">
-import {
-  TAB_NAME_OVERVIEW,
-  TAB_NAME_FILES,
-  TAB_NAME_GIT,
-  TAB_NAME_TASKS,
-  TAB_NAME_SETTINGS,
-  TAB_NAME_SPIDERS,
-  TAB_NAME_DATA,
-  TAB_NAME_SCHEDULES,
-  TAB_NAME_LOGS,
-  TAB_NAME_DEPENDENCIES,
-  TAB_NAME_TRIGGERS,
-  TAB_NAME_TEMPLATE,
-  TAB_NAME_CHANGES,
-  TAB_NAME_MONITORING,
-} from '@/constants';
-import { translate } from '@/utils';
+import { getIconByNavItem, translate } from '@/utils';
 
 const t = translate;
 
@@ -44,42 +28,6 @@ const getClassName = (item: NavItem): string => {
   if (item.emphasis) cls.push('emphasis');
   if (item.id) cls.push(item.id);
   return cls.join(' ');
-};
-
-const getIcon = (item: NavItem): Icon => {
-  if (item.icon) return item.icon;
-  switch (item.id) {
-    case TAB_NAME_OVERVIEW:
-      return ['fa', 'tachometer-alt'];
-    case TAB_NAME_FILES:
-      return ['fa', 'file-code'];
-    case TAB_NAME_GIT:
-      return ['fa', 'code-branch'];
-    case TAB_NAME_TASKS:
-      return ['fa', 'tasks'];
-    case TAB_NAME_SETTINGS:
-      return ['fa', 'cog'];
-    case TAB_NAME_SPIDERS:
-      return ['fa', 'spider'];
-    case TAB_NAME_DATA:
-      return ['fa', 'database'];
-    case TAB_NAME_SCHEDULES:
-      return ['fa', 'calendar-alt'];
-    case TAB_NAME_LOGS:
-      return ['fa', 'file-alt'];
-    case TAB_NAME_DEPENDENCIES:
-      return ['fa', 'cubes'];
-    case TAB_NAME_TRIGGERS:
-      return ['fa', 'bolt'];
-    case TAB_NAME_TEMPLATE:
-      return ['fa', 'file-code'];
-    case TAB_NAME_CHANGES:
-      return ['fa', 'code-commit'];
-    case TAB_NAME_MONITORING:
-      return ['fa', 'tachometer-alt'];
-    default:
-      return ['fa', 'circle'];
-  }
 };
 defineOptions({ name: 'ClNavTabs' });
 </script>
@@ -114,7 +62,7 @@ defineOptions({ name: 'ClNavTabs' });
             :offset="[10, 10]"
           >
             <div class="item-wrapper">
-              <cl-icon :icon="getIcon(item)" />
+              <cl-icon :icon="getIconByNavItem(item)" />
               <span class="label">{{ item.title }}</span>
             </div>
           </el-badge>

@@ -98,8 +98,6 @@ defineOptions({ name: 'ClTabsView' });
 
 <style lang="scss" scoped>
 .tabs-view {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--cl-tabs-view-border-color);
   background-color: var(--cl-tabs-view-bg);
   display: flex;
 }
@@ -107,9 +105,5 @@ defineOptions({ name: 'ClTabsView' });
 <style scoped>
 .tabs-view:deep(.draggable-item) {
   margin: 0 5px;
-}
-
-.tabs-view:deep(.draggable-item:first-child) {
-  margin-left: 10px;
 }
 </style>
