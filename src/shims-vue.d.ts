@@ -6,6 +6,11 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+declare module '*.svg' {
+  import { DefineComponent } from 'vue';
+  const content: DefineComponent<{}, {}, any>;
+  export default content;
+}
 
 declare global {
   namespace JSX {

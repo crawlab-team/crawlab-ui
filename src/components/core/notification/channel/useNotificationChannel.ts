@@ -14,87 +14,80 @@ const allProviders: NotificationChannelProvider[] = [
   {
     type: 'mail',
     name: 'gmail',
-    icon: ['fab', 'google'],
+    icon: ['svg', 'gmail'],
+    smtpServer: 'smtp.gmail.com',
+    smtpPort: 587,
   },
   {
     type: 'mail',
     name: 'outlook',
-    icon: ['fab', 'microsoft'],
+    icon: ['svg', 'outlook'],
+    smtpServer: 'smtp.office365.com',
+    smtpPort: 587,
   },
   {
     type: 'mail',
     name: 'qq',
     icon: ['fab', 'qq'],
+    smtpServer: 'smtp.qq.com',
+    smtpPort: 587,
   },
   {
     type: 'mail',
     name: '163',
-    icon: ['svg', '163'],
+    icon: ['svg', 'netease'],
+    smtpServer: 'smtp.163.com',
+    smtpPort: 465,
   },
   {
     type: 'mail',
     name: 'icloud',
     icon: ['fab', 'apple'],
+    smtpServer: 'smtp.mail.me.com',
+    smtpPort: 587,
   },
   {
     type: 'mail',
     name: 'yahoo',
     icon: ['fab', 'yahoo'],
-  },
-  {
-    type: 'mail',
-    name: 'hotmail',
-    icon: ['fab', 'microsoft'],
-  },
-  {
-    type: 'mail',
-    name: 'aol',
-    icon: ['fab', 'aol'],
+    smtpServer: 'smtp.mail.yahoo.com',
+    smtpPort: 587,
   },
   {
     type: 'mail',
     name: 'zoho',
-    icon: ['fab', 'zoho'],
+    icon: ['svg', 'zoho'],
+    smtpServer: 'smtp.zoho.com',
+    smtpPort: 587,
   },
   {
     type: 'mail',
-    name: 'yandex',
-    icon: ['fab', 'yandex'],
-  },
-  {
-    type: 'mail',
-    name: '126',
-    icon: ['fab', 'qq'],
-  },
-  {
-    type: 'mail',
-    name: 'sina',
-    icon: ['fab', 'sina'],
-  },
-  {
-    type: 'mail',
-    name: 'sohu',
-    icon: ['fab', 'sohu'],
+    name: 'aol',
+    icon: ['svg', 'aol'],
+    smtpServer: 'smtp.aol.com',
+    smtpPort: 587,
   },
   {
     type: 'mail',
     name: 'exmail',
-    icon: ['fab', 'qq'],
-  },
-  {
-    type: 'im',
-    name: 'wechat_work',
     icon: ['fab', 'weixin'],
+    smtpServer: 'smtp.exmail.qq.com',
+    smtpPort: 465,
   },
   {
     type: 'im',
     name: 'dingtalk',
-    icon: ['fab', 'dingtalk'],
+    icon: ['svg', 'dingtalk'],
   },
   {
     type: 'im',
     name: 'lark',
-    icon: ['fab', 'lark'],
+    icon: ['svg', 'lark'],
+  },
+  {
+    type: 'im',
+    name: 'wechat_work',
+    icon: ['svg', 'wechat_work'],
   },
   {
     type: 'im',
@@ -104,7 +97,7 @@ const allProviders: NotificationChannelProvider[] = [
   {
     type: 'im',
     name: 'ms_teams',
-    icon: ['fab', 'microsoft'],
+    icon: ['svg', 'ms_teams'],
   },
   {
     type: 'im',
@@ -170,19 +163,34 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
     }));
   });
 
-  const activeProviderOption = computed<SelectOption>(() => {
+  const activeProvider = computed<NotificationChannelProvider | null>(() => {
     const provider = allProviders.find(p => p.name === form.value.provider);
     if (!provider) {
+      return null;
+    }
+    return provider;
+  });
+
+  const activeProviderOption = computed<SelectOption>(() => {
+    if (form.value.provider === 'custom') {
+      return {
+        value: form.value.provider,
+        label: t('views.notification.channels.providers.custom'),
+        icon: ['fa', 'edit'],
+      };
+    }
+    if (!activeProvider.value) {
       return {
         value: '',
         label: '',
         icon: [],
       };
     }
+    const { name, icon } = activeProvider.value;
     return {
-      value: provider.name,
-      label: provider.name,
-      icon: provider.icon,
+      value: name,
+      label: t(`views.notification.channels.providers.${name}`),
+      icon,
     };
   });
 
@@ -197,6 +205,7 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
     form,
     typeOptions,
     providerOptionGroups,
+    activeProvider,
     activeProviderOption,
   };
 };

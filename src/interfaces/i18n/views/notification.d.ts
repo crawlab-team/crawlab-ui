@@ -10,7 +10,7 @@ interface LViewsNotification {
       templateContent: string;
       triggerTarget: string;
       trigger: string;
-      hasMail: boolean;
+      hasMail: string;
       senderEmail: string;
       senderName: string;
       mailTo: string;
@@ -65,14 +65,9 @@ interface LViewsNotification {
       163: string;
       icloud: string;
       yahoo: string;
-      hotmail: string;
       aol: string;
       zoho: string;
-      yandex: string;
-      126: string;
-      sina: string;
-      sohu: string;
-      tencent: string;
+      exmail: string;
       wechat_work: string;
       dingtalk: string;
       lark: string;
@@ -82,6 +77,10 @@ interface LViewsNotification {
       discord: string;
       whatsapp_business: string;
       facebook_messenger: string;
+      custom: string;
+    };
+    providerDoc: {
+      label: string;
     };
   };
 }

@@ -2,8 +2,8 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import logo from '@/assets/svg/logo-white.svg';
-import logoIcon from '@/assets/svg/logo-icon-white.svg';
+import logo from '@/assets/svg/logo-white.svg?url';
+import logoIcon from '@/assets/svg/logo-icon-white.svg?url';
 import {
   getAllMenuItemPathMap,
   getPrimaryPath,

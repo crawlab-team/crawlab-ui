@@ -2,7 +2,7 @@
 import { useStore } from 'vuex';
 import useNotificationChannel from '@/components/core/notification/channel/useNotificationChannel';
 import { translate } from '@/utils';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import ClFormItem from '@/components/ui/form/FormItem.vue';
 
 defineProps<{
@@ -13,6 +13,7 @@ defineProps<{
 const t = translate;
 
 // store
+const ns: ListStoreNamespace = 'notificationChannel';
 const store = useStore();
 
 const {
@@ -21,10 +22,49 @@ const {
   isSelectiveForm,
   typeOptions,
   providerOptionGroups,
+  activeProvider,
   activeProviderOption,
 } = useNotificationChannel(store);
 
 const smtpPasswordVisible = ref(false);
+
+watch(
+  () => form.value.provider,
+  val => {
+    if (val === 'custom') {
+      store.commit(`${ns}/setForm`, {
+        ...form.value,
+        smtp_server: '',
+        smtp_port: '',
+        smtp_username: '',
+        smtp_password: '',
+        webhook_url: '',
+      });
+      return;
+    }
+    switch (activeProvider.value?.type) {
+      case 'mail':
+        store.commit(`${ns}/setForm`, {
+          ...form.value,
+          type: 'mail',
+          smtp_server: activeProvider.value.smtpServer,
+          smtp_port: activeProvider.value.smtpPort,
+        });
+        break;
+      case 'im':
+        store.commit(`${ns}/setForm`, {
+          ...form.value,
+          type: 'im',
+          webhook_url: '',
+        });
+        break;
+    }
+  }
+);
+
+const hasProvider = computed(
+  () => activeProvider.value && activeProvider.value.name !== 'custom'
+);
 
 defineOptions({ name: 'ClNotificationChannelForm' });
 </script>
@@ -45,6 +85,24 @@ defineOptions({ name: 'ClNotificationChannelForm' });
 
     <cl-form-item
       :span="2"
+      :label="t('views.notification.channels.form.type')"
+      prop="type"
+      required
+    >
+      <el-radio-group v-model="form.type">
+        <el-radio-button
+          v-for="op in typeOptions"
+          :key="op.value"
+          :value="op.value"
+        >
+          <cl-icon :icon="op.icon" />
+          {{ op.label }}
+        </el-radio-button>
+      </el-radio-group>
+    </cl-form-item>
+
+    <cl-form-item
+      :span="4"
       :label="t('views.notification.channels.form.provider')"
       prop="provider"
       required
@@ -72,26 +130,22 @@ defineOptions({ name: 'ClNotificationChannelForm' });
             {{ op.label }}
           </el-option>
         </el-option-group>
+        <el-option-group
+          :label="t('views.notification.channels.providers.custom')"
+        >
+          <el-option value="custom">
+            <span class="icon-wrapper">
+              <cl-icon :icon="['fa', 'edit']" />
+              {{ t('views.notification.channels.providers.custom') }}
+            </span>
+          </el-option>
+        </el-option-group>
       </el-select>
     </cl-form-item>
-
-    <cl-form-item
-      :span="2"
-      :offset="2"
-      :label="t('views.notification.channels.form.type')"
-      prop="type"
-      required
-    >
-      <el-radio-group v-model="form.type">
-        <el-radio-button
-          v-for="op in typeOptions"
-          :key="op.value"
-          :value="op.value"
-        >
-          <cl-icon :icon="op.icon" />
-          {{ op.label }}
-        </el-radio-button>
-      </el-radio-group>
+    <cl-form-item v-if="hasProvider" :span="2">
+      <el-link type="primary" :href="activeProvider?.docUrl" target="_blank">
+        {{ t('views.notification.channels.providerDoc.label') }}
+      </el-link>
     </cl-form-item>
 
     <template v-if="form.type === 'mail'">
@@ -186,5 +240,9 @@ defineOptions({ name: 'ClNotificationChannelForm' });
   text-align: center;
   width: 18px;
   margin-right: 2px;
+
+  &:deep(img) {
+    filter: grayscale(100);
+  }
 }
 </style>

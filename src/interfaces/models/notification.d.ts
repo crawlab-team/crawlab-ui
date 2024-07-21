@@ -71,5 +71,10 @@ export declare global {
     type: NotificationChannelType;
     name: string;
     icon: Icon;
+    smtpServer?: string;
+    smtpPort?: number;
+    webhookEndpoint?: string;
+    webhookToken?: string;
+    docUrl?: string;
   }
 }

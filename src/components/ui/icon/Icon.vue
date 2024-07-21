@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import {
+  ref,
+  computed,
+  onMounted,
+  defineAsyncComponent,
+  onBeforeMount,
+} from 'vue';
 import useIcon from '@/components/ui/icon/icon';
 
 const props = withDefaults(
@@ -8,18 +14,14 @@ const props = withDefaults(
     spinning?: boolean;
     size?: IconSize;
     color?: string;
+    alt?: string;
   }>(),
   {
     size: 'default',
   }
 );
 
-const {
-  isFaIcon: _isFaIcon,
-  isSvg: _isSvg,
-  isAzure: _isAzure,
-  getFontSize,
-} = useIcon();
+const { isFaIcon: _isFaIcon, isSvg: _isSvg, getFontSize } = useIcon();
 
 const fontSize = computed(() => {
   const { size } = props;
@@ -38,53 +40,48 @@ const isSvg = computed<boolean>(() => {
   return _isSvg(icon);
 });
 
-const isAzure = computed<boolean>(() => {
-  const { icon } = props;
-  if (!icon) return false;
-  return _isAzure(icon);
-});
-
-const iconComponent = ref<any>(null);
-
-onMounted(async () => {
+const iconSvgSrc = ref<string>('');
+onBeforeMount(async () => {
   if (isSvg.value) {
-    const svgIcons = import.meta.glob('@/assets/svg/icons/*.svg');
-    const svgIconPath = `/src/assets/svg/icons/${props.icon[1]}.svg`;
-    if (svgIcons[svgIconPath]) {
-      svgIcons[svgIconPath]().then((module: any) => {
-        iconComponent.value = module.default;
-      });
-    }
-  } else if (isAzure.value) {
-    const azureIcons = import.meta.glob('@/assets/svg/icons/azure/*.svg');
-    const azureIconPath = `@/assets/svg/icons/azure/${props.icon[1]}.svg`;
-    if (azureIcons[azureIconPath]) {
-      azureIcons[azureIconPath]().then((module: any) => {
-        iconComponent.value = module.default;
-      });
+    const { icon } = props;
+    if (!Array.isArray(icon) || !icon[1]) return;
+    const res = await import(`@/assets/svg/icons/${icon[1]}.svg?url`);
+    if (res) {
+      iconSvgSrc.value = res.default;
     }
   }
 });
+
 defineOptions({ name: 'ClIcon' });
 </script>
 
 <template>
   <template v-if="icon">
-    <font-awesome-icon
-      v-if="isFaIcon"
-      :class="spinning ? 'fa-spin' : ''"
-      :icon="icon"
-      :style="{ fontSize, color }"
-      class="icon"
-    />
-    <component v-else-if="isSvg" :is="iconComponent" />
-    <component v-else-if="isAzure" :is="iconComponent" />
-    <i
-      v-else
-      :class="[spinning ? 'fa-spin' : '', icon, 'icon']"
-      :style="{ fontSize, color }"
-    />
+    <template v-if="isFaIcon">
+      <font-awesome-icon
+        :class="spinning ? 'fa-spin' : ''"
+        :icon="icon"
+        :style="{ fontSize, color }"
+        class="icon"
+      />
+    </template>
+    <template v-else-if="isSvg">
+      <img class="icon" :src="iconSvgSrc" :alt="alt" />
+    </template>
+    <template v-else>
+      <i
+        :class="[spinning ? 'fa-spin' : '', icon, 'icon']"
+        :style="{ fontSize, color }"
+      />
+    </template>
   </template>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+img {
+  display: var(--fa-display, inline-block);
+  height: 1em;
+  width: 100%;
+  vertical-align: -0.125em;
+}
+</style>
