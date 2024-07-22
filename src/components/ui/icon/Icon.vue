@@ -5,6 +5,7 @@ import {
   onMounted,
   defineAsyncComponent,
   onBeforeMount,
+  watch,
 } from 'vue';
 import useIcon from '@/components/ui/icon/icon';
 
@@ -41,7 +42,7 @@ const isSvg = computed<boolean>(() => {
 });
 
 const iconSvgSrc = ref<string>('');
-onBeforeMount(async () => {
+const updateIconSvgSrc = async () => {
   if (isSvg.value) {
     const { icon } = props;
     if (!Array.isArray(icon) || !icon[1]) return;
@@ -50,7 +51,9 @@ onBeforeMount(async () => {
       iconSvgSrc.value = res.default;
     }
   }
-});
+};
+onBeforeMount(updateIconSvgSrc);
+watch(() => props.icon, updateIconSvgSrc);
 
 defineOptions({ name: 'ClIcon' });
 </script>

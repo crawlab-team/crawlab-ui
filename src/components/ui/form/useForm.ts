@@ -1,4 +1,4 @@
-import { computed, provide } from 'vue';
+import { computed, provide, watch } from 'vue';
 import { Store } from 'vuex';
 import useFormTable from '@/components/ui/form/formTable';
 import { EMPTY_OBJECT_ID } from '@/utils/mongo';
@@ -206,6 +206,12 @@ export const useForm = (
     onFieldChange,
     onFieldRegister,
   };
+
+  watch(activeDialogKey, () => {
+    if (!activeDialogKey.value) {
+      resetForm();
+    }
+  });
 
   return {
     ...formTable,

@@ -12,6 +12,7 @@ const {
   confirmLoading,
   createEditDialogVisible,
 } = useNotificationChannel(store);
+
 defineOptions({ name: 'ClCreateEditNotificationChannelDialog' });
 </script>
 

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useStore } from 'vuex';
-import useNotificationChannel from '@/components/core/notification/channel/useNotificationChannel';
-import { translate } from '@/utils';
 import { computed, ref, watch } from 'vue';
-import ClFormItem from '@/components/ui/form/FormItem.vue';
+import { useStore } from 'vuex';
+import { translate } from '@/utils';
+import useNotificationChannel from '@/components/core/notification/channel/useNotificationChannel';
 
 defineProps<{
   readonly?: boolean;
@@ -24,43 +23,67 @@ const {
   providerOptionGroups,
   activeProvider,
   activeProviderOption,
+  allProviderNames,
 } = useNotificationChannel(store);
 
 const smtpPasswordVisible = ref(false);
 
-watch(
-  () => form.value.provider,
-  val => {
-    if (val === 'custom') {
-      store.commit(`${ns}/setForm`, {
-        ...form.value,
-        smtp_server: '',
-        smtp_port: '',
-        smtp_username: '',
-        smtp_password: '',
-        webhook_url: '',
-      });
-      return;
-    }
-    switch (activeProvider.value?.type) {
-      case 'mail':
-        store.commit(`${ns}/setForm`, {
-          ...form.value,
-          type: 'mail',
-          smtp_server: activeProvider.value.smtpServer,
-          smtp_port: activeProvider.value.smtpPort,
-        });
-        break;
-      case 'im':
-        store.commit(`${ns}/setForm`, {
-          ...form.value,
-          type: 'im',
-          webhook_url: '',
-        });
-        break;
-    }
+const onTypeChange = () => {
+  store.commit(`${ns}/setForm`, {
+    ...form.value,
+    provider: 'custom',
+    smtp_server: '',
+    smtp_port: '',
+    smtp_username: '',
+    smtp_password: '',
+    webhook_url: '',
+  });
+};
+
+const onProviderChange = val => {
+  if (val === 'custom') {
+    store.commit(`${ns}/setForm`, {
+      ...form.value,
+      smtp_server: '',
+      smtp_port: '',
+      smtp_username: '',
+      smtp_password: '',
+      webhook_url: '',
+    });
+    return;
   }
-);
+  let payload: Partial<NotificationChannel>;
+  if (!activeProvider.value) return;
+  const { type, name, smtpServer, smtpPort } = activeProvider.value;
+  switch (type) {
+    case 'mail':
+      payload = {
+        type,
+        smtp_server: smtpServer,
+        smtp_port: smtpPort,
+      };
+      break;
+    case 'im':
+      payload = {
+        type,
+        webhook_url: '',
+      };
+      break;
+  }
+  if (
+    !form.value.name ||
+    allProviderNames.value.some(
+      name =>
+        t(`views.notification.channels.providers.${name}`) === form.value.name
+    )
+  ) {
+    payload.name = t(`views.notification.channels.providers.${name}`);
+  }
+  store.commit(`${ns}/setForm`, {
+    ...form.value,
+    ...payload,
+  });
+};
 
 const hasProvider = computed(
   () => activeProvider.value && activeProvider.value.name !== 'custom'
@@ -89,7 +112,7 @@ defineOptions({ name: 'ClNotificationChannelForm' });
       prop="type"
       required
     >
-      <el-radio-group v-model="form.type">
+      <el-radio-group v-model="form.type" @change="onTypeChange">
         <el-radio-button
           v-for="op in typeOptions"
           :key="op.value"
@@ -102,12 +125,18 @@ defineOptions({ name: 'ClNotificationChannelForm' });
     </cl-form-item>
 
     <cl-form-item
-      :span="4"
+      :span="2"
+      :offset="hasProvider ? 0 : 2"
       :label="t('views.notification.channels.form.provider')"
       prop="provider"
       required
     >
-      <el-select v-model="form.provider" filterable clearable>
+      <el-select
+        v-model="form.provider"
+        filterable
+        clearable
+        @change="onProviderChange"
+      >
         <template #label>
           <span class="icon-wrapper">
             <cl-icon :icon="activeProviderOption.icon" />
@@ -123,6 +152,7 @@ defineOptions({ name: 'ClNotificationChannelForm' });
             v-for="op in group.children"
             :key="op.value"
             :value="op.value"
+            :disabled="op.disabled"
           >
             <span class="icon-wrapper">
               <cl-icon :icon="op.icon" />
@@ -142,9 +172,34 @@ defineOptions({ name: 'ClNotificationChannelForm' });
         </el-option-group>
       </el-select>
     </cl-form-item>
-    <cl-form-item v-if="hasProvider" :span="2">
-      <el-link type="primary" :href="activeProvider?.docUrl" target="_blank">
-        {{ t('views.notification.channels.providerDoc.label') }}
+    <cl-form-item
+      v-if="hasProvider"
+      :span="2"
+      :label="t('views.notification.channels.providerDocs.title')"
+    >
+      <el-link
+        type="primary"
+        :href="
+          typeof activeProvider?.docUrl === 'function'
+            ? activeProvider?.docUrl()
+            : activeProvider?.docUrl
+        "
+        target="_blank"
+      >
+        <el-space>
+          <span>
+            {{ t('views.notification.channels.providerDocs.label') }}
+          </span>
+          <span>-</span>
+          <span>
+            {{
+              t(`views.notification.channels.providers.${activeProvider?.name}`)
+            }}
+          </span>
+          <span>
+            <cl-icon :icon="['fa', 'external-link-alt']" />
+          </span>
+        </el-space>
       </el-link>
     </cl-form-item>
 
@@ -243,6 +298,18 @@ defineOptions({ name: 'ClNotificationChannelForm' });
 
   &:deep(img) {
     filter: grayscale(100);
+  }
+}
+
+.el-alert {
+  padding: 0 10px;
+
+  &:deep(.el-icon) {
+    width: 18px;
+  }
+
+  &:deep(.el-link) {
+    margin-left: 5px;
   }
 }
 </style>

@@ -75,11 +75,10 @@ interface LViewsNotification {
       ms_teams: string;
       telegram: string;
       discord: string;
-      whatsapp_business: string;
-      facebook_messenger: string;
       custom: string;
     };
-    providerDoc: {
+    providerDocs: {
+      title: string;
       label: string;
     };
   };

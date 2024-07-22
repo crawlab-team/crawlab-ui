@@ -64,7 +64,7 @@ export declare global {
     smtp_port?: string;
     smtp_username?: string;
     smtp_password?: string;
-    webhook?: string;
+    webhook_url?: string;
   }
 
   interface NotificationChannelProvider {
@@ -75,6 +75,8 @@ export declare global {
     smtpPort?: number;
     webhookEndpoint?: string;
     webhookToken?: string;
-    docUrl?: string;
+    docUrl?: string | (() => string);
+    disabled?: boolean;
+    locale?: string;
   }
 }

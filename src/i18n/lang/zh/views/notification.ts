@@ -67,7 +67,7 @@ const notification: LViewsNotification = {
       type: '类型',
       name: '名称',
       description: '描述',
-      provider: '提供商',
+      provider: '服务商',
       smtpServer: 'SMTP 服务器',
       smtpPort: 'SMTP 端口',
       smtpUsername: 'SMTP 用户名',
@@ -95,12 +95,11 @@ const notification: LViewsNotification = {
       ms_teams: '微软团队 (Teams)',
       telegram: '电报 (Telegram)',
       discord: 'Discord',
-      whatsapp_business: 'WhatsApp 企业版',
-      facebook_messenger: '脸书信使 (Facebook Messenger)',
       custom: '自定义',
     },
-    providerDoc: {
-      label: '配置文档',
+    providerDocs: {
+      title: '服务商配置文档',
+      label: '文档链接',
     },
   },
 };

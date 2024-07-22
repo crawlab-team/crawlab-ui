@@ -121,6 +121,7 @@ defineOptions({ name: 'ClFormItem' });
     <el-form-item
       :prop="prop"
       :label="label"
+      :label-width="labelWidth"
       :required="isRequired"
       :rules="rules"
       :size="size || formContext?.size"

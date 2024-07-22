@@ -95,12 +95,11 @@ const notification: LViewsNotification = {
       ms_teams: 'Microsoft Teams',
       telegram: 'Telegram',
       discord: 'Discord',
-      whatsapp_business: 'WhatsApp Business',
-      facebook_messenger: 'Facebook Messenger',
       custom: 'Custom',
     },
-    providerDoc: {
-      label: 'Config Documentation',
+    providerDocs: {
+      title: 'Provider Configs',
+      label: 'Documentation Link',
     },
   },
 };
