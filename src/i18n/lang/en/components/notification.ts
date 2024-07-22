@@ -89,6 +89,10 @@ const notification: LComponentsNotification = {
       },
     },
   },
+  channel: {
+    label: 'Channel',
+    tooltip: 'Notification channels',
+  },
 };
 
 export default notification;

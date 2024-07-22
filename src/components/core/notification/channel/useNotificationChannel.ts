@@ -141,8 +141,13 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
       type: 'im',
       name: 'lark',
       icon: ['svg', 'lark'],
-      docUrl: () =>
-        `https://open.larksuite.com/document/client-docs/bot-v3/add-custom-bot?lang=${locale.value === 'zh' ? 'zh-CN' : 'en-US'}`,
+      docUrl: () => {
+        if (locale.value === 'zh') {
+          return 'https://open.feishu.cn/document/client-docs/bot-v3/add-custom-bot';
+        } else {
+          return 'https://open.larksuite.com/document/client-docs/bot-v3/add-custom-bot';
+        }
+      },
       locale: 'zh',
     },
     {
@@ -237,6 +242,10 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
 
   const allProviderNames = computed(() => allProviders.map(p => p.name));
 
+  const getProviderIcon = (provider: string): Icon | undefined => {
+    return allProviders.find(p => p.name === provider)?.icon;
+  };
+
   return {
     ...useForm(
       'notificationChannel',
@@ -252,6 +261,7 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
     activeProviderOption,
     allProviders,
     allProviderNames,
+    getProviderIcon,
   };
 };
 

@@ -88,6 +88,7 @@ const layouts: LLayouts = {
         tabs: {
           overview: '概览',
           template: '模板',
+          channels: '通知渠道',
         },
       },
       channels: {

@@ -10,7 +10,10 @@ const useNotificationSettingDetail = () => {
   const { id, form } = useNotificationSetting(store);
 
   onBeforeMount(async () => {
-    await store.dispatch(`${ns}/getById`, id.value);
+    await Promise.all([
+      store.dispatch(`${ns}/getById`, id.value),
+      store.dispatch('notificationChannel/getAllList'),
+    ]);
   });
 
   return {

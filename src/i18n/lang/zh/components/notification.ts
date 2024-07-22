@@ -89,6 +89,10 @@ const notification: LComponentsNotification = {
       },
     },
   },
+  channel: {
+    label: '通知渠道',
+    tooltip: '消息通知渠道设置',
+  },
 };
 
 export default notification;

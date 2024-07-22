@@ -3,6 +3,7 @@ import { getStore } from '@/store';
 import urljoin from 'url-join';
 import {
   TAB_NAME_CHANGES,
+  TAB_NAME_CHANNELS,
   TAB_NAME_DATA,
   TAB_NAME_DEPENDENCIES,
   TAB_NAME_FILES,
@@ -157,6 +158,8 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'code-commit'];
     case TAB_NAME_MONITORING:
       return ['fa', 'tachometer-alt'];
+    case TAB_NAME_CHANNELS:
+      return ['fa', 'broadcast-tower'];
     default:
       return ['fa', 'circle'];
   }

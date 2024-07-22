@@ -41,11 +41,15 @@ import NodeDetailTabOverview from './node/detail/tabs/NodeDetailTabOverview.vue'
 import NodeDetailTabTasks from './node/detail/tabs/NodeDetailTabTasks.vue';
 import NodeList from './node/list/NodeList.vue';
 import useNodeList from './node/list/useNodeList';
+import NotificationChannelDetailActionsCommon from './notification/channel/detail/actions/NotificationChannelDetailActionsCommon.vue';
+import NotificationChannelDetail from './notification/channel/detail/NotificationChannelDetail.vue';
+import NotificationChannelDetailTabOverview from './notification/channel/detail/tabs/NotificationChannelDetailTabOverview.vue';
 import NotificationChannelList from './notification/channel/list/NotificationChannelList.vue';
 import useNotificationChannelList from './notification/channel/list/useNotificationChannelList';
 import NotificationSettingDetailActionsCommon from './notification/setting/detail/actions/NotificationSettingDetailActionsCommon.vue';
 import NotificationSettingDetailActionsTemplate from './notification/setting/detail/actions/NotificationSettingDetailActionsTemplate.vue';
 import NotificationSettingDetail from './notification/setting/detail/NotificationSettingDetail.vue';
+import NotificationSettingDetailTabChannels from './notification/setting/detail/tabs/NotificationSettingDetailTabChannels.vue';
 import NotificationSettingDetailTabOverview from './notification/setting/detail/tabs/NotificationSettingDetailTabOverview.vue';
 import NotificationSettingDetailTabTemplate from './notification/setting/detail/tabs/NotificationSettingDetailTabTemplate.vue';
 import useNotificationSettingDetail from './notification/setting/detail/useNotificationSettingDetail';
@@ -139,11 +143,15 @@ export {
   NodeDetailTabTasks as ClNodeDetailTabTasks,
   NodeList as ClNodeList,
   useNodeList as useNodeList,
+  NotificationChannelDetailActionsCommon as ClNotificationChannelDetailActionsCommon,
+  NotificationChannelDetail as ClNotificationChannelDetail,
+  NotificationChannelDetailTabOverview as ClNotificationChannelDetailTabOverview,
   NotificationChannelList as ClNotificationChannelList,
   useNotificationChannelList as useNotificationChannelList,
   NotificationSettingDetailActionsCommon as ClNotificationSettingDetailActionsCommon,
   NotificationSettingDetailActionsTemplate as ClNotificationSettingDetailActionsTemplate,
   NotificationSettingDetail as ClNotificationSettingDetail,
+  NotificationSettingDetailTabChannels as ClNotificationSettingDetailTabChannels,
   NotificationSettingDetailTabOverview as ClNotificationSettingDetailTabOverview,
   NotificationSettingDetailTabTemplate as ClNotificationSettingDetailTabTemplate,
   useNotificationSettingDetail as useNotificationSettingDetail,

@@ -1,12 +1,19 @@
-import { TAB_NAME_OVERVIEW, TAB_NAME_TEMPLATE } from '@/constants';
 import {
+  TAB_NAME_CHANNELS,
+  TAB_NAME_OVERVIEW,
+  TAB_NAME_TEMPLATE,
+} from '@/constants';
+import {
+  ClNotificationChannelDetail,
+  ClNotificationChannelDetailTabOverview,
+  ClNotificationChannelList,
   ClNotificationSettingDetail,
+  ClNotificationSettingDetailTabChannels,
   ClNotificationSettingDetailTabOverview,
   ClNotificationSettingDetailTabTemplate,
   ClNotificationSettingList,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
-import ClNotificationChannelList from '@/views/notification/channel/list/NotificationChannelList.vue';
 
 const t = translate;
 
@@ -48,6 +55,12 @@ export default [
         icon: getIconByTabName(TAB_NAME_TEMPLATE),
         component: async () => ClNotificationSettingDetailTabTemplate,
       },
+      {
+        path: TAB_NAME_CHANNELS,
+        title: t('layouts.routes.notifications.settings.tabs.channels'),
+        icon: getIconByTabName(TAB_NAME_CHANNELS),
+        component: async () => ClNotificationSettingDetailTabChannels,
+      },
     ],
   },
   {
@@ -56,5 +69,21 @@ export default [
     title: t('layouts.routes.notifications.channels.title'),
     icon: ['fa', 'broadcast-tower'],
     component: async () => ClNotificationChannelList,
+  },
+  {
+    name: 'NotificationChannelDetail',
+    path: `${endpoint}/channels/:id`,
+    redirect: to => {
+      return { path: to.path + '/' + TAB_NAME_OVERVIEW };
+    },
+    component: async () => ClNotificationChannelDetail,
+    children: [
+      {
+        path: TAB_NAME_OVERVIEW,
+        title: t('layouts.routes.notifications.channels.tabs.overview'),
+        icon: getIconByTabName(TAB_NAME_OVERVIEW),
+        component: async () => ClNotificationChannelDetailTabOverview,
+      },
+    ],
   },
 ] as Array<ExtendedRouterRecord>;

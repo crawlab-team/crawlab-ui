@@ -16,6 +16,7 @@ const title = computed<string>(() => t('views.misc.disclaimer.title'));
 const content = computed<string>(() => {
   return converter.makeHtml(t('views.misc.disclaimer.content'));
 });
+defineOptions({ name: 'ClDisclaimer' });
 </script>
 
 <template>

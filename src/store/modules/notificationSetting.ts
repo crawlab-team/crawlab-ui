@@ -4,7 +4,11 @@ import {
   getDefaultStoreMutations,
   getDefaultStoreState,
 } from '@/utils/store';
-import { TAB_NAME_OVERVIEW, TAB_NAME_TEMPLATE } from '@/constants';
+import {
+  TAB_NAME_CHANNELS,
+  TAB_NAME_OVERVIEW,
+  TAB_NAME_TEMPLATE,
+} from '@/constants';
 import { translate } from '@/utils/i18n';
 
 const t = translate;
@@ -17,6 +21,7 @@ const state = {
   tabs: [
     { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
     { id: TAB_NAME_TEMPLATE, title: t('common.tabs.template') },
+    { id: TAB_NAME_CHANNELS, title: t('common.tabs.channels') },
   ],
 } as NotificationSettingStoreState;
 

@@ -89,4 +89,8 @@ interface LComponentsNotification {
       };
     };
   };
+  channel: {
+    label: string;
+    tooltip: string;
+  };
 }

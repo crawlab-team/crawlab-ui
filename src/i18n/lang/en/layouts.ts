@@ -88,6 +88,7 @@ const layouts: LLayouts = {
         tabs: {
           overview: 'Overview',
           template: 'Template',
+          channels: 'Channels',
         },
       },
       channels: {

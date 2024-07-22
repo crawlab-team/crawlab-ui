@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus';
 import {
   ACTION_ADD,
   ACTION_DELETE,
+  ACTION_ENABLE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   FILTER_OP_CONTAINS,
@@ -13,7 +14,8 @@ import { onListFilterChangeByKey, translate } from '@/utils';
 import useRequest from '@/services/request';
 import useList from '@/layouts/content/list/useList';
 import NavLink from '@/components/ui/nav/NavLink.vue';
-import Switch from '@/components/ui/switch/Switch.vue';
+import ClTag from '@/components/ui/tag/Tag.vue';
+import useNotificationChannel from '@/components/core/notification/channel/useNotificationChannel';
 
 const t = translate;
 
@@ -33,6 +35,8 @@ const useNotificationChannelList = () => {
 
   // action functions
   const { deleteByIdConfirm } = actionFunctions;
+
+  const { getProviderIcon } = useNotificationChannel(store);
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -96,28 +100,45 @@ const useNotificationChannelList = () => {
           key: 'type',
           label: t('views.notification.channels.form.type'),
           icon: ['fa', 'list'],
-          width: '120',
-          value: (row: NotificationChannel) => (
-            <Switch
-              modelValue={row.enabled}
-              onChange={async (value: boolean) => {
-                if (!row._id) return;
-                if (!value) {
-                  await post(`/notifications/channels/${row._id}/disable`);
-                  ElMessage.success(t('common.message.success.disabled'));
-                } else {
-                  await post(`/notifications/channels/${row._id}/enable`);
-                  ElMessage.success(t('common.message.success.enabled'));
-                }
-              }}
-            />
-          ),
+          width: '150',
+          value: (row: NotificationChannel) => {
+            let icon: Icon;
+            let type: BasicType;
+            switch (row.type) {
+              case 'mail':
+                icon = ['fa', 'at'];
+                type = 'primary';
+                break;
+              case 'im':
+                icon = ['fa', 'comment'];
+                type = 'success';
+                break;
+            }
+            return (
+              <ClTag
+                type={type}
+                label={t(`views.notification.channels.types.${row.type}`)}
+                icon={icon}
+              />
+            );
+          },
         },
         {
           key: 'provider',
           label: t('views.notification.channels.form.provider'),
           icon: ['fa', 'industry'],
-          width: '120',
+          width: '200',
+          value: (row: NotificationChannel) => {
+            return (
+              <ClTag
+                type="info"
+                label={t(
+                  `views.notification.channels.providers.${row.provider}`
+                )}
+                icon={getProviderIcon(row.provider)}
+              />
+            );
+          },
         },
         {
           key: 'description',

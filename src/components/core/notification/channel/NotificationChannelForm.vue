@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useNotificationChannel from '@/components/core/notification/channel/useNotificationChannel';

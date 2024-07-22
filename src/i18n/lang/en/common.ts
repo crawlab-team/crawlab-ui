@@ -37,6 +37,7 @@ const common: LCommon = {
     inferDataFieldsTypes: 'Infer Data Fields Types',
     unlink: 'Unlink',
     goto: 'Go To',
+    selectAll: 'Select All',
   },
   messageBox: {
     confirm: {
@@ -102,6 +103,7 @@ const common: LCommon = {
     changes: 'Changes',
     ignore: 'Ignore',
     monitoring: 'Monitoring',
+    channels: 'Channels',
   },
   status: {
     unassigned: 'Unassigned',

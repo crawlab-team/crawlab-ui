@@ -50,6 +50,7 @@ export declare global {
       inferDataFieldsTypes: string;
       unlink: string;
       goto: string;
+      selectAll: string;
     };
     messageBox: {
       confirm: {
@@ -115,6 +116,7 @@ export declare global {
       changes: string;
       ignore: string;
       monitoring: string;
+      channels: string;
     };
     status: {
       unassigned: string;

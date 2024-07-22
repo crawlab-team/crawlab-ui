@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  ref,
-  computed,
-  onMounted,
-  defineAsyncComponent,
-  onBeforeMount,
-  watch,
-} from 'vue';
+import { ref, computed, onBeforeMount, watch } from 'vue';
 import useIcon from '@/components/ui/icon/icon';
 
 const props = withDefaults(
@@ -21,6 +14,10 @@ const props = withDefaults(
     size: 'default',
   }
 );
+
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void;
+}>();
 
 const { isFaIcon: _isFaIcon, isSvg: _isSvg, getFontSize } = useIcon();
 
@@ -66,15 +63,22 @@ defineOptions({ name: 'ClIcon' });
         :icon="icon"
         :style="{ fontSize, color }"
         class="icon"
+        @click="event => emit('click', event)"
       />
     </template>
     <template v-else-if="isSvg">
-      <img class="icon" :src="iconSvgSrc" :alt="alt" />
+      <img
+        class="icon"
+        :src="iconSvgSrc"
+        :alt="alt"
+        @click="event => emit('click', event)"
+      />
     </template>
     <template v-else>
       <i
         :class="[spinning ? 'fa-spin' : '', icon, 'icon']"
         :style="{ fontSize, color }"
+        @click="event => emit('click', event)"
       />
     </template>
   </template>
@@ -84,7 +88,6 @@ defineOptions({ name: 'ClIcon' });
 img {
   display: var(--fa-display, inline-block);
   height: 1em;
-  width: 100%;
   vertical-align: -0.125em;
 }
 </style>

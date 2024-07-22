@@ -70,6 +70,7 @@ const tooltips = computed<SpiderStatTooltips>(() => {
 `,
   };
 });
+defineOptions({ name: 'ClSpiderStat' });
 </script>
 
 <template>

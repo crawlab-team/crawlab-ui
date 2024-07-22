@@ -37,6 +37,7 @@ const common: LCommon = {
     inferDataFieldsTypes: '推断数据字段类型',
     unlink: '取消链接',
     goto: '访问',
+    selectAll: '全选',
   },
   messageBox: {
     confirm: {
@@ -102,6 +103,7 @@ const common: LCommon = {
     changes: '变更',
     ignore: '忽略',
     monitoring: '监控',
+    channels: '通知渠道',
   },
   status: {
     unassigned: '未指定',
