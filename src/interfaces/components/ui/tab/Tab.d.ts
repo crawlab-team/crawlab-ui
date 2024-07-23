@@ -1,8 +1,7 @@
 export declare global {
-  interface Tab {
+  interface Tab extends DraggableItemData {
     id?: number;
     path: string;
-    dragging?: boolean;
     isAction?: boolean;
   }
 }

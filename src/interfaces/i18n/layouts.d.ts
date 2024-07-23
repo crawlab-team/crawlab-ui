@@ -82,7 +82,7 @@ export declare global {
           node: string;
         };
       };
-      notification: {
+      notifications: {
         title: string;
         settings: {
           title: string;

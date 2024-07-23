@@ -58,7 +58,7 @@ const layouts: LLayouts = {
       },
     },
     schedules: {
-      title: '计划',
+      title: '定时任务',
       tabs: {
         overview: '概览',
         tasks: '任务',
@@ -116,7 +116,7 @@ const layouts: LLayouts = {
       },
     },
     environments: {
-      title: '环境',
+      title: '环境变量',
     },
     system: {
       title: '系统',

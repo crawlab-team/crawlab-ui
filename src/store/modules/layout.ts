@@ -3,17 +3,53 @@ import { normalizeTree } from '@/utils/tree';
 import { getDefaultMenuItems } from '@/router';
 import { isPro } from '@/utils';
 
+// persistent sidebar collapsed
+const getDefaultSidebarCollapsed = (): boolean => {
+  const collapsed = localStorage.getItem('sidebarCollapsed');
+  if (collapsed) {
+    return collapsed === 'true';
+  }
+  return false;
+};
+
+// persistent tabs
+const getDefaultTabs = (): Tab[] => {
+  const tabs = localStorage.getItem('tabs');
+  if (tabs) {
+    return JSON.parse(tabs) as Tab[];
+  }
+  return [];
+};
+
+// persistent active tab
+const getDefaultActiveTabId = (): number | undefined => {
+  const activeTabId = localStorage.getItem('activeTabId');
+  if (activeTabId) {
+    return parseInt(activeTabId);
+  }
+  return undefined;
+};
+
+// persistent max tab id
+const getDefaultMaxTabId = (): number => {
+  const maxTabId = localStorage.getItem('maxTabId');
+  if (maxTabId) {
+    return parseInt(maxTabId);
+  }
+  return 0;
+};
+
 export default {
   namespaced: true,
   state: {
     // sidebar
-    sidebarCollapsed: false,
+    sidebarCollapsed: getDefaultSidebarCollapsed(),
     menuItems: getDefaultMenuItems(),
 
     // tabs view
-    activeTabId: undefined,
-    maxTabId: 0,
-    tabs: [] as Tab[],
+    activeTabId: getDefaultActiveTabId(),
+    maxTabId: getDefaultMaxTabId(),
+    tabs: getDefaultTabs(),
     draggingTab: undefined,
     targetTab: undefined,
     isTabsDragging: false,
@@ -73,13 +109,17 @@ export default {
     },
     setTabs(state: LayoutStoreState, tabs: Tab[]) {
       state.tabs = tabs;
+      localStorage.setItem('tabs', JSON.stringify(tabs));
     },
     setActiveTabId(state: LayoutStoreState, id: number) {
       state.activeTabId = id;
+      localStorage.setItem('activeTabId', id.toString());
     },
     addTab(state: LayoutStoreState, tab: Tab) {
       if (tab.id === undefined) tab.id = ++state.maxTabId;
       state.tabs.push(tab);
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
+      localStorage.setItem('maxTabId', state.maxTabId.toString());
     },
     updateTab(state: LayoutStoreState, tab: Tab) {
       const { tabs } = state;
@@ -87,20 +127,18 @@ export default {
       if (idx !== -1) {
         state.tabs[idx] = tab;
       }
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
     removeAllTabs(state: LayoutStoreState) {
       state.tabs = [];
+      localStorage.removeItem('tabs');
     },
     removeTab(state: LayoutStoreState, tab: Tab) {
       if (tab.id === undefined) return;
       const idx = state.tabs.findIndex(d => d.id === tab.id);
       if (idx === -1) return;
       state.tabs.splice(idx, 1);
-
-      // set active tab
-      // if (idx > state.tabs.length - 1) {
-      //
-      // }
+      localStorage.setItem('tabs', JSON.stringify(state.tabs));
     },
     setDraggingTab(state: LayoutStoreState, tab: Tab) {
       state.draggingTab = tab;

@@ -84,16 +84,14 @@ defineOptions({ name: 'ClHeader' });
           <el-breadcrumb-item to="/">
             <cl-icon :icon="['fa', 'home']" />
           </el-breadcrumb-item>
-          <el-breadcrumb-item
-            v-for="item in navMenuItems"
-            :key="item.path"
-            v-if="item?.path !== '/home'"
-          >
-            <router-link :to="item.path">
-              <cl-icon :icon="item.icon" />
-              {{ item.title }}
-            </router-link>
-          </el-breadcrumb-item>
+          <template v-for="item in navMenuItems" :key="item.path">
+            <el-breadcrumb-item v-if="item?.path !== '/home'">
+              <router-link :to="item.path">
+                <cl-icon :icon="item.icon" />
+                {{ item.title }}
+              </router-link>
+            </el-breadcrumb-item>
+          </template>
         </el-breadcrumb>
 
         <cl-tabs-view v-if="false" />

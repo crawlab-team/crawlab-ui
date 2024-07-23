@@ -10,6 +10,7 @@ export declare global {
     title: string;
     icon?: Icon;
     children?: Array<ExtendedRouterRecord>;
+    path?: string;
   }
 }
 

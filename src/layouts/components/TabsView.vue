@@ -2,11 +2,14 @@
 import { computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
+import { Plus } from '@element-plus/icons-vue';
 import { plainClone } from '@/utils/object';
+import { getNavMenuItems, getRouteMenuItemsMap } from '@/utils';
 
 // store
 const storeNameSpace = 'layout';
-const store = useStore<RootStoreState>();
+const store = useStore();
+const { layout: state } = store.state as RootStoreState;
 
 // route
 const route = useRoute();
@@ -26,16 +29,7 @@ const addTab = (tab: Tab) => {
 const setActiveTab = (tab: Tab) => {
   store.commit(`${storeNameSpace}/setActiveTabId`, tab.id);
 };
-const onAddTab = () => {
-  addTab({ path: '/' });
-  const newTab = tabs.value[tabs.value.length - 1];
-  setActiveTab(newTab);
-  router.push(newTab.path);
-};
 
-const onDragDrop = (tabs: Tab[]) => {
-  store.commit(`${storeNameSpace}/setTabs`, tabs);
-};
 const updateTabs = (path: string) => {
   // active tab
   const activeTab = store.getters[`${storeNameSpace}/activeTab`] as
@@ -58,52 +52,112 @@ const updateTabs = (path: string) => {
 watch(currentPath, updateTabs);
 
 onMounted(() => {
-  // add current page to tabs if no tab exists
-  if (tabs.value.length === 0) {
-    // add tab
-    addTab({ path: currentPath.value });
-
-    // new tab
-    const newTab = tabs.value[0];
-    if (!newTab) return;
-
-    // set active tab id
-    setActiveTab(newTab);
+  // find last tab
+  const lastTab = tabs.value.find(tab => tab.path === currentPath.value);
+  if (lastTab) {
+    setActiveTab(lastTab);
+    return;
   }
 
-  // update tabs
-  updateTabs(currentPath.value);
+  // add current page to tabs
+  addTab({ path: currentPath.value } as Tab);
+
+  // set active tab id
+  setActiveTab(tabs.value[tabs.value.length - 1]);
 });
+
+const getLastNavItem = (path: string): MenuItem | undefined => {
+  const menuItemsMap = getRouteMenuItemsMap();
+  const normalizedPath = path.replace(/[0-9a-f]{24}/, ':id');
+  return menuItemsMap.get(normalizedPath);
+};
+
+const getNavItemLabel = (path: string): string => {
+  const items = getNavMenuItems(path);
+  return items.map(item => item.title).join(' / ');
+};
+
+const onTabChange = (tabId: number) => {
+  setActiveTab({ id: tabId } as Tab);
+  router.push(tabs.value.find(tab => tab.id === tabId)?.path || '/home');
+};
+
+const onTabRemove = (tabId: number) => {
+  if (tabs.value.length === 1) {
+    updateTabs('/home');
+    return;
+  }
+  if (state.activeTabId === tabId) {
+    const index = tabs.value.findIndex(tab => tab.id === tabId);
+    const nextTab = tabs.value[index + 1] || tabs.value[index - 1];
+    if (!nextTab) return;
+    setActiveTab(nextTab);
+    router.push(nextTab.path);
+  }
+  store.commit(`${storeNameSpace}/removeTab`, { id: tabId } as Tab);
+};
+
+const onTabAdd = () => {
+  addTab({ path: '/home' } as Tab);
+  const newTab = tabs.value[tabs.value.length - 1];
+  setActiveTab(newTab);
+  router.push(newTab.path);
+};
+
 defineOptions({ name: 'ClTabsView' });
 </script>
 
 <template>
-  <div class="tabs-view">
-    <cl-draggable-list
-      class="tab-list"
-      :items="tabs"
-      item-key="id"
-      @d-end="onDragDrop"
-    >
-      <template v-slot="{ item }">
-        <cl-tab :tab="item" />
+  <el-tabs
+    :model-value="state.activeTabId"
+    class="tabs-view"
+    type="border-card"
+    editable
+    addable
+    @tab-change="onTabChange"
+    @tab-remove="onTabRemove"
+    @tab-add="onTabAdd"
+  >
+    <template #add-icon>
+      <el-icon>
+        <plus />
+      </el-icon>
+    </template>
+    <el-tab-pane v-for="tab in tabs" :key="JSON.stringify(tab)" :name="tab.id">
+      <template #label>
+        <cl-icon :icon="getLastNavItem(tab.path)?.icon" />
+        <span style="margin-left: 3px">{{ getNavItemLabel(tab.path) }}</span>
       </template>
-    </cl-draggable-list>
-
-    <!-- Add cl-tab -->
-    <cl-action-tab :icon="['fa', 'plus']" class="add-tab" @click="onAddTab" />
-    <!-- ./Add cl-tab -->
-  </div>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .tabs-view {
   background-color: var(--cl-tabs-view-bg);
-  display: flex;
-}
-</style>
-<style scoped>
-.tabs-view:deep(.draggable-item) {
-  margin: 0 5px;
+  height: var(--cl-tabs-view-height);
+  border: none;
+
+  &:deep(.el-tabs__item.is-active) {
+    border-bottom: 1px solid #ffffff;
+  }
+
+  &:deep(.el-tabs__item .is-icon-close) {
+    width: 0;
+  }
+
+  &:deep(.el-tabs__item:hover .is-icon-close) {
+    width: 14px;
+    transform-origin: 100% 50%;
+  }
+
+  &:deep(.el-tabs__new-tab) {
+    margin-right: 10px;
+    background-color: #ffffff;
+  }
+
+  &:deep(.el-tabs__content) {
+    display: none;
+  }
 }
 </style>

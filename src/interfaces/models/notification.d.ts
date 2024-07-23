@@ -61,7 +61,7 @@ export declare global {
     description?: string;
     provider?: string;
     smtp_server?: string;
-    smtp_port?: string;
+    smtp_port?: number;
     smtp_username?: string;
     smtp_password?: string;
     webhook_url?: string;

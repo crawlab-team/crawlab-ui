@@ -40,7 +40,7 @@ const onTypeChange = () => {
   });
 };
 
-const onProviderChange = val => {
+const onProviderChange = (val: string) => {
   if (val === 'custom') {
     store.commit(`${ns}/setForm`, {
       ...form.value,

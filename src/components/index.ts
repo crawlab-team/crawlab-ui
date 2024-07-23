@@ -166,7 +166,6 @@ import NavSidebarTree from './ui/nav/NavSidebarTree.vue';
 import NavTabs from './ui/nav/NavTabs.vue';
 import Switch from './ui/switch/Switch.vue';
 import ActionTab from './ui/tab/ActionTab.vue';
-import Tab from './ui/tab/Tab.vue';
 import * as action from './ui/table/action';
 import * as column from './ui/table/column';
 import * as data from './ui/table/data';

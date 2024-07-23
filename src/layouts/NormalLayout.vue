@@ -17,6 +17,7 @@ defineOptions({ name: 'ClNormalLayout' });
       class="container"
     >
       <cl-header />
+      <cl-tabs-view />
       <div class="container-body">
         <router-view />
       </div>
@@ -32,7 +33,8 @@ defineOptions({ name: 'ClNormalLayout' });
     position: fixed;
     top: 0;
     left: var(--cl-sidebar-width);
-    display: block;
+    display: flex;
+    flex-direction: column;
     width: calc(100vw - var(--cl-sidebar-width));
     height: 100vh;
     transition: left var(--cl-sidebar-collapse-transition-duration);
@@ -45,7 +47,10 @@ defineOptions({ name: 'ClNormalLayout' });
 
     .container-body {
       background-color: var(--cl-container-bg);
-      height: calc(100vh - var(--cl-header-height));
+      height: calc(
+        100vh - var(--cl-header-height) - var(--cl-tabs-view-height)
+      );
+      width: 100%;
       overflow: auto;
     }
   }

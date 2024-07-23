@@ -62,7 +62,7 @@ export const getRouteMenuItems = (): MenuItem[] => {
     (parentNode, node) => {
       return {
         ...node,
-        path: urljoin(parentNode.path, node.path),
+        path: urljoin(parentNode.path as string, node.path as string),
       };
     }
   );
