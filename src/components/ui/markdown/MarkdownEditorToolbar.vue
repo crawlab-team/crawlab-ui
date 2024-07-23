@@ -2,6 +2,8 @@
 import { ref, watch } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { translate } from '@/utils';
+import InsertVariableDialog from '@/components/ui/lexical/components/InsertVariableDialog.vue';
+import { INSERT_VARIABLE_COMMAND } from '@/components/ui/lexical/composables/useVariableSetup';
 
 const props = withDefaults(
   defineProps<{
@@ -21,6 +23,7 @@ const emit = defineEmits<{
   (e: 'underline'): void;
   (e: 'strikethrough'): void;
   (e: 'link'): void;
+  (e: 'variable', value: VariableForm): void;
 }>();
 
 const t = translate;
@@ -35,6 +38,15 @@ const updateUndoRedo = () => {
   canRedo.value = model.canRedo(model.uri);
 };
 watch(() => props.content, updateUndoRedo);
+
+const showInsertVariableDialog = ref(false);
+const variableForm = ref<VariableForm>({
+  name: '',
+  category: 'task',
+});
+const insertVariable = () => {
+  emit('variable', variableForm.value);
+};
 
 defineOptions({ name: 'ClMarkdownEditorToolbar' });
 </script>
@@ -72,7 +84,7 @@ defineOptions({ name: 'ClMarkdownEditorToolbar' });
     <button
       class="toolbar-item spaced"
       aria-label="Insert Variable"
-      @click="emit('variable')"
+      @click="showInsertVariableDialog = true"
     >
       <span class="icon">
         <font-awesome-icon :icon="['fa', 'dollar']" style="font-size: 14px" />
@@ -81,6 +93,20 @@ defineOptions({ name: 'ClMarkdownEditorToolbar' });
         {{ t('components.editor.toolbar.insert.variable') }}
       </span>
     </button>
+    <Teleport to="body">
+      <InsertVariableDialog
+        :visible="showInsertVariableDialog"
+        v-model="variableForm"
+        @close="showInsertVariableDialog = false"
+        @confirm="
+          () => {
+            insertVariable();
+            showInsertVariableDialog = false;
+            variableForm.name = '';
+          }
+        "
+      />
+    </Teleport>
   </div>
 </template>
 

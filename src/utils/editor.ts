@@ -62,3 +62,5 @@ export const getLanguageByFileName = (name?: string) => {
       return 'text';
   }
 };
+
+export const UPDATE_MARKDOWN_EVENT = 'update-markdown';

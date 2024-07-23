@@ -156,6 +156,9 @@ defineOptions({ name: 'ClMarkdownEditor' });
           linkPrompt
         )
       "
+      @variable="
+        ({ name, category }) => onEdit(() => `\${${category}:${name}}`)
+      "
     />
     <div ref="editorRef" class="editor" />
   </div>

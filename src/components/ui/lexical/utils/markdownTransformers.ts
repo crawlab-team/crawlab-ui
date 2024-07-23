@@ -20,7 +20,16 @@ import {
   TableNode,
   TableRowNode,
 } from '@lexical/table';
-import { $isParagraphNode, $isTextNode, LexicalNode } from 'lexical';
+import {
+  $isParagraphNode,
+  $isTextNode,
+  ElementNode,
+  LexicalNode,
+} from 'lexical';
+import {
+  $createVariableNode,
+  $isVariableNode,
+} from '@/components/ui/lexical/nodes/VariableNode';
 
 // Very primitive table setup
 const TABLE_ROW_REG_EXP = /^(?:\|)(.+)(?:\|)\s?$/;
@@ -43,7 +52,7 @@ export const TABLE: ElementTransformer = {
 
       let isHeaderRow = false;
       for (const cell of row.getChildren()) {
-        // It's TableCellNode so it's just to make flow happy
+        // It's TableCellNode, so it's just to make flow happy
         if ($isTableCellNode(cell)) {
           rowOutput.push(
             $convertToMarkdownString(MARKDOWN_TRANSFORMERS, cell).replace(
@@ -178,9 +187,41 @@ const mapToTableCells = (textContent: string): Array<TableCellNode> | null => {
   return match[1].split('|').map(text => $createTableCell(text));
 };
 
+export const VARIABLE_TRANSFORMER: ElementTransformer = {
+  dependencies: [],
+  export: (
+    node: LexicalNode,
+    _: (node: ElementNode) => string
+  ): string | null => {
+    if (!$isVariableNode(node)) {
+      return null;
+    }
+    return node.getTextContent();
+  },
+  regExp: /\$\{(\w+):(\w+)}/,
+  replace: (
+    parentNode: ElementNode,
+    children: LexicalNode[],
+    match: string[]
+  ): void => {
+    // TODO: implement
+    const node = $createVariableNode({
+      category: match[1],
+      name: match[2],
+    });
+    if (children?.[0]) {
+      // children[0].replace(node);
+    }
+    console.debug(parentNode, children, node);
+    // parentNode.replace(node);
+  },
+  type: 'element',
+};
+
 export const MARKDOWN_TRANSFORMERS: Array<Transformer> = [
   TABLE,
   CHECK_LIST,
+  VARIABLE_TRANSFORMER,
   ...ELEMENT_TRANSFORMERS,
   ...TEXT_FORMAT_TRANSFORMERS,
   ...TEXT_MATCH_TRANSFORMERS,

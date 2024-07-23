@@ -195,6 +195,12 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
     return this.name;
   }
 
+  getTextContent(): string {
+    return this.category
+      ? `$\{${this.category}:${this.name}\}`
+      : `$\{${this.name}\}`;
+  }
+
   toggle(key, value?: boolean) {
     const latest = this.getLatest().exportJSON();
     const writable = this.getWritable();
@@ -222,10 +228,6 @@ export class VariableNode extends DecoratorNode<JSX.Element> {
 
   toggleStrikethrough() {
     this.toggle('__strikethrough');
-  }
-
-  toggleSelected() {
-    this.toggle('__selected');
   }
 
   setSelected(value: boolean) {

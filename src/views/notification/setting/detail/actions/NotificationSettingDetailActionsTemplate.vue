@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { ref, watch } from 'vue';
-import { translate } from '@/utils';
+import { translate, UPDATE_MARKDOWN_EVENT } from '@/utils';
 import { useStore } from 'vuex';
 import { ElMessageBox } from 'element-plus';
 import { publish } from '@/utils/eventBus';
@@ -66,7 +66,7 @@ const onTemplateModeClick = async (
     template_mode: templateMode.value,
   });
   if (templateMode.value === 'markdown') {
-    publish('update-markdown');
+    publish(UPDATE_MARKDOWN_EVENT);
   }
 };
 
