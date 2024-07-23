@@ -104,6 +104,7 @@ const common: LCommon = {
     ignore: 'Ignore',
     monitoring: 'Monitoring',
     channels: 'Channels',
+    mail: 'Mail Config',
   },
   status: {
     unassigned: 'Unassigned',

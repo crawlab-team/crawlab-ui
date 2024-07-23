@@ -87,6 +87,7 @@ const layouts: LLayouts = {
         title: 'Settings',
         tabs: {
           overview: 'Overview',
+          mail: 'Mail Config',
           template: 'Template',
           channels: 'Channels',
         },

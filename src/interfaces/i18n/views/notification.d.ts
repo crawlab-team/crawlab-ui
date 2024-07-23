@@ -26,19 +26,24 @@ interface LViewsNotification {
         finish: string;
         error: string;
         emptyResults: string;
-        never: string;
       };
       node: {
         statusChange: string;
         online: string;
         offline: string;
-        never: string;
       };
     };
-    tabs: {
-      overview: string;
-      triggers: string;
-      template: string;
+    warnings: {
+      missingMailConfigFields: {
+        content: string;
+        action: string;
+      };
+      emptyChannel: {
+        content: string;
+      };
+      noWarning: {
+        content: string;
+      };
     };
   };
   channels: {

@@ -9,6 +9,7 @@ import {
   TAB_NAME_FILES,
   TAB_NAME_GIT,
   TAB_NAME_LOGS,
+  TAB_NAME_MAIL,
   TAB_NAME_MONITORING,
   TAB_NAME_OVERVIEW,
   TAB_NAME_SCHEDULES,
@@ -160,6 +161,8 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'tachometer-alt'];
     case TAB_NAME_CHANNELS:
       return ['fa', 'broadcast-tower'];
+    case TAB_NAME_MAIL:
+      return ['fa', 'at'];
     default:
       return ['fa', 'circle'];
   }

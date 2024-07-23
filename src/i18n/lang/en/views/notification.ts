@@ -36,19 +36,25 @@ const notification: LViewsNotification = {
         finish: 'Trigger when the task finishes',
         error: 'Trigger when the task fails',
         emptyResults: 'Trigger when the task has empty results',
-        never: 'Never trigger',
       },
       node: {
         statusChange: 'Trigger when the node status changes',
         online: 'Trigger when the node comes online',
         offline: 'Trigger when the node goes offline',
-        never: 'Never trigger',
       },
     },
-    tabs: {
-      overview: 'Overview',
-      triggers: 'Triggers',
-      template: 'Template',
+    warnings: {
+      missingMailConfigFields: {
+        content:
+          'You selected at least one mail channel. You must set required fields in the mail config to send mail notifications.',
+        action: 'Go to the mail config',
+      },
+      emptyChannel: {
+        content: 'Please select at least one notification channel.',
+      },
+      noWarning: {
+        content: 'The notification setting is valid.',
+      },
     },
   },
   channels: {

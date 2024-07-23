@@ -87,6 +87,7 @@ const layouts: LLayouts = {
         title: '通知配置',
         tabs: {
           overview: '概览',
+          mail: '邮件配置',
           template: '模板',
           channels: '通知渠道',
         },

@@ -3,7 +3,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { translate } from '@/utils';
 import { useNotificationChannel, useNotificationSetting } from '@/components';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useNotificationSettingDetail } from '@/views';
 
 const t = translate;
@@ -17,7 +17,7 @@ const { form } = useNotificationSetting(store);
 
 const { activeId } = useNotificationSettingDetail();
 
-const { allListSelectOptions } = useNotificationChannel(store);
+const { allListSelectOptions, allDict } = useNotificationChannel(store);
 
 const selectAll = ref(false);
 const selectIntermediate = ref(false);
@@ -55,6 +55,26 @@ const onChannelNavigate = async (channelId: string) => {
   await router.push(`/notifications/channels/${channelId}`);
 };
 
+const hasWarningMissingMailConfigFields = computed(() => {
+  // check if there is mail type channel
+  const hasMailChannel = form.value.channel_ids?.some(channelId => {
+    const channel = allDict.value.get(channelId) as
+      | NotificationChannel
+      | undefined;
+    return channel?.type === 'mail';
+  });
+
+  if (hasMailChannel) {
+    return !form.value.sender_email || !form.value.mail_to;
+  }
+
+  return false;
+});
+
+const hasWarningEmptyChannel = computed(() => {
+  return !form.value.channel_ids?.length;
+});
+
 defineOptions({ name: 'ClNotificationSettingDetailTabChannels' });
 </script>
 
@@ -90,6 +110,45 @@ defineOptions({ name: 'ClNotificationSettingDetailTabChannels' });
           </el-space>
         </el-checkbox-group>
       </cl-form-item>
+
+      <cl-form-item :span="4">
+        <el-alert
+          v-if="hasWarningMissingMailConfigFields"
+          type="warning"
+          :closable="false"
+          show-icon
+        >
+          <div style="line-height: 24px">
+            {{
+              t(
+                'views.notification.settings.warnings.missingMailConfigFields.content'
+              )
+            }}
+          </div>
+          <cl-nav-link
+            :icon="['fa', 'external-link-alt']"
+            :path="`/notifications/settings/${activeId}/mail`"
+            :label="
+              t(
+                'views.notification.settings.warnings.missingMailConfigFields.action'
+              )
+            "
+          />
+        </el-alert>
+        <el-alert
+          v-else-if="hasWarningEmptyChannel"
+          type="warning"
+          :closable="false"
+          show-icon
+        >
+          <div style="line-height: 24px">
+            {{ t('views.notification.settings.warnings.emptyChannel.content') }}
+          </div>
+        </el-alert>
+        <el-alert v-else type="success" :closable="false" show-icon>
+          {{ t('views.notification.settings.warnings.noWarning.content') }}
+        </el-alert>
+      </cl-form-item>
     </cl-form>
   </div>
 </template>
@@ -99,7 +158,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabChannels' });
   margin: 20px;
 
   &:deep(.icon) {
-    color: var(--cl-primary-color);
+    color: var(--cl-info-color);
     margin-left: 5px;
     cursor: pointer;
     height: 14px;
@@ -107,6 +166,18 @@ defineOptions({ name: 'ClNotificationSettingDetailTabChannels' });
 
     &:hover {
       opacity: 0.8;
+    }
+  }
+
+  &:deep(.is-checked + .icon) {
+    color: var(--cl-primary-color);
+  }
+
+  &:deep(.el-alert) {
+    width: 100%;
+
+    .icon {
+      color: var(--cl-primary-color);
     }
   }
 }

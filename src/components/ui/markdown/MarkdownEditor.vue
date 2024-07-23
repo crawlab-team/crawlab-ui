@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
 });
 
 const onEdit = async (
-  handleText: (value: string, prompt?: string) => string,
+  handleText: (value?: string, prompt?: string) => string,
   prompt?: () => Promise<{ value: string }>
 ) => {
   let promptValue = '';
@@ -109,22 +109,24 @@ const onEdit = async (
     const position = editor.getPosition();
     if (!position) return;
     const wordInfo = model.getWordAtPosition(position);
-    if (!wordInfo) return;
-    range = new monaco.Selection(
-      position.lineNumber,
-      wordInfo.startColumn,
-      position.lineNumber,
-      wordInfo.endColumn
-    );
-    editor.setSelection(range);
+    if (wordInfo) {
+      range = new monaco.Selection(
+        position.lineNumber,
+        wordInfo.startColumn,
+        position.lineNumber,
+        wordInfo.endColumn
+      );
+      editor.setSelection(range);
+    }
   }
   const value = editor?.getModel()?.getValueInRange(range);
+  const text = handleText(value, promptValue);
   model.pushEditOperations(
     [],
     [
       {
         range,
-        text: handleText(value || '', promptValue),
+        text,
       },
     ],
     () => null

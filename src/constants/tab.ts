@@ -13,3 +13,4 @@ export const TAB_NAME_TEMPLATE = 'template';
 export const TAB_NAME_CHANGES = 'changes';
 export const TAB_NAME_MONITORING = 'monitoring';
 export const TAB_NAME_CHANNELS = 'channels';
+export const TAB_NAME_MAIL = 'mail';

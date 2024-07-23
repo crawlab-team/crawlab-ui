@@ -6,6 +6,7 @@ import {
 } from '@/utils/store';
 import {
   TAB_NAME_CHANNELS,
+  TAB_NAME_MAIL,
   TAB_NAME_OVERVIEW,
   TAB_NAME_TEMPLATE,
 } from '@/constants';
@@ -20,6 +21,7 @@ const state = {
   }),
   tabs: [
     { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
+    { id: TAB_NAME_MAIL, title: t('common.tabs.mail') },
     { id: TAB_NAME_TEMPLATE, title: t('common.tabs.template') },
     { id: TAB_NAME_CHANNELS, title: t('common.tabs.channels') },
   ],

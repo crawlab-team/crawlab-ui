@@ -36,19 +36,25 @@ const notification: LViewsNotification = {
         finish: '任务完成时触发',
         error: '任务失败时触发',
         emptyResults: '任务结果为空时触发',
-        never: '从不触发',
       },
       node: {
         statusChange: '节点状态变化时触发',
         online: '节点上线时触发',
         offline: '节点下线时触发',
-        never: '从不触发',
       },
     },
-    tabs: {
-      overview: '概览',
-      triggers: '触发器',
-      template: '模板',
+    warnings: {
+      missingMailConfigFields: {
+        content:
+          '您选择了至少一个邮件通知渠道。为了发送邮件消息通知，您必须在邮件配置中设置必填字段。',
+        action: '前往邮件配置',
+      },
+      emptyChannel: {
+        content: '请选择至少一个通知渠道。',
+      },
+      noWarning: {
+        content: '通知配置有效。',
+      },
     },
   },
   channels: {

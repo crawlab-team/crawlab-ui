@@ -1,5 +1,6 @@
 import {
   TAB_NAME_CHANNELS,
+  TAB_NAME_MAIL,
   TAB_NAME_OVERVIEW,
   TAB_NAME_TEMPLATE,
 } from '@/constants';
@@ -14,6 +15,7 @@ import {
   ClNotificationSettingList,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
+import ClNotificationSettingDetailTabMailConfigs from '@/views/notification/setting/detail/tabs/NotificationSettingDetailTabMailConfig.vue';
 
 const t = translate;
 
@@ -48,6 +50,12 @@ export default [
         title: t('layouts.routes.notifications.settings.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClNotificationSettingDetailTabOverview,
+      },
+      {
+        path: TAB_NAME_MAIL,
+        title: t('layouts.routes.notifications.settings.tabs.mail'),
+        icon: getIconByTabName(TAB_NAME_MAIL),
+        component: async () => ClNotificationSettingDetailTabMailConfigs,
       },
       {
         path: TAB_NAME_TEMPLATE,

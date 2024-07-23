@@ -42,51 +42,74 @@ interface LComponentsNotification {
     task: string;
     node: string;
     spider: string;
+    schedule: string;
   };
   variables: {
     invalid: string;
-    task: {
+    common: {
       id: string;
+      createdAt: string;
+      createdBy: string;
+      updatedAt: string;
+      updatedBy: string;
+    };
+    task: {
       status: string;
       mode: string;
       cmd: string;
       param: string;
       priority: string;
+      error: string;
       pid: string;
-      createdAt: string;
-      updatedAt: string;
-      stat: {
-        startTs: string;
-        endTs: string;
-        waitDuration: string;
-        runtimeDuration: string;
-        totalDuration: string;
-        resultCount: string;
-      };
+    };
+    taskStat: {
+      startTs: string;
+      endTs: string;
+      waitDuration: string;
+      runtimeDuration: string;
+      totalDuration: string;
+      resultCount: string;
     };
     node: {
       key: string;
       name: string;
       description: string;
+      ip: string;
+      mac: string;
+      hostname: string;
+      isMaster: string;
       status: string;
-      createdAt: string;
-      updatedAt: string;
+      enabled: string;
+      active: string;
+      activeAt: string;
+      availableRunners: string;
+      maxRunners: string;
     };
     spider: {
       name: string;
+      description: string;
       mode: string;
       cmd: string;
       param: string;
       priority: string;
-      stat: {
-        results: string;
-        waitDuration: string;
-        runtimeDuration: string;
-        totalDuration: string;
-        averageWaitDuration: string;
-        averageRuntimeDuration: string;
-        averageTotalDuration: string;
-      };
+    };
+    spiderStat: {
+      results: string;
+      waitDuration: string;
+      runtimeDuration: string;
+      totalDuration: string;
+      averageWaitDuration: string;
+      averageRuntimeDuration: string;
+      averageTotalDuration: string;
+    };
+    schedule: {
+      name: string;
+      description: string;
+      cron: string;
+      cmd: string;
+      param: string;
+      priority: string;
+      mode: string;
     };
   };
   channel: {

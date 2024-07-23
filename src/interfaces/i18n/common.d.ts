@@ -117,6 +117,7 @@ export declare global {
       ignore: string;
       monitoring: string;
       channels: string;
+      mail: string;
     };
     status: {
       unassigned: string;

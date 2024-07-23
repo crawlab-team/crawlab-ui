@@ -104,6 +104,7 @@ const common: LCommon = {
     ignore: '忽略',
     monitoring: '监控',
     channels: '通知渠道',
+    mail: '邮件配置',
   },
   status: {
     unassigned: '未指定',

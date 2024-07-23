@@ -44,7 +44,7 @@ defineOptions({ name: 'ClNavLink' });
     text-decoration: underline;
   }
 
-  .icon {
+  &:deep(.icon) {
     margin-right: 3px;
   }
 }

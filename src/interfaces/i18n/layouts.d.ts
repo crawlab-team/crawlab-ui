@@ -88,6 +88,7 @@ export declare global {
           title: string;
           tabs: {
             overview: string;
+            mail: string;
             template: string;
             channels: string;
           };

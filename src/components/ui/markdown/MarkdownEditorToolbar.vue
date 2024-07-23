@@ -40,10 +40,7 @@ const updateUndoRedo = () => {
 watch(() => props.content, updateUndoRedo);
 
 const showInsertVariableDialog = ref(false);
-const variableForm = ref<VariableForm>({
-  name: '',
-  category: 'task',
-});
+const variableForm = ref<NotificationVariable>();
 const insertVariable = () => {
   emit('variable', variableForm.value);
 };
@@ -97,12 +94,17 @@ defineOptions({ name: 'ClMarkdownEditorToolbar' });
       <InsertVariableDialog
         :visible="showInsertVariableDialog"
         v-model="variableForm"
-        @close="showInsertVariableDialog = false"
+        @close="
+          () => {
+            showInsertVariableDialog = false;
+            variableForm = undefined;
+          }
+        "
         @confirm="
           () => {
             insertVariable();
             showInsertVariableDialog = false;
-            variableForm.name = '';
+            variableForm = undefined;
           }
         "
       />
