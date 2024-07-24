@@ -171,6 +171,46 @@ const notification: LComponentsNotification = {
 - 任务总时长 (秒): \${task_stat:total_duration}
 - 任务结果数: \${task_stat:result_count}`,
       },
+      node_status_change: {
+        label: '节点状态变更',
+        name: '节点状态变更',
+        description: '节点状态变更通知模板',
+        title: '节点状态变更',
+        template_markdown: `# 节点状态变更
+
+- 节点名称: \${node:name}
+- 节点状态: \${node:status}
+- 节点是否主节点: \${node:is_master}
+- 节点 IP: \${node:ip}
+- 节点 MAC: \${node:mac}
+- 节点主机名: \${node:hostname}
+- 节点是否启用: \${node:enabled}
+- 节点是否活跃: \${node:active}
+- 节点活跃时间: \${node:active_at}
+- 节点可用运行器数: \${node:available_runners}
+- 节点最大运行器数: \${node:max_runners}`,
+      },
+      node_offline: {
+        label: '节点下线',
+        name: '节点下线',
+        description: '节点下线通知模板',
+        title: '节点下线',
+        template_markdown: `# 节点下线
+
+节点 \${node:name} 已下线，请检查节点状态。
+
+- 节点名称: \${node:name}
+- 节点状态: \${node:status}
+- 节点是否主节点: \${node:is_master}
+- 节点 IP: \${node:ip}
+- 节点 MAC: \${node:mac}
+- 节点主机名: \${node:hostname}
+- 节点是否启用: \${node:enabled}
+- 节点是否活跃: \${node:active}
+- 节点活跃时间: \${node:active_at}
+- 节点可用运行器数: \${node:available_runners}
+- 节点最大运行器数: \${node:max_runners}`,
+      },
     },
   },
 };

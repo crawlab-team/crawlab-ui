@@ -391,6 +391,30 @@ export const allTemplates: NotificationSettingTemplate[] = [
     template_markdown:
       'components.notification.setting.templates.task_error.template_markdown',
   },
+  {
+    key: 'node_status_change',
+    name: 'components.notification.setting.templates.node_status_change.name',
+    description:
+      'components.notification.setting.templates.node_status_change.description',
+    trigger_target: 'node',
+    trigger: 'node_status_change',
+    template_mode: 'markdown',
+    title: 'components.notification.setting.templates.node_status_change.title',
+    template_markdown:
+      'components.notification.setting.templates.node_status_change.template_markdown',
+  },
+  {
+    key: 'node_offline',
+    name: 'components.notification.setting.templates.node_offline.name',
+    description:
+      'components.notification.setting.templates.node_offline.description',
+    trigger_target: 'node',
+    trigger: 'node_offline',
+    template_mode: 'markdown',
+    title: 'components.notification.setting.templates.node_offline.title',
+    template_markdown:
+      'components.notification.setting.templates.node_offline.template_markdown',
+  },
 ];
 
 export const getTriggerOptions = () => [
@@ -418,7 +442,6 @@ export const getTriggerOptions = () => [
   {
     label: t('views.notification.settings.triggerTargets.node'),
     icon: ['fa', 'server'],
-    disabled: true,
     children: [
       {
         label: t('views.notification.settings.triggers.node.statusChange'),

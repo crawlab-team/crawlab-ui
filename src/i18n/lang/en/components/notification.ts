@@ -171,6 +171,46 @@ const notification: LComponentsNotification = {
 - Task Total Duration: \${task_stat:total_duration}
 - Task Result Count: \${task_stat:result_count}`,
       },
+      node_status_change: {
+        label: 'Node Status Change',
+        name: 'Node Status Change',
+        description: 'Node status change notification template',
+        title: 'Node Status Change',
+        template_markdown: `# Node Status Change
+
+- Node Name: \${node:name}
+- Node Status: \${node:status}
+- Node Is Master: \${node:is_master}
+- Node IP Address: \${node:ip}
+- Node MAC Address: \${node:mac}
+- Node Hostname: \${node:hostname}
+- Node Enabled: \${node:enabled}
+- Node Active: \${node:active}
+- Node Active At: \${node:active_at}
+- Node Available Runners: \${node:available_runners}
+- Node Max Runners: \${node:max_runners}`,
+      },
+      node_offline: {
+        label: 'Node Offline',
+        name: 'Node Offline',
+        description: 'Node offline notification template',
+        title: 'Node Offline',
+        template_markdown: `# Node Offline
+
+The node \${node:name} is offline. Please check the node status.
+
+- Node Name: \${node:name}
+- Node Status: \${node:status}
+- Node Is Master: \${node:is_master}
+- Node IP Address: \${node:ip}
+- Node MAC Address: \${node:mac}
+- Node Hostname: \${node:hostname}
+- Node Enabled: \${node:enabled}
+- Node Active: \${node:active}
+- Node Active At: \${node:active_at}
+- Node Available Runners: \${node:available_runners}
+- Node Max Runners: \${node:max_runners}`,
+      },
     },
   },
 };

@@ -130,6 +130,8 @@ interface LComponentsNotification {
     templates: {
       task_finish: SettingTemplate;
       task_error: SettingTemplate;
+      node_status_change: SettingTemplate;
+      node_offline: SettingTemplate;
     };
   };
 }
