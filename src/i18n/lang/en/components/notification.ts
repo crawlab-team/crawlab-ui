@@ -124,9 +124,7 @@ const notification: LComponentsNotification = {
         name: 'Task Finish',
         description: 'Task finish notification template',
         title: 'Task Finish',
-        template_markdown: `# Task Finished
-
-- Spider Name: \${spider:name}
+        template_markdown: `- Spider Name: \${spider:name}
 - Schedule Name: \${schedule:name}
 - Node Name: \${node:name}
 - Task ID: \${task:id}
@@ -150,9 +148,7 @@ const notification: LComponentsNotification = {
         name: 'Task Error',
         description: 'Task error notification template',
         title: 'Task Error',
-        template_markdown: `# Task Error
-
-- Spider Name: \${spider:name}
+        template_markdown: `- Spider Name: \${spider:name}
 - Schedule Name: \${schedule:name}
 - Node Name: \${node:name}
 - Task ID: \${task:id}
@@ -176,9 +172,7 @@ const notification: LComponentsNotification = {
         name: 'Node Status Change',
         description: 'Node status change notification template',
         title: 'Node Status Change',
-        template_markdown: `# Node Status Change
-
-- Node Name: \${node:name}
+        template_markdown: `- Node Name: \${node:name}
 - Node Status: \${node:status}
 - Node Is Master: \${node:is_master}
 - Node IP Address: \${node:ip}
@@ -195,9 +189,7 @@ const notification: LComponentsNotification = {
         name: 'Node Offline',
         description: 'Node offline notification template',
         title: 'Node Offline',
-        template_markdown: `# Node Offline
-
-The node \${node:name} is offline. Please check the node status.
+        template_markdown: `The node \${node:name} is offline. Please check the node status.
 
 - Node Name: \${node:name}
 - Node Status: \${node:status}

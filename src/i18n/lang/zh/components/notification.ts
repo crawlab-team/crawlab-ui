@@ -124,9 +124,7 @@ const notification: LComponentsNotification = {
         name: '任务完成',
         description: '任务完成通知模板',
         title: '任务完成',
-        template_markdown: `# 任务完成
-
-- 爬虫名称: \${spider:name}
+        template_markdown: `- 爬虫名称: \${spider:name}
 - 定时任务名称: \${schedule:name}
 - 节点名称: \${node:name}
 - 任务 ID: \${task:id}
@@ -150,9 +148,7 @@ const notification: LComponentsNotification = {
         name: '任务错误',
         description: '任务错误通知模板',
         title: '任务错误',
-        template_markdown: `# 任务错误
-
-- 爬虫名称: \${spider:name}
+        template_markdown: `- 爬虫名称: \${spider:name}
 - 定时任务名称: \${schedule:name}
 - 节点名称: \${node:name}
 - 任务 ID: \${task:id}
@@ -176,9 +172,7 @@ const notification: LComponentsNotification = {
         name: '节点状态变更',
         description: '节点状态变更通知模板',
         title: '节点状态变更',
-        template_markdown: `# 节点状态变更
-
-- 节点名称: \${node:name}
+        template_markdown: `- 节点名称: \${node:name}
 - 节点状态: \${node:status}
 - 节点是否主节点: \${node:is_master}
 - 节点 IP: \${node:ip}
@@ -195,9 +189,7 @@ const notification: LComponentsNotification = {
         name: '节点下线',
         description: '节点下线通知模板',
         title: '节点下线',
-        template_markdown: `# 节点下线
-
-节点 \${node:name} 已下线，请检查节点状态。
+        template_markdown: `节点 \${node:name} 已下线，请检查节点状态。
 
 - 节点名称: \${node:name}
 - 节点状态: \${node:status}

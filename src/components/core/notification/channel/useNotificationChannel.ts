@@ -133,8 +133,7 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
       type: 'im',
       name: 'dingtalk',
       icon: ['svg', 'dingtalk'],
-      docUrl:
-        'https://open.dingtalk.com/document/orgapp/bots-send-query-and-recall-group-chat-messages',
+      docUrl: 'https://open.dingtalk.com/document/orgapp/custom-robot-access',
       locale: 'zh',
     },
     {
