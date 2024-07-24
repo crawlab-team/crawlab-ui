@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { ref, watch } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import { translate, UPDATE_MARKDOWN_EVENT } from '@/utils';
 import { useStore } from 'vuex';
 import { ElMessageBox } from 'element-plus';
@@ -27,18 +27,17 @@ const templateModeOptions: SelectOption<NotificationTemplateMode>[] = [
     // disabled: true,
   },
 ];
-watch(
-  () => state.form.template_mode,
-  mode => {
-    templateMode.value = mode || 'markdown';
-    if (!state.form.template_mode) {
-      store.commit(`${ns}/setForm`, {
-        ...state.form,
-        template_mode: templateMode.value,
-      });
-    }
+const updateTemplateMode = () => {
+  templateMode.value = state.form.template_mode || 'markdown';
+  if (!state.form.template_mode) {
+    store.commit(`${ns}/setForm`, {
+      ...state.form,
+      template_mode: templateMode.value,
+    });
   }
-);
+};
+watch(() => state.form.template_mode, updateTemplateMode);
+onBeforeMount(updateTemplateMode);
 
 const onTemplateModeClick = async (
   event: MouseEvent,

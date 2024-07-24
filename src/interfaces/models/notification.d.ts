@@ -35,12 +35,18 @@ export declare global {
     channels?: NotificationChannel[];
   }
 
+  interface NotificationSettingTemplate extends NotificationSetting {
+    key: string;
+  }
+
   type NotificationTemplateMode = 'rich-text' | 'markdown';
 
   type NotificationVariableCategory =
     | 'task'
+    | 'task_stat'
     | 'node'
     | 'spider'
+    | 'spider_stat'
     | 'git'
     | 'project'
     | 'schedule'

@@ -1,3 +1,12 @@
+interface SettingTemplate {
+  label: string;
+  name: string;
+  description: string;
+  title: string;
+  template_markdown?: string;
+  template_rich_text?: string;
+}
+
 interface LComponentsNotification {
   dialog: {
     insertVariable: {
@@ -110,10 +119,17 @@ interface LComponentsNotification {
       param: string;
       priority: string;
       mode: string;
+      enabled: string;
     };
   };
   channel: {
     label: string;
     tooltip: string;
+  };
+  setting: {
+    templates: {
+      task_finish: SettingTemplate;
+      task_error: SettingTemplate;
+    };
   };
 }

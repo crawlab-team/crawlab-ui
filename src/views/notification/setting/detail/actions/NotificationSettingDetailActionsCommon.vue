@@ -1,8 +1,8 @@
 <script setup lang="tsx">
-import { computed, ref, watch } from 'vue';
-import { ElMessageBox } from 'element-plus';
+import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
+import { ElMessageBox } from 'element-plus';
 
 const t = translate;
 
@@ -95,71 +95,6 @@ const onTriggerChange = async (value: NotificationTrigger) => {
   trigger.value = value;
 };
 
-const triggerOptions = computed<SelectOption<string>[]>(() => [
-  {
-    label: t('views.notification.settings.triggerTargets.task'),
-    icon: ['fa', 'tasks'],
-    children: [
-      {
-        label: t('views.notification.settings.triggers.task.finish'),
-        value: 'task_finish',
-        icon: ['fa', 'flag-checkered'],
-      },
-      {
-        label: t('views.notification.settings.triggers.task.error'),
-        value: 'task_error',
-        icon: ['fa', 'times'],
-      },
-      {
-        label: t('views.notification.settings.triggers.task.emptyResults'),
-        value: 'task_empty_results',
-        icon: ['fa', 'exclamation-circle'],
-      },
-    ],
-  },
-  {
-    label: t('views.notification.settings.triggerTargets.node'),
-    icon: ['fa', 'server'],
-    disabled: true,
-    children: [
-      {
-        label: t('views.notification.settings.triggers.node.statusChange'),
-        value: 'node_status_change',
-        icon: ['fa', 'exchange-alt'],
-        disabled: true,
-      },
-      {
-        label: t('views.notification.settings.triggers.node.online'),
-        value: 'node_online',
-        icon: ['fa', 'check-circle'],
-        disabled: true,
-      },
-      {
-        label: t('views.notification.settings.triggers.node.offline'),
-        value: 'node_offline',
-        icon: ['fa', 'times-circle'],
-        disabled: true,
-      },
-    ],
-  },
-]);
-
-const getTriggerTargetIcon = (value: NotificationTrigger) => {
-  const target = getTriggerTarget(value);
-  switch (target) {
-    case 'task':
-      return ['fa', 'tasks'];
-    case 'node':
-      return ['fa', 'server'];
-  }
-};
-
-const getTriggerIcon = (value: NotificationTrigger) => {
-  return triggerOptions.value
-    .flatMap(o => o.children)
-    .find(o => o?.value === value)?.icon;
-};
-
 defineOptions({ name: 'ClNotificationSettingDetailActionsCommon' });
 </script>
 
@@ -170,29 +105,10 @@ defineOptions({ name: 'ClNotificationSettingDetailActionsCommon' });
       :tooltip="t('components.notification.trigger.tooltip')"
     />
     <cl-nav-action-item>
-      <el-tree-select
-        popper-class="notification-trigger-select"
-        :model-value="trigger"
-        :data="triggerOptions"
-        accordion
-        @change="onTriggerChange"
-      >
-        <template #label="{ value, label }">
-          <span style="margin-right: 5px">
-            <cl-icon :icon="getTriggerTargetIcon(value)" />
-          </span>
-          <span style="margin-right: 5px">
-            <cl-icon :icon="getTriggerIcon(value)" />
-          </span>
-          <span style="margin-right: 5px">
-            {{ label }}
-          </span>
-        </template>
-        <template #default="{ data }">
-          <cl-icon :icon="data.icon" />
-          <span style="margin-left: 5px">{{ data.label }}</span>
-        </template>
-      </el-tree-select>
+      <cl-notification-setting-trigger-select
+        v-model="trigger"
+        @trigger-change="onTriggerChange"
+      />
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
@@ -203,10 +119,5 @@ defineOptions({ name: 'ClNotificationSettingDetailActionsCommon' });
     width: 240px;
     margin-right: 10px;
   }
-}
-</style>
-<style>
-.notification-trigger-select .el-tree-node__content {
-  height: 36px;
 }
 </style>

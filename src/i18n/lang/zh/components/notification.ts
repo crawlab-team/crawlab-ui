@@ -117,6 +117,62 @@ const notification: LComponentsNotification = {
     label: '通知渠道',
     tooltip: '消息通知渠道设置',
   },
+  setting: {
+    templates: {
+      task_finish: {
+        label: '任务完成',
+        name: '任务完成',
+        description: '任务完成通知模板',
+        title: '任务完成',
+        template_markdown: `# 任务完成
+
+- 爬虫名称: \${spider:name}
+- 定时任务名称: \${schedule:name}
+- 节点名称: \${node:name}
+- 任务 ID: \${task:id}
+- 任务状态: \${task:status}
+- 任务错误: \${task:error}
+- 任务模式: \${task:mode}
+- 任务命令: \${task:cmd}
+- 任务参数: \${task:param}
+- 任务优先级: \${task:priority}
+- 任务创建者: \${task:created_by}
+- 任务创建时间: \${task:created_ts}
+- 任务开始时间: \${task_stat:start_ts}
+- 任务结束时间: \${task_stat:end_ts}
+- 任务等待时长: \${task_stat:wait_duration}
+- 任务运行时长: \${task_stat:runtime_duration}
+- 任务总时长: \${task_stat:total_duration}
+- 任务结果数: \${task_stat:result_count}`,
+      },
+      task_error: {
+        label: '任务错误',
+        name: '任务错误',
+        description: '任务错误通知模板',
+        title: '任务错误',
+        template_markdown: `# 任务错误
+
+- 爬虫名称: \${spider:name}
+- 定时任务名称: \${schedule:name}
+- 节点名称: \${node:name}
+- 任务 ID: \${task:id}
+- 任务状态: \${task:status}
+- 任务错误: \${task:error}
+- 任务模式: \${task:mode}
+- 任务命令: \${task:cmd}
+- 任务参数: \${task:param}
+- 任务优先级: \${task:priority}
+- 任务创建者: \${task:created_by}
+- 任务创建时间: \${task:created_ts}
+- 任务开始时间: \${task_stat:start_ts}
+- 任务结束时间: \${task_stat:end_ts}
+- 任务等待时长 (秒): \${task_stat:wait_duration}
+- 任务运行时长 (秒): \${task_stat:runtime_duration}
+- 任务总时长 (秒): \${task_stat:total_duration}
+- 任务结果数: \${task_stat:result_count}`,
+      },
+    },
+  },
 };
 
 export default notification;

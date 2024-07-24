@@ -103,7 +103,6 @@ const notification: LComponentsNotification = {
       averageTotalDuration: 'Average Total Duration (sec)',
     },
     schedule: {
-      id: 'ID',
       name: 'Name',
       description: 'Description',
       cron: 'Cron',
@@ -117,6 +116,62 @@ const notification: LComponentsNotification = {
   channel: {
     label: 'Channel',
     tooltip: 'Notification channels',
+  },
+  setting: {
+    templates: {
+      task_finish: {
+        label: 'Task Finish',
+        name: 'Task Finish',
+        description: 'Task finish notification template',
+        title: 'Task Finish',
+        template_markdown: `# Task Finished
+
+- Spider Name: \${spider:name}
+- Schedule Name: \${schedule:name}
+- Node Name: \${node:name}
+- Task ID: \${task:id}
+- Task Status: \${task:status}
+- Task Error: \${task:error}
+- Task Mode: \${task:mode}
+- Task Command: \${task:cmd}
+- Task Parameter: \${task:param}
+- Task Priority: \${task:priority}
+- Task Created By: \${task:created_by}
+- Task Created At: \${task:created_ts}
+- Task Started At: \${task_stat:start_ts}
+- Task Ended At: \${task_stat:ended_ts}
+- Task Wait Duration: \${task_stat:wait_duration}
+- Task Runtime Duration: \${task_stat:runtime_duration}
+- Task Total Duration: \${task_stat:total_duration}
+- Task Result Count: \${task_stat:result_count}`,
+      },
+      task_error: {
+        label: 'Task Error',
+        name: 'Task Error',
+        description: 'Task error notification template',
+        title: 'Task Error',
+        template_markdown: `# Task Error
+
+- Spider Name: \${spider:name}
+- Schedule Name: \${schedule:name}
+- Node Name: \${node:name}
+- Task ID: \${task:id}
+- Task Status: \${task:status}
+- Task Error: \${task:error}
+- Task Mode: \${task:mode}
+- Task Command: \${task:cmd}
+- Task Parameter: \${task:param}
+- Task Priority: \${task:priority}
+- Task Created By: \${task:created_by}
+- Task Created At: \${task:created_ts}
+- Task Started At: \${task_stat:start_ts}
+- Task Ended At: \${task_stat:end_ts}
+- Task Wait Duration: \${task_stat:wait_duration}
+- Task Runtime Duration: \${task_stat:runtime_duration}
+- Task Total Duration: \${task_stat:total_duration}
+- Task Result Count: \${task_stat:result_count}`,
+      },
+    },
   },
 };
 

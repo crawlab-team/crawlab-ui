@@ -38,6 +38,8 @@ const common: LCommon = {
     unlink: 'Unlink',
     goto: 'Go To',
     selectAll: 'Select All',
+    viewTemplate: 'View Template',
+    viewChannels: 'View Channels',
   },
   messageBox: {
     confirm: {

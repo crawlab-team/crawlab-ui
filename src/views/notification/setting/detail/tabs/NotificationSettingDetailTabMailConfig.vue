@@ -8,7 +8,7 @@ const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
 const { notificationSetting: state } = store.state as RootStoreState;
 
-defineOptions({ name: 'ClNotificationSettingDetailTabMailConfigs' });
+defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
 </script>
 
 <template>

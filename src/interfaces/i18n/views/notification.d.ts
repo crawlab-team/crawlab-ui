@@ -45,6 +45,9 @@ interface LViewsNotification {
         content: string;
       };
     };
+    templates: {
+      label: string;
+    };
   };
   channels: {
     navActions: LNavActions;

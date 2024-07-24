@@ -56,6 +56,9 @@ const notification: LViewsNotification = {
         content: '通知配置有效。',
       },
     },
+    templates: {
+      label: '选择模板',
+    },
   },
   channels: {
     navActions: {

@@ -56,6 +56,9 @@ const notification: LViewsNotification = {
         content: 'The notification setting is valid.',
       },
     },
+    templates: {
+      label: 'Select Template',
+    },
   },
   channels: {
     navActions: {

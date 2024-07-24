@@ -134,6 +134,26 @@ const useNotificationSettingList = () => {
               },
             },
             {
+              type: 'info',
+              icon: ['fa', 'file-code'],
+              tooltip: t('common.actions.viewTemplate'),
+              onClick: async (row: NotificationSetting) => {
+                await router.push(
+                  `/notifications/settings/${row._id}/template`
+                );
+              },
+            },
+            {
+              type: 'info',
+              icon: ['fa', 'broadcast-tower'],
+              tooltip: t('common.actions.viewChannels'),
+              onClick: async (row: NotificationSetting) => {
+                await router.push(
+                  `/notifications/settings/${row._id}/channels`
+                );
+              },
+            },
+            {
               type: 'danger',
               size: 'small',
               icon: ['fa', 'trash-alt'],

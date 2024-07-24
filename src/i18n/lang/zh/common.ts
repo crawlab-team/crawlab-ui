@@ -38,6 +38,8 @@ const common: LCommon = {
     unlink: '取消链接',
     goto: '访问',
     selectAll: '全选',
+    viewTemplate: '查看模板',
+    viewChannels: '查看通知渠道',
   },
   messageBox: {
     confirm: {

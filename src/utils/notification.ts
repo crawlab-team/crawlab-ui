@@ -1,4 +1,5 @@
 import { translate } from '@/utils/i18n';
+import { toneMappingExposure } from 'three/examples/jsm/nodes/display/ToneMappingNode';
 
 const t = translate;
 
@@ -364,3 +365,79 @@ export const isValidVariable = ({
 
   return allVariables.some(v => v.category === category && v.name === name);
 };
+
+export const allTemplates: NotificationSettingTemplate[] = [
+  {
+    key: 'task_finish',
+    name: 'components.notification.setting.templates.task_finish.name',
+    description:
+      'components.notification.setting.templates.task_finish.description',
+    trigger_target: 'task',
+    trigger: 'task_finish',
+    template_mode: 'markdown',
+    title: 'components.notification.setting.templates.task_finish.title',
+    template_markdown:
+      'components.notification.setting.templates.task_finish.template_markdown',
+  },
+  {
+    key: 'task_error',
+    name: 'components.notification.setting.templates.task_error.name',
+    description:
+      'components.notification.setting.templates.task_error.description',
+    trigger_target: 'task',
+    trigger: 'task_error',
+    template_mode: 'markdown',
+    title: 'components.notification.setting.templates.task_error.title',
+    template_markdown:
+      'components.notification.setting.templates.task_error.template_markdown',
+  },
+];
+
+export const getTriggerOptions = () => [
+  {
+    label: t('views.notification.settings.triggerTargets.task'),
+    icon: ['fa', 'tasks'],
+    children: [
+      {
+        label: t('views.notification.settings.triggers.task.finish'),
+        value: 'task_finish',
+        icon: ['fa', 'flag-checkered'],
+      },
+      {
+        label: t('views.notification.settings.triggers.task.error'),
+        value: 'task_error',
+        icon: ['fa', 'times'],
+      },
+      {
+        label: t('views.notification.settings.triggers.task.emptyResults'),
+        value: 'task_empty_results',
+        icon: ['fa', 'exclamation-circle'],
+      },
+    ],
+  },
+  {
+    label: t('views.notification.settings.triggerTargets.node'),
+    icon: ['fa', 'server'],
+    disabled: true,
+    children: [
+      {
+        label: t('views.notification.settings.triggers.node.statusChange'),
+        value: 'node_status_change',
+        icon: ['fa', 'exchange-alt'],
+        disabled: true,
+      },
+      {
+        label: t('views.notification.settings.triggers.node.online'),
+        value: 'node_online',
+        icon: ['fa', 'check-circle'],
+        disabled: true,
+      },
+      {
+        label: t('views.notification.settings.triggers.node.offline'),
+        value: 'node_offline',
+        icon: ['fa', 'times-circle'],
+        disabled: true,
+      },
+    ],
+  },
+];

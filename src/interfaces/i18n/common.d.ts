@@ -51,6 +51,8 @@ export declare global {
       unlink: string;
       goto: string;
       selectAll: string;
+      viewTemplate: string;
+      viewChannels: string;
     };
     messageBox: {
       confirm: {
