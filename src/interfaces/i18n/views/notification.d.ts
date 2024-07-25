@@ -61,6 +61,8 @@ interface LViewsNotification {
       smtpUsername: string;
       smtpPassword: string;
       webhookUrl: string;
+      telegramBotToken: string;
+      telegramChatId: string;
     };
     types: {
       mail: string;

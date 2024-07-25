@@ -89,6 +89,8 @@ const hasProvider = computed(
   () => activeProvider.value && activeProvider.value.name !== 'custom'
 );
 
+const showTelegramBotToken = ref(false);
+
 defineOptions({ name: 'ClNotificationChannelForm' });
 </script>
 
@@ -262,17 +264,56 @@ defineOptions({ name: 'ClNotificationChannelForm' });
       </cl-form-item>
     </template>
     <template v-else-if="form.type === 'im'">
-      <cl-form-item
-        :span="4"
-        :label="t('views.notification.channels.form.webhookUrl')"
-        prop="webhook_url"
-        required
-      >
-        <el-input
-          v-model="form.webhook_url"
-          :placeholder="t('views.notification.channels.form.webhookUrl')"
-        />
-      </cl-form-item>
+      <template v-if="form.provider === 'telegram'">
+        <cl-form-item
+          :span="2"
+          :label="t('views.notification.channels.form.telegramBotToken')"
+          prop="telegram_bot_token"
+          required
+        >
+          <el-input
+            v-model="form.telegram_bot_token"
+            :placeholder="
+              t('views.notification.channels.form.telegramBotToken')
+            "
+            :type="showTelegramBotToken ? 'text' : 'password'"
+          >
+            <template #suffix>
+              <span
+                style="cursor: pointer"
+                @click="showTelegramBotToken = !showTelegramBotToken"
+              >
+                <cl-icon v-if="!showTelegramBotToken" :icon="['fa', 'eye']" />
+                <cl-icon v-else :icon="['fa', 'eye-slash']" />
+              </span>
+            </template>
+          </el-input>
+        </cl-form-item>
+        <cl-form-item
+          :span="2"
+          :label="t('views.notification.channels.form.telegramChatId')"
+          prop="telegram_chat_id"
+          required
+        >
+          <el-input
+            v-model="form.telegram_chat_id"
+            :placeholder="t('views.notification.channels.form.telegramChatId')"
+          />
+        </cl-form-item>
+      </template>
+      <template v-else>
+        <cl-form-item
+          :span="4"
+          :label="t('views.notification.channels.form.webhookUrl')"
+          prop="webhook_url"
+          required
+        >
+          <el-input
+            v-model="form.webhook_url"
+            :placeholder="t('views.notification.channels.form.webhookUrl')"
+          />
+        </cl-form-item>
+      </template>
     </template>
 
     <cl-form-item

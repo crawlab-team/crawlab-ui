@@ -71,6 +71,8 @@ export declare global {
     smtp_username?: string;
     smtp_password?: string;
     webhook_url?: string;
+    telegram_bot_token?: string;
+    telegram_chat_id?: string;
   }
 
   interface NotificationChannelProvider {

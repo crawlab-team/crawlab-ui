@@ -82,6 +82,8 @@ const notification: LViewsNotification = {
       smtpUsername: 'SMTP Username',
       smtpPassword: 'SMTP Password',
       webhookUrl: 'Webhook URL',
+      telegramBotToken: 'Telegram Bot Token',
+      telegramChatId: 'Telegram Chat ID',
     },
     types: {
       mail: 'Mail',

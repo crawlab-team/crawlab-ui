@@ -82,6 +82,8 @@ const notification: LViewsNotification = {
       smtpUsername: 'SMTP 用户名',
       smtpPassword: 'SMTP 密码',
       webhookUrl: 'Webhook URL',
+      telegramBotToken: '电报机器人令牌',
+      telegramChatId: '电报聊天 ID',
     },
     types: {
       mail: '邮件 (Email)',
