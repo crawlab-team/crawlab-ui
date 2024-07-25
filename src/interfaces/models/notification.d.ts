@@ -87,4 +87,15 @@ export declare global {
     disabled?: boolean;
     locale?: string;
   }
+
+  interface NotificationRequest {
+    status?: 'success' | 'error';
+    error?: string;
+    title?: string;
+    content?: string;
+    setting_id?: string;
+    channel_id?: string;
+    setting?: NotificationSetting;
+    channel?: NotificationChannel;
+  }
 }
