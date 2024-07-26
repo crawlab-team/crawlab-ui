@@ -92,4 +92,35 @@ interface LViewsNotification {
       label: string;
     };
   };
+  requests: {
+    navActionsExtra: {
+      filter: {
+        select: {
+          setting: {
+            label: string;
+          };
+          channel: {
+            label: string;
+          };
+        };
+      };
+    };
+    form: {
+      setting: string;
+      channel: string;
+      status: string;
+      error: string;
+      createdAt: string;
+      title: string;
+      content: string;
+      senderEmail: string;
+      senderName: string;
+      mailTo: string;
+      mailCc: string;
+      mailBcc: string;
+    };
+    detail: {
+      title: string;
+    };
+  };
 }

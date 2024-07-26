@@ -5,6 +5,7 @@ import {
   ClDataSourceList,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
+import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
@@ -21,7 +22,7 @@ export default [
   {
     name: 'DataSourceDetail',
     path: `${endpoint}/:id`,
-    redirect: to => {
+    redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
     component: async () => ClDataSourceDetail,

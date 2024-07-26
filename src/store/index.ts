@@ -14,6 +14,7 @@ import plugin from '@/store/modules/plugin';
 import git from '@/store/modules/git';
 import notificationSetting from '@/store/modules/notificationSetting';
 import notificationChannel from '@/store/modules/notificationChannel';
+import notificationRequest from '@/store/modules/notificationRequest';
 import ds from '@/store/modules/ds';
 import environment from '@/store/modules/environment';
 import system from '@/store/modules/system';
@@ -38,6 +39,7 @@ export const createStore = (): Store<RootStoreState> => {
       git,
       notificationSetting,
       notificationChannel,
+      notificationRequest,
       ds,
       environment,
       system,

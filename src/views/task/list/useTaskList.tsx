@@ -439,7 +439,7 @@ const useTaskList = () => {
                   { type: 'warning', confirmButtonClass: 'restart-confirm-btn' }
                 );
                 await post(`/tasks/${row._id}/restart`);
-                await ElMessage.success(t('common.message.success.restart'));
+                ElMessage.success(t('common.message.success.restart'));
                 await store.dispatch(`task/getList`);
               },
               action: ACTION_RESTART,

@@ -93,7 +93,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabChannels' });
         :label="t('components.notification.channel.label')"
       >
         <el-checkbox-group v-model="form.channel_ids">
-          <el-space spacer="10px">
+          <el-space spacer="10px" wrap>
             <div
               v-for="option in allListSelectOptions"
               :key="option.value"

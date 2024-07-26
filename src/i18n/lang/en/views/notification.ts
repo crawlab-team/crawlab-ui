@@ -113,6 +113,37 @@ const notification: LViewsNotification = {
       label: 'Documentation Link',
     },
   },
+  requests: {
+    navActionsExtra: {
+      filter: {
+        select: {
+          setting: {
+            label: 'Setting',
+          },
+          channel: {
+            label: 'Channel',
+          },
+        },
+      },
+    },
+    form: {
+      setting: 'Setting',
+      channel: 'Channel',
+      status: 'Status',
+      error: 'Error Message',
+      createdAt: 'Timestamp',
+      title: 'Title',
+      content: 'Content',
+      senderEmail: 'Sender Email',
+      senderName: 'Sender Name',
+      mailTo: 'Mail To',
+      mailCc: 'Mail CC',
+      mailBcc: 'Mail BCC',
+    },
+    detail: {
+      title: 'Notification Request Detail',
+    },
+  },
 };
 
 export default notification;

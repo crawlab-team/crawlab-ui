@@ -25,6 +25,7 @@ export declare global {
         title: string;
         settings: string;
         channels: string;
+        requests: string;
       };
       environment: string;
       system: string;

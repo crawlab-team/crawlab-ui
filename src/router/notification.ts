@@ -13,9 +13,11 @@ import {
   ClNotificationSettingDetailTabOverview,
   ClNotificationSettingDetailTabTemplate,
   ClNotificationSettingList,
+  ClNotificationSettingDetailTabMailConfig,
+  ClNotificationRequestList,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
-import ClNotificationSettingDetailTabMailConfigs from '@/views/notification/setting/detail/tabs/NotificationSettingDetailTabMailConfig.vue';
+import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
@@ -26,7 +28,7 @@ export default [
     path: endpoint,
     title: t('layouts.routes.notifications.title'),
     icon: ['fa', 'envelope'],
-    redirect: to => {
+    redirect: (to: RouteLocation) => {
       return { path: to.path + '/settings' };
     },
   },
@@ -40,7 +42,7 @@ export default [
   {
     name: 'NotificationSettingDetail',
     path: `${endpoint}/settings/:id`,
-    redirect: to => {
+    redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
     component: async () => ClNotificationSettingDetail,
@@ -55,7 +57,7 @@ export default [
         path: TAB_NAME_MAIL,
         title: t('layouts.routes.notifications.settings.tabs.mail'),
         icon: getIconByTabName(TAB_NAME_MAIL),
-        component: async () => ClNotificationSettingDetailTabMailConfigs,
+        component: async () => ClNotificationSettingDetailTabMailConfig,
       },
       {
         path: TAB_NAME_TEMPLATE,
@@ -81,7 +83,7 @@ export default [
   {
     name: 'NotificationChannelDetail',
     path: `${endpoint}/channels/:id`,
-    redirect: to => {
+    redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
     component: async () => ClNotificationChannelDetail,
@@ -93,5 +95,12 @@ export default [
         component: async () => ClNotificationChannelDetailTabOverview,
       },
     ],
+  },
+  {
+    name: 'NotificationRequestList',
+    path: `${endpoint}/requests`,
+    title: t('layouts.routes.notifications.requests.title'),
+    icon: ['fa', 'paper-plane'],
+    component: async () => ClNotificationRequestList,
   },
 ] as Array<ExtendedRouterRecord>;

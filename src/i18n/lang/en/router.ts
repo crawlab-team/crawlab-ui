@@ -24,6 +24,7 @@ const router: LRouter = {
       title: 'Notifications',
       settings: 'Notification Settings',
       channels: 'Notification Channels',
+      requests: 'Notification Requests',
     },
     environment: 'Environment',
     system: 'System Settings',

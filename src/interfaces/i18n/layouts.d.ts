@@ -99,6 +99,9 @@ export declare global {
             overview: string;
           };
         };
+        requests: {
+          title: string;
+        };
       };
       gits: {
         title: string;

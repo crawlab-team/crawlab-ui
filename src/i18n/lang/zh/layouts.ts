@@ -98,6 +98,9 @@ const layouts: LLayouts = {
           overview: '概览',
         },
       },
+      requests: {
+        title: '通知请求',
+      },
     },
     gits: {
       title: 'Git 仓库',

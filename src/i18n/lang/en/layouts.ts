@@ -98,6 +98,9 @@ const layouts: LLayouts = {
           overview: 'Overview',
         },
       },
+      requests: {
+        title: 'Requests',
+      },
     },
     gits: {
       title: 'Git Repo',

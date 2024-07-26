@@ -6,6 +6,7 @@ import {
   ClProjectList,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
+import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
@@ -22,7 +23,7 @@ export default [
   {
     name: 'ProjectDetail',
     path: `${endpoint}/:id`,
-    redirect: to => {
+    redirect: (to: RouteLocation) => {
       return { path: to.path + '/overview' };
     },
     component: async () => ClProjectDetail,

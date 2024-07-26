@@ -1,6 +1,7 @@
 import { TAB_NAME_OVERVIEW } from '@/constants/tab';
 import { ClUserDetail, ClUserDetailTabOverview, ClUserList } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
+import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
@@ -17,7 +18,7 @@ export default [
   {
     name: 'UserDetail',
     path: `${endpoint}/:id`,
-    redirect: to => {
+    redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
     component: async () => ClUserDetail,

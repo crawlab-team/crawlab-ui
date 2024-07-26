@@ -1,4 +1,4 @@
-import { RouteRecordRaw } from 'vue-router';
+import { RouteLocation, _RouteRecordBase, RouteComponent } from 'vue-router';
 
 export declare global {
   interface CreateRouterOptions {
@@ -6,11 +6,14 @@ export declare global {
     routerStats?: RouterStatsOptions;
   }
 
-  interface ExtendedRouterRecord extends RouteRecordRaw {
+  interface ExtendedRouterRecord extends _RouteRecordBase {
+    name: string;
     title: string;
     icon?: Icon;
     children?: Array<ExtendedRouterRecord>;
+    redirect?: (to: RouteLocation) => RouteLocation;
     path?: string;
+    component?: RouteComponent;
   }
 }
 

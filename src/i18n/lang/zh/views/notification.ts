@@ -113,6 +113,37 @@ const notification: LViewsNotification = {
       label: '文档链接',
     },
   },
+  requests: {
+    navActionsExtra: {
+      filter: {
+        select: {
+          setting: {
+            label: '通知配置',
+          },
+          channel: {
+            label: '通知渠道',
+          },
+        },
+      },
+    },
+    form: {
+      setting: '通知设置',
+      channel: '通知渠道',
+      status: '状态',
+      error: '错误信息',
+      createdAt: '通知时间',
+      title: '标题',
+      content: '内容',
+      senderEmail: '发件人邮箱',
+      senderName: '发件人姓名',
+      mailTo: '发送至 (To)',
+      mailCc: '抄送 (CC)',
+      mailBcc: '密送 (BCC)',
+    },
+    detail: {
+      title: '通知请求详情',
+    },
+  },
 };
 
 export default notification;

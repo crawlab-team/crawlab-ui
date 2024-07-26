@@ -1,6 +1,10 @@
 export declare global {
   interface BaseModel {
     _id?: string;
+    created_ts?: string;
+    created_by?: string;
+    updated_at?: string;
+    updated_ts?: string;
 
     [field: string]: any;
   }

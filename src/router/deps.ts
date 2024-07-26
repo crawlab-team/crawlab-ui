@@ -4,6 +4,7 @@ import {
   ClDependencySettings,
 } from '@/views';
 import { translate } from '@/utils';
+import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
@@ -15,7 +16,7 @@ export default [
     path: endpoint,
     title: t('layouts.routes.dependencies.title'),
     icon: ['fa', 'puzzle-piece'],
-    redirect: to => {
+    redirect: (to: RouteLocation) => {
       return { path: to.path + '/settings' };
     },
     children: [

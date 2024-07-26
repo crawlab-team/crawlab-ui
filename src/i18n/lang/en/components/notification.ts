@@ -205,6 +205,22 @@ const notification: LComponentsNotification = {
       },
     },
   },
+  request: {
+    status: {
+      label: {
+        sending: 'Sending',
+        success: 'Success',
+        error: 'Error',
+        unknown: 'Unknown',
+      },
+      tooltip: {
+        sending: 'Sending notification request',
+        success: 'Notification request sent successfully',
+        error: 'Failed to send notification request',
+        unknown: 'Unknown notification request status',
+      },
+    },
+  },
 };
 
 export default notification;

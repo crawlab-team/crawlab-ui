@@ -134,4 +134,20 @@ interface LComponentsNotification {
       node_offline: SettingTemplate;
     };
   };
+  request: {
+    status: {
+      label: {
+        sending: string;
+        success: string;
+        error: string;
+        unknown: string;
+      };
+      tooltip: {
+        sending: string;
+        success: string;
+        error: string;
+        unknown: string;
+      };
+    };
+  };
 }

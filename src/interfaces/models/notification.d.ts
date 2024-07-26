@@ -88,11 +88,18 @@ export declare global {
     locale?: string;
   }
 
-  interface NotificationRequest {
-    status?: 'success' | 'error';
+  type NotificationRequestStatus = 'sending' | 'success' | 'error' | 'unknown';
+
+  interface NotificationRequest extends BaseModel {
+    status?: NotificationRequestStatus;
     error?: string;
     title?: string;
     content?: string;
+    sender_email?: string;
+    sender_name?: string;
+    mail_to?: string;
+    mail_cc?: string;
+    mail_bcc?: string;
     setting_id?: string;
     channel_id?: string;
     setting?: NotificationSetting;

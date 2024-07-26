@@ -205,6 +205,22 @@ const notification: LComponentsNotification = {
       },
     },
   },
+  request: {
+    status: {
+      label: {
+        sending: '发送中',
+        success: '成功',
+        error: '错误',
+        unknown: '未知',
+      },
+      tooltip: {
+        sending: '消息通知发送中',
+        success: '消息通知请求成功',
+        error: '消息通知请求错误',
+        unknown: '未知消息通知请求状态',
+      },
+    },
+  },
 };
 
 export default notification;

@@ -118,6 +118,11 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
           title: 'router.menuItems.notification.channels',
           icon: ['fa', 'broadcast-tower'],
         },
+        {
+          path: '/notifications/requests',
+          title: 'router.menuItems.notification.requests',
+          icon: ['fa', 'paper-plane'],
+        },
       ],
     },
     {

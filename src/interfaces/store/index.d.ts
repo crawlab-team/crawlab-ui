@@ -24,6 +24,7 @@ export declare global {
     git: GitStoreState;
     notificationSetting: NotificationSettingStoreState;
     notificationChannel: NotificationChannelStoreState;
+    notificationRequest: NotificationRequestStoreState;
     ds: DataSourceStoreState;
     environment: EnvironmentStoreState;
     system: SystemStoreState;
@@ -155,24 +156,6 @@ export declare global {
     R = RootStoreState,
   > = ActionContext<S, R>;
 
-  type StoreNamespace =
-    | 'layout'
-    | 'node'
-    | 'project'
-    | 'spider'
-    | 'task'
-    | 'schedule'
-    | 'file'
-    | 'tag'
-    | 'dataCollection'
-    | 'user'
-    | 'token'
-    | 'plugin'
-    | 'git'
-    | 'notificationSetting'
-    | 'notificationChannel'
-    | 'ds'
-    | 'environment';
   type ListStoreNamespace =
     | 'node'
     | 'project'
@@ -187,8 +170,10 @@ export declare global {
     | 'git'
     | 'notificationSetting'
     | 'notificationChannel'
+    | 'notificationRequest'
     | 'ds'
     | 'environment';
+  type StoreNamespace = ListStoreNamespace | 'layout';
 
   interface StoreContext<T, R = RootStoreState> {
     namespace: StoreNamespace;

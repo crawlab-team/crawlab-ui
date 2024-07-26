@@ -24,6 +24,7 @@ const router: LRouter = {
       title: '消息通知',
       settings: '通知配置',
       channels: '通知渠道',
+      requests: '通知请求',
     },
     environment: '环境变量',
     system: '系统设置',
