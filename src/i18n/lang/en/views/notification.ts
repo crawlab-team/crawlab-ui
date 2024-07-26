@@ -84,6 +84,9 @@ const notification: LViewsNotification = {
       webhookUrl: 'Webhook URL',
       telegramBotToken: 'Telegram Bot Token',
       telegramChatId: 'Telegram Chat ID',
+      outlookTenantId: 'Outlook Tenant ID',
+      outlookClientId: 'Outlook Client ID',
+      outlookClientSecret: 'Outlook Client Secret',
     },
     types: {
       mail: 'Mail',

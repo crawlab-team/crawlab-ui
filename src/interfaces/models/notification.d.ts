@@ -73,6 +73,9 @@ export declare global {
     webhook_url?: string;
     telegram_bot_token?: string;
     telegram_chat_id?: string;
+    outlook_tenant_id?: string;
+    outlook_client_id?: string;
+    outlook_client_secret?: string;
   }
 
   interface NotificationChannelProvider {

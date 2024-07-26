@@ -56,7 +56,7 @@ defineOptions({ name: 'ClNotificationRequestList' });
           {{ t('views.notification.requests.form.setting') }}
         </template>
         <cl-nav-link
-          :path="`/notification/settings/${state.form?.setting?._id}`"
+          :path="`/notifications/settings/${state.form?.setting?._id}`"
           :label="state.form?.setting?.name"
         />
       </el-descriptions-item>
@@ -66,7 +66,7 @@ defineOptions({ name: 'ClNotificationRequestList' });
           {{ t('views.notification.requests.form.channel') }}
         </template>
         <cl-nav-link
-          :path="`/notification/channels/${state.form?.channel?._id}`"
+          :path="`/notifications/channels/${state.form?.channel?._id}`"
           :label="state.form?.channel?.name"
         />
       </el-descriptions-item>

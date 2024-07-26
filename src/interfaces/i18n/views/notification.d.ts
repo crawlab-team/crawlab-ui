@@ -63,6 +63,9 @@ interface LViewsNotification {
       webhookUrl: string;
       telegramBotToken: string;
       telegramChatId: string;
+      outlookTenantId: string;
+      outlookClientId: string;
+      outlookClientSecret: string;
     };
     types: {
       mail: string;

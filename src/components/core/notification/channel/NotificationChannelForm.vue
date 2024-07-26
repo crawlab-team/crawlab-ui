@@ -85,11 +85,20 @@ const onProviderChange = (val: string) => {
   });
 };
 
+const onSmtpPortChange = (port: string) => {
+  if (!port || isNaN(Number(port))) return;
+  store.commit(`${ns}/setForm`, {
+    ...form.value,
+    smtp_port: Number(port),
+  });
+};
+
 const hasProvider = computed(
   () => activeProvider.value && activeProvider.value.name !== 'custom'
 );
 
 const showTelegramBotToken = ref(false);
+const showOutlookClientSecret = ref(false);
 
 defineOptions({ name: 'ClNotificationChannelForm' });
 </script>
@@ -206,6 +215,58 @@ defineOptions({ name: 'ClNotificationChannelForm' });
     </cl-form-item>
 
     <template v-if="form.type === 'mail'">
+      <template v-if="form.provider === 'outlook'">
+        <cl-form-item
+          :span="2"
+          :label="t('views.notification.channels.form.outlookTenantId')"
+          prop="outlook_tenant_id"
+          required
+        >
+          <el-input
+            v-model="form.outlook_tenant_id"
+            :placeholder="t('views.notification.channels.form.outlookTenantId')"
+          />
+        </cl-form-item>
+        <cl-form-item
+          :span="2"
+          :label="t('views.notification.channels.form.outlookClientId')"
+          prop="outlook_client_id"
+          required
+        >
+          <el-input
+            v-model="form.outlook_client_id"
+            :placeholder="t('views.notification.channels.form.outlookClientId')"
+          />
+        </cl-form-item>
+        <cl-form-item
+          :span="2"
+          :offset="2"
+          :label="t('views.notification.channels.form.outlookClientSecret')"
+          prop="outlook_client_secret"
+          required
+        >
+          <el-input
+            v-model="form.outlook_client_secret"
+            :type="showOutlookClientSecret ? 'text' : 'password'"
+            :placeholder="
+              t('views.notification.channels.form.outlookClientSecret')
+            "
+          >
+            <template #suffix>
+              <span
+                style="cursor: pointer"
+                @click="showOutlookClientSecret = !showOutlookClientSecret"
+              >
+                <cl-icon
+                  v-if="!showOutlookClientSecret"
+                  :icon="['fa', 'eye']"
+                />
+                <cl-icon v-else :icon="['fa', 'eye-slash']" />
+              </span>
+            </template>
+          </el-input>
+        </cl-form-item>
+      </template>
       <cl-form-item
         :span="2"
         :label="t('views.notification.channels.form.smtpServer')"
@@ -227,6 +288,7 @@ defineOptions({ name: 'ClNotificationChannelForm' });
           v-model="form.smtp_port"
           type="number"
           :placeholder="t('views.notification.channels.form.smtpPort')"
+          @input="onSmtpPortChange"
         />
       </cl-form-item>
       <cl-form-item
@@ -241,6 +303,7 @@ defineOptions({ name: 'ClNotificationChannelForm' });
         />
       </cl-form-item>
       <cl-form-item
+        v-if="form.provider !== 'outlook'"
         :span="2"
         :label="t('views.notification.channels.form.smtpPassword')"
         prop="smtp_password"

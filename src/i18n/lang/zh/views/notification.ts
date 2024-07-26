@@ -84,6 +84,9 @@ const notification: LViewsNotification = {
       webhookUrl: 'Webhook URL',
       telegramBotToken: '电报机器人令牌',
       telegramChatId: '电报聊天 ID',
+      outlookTenantId: 'Outlook 租户 ID',
+      outlookClientId: 'Outlook 客户端 ID',
+      outlookClientSecret: 'Outlook 客户端密钥',
     },
     types: {
       mail: '邮件 (Email)',
