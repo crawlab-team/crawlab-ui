@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
+import { ref } from 'vue';
+import ClInputSelect from '@/components/ui/select/InputSelect.vue';
+import { InternalRuleItem } from 'async-validator';
 
 const t = translate;
 
@@ -8,12 +11,36 @@ const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
 const { notificationSetting: state } = store.state as RootStoreState;
 
+const emailValidator = (
+  _: InternalRuleItem,
+  value: string[],
+  callback: (error?: string | Error) => void
+) => {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  for (const v of value) {
+    // email
+    if (!regex.test(v)) {
+      callback(
+        new Error(t('views.notification.settings.formRules.invalidEmail'))
+      );
+      return;
+    }
+  }
+  callback();
+};
+
+const rules: FormRules = {
+  mail_to: [{ validator: emailValidator }],
+  mail_cc: [{ validator: emailValidator }],
+  mail_bcc: [{ validator: emailValidator }],
+};
+
 defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
 </script>
 
 <template>
   <div class="notification-setting-detail-tab-mail-config">
-    <cl-form :model="state.form">
+    <cl-form :model="state.form" :rules="rules">
       <cl-form-item
         :span="2"
         :label="t('views.notification.settings.form.senderEmail')"
@@ -42,7 +69,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
         prop="mail_to"
         required
       >
-        <el-input
+        <cl-input-select
           v-model="state.form.mail_to"
           :placeholder="t('views.notification.settings.form.mailTo')"
         />
@@ -53,7 +80,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
         :label="t('views.notification.settings.form.mailCc')"
         prop="mail_cc"
       >
-        <el-input
+        <cl-input-select
           v-model="state.form.mail_cc"
           :placeholder="t('views.notification.settings.form.mailCc')"
         />
@@ -64,7 +91,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
         :label="t('views.notification.settings.form.mailBcc')"
         prop="mail_bcc"
       >
-        <el-input
+        <cl-input-select
           v-model="state.form.mail_bcc"
           :placeholder="t('views.notification.settings.form.mailBcc')"
         />

@@ -28,9 +28,9 @@ export declare global {
     has_mail?: boolean;
     sender_email?: string;
     sender_name?: string;
-    mail_to?: string;
-    mail_cc?: string;
-    mail_bcc?: string;
+    mail_to?: string[];
+    mail_cc?: string[];
+    mail_bcc?: string[];
     channel_ids?: string[];
     channels?: NotificationChannel[];
   }

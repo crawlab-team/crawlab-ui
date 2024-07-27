@@ -17,6 +17,9 @@ interface LViewsNotification {
       mailCc: string;
       mailBcc: string;
     };
+    formRules: {
+      invalidEmail: string;
+    };
     triggerTargets: {
       task: string;
       node: string;

@@ -27,6 +27,9 @@ const notification: LViewsNotification = {
       mailCc: 'Mail CC',
       mailBcc: 'Mail BCC',
     },
+    formRules: {
+      invalidEmail: 'Please enter a valid email address',
+    },
     triggerTargets: {
       task: 'Task',
       node: 'Node',

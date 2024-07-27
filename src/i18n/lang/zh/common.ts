@@ -124,6 +124,11 @@ const common: LCommon = {
   placeholder: {
     empty: '空',
   },
+  select: {
+    input: {
+      noDataText: '请输入一个值创建值',
+    },
+  },
   error: {
     common: '发生错误',
   },

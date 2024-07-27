@@ -27,6 +27,9 @@ const notification: LViewsNotification = {
       mailCc: '抄送',
       mailBcc: '密送',
     },
+    formRules: {
+      invalidEmail: '请输入有效的邮箱地址',
+    },
     triggerTargets: {
       task: '任务',
       node: '节点',

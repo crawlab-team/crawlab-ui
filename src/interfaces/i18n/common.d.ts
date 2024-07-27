@@ -137,6 +137,11 @@ export declare global {
     placeholder: {
       empty: string;
     };
+    select: {
+      input: {
+        noDataText: string;
+      };
+    };
     error: {
       common: string;
     };

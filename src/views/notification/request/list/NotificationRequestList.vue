@@ -108,21 +108,42 @@ defineOptions({ name: 'ClNotificationRequestList' });
             <cl-icon :icon="['fa', 'at']" />
             {{ t('views.notification.requests.form.mailTo') }}
           </template>
-          <span>{{ state.form?.mail_to }}</span>
+          <template v-if="state.form?.mail_to">
+            <cl-tag
+              v-for="mail in state.form.mail_to"
+              :key="mail"
+              :label="mail"
+              type="primary"
+            />
+          </template>
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
             <cl-icon :icon="['fa', 'at']" />
             {{ t('views.notification.requests.form.mailCc') }}
           </template>
-          <span>{{ state.form?.mail_cc }}</span>
+          <template v-if="state.form?.mail_cc">
+            <cl-tag
+              v-for="mail in state.form.mail_cc"
+              :key="mail"
+              :label="mail"
+              type="primary"
+            />
+          </template>
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
             <cl-icon :icon="['fa', 'at']" />
             {{ t('views.notification.requests.form.mailBcc') }}
           </template>
-          <span>{{ state.form?.mail_bcc }}</span>
+          <template v-if="state.form?.mail_bcc">
+            <cl-tag
+              v-for="mail in state.form.mail_bcc"
+              :key="mail"
+              :label="mail"
+              type="primary"
+            />
+          </template>
         </el-descriptions-item>
       </template>
     </el-descriptions>

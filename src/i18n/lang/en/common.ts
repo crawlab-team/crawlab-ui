@@ -124,6 +124,11 @@ const common: LCommon = {
   placeholder: {
     empty: 'Empty',
   },
+  select: {
+    input: {
+      noDataText: 'Please create an item by entering a value',
+    },
+  },
   error: {
     common: 'An error occurred',
   },
