@@ -46,14 +46,14 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
       smtpPort: 587,
       docUrl: () =>
         `https://support.google.com/a/answer/2956491?hl=${locale.value}`,
-      disabled: true,
       locale: 'en',
+      disabled: true,
     },
     {
       type: 'mail',
       name: 'outlook',
       icon: ['svg', 'outlook'],
-      smtpServer: 'smtp.office365.com',
+      smtpServer: 'smtp-mail.outlook.com',
       smtpPort: 587,
       docUrl: () => {
         if (locale.value === 'zh') {
@@ -88,8 +88,13 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
       icon: ['fab', 'apple'],
       smtpServer: 'smtp.mail.me.com',
       smtpPort: 587,
-      docUrl:
-        'https://smartreach.io/blog/masterclass/smtp/icloud-smtp-settings/',
+      docUrl: () => {
+        if (locale.value === 'zh') {
+          return 'https://support.apple.com/zh-cn/102525';
+        } else {
+          return 'https://support.apple.com/en-us/102525';
+        }
+      },
       locale: 'en',
     },
     {
@@ -119,15 +124,6 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
       smtpPort: 587,
       docUrl: 'https://smartreach.io/blog/masterclass/smtp/aol-mail-settings/',
       locale: 'en',
-    },
-    {
-      type: 'mail',
-      name: 'exmail',
-      icon: ['fab', 'weixin'],
-      smtpServer: 'smtp.exmail.qq.com',
-      smtpPort: 465,
-      docUrl: 'https://developer-new.lm.virbox.com/doc/email/help.html',
-      locale: 'zh',
     },
     {
       type: 'im',
@@ -189,22 +185,32 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
 
   const providerOptionGroups = computed<SelectOption[]>(() => {
     const map: Record<string, SelectOption[]> = {};
-    allProviders.forEach(p => {
-      const op: SelectOption = {
-        value: p.name,
-        label: t(`views.notification.channels.providers.${p.name}`),
-        icon: p.icon,
-        disabled: p.disabled,
+    allProviders
+      .sort((a, b) => {
+        if (a.disabled !== b.disabled) {
+          return a.disabled ? 1 : -1;
+        }
+        if (a.locale === b.locale) return 0;
+        return a.locale === locale.value ? -1 : 1;
+      })
+      .forEach(p => {
+        const op: SelectOption = {
+          value: p.name,
+          label: t(`views.notification.channels.providers.${p.name}`),
+          icon: p.icon,
+          disabled: p.disabled,
+        };
+        if (!map[p.type]) {
+          map[p.type] = [];
+        }
+        map[p.type].push(op);
+      });
+    return Object.keys(map).map(key => {
+      return {
+        label: t(`views.notification.channels.types.${key}`),
+        children: map[key],
       };
-      if (!map[p.type]) {
-        map[p.type] = [];
-      }
-      map[p.type].push(op);
     });
-    return Object.keys(map).map(key => ({
-      label: t(`views.notification.channels.types.${key}`),
-      children: map[key],
-    }));
   });
 
   const activeProvider = computed<NotificationChannelProvider | null>(() => {

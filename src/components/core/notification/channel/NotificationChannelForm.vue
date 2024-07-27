@@ -98,7 +98,6 @@ const hasProvider = computed(
 );
 
 const showTelegramBotToken = ref(false);
-const showOutlookClientSecret = ref(false);
 
 defineOptions({ name: 'ClNotificationChannelForm' });
 </script>
@@ -215,56 +214,21 @@ defineOptions({ name: 'ClNotificationChannelForm' });
     </cl-form-item>
 
     <template v-if="form.type === 'mail'">
-      <template v-if="form.provider === 'outlook'">
+      <template v-if="form.provider === 'gmail'">
         <cl-form-item
-          :span="2"
-          :label="t('views.notification.channels.form.outlookTenantId')"
-          prop="outlook_tenant_id"
+          :span="4"
+          :label="t('views.notification.channels.form.googleOAuth2Json')"
+          prop="google_oauth2_json"
           required
         >
           <el-input
-            v-model="form.outlook_tenant_id"
-            :placeholder="t('views.notification.channels.form.outlookTenantId')"
-          />
-        </cl-form-item>
-        <cl-form-item
-          :span="2"
-          :label="t('views.notification.channels.form.outlookClientId')"
-          prop="outlook_client_id"
-          required
-        >
-          <el-input
-            v-model="form.outlook_client_id"
-            :placeholder="t('views.notification.channels.form.outlookClientId')"
-          />
-        </cl-form-item>
-        <cl-form-item
-          :span="2"
-          :offset="2"
-          :label="t('views.notification.channels.form.outlookClientSecret')"
-          prop="outlook_client_secret"
-          required
-        >
-          <el-input
-            v-model="form.outlook_client_secret"
-            :type="showOutlookClientSecret ? 'text' : 'password'"
+            v-model="form.google_oauth2_json"
             :placeholder="
-              t('views.notification.channels.form.outlookClientSecret')
+              t('views.notification.channels.form.googleOAuth2Json')
             "
-          >
-            <template #suffix>
-              <span
-                style="cursor: pointer"
-                @click="showOutlookClientSecret = !showOutlookClientSecret"
-              >
-                <cl-icon
-                  v-if="!showOutlookClientSecret"
-                  :icon="['fa', 'eye']"
-                />
-                <cl-icon v-else :icon="['fa', 'eye-slash']" />
-              </span>
-            </template>
-          </el-input>
+            type="textarea"
+            rows="10"
+          />
         </cl-form-item>
       </template>
       <cl-form-item
@@ -303,7 +267,7 @@ defineOptions({ name: 'ClNotificationChannelForm' });
         />
       </cl-form-item>
       <cl-form-item
-        v-if="form.provider !== 'outlook'"
+        v-if="form.provider !== 'gmail'"
         :span="2"
         :label="t('views.notification.channels.form.smtpPassword')"
         prop="smtp_password"

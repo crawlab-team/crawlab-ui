@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
-import { ref } from 'vue';
-import ClInputSelect from '@/components/ui/select/InputSelect.vue';
 import { InternalRuleItem } from 'async-validator';
 
 const t = translate;
@@ -42,18 +40,43 @@ defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
   <div class="notification-setting-detail-tab-mail-config">
     <cl-form :model="state.form" :rules="rules">
       <cl-form-item
-        :span="2"
+        :span="4"
         :label="t('views.notification.settings.form.senderEmail')"
         prop="sender_email"
         required
       >
-        <el-input
-          v-model="state.form.sender_email"
-          :placeholder="t('views.notification.settings.form.senderEmail')"
-        />
+        <div class="sender-email-wrapper">
+          <el-input
+            v-model="state.form.sender_email"
+            :placeholder="t('views.notification.settings.form.senderEmail')"
+            :disabled="!state.form.use_custom_sender_email"
+          />
+          <div class="use-custom-sender-email-wrapper">
+            <el-checkbox v-model="state.form.use_custom_sender_email">
+              {{
+                t('views.notification.settings.form.useCustomSenderEmail.label')
+              }}
+            </el-checkbox>
+            <el-tooltip
+              :content="
+                t(
+                  'views.notification.settings.form.useCustomSenderEmail.tooltip'
+                )
+              "
+              trigger="click"
+            >
+              <span style="cursor: pointer">
+                <cl-icon
+                  :icon="['fa', 'question-circle']"
+                  color="var(--el-text-color-regular)"
+                />
+              </span>
+            </el-tooltip>
+          </div>
+        </div>
       </cl-form-item>
       <cl-form-item
-        :span="2"
+        :span="4"
         :label="t('views.notification.settings.form.senderName')"
         prop="sender_name"
       >
@@ -103,5 +126,15 @@ defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
 <style lang="scss" scoped>
 .notification-setting-detail-tab-mail-config {
   margin: 20px;
+
+  .sender-email-wrapper {
+    display: flex;
+    gap: 10px;
+
+    .use-custom-sender-email-wrapper {
+      display: flex;
+      gap: 5px;
+    }
+  }
 }
 </style>

@@ -22,6 +22,11 @@ const notification: LViewsNotification = {
       trigger: 'Trigger',
       hasMail: 'Has Mail',
       senderEmail: 'Sender Email',
+      useCustomSenderEmail: {
+        label: 'Use Custom Sender Email',
+        tooltip:
+          'Use a custom sender email address, otherwise use the default sender email address as configured in SMTP settings',
+      },
       senderName: 'Sender Name',
       mailTo: 'Mail To',
       mailCc: 'Mail CC',
@@ -87,9 +92,7 @@ const notification: LViewsNotification = {
       webhookUrl: 'Webhook URL',
       telegramBotToken: 'Telegram Bot Token',
       telegramChatId: 'Telegram Chat ID',
-      outlookTenantId: 'Outlook Tenant ID',
-      outlookClientId: 'Outlook Client ID',
-      outlookClientSecret: 'Outlook Client Secret',
+      googleOAuth2Json: 'Google OAuth2 JSON',
     },
     types: {
       mail: 'Mail',
@@ -104,7 +107,6 @@ const notification: LViewsNotification = {
       yahoo: 'Yahoo',
       aol: 'AOL',
       zoho: 'Zoho',
-      exmail: 'Tencent Exmail',
       wechat_work: 'WeChat Work',
       dingtalk: 'DingTalk',
       lark: 'Lark',

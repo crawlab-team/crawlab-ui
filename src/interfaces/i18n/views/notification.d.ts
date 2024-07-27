@@ -12,6 +12,10 @@ interface LViewsNotification {
       trigger: string;
       hasMail: string;
       senderEmail: string;
+      useCustomSenderEmail: {
+        label: string;
+        tooltip: string;
+      };
       senderName: string;
       mailTo: string;
       mailCc: string;
@@ -66,9 +70,7 @@ interface LViewsNotification {
       webhookUrl: string;
       telegramBotToken: string;
       telegramChatId: string;
-      outlookTenantId: string;
-      outlookClientId: string;
-      outlookClientSecret: string;
+      googleOAuth2Json: string;
     };
     types: {
       mail: string;
@@ -83,7 +85,6 @@ interface LViewsNotification {
       yahoo: string;
       aol: string;
       zoho: string;
-      exmail: string;
       wechat_work: string;
       dingtalk: string;
       lark: string;

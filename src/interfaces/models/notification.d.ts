@@ -27,6 +27,7 @@ export declare global {
     trigger?: NotificationTrigger;
     has_mail?: boolean;
     sender_email?: string;
+    use_custom_sender_email?: boolean;
     sender_name?: string;
     mail_to?: string[];
     mail_cc?: string[];
@@ -73,9 +74,7 @@ export declare global {
     webhook_url?: string;
     telegram_bot_token?: string;
     telegram_chat_id?: string;
-    outlook_tenant_id?: string;
-    outlook_client_id?: string;
-    outlook_client_secret?: string;
+    google_oauth2_json?: string;
   }
 
   interface NotificationChannelProvider {

@@ -22,6 +22,11 @@ const notification: LViewsNotification = {
       trigger: '触发器',
       hasMail: '是否有邮件',
       senderEmail: '发件人邮箱',
+      useCustomSenderEmail: {
+        label: '使用自定义发件人邮箱',
+        tooltip:
+          '使用自定义发件人邮箱地址，否则使用 SMTP 设置中配置的默认发件人邮箱地址',
+      },
       senderName: '发件人姓名',
       mailTo: '发送至',
       mailCc: '抄送',
@@ -87,9 +92,7 @@ const notification: LViewsNotification = {
       webhookUrl: 'Webhook URL',
       telegramBotToken: '电报机器人令牌',
       telegramChatId: '电报聊天 ID',
-      outlookTenantId: 'Outlook 租户 ID',
-      outlookClientId: 'Outlook 客户端 ID',
-      outlookClientSecret: 'Outlook 客户端密钥',
+      googleOAuth2Json: '谷歌 OAuth2 JSON',
     },
     types: {
       mail: '邮件 (Email)',
@@ -104,7 +107,6 @@ const notification: LViewsNotification = {
       yahoo: '雅虎 (Yahoo)',
       aol: '美国在线 (AOL)',
       zoho: '卓豪 (Zoho)',
-      exmail: '腾讯企业邮箱 (Tencent Exmail)',
       wechat_work: '企业微信 (Wechat Work)',
       dingtalk: '钉钉 (DingTalk)',
       lark: '飞书 (Lark)',
