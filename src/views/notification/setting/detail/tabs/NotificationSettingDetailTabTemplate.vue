@@ -131,7 +131,9 @@ defineOptions({ name: 'ClNotificationSettingDetailTabTemplate' });
     >
       <template #prefix>
         <el-tooltip :content="t('views.notification.settings.form.title')">
-          <cl-icon :icon="['fa', 'heading']" />
+          <span>
+            <cl-icon :icon="['fa', 'heading']" />
+          </span>
         </el-tooltip>
       </template>
     </el-input>

@@ -39,9 +39,9 @@ defineOptions({ name: 'ClNotificationSettingDetail' });
   <cl-detail-layout store-namespace="notificationSetting">
     <template #actions>
       <cl-notification-setting-detail-actions-common />
-      <cl-notification-setting-detail-actions-template
-        v-if="activeTabName === TAB_NAME_TEMPLATE"
-      />
+      <!--      <cl-notification-setting-detail-actions-template-->
+      <!--        v-if="activeTabName === TAB_NAME_TEMPLATE"-->
+      <!--      />-->
     </template>
   </cl-detail-layout>
 </template>
