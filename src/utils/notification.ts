@@ -1,5 +1,4 @@
 import { translate } from '@/utils/i18n';
-import { toneMappingExposure } from 'three/examples/jsm/nodes/display/ToneMappingNode';
 
 const t = translate;
 
@@ -351,6 +350,24 @@ export const allVariables: NotificationVariable[] = [
     icon: ['fa', 'user'],
   },
 ];
+
+export const triggerTargetVariableCategoryMap: Record<
+  NotificationTriggerTarget,
+  NotificationVariableCategory[]
+> = {
+  task: [
+    'task',
+    'task_stat',
+    'node',
+    'spider',
+    'spider_stat',
+    'git',
+    'project',
+    'schedule',
+    'user',
+  ],
+  node: ['node'],
+};
 
 export const isValidVariable = ({
   category,

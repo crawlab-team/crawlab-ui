@@ -30,4 +30,10 @@ defineOptions({ name: 'ClNotificationChannelList' });
   </cl-list-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+.notification-channel-list {
+  &:deep(img) {
+    filter: grayscale(100);
+  }
+}
+</style>

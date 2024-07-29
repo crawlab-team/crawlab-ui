@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { translate, allVariables } from '@/utils';
+import {
+  translate,
+  allVariables,
+  triggerTargetVariableCategoryMap,
+} from '@/utils';
+import { useStore } from 'vuex';
 
 const modelValue = defineModel<NotificationVariable | undefined>({
   required: true,
@@ -16,6 +21,10 @@ const emit = defineEmits<{
 }>();
 
 const t = translate;
+
+const ns: ListStoreNamespace = 'notificationSetting';
+const store = useStore();
+const { notificationSetting: state } = store.state as RootStoreState;
 
 const variableCategoryOptions = computed<
   SelectOption<NotificationVariableCategory>[]
@@ -41,17 +50,31 @@ const variableCategoryOptions = computed<
       value: 'node',
       icon: ['fa', 'server'],
     },
-  ];
+  ].filter(op => {
+    if (!state.form?.trigger_target) return false;
+    return triggerTargetVariableCategoryMap[
+      state.form?.trigger_target
+    ]?.includes(op.value as any);
+  }) as SelectOption<NotificationVariableCategory>[];
 });
 
 const onConfirm = () => {
   emit('confirm');
 };
 
-const category = ref<NotificationVariableCategory>('task');
+const category = ref<NotificationVariableCategory | undefined>(
+  variableCategoryOptions.value[0]?.value
+);
 
 const variables = computed<NotificationVariable[]>(() =>
-  allVariables.filter(v => v.category.startsWith(category.value))
+  allVariables.filter(v => {
+    if (!category.value) return false;
+    if (!v.category.startsWith(category.value)) return false;
+    if (!state.form?.trigger_target) return false;
+    return !triggerTargetVariableCategoryMap[
+      state.form?.trigger_target
+    ]?.includes(v.name as any);
+  })
 );
 
 defineOptions({ name: 'ClInsertVariableDialog' });
@@ -66,7 +89,7 @@ defineOptions({ name: 'ClInsertVariableDialog' });
     @close="emit('close')"
     @confirm="onConfirm"
   >
-    <cl-form ref="formRef" :rules="formRules">
+    <cl-form ref="formRef">
       <cl-form-item
         :span="4"
         :label="
