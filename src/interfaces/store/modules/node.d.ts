@@ -5,13 +5,18 @@ type NodeStoreModule = BaseModule<
   NodeStoreActions
 >;
 
-type NodeStoreState = BaseStoreState<CNode>;
+interface NodeStoreState extends BaseStoreState<CNode> {
+  nodeMetricsMap: Record<string, Metric>;
+}
 
 type NodeStoreGetters = BaseStoreGetters<CNode>;
 
 interface NodeStoreMutations extends BaseStoreMutations<CNode> {
   setAllNodeSelectOptions: StoreMutation<BaseStoreState<CNode>, SelectOption[]>;
   setAllNodeTags: StoreMutation<BaseStoreState<CNode>, string[]>;
+  setNodeMetricsMap: StoreMutation<NodeStoreState, Record<string, Metric>>;
 }
 
-type NodeStoreActions = BaseStoreActions<CNode>;
+interface NodeStoreActions extends BaseStoreActions<CNode> {
+  getNodeMetrics: StoreAction<NodeStoreState>;
+}

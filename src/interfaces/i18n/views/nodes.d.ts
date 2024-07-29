@@ -11,6 +11,7 @@ interface LViewsNodes {
       enabled: string;
       tags: string;
       description: string;
+      currentMetrics: string;
     };
   };
   navActions: LNavActions;

@@ -11,6 +11,7 @@ const nodes: LViewsNodes = {
       enabled: 'Enabled',
       tags: 'Tags',
       description: 'Description',
+      currentMetrics: 'Current Metrics',
     },
   },
   navActions: {

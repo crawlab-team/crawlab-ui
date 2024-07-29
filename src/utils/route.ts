@@ -158,7 +158,7 @@ export const getIconByTabName = (tabName: string): Icon => {
     case TAB_NAME_CHANGES:
       return ['fa', 'code-commit'];
     case TAB_NAME_MONITORING:
-      return ['fa', 'tachometer-alt'];
+      return ['fa', 'line-chart'];
     case TAB_NAME_CHANNELS:
       return ['fa', 'broadcast-tower'];
     case TAB_NAME_MAIL:

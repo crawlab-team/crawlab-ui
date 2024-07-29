@@ -40,6 +40,7 @@ const common: LCommon = {
     selectAll: '全选',
     viewTemplate: '查看模板',
     viewChannels: '查看通知渠道',
+    viewMonitoring: '查看监控',
   },
   messageBox: {
     confirm: {

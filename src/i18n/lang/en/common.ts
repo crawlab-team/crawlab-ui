@@ -40,6 +40,7 @@ const common: LCommon = {
     selectAll: 'Select All',
     viewTemplate: 'View Template',
     viewChannels: 'View Channels',
+    viewMonitoring: 'View Monitoring',
   },
   messageBox: {
     confirm: {

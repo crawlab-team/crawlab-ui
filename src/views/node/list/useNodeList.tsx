@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import {
   getDefaultUseListOptions,
@@ -35,10 +35,12 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_FILTER_SELECT,
   ACTION_VIEW,
+  ACTION_VIEW_MONITORING,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
-import { isAllowedAction } from '@/utils';
+import { isAllowedAction, isPro, setupAutoUpdate } from '@/utils';
+import { ClNodeCurrentMetrics } from '@/components';
 
 type Node = CNode;
 
@@ -49,6 +51,7 @@ const useNodeList = () => {
   // store
   const ns = 'node';
   const store = useStore<RootStoreState>();
+  const { node: state } = store.state as RootStoreState;
 
   // i18n
   const t = translate;
@@ -187,8 +190,8 @@ const useNodeList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<Node>>(
-    () =>
+  const tableColumns = computed<TableColumns<Node>>(() =>
+    (
       [
         {
           key: 'name', // name
@@ -250,30 +253,6 @@ const useNodeList = () => {
           ],
         },
         {
-          key: 'ip',
-          className: 'ip',
-          label: t('views.nodes.table.columns.ip'),
-          icon: ['fa', 'map-marker-alt'],
-          width: '150',
-          defaultHidden: true,
-        },
-        {
-          key: 'mac',
-          className: 'mac',
-          label: t('views.nodes.table.columns.mac'),
-          icon: ['fa', 'map-marker-alt'],
-          width: '150',
-          defaultHidden: true,
-        },
-        {
-          key: 'hostname',
-          className: 'hostname',
-          label: t('views.nodes.table.columns.hostname'),
-          icon: ['fa', 'map-marker-alt'],
-          width: '150',
-          defaultHidden: true,
-        },
-        {
           key: 'runners',
           className: 'runners',
           label: t('views.nodes.table.columns.runners'),
@@ -333,6 +312,27 @@ const useNodeList = () => {
           ],
         },
         {
+          key: 'current-metric',
+          className: 'current-metric',
+          label: t('views.nodes.table.columns.currentMetrics'),
+          icon: ['fa', 'chart-line'],
+          width: '200',
+          value: (row: Node) => {
+            if (!row._id) return;
+            const currentMetrics = state.nodeMetricsMap[row._id];
+            return (
+              <ClNodeCurrentMetrics
+                metric={currentMetrics}
+                clickable
+                onClick={async () => {
+                  console.debug('click');
+                  await router.push(`/nodes/${row._id}/monitoring`);
+                }}
+              />
+            );
+          },
+        },
+        {
           key: 'description',
           className: 'description',
           label: t('views.nodes.table.columns.description'),
@@ -357,15 +357,15 @@ const useNodeList = () => {
               },
               action: ACTION_VIEW,
             },
-            // {
-            //   type: 'info',
-            //   size: 'small',
-            //   icon: ['fa', 'clone'],
-            //   tooltip: 'Clone',
-            //   onClick: (row) => {
-            //     console.log('clone', row);
-            //   }
-            // },
+            {
+              type: 'info',
+              icon: ['fa', 'line-chart'],
+              tooltip: t('common.actions.viewMonitoring'),
+              onClick: async row => {
+                await router.push(`/nodes/${row._id}/monitoring`);
+              },
+              action: ACTION_VIEW_MONITORING,
+            },
             {
               type: 'danger',
               size: 'small',
@@ -392,6 +392,12 @@ const useNodeList = () => {
           disableTransfer: true,
         },
       ] as TableColumns<Node>
+    ).filter(col => {
+      if (!isPro()) {
+        return !['current-metric'].includes(col.key);
+      }
+      return true;
+    })
   );
 
   // options
@@ -399,6 +405,11 @@ const useNodeList = () => {
 
   // init
   setupListComponent(ns, store, []);
+
+  if (isPro()) {
+    onBeforeMount(() => store.dispatch(`${ns}/getNodeMetrics`));
+    setupAutoUpdate(() => store.dispatch(`${ns}/getNodeMetrics`));
+  }
 
   // visible table actions buttons
   const visibleButtons: BuiltInTableActionButtonName[] = [

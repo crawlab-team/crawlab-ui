@@ -11,6 +11,7 @@ const nodes: LViewsNodes = {
       enabled: '是否启用',
       tags: '标签',
       description: '描述',
+      currentMetrics: '当前指标',
     },
   },
   navActions: {

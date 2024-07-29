@@ -1,21 +1,35 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { useStore } from 'vuex';
 import useNodeList from '@/views/node/list/useNodeList';
 
-export default defineComponent({
-  name: 'NodeList',
-  setup() {
-    return {
-      ...useNodeList(),
-    };
-  },
-});
+const store = useStore();
+const { node: state } = store.state as RootStoreState;
+
+const {
+  actionFunctions,
+  navActions,
+  tablePagination,
+  tableColumns,
+  tableData,
+  tableTotal,
+  visibleButtons,
+} = useNodeList();
+
+const getCurrentMetrics = (row: CNode) => {
+  if (!row._id) return;
+  return state.nodeMetricsMap[row._id];
+};
+
+defineOptions({ name: 'ClNodeList' });
 </script>
 
 <template>
   <cl-list-layout
     class="node-list"
-    :row-key="(row: CNode) => [row._id, row.status].join('_')"
+    :row-key="
+      (row: CNode) =>
+        [row._id, row.status, JSON.stringify(getCurrentMetrics(row))].join('_')
+    "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

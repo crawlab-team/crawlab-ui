@@ -53,6 +53,7 @@ export declare global {
       selectAll: string;
       viewTemplate: string;
       viewChannels: string;
+      viewMonitoring: string;
     };
     messageBox: {
       confirm: {

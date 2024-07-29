@@ -284,7 +284,7 @@ const getMetricsTimeSeriesData = async () => {
   metricsTimeSeriesData.value = res.data || [];
 };
 
-let handle: number;
+let handle: any;
 onBeforeMount(getMetricsTimeSeriesData);
 onBeforeMount(() => {
   handle = setInterval(getMetricsTimeSeriesData, 60 * 1000);
