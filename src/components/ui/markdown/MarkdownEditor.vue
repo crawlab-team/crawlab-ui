@@ -24,6 +24,7 @@ const initMarkdown = async () => {
     .getLanguages()
     .find(lang => lang.id === 'markdown');
   if (markdown) {
+    // @ts-ignore
     const { language } = await markdown.loader();
     language.tokenizer.root.push([/\$\{(\w+):(\w+)\}/, 'variable']);
   }
@@ -50,6 +51,11 @@ const addSaveKeyMap = () => {
   );
 };
 
+const updateValue = () => {
+  if (!modelValue.value) return;
+  editor?.setValue(modelValue.value || '');
+};
+
 const initEditor = debounce(async () => {
   if (!editorRef.value) return;
   if (!editor) {
@@ -72,11 +78,7 @@ const initEditor = debounce(async () => {
     });
   }
 
-  let handle = setInterval(() => {
-    if (!modelValue.value) return;
-    editor?.setValue(modelValue.value || '');
-    clearInterval(handle);
-  }, 50);
+  updateValue();
 });
 onMounted(initEditor);
 watch(
@@ -104,7 +106,7 @@ const onEdit = async (
   if (!editor) return;
   const model = editor.getModel();
   if (!model) return;
-  let range = editor?.getSelection();
+  let range = editor?.getSelection() as monaco.Selection;
   if (!range || range.isEmpty()) {
     const position = editor.getPosition();
     if (!position) return;
@@ -159,7 +161,8 @@ defineOptions({ name: 'ClMarkdownEditor' });
         )
       "
       @variable="
-        ({ name, category }) => onEdit(() => `\${${category}:${name}}`)
+        ({ name, category }: VariableForm) =>
+          onEdit(() => `\${${category}:${name}}`)
       "
     />
     <div ref="editorRef" class="editor" />

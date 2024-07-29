@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import * as monaco from 'monaco-editor';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { translate } from '@/utils';
 import InsertVariableDialog from '@/components/ui/lexical/components/InsertVariableDialog.vue';
-import { INSERT_VARIABLE_COMMAND } from '@/components/ui/lexical/composables/useVariableSetup';
 
-const props = withDefaults(
-  defineProps<{
-    editor?: monaco.editor.IStandaloneCodeEditor;
-    content?: string;
-  }>(),
-  {
-    showHistory: true,
-  }
-);
+const props = defineProps<{
+  editor?: monaco.editor.IStandaloneCodeEditor;
+  content?: string;
+}>();
 
 const emit = defineEmits<{
   (e: 'undo'): void;
@@ -34,7 +29,9 @@ const updateUndoRedo = () => {
   const { editor } = props;
   if (!editor) return false;
   const model = editor.getModel();
+  // @ts-ignore
   canUndo.value = model.canUndo(model.uri);
+  // @ts-ignore
   canRedo.value = model.canRedo(model.uri);
 };
 watch(() => props.content, updateUndoRedo);
@@ -42,6 +39,7 @@ watch(() => props.content, updateUndoRedo);
 const showInsertVariableDialog = ref(false);
 const variableForm = ref<NotificationVariable>();
 const insertVariable = () => {
+  if (!variableForm.value) return;
   emit('variable', variableForm.value);
 };
 

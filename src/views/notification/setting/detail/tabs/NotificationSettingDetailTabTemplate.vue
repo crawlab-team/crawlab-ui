@@ -141,7 +141,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabTemplate' });
       <template v-if="state.form.template_mode === 'markdown'">
         <cl-markdown-editor
           v-model="templateMarkdown"
-          :id="activeId"
+          :id="state.form._id"
           @save="onSave"
         />
       </template>
