@@ -2,6 +2,7 @@ import { computed, onBeforeMount, ref } from 'vue';
 import useDetail from '@/layouts/content/detail/useDetail';
 import useNotificationSetting from '@/components/core/notification/setting/useNotificationSetting';
 import { useStore } from 'vuex';
+import { setupGetAllList } from '@/utils';
 
 const useNotificationSettingDetail = () => {
   const ns: ListStoreNamespace = 'notificationSetting';
@@ -15,6 +16,8 @@ const useNotificationSettingDetail = () => {
       store.dispatch('notificationChannel/getAllList'),
     ]);
   });
+
+  setupGetAllList(store, ['notificationAlert']);
 
   return {
     ...useDetail(ns),

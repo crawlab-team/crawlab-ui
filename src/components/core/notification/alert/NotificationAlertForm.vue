@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { EMPTY_OBJECT_ID, translate } from '@/utils';
+import { translate } from '@/utils';
 import useNotificationAlert from '@/components/core/notification/alert/useNotificationAlert';
 import { getMetricUnitLabel } from '@/utils/metric';
 
@@ -24,7 +24,12 @@ const {
   operatorOptions,
   lastingSecondsOptions,
   levelOptions,
+  validateForm,
 } = useNotificationAlert(store);
+
+defineExpose({
+  validateForm,
+});
 
 defineOptions({ name: 'ClNotificationAlertForm' });
 </script>

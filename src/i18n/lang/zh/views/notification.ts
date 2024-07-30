@@ -31,6 +31,7 @@ const notification: LViewsNotification = {
       mailTo: '发送至',
       mailCc: '抄送',
       mailBcc: '密送',
+      alert: '监控警报',
     },
     formRules: {
       invalidEmail: '请输入有效的邮箱地址',
@@ -38,6 +39,7 @@ const notification: LViewsNotification = {
     triggerTargets: {
       task: '任务',
       node: '节点',
+      alert: '监控警报',
     },
     triggers: {
       task: {
@@ -66,6 +68,9 @@ const notification: LViewsNotification = {
     },
     templates: {
       label: '选择模板',
+    },
+    actions: {
+      createAlert: '创建通知警报',
     },
   },
   channels: {

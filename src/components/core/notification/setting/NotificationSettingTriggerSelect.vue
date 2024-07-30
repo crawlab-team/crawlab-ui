@@ -52,12 +52,19 @@ defineOptions({ name: 'ClNotificationSettingTriggerSelect' });
     @change="(val: NotificationTrigger) => emit('trigger-change', val)"
   >
     <template #label="{ value, label }">
-      <span style="margin-right: 5px">
-        <cl-icon :icon="getTriggerTargetIcon(value)" />
-      </span>
-      <span style="margin-right: 5px">
-        <cl-icon :icon="getTriggerIcon(value)" />
-      </span>
+      <template v-if="value === 'alert'">
+        <span style="margin-right: 5px">
+          <cl-icon :icon="['fa', 'bell']" />
+        </span>
+      </template>
+      <template v-else>
+        <span style="margin-right: 5px">
+          <cl-icon :icon="getTriggerTargetIcon(value)" />
+        </span>
+        <span style="margin-right: 5px">
+          <cl-icon :icon="getTriggerIcon(value)" />
+        </span>
+      </template>
       <span style="margin-right: 5px">
         {{ label }}
       </span>

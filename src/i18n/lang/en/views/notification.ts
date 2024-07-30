@@ -31,6 +31,7 @@ const notification: LViewsNotification = {
       mailTo: 'Mail To',
       mailCc: 'Mail CC',
       mailBcc: 'Mail BCC',
+      alert: 'Alert',
     },
     formRules: {
       invalidEmail: 'Please enter a valid email address',
@@ -38,6 +39,7 @@ const notification: LViewsNotification = {
     triggerTargets: {
       task: 'Task',
       node: 'Node',
+      alert: 'Monitoring Alert',
     },
     triggers: {
       task: {
@@ -66,6 +68,9 @@ const notification: LViewsNotification = {
     },
     templates: {
       label: 'Select Template',
+    },
+    actions: {
+      createAlert: 'Create Alert',
     },
   },
   channels: {

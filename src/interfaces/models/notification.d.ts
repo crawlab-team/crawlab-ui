@@ -5,11 +5,10 @@ export declare global {
     | 'task_finish'
     | 'task_error'
     | 'task_empty_results'
-    | 'task_never'
     | 'node_status_change'
     | 'node_online'
     | 'node_offline'
-    | 'node_never';
+    | 'alert';
 
   interface NotificationSetting extends BaseModel {
     name?: string;
@@ -34,6 +33,7 @@ export declare global {
     mail_bcc?: string[];
     channel_ids?: string[];
     channels?: NotificationChannel[];
+    alert_id?: string;
   }
 
   interface NotificationSettingTemplate extends NotificationSetting {

@@ -20,6 +20,7 @@ interface LViewsNotification {
       mailTo: string;
       mailCc: string;
       mailBcc: string;
+      alert: string;
     };
     formRules: {
       invalidEmail: string;
@@ -27,6 +28,7 @@ interface LViewsNotification {
     triggerTargets: {
       task: string;
       node: string;
+      alert: string;
     };
     triggers: {
       task: {
@@ -54,6 +56,9 @@ interface LViewsNotification {
     };
     templates: {
       label: string;
+    };
+    actions: {
+      createAlert: string;
     };
   };
   channels: {

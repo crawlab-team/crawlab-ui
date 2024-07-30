@@ -434,10 +434,11 @@ export const allTemplates: NotificationSettingTemplate[] = [
   },
 ];
 
-export const getTriggerOptions = () => [
+export const getTriggerOptions = (): SelectOption<string>[] => [
   {
     label: t('views.notification.settings.triggerTargets.task'),
     icon: ['fa', 'tasks'],
+    value: 'task',
     children: [
       {
         label: t('views.notification.settings.triggers.task.finish'),
@@ -459,6 +460,7 @@ export const getTriggerOptions = () => [
   {
     label: t('views.notification.settings.triggerTargets.node'),
     icon: ['fa', 'server'],
+    value: 'node',
     children: [
       {
         label: t('views.notification.settings.triggers.node.statusChange'),
@@ -476,5 +478,10 @@ export const getTriggerOptions = () => [
         icon: ['fa', 'times-circle'],
       },
     ],
+  },
+  {
+    label: t('views.notification.settings.triggerTargets.alert'),
+    icon: ['fa', 'bell'],
+    value: 'alert',
   },
 ];
