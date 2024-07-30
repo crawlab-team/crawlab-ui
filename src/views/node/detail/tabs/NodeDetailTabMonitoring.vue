@@ -5,7 +5,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 import useRequest from '@/services/request';
 import { translate } from '@/utils';
 import { getTimeUnitParts } from '@/utils/time';
-import { formatBytes } from '@/utils/metric';
+import { formatBytes, getAllMetricGroups } from '@/utils/metric';
 import { colorPalette } from '@/utils/chart';
 import useDetail from '@/layouts/content/detail/useDetail';
 import ClEmpty from '@/components/ui/empty/Empty.vue';
@@ -90,63 +90,6 @@ const timeDisplayFormats = computed(() => {
   }
 });
 
-const allMetricGroups: MetricGroup[] = [
-  {
-    name: 'cpu_usage_percent', // 'cpu_usage_percent
-    label: t('components.node.metric.metrics.cpu_usage_percent'),
-    metrics: ['cpu_usage_percent'],
-  },
-  {
-    name: 'used_memory_percent',
-    label: t('components.node.metric.metrics.used_memory_percent'),
-    metrics: ['used_memory_percent'],
-  },
-  {
-    name: 'used_disk_percent',
-    label: t('components.node.metric.metrics.used_disk_percent'),
-    metrics: ['used_disk_percent'],
-  },
-  {
-    name: 'disk_io_bytes_rate',
-    label: t('components.node.metric.groups.disk_io_bytes_rate'),
-    metrics: ['disk_read_bytes_rate', 'disk_write_bytes_rate'],
-  },
-  {
-    name: 'network_io_bytes_rate',
-    label: t('components.node.metric.groups.network_io_bytes_rate'),
-    metrics: ['network_bytes_recv_rate', 'network_bytes_sent_rate'],
-  },
-  {
-    name: 'total_memory',
-    label: t('components.node.metric.metrics.total_memory'),
-    metrics: ['total_memory'],
-  },
-  {
-    name: 'available_memory',
-    label: t('components.node.metric.metrics.available_memory'),
-    metrics: ['available_memory'],
-  },
-  {
-    name: 'used_memory',
-    label: t('components.node.metric.metrics.used_memory'),
-    metrics: ['used_memory'],
-  },
-  {
-    name: 'total_disk',
-    label: t('components.node.metric.metrics.total_disk'),
-    metrics: ['total_disk'],
-  },
-  {
-    name: 'available_disk',
-    label: t('components.node.metric.metrics.available_disk'),
-    metrics: ['available_disk'],
-  },
-  {
-    name: 'used_disk',
-    label: t('components.node.metric.metrics.used_disk'),
-    metrics: ['used_disk'],
-  },
-];
 const metricGroups = ref<string[]>([
   'cpu_usage_percent',
   'used_memory_percent',
@@ -155,7 +98,7 @@ const metricGroups = ref<string[]>([
   'network_io_bytes_rate',
 ]);
 const metricOptions = computed<SelectOption[]>(() => {
-  return allMetricGroups.map(({ label, name: value }: MetricGroup) => {
+  return getAllMetricGroups().map(({ label, name: value }: MetricGroup) => {
     return { label, value };
   });
 });
@@ -166,7 +109,8 @@ const getLineChartData = (name: string): ChartData => {
     ({ _id }: Metric) => new Date(_id as string)
   );
   const { metrics } =
-    allMetricGroups.find(({ name: groupName }) => groupName === name) || {};
+    getAllMetricGroups().find(({ name: groupName }) => groupName === name) ||
+    {};
   return {
     labels,
     datasets:
@@ -189,7 +133,7 @@ const getLineChartData = (name: string): ChartData => {
 
 const getLineChartOptions = (groupName: string): ChartOptions<'line'> => {
   const { label, name } =
-    allMetricGroups.find(({ name }) => name === groupName) || {};
+    getAllMetricGroups().find(({ name }) => name === groupName) || {};
   return {
     plugins: {
       title: {
@@ -272,7 +216,7 @@ const getMetricsTimeSeriesData = async () => {
       time_unit: timeUnit.value,
       metric_names: metricGroups.value
         .map(groupName => {
-          const metricGroup = allMetricGroups.find(
+          const metricGroup = getAllMetricGroups().find(
             ({ name }) => name === groupName
           );
           return metricGroup?.metrics?.join(',');

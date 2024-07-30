@@ -15,6 +15,9 @@ import {
   ClNotificationSettingList,
   ClNotificationSettingDetailTabMailConfig,
   ClNotificationRequestList,
+  ClNotificationAlertList,
+  ClNotificationAlertDetail,
+  ClNotificationAlertDetailTabOverview,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
 import { RouteLocation } from 'vue-router';
@@ -102,5 +105,29 @@ export default [
     title: t('layouts.routes.notifications.requests.title'),
     icon: ['fa', 'paper-plane'],
     component: async () => ClNotificationRequestList,
+  },
+  {
+    name: 'NotificationAlertList',
+    path: `${endpoint}/alerts`,
+    title: t('layouts.routes.notifications.alerts.title'),
+    icon: ['fa', 'bell'],
+    component: async () => ClNotificationAlertList,
+  },
+  {
+    name: 'NotificationAlertDetail',
+    path: `${endpoint}/alerts/:id`,
+    redirect: (to: RouteLocation) => {
+      return { path: to.path + '/' + TAB_NAME_OVERVIEW };
+    },
+    component: async () => ClNotificationAlertDetail,
+    children: [
+      {
+        name: 'NotificationAlertDetailOverview',
+        path: TAB_NAME_OVERVIEW,
+        title: t('layouts.routes.notifications.alerts.tabs.overview'),
+        icon: getIconByTabName(TAB_NAME_OVERVIEW),
+        component: async () => ClNotificationAlertDetailTabOverview,
+      },
+    ],
   },
 ] as Array<ExtendedRouterRecord>;

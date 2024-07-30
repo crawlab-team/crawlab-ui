@@ -8,10 +8,10 @@ export declare global {
 
   interface ExtendedRouterRecord extends _RouteRecordBase {
     name: string;
-    title: string;
+    title?: string;
     icon?: Icon;
     children?: Array<ExtendedRouterRecord>;
-    redirect?: (to: RouteLocation) => RouteLocation;
+    redirect?: string | ((to: RouteLocation) => RouteLocation);
     path?: string;
     component?: RouteComponent;
   }

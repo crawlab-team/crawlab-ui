@@ -7,11 +7,11 @@ const { get } = useRequest();
 
 const t = translate;
 
-const ns = 'notificationChannel';
+const ns = 'notificationAlert';
 
-const { activeId } = useDetail<NotificationChannel>(ns);
+const { activeId } = useDetail<NotificationAlert>(ns);
 
-defineOptions({ name: 'ClNotificationChannelDetailActionsCommon' });
+defineOptions({ name: 'ClNotificationAlertDetailActionsCommon' });
 </script>
 
 <template>

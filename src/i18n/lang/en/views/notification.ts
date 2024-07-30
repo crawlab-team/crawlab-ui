@@ -152,6 +152,44 @@ const notification: LViewsNotification = {
       title: 'Notification Request Detail',
     },
   },
+  alerts: {
+    navActions: {
+      new: {
+        label: 'New Notification Alert',
+        tooltip: 'Create a new notification alert',
+      },
+      filter: {
+        search: {
+          placeholder: 'Search notification alerts',
+        },
+      },
+    },
+    form: {
+      name: 'Name',
+      description: 'Description',
+      enabled: 'Enabled',
+      hasMetricTarget: 'Has Metric Target',
+      metricTarget: 'Metric Target',
+      alertRule: 'Alert Rule',
+      metricName: 'Metric Name',
+      operator: 'Operator',
+      lastingSeconds: 'Lasting Seconds',
+      targetValue: 'Target Value',
+      level: 'Level',
+    },
+    lastingSeconds: {
+      '1m': '1 Min (Instant)',
+      '5m': '5 Min',
+      '10m': '10 Min',
+      '30m': '30 Min',
+      '1h': '1 Hour',
+    },
+    levels: {
+      info: 'Info',
+      warning: 'Warning',
+      critical: 'Critical',
+    },
+  },
 };
 
 export default notification;

@@ -130,4 +130,32 @@ interface LViewsNotification {
       title: string;
     };
   };
+  alerts: {
+    navActions: LNavActions;
+    form: {
+      name: string;
+      description: string;
+      enabled: string;
+      hasMetricTarget: string;
+      metricTarget: string;
+      alertRule: string;
+      metricName: string;
+      operator: string;
+      lastingSeconds: string;
+      targetValue: string;
+      level: string;
+    };
+    lastingSeconds: {
+      '1m': string;
+      '5m': string;
+      '10m': string;
+      '30m': string;
+      '1h': string;
+    };
+    levels: {
+      info: string;
+      warning: string;
+      critical: string;
+    };
+  };
 }

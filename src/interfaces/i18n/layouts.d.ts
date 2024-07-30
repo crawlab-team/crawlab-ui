@@ -102,6 +102,12 @@ export declare global {
         requests: {
           title: string;
         };
+        alerts: {
+          title: string;
+          tabs: {
+            overview: string;
+          };
+        };
       };
       gits: {
         title: string;

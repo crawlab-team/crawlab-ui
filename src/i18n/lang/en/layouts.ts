@@ -101,6 +101,12 @@ const layouts: LLayouts = {
       requests: {
         title: 'Requests',
       },
+      alerts: {
+        title: 'Alerts',
+        tabs: {
+          overview: 'Overview',
+        },
+      },
     },
     gits: {
       title: 'Git Repo',

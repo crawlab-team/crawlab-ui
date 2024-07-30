@@ -41,6 +41,11 @@ import NodeDetailTabOverview from './node/detail/tabs/NodeDetailTabOverview.vue'
 import NodeDetailTabTasks from './node/detail/tabs/NodeDetailTabTasks.vue';
 import NodeList from './node/list/NodeList.vue';
 import useNodeList from './node/list/useNodeList';
+import NotificationAlertDetailActionsCommon from './notification/alert/detail/actions/NotificationAlertDetailActionsCommon.vue';
+import NotificationAlertDetail from './notification/alert/detail/NotificationAlertDetail.vue';
+import NotificationAlertDetailTabOverview from './notification/alert/detail/tabs/NotificationAlertDetailTabOverview.vue';
+import NotificationAlertList from './notification/alert/list/NotificationAlertList.vue';
+import useNotificationAlertList from './notification/alert/list/useNotificationAlertList';
 import NotificationChannelDetailActionsCommon from './notification/channel/detail/actions/NotificationChannelDetailActionsCommon.vue';
 import NotificationChannelDetail from './notification/channel/detail/NotificationChannelDetail.vue';
 import NotificationChannelDetailTabOverview from './notification/channel/detail/tabs/NotificationChannelDetailTabOverview.vue';
@@ -146,6 +151,11 @@ export {
   NodeDetailTabTasks as ClNodeDetailTabTasks,
   NodeList as ClNodeList,
   useNodeList as useNodeList,
+  NotificationAlertDetailActionsCommon as ClNotificationAlertDetailActionsCommon,
+  NotificationAlertDetail as ClNotificationAlertDetail,
+  NotificationAlertDetailTabOverview as ClNotificationAlertDetailTabOverview,
+  NotificationAlertList as ClNotificationAlertList,
+  useNotificationAlertList as useNotificationAlertList,
   NotificationChannelDetailActionsCommon as ClNotificationChannelDetailActionsCommon,
   NotificationChannelDetail as ClNotificationChannelDetail,
   NotificationChannelDetailTabOverview as ClNotificationChannelDetailTabOverview,

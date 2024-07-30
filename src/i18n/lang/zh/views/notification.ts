@@ -152,6 +152,44 @@ const notification: LViewsNotification = {
       title: '通知请求详情',
     },
   },
+  alerts: {
+    navActions: {
+      new: {
+        label: '新建通知警报',
+        tooltip: '创建一个新的通知警报',
+      },
+      filter: {
+        search: {
+          placeholder: '搜索通知警报',
+        },
+      },
+    },
+    form: {
+      name: '名称',
+      description: '描述',
+      enabled: '是否启用',
+      hasMetricTarget: '是否有指标目标',
+      metricTarget: '指标目标',
+      alertRule: '警报规则',
+      metricName: '指标名称',
+      operator: '操作符',
+      lastingSeconds: '持续时间 (秒)',
+      targetValue: '目标值',
+      level: '级别',
+    },
+    lastingSeconds: {
+      '1m': '1 分钟 (即时)',
+      '5m': '5 分钟',
+      '10m': '10 分钟',
+      '30m': '30 分钟',
+      '1h': '1 小时',
+    },
+    levels: {
+      info: '信息',
+      warning: '警告',
+      critical: '严重',
+    },
+  },
 };
 
 export default notification;

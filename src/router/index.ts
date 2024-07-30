@@ -119,6 +119,11 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
           icon: ['fa', 'broadcast-tower'],
         },
         {
+          path: '/notifications/alerts',
+          title: 'router.menuItems.notification.alerts',
+          icon: ['fa', 'bell'],
+        },
+        {
           path: '/notifications/requests',
           title: 'router.menuItems.notification.requests',
           icon: ['fa', 'paper-plane'],
@@ -159,14 +164,14 @@ export function getDefaultMenuItems(): MenuItem[] {
 
 export function getRootRoute(
   routes: Array<ExtendedRouterRecord>
-): RouteRecordRaw | undefined {
+): ExtendedRouterRecord | undefined {
   return routes.find(r => r.name === ROUTER_ROOT_NAME_ROOT);
 }
 
 export function getRouteByName(
   routes: Array<ExtendedRouterRecord>,
   name: string
-): RouteRecordRaw | undefined {
+): ExtendedRouterRecord | undefined {
   for (const route of routes) {
     if (route.name === name) {
       return route;
@@ -193,7 +198,7 @@ export function replaceRouteByName(
 }
 
 export function addRoutes(
-  route: RouteRecordRaw,
+  route: ExtendedRouterRecord,
   routes: Array<ExtendedRouterRecord>
 ): void {
   if (!route.children) {
@@ -232,7 +237,7 @@ export function createRouter(
   // router
   const router = createVueRouter({
     history,
-    routes: allRoutes,
+    routes: allRoutes as RouteRecordRaw[],
   });
 
   // initialize

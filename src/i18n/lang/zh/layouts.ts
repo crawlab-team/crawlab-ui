@@ -101,6 +101,12 @@ const layouts: LLayouts = {
       requests: {
         title: '通知请求',
       },
+      alerts: {
+        title: '警报配置',
+        tabs: {
+          overview: '概览',
+        },
+      },
     },
     gits: {
       title: 'Git 仓库',

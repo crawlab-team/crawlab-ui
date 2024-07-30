@@ -29,6 +29,9 @@ import NodeRunners from './core/node/NodeRunners.vue';
 import NodeStatus from './core/node/NodeStatus.vue';
 import NodeType from './core/node/NodeType.vue';
 import useNode from './core/node/useNode';
+import CreateEditNotificationAlertDialog from './core/notification/alert/CreateEditNotificationAlertDialog.vue';
+import NotificationAlertForm from './core/notification/alert/NotificationAlertForm.vue';
+import useNotificationAlert from './core/notification/alert/useNotificationAlert';
 import CreateEditNotificationChannelDialog from './core/notification/channel/CreateEditNotificationChannelDialog.vue';
 import NotificationChannelForm from './core/notification/channel/NotificationChannelForm.vue';
 import useNotificationChannel from './core/notification/channel/useNotificationChannel';
@@ -227,6 +230,9 @@ export {
   NodeStatus as ClNodeStatus,
   NodeType as ClNodeType,
   useNode as useNode,
+  CreateEditNotificationAlertDialog as ClCreateEditNotificationAlertDialog,
+  NotificationAlertForm as ClNotificationAlertForm,
+  useNotificationAlert as useNotificationAlert,
   CreateEditNotificationChannelDialog as ClCreateEditNotificationChannelDialog,
   NotificationChannelForm as ClNotificationChannelForm,
   useNotificationChannel as useNotificationChannel,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useNotificationSettingList from '@/views/notification/setting/list/useNotificationSettingList';
+import { useNotificationAlertList } from '@/views';
 
 const {
   navActions,
@@ -8,13 +8,14 @@ const {
   tableTotal,
   tablePagination,
   actionFunctions,
-} = useNotificationSettingList();
-defineOptions({ name: 'ClNotificationSettingList' });
+} = useNotificationAlertList();
+
+defineOptions({ name: 'ClNotificationAlertList' });
 </script>
 
 <template>
   <cl-list-layout
-    class="notification-setting-list"
+    class="notification-alert-list"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
@@ -24,10 +25,22 @@ defineOptions({ name: 'ClNotificationSettingList' });
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-notification-setting-dialog />
+      <cl-create-edit-notification-alert-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+.notification-alert-content {
+  width: 100%;
+  padding: 20px;
+  text-align: left;
+
+  pre {
+    width: 100%;
+    overflow: auto;
+    font-size: 14px;
+  }
+}
+</style>

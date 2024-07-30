@@ -107,4 +107,21 @@ export declare global {
     setting?: NotificationSetting;
     channel?: NotificationChannel;
   }
+
+  type NotificationAlertOperator = 'gt' | 'ge' | 'lt' | 'le';
+
+  type NotificationAlertLevel = 'info' | 'warning' | 'critical';
+
+  interface NotificationAlert extends BaseModel {
+    name?: string;
+    description?: string;
+    enabled?: boolean;
+    has_metric_target?: boolean;
+    metric_target_id?: string;
+    metric_name?: string;
+    operator?: NotificationAlertOperator;
+    lasting_seconds?: number;
+    target_value?: number;
+    level?: NotificationAlertLevel;
+  }
 }
