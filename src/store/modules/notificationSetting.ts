@@ -11,6 +11,10 @@ import {
   TAB_NAME_TEMPLATE,
 } from '@/constants';
 import { translate } from '@/utils/i18n';
+import {
+  hasNotificationSettingChannelWarningMissingMailConfigFields,
+  hasNotificationSettingMailChannel,
+} from '@/utils';
 
 const t = translate;
 
@@ -18,6 +22,7 @@ const state = {
   ...getDefaultStoreState<NotificationSetting>('notificationSetting'),
   newFormFn: () => ({
     enabled: true,
+    template_mode: 'markdown',
   }),
   tabs: [
     { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
@@ -29,6 +34,53 @@ const state = {
 
 const getters = {
   ...getDefaultStoreGetters<NotificationSetting>(),
+  tabs: (state: BaseStoreState, _, __, rootGetters) => {
+    const { tabs, form } = state;
+    return tabs.map(tab => {
+      if (tab.id === TAB_NAME_MAIL) {
+        let hasWarning = false;
+        if (
+          hasNotificationSettingMailChannel(
+            form,
+            rootGetters['notificationChannel/allDict']
+          )
+        ) {
+          if (form.use_custom_sender_email && !form.sender_email) {
+            hasWarning = true;
+          } else if (!form.mail_to?.length) {
+            hasWarning = true;
+          }
+        }
+        return {
+          ...tab,
+          badgeType: 'warning',
+          badge: hasWarning ? '!' : undefined,
+        };
+      } else if (tab.id === TAB_NAME_TEMPLATE) {
+        let hasWarning = false;
+        if (!form.title || !form.template_markdown) {
+          hasWarning = true;
+        }
+        return {
+          ...tab,
+          badgeType: 'danger',
+          badge: hasWarning ? '!' : undefined,
+        };
+      } else if (tab.id === TAB_NAME_CHANNELS) {
+        const hasWarning =
+          hasNotificationSettingChannelWarningMissingMailConfigFields(
+            form,
+            rootGetters['notificationChannel/allDict']
+          ) || !form.channel_ids?.length;
+        return {
+          ...tab,
+          badgeType: 'warning',
+          badge: hasWarning ? '!' : undefined,
+        };
+      }
+      return tab;
+    });
+  },
 } as NotificationSettingStoreGetters;
 
 const mutations = {

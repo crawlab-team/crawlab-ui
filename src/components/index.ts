@@ -195,6 +195,7 @@ import LinkTag from './ui/tag/LinkTag.vue';
 import Tag from './ui/tag/Tag.vue';
 import Duration from './ui/time/Duration.vue';
 import Time from './ui/time/Time.vue';
+import Tip from './ui/tip/Tip.vue';
 import Transfer from './ui/transfer/Transfer.vue';
 import TransferPanel from './ui/transfer/TransferPanel.vue';
 
@@ -396,6 +397,7 @@ export {
   Tag as ClTag,
   Duration as ClDuration,
   Time as ClTime,
+  Tip as ClTip,
   Transfer as ClTransfer,
   TransferPanel as ClTransferPanel,
 };

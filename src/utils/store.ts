@@ -64,6 +64,7 @@ export const getDefaultStoreGetters = <T = any>(
       );
       return dict;
     },
+    tabs: (state: BaseStoreState<T>) => state.tabs,
   };
 };
 

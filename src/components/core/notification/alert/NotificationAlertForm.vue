@@ -77,24 +77,22 @@ defineOptions({ name: 'ClNotificationAlertForm' });
       prop="metric_target_id"
       :required="form.has_metric_target"
     >
-      <div class="metric-target-wrapper">
-        <el-select
-          v-model="form.metric_target_id"
-          :placeholder="t('views.notification.alerts.form.metricTarget')"
-          :disabled="!form.has_metric_target"
-          default-first-option
-        >
-          <el-option
-            v-for="op in metricTargetOptions"
-            :key="op.value"
-            :label="op.label"
-            :value="op.value"
-          />
-        </el-select>
-        <el-checkbox v-model="form.has_metric_target">
-          {{ t('views.notification.alerts.form.hasMetricTarget') }}
-        </el-checkbox>
-      </div>
+      <el-select
+        v-model="form.metric_target_id"
+        :placeholder="t('views.notification.alerts.form.metricTarget')"
+        :disabled="!form.has_metric_target"
+        default-first-option
+      >
+        <el-option
+          v-for="op in metricTargetOptions"
+          :key="op.value"
+          :label="op.label"
+          :value="op.value"
+        />
+      </el-select>
+      <el-checkbox v-model="form.has_metric_target">
+        {{ t('views.notification.alerts.form.hasMetricTarget') }}
+      </el-checkbox>
     </cl-form-item>
     <cl-form-item
       :span="4"
@@ -151,16 +149,14 @@ defineOptions({ name: 'ClNotificationAlertForm' });
       :offset="4"
       :label="t('views.notification.alerts.form.lastingSeconds')"
     >
-      <div class="lasting-seconds-wrapper">
-        <el-select v-model="form.lasting_seconds">
-          <el-option
-            v-for="op in lastingSecondsOptions"
-            :key="op.value"
-            :label="op.label"
-            :value="op.value"
-          />
-        </el-select>
-      </div>
+      <el-select v-model="form.lasting_seconds">
+        <el-option
+          v-for="op in lastingSecondsOptions"
+          :key="op.value"
+          :label="op.label"
+          :value="op.value"
+        />
+      </el-select>
     </cl-form-item>
     <cl-form-item
       :span="4"

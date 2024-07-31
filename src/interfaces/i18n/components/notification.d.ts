@@ -52,6 +52,8 @@ interface LComponentsNotification {
     node: string;
     spider: string;
     schedule: string;
+    alert: string;
+    metric: string;
   };
   variables: {
     invalid: string;
@@ -121,6 +123,16 @@ interface LComponentsNotification {
       mode: string;
       enabled: string;
     };
+    alert: {
+      name: string;
+      description: string;
+      enabled: string;
+      metricName: string;
+      operator: string;
+      lastingSeconds: string;
+      targetValue: string;
+      level: string;
+    };
   };
   channel: {
     label: string;
@@ -132,6 +144,12 @@ interface LComponentsNotification {
       task_error: SettingTemplate;
       node_status_change: SettingTemplate;
       node_offline: SettingTemplate;
+      alert_cpu_critical: SettingTemplate;
+      // alert_cpu_warning: SettingTemplate;
+      // alert_memory_critical: SettingTemplate;
+      alert_memory_warning: SettingTemplate;
+      // alert_disk_critical: SettingTemplate;
+      // alert_disk_warning: SettingTemplate;
     };
   };
   request: {

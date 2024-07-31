@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { translate } from '@/utils';
 import { ElMessageBox } from 'element-plus';
+import { getTriggerTarget, translate } from '@/utils';
 
 const t = translate;
 
@@ -10,38 +10,9 @@ const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
 const { notificationSetting: state } = store.state as RootStoreState;
 
-const getTriggerTarget = (
-  trigger?: NotificationTrigger
-): NotificationTriggerTarget | undefined => {
-  if (trigger?.startsWith('task')) {
-    return 'task';
-  } else if (trigger?.startsWith('node')) {
-    return 'node';
-  } else {
-    return;
-  }
-};
-
-const triggerTarget = ref<NotificationTriggerTarget>(
-  state.form.trigger_target || getTriggerTarget(state.form.trigger) || 'task'
+const triggerTarget = ref<NotificationTriggerTarget | undefined>(
+  getTriggerTarget(state.form.trigger)
 );
-watch(triggerTarget, val => {
-  let _trigger: NotificationTrigger;
-  switch (val) {
-    case 'task':
-      _trigger = 'task_finish';
-      break;
-    case 'node':
-      _trigger = 'node_status_change';
-      break;
-  }
-  trigger.value = _trigger;
-  store.commit(`${ns}/setForm`, {
-    ...state.form,
-    trigger_target: val,
-    trigger: _trigger,
-  } as NotificationSetting);
-});
 
 const trigger = ref<NotificationTrigger | undefined>(
   state.form.trigger || 'task_finish'
@@ -56,7 +27,6 @@ watch<NotificationSetting>(
   () => state.form,
   (val, prev) => {
     if (val._id !== prev._id) {
-      triggerTarget.value = val.trigger_target || 'task';
       trigger.value = val.trigger || 'task_finish';
       return;
     }
@@ -65,7 +35,6 @@ watch<NotificationSetting>(
     if (val.task_trigger && !val.trigger) {
       store.commit(`${ns}/setForm`, {
         ...state.form,
-        trigger_target: 'task',
         trigger: val.task_trigger,
         task_trigger: '',
       } as NotificationSetting);
@@ -107,6 +76,7 @@ defineOptions({ name: 'ClNotificationSettingDetailActionsCommon' });
     <cl-nav-action-item>
       <cl-notification-setting-trigger-select
         v-model="trigger"
+        :disabled="state.form.trigger === 'alert'"
         @trigger-change="onTriggerChange"
       />
     </cl-nav-action-item>

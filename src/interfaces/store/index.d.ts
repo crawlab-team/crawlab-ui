@@ -33,9 +33,9 @@ export declare global {
 
   type StoreGetter<S, T, R = RootStoreState> = (
     state: S,
-    getters: GetterTree<S, R>,
-    rootState: R,
-    rootGetters: any
+    getters?: GetterTree<S, R>,
+    rootState?: R,
+    rootGetters?: any
   ) => T;
 
   type StoreMutation<S, P> = (state: S, payload: P) => void;
@@ -92,6 +92,7 @@ export declare global {
     formListIds: StoreGetter<BaseStoreState, string[]>;
     allListSelectOptions: StoreGetter<BaseStoreState, SelectOption[]>;
     allDict: StoreGetter<BaseStoreState, Map<string, T>>;
+    tabs: StoreGetter<BaseStoreState, NavItem[]>;
   }
 
   interface BaseStoreMutations<T = any>

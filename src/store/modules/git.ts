@@ -11,6 +11,7 @@ import {
   TAB_NAME_CHANGES,
   TAB_NAME_LOGS,
   TAB_NAME_SPIDERS,
+  GIT_STATUS_READY,
 } from '@/constants';
 import useRequest from '@/services/request';
 import {
@@ -70,6 +71,25 @@ const getters = {
         label: r.name,
         value: r.name,
       }));
+  },
+  tabs: (state: GitStoreState) => {
+    const { form, tabs, gitChanges } = state;
+    return tabs.map(tab => {
+      if (form.status !== GIT_STATUS_READY) {
+        return {
+          ...tab,
+          disabled: tab.id !== TAB_NAME_OVERVIEW,
+        };
+      }
+      if (tab.id === TAB_NAME_CHANGES) {
+        return {
+          ...tab,
+          badge: gitChanges.length,
+          badgeType: 'danger',
+        };
+      }
+      return tab;
+    });
   },
 } as GitStoreGetters;
 

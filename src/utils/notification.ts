@@ -349,7 +349,177 @@ export const allVariables: NotificationVariable[] = [
     label: t('components.notification.variables.common.updatedBy'),
     icon: ['fa', 'user'],
   },
+  {
+    category: 'alert',
+    name: 'name',
+    label: t('components.notification.variables.alert.name'),
+    icon: ['fa', 'font'],
+  },
+  {
+    category: 'alert',
+    name: 'name',
+    label: t('components.notification.variables.alert.description'),
+    icon: ['fa', 'comment'],
+  },
+  {
+    category: 'alert',
+    name: 'enabled',
+    label: t('components.notification.variables.alert.enabled'),
+    icon: ['fa', 'check-square'],
+  },
+  {
+    category: 'alert',
+    name: 'metric_name',
+    label: t('components.notification.variables.alert.metricName'),
+    icon: ['fa', 'chart-bar'],
+  },
+  {
+    category: 'alert',
+    name: 'operator',
+    label: t('components.notification.variables.alert.operator'),
+    icon: ['fa', 'equals'],
+  },
+  {
+    category: 'alert',
+    name: 'lasting_seconds',
+    label: t('components.notification.variables.alert.lastingSeconds'),
+    icon: ['fa', 'hourglass'],
+  },
+  {
+    category: 'alert',
+    name: 'target_value',
+    label: t('components.notification.variables.alert.targetValue'),
+    icon: ['fa', 'bullseye'],
+  },
+  {
+    category: 'alert',
+    name: 'level',
+    label: t('components.notification.variables.alert.level'),
+    icon: ['fa', 'exclamation-triangle'],
+  },
+  {
+    category: 'alert',
+    name: 'current_metric_value',
+    label: t('components.notification.variables.alert.currentMetricValue'),
+    icon: ['fa', 'chart-line'],
+  },
+  {
+    category: 'alert',
+    name: 'created_ts',
+    label: t('components.notification.variables.common.createdAt'),
+    icon: ['fa', 'clock'],
+  },
+  {
+    category: 'alert',
+    name: 'created_by',
+    label: t('components.notification.variables.common.createdBy'),
+    icon: ['fa', 'user'],
+  },
+  {
+    category: 'alert',
+    name: 'updated_ts',
+    label: t('components.notification.variables.common.updatedAt'),
+    icon: ['fa', 'clock'],
+  },
+  {
+    category: 'alert',
+    name: 'updated_by',
+    label: t('components.notification.variables.common.updatedBy'),
+    icon: ['fa', 'user'],
+  },
+  {
+    category: 'metric',
+    name: 'cpu_usage_percent',
+    label: t('components.node.metric.metrics.cpu_usage_percent'),
+    icon: ['fa', 'microchip'],
+  },
+  {
+    category: 'metric',
+    name: 'total_memory',
+    label: t('components.node.metric.metrics.total_memory'),
+    icon: ['fa', 'memory'],
+  },
+  {
+    category: 'metric',
+    name: 'available_memory',
+    label: t('components.node.metric.metrics.available_memory'),
+    icon: ['fa', 'memory'],
+  },
+  {
+    category: 'metric',
+    name: 'used_memory',
+    label: t('components.node.metric.metrics.used_memory'),
+    icon: ['fa', 'memory'],
+  },
+  {
+    category: 'metric',
+    name: 'used_memory_percent',
+    label: t('components.node.metric.metrics.used_memory_percent'),
+    icon: ['fa', 'memory'],
+  },
+  {
+    category: 'metric',
+    name: 'total_disk',
+    label: t('components.node.metric.metrics.total_disk'),
+    icon: ['fa', 'hdd'],
+  },
+  {
+    category: 'metric',
+    name: 'available_disk',
+    label: t('components.node.metric.metrics.available_disk'),
+    icon: ['fa', 'hdd'],
+  },
+  {
+    category: 'metric',
+    name: 'used_disk',
+    label: t('components.node.metric.metrics.used_disk'),
+    icon: ['fa', 'hdd'],
+  },
+  {
+    category: 'metric',
+    name: 'used_disk_percent',
+    label: t('components.node.metric.metrics.used_disk_percent'),
+    icon: ['fa', 'hdd'],
+  },
+  {
+    category: 'metric',
+    name: 'disk_read_bytes_rate',
+    label: t('components.node.metric.metrics.disk_read_bytes_rate'),
+    icon: ['fa', 'hdd'],
+  },
+  {
+    category: 'metric',
+    name: 'disk_write_bytes_rate',
+    label: t('components.node.metric.metrics.disk_write_bytes_rate'),
+    icon: ['fa', 'hdd'],
+  },
+  {
+    category: 'metric',
+    name: 'network_bytes_sent_rate',
+    label: t('components.node.metric.metrics.network_bytes_sent_rate'),
+    icon: ['fa', 'network-wired'],
+  },
+  {
+    category: 'metric',
+    name: 'network_bytes_recv_rate',
+    label: t('components.node.metric.metrics.network_bytes_recv_rate'),
+    icon: ['fa', 'network-wired'],
+  },
 ];
+
+export const getTriggerTarget = (
+  trigger?: NotificationTrigger
+): NotificationTriggerTarget | undefined => {
+  if (trigger?.startsWith('task')) {
+    return 'task';
+  } else if (trigger?.startsWith('node')) {
+    return 'node';
+  } else if (trigger === 'alert') {
+    return 'alert';
+  } else {
+    return;
+  }
+};
 
 export const triggerTargetVariableCategoryMap: Record<
   NotificationTriggerTarget,
@@ -367,6 +537,7 @@ export const triggerTargetVariableCategoryMap: Record<
     'user',
   ],
   node: ['node'],
+  alert: ['alert', 'node', 'metric'],
 };
 
 export const isValidVariable = ({
@@ -389,7 +560,6 @@ export const allTemplates: NotificationSettingTemplate[] = [
     name: 'components.notification.setting.templates.task_finish.name',
     description:
       'components.notification.setting.templates.task_finish.description',
-    trigger_target: 'task',
     trigger: 'task_finish',
     template_mode: 'markdown',
     title: 'components.notification.setting.templates.task_finish.title',
@@ -401,7 +571,6 @@ export const allTemplates: NotificationSettingTemplate[] = [
     name: 'components.notification.setting.templates.task_error.name',
     description:
       'components.notification.setting.templates.task_error.description',
-    trigger_target: 'task',
     trigger: 'task_error',
     template_mode: 'markdown',
     title: 'components.notification.setting.templates.task_error.title',
@@ -413,7 +582,6 @@ export const allTemplates: NotificationSettingTemplate[] = [
     name: 'components.notification.setting.templates.node_status_change.name',
     description:
       'components.notification.setting.templates.node_status_change.description',
-    trigger_target: 'node',
     trigger: 'node_status_change',
     template_mode: 'markdown',
     title: 'components.notification.setting.templates.node_status_change.title',
@@ -425,12 +593,103 @@ export const allTemplates: NotificationSettingTemplate[] = [
     name: 'components.notification.setting.templates.node_offline.name',
     description:
       'components.notification.setting.templates.node_offline.description',
-    trigger_target: 'node',
     trigger: 'node_offline',
     template_mode: 'markdown',
     title: 'components.notification.setting.templates.node_offline.title',
     template_markdown:
       'components.notification.setting.templates.node_offline.template_markdown',
+  },
+  {
+    key: 'alert_cpu_critical',
+    name: 'components.notification.setting.templates.alert_cpu_critical.name',
+    description:
+      'components.notification.setting.templates.alert_cpu_critical.description',
+    trigger: 'alert',
+    template_mode: 'markdown',
+    title: 'components.notification.setting.templates.alert_cpu_critical.title',
+    template_markdown:
+      'components.notification.setting.templates.alert_cpu_critical.template_markdown',
+  },
+  {
+    key: 'alert_memory_warning',
+    name: 'components.notification.setting.templates.alert_memory_warning.name',
+    description:
+      'components.notification.setting.templates.alert_memory_warning.description',
+    trigger: 'alert',
+    template_mode: 'markdown',
+    title:
+      'components.notification.setting.templates.alert_memory_warning.title',
+    template_markdown:
+      'components.notification.setting.templates.alert_memory_warning.template_markdown',
+  },
+];
+
+export const alertTemplates: NotificationAlertTemplate[] = [
+  {
+    key: 'alert_cpu_critical',
+    name: 'components.notification.setting.templates.alert_cpu_critical.name',
+    description:
+      'components.notification.setting.templates.alert_cpu_critical.description',
+    metric_name: 'cpu_usage_percent',
+    operator: 'gt',
+    target_value: 90,
+    lasting_seconds: 300,
+    level: 'critical',
+  },
+  {
+    key: 'alert_cpu_warning',
+    name: 'components.notification.setting.templates.alert_cpu_warning.name',
+    description:
+      'components.notification.setting.templates.alert_cpu_warning.description',
+    metric_name: 'cpu_usage_percent',
+    operator: 'gt',
+    target_value: 80,
+    lasting_seconds: 300,
+    level: 'warning',
+  },
+  {
+    key: 'alert_memory_critical',
+    name: 'components.notification.setting.templates.alert_memory_critical.name',
+    description:
+      'components.notification.setting.templates.alert_memory_critical.description',
+    metric_name: 'used_memory_percent',
+    operator: 'gt',
+    target_value: 90,
+    lasting_seconds: 300,
+    level: 'critical',
+  },
+  {
+    key: 'alert_memory_warning',
+    name: 'components.notification.setting.templates.alert_memory_warning.name',
+    description:
+      'components.notification.setting.templates.alert_memory_warning.description',
+    metric_name: 'used_memory_percent',
+    operator: 'gt',
+    target_value: 70,
+    lasting_seconds: 300,
+    level: 'warning',
+  },
+  {
+    key: 'alert_disk_critical',
+    name: 'components.notification.setting.templates.alert_disk_critical.name',
+    description:
+      'components.notification.setting.templates.alert_disk_critical.description',
+    metric_name: 'used_disk_percent',
+    operator: 'gt',
+    target_value: 90,
+    lasting_seconds: 300,
+    level: 'critical',
+  },
+  {
+    key: 'alert_disk_warning',
+    name: 'components.notification.setting.templates.alert_disk_warning.name',
+    description:
+      'components.notification.setting.templates.alert_disk_warning.description',
+    metric_name: 'used_disk_percent',
+    operator: 'gt',
+    target_value: 70,
+    lasting_seconds: 300,
+    level: 'warning',
   },
 ];
 
@@ -485,3 +744,31 @@ export const getTriggerOptions = (): SelectOption<string>[] => [
     value: 'alert',
   },
 ];
+
+export const hasNotificationSettingMailChannel = (
+  form: NotificationSetting,
+  allChannelDict: Map<string, NotificationChannel>
+) => {
+  return form.channel_ids?.some(channelId => {
+    const channel = allChannelDict.get(channelId) as
+      | NotificationChannel
+      | undefined;
+    return channel?.type === 'mail';
+  });
+};
+
+export const hasNotificationSettingChannelWarningMissingMailConfigFields = (
+  form: NotificationSetting,
+  allChannelDict: Map<string, NotificationChannel>
+) => {
+  const hasMailChannel = hasNotificationSettingMailChannel(
+    form,
+    allChannelDict
+  );
+
+  if (hasMailChannel) {
+    return !form.sender_email || !form.mail_to;
+  }
+
+  return false;
+};

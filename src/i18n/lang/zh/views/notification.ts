@@ -32,6 +32,10 @@ const notification: LViewsNotification = {
       mailCc: '抄送',
       mailBcc: '密送',
       alert: '监控警报',
+      useCustomSetting: {
+        label: '使用自定义设置',
+        tooltip: '使用自定义设置，否则选择一个模板',
+      },
     },
     formRules: {
       invalidEmail: '请输入有效的邮箱地址',
@@ -193,6 +197,13 @@ const notification: LViewsNotification = {
       info: '信息',
       warning: '警告',
       critical: '严重',
+    },
+  },
+  message: {
+    success: {
+      create: {
+        alert: '通知警报创建成功',
+      },
     },
   },
 };

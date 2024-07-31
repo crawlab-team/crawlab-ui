@@ -43,6 +43,8 @@ const notification: LComponentsNotification = {
     node: 'Node',
     spider: 'Spider',
     schedule: 'Schedule',
+    alert: 'Alert',
+    metric: 'Metric',
   },
   variables: {
     invalid: 'Invalid Variable',
@@ -111,6 +113,16 @@ const notification: LComponentsNotification = {
       priority: 'Priority',
       mode: 'Mode',
       enabled: 'Enabled',
+    },
+    alert: {
+      name: 'Name',
+      description: 'Description',
+      enabled: 'Enabled',
+      metricName: 'Metric Name',
+      operator: 'Operator',
+      lastingSeconds: 'Lasting Seconds',
+      targetValue: 'Target Value',
+      level: 'Level',
     },
   },
   channel: {
@@ -202,6 +214,35 @@ const notification: LComponentsNotification = {
 - Node Active At: \${node:active_at}
 - Node Available Runners: \${node:available_runners}
 - Node Max Runners: \${node:max_runners}`,
+      },
+      alert_cpu_critical: {
+        label: 'CPU Critical',
+        name: 'CPU Critical',
+        description: 'CPU critical alert notification',
+        title: 'CPU Usage Critical (> 90%)',
+        template_markdown: `CPU usage is critical. Please check.
+
+- Alert Name: \${alert:name}
+- Alert Level: \${alert:level}
+- Alert Threshold: \${alert:target_value}
+- Current CPU Usage: \${metric:cpu_usage_percent}
+- Node: \${node:name}
+`,
+      },
+      alert_memory_warning: {
+        label: 'Memory Warning',
+        name: 'Memory Warning',
+        description: 'Memory critical alert notification',
+        title: 'Memory Usage Warning (> 40%)',
+        template_markdown: `Memory usage is high. Please check.
+
+- Alert Name: \${alert:name}
+- Alert Level: \${alert:level}
+- Alert Threshold: \${alert:target_value}
+- Current Memory Usage: \${metric:used_memory_percent} (\${metric:used_memory} / \${metric:total_memory})
+- Node: \${node:name}
+- Node Is Master: \${node:is_master}
+`,
       },
     },
   },

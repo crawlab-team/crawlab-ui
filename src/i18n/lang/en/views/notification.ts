@@ -32,6 +32,10 @@ const notification: LViewsNotification = {
       mailCc: 'Mail CC',
       mailBcc: 'Mail BCC',
       alert: 'Alert',
+      useCustomSetting: {
+        label: 'Use Custom Setting',
+        tooltip: 'Use a custom setting, otherwise select a template',
+      },
     },
     formRules: {
       invalidEmail: 'Please enter a valid email address',
@@ -193,6 +197,13 @@ const notification: LViewsNotification = {
       info: 'Info',
       warning: 'Warning',
       critical: 'Critical',
+    },
+  },
+  message: {
+    success: {
+      create: {
+        alert: 'Notification alert created successfully',
+      },
     },
   },
 };

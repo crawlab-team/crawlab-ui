@@ -43,37 +43,21 @@ defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
         :span="4"
         :label="t('views.notification.settings.form.senderEmail')"
         prop="sender_email"
-        required
+        :required="state.form.use_custom_sender_email"
       >
-        <div class="sender-email-wrapper">
-          <el-input
-            v-model="state.form.sender_email"
-            :placeholder="t('views.notification.settings.form.senderEmail')"
-            :disabled="!state.form.use_custom_sender_email"
-          />
-          <div class="use-custom-sender-email-wrapper">
-            <el-checkbox v-model="state.form.use_custom_sender_email">
-              {{
-                t('views.notification.settings.form.useCustomSenderEmail.label')
-              }}
-            </el-checkbox>
-            <el-tooltip
-              :content="
-                t(
-                  'views.notification.settings.form.useCustomSenderEmail.tooltip'
-                )
-              "
-              trigger="click"
-            >
-              <span style="cursor: pointer">
-                <cl-icon
-                  :icon="['fa', 'question-circle']"
-                  color="var(--el-text-color-regular)"
-                />
-              </span>
-            </el-tooltip>
-          </div>
-        </div>
+        <el-input
+          v-model="state.form.sender_email"
+          :placeholder="t('views.notification.settings.form.senderEmail')"
+          :disabled="!state.form.use_custom_sender_email"
+        />
+        <el-checkbox v-model="state.form.use_custom_sender_email">
+          {{ t('views.notification.settings.form.useCustomSenderEmail.label') }}
+        </el-checkbox>
+        <cl-tip
+          :tooltip="
+            t('views.notification.settings.form.useCustomSenderEmail.tooltip')
+          "
+        />
       </cl-form-item>
       <cl-form-item
         :span="4"

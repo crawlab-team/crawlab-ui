@@ -88,7 +88,7 @@ const useNotificationAlertList = () => {
           key: 'name',
           label: t('views.notification.alerts.form.name'),
           icon: ['fa', 'font'],
-          width: '150',
+          width: '240',
           value: (row: NotificationAlert) => (
             <NavLink
               path={`/notifications/alerts/${row._id}`}

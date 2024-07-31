@@ -15,6 +15,7 @@ const props = withDefaults(
     offset?: number;
     rules?: RuleItem | RuleItem[];
     notEditable?: boolean;
+    noLabel?: boolean;
   }>(),
   {
     span: 1,
@@ -121,7 +122,7 @@ defineOptions({ name: 'ClFormItem' });
     <el-form-item
       :prop="prop"
       :label="label"
-      :label-width="labelWidth"
+      :label-width="noLabel ? '0' : labelWidth"
       :required="isRequired"
       :rules="rules"
       :size="size || formContext?.size"
@@ -191,6 +192,12 @@ defineOptions({ name: 'ClFormItem' });
   &:deep(.el-radio-group) {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  &:deep(.form-item-content) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 }
 </style>

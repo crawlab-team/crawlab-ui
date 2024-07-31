@@ -43,6 +43,8 @@ const notification: LComponentsNotification = {
     node: '节点',
     spider: '爬虫',
     schedule: '定时任务',
+    alert: '监控警报',
+    metric: '监控指标',
   },
   variables: {
     invalid: '无效变量',
@@ -111,6 +113,16 @@ const notification: LComponentsNotification = {
       priority: '优先级',
       mode: '模式',
       enabled: '是否启用',
+    },
+    alert: {
+      name: '名称',
+      description: '描述',
+      enabled: '是否启用',
+      metricName: '指标名称',
+      operator: '操作符',
+      lastingSeconds: '持续时间 (秒)',
+      targetValue: '目标值',
+      level: '级别',
     },
   },
   channel: {
@@ -202,6 +214,34 @@ const notification: LComponentsNotification = {
 - 节点活跃时间: \${node:active_at}
 - 节点可用运行器数: \${node:available_runners}
 - 节点最大运行器数: \${node:max_runners}`,
+      },
+      alert_cpu_critical: {
+        label: 'CPU 使用率过高 (严重)',
+        name: 'CPU 使用率过高 (严重)',
+        description: 'CPU 使用率过高警报通知',
+        title: 'CPU 使用率过高',
+        template_markdown: `CPU 使用率过高，请检查。
+
+- 警报名称: \${alert:name}
+- 警报等级: \${alert:level}
+- 警报 CPU 阈值: \${alert:target_value}
+- 当前 CPU 使用率: \${metric:cpu_usage_percent}
+- 节点: \${node:name}
+`,
+      },
+      alert_memory_warning: {
+        label: '内存使用率过高 (警告)',
+        name: '内存使用率过高 (警告)',
+        description: '内存使用率过高警报通知',
+        title: '内存使用率过高',
+        template_markdown: `内存使用率过高，请检查。
+
+- 警报名称: \${alert:name}
+- 警报等级: \${alert:level}
+- 内存阈值: \${alert:target_value}
+- 当前内存使用率: \${metric:used_memory_percent} (\${metric:used_memory} / \${metric:total_memory})
+- 节点: \${node:name}
+`,
       },
     },
   },

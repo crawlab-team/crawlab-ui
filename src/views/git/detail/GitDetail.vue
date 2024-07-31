@@ -39,27 +39,15 @@ const {
 
 // update tab disabled keys
 const { form } = useGit(store);
-let handle = 0;
+let handle: any;
 watch(
   form,
   debounce(() => {
     clearInterval(handle);
-    const { status } = form.value as Git;
-    if (status === GIT_STATUS_READY) {
-      store.commit(`${ns}/resetDisabledTabKeys`);
-    } else {
-      store.commit(
-        `${ns}/setDisabledTabKeys`,
-        state.tabs.map(tab => tab.id).filter(id => id !== TAB_NAME_OVERVIEW)
-      );
-      if (status === GIT_STATUS_ERROR) {
-        return;
-      }
-      handle = setInterval(
-        () => store.dispatch(`${ns}/getById`, activeId.value),
-        5000
-      );
-    }
+    handle = setInterval(
+      () => store.dispatch(`${ns}/getById`, activeId.value),
+      5000
+    );
   })
 );
 

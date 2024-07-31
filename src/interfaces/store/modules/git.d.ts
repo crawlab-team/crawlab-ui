@@ -20,8 +20,6 @@ interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
 
 interface GitStoreGetters extends BaseStoreGetters<Git> {
   gitBranchSelectOptions: StoreGetter<GitStoreState, SelectOption[]>;
-
-  [key: string]: any;
 }
 
 interface GitStoreMutations

@@ -21,6 +21,10 @@ interface LViewsNotification {
       mailCc: string;
       mailBcc: string;
       alert: string;
+      useCustomSetting: {
+        label: string;
+        tooltip: string;
+      };
     };
     formRules: {
       invalidEmail: string;
@@ -161,6 +165,13 @@ interface LViewsNotification {
       info: string;
       warning: string;
       critical: string;
+    };
+  };
+  message: {
+    success: {
+      create: {
+        alert: string;
+      };
     };
   };
 }

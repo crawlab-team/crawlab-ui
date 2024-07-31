@@ -7,7 +7,6 @@ import useNotificationSettingDetail from '@/views/notification/setting/detail/us
 const ns: ListStoreNamespace = 'notificationSetting';
 const store = useStore();
 const { notificationSetting: state } = store.state as RootStoreState;
-const { activeTabName } = useNotificationSettingDetail();
 
 watch<NotificationSetting>(
   () => state.form,

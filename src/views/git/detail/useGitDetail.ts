@@ -37,18 +37,6 @@ const useGitDetail = () => {
 
   const id = computed<string>(() => route.params.id as string);
 
-  const tabs = computed(() => {
-    return state.tabs.map(tab => {
-      tab.title = t(tab.title || '');
-      tab.disabled = state.disabledTabKeys.includes(tab.id);
-      if (tab.id === TAB_NAME_CHANGES) {
-        tab.badge = state.gitChanges.length;
-        tab.badgeType = 'danger';
-      }
-      return tab;
-    });
-  });
-
   const activeTabName = computed<string>(() => getTabName(router));
 
   const currentBranch = computed<GitRef | undefined>(() => state.currentBranch);
@@ -278,7 +266,6 @@ const useGitDetail = () => {
 
   return {
     ...useDetail('git'),
-    tabs,
     currentBranch,
     gitLocalBranches,
     gitLocalBranchesDict,

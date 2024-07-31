@@ -1,5 +1,5 @@
 export declare global {
-  type NotificationTriggerTarget = 'task' | 'node';
+  type NotificationTriggerTarget = 'task' | 'node' | 'alert';
 
   type NotificationTrigger =
     | 'task_finish'
@@ -22,7 +22,6 @@ export declare global {
     template_rich_text_json?: string;
     template_theme?: string;
     task_trigger?: string;
-    trigger_target?: NotificationTriggerTarget;
     trigger?: NotificationTrigger;
     has_mail?: boolean;
     sender_email?: string;
@@ -34,6 +33,10 @@ export declare global {
     channel_ids?: string[];
     channels?: NotificationChannel[];
     alert_id?: string;
+
+    // for UI
+    template_key?: string;
+    use_custom_setting?: boolean;
   }
 
   interface NotificationSettingTemplate extends NotificationSetting {
@@ -51,7 +54,9 @@ export declare global {
     | 'git'
     | 'project'
     | 'schedule'
-    | 'user';
+    | 'user'
+    | 'alert'
+    | 'metric';
 
   interface NotificationVariable {
     category: NotificationVariableCategory;
@@ -123,5 +128,10 @@ export declare global {
     lasting_seconds?: number;
     target_value?: number;
     level?: NotificationAlertLevel;
+    template_key?: string;
+  }
+
+  interface NotificationAlertTemplate extends NotificationAlert {
+    key: string;
   }
 }

@@ -4,6 +4,10 @@ import { getTriggerOptions } from '@/utils';
 
 const trigger = defineModel<NotificationTrigger>();
 
+defineProps<{
+  disabled?: boolean;
+}>();
+
 const emit = defineEmits<{
   (e: 'trigger-change', value: NotificationTrigger): void;
 }>();
@@ -49,6 +53,7 @@ defineOptions({ name: 'ClNotificationSettingTriggerSelect' });
     v-model="trigger"
     :data="triggerOptions"
     accordion
+    :disabled="disabled"
     @change="(val: NotificationTrigger) => emit('trigger-change', val)"
   >
     <template #label="{ value, label }">

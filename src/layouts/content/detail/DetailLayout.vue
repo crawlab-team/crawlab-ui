@@ -6,12 +6,11 @@ import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
-    storeNamespace?: ListStoreNamespace;
+    storeNamespace: ListStoreNamespace;
     noSidebar?: boolean;
     navItemNameKey?: string;
     showBackButton?: boolean;
     showSaveButton?: boolean;
-    tabs?: NavItem[];
   }>(),
   {
     noSidebar: false,
@@ -20,8 +19,6 @@ const props = withDefaults(
     showBackButton: true,
   }
 );
-
-const t = translate;
 
 const IGNORE_GET_ALL_NS = ['task'];
 
@@ -46,7 +43,6 @@ const {
   getForm,
   sidebarCollapsed,
   actionsCollapsed,
-  tabs: defaultTabs,
   contentContainerStyle,
   navActions,
   onNavSidebarSelect,
@@ -56,6 +52,10 @@ const {
   onBack,
   onSave,
 } = useDetail(ns.value);
+
+const computedTabs = computed<NavItem[]>(
+  () => store.getters[`${ns.value}/tabs`]
+);
 
 // get form before mount
 onBeforeMount(getForm);
@@ -102,7 +102,7 @@ defineOptions({ name: 'ClDetailLayout' });
     <div class="content">
       <cl-nav-tabs
         :active-key="activeTabName"
-        :items="tabs || defaultTabs"
+        :items="computedTabs"
         :collapsed="sidebarCollapsed"
         toggle
         class="nav-tabs"

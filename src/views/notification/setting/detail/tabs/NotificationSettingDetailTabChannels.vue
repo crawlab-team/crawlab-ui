@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { translate } from '@/utils';
+import {
+  hasNotificationSettingChannelWarningMissingMailConfigFields,
+  translate,
+} from '@/utils';
 import { useNotificationChannel, useNotificationSetting } from '@/components';
 import { computed, ref, watch } from 'vue';
 import { useNotificationSettingDetail } from '@/views';
@@ -56,19 +59,10 @@ const onChannelNavigate = async (channelId: string) => {
 };
 
 const hasWarningMissingMailConfigFields = computed(() => {
-  // check if there is mail type channel
-  const hasMailChannel = form.value.channel_ids?.some(channelId => {
-    const channel = allDict.value.get(channelId) as
-      | NotificationChannel
-      | undefined;
-    return channel?.type === 'mail';
-  });
-
-  if (hasMailChannel) {
-    return !form.value.sender_email || !form.value.mail_to;
-  }
-
-  return false;
+  return hasNotificationSettingChannelWarningMissingMailConfigFields(
+    form.value,
+    allDict.value
+  );
 });
 
 const hasWarningEmptyChannel = computed(() => {

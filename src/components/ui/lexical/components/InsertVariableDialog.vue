@@ -4,6 +4,7 @@ import {
   translate,
   allVariables,
   triggerTargetVariableCategoryMap,
+  getTriggerTarget,
 } from '@/utils';
 import { useStore } from 'vuex';
 
@@ -11,7 +12,7 @@ const modelValue = defineModel<NotificationVariable | undefined>({
   required: true,
 });
 
-const props = defineProps<{
+defineProps<{
   visible?: boolean;
 }>();
 
@@ -50,11 +51,20 @@ const variableCategoryOptions = computed<
       value: 'node',
       icon: ['fa', 'server'],
     },
+    {
+      label: t('components.notification.variableCategories.alert'),
+      value: 'alert',
+      icon: ['fa', 'bell'],
+    },
+    {
+      label: t('components.notification.variableCategories.metric'),
+      value: 'metric',
+      icon: ['fa', 'chart-line'],
+    },
   ].filter(op => {
-    if (!state.form?.trigger_target) return false;
-    return triggerTargetVariableCategoryMap[
-      state.form?.trigger_target
-    ]?.includes(op.value as any);
+    const target = getTriggerTarget(state.form?.trigger);
+    if (!target) return true;
+    return triggerTargetVariableCategoryMap[target]?.includes(op.value as any);
   }) as SelectOption<NotificationVariableCategory>[];
 });
 
@@ -65,15 +75,20 @@ const onConfirm = () => {
 const category = ref<NotificationVariableCategory | undefined>(
   variableCategoryOptions.value[0]?.value
 );
+watch(
+  () => variableCategoryOptions.value,
+  () => {
+    category.value = variableCategoryOptions.value[0]?.value;
+  }
+);
 
 const variables = computed<NotificationVariable[]>(() =>
   allVariables.filter(v => {
     if (!category.value) return false;
     if (!v.category.startsWith(category.value)) return false;
-    if (!state.form?.trigger_target) return false;
-    return !triggerTargetVariableCategoryMap[
-      state.form?.trigger_target
-    ]?.includes(v.name as any);
+    const target = getTriggerTarget(state.form?.trigger);
+    if (!target) return true;
+    return !triggerTargetVariableCategoryMap[target]?.includes(v.name as any);
   })
 );
 
@@ -118,18 +133,22 @@ defineOptions({ name: 'ClInsertVariableDialog' });
         "
         required
       >
-        <el-check-tag
-          v-for="v in variables"
-          :key="v.name"
-          :checked="modelValue?.name === v.name"
-          type="primary"
-          @change="(checked: boolean) => (modelValue = checked ? v : undefined)"
-        >
-          <span style="margin-right: 5px">
-            <cl-icon :icon="v.icon" />
-          </span>
-          <span>{{ v.label }}</span>
-        </el-check-tag>
+        <div>
+          <el-check-tag
+            v-for="v in variables"
+            :key="v.name"
+            :checked="modelValue?.name === v.name"
+            type="primary"
+            @change="
+              (checked: boolean) => (modelValue = checked ? v : undefined)
+            "
+          >
+            <span style="margin-right: 5px">
+              <cl-icon :icon="v.icon" />
+            </span>
+            <span>{{ v.label }}</span>
+          </el-check-tag>
+        </div>
       </cl-form-item>
     </cl-form>
   </cl-dialog>

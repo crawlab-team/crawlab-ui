@@ -63,7 +63,7 @@ defineOptions({ name: 'ClNavTabs' });
           >
             <div class="item-wrapper">
               <cl-icon :icon="getIconByNavItem(item)" />
-              <span class="label">{{ item.title }}</span>
+              <span class="label">{{ t(item.title || '') }}</span>
             </div>
           </el-badge>
         </el-tooltip>
