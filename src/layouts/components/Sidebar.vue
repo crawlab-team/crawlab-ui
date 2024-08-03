@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import logo from '@/assets/svg/logo-white.svg?url';
+import logoWithTitle from '@/assets/svg/logo-white.svg?url';
 import logoIcon from '@/assets/svg/logo-icon-white.svg?url';
 import {
   getAllMenuItemPathMap,
@@ -63,7 +63,34 @@ const toggleSidebar = () => {
 
 const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
-const siteTitle = computed<Setting>(() => systemState.siteTitle);
+const customize = computed<Setting>(() => systemState.customize);
+const showCustomTitle = computed<boolean>(
+  () => customize.value?.value?.show_custom_title
+);
+const showCustomLogo = computed<boolean>(
+  () => customize.value?.value?.show_custom_logo
+);
+const hidePlatformVersion = computed<boolean>(
+  () => customize.value?.value?.hide_platform_version
+);
+const customTitle = computed<string>(
+  () => customize.value?.value?.custom_title
+);
+const customLogo = computed<string>(() => customize.value?.value?.custom_logo);
+
+const customizedLogo = computed<string>(() => {
+  if (showCustomLogo.value && customLogo.value) {
+    return customLogo.value;
+  }
+  return logoIcon;
+});
+
+onBeforeMount(async () => {
+  if (isPro()) {
+    await store.dispatch('system/getCustomize');
+  }
+});
+
 defineOptions({ name: 'ClSidebar' });
 </script>
 
@@ -76,15 +103,23 @@ defineOptions({ name: 'ClSidebar' });
     <!-- Logo -->
     <div class="sidebar-header">
       <div v-if="!sidebarCollapsed" class="logo">
-        <div
-          v-if="
-            !siteTitle.value?.customize_site_title ||
-            !siteTitle.value?.site_title
-          "
-          class="logo"
-        >
-          <img class="logo-img" alt="logo-img" :src="logo" />
-          <div class="logo-sub-title">
+        <div class="logo">
+          <img
+            class="logo-img"
+            alt="logo-img"
+            :src="
+              showCustomTitle || showCustomLogo ? customizedLogo : logoWithTitle
+            "
+          />
+
+          <div v-if="showCustomTitle || showCustomLogo" class="logo-title">
+            <template v-if="showCustomTitle && customTitle">
+              {{ customTitle }}
+            </template>
+            <template v-else> Crawlab</template>
+          </div>
+
+          <div v-if="!hidePlatformVersion" class="logo-sub-title">
             <div class="logo-sub-title-block">
               <span>{{ t(systemInfo.edition || '') }}</span>
               <cl-icon v-if="isPro()" :icon="['far', 'gem']" />
@@ -93,9 +128,6 @@ defineOptions({ name: 'ClSidebar' });
               <span>{{ systemInfo.version }}</span>
             </div>
           </div>
-        </div>
-        <div v-else class="logo-title">
-          {{ siteTitle.value?.site_title }}
         </div>
       </div>
       <div v-else class="logo">

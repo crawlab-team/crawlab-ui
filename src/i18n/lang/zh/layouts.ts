@@ -128,7 +128,7 @@ const layouts: LLayouts = {
       title: '环境变量',
     },
     system: {
-      title: '系统',
+      title: '系统设置',
     },
     misc: {
       disclaimer: '免责声明',

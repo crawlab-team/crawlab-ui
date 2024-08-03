@@ -8,18 +8,18 @@ declare global {
   }
 
   interface SystemStoreState {
-    siteTitle: Setting;
+    customize: Setting;
   }
 
   interface SystemStoreGetters
     extends GetterTree<SystemStoreState, RootStoreState> {}
 
   interface SystemStoreMutations extends MutationTree<SystemStoreState> {
-    setSiteTitle: StoreMutation<SystemStoreState, Setting>;
+    setCustomize: StoreMutation<SystemStoreState, Setting>;
   }
 
   interface SystemStoreActions extends BaseStoreActions {
-    getSiteTitle: StoreAction<SystemStoreState>;
-    saveSiteTitle: StoreAction<SystemStoreState>;
+    getCustomize: StoreAction<SystemStoreState>;
+    saveCustomize: StoreAction<SystemStoreState>;
   }
 }

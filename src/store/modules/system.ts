@@ -1,25 +1,29 @@
 import useRequest from '@/services/request';
 
-const { get, put } = useRequest();
+const { get, post, put } = useRequest();
 
 export default {
   namespaced: true,
   state: {
-    siteTitle: {},
+    customize: { key: 'customize', value: {} },
   },
   getters: {},
   mutations: {
-    setSiteTitle(state, siteTitle) {
-      state.siteTitle = { ...siteTitle };
+    setCustomize(state, siteTitle) {
+      state.customize = { ...siteTitle };
     },
   },
   actions: {
-    getSiteTitle: async ({ state }: StoreActionContext<SystemStoreState>) => {
-      const res = await get('/settings/site_title');
-      state.siteTitle = res.data;
+    getCustomize: async ({ state }: StoreActionContext<SystemStoreState>) => {
+      const res = await get('/settings/customize');
+      state.customize = res.data || { key: 'customize', value: {} };
     },
-    saveSiteTitle: async ({ state }: StoreActionContext<SystemStoreState>) => {
-      await put('/settings/site_title', state.siteTitle);
+    saveCustomize: async ({ state }: StoreActionContext<SystemStoreState>) => {
+      if (!state.customize._id) {
+        await post('/settings/customize', state.customize);
+      } else {
+        await put('/settings/customize', state.customize);
+      }
     },
   },
 } as SystemStoreModule;
