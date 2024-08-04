@@ -118,8 +118,8 @@ const layouts: LLayouts = {
         spiders: '爬虫',
       },
     },
-    dataSources: {
-      title: '数据源',
+    databases: {
+      title: '数据库',
       tabs: {
         overview: '概览',
       },

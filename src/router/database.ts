@@ -9,13 +9,13 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'data-sources';
+const endpoint = 'databases';
 
 export default [
   {
     name: 'DatabaseList',
     path: endpoint,
-    title: t('layouts.routes.dataSources.title'),
+    title: t('layouts.routes.databases.title'),
     icon: ['fa', 'database'],
     component: async () => ClDatabaseList,
   },
@@ -29,7 +29,7 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.dataSources.tabs.overview'),
+        title: t('layouts.routes.databases.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClDatabaseDetailTabOverview,
       },

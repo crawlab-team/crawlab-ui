@@ -42,7 +42,7 @@ defineOptions({ name: 'ClDatabaseForm' });
 
 <template>
   <cl-form
-    class="data-source-form"
+    class="database-form"
     v-if="form"
     ref="formRef"
     :model="form"
@@ -233,12 +233,12 @@ defineOptions({ name: 'ClDatabaseForm' });
 </template>
 
 <style scoped>
-.data-source-form:deep(.hosts-item .hosts-item-input) {
+.database-form:deep(.hosts-item .hosts-item-input) {
   width: calc(100% - 10px - (10px + 32px) * 2);
   margin-right: 10px;
 }
 
-.data-source-form:deep(.hosts-item .el-button) {
+.database-form:deep(.hosts-item .el-button) {
   width: 32px;
 }
 </style>

@@ -17,7 +17,7 @@ defineOptions({ name: 'ClSpiderDetailTabData' });
   <div class="spider-detail-tab-data">
     <cl-result-list
       :id="form?.col_id"
-      :data-source-id="form?.data_source_id"
+      :database-id="form?.data_source_id"
       :display-all-fields="displayAllFields"
       no-actions
       embedded

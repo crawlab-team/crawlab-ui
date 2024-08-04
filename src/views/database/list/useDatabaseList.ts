@@ -41,7 +41,7 @@ const useDatabaseList = () => {
   const router = getRouter();
 
   // store
-  const ns = 'ds';
+  const ns = 'database';
   const store = getStore();
   const { commit } = store;
 
@@ -160,12 +160,12 @@ const useDatabaseList = () => {
   const tableColumns = computed<TableColumns<Database>>(() => [
     {
       key: 'name',
-      label: t('components.ds.form.name'),
+      label: t('components.database.form.name'),
       icon: ['fa', 'font'],
       width: '150',
       value: (row: Database) =>
         h(ClNavLink, {
-          path: `/data-sources/${row._id}`,
+          path: `/databases/${row._id}`,
           label: row.name,
         }),
       hasSort: true,
@@ -174,7 +174,7 @@ const useDatabaseList = () => {
     },
     {
       key: 'type',
-      label: t('components.ds.form.type'),
+      label: t('components.database.form.type'),
       icon: ['fa', 'database'],
       width: '150',
       value: (row: Database) =>
@@ -266,8 +266,8 @@ const useDatabaseList = () => {
           type: 'primary',
           icon: ['fa', 'search'],
           tooltip: t('common.actions.view'),
-          onClick: row => {
-            router.push(`/data-sources/${row._id}`);
+          onClick: async row => {
+            await router.push(`/databases/${row._id}`);
           },
         },
         {

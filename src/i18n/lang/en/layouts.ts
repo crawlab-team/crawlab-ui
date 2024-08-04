@@ -118,7 +118,7 @@ const layouts: LLayouts = {
         spiders: 'Spiders',
       },
     },
-    dataSources: {
+    databases: {
       title: 'Data Sources',
       tabs: {
         overview: 'Overview',

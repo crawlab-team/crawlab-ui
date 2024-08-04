@@ -75,8 +75,8 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
     { path: '/tasks', title: 'router.menuItems.tasks', icon: ['fa', 'tasks'] },
     { path: '/gits', title: 'router.menuItems.git', icon: ['fab', 'git'] },
     {
-      path: '/data-sources',
-      title: 'router.menuItems.ds',
+      path: '/databases',
+      title: 'router.menuItems.databases',
       icon: ['fa', 'database'],
     },
     { path: '/users', title: 'router.menuItems.users', icon: ['fa', 'users'] },

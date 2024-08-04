@@ -51,7 +51,7 @@ export default defineComponent({
   <div class="task-detail-tab-data">
     <cl-result-list
       :id="form?.spider?.col_id"
-      :data-source-id="form?.spider?.data_source_id"
+      :database-id="form?.spider?.data_source_id"
       :filter="filter"
       :display-all-fields="displayAllFields"
       no-actions

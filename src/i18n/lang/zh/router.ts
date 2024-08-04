@@ -7,7 +7,7 @@ const router: LRouter = {
     schedules: '定时任务',
     tasks: '任务',
     git: 'Git 仓库',
-    ds: '数据源',
+    databases: '数据库',
     users: '用户',
     tags: '标签',
     tokens: '令牌',

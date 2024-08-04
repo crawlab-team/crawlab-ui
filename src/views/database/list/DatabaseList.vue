@@ -24,7 +24,7 @@ defineOptions({ name: 'ClDatabaseList' });
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-data-source-dialog />
+      <cl-create-edit-database-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>

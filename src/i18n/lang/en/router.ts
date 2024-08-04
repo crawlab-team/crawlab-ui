@@ -7,7 +7,7 @@ const router: LRouter = {
     schedules: 'Schedules',
     tasks: 'Tasks',
     git: 'Git Repo',
-    ds: 'Data Sources',
+    databases: 'Databases',
     users: 'Users',
     tags: 'Tags',
     tokens: 'Tokens',

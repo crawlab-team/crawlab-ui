@@ -8,7 +8,7 @@ import {
 import { translate } from '@/utils';
 
 const props = defineProps<{
-  dataSource?: Database;
+  database?: Database;
 }>();
 
 const emit = defineEmits<{
@@ -19,23 +19,23 @@ const emit = defineEmits<{
 const t = translate;
 
 const data = computed<TagProps>(() => {
-  const { dataSource } = props;
-  switch (dataSource?.connect_type) {
+  const { database } = props;
+  switch (database?.connect_type) {
     case DATABASE_CONNECT_TYPE_STANDARD:
       return {
-        label: t('components.ds.connectType.label.standard'),
+        label: t('components.database.connectType.label.standard'),
         icon: ['fa', 'sliders'],
         type: 'primary',
       };
     case DATABASE_CONNECT_TYPE_URL:
       return {
-        label: t('components.ds.connectType.label.url'),
+        label: t('components.database.connectType.label.url'),
         icon: ['fa', 'at'],
         type: 'primary',
       };
     case DATABASE_CONNECT_TYPE_HOSTS:
       return {
-        label: t('components.ds.connectType.label.hosts'),
+        label: t('components.database.connectType.label.hosts'),
         icon: ['fa', 'diagram-project'],
         type: 'primary',
       };
@@ -59,5 +59,3 @@ defineOptions({ name: 'ClDatabaseConnectType' });
     @click="emit('click')"
   />
 </template>
-
-<style lang="scss" scoped></style>

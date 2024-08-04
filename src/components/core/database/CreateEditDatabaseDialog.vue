@@ -23,7 +23,7 @@ defineOptions({ name: 'ClCreateEditDatabaseDialog' });
     :visible="createEditDialogVisible"
   >
     <template #default>
-      <cl-data-source-form />
+      <cl-database-form />
     </template>
   </cl-create-edit-dialog>
 </template>

@@ -26,13 +26,13 @@ const allDataSourceSelectOptionsWithDefault = computed<SelectOption[]>(() => {
 
 const dsId = ref<string>();
 const onDataSourceChange = async (value: string) => {
-  await post(`/spiders/${id.value}/data-source/${value || EMPTY_OBJECT_ID}`);
+  await post(`/spiders/${id.value}/database/${value || EMPTY_OBJECT_ID}`);
   await store.dispatch('spider/getById', id.value);
   ElMessage.success(t('components.ds.message.success.change'));
 };
 onBeforeMount(async () => {
   await store.dispatch('ds/getAllList');
-  const res = await get<Database>(`/spiders/${id.value}/data-source`);
+  const res = await get<Database>(`/spiders/${id.value}/database`);
   dsId.value = res.data?._id;
 });
 defineOptions({ name: 'ClSpiderDetailActionsDatabase' });

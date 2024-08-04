@@ -119,7 +119,7 @@ export declare global {
           spiders: string;
         };
       };
-      dataSources: {
+      databases: {
         title: string;
         tabs: {
           overview: string;

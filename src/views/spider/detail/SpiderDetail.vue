@@ -22,7 +22,7 @@ defineOptions({ name: 'ClSpiderDetail' });
       <cl-spider-detail-actions-common />
       <cl-spider-detail-actions-files v-if="activeTabName === 'files'" />
       <cl-spider-detail-actions-data v-if="activeTabName === 'data'" />
-      <cl-spider-detail-actions-data-source v-if="activeTabName === 'data'" />
+      <cl-spider-detail-actions-database v-if="activeTabName === 'data'" />
       <slot name="actions-suffix" />
     </template>
   </cl-detail-layout>

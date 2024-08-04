@@ -8,7 +8,7 @@ export declare global {
       schedules: string;
       tasks: string;
       git: string;
-      ds: string;
+      databases: string;
       users: string;
       tags: string;
       tokens: string;

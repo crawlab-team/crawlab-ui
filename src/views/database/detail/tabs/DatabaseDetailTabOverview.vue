@@ -10,13 +10,13 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="data-source-detail-tab-overview">
-    <cl-data-source-form readonly />
+  <div class="database-detail-tab-overview">
+    <cl-database-form readonly />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.data-source-detail-tab-overview {
+.database-detail-tab-overview {
   margin: 20px;
 }
 </style>
