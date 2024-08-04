@@ -21,7 +21,7 @@ import project from './project';
 import spider from './spider';
 import schedule from './schedule';
 import task from './task';
-import ds from './ds';
+import database from './database';
 import user from './user';
 import tag from './tag';
 import plugin from './plugin';
@@ -51,7 +51,7 @@ const components: LComponents = {
   spider,
   schedule,
   task,
-  ds,
+  ds: database,
   user,
   tag,
   plugin,

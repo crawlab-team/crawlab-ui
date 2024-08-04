@@ -1,4 +1,4 @@
-export * from './dataSource';
+export * from './database';
 export * from './git';
 export * from './login';
 export * from './node';

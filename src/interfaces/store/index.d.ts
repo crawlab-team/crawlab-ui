@@ -26,7 +26,7 @@ export declare global {
     notificationChannel: NotificationChannelStoreState;
     notificationRequest: NotificationRequestStoreState;
     notificationAlert: NotificationAlertStoreState;
-    ds: DataSourceStoreState;
+    database: DatabaseStoreState;
     environment: EnvironmentStoreState;
     system: SystemStoreState;
   }
@@ -174,7 +174,7 @@ export declare global {
     | 'notificationChannel'
     | 'notificationRequest'
     | 'notificationAlert'
-    | 'ds'
+    | 'database'
     | 'environment';
   type StoreNamespace = ListStoreNamespace | 'layout';
 

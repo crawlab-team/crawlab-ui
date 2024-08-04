@@ -16,7 +16,7 @@ import token from '@/router/token';
 import deps from '@/router/deps';
 import notification from '@/router/notification';
 import git from '@/router/git';
-import ds from '@/router/ds';
+import ds from '@/router/database';
 import environment from '@/router/environment';
 import system from '@/router/system';
 import misc from '@/router/misc';

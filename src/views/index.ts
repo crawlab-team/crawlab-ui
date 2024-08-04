@@ -1,4 +1,9 @@
 import ResultList from './data/list/ResultList.vue';
+import DatabaseDetail from './database/detail/DatabaseDetail.vue';
+import DatabaseDetailTabOverview from './database/detail/tabs/DatabaseDetailTabOverview.vue';
+import useDatabaseDetail from './database/detail/useDatabaseDetail';
+import DatabaseList from './database/list/DatabaseList.vue';
+import useDatabaseList from './database/list/useDatabaseList';
 import InstallForm from './deps/components/form/InstallForm.vue';
 import UninstallForm from './deps/components/form/UninstallForm.vue';
 import DependencyLang from './deps/components/lang/DependencyLang.vue';
@@ -10,18 +15,13 @@ import DependencySpiderTab from './deps/spider/DependencySpiderTab.vue';
 import DependencyTaskList from './deps/task/DependencyTaskList.vue';
 import LogsView from './deps/task/LogsView.vue';
 import TaskAction from './deps/task/TaskAction.vue';
-import DataSourceDetail from './ds/detail/DataSourceDetail.vue';
-import DataSourceDetailTabOverview from './ds/detail/tabs/DataSourceDetailTabOverview.vue';
-import useDataSourceDetail from './ds/detail/useDataSourceDetail';
-import DataSourceList from './ds/list/DataSourceList.vue';
-import useDataSourceList from './ds/list/useDataSourceList';
 import EnvironmentList from './environment/list/EnvironmentList.vue';
 import useEnvironmentList from './environment/list/useEnvironmentList';
+import GitDetail from './git/detail/GitDetail.vue';
 import GitDetailActionsChanges from './git/detail/actions/GitDetailActionsChanges.vue';
 import GitDetailActionsCommon from './git/detail/actions/GitDetailActionsCommon.vue';
 import GitDetailActionsFiles from './git/detail/actions/GitDetailActionsFiles.vue';
 import GitDetailActionsSpiders from './git/detail/actions/GitDetailActionsSpiders.vue';
-import GitDetail from './git/detail/GitDetail.vue';
 import GitDetailTabChanges from './git/detail/tabs/GitDetailTabChanges.vue';
 import GitDetailTabFiles from './git/detail/tabs/GitDetailTabFiles.vue';
 import GitDetailTabLogs from './git/detail/tabs/GitDetailTabLogs.vue';
@@ -34,29 +34,29 @@ import Home from './home/Home.vue';
 import Login from './login/Login.vue';
 import Disclaimer from './misc/Disclaimer.vue';
 import MySettings from './misc/MySettings.vue';
-import NodeDetailActionsCommon from './node/detail/actions/NodeDetailActionsCommon.vue';
 import NodeDetail from './node/detail/NodeDetail.vue';
+import NodeDetailActionsCommon from './node/detail/actions/NodeDetailActionsCommon.vue';
 import NodeDetailTabMonitoring from './node/detail/tabs/NodeDetailTabMonitoring.vue';
 import NodeDetailTabOverview from './node/detail/tabs/NodeDetailTabOverview.vue';
 import NodeDetailTabTasks from './node/detail/tabs/NodeDetailTabTasks.vue';
 import NodeList from './node/list/NodeList.vue';
 import useNodeList from './node/list/useNodeList';
-import NotificationAlertDetailActionsCommon from './notification/alert/detail/actions/NotificationAlertDetailActionsCommon.vue';
 import NotificationAlertDetail from './notification/alert/detail/NotificationAlertDetail.vue';
+import NotificationAlertDetailActionsCommon from './notification/alert/detail/actions/NotificationAlertDetailActionsCommon.vue';
 import NotificationAlertDetailTabOverview from './notification/alert/detail/tabs/NotificationAlertDetailTabOverview.vue';
 import useNotificationAlertDetail from './notification/alert/detail/useNotificationAlertDetail';
 import NotificationAlertList from './notification/alert/list/NotificationAlertList.vue';
 import useNotificationAlertList from './notification/alert/list/useNotificationAlertList';
-import NotificationChannelDetailActionsCommon from './notification/channel/detail/actions/NotificationChannelDetailActionsCommon.vue';
 import NotificationChannelDetail from './notification/channel/detail/NotificationChannelDetail.vue';
+import NotificationChannelDetailActionsCommon from './notification/channel/detail/actions/NotificationChannelDetailActionsCommon.vue';
 import NotificationChannelDetailTabOverview from './notification/channel/detail/tabs/NotificationChannelDetailTabOverview.vue';
 import NotificationChannelList from './notification/channel/list/NotificationChannelList.vue';
 import useNotificationChannelList from './notification/channel/list/useNotificationChannelList';
 import NotificationRequestList from './notification/request/list/NotificationRequestList.vue';
 import useNotificationRequestList from './notification/request/list/useNotificationRequestList';
+import NotificationSettingDetail from './notification/setting/detail/NotificationSettingDetail.vue';
 import NotificationSettingDetailActionsCommon from './notification/setting/detail/actions/NotificationSettingDetailActionsCommon.vue';
 import NotificationSettingDetailActionsTemplate from './notification/setting/detail/actions/NotificationSettingDetailActionsTemplate.vue';
-import NotificationSettingDetail from './notification/setting/detail/NotificationSettingDetail.vue';
 import NotificationSettingDetailTabChannels from './notification/setting/detail/tabs/NotificationSettingDetailTabChannels.vue';
 import NotificationSettingDetailTabMailConfig from './notification/setting/detail/tabs/NotificationSettingDetailTabMailConfig.vue';
 import NotificationSettingDetailTabOverview from './notification/setting/detail/tabs/NotificationSettingDetailTabOverview.vue';
@@ -75,11 +75,11 @@ import ScheduleDetailTabTasks from './schedule/detail/tabs/ScheduleDetailTabTask
 import useScheduleDetail from './schedule/detail/useScheduleDetail';
 import ScheduleList from './schedule/list/ScheduleList.vue';
 import useScheduleList from './schedule/list/useScheduleList';
+import SpiderDetail from './spider/detail/SpiderDetail.vue';
 import SpiderDetailActionsCommon from './spider/detail/actions/SpiderDetailActionsCommon.vue';
 import SpiderDetailActionsData from './spider/detail/actions/SpiderDetailActionsData.vue';
-import SpiderDetailActionsDataSource from './spider/detail/actions/SpiderDetailActionsDataSource.vue';
+import SpiderDetailActionsDatabase from './spider/detail/actions/SpiderDetailActionsDatabase.vue';
 import SpiderDetailActionsFiles from './spider/detail/actions/SpiderDetailActionsFiles.vue';
-import SpiderDetail from './spider/detail/SpiderDetail.vue';
 import SpiderDetailTabData from './spider/detail/tabs/SpiderDetailTabData.vue';
 import SpiderDetailTabFiles from './spider/detail/tabs/SpiderDetailTabFiles.vue';
 import SpiderDetailTabOverview from './spider/detail/tabs/SpiderDetailTabOverview.vue';
@@ -90,26 +90,31 @@ import useSpiderDetail from './spider/detail/useSpiderDetail';
 import SpiderList from './spider/list/SpiderList.vue';
 import useSpiderList from './spider/list/useSpiderList';
 import SystemDetail from './system/detail/SystemDetail.vue';
+import TaskDetail from './task/detail/TaskDetail.vue';
 import TaskDetailActionsCommon from './task/detail/actions/TaskDetailActionsCommon.vue';
 import TaskDetailActionsData from './task/detail/actions/TaskDetailActionsData.vue';
 import TaskDetailActionsLogs from './task/detail/actions/TaskDetailActionsLogs.vue';
 import TaskDetailTabData from './task/detail/tabs/TaskDetailTabData.vue';
 import TaskDetailTabLogs from './task/detail/tabs/TaskDetailTabLogs.vue';
 import TaskDetailTabOverview from './task/detail/tabs/TaskDetailTabOverview.vue';
-import TaskDetail from './task/detail/TaskDetail.vue';
 import useTaskDetail from './task/detail/useTaskDetail';
 import TaskList from './task/list/TaskList.vue';
 import useTaskList from './task/list/useTaskList';
 import TokenList from './token/list/TokenList.vue';
 import useTokenList from './token/list/useTokenList';
-import UserDetailTabOverview from './user/detail/tabs/UserDetailTabOverview.vue';
 import UserDetail from './user/detail/UserDetail.vue';
+import UserDetailTabOverview from './user/detail/tabs/UserDetailTabOverview.vue';
 import useUserDetail from './user/detail/useUserDetail';
 import UserList from './user/list/UserList.vue';
 import useUserList from './user/list/useUserList';
 
 export {
   ResultList as ClResultList,
+  DatabaseDetail as ClDatabaseDetail,
+  DatabaseDetailTabOverview as ClDatabaseDetailTabOverview,
+  useDatabaseDetail as useDatabaseDetail,
+  DatabaseList as ClDatabaseList,
+  useDatabaseList as useDatabaseList,
   InstallForm as ClInstallForm,
   UninstallForm as ClUninstallForm,
   DependencyLang as ClDependencyLang,
@@ -121,18 +126,13 @@ export {
   DependencyTaskList as ClDependencyTaskList,
   LogsView as ClLogsView,
   TaskAction as ClTaskAction,
-  DataSourceDetail as ClDataSourceDetail,
-  DataSourceDetailTabOverview as ClDataSourceDetailTabOverview,
-  useDataSourceDetail as useDataSourceDetail,
-  DataSourceList as ClDataSourceList,
-  useDataSourceList as useDataSourceList,
   EnvironmentList as ClEnvironmentList,
   useEnvironmentList as useEnvironmentList,
+  GitDetail as ClGitDetail,
   GitDetailActionsChanges as ClGitDetailActionsChanges,
   GitDetailActionsCommon as ClGitDetailActionsCommon,
   GitDetailActionsFiles as ClGitDetailActionsFiles,
   GitDetailActionsSpiders as ClGitDetailActionsSpiders,
-  GitDetail as ClGitDetail,
   GitDetailTabChanges as ClGitDetailTabChanges,
   GitDetailTabFiles as ClGitDetailTabFiles,
   GitDetailTabLogs as ClGitDetailTabLogs,
@@ -145,29 +145,29 @@ export {
   Login as ClLogin,
   Disclaimer as ClDisclaimer,
   MySettings as ClMySettings,
-  NodeDetailActionsCommon as ClNodeDetailActionsCommon,
   NodeDetail as ClNodeDetail,
+  NodeDetailActionsCommon as ClNodeDetailActionsCommon,
   NodeDetailTabMonitoring as ClNodeDetailTabMonitoring,
   NodeDetailTabOverview as ClNodeDetailTabOverview,
   NodeDetailTabTasks as ClNodeDetailTabTasks,
   NodeList as ClNodeList,
   useNodeList as useNodeList,
-  NotificationAlertDetailActionsCommon as ClNotificationAlertDetailActionsCommon,
   NotificationAlertDetail as ClNotificationAlertDetail,
+  NotificationAlertDetailActionsCommon as ClNotificationAlertDetailActionsCommon,
   NotificationAlertDetailTabOverview as ClNotificationAlertDetailTabOverview,
   useNotificationAlertDetail as useNotificationAlertDetail,
   NotificationAlertList as ClNotificationAlertList,
   useNotificationAlertList as useNotificationAlertList,
-  NotificationChannelDetailActionsCommon as ClNotificationChannelDetailActionsCommon,
   NotificationChannelDetail as ClNotificationChannelDetail,
+  NotificationChannelDetailActionsCommon as ClNotificationChannelDetailActionsCommon,
   NotificationChannelDetailTabOverview as ClNotificationChannelDetailTabOverview,
   NotificationChannelList as ClNotificationChannelList,
   useNotificationChannelList as useNotificationChannelList,
   NotificationRequestList as ClNotificationRequestList,
   useNotificationRequestList as useNotificationRequestList,
+  NotificationSettingDetail as ClNotificationSettingDetail,
   NotificationSettingDetailActionsCommon as ClNotificationSettingDetailActionsCommon,
   NotificationSettingDetailActionsTemplate as ClNotificationSettingDetailActionsTemplate,
-  NotificationSettingDetail as ClNotificationSettingDetail,
   NotificationSettingDetailTabChannels as ClNotificationSettingDetailTabChannels,
   NotificationSettingDetailTabMailConfig as ClNotificationSettingDetailTabMailConfig,
   NotificationSettingDetailTabOverview as ClNotificationSettingDetailTabOverview,
@@ -186,11 +186,11 @@ export {
   useScheduleDetail as useScheduleDetail,
   ScheduleList as ClScheduleList,
   useScheduleList as useScheduleList,
+  SpiderDetail as ClSpiderDetail,
   SpiderDetailActionsCommon as ClSpiderDetailActionsCommon,
   SpiderDetailActionsData as ClSpiderDetailActionsData,
-  SpiderDetailActionsDataSource as ClSpiderDetailActionsDataSource,
+  SpiderDetailActionsDatabase as ClSpiderDetailActionsDatabase,
   SpiderDetailActionsFiles as ClSpiderDetailActionsFiles,
-  SpiderDetail as ClSpiderDetail,
   SpiderDetailTabData as ClSpiderDetailTabData,
   SpiderDetailTabFiles as ClSpiderDetailTabFiles,
   SpiderDetailTabOverview as ClSpiderDetailTabOverview,
@@ -201,20 +201,20 @@ export {
   SpiderList as ClSpiderList,
   useSpiderList as useSpiderList,
   SystemDetail as ClSystemDetail,
+  TaskDetail as ClTaskDetail,
   TaskDetailActionsCommon as ClTaskDetailActionsCommon,
   TaskDetailActionsData as ClTaskDetailActionsData,
   TaskDetailActionsLogs as ClTaskDetailActionsLogs,
   TaskDetailTabData as ClTaskDetailTabData,
   TaskDetailTabLogs as ClTaskDetailTabLogs,
   TaskDetailTabOverview as ClTaskDetailTabOverview,
-  TaskDetail as ClTaskDetail,
   useTaskDetail as useTaskDetail,
   TaskList as ClTaskList,
   useTaskList as useTaskList,
   TokenList as ClTokenList,
   useTokenList as useTokenList,
-  UserDetailTabOverview as ClUserDetailTabOverview,
   UserDetail as ClUserDetail,
+  UserDetailTabOverview as ClUserDetailTabOverview,
   useUserDetail as useUserDetail,
   UserList as ClUserList,
   useUserList as useUserList,
