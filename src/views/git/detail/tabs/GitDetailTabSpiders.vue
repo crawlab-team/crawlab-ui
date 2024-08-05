@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClGitDetailTabSpiders' });
+defineOptions({ name: 'ClGitDetailTabSpiders' });
 </script>
 
 <template>

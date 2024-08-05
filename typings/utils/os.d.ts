@@ -1,2 +1,2 @@
 export declare const isWindows: () => boolean;
-export declare const getOSPathSeparator: () => "/" | "\\";
+export declare const getOSPathSeparator: () => '\\' | '/';

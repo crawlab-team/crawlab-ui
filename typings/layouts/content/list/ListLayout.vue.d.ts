@@ -2,91 +2,113 @@ declare function __VLS_template(): {
     "nav-actions-extra"?(_: {}): any;
     extra?(_: {}): any;
 };
-declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    navActions?: ListActionGroup[];
-    rowKey?: string | ((row: any) => string);
-    tableColumns: TableColumns;
-    tableData: TableData;
-    tableTotal?: number;
-    tablePagination?: TablePagination;
-    tableListFilter?: FilterConditionData[];
-    tableListSort?: SortData[];
-    tableActionsPrefix?: ListActionButton[];
-    tableActionsSuffix?: ListActionButton[];
-    tableFilter?: any;
-    actionFunctions?: ListLayoutActionFunctions;
-    noActions?: boolean;
-    selectableFunction?: TableSelectableFunction;
-    visibleButtons?: BuiltInTableActionButtonName[];
-    tablePaginationLayout?: string;
-    tableLoading?: boolean;
-    tablePaginationPosition?: TablePaginationPosition;
-    embedded?: boolean;
-}>, {
-    navActions: () => never[];
-    rowKey: string;
-    tableColumns: () => never[];
-    tableData: () => never[];
-    tableTotal: number;
-    tablePagination: () => {
+declare const __VLS_component: import('vue').DefineComponent<
+  __VLS_WithDefaults<
+    __VLS_TypePropsToOption<{
+      navActions?: ListActionGroup[];
+      rowKey?: string | ((row: any) => string);
+      tableColumns: TableColumns;
+      tableData: TableData;
+      tableTotal?: number;
+      tablePagination?: TablePagination;
+      tableListFilter?: FilterConditionData[];
+      tableListSort?: SortData[];
+      tableActionsPrefix?: ListActionButton[];
+      tableActionsSuffix?: ListActionButton[];
+      tableFilter?: any;
+      actionFunctions?: ListLayoutActionFunctions;
+      noActions?: boolean;
+      selectableFunction?: TableSelectableFunction;
+      visibleButtons?: BuiltInTableActionButtonName[];
+      tablePaginationLayout?: string;
+      tableLoading?: boolean;
+      tablePaginationPosition?: TablePaginationPosition;
+      embedded?: boolean;
+    }>,
+    {
+      navActions: () => never[];
+      rowKey: string;
+      tableColumns: () => never[];
+      tableData: () => never[];
+      tableTotal: number;
+      tablePagination: () => {
         page: number;
         size: number;
-    };
-    tableListFilter: () => never[];
-    tableListSort: () => never[];
-    tableActionsPrefix: () => never[];
-    tableActionsSuffix: () => never[];
-    tableFilter: () => {};
-    noActions: boolean;
-    selectableFunction: () => true;
-    visibleButtons: () => never[];
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+      };
+      tableListFilter: () => never[];
+      tableListSort: () => never[];
+      tableActionsPrefix: () => never[];
+      tableActionsSuffix: () => never[];
+      tableFilter: () => {};
+      noActions: boolean;
+      selectableFunction: () => true;
+      visibleButtons: () => never[];
+    }
+  >,
+  {},
+  unknown,
+  {},
+  {},
+  import('vue').ComponentOptionsMixin,
+  import('vue').ComponentOptionsMixin,
+  {
     select: (value: TableData<TableAnyRowData>) => void;
     edit: (value: TableData<TableAnyRowData>) => void;
     delete: (value: TableData<TableAnyRowData>) => void;
-}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToOption<{
-    navActions?: ListActionGroup[];
-    rowKey?: string | ((row: any) => string);
-    tableColumns: TableColumns;
-    tableData: TableData;
-    tableTotal?: number;
-    tablePagination?: TablePagination;
-    tableListFilter?: FilterConditionData[];
-    tableListSort?: SortData[];
-    tableActionsPrefix?: ListActionButton[];
-    tableActionsSuffix?: ListActionButton[];
-    tableFilter?: any;
-    actionFunctions?: ListLayoutActionFunctions;
-    noActions?: boolean;
-    selectableFunction?: TableSelectableFunction;
-    visibleButtons?: BuiltInTableActionButtonName[];
-    tablePaginationLayout?: string;
-    tableLoading?: boolean;
-    tablePaginationPosition?: TablePaginationPosition;
-    embedded?: boolean;
-}>, {
-    navActions: () => never[];
-    rowKey: string;
-    tableColumns: () => never[];
-    tableData: () => never[];
-    tableTotal: number;
-    tablePagination: () => {
-        page: number;
-        size: number;
-    };
-    tableListFilter: () => never[];
-    tableListSort: () => never[];
-    tableActionsPrefix: () => never[];
-    tableActionsSuffix: () => never[];
-    tableFilter: () => {};
-    noActions: boolean;
-    selectableFunction: () => true;
-    visibleButtons: () => never[];
-}>>> & {
+  },
+  string,
+  import('vue').PublicProps,
+  Readonly<
+    import('vue').ExtractPropTypes<
+      __VLS_WithDefaults<
+        __VLS_TypePropsToOption<{
+          navActions?: ListActionGroup[];
+          rowKey?: string | ((row: any) => string);
+          tableColumns: TableColumns;
+          tableData: TableData;
+          tableTotal?: number;
+          tablePagination?: TablePagination;
+          tableListFilter?: FilterConditionData[];
+          tableListSort?: SortData[];
+          tableActionsPrefix?: ListActionButton[];
+          tableActionsSuffix?: ListActionButton[];
+          tableFilter?: any;
+          actionFunctions?: ListLayoutActionFunctions;
+          noActions?: boolean;
+          selectableFunction?: TableSelectableFunction;
+          visibleButtons?: BuiltInTableActionButtonName[];
+          tablePaginationLayout?: string;
+          tableLoading?: boolean;
+          tablePaginationPosition?: TablePaginationPosition;
+          embedded?: boolean;
+        }>,
+        {
+          navActions: () => never[];
+          rowKey: string;
+          tableColumns: () => never[];
+          tableData: () => never[];
+          tableTotal: number;
+          tablePagination: () => {
+            page: number;
+            size: number;
+          };
+          tableListFilter: () => never[];
+          tableListSort: () => never[];
+          tableActionsPrefix: () => never[];
+          tableActionsSuffix: () => never[];
+          tableFilter: () => {};
+          noActions: boolean;
+          selectableFunction: () => true;
+          visibleButtons: () => never[];
+        }
+      >
+    >
+  > & {
     onSelect?: ((value: TableData<TableAnyRowData>) => any) | undefined;
     onDelete?: ((value: TableData<TableAnyRowData>) => any) | undefined;
     onEdit?: ((value: TableData<TableAnyRowData>) => any) | undefined;
-}, {
+  },
+  {
     navActions: ListActionGroup[];
     noActions: boolean;
     visibleButtons: BuiltInTableActionButtonName[];
@@ -94,14 +116,16 @@ declare const __VLS_component: import("vue").DefineComponent<__VLS_WithDefaults<
     tableTotal: number;
     tablePagination: TablePagination;
     tableColumns: TableColumns;
+    rowKey: string | ((row: any) => string);
     tableActionsPrefix: ListActionButton[];
     tableListFilter: FilterConditionData[];
     tableListSort: SortData[];
-    rowKey: string | ((row: any) => string);
     selectableFunction: TableSelectableFunction;
     tableFilter: any;
     tableActionsSuffix: ListActionButton[];
-}, {}>;
+  },
+  {}
+>;
 declare const _default: __VLS_WithTemplateSlots<typeof __VLS_component, ReturnType<typeof __VLS_template>>;
 export default _default;
 type __VLS_WithDefaults<P, D> = {

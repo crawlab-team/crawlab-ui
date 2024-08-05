@@ -4,7 +4,7 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { User, Lock } from '@element-plus/icons-vue';
-import logo from '@/assets/svg/logo-main.svg';
+import logo from '@/assets/svg/logo-main.svg?url';
 import useRequest from '@/services/request';
 import { isValidUsername } from '@/utils/validate';
 import { setGlobalLang, translate } from '@/utils/i18n';

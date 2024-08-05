@@ -1,3 +1,2 @@
-import { RouteRecordRaw } from 'vue-router';
-declare const _default: Array<RouteRecordRaw>;
+declare const _default: Array<ExtendedRouterRecord>;
 export default _default;

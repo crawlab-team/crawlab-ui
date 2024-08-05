@@ -12,3 +12,5 @@ export declare const TAB_NAME_TRIGGERS = "triggers";
 export declare const TAB_NAME_TEMPLATE = "template";
 export declare const TAB_NAME_CHANGES = "changes";
 export declare const TAB_NAME_MONITORING = "monitoring";
+export declare const TAB_NAME_CHANNELS = 'channels';
+export declare const TAB_NAME_MAIL = 'mail';

@@ -9,6 +9,7 @@ export declare const ACTION_CANCEL = "cancel";
 export declare const ACTION_RESTART = "restart";
 export declare const ACTION_VIEW_LOGS = "view-logs";
 export declare const ACTION_VIEW_DATA = "view-data";
+export declare const ACTION_VIEW_MONITORING = 'view-monitoring';
 export declare const ACTION_COPY = "copy";
 export declare const ACTION_START = "start";
 export declare const ACTION_STOP = "stop";

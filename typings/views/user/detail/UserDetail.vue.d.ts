@@ -1,14 +1,17 @@
-declare const _default: import("vue").DefineComponent<{}, {
-    navItems: import("vue").ComputedRef<NavItem<BaseModel>[]>;
-    activeId: import("vue").ComputedRef<string>;
-    navSidebar: import("vue").Ref<{
-        scroll: (id: string) => void;
+declare const _default: import('vue').DefineComponent<
+  {},
+  {
+    navItems: import('vue').ComputedRef<NavItem<BaseModel>[]>;
+    activeId: import('vue').ComputedRef<string>;
+    navSidebar: import('vue').Ref<{
+      scroll: (id: string) => void;
     } | null>;
-    navActions: import("vue").Ref<{
-        getHeight: () => string;
+    navActions: import('vue').Ref<{
+      getHeight: () => string;
     } | null>;
-    showActionsToggleTooltip: import("vue").Ref<boolean>;
-    tabs: import("vue").ComputedRef<{
+    showActionsToggleTooltip: import('vue').Ref<boolean>;
+    tabs: import('vue').ComputedRef<
+      {
         title: string;
         disabled: boolean;
         id: string;
@@ -23,14 +26,16 @@ declare const _default: import("vue").DefineComponent<{}, {
         label?: string;
         value?: any;
         children?: NavItem<any>[] | undefined;
-    }[]>;
-    activeTabName: import("vue").ComputedRef<string>;
-    sidebarCollapsed: import("vue").ComputedRef<boolean>;
-    actionsCollapsed: import("vue").ComputedRef<boolean>;
-    contentContainerStyle: import("vue").ComputedRef<{
-        height: string;
+        path?: string;
+      }[]
+    >;
+    activeTabName: import('vue').ComputedRef<string>;
+    sidebarCollapsed: import('vue').ComputedRef<boolean>;
+    actionsCollapsed: import('vue').ComputedRef<boolean>;
+    contentContainerStyle: import('vue').ComputedRef<{
+      height: string;
     }>;
-    getForm: () => ReturnType<() => Promise<any>> extends Promise<any> ? Promise<ReturnType<() => Promise<any>>> : ReturnType<() => Promise<any>>;
+    getForm: () => Promise<Promise<any>>;
     onNavSidebarSelect: (item: NavItem) => Promise<void>;
     onNavSidebarToggle: (value: boolean) => void;
     onActionsToggle: () => void;
@@ -38,5 +43,17 @@ declare const _default: import("vue").DefineComponent<{}, {
     onNavTabsToggle: () => void;
     onBack: () => Promise<void>;
     onSave: () => Promise<void>;
-}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{}>>, {}, {}>;
+  },
+  {},
+  {},
+  {},
+  import('vue').ComponentOptionsMixin,
+  import('vue').ComponentOptionsMixin,
+  {},
+  string,
+  import('vue').PublicProps,
+  Readonly<import('vue').ExtractPropTypes<{}>>,
+  {},
+  {}
+>;
 export default _default;
