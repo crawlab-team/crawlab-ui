@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useDatabaseList from '@/views/database/list/useDatabaseList';
+import { useDatabaseList } from '@/views';
 
 const {
   actionFunctions,

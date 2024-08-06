@@ -1,24 +1,21 @@
 import { computed, h } from 'vue';
 import { ElMessageBox } from 'element-plus';
-import DataSourceType from '@/components/core/database/DatabaseType.vue';
+import {
+  ClNavLink,
+  ClDatabaseDataSource,
+  ClDatabaseStatus,
+} from '@/components';
 import useDataSourceService from '@/services/database/databaseService';
 import {
-  DATABASE_CONNECT_TYPE_HOSTS,
-  DATABASE_CONNECT_TYPE_STANDARD,
-  DATABASE_CONNECT_TYPE_URL,
   DATABASE_STATUS_OFFLINE,
   DATABASE_STATUS_ONLINE,
-  DATABASE_TYPE_COCKROACHDB,
   DATABASE_TYPE_ELASTICSEARCH,
   DATABASE_TYPE_KAFKA,
   DATABASE_TYPE_MONGO,
   DATABASE_TYPE_MSSQL,
   DATABASE_TYPE_MYSQL,
   DATABASE_TYPE_POSTGRESQL,
-  DATABASE_TYPE_SQLITE,
 } from '@/constants/database';
-import DataSourceStatus from '@/components/core/database/DatabaseStatus.vue';
-import DataSourceConnectType from '@/components/core/database/DatabaseConnectType.vue';
 import { getStore } from '@/store';
 import { onListFilterChangeByKey, translate } from '@/utils';
 import { getRouter } from '@/router';
@@ -30,7 +27,6 @@ import {
   FILTER_OP_EQUAL,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
-import { ClNavLink, ClTag } from '@/components';
 import { useList } from '@/layouts/content';
 
 // i18n
@@ -48,33 +44,40 @@ const useDatabaseList = () => {
   // services
   const { getList, deleteById } = useDataSourceService(store);
 
-  const typeSelectOptions: SelectOption[] = [
-    { label: t('components.ds.type.mongo'), value: DATABASE_TYPE_MONGO },
-    { label: t('components.ds.type.mysql'), value: DATABASE_TYPE_MYSQL },
+  const dataSourceSelectOptions: SelectOption[] = [
     {
-      label: t('components.ds.type.postgresql'),
+      label: t('components.database.dataSources.mongo'),
+      value: DATABASE_TYPE_MONGO,
+    },
+    {
+      label: t('components.database.dataSources.mysql'),
+      value: DATABASE_TYPE_MYSQL,
+    },
+    {
+      label: t('components.database.dataSources.postgresql'),
       value: DATABASE_TYPE_POSTGRESQL,
     },
-    { label: t('components.ds.type.mssql'), value: DATABASE_TYPE_MSSQL },
-    { label: t('components.ds.type.sqlite'), value: DATABASE_TYPE_SQLITE },
     {
-      label: t('components.ds.type.cockroachdb'),
-      value: DATABASE_TYPE_COCKROACHDB,
+      label: t('components.database.dataSources.mssql'),
+      value: DATABASE_TYPE_MSSQL,
     },
     {
-      label: t('components.ds.type.elasticsearch'),
+      label: t('components.database.dataSources.elasticsearch'),
       value: DATABASE_TYPE_ELASTICSEARCH,
     },
-    { label: t('components.ds.type.kafka'), value: DATABASE_TYPE_KAFKA },
+    {
+      label: t('components.database.dataSources.kafka'),
+      value: DATABASE_TYPE_KAFKA,
+    },
   ];
 
   const statusSelectOptions: SelectOption[] = [
     {
-      label: t('components.ds.status.label.online'),
+      label: t('components.database.status.label.online'),
       value: DATABASE_STATUS_ONLINE,
     },
     {
-      label: t('components.ds.status.label.offline'),
+      label: t('components.database.status.label.offline'),
       value: DATABASE_STATUS_OFFLINE,
     },
   ];
@@ -86,8 +89,8 @@ const useDatabaseList = () => {
       children: [
         {
           buttonType: 'label',
-          label: t('views.ds.navActions.new.label'),
-          tooltip: t('views.ds.navActions.new.tooltip'),
+          label: t('views.database.navActions.new.label'),
+          tooltip: t('views.database.navActions.new.tooltip'),
           icon: ['fa', 'plus'],
           type: 'success',
           onClick: () => {
@@ -104,7 +107,7 @@ const useDatabaseList = () => {
           action: ACTION_FILTER_SEARCH,
           id: 'filter-search',
           className: 'search',
-          placeholder: t('views.ds.navActions.filter.search.placeholder'),
+          placeholder: t('views.database.navActions.filter.search.placeholder'),
           onChange: onListFilterChangeByKey(
             store,
             ns as any,
@@ -114,14 +117,16 @@ const useDatabaseList = () => {
         },
         {
           action: ACTION_FILTER_SELECT,
-          id: 'filter-select-type',
-          className: 'filter-select-type',
-          label: t('views.ds.navActionsExtra.filter.select.type.label'),
-          options: typeSelectOptions,
+          id: 'filter-select-data-source',
+          className: 'filter-select-data-source',
+          label: t(
+            'views.database.navActionsExtra.filter.select.dataSource.label'
+          ),
+          options: dataSourceSelectOptions,
           onChange: onListFilterChangeByKey(
             store,
             ns as any,
-            'type',
+            'data_source',
             FILTER_OP_EQUAL
           ),
         },
@@ -129,27 +134,13 @@ const useDatabaseList = () => {
           action: ACTION_FILTER_SELECT,
           id: 'filter-select-status',
           className: 'filter-select-status',
-          label: t('views.ds.navActionsExtra.filter.select.status.label'),
+          label: t('views.database.navActionsExtra.filter.select.status.label'),
           options: statusSelectOptions,
           onChange: onListFilterChangeByKey(
             store,
             ns as any,
             'status',
             FILTER_OP_EQUAL
-          ),
-        },
-        {
-          action: ACTION_FILTER_SEARCH,
-          id: 'filter-search-connect-settings',
-          className: 'search-connect-settings',
-          placeholder: t(
-            'views.ds.navActionsExtra.filter.search.connectSettings.placeholder'
-          ),
-          onChange: onListFilterChangeByKey(
-            store,
-            ns as any,
-            'connect_settings',
-            FILTER_OP_CONTAINS
           ),
         },
       ],
@@ -163,94 +154,37 @@ const useDatabaseList = () => {
       label: t('components.database.form.name'),
       icon: ['fa', 'font'],
       width: '150',
-      value: (row: Database) =>
-        h(ClNavLink, {
-          path: `/databases/${row._id}`,
-          label: row.name,
-        }),
+      value: (row: Database) => (
+        <ClNavLink path={`/databases/${row._id}`} label={row.name} />
+      ),
       hasSort: true,
       hasFilter: true,
       allowFilterSearch: true,
     },
     {
-      key: 'type',
-      label: t('components.database.form.type'),
+      key: 'data_source',
+      label: t('components.database.form.dataSource'),
       icon: ['fa', 'database'],
       width: '150',
-      value: (row: Database) =>
-        h(DataSourceType, {
-          dataSource: row,
-        }),
+      value: (row: Database) => (
+        <ClDatabaseDataSource dataSource={row.data_source} />
+      ),
     },
     {
       key: 'status', // status
-      label: t('components.ds.form.status'),
+      label: t('components.database.form.status'),
       icon: ['fa', 'heartbeat'],
       width: '120',
-      value: (row: Database) => {
-        return h(DataSourceStatus, {
-          status: row.status,
-          error: row.error,
-        });
-      },
+      value: (row: Database) => (
+        <ClDatabaseStatus status={row.status} error={row.error} />
+      ),
       hasFilter: true,
       allowFilterItems: true,
       filterItems: statusSelectOptions,
     },
     {
-      key: 'connect_type',
-      label: t('components.ds.form.connectType'),
-      icon: ['fa', 'wifi'],
-      width: '120',
-      value: (row: Database) => {
-        return h(DataSourceConnectType, {
-          dataSource: row,
-        } as DatabaseConnectTypeProps);
-      },
-    },
-    {
-      key: 'connect_settings',
-      label: t('components.ds.form.connectSettings'),
-      icon: ['fa', 'map-marker-alt'],
-      width: '210',
-      value: (row: Database) => {
-        let label: string | undefined;
-        switch (row.connect_type) {
-          case DATABASE_CONNECT_TYPE_STANDARD:
-            label = `${row.host || '<' + t('components.ds.default.host') + '>'}:${row.port || '<' + t('components.ds.default.port') + '>'}`;
-            return h(ClTag, {
-              label,
-            });
-          case DATABASE_CONNECT_TYPE_URL:
-            label = row.url;
-            return h(ClTag, {
-              label,
-            });
-          case DATABASE_CONNECT_TYPE_HOSTS:
-            return row.hosts?.map(address => {
-              label = address;
-              return h(ClTag, {
-                label: address,
-              });
-            });
-        }
-      },
-    },
-    {
-      key: 'database',
-      label: t('components.ds.form.database'),
-      icon: ['fa', 'database'],
-      width: '150',
-    },
-    {
-      key: 'username',
-      label: t('components.ds.form.username'),
-      icon: ['fa', 'key'],
-      width: '180',
-    },
-    {
       key: 'description',
-      label: t('components.ds.form.description'),
+      label: t('components.database.form.description'),
       icon: ['fa', 'comment-alt'],
       width: 'auto',
       hasFilter: true,
