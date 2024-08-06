@@ -6,21 +6,14 @@ const t = translate;
 defineProps<{
   items?: NavItem[];
   activeKey?: string;
-  collapsed?: boolean;
-  toggle?: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: 'select', index: string): void;
-  (e: 'toggle'): void;
 }>();
 
 const onSelect = (index: string) => {
   emit('select', index);
-};
-
-const onToggle = () => {
-  emit('toggle');
 };
 
 const getClassName = (item: NavItem): string => {
@@ -34,18 +27,6 @@ defineOptions({ name: 'ClNavTabs' });
 
 <template>
   <div class="nav-tabs">
-    <el-tooltip
-      v-if="toggle"
-      :content="
-        collapsed
-          ? t('components.nav.tabs.toggle.expand')
-          : t('components.nav.tabs.toggle.collapse')
-      "
-    >
-      <div class="toggle" @click="onToggle">
-        <cl-icon :icon="collapsed ? ['fa', 'indent'] : ['fa', 'outdent']" />
-      </div>
-    </el-tooltip>
     <el-menu :default-active="activeKey" mode="horizontal" @select="onSelect">
       <el-menu-item
         v-for="item in items"

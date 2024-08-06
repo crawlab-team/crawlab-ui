@@ -185,18 +185,6 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
     resetAllList: (state: BaseStoreState<T>) => {
       state.allList = [];
     },
-    expandSidebar: (state: BaseStoreState<T>) => {
-      state.sidebarCollapsed = false;
-    },
-    collapseSidebar: (state: BaseStoreState<T>) => {
-      state.sidebarCollapsed = true;
-    },
-    expandActions: (state: BaseStoreState<T>) => {
-      state.actionsCollapsed = false;
-    },
-    collapseActions: (state: BaseStoreState<T>) => {
-      state.actionsCollapsed = true;
-    },
     setTabs: (state: BaseStoreState<T>, tabs) => {
       state.tabs = tabs;
     },

@@ -18,10 +18,6 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
   const state = store.state[ns] as BaseStoreState;
   const { form } = state;
 
-  const navSidebar = ref<NavSidebar | null>(null);
-
-  const navActions = ref<NavActions | null>(null);
-
   const showActionsToggleTooltip = ref<boolean>(false);
 
   const navItems = computed<NavItem<T>[]>(() =>
@@ -40,10 +36,6 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
 
   const activeTabName = computed<string>(() => getTabName(router));
 
-  const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
-
-  const actionsCollapsed = computed<boolean>(() => state.actionsCollapsed);
-
   const tabs = computed(() => {
     return state.tabs.map(tab => {
       return {
@@ -54,14 +46,18 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     });
   });
 
-  const contentContainerStyle = computed(() => {
-    const navActionsHeight = navActions.value
-      ? ` - ${navActions.value?.getHeight()}`
-      : '';
-    return {
-      height: `calc(100% - var(--cl-nav-tabs-height) - 1px${navActionsHeight})`,
-    };
-  });
+  const navLoading = ref(false);
+  const onNavSelect = async (id: string) => {
+    navLoading.value = true;
+    try {
+      await router.push(
+        `${primaryRoutePath.value}/${id}/${activeTabName.value}`
+      );
+      await getForm();
+    } finally {
+      navLoading.value = false;
+    }
+  };
 
   const primaryRoutePath = computed<string>(() => getRoutePath(route.path));
 
@@ -72,44 +68,8 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
     return await store.dispatch(`${ns}/getById`, activeId.value);
   });
 
-  const onNavSidebarSelect = async (item: NavItem) => {
-    if (!item) {
-      console.error(new Error('item is empty'));
-      return;
-    }
-    await router.push(
-      `${primaryRoutePath.value}/${item.id}/${activeTabName.value}`
-    );
-    await getForm();
-  };
-
-  const onNavSidebarToggle = (value: boolean) => {
-    if (value) {
-      store.commit(`${ns}/collapseSidebar`);
-    } else {
-      store.commit(`${ns}/expandSidebar`);
-    }
-  };
-
-  const onActionsToggle = () => {
-    showActionsToggleTooltip.value = false;
-    if (actionsCollapsed.value) {
-      store.commit(`${ns}/expandActions`);
-    } else {
-      store.commit(`${ns}/collapseActions`);
-    }
-  };
-
   const onNavTabsSelect = async (tabName: string) => {
     await router.push(`${primaryRoutePath.value}/${activeId.value}/${tabName}`);
-  };
-
-  const onNavTabsToggle = () => {
-    if (!sidebarCollapsed.value) {
-      store.commit(`${ns}/collapseSidebar`);
-    } else {
-      store.commit(`${ns}/expandSidebar`);
-    }
   };
 
   const onBack = async () => {
@@ -148,20 +108,13 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
   return {
     navItems,
     activeId,
-    navSidebar,
-    navActions,
     showActionsToggleTooltip,
+    navLoading,
+    onNavSelect,
     tabs,
     activeTabName,
-    sidebarCollapsed,
-    actionsCollapsed,
-    contentContainerStyle,
     getForm,
-    onNavSidebarSelect,
-    onNavSidebarToggle,
-    onActionsToggle,
     onNavTabsSelect,
-    onNavTabsToggle,
     onBack,
     onSave,
   };

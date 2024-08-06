@@ -129,10 +129,6 @@ export declare global {
     resetTableListSortByKey: StoreMutation<BaseStoreState<T>, string>;
     setAllList: StoreMutation<BaseStoreState<T>, T[]>;
     resetAllList: StoreMutation<BaseStoreState<T>>;
-    expandSidebar: StoreMutation<BaseStoreState<T>>;
-    collapseSidebar: StoreMutation<BaseStoreState<T>>;
-    expandActions: StoreMutation<BaseStoreState<T>>;
-    collapseActions: StoreMutation<BaseStoreState<T>>;
     setTabs: StoreMutation<BaseStoreState, NavItem[]>;
     setDisabledTabKeys: StoreMutation<BaseStoreState, string[]>;
     resetDisabledTabKeys: StoreMutation<BaseStoreState, string[]>;

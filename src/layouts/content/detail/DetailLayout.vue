@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
-import useDetail from '@/layouts/content/detail/useDetail';
 import { useStore } from 'vuex';
-import { translate } from '@/utils';
+import useDetail from '@/layouts/content/detail/useDetail';
 
 const props = withDefaults(
   defineProps<{
@@ -20,35 +19,16 @@ const props = withDefaults(
   }
 );
 
-const IGNORE_GET_ALL_NS = ['task'];
-
 const ns = computed(() => props.storeNamespace);
 const store = useStore();
-const state = store.state[ns.value] as BaseStoreState;
-
-const computedNavItems = computed<NavItem[]>(() =>
-  state.allList.map((d: BaseModel) => {
-    const { navItemNameKey } = props;
-    return {
-      id: d._id,
-      title: d[navItemNameKey],
-    } as NavItem;
-  })
-);
 
 const {
   activeId,
   activeTabName,
-  navSidebar,
   getForm,
-  sidebarCollapsed,
-  actionsCollapsed,
-  contentContainerStyle,
-  navActions,
-  onNavSidebarSelect,
-  onNavSidebarToggle,
+  navLoading,
+  onNavSelect,
   onNavTabsSelect,
-  onNavTabsToggle,
   onBack,
   onSave,
 } = useDetail(ns.value);
@@ -57,22 +37,20 @@ const computedTabs = computed<NavItem[]>(
   () => store.getters[`${ns.value}/tabs`]
 );
 
+const allListSelectOptions = computed(() => {
+  return store.state[ns.value].allList.map((item: BaseModel) => ({
+    label: item[props.navItemNameKey],
+    value: item._id,
+  }));
+});
+
 // get form before mount
 onBeforeMount(getForm);
 
 // get all list before mount
 onBeforeMount(async () => {
-  if (IGNORE_GET_ALL_NS.includes(ns.value)) return;
   await store.dispatch(`${ns.value}/getAllList`);
 });
-
-// scroll nav sidebar after mounted
-onMounted(() => {
-  if (!navSidebar.value) return;
-  navSidebar.value.scroll(activeId.value);
-});
-
-onMounted(() => {});
 
 // reset form before unmount
 onBeforeUnmount(() => {
@@ -80,40 +58,39 @@ onBeforeUnmount(() => {
     store.commit(`${ns.value}/resetForm`);
   }
 });
+
 defineOptions({ name: 'ClDetailLayout' });
 </script>
 
 <template>
-  <div
-    :class="noSidebar || sidebarCollapsed ? 'collapsed' : ''"
-    class="detail-layout"
-  >
-    <div class="sidebar">
-      <cl-nav-sidebar
-        v-if="!noSidebar"
-        ref="navSidebar"
-        :active-key="activeId"
-        :collapsed="noSidebar || sidebarCollapsed"
-        :items="computedNavItems"
-        @select="onNavSidebarSelect"
-        @toggle="onNavSidebarToggle"
-      />
-    </div>
-    <div class="content">
+  <div class="detail-layout">
+    <div v-loading="navLoading" class="content">
       <cl-nav-tabs
         :active-key="activeTabName"
         :items="computedTabs"
-        :collapsed="sidebarCollapsed"
-        toggle
         class="nav-tabs"
         @select="onNavTabsSelect"
-        @toggle="onNavTabsToggle"
-      />
-      <cl-nav-actions
-        ref="navActions"
-        :collapsed="actionsCollapsed"
-        class="nav-actions"
       >
+        <template #extra>
+          <div class="nav-select">
+            <cl-icon :icon="['fa', 'exchange-alt']" size="small" />
+            <el-select
+              :model-value="activeId"
+              size="small"
+              placement="bottom-end"
+              @change="onNavSelect"
+            >
+              <el-option
+                v-for="op in allListSelectOptions"
+                :key="op.value"
+                :label="op.label"
+                :value="op.value"
+              />
+            </el-select>
+          </div>
+        </template>
+      </cl-nav-tabs>
+      <cl-nav-actions class="nav-actions">
         <cl-nav-action-group-detail-common
           :show-back-button="showBackButton"
           :show-save-button="showSaveButton"
@@ -122,7 +99,7 @@ defineOptions({ name: 'ClDetailLayout' });
         />
         <slot name="actions" />
       </cl-nav-actions>
-      <div :style="contentContainerStyle" class="content-container">
+      <div class="content-container">
         <router-view />
       </div>
     </div>
@@ -134,29 +111,8 @@ defineOptions({ name: 'ClDetailLayout' });
   display: flex;
   height: 100%;
 
-  &.collapsed {
-    .sidebar {
-      flex: 0 0 0;
-    }
-
-    .content {
-      flex: 1 0 100%;
-      max-width: 100%;
-    }
-  }
-
-  .sidebar {
-    flex: 0 0 var(--cl-nav-sidebar-width);
-    width: 0;
-    transition: flex var(--cl-nav-sidebar-collapse-transition-duration);
-    border-right: 1px solid var(--cl-info-plain-color);
-    background-color: #ffffff;
-  }
-
   .content {
-    flex: 1 0 calc(100% - var(--cl-nav-sidebar-width));
-    width: var(--cl-nav-sidebar-width);
-    max-width: calc(100% - var(--cl-nav-sidebar-width));
+    flex: 1;
     background-color: var(--cl-container-white-bg);
     display: flex;
     flex-direction: column;
@@ -165,28 +121,21 @@ defineOptions({ name: 'ClDetailLayout' });
       height: fit-content;
     }
 
+    .nav-select {
+      width: 180px;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--cl-info-medium-color);
+
+      .el-select {
+        flex: 1;
+      }
+    }
+
     .content-container {
       flex: 1;
-    }
-  }
-
-  .actions-toggle {
-    display: flex;
-    align-items: center;
-    height: var(--cl-nav-tabs-height);
-    color: var(--cl-info-color);
-    cursor: pointer;
-    padding: 0 20px;
-    border-left: 1px solid var(--cl-container-border-color);
-
-    .icon {
-      transition: all var(--cl-default-transition-duration);
-    }
-
-    &.collapsed {
-      .icon {
-        transform: rotate(180deg);
-      }
     }
   }
 }
