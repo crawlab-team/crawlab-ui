@@ -111,6 +111,8 @@ const useNotificationChannelList = () => {
                 icon = ['fa', 'comment'];
                 type = 'success';
                 break;
+              default:
+                return null;
             }
             return (
               <ClTag
@@ -133,7 +135,7 @@ const useNotificationChannelList = () => {
                 label={t(
                   `views.notification.channels.providers.${row.provider}`
                 )}
-                icon={getProviderIcon(row.provider)}
+                icon={getProviderIcon(row.provider as string)}
               />
             );
           },

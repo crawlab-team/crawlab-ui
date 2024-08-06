@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineOptions({ name: 'ClProjectDetailTabSpiders' });
-defineOptions({ name: 'ClProjectDetailTabSpiders' });
 </script>
 
 <template>
