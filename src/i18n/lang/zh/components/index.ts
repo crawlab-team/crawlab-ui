@@ -51,7 +51,7 @@ const components: LComponents = {
   spider,
   schedule,
   task,
-  ds: database,
+  database,
   user,
   tag,
   plugin,

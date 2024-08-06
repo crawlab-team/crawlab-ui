@@ -28,22 +28,22 @@ const data = computed<TagProps>(() => {
   switch (status) {
     case DATABASE_STATUS_ONLINE:
       return {
-        label: t('components.ds.status.label.online'),
-        tooltip: t('components.ds.status.tooltip.online'),
+        label: t('components.database.status.label.online'),
+        tooltip: t('components.database.status.tooltip.online'),
         type: 'success',
         icon: ['fa', 'check'],
       };
     case DATABASE_STATUS_OFFLINE:
       return {
-        label: t('components.ds.status.label.offline'),
-        tooltip: `${t('components.ds.status.tooltip.offline')}<br><span style="color: #f56c6c">${error}</span>`,
+        label: t('components.database.status.label.offline'),
+        tooltip: `${t('components.database.status.tooltip.offline')}<br><span style="color: #f56c6c">${error}</span>`,
         type: 'danger',
         icon: ['fa', 'times'],
       };
     default:
       return {
-        label: t('components.ds.status.label.unknown'),
-        tooltip: t('components.ds.status.tooltip.unknown'),
+        label: t('components.database.status.label.unknown'),
+        tooltip: t('components.database.status.tooltip.unknown'),
         type: 'info',
         icon: ['fa', 'question'],
       };

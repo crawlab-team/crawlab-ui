@@ -1,26 +1,23 @@
 const database: LViewsDatabase = {
   navActions: {
     new: {
-      label: 'New Data Source',
-      tooltip: 'Create a new data source',
+      label: 'New Database',
+      tooltip: 'Create a new database',
     },
     filter: {
       search: {
-        placeholder: 'Search Data Source',
+        placeholder: 'Search Database',
       },
     },
   },
   navActionsExtra: {
     filter: {
       select: {
-        type: {
-          label: 'Type',
+        dataSource: {
+          label: 'Data Source',
         },
         status: {
           label: 'Status',
-        },
-        connectType: {
-          label: 'Connect Type',
         },
         database: {
           label: 'Database',

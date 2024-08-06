@@ -6,9 +6,9 @@ export declare global {
     };
     form: {
       name: string;
-      type: string;
-      status: string;
       description: string;
+      dataSource: string;
+      status: string;
       host: string;
       port: string;
       url: string;
@@ -18,8 +18,6 @@ export declare global {
       username: string;
       password: string;
       changePassword: string;
-      connectType: string;
-      connectSettings: string;
       mongo: {
         authSource: string;
         authMechanism: string;
@@ -38,16 +36,15 @@ export declare global {
         database: string;
       };
     };
-    type: {
+    dataSources: {
       default: string;
       mongo: string;
       mysql: string;
       postgresql: string;
       mssql: string;
-      sqlite: string;
-      cockroachdb: string;
       elasticsearch: string;
       kafka: string;
+      redis: string;
     };
     status: {
       label: {
@@ -62,6 +59,7 @@ export declare global {
       };
     };
     default: {
+      name: string;
       host: string;
       port: string;
     };

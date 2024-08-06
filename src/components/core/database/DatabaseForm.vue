@@ -19,24 +19,21 @@ const t = translate;
 
 // store
 const store = getStore();
+const { database: state } = store.state as RootStoreState;
 
-const {
-  form,
-  formRef,
-  isSelectiveForm,
-  isFormItemDisabled,
-  onConnectTypeChange,
-  onChangePasswordFunc,
-  onHostsAdd,
-  onHostsDelete,
-  typeOptions,
-} = useDatabase(store);
+const { formRef, isSelectiveForm, onChangePasswordFunc, dataSourceOptions } =
+  useDatabase(store);
 
 const { activeId } = useDatabaseDetail();
 
 const onChangePassword = () => onChangePasswordFunc(activeId.value);
 
 const isDetail = computed<boolean>(() => !!activeId.value);
+
+const form = computed(() => state.form);
+
+const isDisabled = computed(() => form.value.is_default);
+
 defineOptions({ name: 'ClDatabaseForm' });
 </script>
 
@@ -51,16 +48,15 @@ defineOptions({ name: 'ClDatabaseForm' });
     <!--Row-->
     <cl-form-item
       :span="2"
-      :offset="2"
-      :label="t('components.ds.form.name')"
+      :label="t('components.database.form.name')"
       not-editable
       prop="name"
       required
     >
       <el-input
         v-model="form.name"
-        :disabled="isFormItemDisabled('name')"
-        :placeholder="t('components.ds.form.name')"
+        :placeholder="t('components.database.form.name')"
+        :disabled="isDisabled"
       />
     </cl-form-item>
     <!--./Row-->
@@ -68,115 +64,63 @@ defineOptions({ name: 'ClDatabaseForm' });
     <!--Row-->
     <cl-form-item
       :span="2"
-      :label="t('components.ds.form.type')"
-      prop="type"
+      :label="t('components.database.form.dataSource')"
+      prop="data_source"
       required
     >
       <el-select
-        v-model="form.type"
-        :disabled="isFormItemDisabled('type')"
-        :placeholder="t('components.ds.form.type')"
+        v-model="form.data_source"
+        :placeholder="t('components.database.form.dataSource')"
+        :disabled="isDisabled"
       >
         <el-option
-          v-for="(op, $index) in typeOptions"
-          :key="$index"
+          v-for="op in dataSourceOptions"
+          :key="op.value"
           :label="op.label"
           :value="op.value"
         />
       </el-select>
     </cl-form-item>
-    <cl-form-item
-      :span="2"
-      :label="t('components.ds.form.connectType')"
-      prop="connect_type"
-    >
-      <el-radio-group
-        v-model="form.connect_type"
-        :disabled="isFormItemDisabled('connect_type')"
-        @change="onConnectTypeChange"
-      >
-        <el-radio value="standard"
-          >{{ t('components.database.connectType.label.standard') }}
-        </el-radio>
-        <el-radio value="url"
-          >{{ t('components.database.connectType.label.url') }}
-        </el-radio>
-        <el-radio value="hosts"
-          >{{ t('components.database.connectType.label.hosts') }}
-        </el-radio>
-      </el-radio-group>
-    </cl-form-item>
     <!--./Row-->
 
     <!--Row-->
-    <template v-if="form.connect_type === DATABASE_CONNECT_TYPE_STANDARD">
-      <cl-form-item :span="2" :label="t('components.ds.form.host')" prop="host">
-        <el-input
-          v-model="form.host"
-          :disabled="isFormItemDisabled('host')"
-          :placeholder="t('components.ds.form.default.host')"
-        />
-      </cl-form-item>
-      <cl-form-item :span="2" :label="t('components.ds.form.port')" prop="port">
-        <el-input
-          v-model="form.port"
-          :disabled="isFormItemDisabled('port')"
-          :placeholder="t('components.ds.form.default.port')"
-        />
-      </cl-form-item>
-    </template>
-    <template v-else-if="form.connect_type === DATABASE_CONNECT_TYPE_URL">
-      <cl-form-item :span="4" :label="t('components.ds.form.url')" prop="url">
-        <el-input
-          v-model="form.url"
-          :disabled="isFormItemDisabled('url')"
-          :placeholder="t('components.ds.form.url')"
-        />
-      </cl-form-item>
-    </template>
-    <template v-else-if="form.connect_type === DATABASE_CONNECT_TYPE_HOSTS">
-      <cl-form-item
-        class="hosts-item"
-        :span="4"
-        :label="t('components.ds.form.hosts')"
-        prop="hosts"
-      >
-        <el-row v-for="(_, $index) in form.hosts" :key="$index">
-          <el-input
-            class="hosts-item-input"
-            v-model="form.hosts[$index]"
-            :placeholder="t('components.ds.form.address')"
-          />
-          <cl-fa-icon-button
-            :icon="['fa', 'plus']"
-            type="info"
-            plain
-            :tooltip="t('common.actions.add')"
-            @click="() => onHostsAdd($index)"
-          />
-          <cl-fa-icon-button
-            :icon="['fa', 'remove']"
-            type="info"
-            plain
-            :tooltip="t('common.actions.delete')"
-            @click="() => onHostsDelete($index)"
-          />
-        </el-row>
-      </cl-form-item>
-    </template>
+    <cl-form-item
+      :span="2"
+      :label="t('components.database.form.host')"
+      prop="host"
+      required
+    >
+      <el-input
+        v-model="form.host"
+        :placeholder="t('components.database.form.host')"
+        :disabled="isDisabled"
+      />
+    </cl-form-item>
+    <cl-form-item
+      :span="2"
+      :label="t('components.database.form.port')"
+      prop="port"
+      required
+    >
+      <el-input
+        v-model="form.port"
+        :placeholder="t('components.database.form.port')"
+        :disabled="isDisabled"
+      />
+    </cl-form-item>
     <!--./Row-->
 
     <!--Row-->
     <cl-form-item
       :span="2"
       :offset="2"
-      :label="t('components.ds.form.database')"
+      :label="t('components.database.form.database')"
       prop="database"
     >
       <el-input
         v-model="form.database"
-        :disabled="isFormItemDisabled('database')"
-        :placeholder="t('components.ds.form.default.database')"
+        :placeholder="t('components.database.form.database')"
+        :disabled="isDisabled"
       />
     </cl-form-item>
     <!--./Row-->
@@ -184,48 +128,63 @@ defineOptions({ name: 'ClDatabaseForm' });
     <!--Row-->
     <cl-form-item
       :span="2"
-      :label="t('components.ds.form.username')"
+      :label="t('components.database.form.username')"
       prop="username"
     >
       <el-input
         v-model="form.username"
-        :disabled="isFormItemDisabled('username')"
-        :placeholder="t('components.ds.form.username')"
+        :placeholder="t('components.database.form.username')"
+        :disabled="isDisabled"
       />
     </cl-form-item>
     <cl-form-item
+      v-if="!isDisabled"
       :span="2"
-      :label="t('components.ds.form.password')"
+      :label="t('components.database.form.password')"
       prop="password"
     >
       <el-input
         v-if="isSelectiveForm || !isDetail"
         v-model="form.password"
-        :disabled="isFormItemDisabled('password')"
-        :placeholder="t('components.ds.form.password')"
+        :placeholder="t('components.database.form.password')"
         type="password"
+        show-password
+        :disabled="isDisabled"
       />
       <cl-label-button
         v-else
         :icon="['fa', 'lock']"
-        :label="t('components.ds.form.changePassword')"
+        :label="t('components.database.form.changePassword')"
         type="danger"
+        :disabled="isDisabled"
         @click="onChangePassword"
       />
     </cl-form-item>
     <!--./Row-->
 
+    <cl-form-item
+      :span="4"
+      :label="t('components.database.form.url')"
+      prop="url"
+    >
+      <el-input
+        v-model="form.url"
+        :placeholder="t('components.database.form.url')"
+        :disabled="isDisabled"
+      />
+    </cl-form-item>
+
     <!--Row-->
     <cl-form-item
       :span="4"
-      :label="t('components.ds.form.description')"
+      :label="t('components.database.form.description')"
       prop="description"
     >
       <el-input
         v-model="form.description"
-        :disabled="isFormItemDisabled('description')"
-        :placeholder="t('components.ds.form.description')"
+        :placeholder="t('components.database.form.description')"
         type="textarea"
+        :disabled="isDisabled"
       />
     </cl-form-item>
     <!--./Row-->

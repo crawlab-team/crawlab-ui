@@ -1,15 +1,15 @@
 const database: LComponentsDatabase = {
   label: {
-    text: '数据源',
-    tooltip: '数据源',
+    text: '数据库',
+    tooltip: '数据库',
   },
   form: {
     name: '名称',
-    type: '类别',
-    status: '状态',
     description: '描述',
-    host: '主机',
-    port: '端口',
+    dataSource: '数据源',
+    status: '状态',
+    host: '主机 (Host)',
+    port: '端口 (Port)',
     url: 'URL',
     hosts: '主机列表',
     address: '地址',
@@ -17,8 +17,6 @@ const database: LComponentsDatabase = {
     password: '密码',
     changePassword: '更改密码',
     database: '数据库',
-    connectType: '连接类型',
-    connectSettings: '连接配置',
     mongo: {
       authSource: '验证源',
       authMechanism: '验证机制',
@@ -37,16 +35,15 @@ const database: LComponentsDatabase = {
       database: '默认数据库',
     },
   },
-  type: {
+  dataSources: {
     default: '默认',
     mongo: 'MongoDB',
     mysql: 'MySQL',
     postgresql: 'PostgreSQL',
     mssql: 'Microsoft SQL Server',
-    sqlite: 'SQLite',
-    cockroachdb: 'CockroachDB',
     elasticsearch: 'ElasticSearch',
     kafka: 'Kafka',
+    redis: 'Redis',
   },
   status: {
     label: {
@@ -55,18 +52,19 @@ const database: LComponentsDatabase = {
       unknown: '未知',
     },
     tooltip: {
-      online: '数据源处于在线状态',
-      offline: '数据源处于离线状态',
-      unknown: '未知数据源状态',
+      online: '数据库处于在线状态',
+      offline: '数据库处于离线状态',
+      unknown: '未知数据库状态',
     },
   },
   default: {
+    name: '默认数据库',
     host: '默认主机',
     port: '默认端口',
   },
   message: {
     success: {
-      change: '更改数据源成功',
+      change: '更改数据库成功',
     },
   },
   connectType: {

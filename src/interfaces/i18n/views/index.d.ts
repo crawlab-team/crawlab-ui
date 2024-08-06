@@ -15,7 +15,7 @@ export declare global {
     plugins: LViewsPlugins;
     misc: LViewsMisc;
     gits: LViewGits;
-    ds: LViewsDatabase;
+    database: LViewsDatabase;
     environment: LViewsEnvironments;
     system: LViewsSystem;
   }

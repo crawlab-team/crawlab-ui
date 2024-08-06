@@ -26,7 +26,7 @@ const views: LViews = {
   schedules,
   tasks,
   gits,
-  ds: database,
+  database,
   users,
   tags,
   tokens,

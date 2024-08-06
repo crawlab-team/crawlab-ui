@@ -4,13 +4,10 @@ export declare global {
     navActionsExtra: {
       filter: {
         select: {
-          type: {
+          dataSource: {
             label: string;
           };
           status: {
-            label: string;
-          };
-          connectType: {
             label: string;
           };
           database: {

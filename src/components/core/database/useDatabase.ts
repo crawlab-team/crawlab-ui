@@ -8,8 +8,6 @@ import {
   DATABASE_TYPE_MYSQL,
   DATABASE_TYPE_POSTGRESQL,
   DATABASE_TYPE_MSSQL,
-  DATABASE_TYPE_SQLITE,
-  DATABASE_TYPE_COCKROACHDB,
   DATABASE_TYPE_ELASTICSEARCH,
   DATABASE_TYPE_KAFKA,
 } from '@/constants/database';
@@ -32,29 +30,36 @@ export const useDatabase = (store: Store<RootStoreState>) => {
   const formRules: FormRules = {};
 
   // type options
-  const typeOptions: SelectOption[] = [
-    { label: t('components.ds.type.mongo'), value: DATABASE_TYPE_MONGO },
-    { label: t('components.ds.type.mysql'), value: DATABASE_TYPE_MYSQL },
+  const dataSourceOptions: SelectOption[] = [
     {
-      label: t('components.ds.type.postgresql'),
+      label: t('components.database.dataSources.mongo'),
+      value: DATABASE_TYPE_MONGO,
+    },
+    {
+      label: t('components.database.dataSources.mysql'),
+      value: DATABASE_TYPE_MYSQL,
+    },
+    {
+      label: t('components.database.dataSources.postgresql'),
       value: DATABASE_TYPE_POSTGRESQL,
     },
-    { label: t('components.ds.type.mssql'), value: DATABASE_TYPE_MSSQL },
-    { label: t('components.ds.type.sqlite'), value: DATABASE_TYPE_SQLITE },
     {
-      label: t('components.ds.type.cockroachdb'),
-      value: DATABASE_TYPE_COCKROACHDB,
+      label: t('components.database.dataSources.mssql'),
+      value: DATABASE_TYPE_MSSQL,
     },
     {
-      label: t('components.ds.type.elasticsearch'),
+      label: t('components.database.dataSources.elasticsearch'),
       value: DATABASE_TYPE_ELASTICSEARCH,
     },
-    { label: t('components.ds.type.kafka'), value: DATABASE_TYPE_KAFKA },
+    {
+      label: t('components.database.dataSources.kafka'),
+      value: DATABASE_TYPE_KAFKA,
+    },
   ];
   const getTypeOptionsWithDefault = (): SelectOption[] => {
     return [
-      { label: t('components.ds.type.default'), value: undefined },
-      ...typeOptions,
+      { label: t('components.database.dataSources.default'), value: undefined },
+      ...dataSourceOptions,
     ];
   };
 
@@ -73,24 +78,6 @@ export const useDatabase = (store: Store<RootStoreState>) => {
 
     await store.dispatch(`${ns}/changePassword`, { id, password: value });
     ElMessage.success(t('common.message.success.save'));
-  };
-
-  // on connect type change
-  const onConnectTypeChange = (connectType: DatabaseConnectType) => {
-    const form = plainClone(state.form);
-    switch (connectType) {
-      case DATABASE_CONNECT_TYPE_STANDARD:
-        form.host = '';
-        form.port = '';
-        break;
-      case DATABASE_CONNECT_TYPE_URL:
-        form.url = '';
-        break;
-      case DATABASE_CONNECT_TYPE_HOSTS:
-        form.hosts = [''];
-        break;
-    }
-    store.commit(`${ns}/setForm`, { ...form });
   };
 
   // on hosts add
@@ -112,10 +99,9 @@ export const useDatabase = (store: Store<RootStoreState>) => {
   return {
     ...useForm(ns, store, useDatabaseService(store), formComponentData),
     formRules,
-    typeOptions,
+    dataSourceOptions,
     getTypeOptionsWithDefault,
     onChangePasswordFunc,
-    onConnectTypeChange,
     onHostsAdd,
     onHostsDelete,
   };

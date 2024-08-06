@@ -16,7 +16,7 @@ export declare global {
     metric: LComponentsMetric;
     export: LComponentsExport;
     result: LComponentsResult;
-    ds: LComponentsDatabase;
+    database: LComponentsDatabase;
     environment: LComponentsEnvironment;
     notification: LComponentsNotification;
     editor: LComponentsEditor;

@@ -28,7 +28,7 @@ const dsId = ref<string>();
 const onDataSourceChange = async (value: string) => {
   await post(`/spiders/${id.value}/database/${value || EMPTY_OBJECT_ID}`);
   await store.dispatch('spider/getById', id.value);
-  ElMessage.success(t('components.ds.message.success.change'));
+  ElMessage.success(t('components.database.message.success.change'));
 };
 onBeforeMount(async () => {
   await store.dispatch('ds/getAllList');
@@ -42,7 +42,7 @@ defineOptions({ name: 'ClSpiderDetailActionsDatabase' });
   <cl-nav-action-group>
     <cl-nav-action-fa-icon
       :icon="['fa', 'database']"
-      :label="t('components.ds.label.text')"
+      :label="t('components.database.label.text')"
     />
     <cl-nav-action-item>
       <el-select v-model="dsId" @change="onDataSourceChange">

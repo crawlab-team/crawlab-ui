@@ -1,13 +1,13 @@
 const database: LComponentsDatabase = {
   label: {
-    text: 'Data Source',
-    tooltip: 'Data Source',
+    text: 'Database',
+    tooltip: 'Database',
   },
   form: {
     name: 'Name',
-    type: 'Type',
-    status: 'Status',
     description: 'Description',
+    dataSource: 'Data Source',
+    status: 'Status',
     host: 'Host',
     port: 'Port',
     url: 'URL',
@@ -17,8 +17,6 @@ const database: LComponentsDatabase = {
     address: 'Address',
     changePassword: 'Change Password',
     database: 'Database',
-    connectType: 'Connect Type',
-    connectSettings: 'Connect Settings',
     mongo: {
       authSource: 'Auth Source',
       authMechanism: 'Auth Mechanism',
@@ -37,16 +35,15 @@ const database: LComponentsDatabase = {
       database: 'Default Database',
     },
   },
-  type: {
+  dataSources: {
     default: 'Default',
     mongo: 'MongoDB',
     mysql: 'MySQL',
     postgresql: 'PostgreSQL',
     mssql: 'Microsoft SQL Server',
-    sqlite: 'SQLite',
-    cockroachdb: 'CockroachDB',
     elasticsearch: 'ElasticSearch',
     kafka: 'Kafka',
+    redis: 'Redis',
   },
   status: {
     label: {
@@ -61,6 +58,7 @@ const database: LComponentsDatabase = {
     },
   },
   default: {
+    name: 'Default Database',
     host: 'Default Host',
     port: 'Default Port',
   },
