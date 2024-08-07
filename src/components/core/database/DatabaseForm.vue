@@ -3,12 +3,8 @@ import { computed } from 'vue';
 import { getStore } from '@/store';
 import useDatabase from '@/components/core/database/useDatabase';
 import useDatabaseDetail from '@/views/database/detail/useDatabaseDetail';
-import {
-  DATABASE_CONNECT_TYPE_HOSTS,
-  DATABASE_CONNECT_TYPE_STANDARD,
-  DATABASE_CONNECT_TYPE_URL,
-} from '@/constants/database';
 import { translate } from '@/utils';
+import { getDatabaseDefaultByDataSource } from '@/utils/database';
 
 defineProps<{
   readonly?: boolean;
@@ -18,6 +14,7 @@ defineProps<{
 const t = translate;
 
 // store
+const ns: ListStoreNamespace = 'database';
 const store = getStore();
 const { database: state } = store.state as RootStoreState;
 
@@ -33,6 +30,16 @@ const isDetail = computed<boolean>(() => !!activeId.value);
 const form = computed(() => state.form);
 
 const isDisabled = computed(() => form.value.is_default);
+
+const onDataSourceChange = (dataSource: DatabaseDataSource) => {
+  const { name, host, port } = getDatabaseDefaultByDataSource(dataSource) || {};
+  store.commit(`${ns}/setForm`, {
+    data_source: dataSource,
+    name,
+    host,
+    port,
+  });
+};
 
 defineOptions({ name: 'ClDatabaseForm' });
 </script>
@@ -72,6 +79,7 @@ defineOptions({ name: 'ClDatabaseForm' });
         v-model="form.data_source"
         :placeholder="t('components.database.form.dataSource')"
         :disabled="isDisabled"
+        @change="onDataSourceChange"
       >
         <el-option
           v-for="op in dataSourceOptions"

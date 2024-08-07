@@ -31,7 +31,8 @@ export const setupGetAllList = (
 export const setupListComponent = (
   ns: ListStoreNamespace,
   store: Store<RootStoreState>,
-  allListNamespaces?: ListStoreNamespace[]
+  allListNamespaces?: ListStoreNamespace[],
+  autoUpdate: boolean = true
 ) => {
   if (!allListNamespaces) allListNamespaces = [];
 
@@ -39,9 +40,11 @@ export const setupListComponent = (
   setupGetAllList(store, allListNamespaces);
 
   // auto update
-  setupAutoUpdate(async () => {
-    await store.dispatch(`${ns}/getList`);
-  });
+  if (autoUpdate) {
+    setupAutoUpdate(async () => {
+      await store.dispatch(`${ns}/getList`);
+    });
+  }
 };
 
 export const prependAllToSelectOptions = (

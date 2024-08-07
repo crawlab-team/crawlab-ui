@@ -40,7 +40,7 @@ export declare global {
       default: string;
       mongo: string;
       mysql: string;
-      postgresql: string;
+      postgres: string;
       mssql: string;
       elasticsearch: string;
       kafka: string;

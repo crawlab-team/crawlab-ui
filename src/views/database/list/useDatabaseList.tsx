@@ -4,20 +4,19 @@ import {
   ClNavLink,
   ClDatabaseDataSource,
   ClDatabaseStatus,
+  useDatabase,
 } from '@/components';
 import useDataSourceService from '@/services/database/databaseService';
 import {
   DATABASE_STATUS_OFFLINE,
   DATABASE_STATUS_ONLINE,
-  DATABASE_TYPE_ELASTICSEARCH,
-  DATABASE_TYPE_KAFKA,
-  DATABASE_TYPE_MONGO,
-  DATABASE_TYPE_MSSQL,
-  DATABASE_TYPE_MYSQL,
-  DATABASE_TYPE_POSTGRESQL,
 } from '@/constants/database';
 import { getStore } from '@/store';
-import { onListFilterChangeByKey, translate } from '@/utils';
+import {
+  onListFilterChangeByKey,
+  setupListComponent,
+  translate,
+} from '@/utils';
 import { getRouter } from '@/router';
 import {
   ACTION_FILTER,
@@ -41,35 +40,10 @@ const useDatabaseList = () => {
   const store = getStore();
   const { commit } = store;
 
+  const { dataSourceOptions } = useDatabase(store);
+
   // services
   const { getList, deleteById } = useDataSourceService(store);
-
-  const dataSourceSelectOptions: SelectOption[] = [
-    {
-      label: t('components.database.dataSources.mongo'),
-      value: DATABASE_TYPE_MONGO,
-    },
-    {
-      label: t('components.database.dataSources.mysql'),
-      value: DATABASE_TYPE_MYSQL,
-    },
-    {
-      label: t('components.database.dataSources.postgresql'),
-      value: DATABASE_TYPE_POSTGRESQL,
-    },
-    {
-      label: t('components.database.dataSources.mssql'),
-      value: DATABASE_TYPE_MSSQL,
-    },
-    {
-      label: t('components.database.dataSources.elasticsearch'),
-      value: DATABASE_TYPE_ELASTICSEARCH,
-    },
-    {
-      label: t('components.database.dataSources.kafka'),
-      value: DATABASE_TYPE_KAFKA,
-    },
-  ];
 
   const statusSelectOptions: SelectOption[] = [
     {
@@ -122,7 +96,7 @@ const useDatabaseList = () => {
           label: t(
             'views.database.navActionsExtra.filter.select.dataSource.label'
           ),
-          options: dataSourceSelectOptions,
+          options: dataSourceOptions.value,
           onChange: onListFilterChangeByKey(
             store,
             ns as any,
@@ -235,6 +209,8 @@ const useDatabaseList = () => {
     navActions,
     tableColumns,
   } as UseListOptions<Database>;
+
+  setupListComponent(ns, store, [], true);
 
   return {
     ...useList<Database>(ns, store, opts),

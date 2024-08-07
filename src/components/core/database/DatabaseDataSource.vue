@@ -1,14 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import {
-  DATABASE_TYPE_MONGO,
-  DATABASE_TYPE_MYSQL,
-  DATABASE_TYPE_POSTGRESQL,
-  DATABASE_TYPE_MSSQL,
-  DATABASE_TYPE_ELASTICSEARCH,
-  DATABASE_TYPE_KAFKA,
-  DATABASE_TYPE_REDIS,
-} from '@/constants/database';
 import { translate } from '@/utils';
 
 const props = defineProps<{
@@ -25,47 +16,83 @@ const t = translate;
 const data = computed<TagProps>(() => {
   const { dataSource } = props;
   switch (dataSource) {
-    case DATABASE_TYPE_MONGO:
+    case 'mongo':
       return {
         label: t('components.database.dataSources.mongo'),
         type: 'info',
         icon: ['svg', 'mongodb'],
       };
-    case DATABASE_TYPE_ELASTICSEARCH:
-      return {
-        label: t('components.database.dataSources.elasticsearch'),
-        type: 'info',
-        icon: ['svg', 'elasticsearch'],
-      };
-    case DATABASE_TYPE_MYSQL:
+    case 'mysql':
       return {
         label: t('components.database.dataSources.mysql'),
         type: 'info',
         icon: ['svg', 'mysql'],
       };
-    case DATABASE_TYPE_POSTGRESQL:
+    case 'postgres':
       return {
-        label: t('components.database.dataSources.postgresql'),
+        label: t('components.database.dataSources.postgres'),
         type: 'info',
         icon: ['svg', 'postgres'],
       };
-    case DATABASE_TYPE_MSSQL:
+    case 'mssql':
       return {
         label: t('components.database.dataSources.mssql'),
         type: 'info',
         icon: ['svg', 'mssql'],
       };
-    case DATABASE_TYPE_KAFKA:
+    case 'oracle':
       return {
-        label: t('components.database.dataSources.kafka'),
+        label: t('components.database.dataSources.oracle'),
         type: 'info',
-        icon: ['svg', 'kafka'],
+        icon: ['svg', 'oracle'],
       };
-    case DATABASE_TYPE_REDIS:
+    case 'db2':
+      return {
+        label: t('components.database.dataSources.db2'),
+        type: 'info',
+        icon: ['svg', 'postgres'],
+      };
+    case 'cassandra':
+      return {
+        label: t('components.database.dataSources.cassandra'),
+        type: 'info',
+        icon: ['svg', 'cassandra'],
+      };
+    case 'hive':
+      return {
+        label: t('components.database.dataSources.hive'),
+        type: 'info',
+        icon: ['svg', 'hive'],
+      };
+    case 'clickhouse':
+      return {
+        label: t('components.database.dataSources.clickhouse'),
+        type: 'info',
+        icon: ['svg', 'clickhouse'],
+      };
+    case 'snowflake':
+      return {
+        label: t('components.database.dataSources.snowflake'),
+        type: 'info',
+        icon: ['svg', 'snowflake'],
+      };
+    case 'elasticsearch':
+      return {
+        label: t('components.database.dataSources.elasticsearch'),
+        type: 'info',
+        icon: ['svg', 'elasticsearch'],
+      };
+    case 'redis':
       return {
         label: t('components.database.dataSources.redis'),
         type: 'info',
         icon: ['svg', 'redis'],
+      };
+    case 'kafka':
+      return {
+        label: t('components.database.dataSources.kafka'),
+        type: 'info',
+        icon: ['svg', 'kafka'],
       };
     default:
       return {

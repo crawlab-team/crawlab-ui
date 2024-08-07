@@ -1,10 +1,4 @@
 import {
-  DATABASE_TYPE_MONGO,
-  DATABASE_TYPE_MYSQL,
-  DATABASE_TYPE_POSTGRESQL,
-  DATABASE_TYPE_MSSQL,
-  DATABASE_TYPE_ELASTICSEARCH,
-  DATABASE_TYPE_KAFKA,
   DATABASE_STATUS_ONLINE,
   DATABASE_STATUS_OFFLINE,
 } from '@/constants/database';
@@ -17,7 +11,7 @@ export declare global {
     error?: string;
     description?: string;
     host?: string;
-    port?: string;
+    port?: number;
     url?: string;
     hosts?: string[];
     username?: string;
@@ -27,12 +21,19 @@ export declare global {
   }
 
   type DatabaseDataSource =
-    | DATABASE_TYPE_MONGO
-    | DATABASE_TYPE_MYSQL
-    | DATABASE_TYPE_POSTGRESQL
-    | DATABASE_TYPE_MSSQL
-    | DATABASE_TYPE_ELASTICSEARCH
-    | DATABASE_TYPE_KAFKA;
+    | 'mongo'
+    | 'mysql'
+    | 'postgres'
+    | 'mssql'
+    | 'oracle'
+    | 'db2'
+    | 'cassandra'
+    | 'hive'
+    | 'clickhouse'
+    | 'snowflake'
+    | 'elasticsearch'
+    | 'redis'
+    | 'kafka';
 
   type DatabaseStatus = DATABASE_STATUS_ONLINE | DATABASE_STATUS_OFFLINE;
 }

@@ -39,7 +39,7 @@ const database: LComponentsDatabase = {
     default: 'Default',
     mongo: 'MongoDB',
     mysql: 'MySQL',
-    postgresql: 'PostgreSQL',
+    postgres: 'PostgreSQL',
     mssql: 'Microsoft SQL Server',
     elasticsearch: 'ElasticSearch',
     kafka: 'Kafka',

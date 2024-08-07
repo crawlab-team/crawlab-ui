@@ -31,7 +31,7 @@ const onDataSourceChange = async (value: string) => {
   ElMessage.success(t('components.database.message.success.change'));
 };
 onBeforeMount(async () => {
-  await store.dispatch('ds/getAllList');
+  await store.dispatch('database/getAllList');
   const res = await get<Database>(`/spiders/${id.value}/database`);
   dsId.value = res.data?._id;
 });

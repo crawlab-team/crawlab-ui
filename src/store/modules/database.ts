@@ -1,4 +1,3 @@
-import { DATABASE_CONNECT_TYPE_STANDARD } from '@/constants/database';
 import useRequest from '@/services/request';
 import {
   getDefaultStoreActions,
@@ -14,7 +13,6 @@ const state = {
   ...getDefaultStoreState<Database>('database' as StoreNamespace),
   newFormFn: () => {
     return {
-      connect_type: DATABASE_CONNECT_TYPE_STANDARD,
       hosts: [],
     };
   },

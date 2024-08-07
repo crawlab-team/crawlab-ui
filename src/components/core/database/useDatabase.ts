@@ -1,19 +1,10 @@
+import { computed } from 'vue';
 import { Store } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import {
-  DATABASE_CONNECT_TYPE_HOSTS,
-  DATABASE_CONNECT_TYPE_STANDARD,
-  DATABASE_CONNECT_TYPE_URL,
-  DATABASE_TYPE_MONGO,
-  DATABASE_TYPE_MYSQL,
-  DATABASE_TYPE_POSTGRESQL,
-  DATABASE_TYPE_MSSQL,
-  DATABASE_TYPE_ELASTICSEARCH,
-  DATABASE_TYPE_KAFKA,
-} from '@/constants/database';
 import useDatabaseService from '@/services/database/databaseService';
 import { getDefaultFormComponentData, plainClone, translate } from '@/utils';
 import useForm from '@/components/ui/form/useForm';
+import { databaseDefaults } from '@/utils/database';
 
 // i18n
 const t = translate;
@@ -30,36 +21,16 @@ export const useDatabase = (store: Store<RootStoreState>) => {
   const formRules: FormRules = {};
 
   // type options
-  const dataSourceOptions: SelectOption[] = [
-    {
-      label: t('components.database.dataSources.mongo'),
-      value: DATABASE_TYPE_MONGO,
-    },
-    {
-      label: t('components.database.dataSources.mysql'),
-      value: DATABASE_TYPE_MYSQL,
-    },
-    {
-      label: t('components.database.dataSources.postgresql'),
-      value: DATABASE_TYPE_POSTGRESQL,
-    },
-    {
-      label: t('components.database.dataSources.mssql'),
-      value: DATABASE_TYPE_MSSQL,
-    },
-    {
-      label: t('components.database.dataSources.elasticsearch'),
-      value: DATABASE_TYPE_ELASTICSEARCH,
-    },
-    {
-      label: t('components.database.dataSources.kafka'),
-      value: DATABASE_TYPE_KAFKA,
-    },
-  ];
+  const dataSourceOptions = computed<SelectOption<DatabaseDataSource>[]>(() =>
+    databaseDefaults.map(item => ({
+      label: item.name,
+      value: item.data_source,
+    }))
+  );
   const getTypeOptionsWithDefault = (): SelectOption[] => {
     return [
       { label: t('components.database.dataSources.default'), value: undefined },
-      ...dataSourceOptions,
+      ...dataSourceOptions.value,
     ];
   };
 

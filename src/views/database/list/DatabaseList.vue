@@ -14,13 +14,14 @@ defineOptions({ name: 'ClDatabaseList' });
 
 <template>
   <cl-list-layout
+    class="database-list"
+    :row-key="({ _id, status }: Database) => [_id, status].join('_')"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :pagination="tablePagination"
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
-    class="database-list"
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
