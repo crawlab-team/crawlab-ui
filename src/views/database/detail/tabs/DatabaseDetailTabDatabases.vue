@@ -305,6 +305,12 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
   height: calc(100vh - 64px - 40px - 41px - 50px);
   width: 100%;
 
+  &:deep(.el-table--border:before),
+  &:deep(.el-table--border .el-table__inner-wrapper:after),
+  &:deep(.el-table__border-left-patch) {
+    background-color: transparent !important;
+  }
+
   .sidebar {
     flex: 0 0 240px;
     height: 100%;
@@ -365,8 +371,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     height: 100%;
     overflow: auto;
 
-    .table {
-      border: none;
+    .el-table {
       width: 100%;
     }
   }
