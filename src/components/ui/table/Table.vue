@@ -233,8 +233,11 @@ defineOptions({ name: 'ClTable' });
 <style lang="scss" scoped>
 .table {
   background-color: var(--cl-container-white-bg);
+  display: flex;
+  flex-direction: column;
 
   .el-table {
+    flex: 1;
     width: 100%;
   }
 
@@ -244,6 +247,7 @@ defineOptions({ name: 'ClTable' });
   }
 
   .table-footer {
+    flex: 0 0 50px;
     display: flex;
     justify-content: space-between;
     padding: 10px;

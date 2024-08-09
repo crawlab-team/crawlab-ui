@@ -48,8 +48,8 @@ export declare global {
 
   interface DatabaseTable {
     name: string;
-    columns: DatabaseColumn[];
-    indexes: DatabaseIndex[];
+    columns?: DatabaseColumn[];
+    indexes?: DatabaseIndex[];
   }
 
   interface DatabaseColumn {

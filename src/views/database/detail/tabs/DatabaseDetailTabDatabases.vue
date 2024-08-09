@@ -38,7 +38,7 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
               id: `${d.name}:${t.name}:columns`,
               label: 'columns',
               icon: ['fa', 'columns'],
-              children: t.columns.map(c => {
+              children: t.columns?.map(c => {
                 return {
                   id: `${d.name}:${t.name}:columns:${c.name}`,
                   name: c.name,
@@ -53,7 +53,7 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
               id: `${d.name}:${t.name}:indexes`,
               label: 'indexes',
               icon: ['fa', 'key'],
-              children: t.indexes.map(i => {
+              children: t.indexes?.map(i => {
                 return {
                   id: `${d.name}:${t.name}:indexes:${i.name}`,
                   name: i.name,
@@ -190,7 +190,6 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
 
 const tableColumns = computed<TableColumns<Record<string, any>>>(() => {
   const { id, type, children } = activeNavItem.value || {};
-  console.debug(type, children);
   if (type !== 'table' || !children) return [];
   const columns = children.find(c => c.id === `${id}:columns`);
   if (!columns?.children) return [];
@@ -215,6 +214,11 @@ const tablePagination = computed<TablePagination>(
 );
 
 const tableTotal = computed<number>(() => state.tablePreviewTotal);
+
+const onTablePaginationChange = (pagination: TablePagination) => {
+  store.commit(`${ns}/setTablePreviewPagination`, pagination);
+  getTablePreview();
+};
 
 const resetTablePreview = () => {
   activeNavItem.value = undefined;
@@ -244,48 +248,51 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
 <template>
   <div class="database-detail-tab-databases">
     <div class="sidebar">
-      <el-tree
-        ref="treeRef"
-        node-key="id"
-        :data="treeItems"
-        :expand-on-click-node="false"
-        highlight-current
-        @node-click="onNodeClick"
-        @node-contextmenu="onContextMenuClick"
-      >
-        <template #default="{ data }">
-          <cl-context-menu
-            :visible="isContextMenuVisible(data.id)"
-            :style="{ flex: 1, paddingRight: '10px' }"
-          >
-            <template #reference>
-              <div class="node-wrapper" :title="data.label">
-                <span class="icon-wrapper">
-                  <cl-icon :icon="data.icon" />
-                </span>
-                <span class="label">{{ data.label }}</span>
-                <span v-if="data.data_type" class="data-type">
-                  {{ data.data_type }}
-                </span>
-              </div>
-              <div class="actions">
-                <cl-icon
-                  :icon="['fa', 'ellipsis']"
-                  @click="(event: MouseEvent) => onActionsClick(data, event)"
-                />
-              </div>
-            </template>
-            <cl-context-menu-list
-              :items="contextMenuItems"
-              @hide="onContextMenuHide(data.id)"
-            />
-          </cl-context-menu>
-        </template>
-      </el-tree>
+      <el-scrollbar>
+        <el-tree
+          ref="treeRef"
+          node-key="id"
+          :data="treeItems"
+          :expand-on-click-node="false"
+          highlight-current
+          @node-click="onNodeClick"
+          @node-contextmenu="onContextMenuClick"
+        >
+          <template #default="{ data }">
+            <cl-context-menu
+              :visible="isContextMenuVisible(data.id)"
+              :style="{ flex: 1, paddingRight: '10px' }"
+            >
+              <template #reference>
+                <div class="node-wrapper" :title="data.label">
+                  <span class="icon-wrapper">
+                    <cl-icon :icon="data.icon" />
+                  </span>
+                  <span class="label">{{ data.label }}</span>
+                  <span v-if="data.data_type" class="data-type">
+                    {{ data.data_type }}
+                  </span>
+                </div>
+                <div class="actions">
+                  <cl-icon
+                    :icon="['fa', 'ellipsis']"
+                    @click="(event: MouseEvent) => onActionsClick(data, event)"
+                  />
+                </div>
+              </template>
+              <cl-context-menu-list
+                :items="contextMenuItems"
+                @hide="onContextMenuHide(data.id)"
+              />
+            </cl-context-menu>
+          </template>
+        </el-tree>
+      </el-scrollbar>
     </div>
     <div class="content">
       <template v-if="activeNavItem?.type === 'table'">
         <cl-table
+          :loading="tablePreviewLoading"
           :key="JSON.stringify(activeNavItem)"
           :row-key="(row: Record<string, any>) => JSON.stringify(row)"
           :columns="tableColumns"
@@ -293,6 +300,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           :page="tablePagination.page"
           :page-size="tablePagination.size"
           :total="tableTotal"
+          @pagination-change="onTablePaginationChange"
         />
       </template>
     </div>
@@ -371,8 +379,13 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     height: 100%;
     overflow: auto;
 
-    .el-table {
+    .table {
       width: 100%;
+      height: 100%;
+
+      &:deep(.table-footer) {
+        border-top: 1px solid var(--el-border-color);
+      }
     }
   }
 }
