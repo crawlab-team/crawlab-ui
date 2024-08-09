@@ -1,5 +1,8 @@
 import ResultList from './data/list/ResultList.vue';
+import DatabaseDetailActionsCommon from './database/detail/actions/DatabaseDetailActionsCommon.vue';
 import DatabaseDetail from './database/detail/DatabaseDetail.vue';
+import DatabaseDetailTabConsole from './database/detail/tabs/DatabaseDetailTabConsole.vue';
+import DatabaseDetailTabDatabases from './database/detail/tabs/DatabaseDetailTabDatabases.vue';
 import DatabaseDetailTabOverview from './database/detail/tabs/DatabaseDetailTabOverview.vue';
 import useDatabaseDetail from './database/detail/useDatabaseDetail';
 import DatabaseList from './database/list/DatabaseList.vue';
@@ -110,7 +113,10 @@ import useUserList from './user/list/useUserList';
 
 export {
   ResultList as ClResultList,
+  DatabaseDetailActionsCommon as ClDatabaseDetailActionsCommon,
   DatabaseDetail as ClDatabaseDetail,
+  DatabaseDetailTabConsole as ClDatabaseDetailTabConsole,
+  DatabaseDetailTabDatabases as ClDatabaseDetailTabDatabases,
   DatabaseDetailTabOverview as ClDatabaseDetailTabOverview,
   useDatabaseDetail as useDatabaseDetail,
   DatabaseList as ClDatabaseList,

@@ -1,26 +1,20 @@
 <script setup lang="ts">
-import { ClickOutside as vClickOutside } from 'element-plus';
+import { computed, provide, StyleValue } from 'vue';
+import { Placement } from '@popperjs/core';
 
 interface ContextMenuProps {
   visible?: boolean;
-  placement: string;
-  clicking?: boolean;
+  placement?: Placement;
+  style?: StyleValue;
 }
 
 const props = withDefaults(defineProps<ContextMenuProps>(), {
   placement: 'right-start',
 });
 
-export interface contextMenuEmits {
-  (e: 'hide'): void;
-}
-
-const emit = defineEmits<contextMenuEmits>();
-
-const onClickOutside = () => {
-  if (props.clicking) return;
-  emit('hide');
-};
+provide('context-menu', {
+  visible: computed(() => props.visible),
+});
 
 defineOptions({ name: 'ClContextMenu' });
 </script>
@@ -37,7 +31,7 @@ defineOptions({ name: 'ClContextMenu' });
       <slot name="default"></slot>
     </template>
     <template #reference>
-      <div v-click-outside="onClickOutside">
+      <div :style="style">
         <slot name="reference"></slot>
       </div>
     </template>

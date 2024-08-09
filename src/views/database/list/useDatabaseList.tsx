@@ -5,6 +5,7 @@ import {
   ClDatabaseDataSource,
   ClDatabaseStatus,
   useDatabase,
+  ClIcon,
 } from '@/components';
 import useDataSourceService from '@/services/database/databaseService';
 import {
@@ -122,87 +123,103 @@ const useDatabaseList = () => {
   ]);
 
   // table columns
-  const tableColumns = computed<TableColumns<Database>>(() => [
-    {
-      key: 'name',
-      label: t('components.database.form.name'),
-      icon: ['fa', 'font'],
-      width: '150',
-      value: (row: Database) => (
-        <ClNavLink path={`/databases/${row._id}`} label={row.name} />
-      ),
-      hasSort: true,
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: 'data_source',
-      label: t('components.database.form.dataSource'),
-      icon: ['fa', 'database'],
-      width: '150',
-      value: (row: Database) => (
-        <ClDatabaseDataSource dataSource={row.data_source} />
-      ),
-    },
-    {
-      key: 'status', // status
-      label: t('components.database.form.status'),
-      icon: ['fa', 'heartbeat'],
-      width: '120',
-      value: (row: Database) => (
-        <ClDatabaseStatus status={row.status} error={row.error} />
-      ),
-      hasFilter: true,
-      allowFilterItems: true,
-      filterItems: statusSelectOptions,
-    },
-    {
-      key: 'description',
-      label: t('components.database.form.description'),
-      icon: ['fa', 'comment-alt'],
-      width: 'auto',
-      hasFilter: true,
-      allowFilterSearch: true,
-    },
-    {
-      key: TABLE_COLUMN_NAME_ACTIONS,
-      label: t('components.table.columns.actions'),
-      fixed: 'right',
-      width: '200',
-      buttons: [
+  const tableColumns = computed<TableColumns<Database>>(
+    () =>
+      [
         {
-          type: 'primary',
-          icon: ['fa', 'search'],
-          tooltip: t('common.actions.view'),
-          onClick: async row => {
-            await router.push(`/databases/${row._id}`);
-          },
+          key: 'name',
+          label: t('components.database.form.name'),
+          icon: ['fa', 'font'],
+          width: '150',
+          value: (row: Database) => (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <ClNavLink
+                path={`/databases/${row._id}`}
+                label={
+                  row.is_default
+                    ? t('components.database.default.name')
+                    : row.name
+                }
+              />
+              {row.is_default ? (
+                <ClIcon color="var(--cl-warning-color)" icon={['fa', 'star']} />
+              ) : null}
+            </div>
+          ),
+          hasSort: true,
+          hasFilter: true,
+          allowFilterSearch: true,
         },
         {
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
-          tooltip: t('common.actions.delete'),
-          onClick: async (row: Database) => {
-            const res = await ElMessageBox.confirm(
-              t('common.messageBox.confirm.delete'),
-              t('common.actions.delete'),
-              {
-                type: 'warning',
-                confirmButtonClass: 'el-button--danger',
-              }
-            );
+          key: 'data_source',
+          label: t('components.database.form.dataSource'),
+          icon: ['fa', 'database'],
+          width: '150',
+          value: (row: Database) => (
+            <ClDatabaseDataSource dataSource={row.data_source} />
+          ),
+        },
+        {
+          key: 'status', // status
+          label: t('components.database.form.status'),
+          icon: ['fa', 'heartbeat'],
+          width: '120',
+          value: (row: Database) => (
+            <ClDatabaseStatus status={row.status} error={row.error} />
+          ),
+          hasFilter: true,
+          allowFilterItems: true,
+          filterItems: statusSelectOptions,
+        },
+        {
+          key: 'description',
+          label: t('components.database.form.description'),
+          icon: ['fa', 'comment-alt'],
+          width: 'auto',
+          hasFilter: true,
+          allowFilterSearch: true,
+        },
+        {
+          key: TABLE_COLUMN_NAME_ACTIONS,
+          label: t('components.table.columns.actions'),
+          fixed: 'right',
+          width: '200',
+          buttons: [
+            {
+              type: 'primary',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: async row => {
+                await router.push(`/databases/${row._id}`);
+              },
+            },
+            {
+              type: 'danger',
+              size: 'small',
+              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.delete'),
+              disabled: (row: Database) => row.is_default,
+              onClick: async (row: Database) => {
+                const res = await ElMessageBox.confirm(
+                  t('common.messageBox.confirm.delete'),
+                  t('common.actions.delete'),
+                  {
+                    type: 'warning',
+                    confirmButtonClass: 'el-button--danger',
+                  }
+                );
 
-            if (res) {
-              await deleteById(row._id as string);
-            }
-            await getList();
-          },
+                if (res) {
+                  await deleteById(row._id as string);
+                }
+                await getList();
+              },
+            },
+          ],
+          disableTransfer: true,
         },
-      ],
-      disableTransfer: true,
-    },
-  ]);
+      ] as TableColumns<Database>
+  );
 
   // options
   const opts = {

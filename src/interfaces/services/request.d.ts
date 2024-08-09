@@ -4,6 +4,8 @@ export declare global {
     size?: number;
     conditions?: FilterConditionData[] | string;
     all?: boolean | string | number;
+
+    [key: string]: any;
   }
 
   interface BatchRequestPayload {

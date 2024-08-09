@@ -1,3 +1,8 @@
-interface ContextMenuListProps {
-  items: ContextMenuItem[];
+export declare global {
+  interface ContextMenuItem {
+    title: string;
+    icon?: Icon;
+    action?: () => void | Promise<void>;
+    className?: string;
+  }
 }

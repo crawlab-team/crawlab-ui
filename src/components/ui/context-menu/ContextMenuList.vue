@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { ComputedRef, inject, ref } from 'vue';
+import { ClickOutside as vClickOutside } from 'element-plus';
+
 interface ContextMenuItem {
   title: string;
   icon?: Icon;
-  action?: () => void;
+  action?: () => void | Promise<void>;
   className?: string;
 }
 
@@ -10,26 +13,42 @@ defineProps<{
   items?: ContextMenuItem[];
 }>();
 
+const contextMenu = inject<{ visible: ComputedRef<boolean> }>('context-menu');
+
 const emit = defineEmits<{
   (e: 'hide'): void;
 }>();
 
-const onClick = (event: Event, item: ContextMenuItem) => {
+const clicking = ref(false);
+const onClick = (event: MouseEvent, item: ContextMenuItem) => {
+  if (!contextMenu?.visible.value) return;
+  clicking.value = true;
+  setTimeout(() => {
+    clicking.value = false;
+  }, 100);
+
   event.stopPropagation();
   if (!item.action) return;
   item.action();
   emit('hide');
 };
+
+const onClickOutside = () => {
+  if (!contextMenu?.visible.value) return;
+  if (clicking.value) return;
+  emit('hide');
+};
+
 defineOptions({ name: 'ClContextMenuList' });
 </script>
 
 <template>
-  <ul class="context-menu-list">
+  <ul v-click-outside="onClickOutside" class="context-menu-list">
     <li
       v-for="(item, $index) in items"
       :key="$index"
       :class="['context-menu-item', item.className].join(' ')"
-      @click="event => onClick(event, item)"
+      @click="onClick($event, item)"
     >
       <span class="prefix">
         <template v-if="item.icon">

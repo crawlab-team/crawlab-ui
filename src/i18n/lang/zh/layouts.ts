@@ -122,6 +122,8 @@ const layouts: LLayouts = {
       title: '数据库',
       tabs: {
         overview: '概览',
+        databases: '数据库',
+        console: '控制台',
       },
     },
     environments: {

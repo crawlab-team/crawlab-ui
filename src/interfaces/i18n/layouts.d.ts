@@ -123,6 +123,8 @@ export declare global {
         title: string;
         tabs: {
           overview: string;
+          databases: string;
+          console: string;
         };
       };
       environments: {

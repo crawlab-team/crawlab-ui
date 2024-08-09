@@ -54,6 +54,7 @@ export declare global {
       viewTemplate: string;
       viewChannels: string;
       viewMonitoring: string;
+      previewData: string;
     };
     messageBox: {
       confirm: {
@@ -121,6 +122,8 @@ export declare global {
       monitoring: string;
       channels: string;
       mail: string;
+      databases: string;
+      console: string;
     };
     status: {
       unassigned: string;

@@ -122,6 +122,8 @@ const layouts: LLayouts = {
       title: 'Data Sources',
       tabs: {
         overview: 'Overview',
+        databases: 'Databases',
+        console: 'Console',
       },
     },
     environments: {

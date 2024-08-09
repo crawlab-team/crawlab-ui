@@ -4,7 +4,9 @@ import urljoin from 'url-join';
 import {
   TAB_NAME_CHANGES,
   TAB_NAME_CHANNELS,
+  TAB_NAME_CONSOLE,
   TAB_NAME_DATA,
+  TAB_NAME_DATABASES,
   TAB_NAME_DEPENDENCIES,
   TAB_NAME_FILES,
   TAB_NAME_GIT,
@@ -163,6 +165,10 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'broadcast-tower'];
     case TAB_NAME_MAIL:
       return ['fa', 'at'];
+    case TAB_NAME_DATABASES:
+      return ['fa', 'database'];
+    case TAB_NAME_CONSOLE:
+      return ['fa', 'terminal'];
     default:
       return ['fa', 'circle'];
   }

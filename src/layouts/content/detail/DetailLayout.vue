@@ -113,6 +113,7 @@ defineOptions({ name: 'ClDetailLayout' });
 
   .content {
     flex: 1;
+    width: 100%;
     background-color: var(--cl-container-white-bg);
     display: flex;
     flex-direction: column;

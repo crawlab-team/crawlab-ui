@@ -112,6 +112,7 @@ defineOptions({ name: 'ClDatabaseForm' });
     >
       <el-input
         v-model="form.port"
+        type="number"
         :placeholder="t('components.database.form.port')"
         :disabled="isDisabled"
       />
@@ -152,20 +153,11 @@ defineOptions({ name: 'ClDatabaseForm' });
       prop="password"
     >
       <el-input
-        v-if="isSelectiveForm || !isDetail"
         v-model="form.password"
         :placeholder="t('components.database.form.password')"
         type="password"
         show-password
         :disabled="isDisabled"
-      />
-      <cl-label-button
-        v-else
-        :icon="['fa', 'lock']"
-        :label="t('components.database.form.changePassword')"
-        type="danger"
-        :disabled="isDisabled"
-        @click="onChangePassword"
       />
     </cl-form-item>
     <!--./Row-->

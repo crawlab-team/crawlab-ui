@@ -41,6 +41,7 @@ const common: LCommon = {
     viewTemplate: '查看模板',
     viewChannels: '查看通知渠道',
     viewMonitoring: '查看监控',
+    previewData: '预览数据',
   },
   messageBox: {
     confirm: {
@@ -108,6 +109,8 @@ const common: LCommon = {
     monitoring: '监控',
     channels: '通知渠道',
     mail: '邮件配置',
+    databases: '数据库',
+    console: '控制台',
   },
   status: {
     unassigned: '未指定',

@@ -41,6 +41,7 @@ const common: LCommon = {
     viewTemplate: 'View Template',
     viewChannels: 'View Channels',
     viewMonitoring: 'View Monitoring',
+    previewData: 'Preview Data',
   },
   messageBox: {
     confirm: {
@@ -108,6 +109,8 @@ const common: LCommon = {
     monitoring: 'Monitoring',
     channels: 'Channels',
     mail: 'Mail Config',
+    databases: 'Databases',
+    console: 'Console',
   },
   status: {
     unassigned: 'Unassigned',
