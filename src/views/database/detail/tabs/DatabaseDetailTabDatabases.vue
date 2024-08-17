@@ -93,6 +93,7 @@ const getTablePreview = async () => {
 
 const activeNavItem = ref<DatabaseNavItem>();
 const onNodeClick = async (data: DatabaseNavItem) => {
+  console.debug('onNodeClick');
   activeNavItem.value = data;
   const { type } = data;
   if (type === 'table') {
@@ -281,6 +282,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                 </div>
               </template>
               <cl-context-menu-list
+                v-if="isContextMenuVisible(data.id)"
                 :items="contextMenuItems"
                 @hide="onContextMenuHide(data.id)"
               />

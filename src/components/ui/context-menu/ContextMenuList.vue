@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ComputedRef, inject, ref } from 'vue';
-import { ClickOutside as vClickOutside } from 'element-plus';
 
 interface ContextMenuItem {
   title: string;
