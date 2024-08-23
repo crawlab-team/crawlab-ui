@@ -9,6 +9,7 @@ const props = withDefaults(
     size?: IconSize;
     color?: string;
     alt?: string;
+    class?: string;
   }>(),
   {
     size: 'default',
@@ -52,6 +53,10 @@ const updateIconSvgSrc = async () => {
 onBeforeMount(updateIconSvgSrc);
 watch(() => props.icon, updateIconSvgSrc);
 
+const cls = computed(() => {
+  return props.class?.split(' ') ?? [];
+});
+
 defineOptions({ name: 'ClIcon' });
 </script>
 
@@ -59,7 +64,7 @@ defineOptions({ name: 'ClIcon' });
   <template v-if="icon">
     <template v-if="isFaIcon">
       <font-awesome-icon
-        :class="spinning ? 'fa-spin' : ''"
+        :class="[spinning ? 'fa-spin' : '', ...cls].join(' ')"
         :icon="icon"
         :style="{ fontSize, color }"
         class="icon"
@@ -68,7 +73,7 @@ defineOptions({ name: 'ClIcon' });
     </template>
     <template v-else-if="isSvg">
       <img
-        class="icon"
+        :class="[icon, ...cls].join(' ')"
         :src="iconSvgSrc"
         :alt="alt"
         @click="event => emit('click', event)"
@@ -76,7 +81,7 @@ defineOptions({ name: 'ClIcon' });
     </template>
     <template v-else>
       <i
-        :class="[spinning ? 'fa-spin' : '', icon, 'icon']"
+        :class="[spinning ? 'fa-spin' : '', icon, 'icon', ...cls].join(' ')"
         :style="{ fontSize, color }"
         @click="event => emit('click', event)"
       />

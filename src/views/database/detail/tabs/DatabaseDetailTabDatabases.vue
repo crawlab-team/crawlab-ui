@@ -14,6 +14,8 @@ const { database: state } = store.state as RootStoreState;
 
 const { activeId } = useDatabaseDetail();
 
+const searchKeyword = ref('');
+
 const treeItems = computed<DatabaseNavItem[]>(() => {
   const { metadata } = state;
   if (!metadata?.databases) return [] as DatabaseNavItem[];
@@ -242,6 +244,33 @@ onBeforeUnmount(() => {
   resetTablePreview();
 });
 
+const showCreateContextMenu = ref(false);
+const createContextMenuListItems: ContextMenuItem[] = [
+  {
+    title: t('views.database.databases.actions.createDatabase'),
+    icon: ['fa', 'database'],
+    action: () => {
+      console.debug('Create Database');
+    },
+  },
+  {
+    title: t('views.database.databases.actions.createTable'),
+    icon: ['fa', 'table'],
+    action: () => {
+      console.debug('Create Table');
+    },
+  },
+];
+
+const showSearch = ref(false);
+const onSearch = () => {
+  showSearch.value = !showSearch.value;
+};
+
+const onRefresh = async () => {
+  await store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
+};
+
 defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
 </script>
 
@@ -249,6 +278,35 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
   <div class="database-detail-tab-databases">
     <div class="sidebar">
       <el-scrollbar>
+        <div class="sidebar-actions">
+          <cl-context-menu :visible="showCreateContextMenu">
+            <template #reference>
+              <cl-icon
+                :icon="['fa', 'plus']"
+                @click="showCreateContextMenu = true"
+              />
+            </template>
+            <cl-context-menu-list
+              :items="createContextMenuListItems"
+              @hide="showCreateContextMenu = false"
+            />
+          </cl-context-menu>
+          <cl-icon :icon="['fa', 'refresh']" @click="onRefresh" />
+          <cl-icon
+            :class="showSearch ? 'selected' : ''"
+            :icon="['fa', 'search']"
+            @click="onSearch"
+          />
+          <cl-icon :icon="['fas', 'terminal']" />
+        </div>
+        <div v-if="showSearch" class="sidebar-search">
+          <el-input
+            v-model="searchKeyword"
+            :placeholder="
+              t('views.database.databases.sidebar.search.placeholder')
+            "
+          />
+        </div>
         <el-tree
           ref="treeRef"
           node-key="id"
@@ -304,6 +362,8 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
         />
       </template>
     </div>
+
+    <cl-create-edit-database-table-dialog />
   </div>
 </template>
 
@@ -324,6 +384,44 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     height: 100%;
     overflow: auto;
     border-right: 1px solid var(--el-border-color);
+
+    .sidebar-actions {
+      height: 26px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--cl-primary-color);
+      border-bottom: 1px solid var(--el-border-color);
+
+      & > * {
+        display: flex;
+        align-items: center;
+      }
+
+      &:deep(.icon) {
+        cursor: pointer;
+        padding: 5px;
+        font-size: 12px;
+        width: 12px;
+        height: 12px;
+      }
+
+      &:deep(.icon.selected),
+      &:deep(.icon:hover) {
+        background-color: var(--cl-info-light-color);
+        border-radius: 50%;
+      }
+    }
+
+    .sidebar-search {
+      border-bottom: 1px solid var(--el-border-color);
+
+      &:deep(.el-input .el-input__wrapper) {
+        box-shadow: none;
+        border: none;
+      }
+    }
 
     .el-tree {
       min-width: fit-content;

@@ -33,6 +33,13 @@ const database: LViewsDatabase = {
       },
     },
   },
+  databases: {
+    sidebar: {
+      search: {
+        placeholder: '搜索数据库项...',
+      },
+    },
+  },
 };
 
 export default database;

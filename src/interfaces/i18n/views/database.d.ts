@@ -24,5 +24,16 @@ export declare global {
         };
       };
     };
+    databases: {
+      sidebar: {
+        search: {
+          placeholder: string;
+        };
+      };
+      actions: {
+        createDatabase: string;
+        createTable: string;
+      };
+    };
   }
 }

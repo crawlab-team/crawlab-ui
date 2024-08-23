@@ -1,4 +1,5 @@
 import CreateEditDatabaseDialog from './core/database/CreateEditDatabaseDialog.vue';
+import CreateEditDatabaseTableDialog from './core/database/CreateEditDatabaseTableDialog.vue';
 import DatabaseDataSource from './core/database/DatabaseDataSource.vue';
 import DatabaseForm from './core/database/DatabaseForm.vue';
 import DatabaseStatus from './core/database/DatabaseStatus.vue';
@@ -200,6 +201,7 @@ import TransferPanel from './ui/transfer/TransferPanel.vue';
 
 export {
   CreateEditDatabaseDialog as ClCreateEditDatabaseDialog,
+  CreateEditDatabaseTableDialog as ClCreateEditDatabaseTableDialog,
   DatabaseDataSource as ClDatabaseDataSource,
   DatabaseForm as ClDatabaseForm,
   DatabaseStatus as ClDatabaseStatus,
