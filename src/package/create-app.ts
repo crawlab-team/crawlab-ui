@@ -15,6 +15,7 @@ import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
 import '@/styles/index.scss';
 import { initChartJS } from '@/utils/chart';
+import clickOutsideDirective from '@/directives/click-outside/clickOutside';
 
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
@@ -97,6 +98,7 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   if (options.loadLocate) app.directive('locate', locate as any);
   if (options.loadAuth) app.directive('auth', auth as any);
   if (options.loadExport) app.directive('export', export_ as any);
+  app.directive('click-outside', clickOutsideDirective);
 
   // mount
   if (options.mount) {
