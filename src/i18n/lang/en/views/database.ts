@@ -39,6 +39,32 @@ const database: LViewsDatabase = {
         placeholder: 'Search database items...',
       },
     },
+    actions: {
+      createDatabase: 'Create Database',
+      createTable: 'Create Table',
+    },
+    dialog: {
+      createDatabase: {
+        title: 'Create Database',
+      },
+      createTable: {
+        title: 'Create Table',
+        tabs: {
+          overview: {
+            name: 'Overview',
+            form: {
+              name: 'Name',
+            },
+          },
+          columns: {
+            name: 'Columns',
+          },
+          indexes: {
+            name: 'Indexes',
+          },
+        },
+      },
+    },
   },
 };
 

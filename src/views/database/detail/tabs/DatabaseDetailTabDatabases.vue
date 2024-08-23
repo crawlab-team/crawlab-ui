@@ -111,8 +111,7 @@ const isContextMenuVisible = (id: string) => {
   if (activeContextMenuNavItem.value.id !== id) return false;
   return contextMenuVisibleMap.value[id] || false;
 };
-const onActionsClick = (item: DatabaseNavItem, event: MouseEvent) => {
-  event.stopPropagation();
+const onActionsClick = (item: DatabaseNavItem) => {
   activeContextMenuNavItem.value = item;
   contextMenuVisibleMap.value[item.id] = true;
 };
@@ -251,14 +250,14 @@ const createContextMenuListItems: ContextMenuItem[] = [
     title: t('views.database.databases.actions.createDatabase'),
     icon: ['fa', 'database'],
     action: () => {
-      console.debug('Create Database');
+      store.commit(`${ns}/showDialog`, 'createDatabase');
     },
   },
   {
     title: t('views.database.databases.actions.createTable'),
     icon: ['fa', 'table'],
     action: () => {
-      console.debug('Create Table');
+      store.commit(`${ns}/showDialog`, 'createTable');
     },
   },
 ];
@@ -278,36 +277,37 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
 <template>
   <div class="database-detail-tab-databases">
     <div class="sidebar">
-      <el-scrollbar>
-        <div class="sidebar-actions">
-          <cl-context-menu :visible="showCreateContextMenu">
-            <template #reference>
-              <cl-icon
-                :icon="['fa', 'plus']"
-                @click="showCreateContextMenu = true"
-              />
-            </template>
-            <cl-context-menu-list
-              :items="createContextMenuListItems"
-              @hide="showCreateContextMenu = false"
+      <div class="sidebar-actions">
+        <cl-context-menu :visible="showCreateContextMenu">
+          <template #reference>
+            <cl-icon
+              :icon="['fa', 'plus']"
+              @click.stop="showCreateContextMenu = true"
             />
-          </cl-context-menu>
-          <cl-icon :icon="['fa', 'refresh']" @click="onRefresh" />
-          <cl-icon
-            :class="showSearch ? 'selected' : ''"
-            :icon="['fa', 'search']"
-            @click="onSearch"
+          </template>
+          <cl-context-menu-list
+            v-if="showCreateContextMenu"
+            :items="createContextMenuListItems"
+            @hide="showCreateContextMenu = false"
           />
-          <cl-icon :icon="['fas', 'terminal']" />
-        </div>
-        <div v-if="showSearch" class="sidebar-search">
-          <el-input
-            v-model="searchKeyword"
-            :placeholder="
-              t('views.database.databases.sidebar.search.placeholder')
-            "
-          />
-        </div>
+        </cl-context-menu>
+        <cl-icon :icon="['fa', 'refresh']" @click="onRefresh" />
+        <cl-icon
+          :class="showSearch ? 'selected' : ''"
+          :icon="['fa', 'search']"
+          @click="onSearch"
+        />
+        <cl-icon :icon="['fas', 'terminal']" />
+      </div>
+      <div v-if="showSearch" class="sidebar-search">
+        <el-input
+          v-model="searchKeyword"
+          :placeholder="
+            t('views.database.databases.sidebar.search.placeholder')
+          "
+        />
+      </div>
+      <el-scrollbar>
         <el-tree
           ref="treeRef"
           node-key="id"
@@ -335,7 +335,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                 <div class="actions">
                   <cl-icon
                     :icon="['fa', 'ellipsis']"
-                    @click="(event: MouseEvent) => onActionsClick(data, event)"
+                    @click.stop="onActionsClick(data)"
                   />
                 </div>
               </template>
@@ -386,6 +386,8 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     height: 100%;
     overflow: auto;
     border-right: 1px solid var(--el-border-color);
+    display: flex;
+    flex-direction: column;
 
     .sidebar-actions {
       height: 26px;
@@ -407,12 +409,12 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
         font-size: 12px;
         width: 12px;
         height: 12px;
+        border-radius: 50%;
       }
 
       &:deep(.icon.selected),
       &:deep(.icon:hover) {
-        background-color: var(--cl-info-light-color);
-        border-radius: 50%;
+        background-color: var(--cl-primary-plain-color);
       }
     }
 

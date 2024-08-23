@@ -43,7 +43,7 @@ defineOptions({ name: 'ClNavTabs' });
             :offset="[10, 10]"
           >
             <div class="item-wrapper">
-              <cl-icon :icon="getIconByNavItem(item)" />
+              <cl-icon :icon="item.icon ?? getIconByNavItem(item)" />
               <span class="label">{{ t(item.title || '') }}</span>
             </div>
           </el-badge>

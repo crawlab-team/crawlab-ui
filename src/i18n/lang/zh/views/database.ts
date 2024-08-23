@@ -39,6 +39,32 @@ const database: LViewsDatabase = {
         placeholder: '搜索数据库项...',
       },
     },
+    actions: {
+      createDatabase: '创建数据库',
+      createTable: '创建表',
+    },
+    dialog: {
+      createDatabase: {
+        title: '创建数据库',
+      },
+      createTable: {
+        title: '创建表',
+        tabs: {
+          overview: {
+            name: '概览',
+            form: {
+              name: '名称',
+            },
+          },
+          columns: {
+            name: '列',
+          },
+          indexes: {
+            name: '索引',
+          },
+        },
+      },
+    },
   },
 };
 

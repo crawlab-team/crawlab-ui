@@ -34,6 +34,28 @@ export declare global {
         createDatabase: string;
         createTable: string;
       };
+      dialog: {
+        createDatabase: {
+          title: string;
+        };
+        createTable: {
+          title: string;
+          tabs: {
+            overview: {
+              name: string;
+              form: {
+                name: string;
+              };
+            };
+            columns: {
+              name: string;
+            };
+            indexes: {
+              name: string;
+            };
+          };
+        };
+      };
     };
   }
 }
