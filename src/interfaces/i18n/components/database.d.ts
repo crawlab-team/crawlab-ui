@@ -88,6 +88,9 @@ export declare global {
           columns: string;
           indexes: string;
         };
+        create: {
+          name: string;
+        };
       };
       table: {
         name: string;
@@ -102,6 +105,9 @@ export declare global {
           type: string;
           columns: string;
           unique: string;
+        };
+        create: {
+          name: string;
         };
       };
     };

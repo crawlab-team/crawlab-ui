@@ -96,7 +96,7 @@ const updateDefaultExpandedKeys = () => {
   if (treeItems.value.length === 1) {
     const currentItem = treeItems.value[0];
     defaultExpandedKeys.value = [currentItem.id];
-    onNodeClick(currentItem);
+    selectNode(currentItem);
   } else {
     defaultExpandedKeys.value = [];
   }
@@ -107,16 +107,20 @@ const activeDatabaseName = ref();
 const defaultTabName = ref<string>(TAB_NAME_OVERVIEW);
 const activeNavItem = ref<DatabaseNavItem>();
 const onNodeClick = async (data: DatabaseNavItem) => {
-  const { id, type } = data;
+  return selectNode(data);
+};
+const selectNode = async (data: DatabaseNavItem) => {
+  const { id, type, new: isNew } = data;
   const idParts = id.split(':') || [];
   const databaseName = idParts[0];
   const database = treeItems.value?.find(d => d.name === databaseName);
   const tableName = idParts[1];
   const table = database?.children?.find(t => t.name === tableName);
   activeDatabaseName.value = databaseName;
+
   switch (type) {
     case 'table':
-      defaultTabName.value = TAB_NAME_DATA;
+      defaultTabName.value = !isNew ? TAB_NAME_DATA : TAB_NAME_COLUMNS;
       activeNavItem.value = data;
       break;
     case 'columns':
@@ -150,7 +154,7 @@ const onDatabaseTableClick = (
   }
   const data = treeRef.value?.getNode?.(key)?.data;
   if (!data) return;
-  onNodeClick(data);
+  selectNode(data);
 };
 
 const treeRef = ref<typeof ElTree>();
@@ -262,20 +266,48 @@ onBeforeUnmount(() => {
   reset();
 });
 
+const newTableNode = (): DatabaseNavItem => {
+  const name = '';
+  return {
+    id: Math.round(Math.random() * 1e8).toString(),
+    label: name,
+    type: 'table',
+    icon: ['fa', 'table'],
+    new: true,
+    children: [],
+    data: {
+      name,
+      columns: [],
+      indexes: [],
+    },
+  };
+};
+
 const showCreateContextMenu = ref(false);
 const createContextMenuListItems: ContextMenuItem[] = [
   {
     title: t('views.database.databases.actions.createDatabase'),
     icon: ['fa', 'database'],
     action: () => {
-      store.commit(`${ns}/showDialog`, 'createDatabase');
+      // TODO: implement me
     },
   },
   {
     title: t('views.database.databases.actions.createTable'),
     icon: ['fa', 'table'],
     action: () => {
-      store.commit(`${ns}/showDialog`, 'createTable');
+      // try to select a database first
+      let databaseName: string;
+      if (activeNavItem.value?.type === 'database') {
+        databaseName = activeNavItem.value?.name as string;
+      } else {
+        databaseName = activeDatabaseName.value;
+      }
+      const databaseNode = treeItems.value?.find(d => d.name === databaseName);
+
+      const newNode = newTableNode();
+      treeRef.value?.append(newNode, databaseNode);
+      selectNode(newNode);
     },
   },
 ];
@@ -368,16 +400,37 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                   <span class="icon-wrapper">
                     <cl-icon :icon="data.icon" />
                   </span>
-                  <span class="label">{{ data.label }}</span>
-                  <span v-if="data.data_type" class="data-type">
-                    {{ data.data_type }}
-                  </span>
+                  <template v-if="!data.new">
+                    <span class="label">
+                      {{ data.label }}
+                    </span>
+                    <span v-if="data.data_type" class="data-type">
+                      {{ data.data_type }}
+                    </span>
+                  </template>
+                  <template v-else>
+                    <span>
+                      <el-input
+                        v-model="data.data.name"
+                        size="small"
+                        :placeholder="
+                          t('components.database.databases.table.create.name')
+                        "
+                      />
+                    </span>
+                  </template>
                 </div>
-                <div class="actions">
-                  <cl-icon
-                    :icon="['fa', 'ellipsis']"
-                    @click.stop="onActionsClick(data)"
-                  />
+                <div class="actions" :class="data.new ? 'new' : ''">
+                  <template v-if="!data.new">
+                    <cl-icon
+                      :icon="['fa', 'ellipsis']"
+                      @click.stop="onActionsClick(data)"
+                    />
+                  </template>
+                  <template v-else>
+                    <cl-icon :icon="['fa', 'check']" @click.stop="() => {}" />
+                    <cl-icon :icon="['fa', 'times']" @click.stop="() => {}" />
+                  </template>
                 </div>
               </template>
               <cl-context-menu-list
@@ -512,6 +565,11 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           right: 5px;
           height: 100%;
           align-items: center;
+
+          &.new {
+            display: inline-flex;
+            gap: 5px;
+          }
         }
       }
     }

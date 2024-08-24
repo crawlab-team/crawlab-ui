@@ -166,5 +166,8 @@
     "vite-svg-loader": "^5.1.0",
     "vue-chartjs": "^5.3.1",
     "vue-tsc": "^2.0.24"
+  },
+  "dependencies": {
+    "uuid": "^10.0.0"
   }
 }

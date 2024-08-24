@@ -87,6 +87,9 @@ const database: LComponentsDatabase = {
         columns: '列数',
         indexes: '索引数',
       },
+      create: {
+        name: '新数据库名称',
+      },
     },
     table: {
       name: '表名称',
@@ -101,6 +104,9 @@ const database: LComponentsDatabase = {
         type: '类型',
         columns: '列',
         unique: '唯一',
+      },
+      create: {
+        name: '新表名称',
       },
     },
   },

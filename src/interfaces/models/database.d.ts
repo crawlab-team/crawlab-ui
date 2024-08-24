@@ -81,6 +81,7 @@ export declare global {
     children: DatabaseNavItem[];
     database?: string;
     table?: DatabaseTable;
+    new?: boolean;
   }
 
   type DatabaseTableClickRowType = 'name' | 'columns' | 'indexes';

@@ -89,6 +89,9 @@ const database: LComponentsDatabase = {
         columns: 'Columns',
         indexes: 'Indexes',
       },
+      create: {
+        name: 'New database name',
+      },
     },
     table: {
       name: 'Table Name',
@@ -103,6 +106,9 @@ const database: LComponentsDatabase = {
         type: 'Type',
         columns: 'Columns',
         unique: 'Unique',
+      },
+      create: {
+        name: 'New table name',
       },
     },
   },
