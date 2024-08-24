@@ -5,6 +5,13 @@ import { useDatabaseDetail } from '@/views';
 import { translate } from '@/utils';
 import { ElMessage, ElTree } from 'element-plus';
 import { ClResultCell } from '@/components';
+import { debounce } from 'lodash';
+import type Node from 'element-plus/es/components/tree/src/model/node';
+import {
+  FilterNodeMethodFunction,
+  FilterValue,
+  TreeNodeData,
+} from 'element-plus/es/components/tree/src/tree.type';
 
 const t = translate;
 
@@ -13,8 +20,6 @@ const store = useStore();
 const { database: state } = store.state as RootStoreState;
 
 const { activeId } = useDatabaseDetail();
-
-const searchKeyword = ref('');
 
 const treeItems = computed<DatabaseNavItem[]>(() => {
   const { metadata } = state;
@@ -262,9 +267,23 @@ const createContextMenuListItems: ContextMenuItem[] = [
   },
 ];
 
+const searchKeyword = ref('');
 const showSearch = ref(false);
-const onSearch = () => {
+const onSearchClick = () => {
   showSearch.value = !showSearch.value;
+};
+watch(
+  searchKeyword,
+  debounce(() => {
+    treeRef.value?.filter(searchKeyword.value);
+  }, 300)
+);
+const onSearchFilter: FilterNodeMethodFunction = (
+  value: FilterValue,
+  data: TreeNodeData
+): boolean => {
+  if (!value) return true;
+  return data.label?.toLowerCase().includes(value.toString().toLowerCase());
 };
 
 const onRefresh = async () => {
@@ -295,7 +314,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
         <cl-icon
           :class="showSearch ? 'selected' : ''"
           :icon="['fa', 'search']"
-          @click="onSearch"
+          @click="onSearchClick"
         />
         <cl-icon :icon="['fas', 'terminal']" />
       </div>
@@ -305,11 +324,19 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           :placeholder="
             t('views.database.databases.sidebar.search.placeholder')
           "
+          clearable
+          @clear="
+            () => {
+              searchKeyword = '';
+              showSearch = false;
+            }
+          "
         />
       </div>
       <el-scrollbar>
         <el-tree
           ref="treeRef"
+          :filter-node-method="onSearchFilter"
           node-key="id"
           :data="treeItems"
           :expand-on-click-node="false"
