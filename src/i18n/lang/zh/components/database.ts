@@ -82,6 +82,11 @@ const database: LComponentsDatabase = {
   databases: {
     database: {
       name: '数据库名称',
+      tables: {
+        name: '表名称',
+        columns: '列数',
+        indexes: '索引数',
+      },
     },
     table: {
       name: '表名称',

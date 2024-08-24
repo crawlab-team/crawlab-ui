@@ -31,7 +31,6 @@ const { database: state } = store.state as RootStoreState;
 
 const activeTabName = ref<string>(props.defaultTabName);
 const tabsItems = computed<NavItem[]>(() => [
-  { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
   { id: TAB_NAME_DATA, title: t('common.tabs.data') },
   { id: TAB_NAME_COLUMNS, title: t('common.tabs.columns') },
   { id: TAB_NAME_INDEXES, title: t('common.tabs.indexes') },
@@ -183,22 +182,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
       @select="(key: string) => (activeTabName = key)"
     />
     <div class="tab-content">
-      <template v-if="activeTabName === TAB_NAME_OVERVIEW">
-        <cl-form :model="form">
-          <cl-form-item
-            :span="4"
-            :label="t('components.database.databases.table.name')"
-            prop="name"
-            required
-          >
-            <el-input
-              v-model="form.name"
-              :placeholder="t('components.database.databases.table.name')"
-            />
-          </cl-form-item>
-        </cl-form>
-      </template>
-      <template v-else-if="activeTabName === TAB_NAME_DATA">
+      <template v-if="activeTabName === TAB_NAME_DATA">
         <cl-table
           :loading="tablePreviewLoading"
           :key="JSON.stringify(props.table)"
@@ -216,6 +200,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
           :row-key="(row: any) => JSON.stringify(row)"
           :columns="columnsTableColumns"
           :data="columnsTableData"
+          hide-footer
         />
       </template>
       <template v-else-if="activeTabName === TAB_NAME_INDEXES">
@@ -223,6 +208,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
           :row-key="(row: any) => JSON.stringify(row)"
           :columns="indexesTableColumns"
           :data="indexesTableData"
+          hide-footer
         />
       </template>
     </div>
@@ -231,15 +217,17 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
 
 <style scoped>
 .database-table-detail {
+  height: 100%;
   display: flex;
   flex-direction: column;
 
+  .nav-tabs {
+    flex: 0 0 40px;
+  }
+
   .tab-content {
     flex: 1;
-
-    &:deep(.el-form) {
-      padding: 20px;
-    }
+    overflow: auto;
   }
 }
 </style>

@@ -84,6 +84,11 @@ const database: LComponentsDatabase = {
   databases: {
     database: {
       name: 'Database Name',
+      tables: {
+        name: 'Table Name',
+        columns: 'Columns',
+        indexes: 'Indexes',
+      },
     },
     table: {
       name: 'Table Name',

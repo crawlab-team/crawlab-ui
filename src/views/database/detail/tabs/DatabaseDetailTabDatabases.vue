@@ -3,10 +3,8 @@ import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useDatabaseDetail } from '@/views';
 import { translate } from '@/utils';
-import { ElMessage, ElTree } from 'element-plus';
-import { ClResultCell } from '@/components';
+import { ElTree } from 'element-plus';
 import { debounce } from 'lodash';
-import type Node from 'element-plus/es/components/tree/src/model/node';
 import {
   FilterNodeMethodFunction,
   FilterValue,
@@ -89,9 +87,21 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
   }) as DatabaseNavItem<DatabaseDatabase>[];
 });
 
-const updateMetadata = () => {
-  store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
+const defaultExpandedKeys = ref<string[]>([]);
+const getMetadata = async () => {
+  await store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
 };
+
+const updateDefaultExpandedKeys = () => {
+  if (treeItems.value.length === 1) {
+    const currentItem = treeItems.value[0];
+    defaultExpandedKeys.value = [currentItem.id];
+    onNodeClick(currentItem);
+  } else {
+    defaultExpandedKeys.value = [];
+  }
+};
+watch(treeItems, updateDefaultExpandedKeys);
 
 const activeDatabaseName = ref();
 const defaultTabName = ref<string>(TAB_NAME_OVERVIEW);
@@ -122,6 +132,25 @@ const onNodeClick = async (data: DatabaseNavItem) => {
     default:
       activeNavItem.value = data;
   }
+
+  // highlight current node
+  setTimeout(() => {
+    treeRef.value?.setCurrentKey(id);
+  }, 0);
+};
+
+const onDatabaseTableClick = (
+  table: DatabaseTable,
+  type: DatabaseTableClickRowType
+) => {
+  const databaseName = activeNavItem.value?.data.name;
+  let key = `${databaseName}:${table.name}`;
+  if (type !== 'name') {
+    key = `${key}:${type}`;
+  }
+  const data = treeRef.value?.getNode?.(key)?.data;
+  if (!data) return;
+  onNodeClick(data);
 };
 
 const treeRef = ref<typeof ElTree>();
@@ -224,10 +253,10 @@ const reset = () => {
 };
 
 watch(activeId, () => {
-  updateMetadata();
+  getMetadata();
   reset();
 });
-onBeforeMount(updateMetadata);
+onBeforeMount(getMetadata);
 onBeforeUnmount(() => {
   store.commit(`${ns}/setMetadata`, []);
   reset();
@@ -324,6 +353,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           node-key="id"
           :data="treeItems"
           :expand-on-click-node="false"
+          :default-expanded-keys="defaultExpandedKeys"
           highlight-current
           @node-click="onNodeClick"
           @node-contextmenu="onContextMenuClick"
@@ -362,7 +392,10 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     </div>
     <div class="content">
       <template v-if="activeNavItem?.type === 'database'">
-        <cl-database-database-detail :active-item="activeNavItem?.data" />
+        <cl-database-database-detail
+          :database="activeNavItem?.data"
+          @click-table="onDatabaseTableClick"
+        />
       </template>
       <template v-else-if="activeNavItem?.type === 'table'">
         <cl-database-table-detail
@@ -490,13 +523,23 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     height: 100%;
     overflow: auto;
 
-    .table {
+    &:deep(.table) {
       width: 100%;
       height: 100%;
+    }
 
-      &:deep(.table-footer) {
-        border-top: 1px solid var(--el-border-color);
-      }
+    &:deep(.table .table-footer) {
+      border-top: 1px solid var(--el-border-color);
+    }
+
+    &:deep(.table .el-table__inner-wrapper) {
+      position: relative;
+      overflow: unset;
+    }
+
+    &:deep(.table .el-table__header-wrapper) {
+      position: sticky;
+      top: 0;
     }
   }
 }

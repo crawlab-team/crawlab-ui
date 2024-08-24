@@ -82,4 +82,6 @@ export declare global {
     database?: string;
     table?: DatabaseTable;
   }
+
+  type DatabaseTableClickRowType = 'name' | 'columns' | 'indexes';
 }

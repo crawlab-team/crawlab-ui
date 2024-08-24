@@ -83,6 +83,11 @@ export declare global {
     databases: {
       database: {
         name: string;
+        tables: {
+          name: string;
+          columns: string;
+          indexes: string;
+        };
       };
       table: {
         name: string;
