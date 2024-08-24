@@ -111,6 +111,8 @@ const common: LCommon = {
     mail: 'Mail Config',
     databases: 'Databases',
     console: 'Console',
+    columns: 'Columns',
+    indexes: 'Indexes',
   },
   status: {
     unassigned: 'Unassigned',

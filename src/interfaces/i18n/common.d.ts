@@ -124,6 +124,8 @@ export declare global {
       mail: string;
       databases: string;
       console: string;
+      columns: string;
+      indexes: string;
     };
     status: {
       unassigned: string;

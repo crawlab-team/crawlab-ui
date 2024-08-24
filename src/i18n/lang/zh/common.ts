@@ -111,6 +111,8 @@ const common: LCommon = {
     mail: '邮件配置',
     databases: '数据库',
     console: '控制台',
+    columns: '列',
+    indexes: '索引',
   },
   status: {
     unassigned: '未指定',

@@ -42,19 +42,19 @@ export declare global {
   }
 
   interface DatabaseDatabase {
-    name: string;
-    tables: DatabaseTable[];
+    name?: string;
+    tables?: DatabaseTable[];
   }
 
   interface DatabaseTable {
-    name: string;
+    name?: string;
     columns?: DatabaseColumn[];
     indexes?: DatabaseIndex[];
   }
 
   interface DatabaseColumn {
-    name: string;
-    type: string;
+    name?: string;
+    type?: string;
     null?: boolean; // Use ? to make this property optional
     key?: string;
     default?: string;
@@ -74,11 +74,12 @@ export declare global {
     order: number;
   }
 
-  interface DatabaseNavItem extends NavItem {
-    type?: 'database' | 'table' | 'column' | 'index';
+  interface DatabaseNavItem<T = any> extends NavItem<T> {
+    type?: 'database' | 'table' | 'columns' | 'indexes' | 'column' | 'index';
     name?: string;
     data_type?: string;
     children: DatabaseNavItem[];
     database?: string;
+    table?: DatabaseTable;
   }
 }

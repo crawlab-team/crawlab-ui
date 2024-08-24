@@ -81,6 +81,26 @@ const database: LComponentsDatabase = {
         'Hosts connect settings, normally used for multiple instances or cluster configurations',
     },
   },
+  databases: {
+    database: {
+      name: 'Database Name',
+    },
+    table: {
+      name: 'Table Name',
+      columns: {
+        name: 'Name',
+        type: 'Data Type',
+        null: 'Nullable',
+        default: 'Default Expression',
+      },
+      indexes: {
+        name: 'Name',
+        type: 'Type',
+        columns: 'Columns',
+        unique: 'Unique',
+      },
+    },
+  },
 };
 
 export default database;

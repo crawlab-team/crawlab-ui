@@ -12,6 +12,12 @@ import {
   FilterValue,
   TreeNodeData,
 } from 'element-plus/es/components/tree/src/tree.type';
+import {
+  TAB_NAME_COLUMNS,
+  TAB_NAME_DATA,
+  TAB_NAME_INDEXES,
+  TAB_NAME_OVERVIEW,
+} from '@/constants';
 
 const t = translate;
 
@@ -32,6 +38,7 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
       label: d.name,
       icon: ['fa', 'database'],
       type: 'database',
+      data: d,
       children: d.tables.map(t => {
         return {
           id: `${d.name}:${t.name}`,
@@ -40,11 +47,13 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
           icon: ['fa', 'table'],
           type: 'table',
           database: d.name,
+          data: t,
           children: [
             {
               id: `${d.name}:${t.name}:columns`,
               label: 'columns',
               icon: ['fa', 'columns'],
+              type: 'columns',
               children: t.columns?.map(c => {
                 return {
                   id: `${d.name}:${t.name}:columns:${c.name}`,
@@ -53,58 +62,65 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
                   icon: ['fa', 'tag'],
                   type: 'column',
                   data_type: c.type,
-                };
+                  data: c,
+                } as DatabaseNavItem<DatabaseColumn>;
               }),
             },
             {
               id: `${d.name}:${t.name}:indexes`,
               label: 'indexes',
               icon: ['fa', 'key'],
+              type: 'indexes',
               children: t.indexes?.map(i => {
                 return {
                   id: `${d.name}:${t.name}:indexes:${i.name}`,
                   name: i.name,
                   label: i.name,
                   icon: ['fa', 'key'],
+                  type: 'index',
+                  data: i,
                 };
               }),
             },
           ],
-        } as DatabaseNavItem;
+        } as DatabaseNavItem<DatabaseTable>;
       }),
     };
-  }) as DatabaseNavItem[];
+  }) as DatabaseNavItem<DatabaseDatabase>[];
 });
 
 const updateMetadata = () => {
   store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
 };
 
-const tablePreviewLoading = ref(false);
-const getTablePreview = async () => {
-  if (!activeNavItem.value) return;
-  tablePreviewLoading.value = true;
-  const { database, name: table } = activeNavItem.value;
-  try {
-    await store.dispatch(`${ns}/getTablePreview`, {
-      id: activeId.value,
-      database,
-      table,
-    });
-  } catch (error: any) {
-    ElMessage.error(error.message);
-  } finally {
-    tablePreviewLoading.value = false;
-  }
-};
-
+const activeDatabaseName = ref();
+const defaultTabName = ref<string>(TAB_NAME_OVERVIEW);
 const activeNavItem = ref<DatabaseNavItem>();
 const onNodeClick = async (data: DatabaseNavItem) => {
-  console.debug('onNodeClick');
-  activeNavItem.value = data;
-  const { type } = data;
-  if (type === 'table') {
-    await getTablePreview();
+  const { id, type } = data;
+  const idParts = id.split(':') || [];
+  const databaseName = idParts[0];
+  const database = treeItems.value?.find(d => d.name === databaseName);
+  const tableName = idParts[1];
+  const table = database?.children?.find(t => t.name === tableName);
+  activeDatabaseName.value = databaseName;
+  switch (type) {
+    case 'table':
+      defaultTabName.value = TAB_NAME_DATA;
+      activeNavItem.value = data;
+      break;
+    case 'columns':
+    case 'column':
+      defaultTabName.value = TAB_NAME_COLUMNS;
+      activeNavItem.value = table;
+      break;
+    case 'indexes':
+    case 'index':
+      defaultTabName.value = TAB_NAME_INDEXES;
+      activeNavItem.value = table;
+      break;
+    default:
+      activeNavItem.value = data;
   }
 };
 
@@ -195,39 +211,7 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
   }
 });
 
-const tableColumns = computed<TableColumns<Record<string, any>>>(() => {
-  const { id, type, children } = activeNavItem.value || {};
-  if (type !== 'table' || !children) return [];
-  const columns = children.find(c => c.id === `${id}:columns`);
-  if (!columns?.children) return [];
-  return columns.children.map(c => {
-    return {
-      key: c.name,
-      label: c.label,
-      value: (row: Record<string, any>) => (
-        <ClResultCell fieldKey={c.name} value={row[c.name || '']} />
-      ),
-      minWidth: 120,
-    } as TableColumn<Record<string, any>>;
-  });
-});
-
-const tableData = computed<Record<string, any>[]>(() => {
-  return state.tablePreviewData || [];
-});
-
-const tablePagination = computed<TablePagination>(
-  () => state.tablePreviewPagination
-);
-
-const tableTotal = computed<number>(() => state.tablePreviewTotal);
-
-const onTablePaginationChange = (pagination: TablePagination) => {
-  store.commit(`${ns}/setTablePreviewPagination`, pagination);
-  getTablePreview();
-};
-
-const resetTablePreview = () => {
+const reset = () => {
   activeNavItem.value = undefined;
   activeContextMenuNavItem.value = undefined;
   contextMenuVisibleMap.value = {};
@@ -241,12 +225,12 @@ const resetTablePreview = () => {
 
 watch(activeId, () => {
   updateMetadata();
-  resetTablePreview();
+  reset();
 });
 onBeforeMount(updateMetadata);
 onBeforeUnmount(() => {
   store.commit(`${ns}/setMetadata`, []);
-  resetTablePreview();
+  reset();
 });
 
 const showCreateContextMenu = ref(false);
@@ -377,17 +361,15 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
       </el-scrollbar>
     </div>
     <div class="content">
-      <template v-if="activeNavItem?.type === 'table'">
-        <cl-table
-          :loading="tablePreviewLoading"
-          :key="JSON.stringify(activeNavItem)"
-          :row-key="(row: Record<string, any>) => JSON.stringify(row)"
-          :columns="tableColumns"
-          :data="tableData"
-          :page="tablePagination.page"
-          :page-size="tablePagination.size"
-          :total="tableTotal"
-          @pagination-change="onTablePaginationChange"
+      <template v-if="activeNavItem?.type === 'database'">
+        <cl-database-database-detail :active-item="activeNavItem?.data" />
+      </template>
+      <template v-else-if="activeNavItem?.type === 'table'">
+        <cl-database-table-detail
+          :active-id="activeId"
+          :database-name="activeDatabaseName"
+          :table="activeNavItem?.data"
+          :default-tab-name="defaultTabName"
         />
       </template>
     </div>

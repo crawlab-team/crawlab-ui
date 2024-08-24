@@ -79,6 +79,26 @@ const database: LComponentsDatabase = {
       hosts: '多主机连接设置, 通常适合多实例或集群配置',
     },
   },
+  databases: {
+    database: {
+      name: '数据库名称',
+    },
+    table: {
+      name: '表名称',
+      columns: {
+        name: '名称',
+        type: '数据类型',
+        null: '可空',
+        default: '默认值',
+      },
+      indexes: {
+        name: '名称',
+        type: '类型',
+        columns: '列',
+        unique: '唯一',
+      },
+    },
+  },
 };
 
 export default database;

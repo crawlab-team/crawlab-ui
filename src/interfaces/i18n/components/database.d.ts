@@ -80,5 +80,25 @@ export declare global {
         hosts: string;
       };
     };
+    databases: {
+      database: {
+        name: string;
+      };
+      table: {
+        name: string;
+        columns: {
+          name: string;
+          type: string;
+          null: string;
+          default: string;
+        };
+        indexes: {
+          name: string;
+          type: string;
+          columns: string;
+          unique: string;
+        };
+      };
+    };
   }
 }
