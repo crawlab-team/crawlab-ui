@@ -42,6 +42,8 @@ const common: LCommon = {
     viewChannels: 'View Channels',
     viewMonitoring: 'View Monitoring',
     previewData: 'Preview Data',
+    insertBefore: 'Insert Before',
+    insertAfter: 'Insert After',
   },
   messageBox: {
     confirm: {

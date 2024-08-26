@@ -55,6 +55,8 @@ export declare global {
       viewChannels: string;
       viewMonitoring: string;
       previewData: string;
+      insertBefore: string;
+      insertAfter: string;
     };
     messageBox: {
       confirm: {

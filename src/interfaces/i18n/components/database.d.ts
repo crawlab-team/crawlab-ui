@@ -109,6 +109,9 @@ export declare global {
         create: {
           name: string;
         };
+        actions: {
+          addColumn: string;
+        };
       };
     };
   }

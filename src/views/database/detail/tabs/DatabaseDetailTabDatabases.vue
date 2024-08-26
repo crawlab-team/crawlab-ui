@@ -90,9 +90,10 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
 const defaultExpandedKeys = ref<string[]>([]);
 const getMetadata = async () => {
   await store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
+  updateDefaultExpandedKeys();
 };
-
 const updateDefaultExpandedKeys = () => {
+  console.debug('updateDefaultExpandedKeys');
   if (treeItems.value.length === 1) {
     const currentItem = treeItems.value[0];
     defaultExpandedKeys.value = [currentItem.id];
@@ -101,7 +102,6 @@ const updateDefaultExpandedKeys = () => {
     defaultExpandedKeys.value = [];
   }
 };
-watch(treeItems, updateDefaultExpandedKeys);
 
 const activeDatabaseName = ref();
 const defaultTabName = ref<string>(TAB_NAME_OVERVIEW);
@@ -141,6 +141,19 @@ const selectNode = async (data: DatabaseNavItem) => {
   setTimeout(() => {
     treeRef.value?.setCurrentKey(id);
   }, 0);
+};
+const onNodeCancel = async (data: DatabaseNavItem) => {
+  if (!data.new) return;
+  const node = treeRef.value?.getNode(data.id);
+  if (!node) return;
+  treeRef.value?.remove(node);
+  switch (data.type) {
+    case 'table':
+      const { data } = treeRef.value?.getNode(activeDatabaseName.value) || {};
+      if (data) {
+        await selectNode(data);
+      }
+  }
 };
 
 const onDatabaseTableClick = (
@@ -266,10 +279,11 @@ onBeforeUnmount(() => {
   reset();
 });
 
-const newTableNode = (): DatabaseNavItem => {
+const newTableNode = (): DatabaseNavItem<DatabaseTable> => {
   const name = '';
+  const tableId = Math.round(Math.random() * 1e8).toString();
   return {
-    id: Math.round(Math.random() * 1e8).toString(),
+    id: `${activeDatabaseName.value}:${tableId}`,
     label: name,
     type: 'table',
     icon: ['fa', 'table'],
@@ -280,7 +294,7 @@ const newTableNode = (): DatabaseNavItem => {
       columns: [],
       indexes: [],
     },
-  };
+  } as DatabaseNavItem<DatabaseTable>;
 };
 
 const showCreateContextMenu = ref(false);
@@ -300,13 +314,23 @@ const createContextMenuListItems: ContextMenuItem[] = [
       let databaseName: string;
       if (activeNavItem.value?.type === 'database') {
         databaseName = activeNavItem.value?.name as string;
-      } else {
+      } else if (activeDatabaseName.value) {
         databaseName = activeDatabaseName.value;
+      } else {
+        databaseName = treeItems.value?.[0]?.name as string;
       }
       const databaseNode = treeItems.value?.find(d => d.name === databaseName);
+      if (!databaseNode) return;
 
       const newNode = newTableNode();
-      treeRef.value?.append(newNode, databaseNode);
+      if (databaseNode?.children?.length) {
+        const firstTableNode = treeRef.value?.getNode(
+          databaseNode.children[0].id
+        );
+        treeRef.value?.insertBefore(newNode, firstTableNode);
+      } else {
+        treeRef.value?.append(newNode, databaseNode);
+      }
       selectNode(newNode);
     },
   },
@@ -393,7 +417,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           <template #default="{ data }">
             <cl-context-menu
               :visible="isContextMenuVisible(data.id)"
-              :style="{ flex: 1, paddingRight: '10px' }"
+              :style="{ flex: 1, paddingRight: '5px' }"
             >
               <template #reference>
                 <div class="node-wrapper" :title="data.label">
@@ -409,7 +433,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                     </span>
                   </template>
                   <template v-else>
-                    <span>
+                    <div class="edit-wrapper">
                       <el-input
                         v-model="data.data.name"
                         size="small"
@@ -417,7 +441,17 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                           t('components.database.databases.table.create.name')
                         "
                       />
-                    </span>
+                      <div class="edit-actions">
+                        <cl-icon
+                          :icon="['fa', 'check']"
+                          @click.stop="() => {}"
+                        />
+                        <cl-icon
+                          :icon="['fa', 'times']"
+                          @click.stop="onNodeCancel(data)"
+                        />
+                      </div>
+                    </div>
                   </template>
                 </div>
                 <div class="actions" :class="data.new ? 'new' : ''">
@@ -426,10 +460,6 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                       :icon="['fa', 'ellipsis']"
                       @click.stop="onActionsClick(data)"
                     />
-                  </template>
-                  <template v-else>
-                    <cl-icon :icon="['fa', 'check']" @click.stop="() => {}" />
-                    <cl-icon :icon="['fa', 'times']" @click.stop="() => {}" />
                   </template>
                 </div>
               </template>
@@ -456,6 +486,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           :database-name="activeDatabaseName"
           :table="activeNavItem?.data"
           :default-tab-name="defaultTabName"
+          :is-new="activeNavItem?.new"
         />
       </template>
     </div>
@@ -548,6 +579,18 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
 
           .label {
             flex: 0 0 auto;
+          }
+
+          .edit-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+
+            .edit-actions {
+              display: flex;
+              gap: 5px;
+            }
           }
 
           .data-type {

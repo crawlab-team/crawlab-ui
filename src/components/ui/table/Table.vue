@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, ref, computed } from 'vue';
-import { ElTable } from 'element-plus';
+import { ColumnStyle, ElTable } from 'element-plus';
 import useColumn from '@/components/ui/table/column';
 import useHeader from '@/components/ui/table/header';
 import useAction from '@/components/ui/table/action';
@@ -11,6 +11,7 @@ import {
   TABLE_PAGINATION_POSITION_TOP,
 } from '@/constants/table';
 import { emptyArrayFunc } from '@/utils';
+import { ColumnCls } from 'element-plus/es/components/table/src/table/defaults';
 
 const props = withDefaults(
   defineProps<{
@@ -34,6 +35,12 @@ const props = withDefaults(
     border?: boolean;
     fit?: boolean;
     emptyText?: string;
+    rowClassName?: ColumnCls<any>;
+    rowStyle?: ColumnStyle<any>;
+    cellClassName?: ColumnCls<any>;
+    cellStyle?: ColumnStyle<any>;
+    headerCellClassName?: ColumnCls<any>;
+    headerCellStyle?: ColumnStyle<any>;
   }>(),
   {
     data: emptyArrayFunc,
@@ -142,8 +149,17 @@ defineOptions({ name: 'ClTable' });
       :max-height="maxHeight"
       :border="border"
       :empty-text="emptyText"
+      :row-class-name="rowClassName"
+      :row-style="rowStyle"
+      :cell-class-name="cellClassName"
+      :cell-style="cellStyle"
+      :header-cell-class-name="headerCellClassName"
+      :header-cell-style="headerCellStyle"
       @selection-change="onSelectionChange"
     >
+      <template #empty>
+        <slot name="empty" />
+      </template>
       <el-table-column
         v-if="selectable"
         align="center"
@@ -264,24 +280,26 @@ defineOptions({ name: 'ClTable' });
   word-break: normal;
 }
 
-.table.embedded:deep(.el-table--border .el-table__inner-wrapper:after) {
-  height: 0;
-}
+.table.embedded {
+  &:deep(.el-table--border .el-table__inner-wrapper:after) {
+    height: 0;
+  }
 
-.table.embedded:deep(.el-table__border-left-patch),
-.table.embedded:deep(.el-table--border:before) {
-  width: 0;
-}
+  &:deep(.el-table__border-left-patch),
+  &:deep(.el-table--border:before) {
+    width: 0;
+  }
 
-.table.embedded:deep(
-    .el-table--border .el-table__inner-wrapper tr:first-child td:first-child
-  ),
-.table.embedded:deep(
-    .el-table.is-scrolling-left.el-table--border tr:first-child td:first-child
-  ),
-.table.embedded:deep(
-    .el-table--border .el-table__inner-wrapper tr:first-child th:first-child
-  ) {
-  border-left: none;
+  &:deep(
+      .el-table--border .el-table__inner-wrapper tr:first-child td:first-child
+    ),
+  &:deep(
+      .el-table.is-scrolling-left.el-table--border tr:first-child td:first-child
+    ),
+  &:deep(
+      .el-table--border .el-table__inner-wrapper tr:first-child th:first-child
+    ) {
+    border-left: none;
+  }
 }
 </style>

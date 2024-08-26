@@ -42,6 +42,8 @@ const common: LCommon = {
     viewChannels: '查看通知渠道',
     viewMonitoring: '查看监控',
     previewData: '预览数据',
+    insertBefore: '在前插入',
+    insertAfter: '在后插入',
   },
   messageBox: {
     confirm: {

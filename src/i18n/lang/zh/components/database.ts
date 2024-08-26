@@ -108,6 +108,9 @@ const database: LComponentsDatabase = {
       create: {
         name: '新表名称',
       },
+      actions: {
+        addColumn: '添加列',
+      },
     },
   },
 };

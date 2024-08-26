@@ -110,6 +110,9 @@ const database: LComponentsDatabase = {
       create: {
         name: 'New table name',
       },
+      actions: {
+        addColumn: 'Add Column',
+      },
     },
   },
 };

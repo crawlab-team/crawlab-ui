@@ -52,7 +52,12 @@ export declare global {
     indexes?: DatabaseIndex[];
   }
 
-  interface DatabaseColumn {
+  interface DatabaseTableItem {
+    status?: 'new' | 'updated' | 'deleted';
+    contextMenuVisible?: boolean;
+  }
+
+  interface DatabaseColumn extends DatabaseTableItem {
     name?: string;
     type?: string;
     null?: boolean; // Use ? to make this property optional
@@ -62,7 +67,7 @@ export declare global {
     children?: DatabaseColumn[];
   }
 
-  interface DatabaseIndex {
+  interface DatabaseIndex extends DatabaseTableItem {
     name: string;
     type?: string;
     columns: DatabaseIndexColumn[];

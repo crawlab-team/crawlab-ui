@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, provide, StyleValue } from 'vue';
 import { Placement } from '@popperjs/core';
+import { TooltipTriggerType } from 'element-plus/es/components/tooltip/src/trigger';
 
 interface ContextMenuProps {
+  trigger?: TooltipTriggerType;
   visible?: boolean;
   placement?: Placement;
   style?: StyleValue;
@@ -21,6 +23,7 @@ defineOptions({ name: 'ClContextMenu' });
 
 <template>
   <el-popover
+    :trigger="trigger"
     :placement="placement"
     :show-arrow="false"
     :visible="visible"
