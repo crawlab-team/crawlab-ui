@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { computed, type CSSProperties, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { ColumnStyle, ElMessage } from 'element-plus';
+import { CellStyle, ColumnStyle, ElMessage } from 'element-plus';
 import {
   TAB_NAME_COLUMNS,
   TAB_NAME_DATA,
@@ -14,6 +14,7 @@ import {
   ClIcon,
   ClContextMenu,
   ClContextMenuList,
+  ClTableEditCell,
 } from '@/components';
 
 const props = withDefaults(
@@ -126,7 +127,10 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
         {row.status !== 'deleted' ? (
           <ClIcon icon={['fa', 'minus']} onClick={() => onDeleteColumn(row)} />
         ) : (
-          <ClIcon icon={['fa', 'rotate-left']} />
+          <ClIcon
+            icon={['fa', 'rotate-left']}
+            onClick={() => onRevertColumn(row)}
+          />
         )}
       </div>
     ),
@@ -135,6 +139,15 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
     key: 'name',
     label: t('components.database.databases.table.columns.name'),
     width: 200,
+    value: (row: DatabaseColumn) => (
+      <ClTableEditCell
+        modelValue={row.name}
+        onChange={(val: string) => {
+          row.name = val;
+        }}
+      />
+    ),
+    noPadding: true,
   },
   {
     key: 'type',
@@ -280,15 +293,37 @@ const onDeleteColumn = (column: DatabaseColumn) => {
     column.status = 'deleted';
   }
 };
+const onRevertColumn = (column: DatabaseColumn) => {
+  column.status = undefined;
+};
+
+const getColumnStatus = (column: DatabaseColumn) => {
+  if (column.status && column.status !== 'updated') return column.status;
+  const hasColumn = props.table?.columns?.some(
+    c =>
+      column.name === c.name &&
+      column.type === c.type &&
+      column.null === c.null &&
+      column.default === c.default
+  );
+  if (hasColumn) return;
+  return 'updated';
+};
+
 const columnRowStyle: ColumnStyle<DatabaseColumn> = ({
   row,
 }): CSSProperties => {
   let backgroundColor: string | undefined = undefined;
   let color: string | undefined = undefined;
-  switch (row.status) {
+  const status = getColumnStatus(row);
+  switch (status) {
     case 'new':
       color = 'var(--cl-success-color)';
       backgroundColor = 'var(--cl-success-plain-color)';
+      break;
+    case 'updated':
+      color = 'var(--cl-primary-color)';
+      backgroundColor = 'var(--cl-primary-plain-color)';
       break;
     case 'deleted':
       color = 'var(--cl-danger-color)';
@@ -298,6 +333,19 @@ const columnRowStyle: ColumnStyle<DatabaseColumn> = ({
   return {
     color,
     backgroundColor,
+  };
+};
+const columnCellStyle: CellStyle<DatabaseColumn> = ({ row, column }) => {
+  if (column.columnKey === 'actions') {
+    return;
+  }
+  const originalColumn = props.table?.columns?.find(c => c.hash === row.hash);
+  if (!originalColumn) return;
+  if (row[column.columnKey] === originalColumn[column.columnKey]) {
+    return;
+  }
+  return {
+    fontWeight: 'bold',
   };
 };
 
@@ -331,6 +379,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
           :columns="columnsTableColumns"
           :data="columnsTableData"
           :row-style="columnRowStyle"
+          :cell-style="columnCellStyle"
           hide-footer
         />
       </template>
@@ -360,8 +409,27 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
     flex: 1;
     overflow: auto;
 
+    &:deep(.table .table-edit-cell) {
+      height: 40px;
+    }
+
+    &:deep(.table .table-edit-cell .el-input__wrapper) {
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    &:deep(.table .table-edit-cell.is-edit .el-input__wrapper) {
+      border: 1px solid var(--cl-primary-color);
+    }
+
     &:deep(.table .actions) {
       display: flex;
+      align-items: center;
+    }
+
+    &:deep(.table .actions > div) {
+      display: flex;
+      align-items: center;
     }
 
     &:deep(.table .actions .icon) {
@@ -372,12 +440,17 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
 
     &:deep(.table .actions .icon:hover) {
       border-radius: 50%;
-      background-color: var(--cl-info-light-color);
+      color: var(--cl-primary-color);
+      background-color: var(--cl-primary-plain-color);
     }
 
     &:deep(.table .el-table__row:hover),
     &:deep(.table .el-table__row:hover .el-table__cell) {
       background-color: inherit;
+    }
+
+    &:deep(.table .el-table__cell:hover .cell-actions) {
+      display: flex;
     }
   }
 }

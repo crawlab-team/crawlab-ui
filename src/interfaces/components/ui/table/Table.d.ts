@@ -61,6 +61,7 @@ export declare global {
     required?: boolean;
     className?: string;
     proOnly?: boolean;
+    noPadding?: boolean;
   }
 
   type TableColumns<T = any> = TableColumn<T>[];

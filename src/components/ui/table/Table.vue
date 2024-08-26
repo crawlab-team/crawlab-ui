@@ -179,7 +179,9 @@ defineOptions({ name: 'ClTable' });
         :min-width="c.minWidth || c.width"
         :sortable="c.sortable"
         :index="c.index"
-        :class-name="c.className || c.key"
+        :class-name="
+          (c.className || c.key) + (c.noPadding ? ' no-padding' : '')
+        "
       >
         <template #header="scope">
           <cl-table-header
@@ -278,6 +280,15 @@ defineOptions({ name: 'ClTable' });
 .el-table:deep(th > .cell) {
   line-height: 1.5;
   word-break: normal;
+}
+
+.el-table:deep(td > .cell) {
+  overflow: inherit;
+}
+
+.el-table:deep(td.no-padding),
+.el-table:deep(td.no-padding > .cell) {
+  padding: 0;
 }
 
 .table.embedded {

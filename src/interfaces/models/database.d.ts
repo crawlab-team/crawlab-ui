@@ -53,6 +53,7 @@ export declare global {
   }
 
   interface DatabaseTableItem {
+    hash?: string;
     status?: 'new' | 'updated' | 'deleted';
     contextMenuVisible?: boolean;
   }

@@ -516,7 +516,8 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     flex-direction: column;
 
     .sidebar-actions {
-      height: 26px;
+      height: 41px;
+      flex: 0 0 41px;
       padding: 5px;
       display: flex;
       align-items: center;
@@ -531,10 +532,10 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
 
       &:deep(.icon) {
         cursor: pointer;
-        padding: 5px;
-        font-size: 12px;
-        width: 12px;
-        height: 12px;
+        padding: 6px;
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
         border-radius: 50%;
       }
 
@@ -545,6 +546,8 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     }
 
     .sidebar-search {
+      height: 38px;
+      flex: 0 0 38px;
       border-bottom: 1px solid var(--el-border-color);
 
       &:deep(.el-input .el-input__wrapper) {

@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { h } from 'vue';
-import FaIconButton from '@/components/ui/button/FaIconButton.vue';
+import { ClFaIconButton } from '@/components';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -66,8 +66,7 @@ const getChildren = () => {
           id,
           className,
         };
-        // FIXME: use "as any" to fix type errors temporarily
-        return h(FaIconButton, props as any);
+        return <ClFaIconButton {...props} />;
       });
   }
 
@@ -85,12 +84,11 @@ const getChildren = () => {
   }
 };
 
-const root = h('div', getChildren());
+const root = <div>{getChildren()}</div>;
+
 defineOptions({ name: 'ClTableCell' });
 </script>
 
 <template>
   <root />
 </template>
-
-<style lang="scss" scoped></style>
