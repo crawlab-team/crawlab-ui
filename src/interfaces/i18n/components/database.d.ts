@@ -114,5 +114,9 @@ export declare global {
         };
       };
     };
+    actions: {
+      commitChanges: string;
+      rollbackChanges: string;
+    };
   }
 }

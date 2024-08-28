@@ -115,6 +115,10 @@ const database: LComponentsDatabase = {
       },
     },
   },
+  actions: {
+    commitChanges: 'Commit Changes',
+    rollbackChanges: 'Rollback Changes',
+  },
 };
 
 export default database;

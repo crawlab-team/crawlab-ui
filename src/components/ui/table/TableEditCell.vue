@@ -1,23 +1,36 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { ref, watch } from 'vue';
-import { ElInput } from 'element-plus';
+import {
+  ElInput,
+  ElAutocomplete,
+  type AutocompleteFetchSuggestions,
+} from 'element-plus';
+import { ClIcon } from '@/components';
 
-const props = defineProps<{
-  modelValue?: string;
-  required?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string;
+    required?: boolean;
+    autocomplete?: boolean;
+    fetchSuggestions?: AutocompleteFetchSuggestions;
+    triggerOnFocus?: boolean;
+  }>(),
+  {
+    triggerOnFocus: true,
+  }
+);
 
 const emit = defineEmits<{
   (e: 'change', val: string): void;
 }>();
 
-const inputRef = ref<typeof ElInput>(null);
+const inputRef = ref<typeof ElInput | null>(null);
 
-const internalValue = ref(props.modelValue);
+const internalValue = ref<string>(props.modelValue || '');
 watch(
   () => props.modelValue,
   val => {
-    internalValue.value = val;
+    internalValue.value = val || '';
   }
 );
 
@@ -36,10 +49,34 @@ const onCheck = () => {
   emit('change', internalValue.value);
 };
 
+const onSelect = (item: SelectOption) => {
+  internalValue.value = item.value;
+  onCheck();
+};
+
 const onCancel = () => {
   isEdit.value = false;
-  internalValue.value = props.modelValue;
+  internalValue.value = props.modelValue || '';
 };
+
+const CellActions = () => (
+  <div class="cell-actions">
+    <ClIcon
+      icon={['fa', 'check']}
+      onClick={(event: MouseEvent) => {
+        event.stopPropagation();
+        onCheck();
+      }}
+    />
+    <ClIcon
+      icon={['fa', 'times']}
+      onClick={(event: MouseEvent) => {
+        event.stopPropagation();
+        onCancel();
+      }}
+    />
+  </div>
+);
 
 defineOptions({ name: 'ClTableEditCell' });
 </script>
@@ -57,19 +94,31 @@ defineOptions({ name: 'ClTableEditCell' });
       </span>
     </template>
     <template v-else>
-      <el-input
+      <el-autocomplete
+        v-if="autocomplete"
         ref="inputRef"
         v-model="internalValue"
         class="edit-input"
         size="default"
-        autofocus
+        :trigger-on-focus="triggerOnFocus"
+        :fetch-suggestions="fetchSuggestions"
+        @keyup.enter="onCheck"
+        @select="onSelect"
+      >
+        <template #suffix>
+          <cell-actions />
+        </template>
+      </el-autocomplete>
+      <el-input
+        v-else
+        ref="inputRef"
+        v-model="internalValue"
+        class="edit-input"
+        size="default"
         @keyup.enter="onCheck"
       >
         <template #suffix>
-          <div class="cell-actions">
-            <cl-icon :icon="['fa', 'check']" @click.stop="onCheck" />
-            <cl-icon :icon="['fa', 'times']" @click.stop="onCancel" />
-          </div>
+          <cell-actions />
         </template>
       </el-input>
     </template>
@@ -96,11 +145,12 @@ defineOptions({ name: 'ClTableEditCell' });
     }
   }
 
-  .edit-input {
+  &:deep(.edit-input) {
     width: 100%;
     height: 100%;
   }
 
+  &:deep(.el-input),
   &:deep(.edit-input .el-input__inner) {
     height: 100%;
   }

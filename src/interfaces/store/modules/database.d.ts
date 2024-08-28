@@ -11,6 +11,7 @@ export declare global {
     tablePreviewData: Record<string, any>[];
     tablePreviewPagination: TablePagination;
     tablePreviewTotal: number;
+    activeTable?: DatabaseTable;
   }
 
   type DatabaseStoreGetters = BaseStoreGetters<DatabaseStoreState>;
@@ -26,6 +27,8 @@ export declare global {
       DatabaseStoreState,
       TablePagination
     >;
+    setActiveTable: StoreMutation<DatabaseStoreState, DatabaseTable>;
+    resetActiveTable: StoreMutation<DatabaseStoreState>;
   }
 
   interface DatabaseStoreActions extends BaseStoreActions<Database> {
@@ -35,6 +38,10 @@ export declare global {
     >;
     getMetadata: StoreAction<DatabaseStoreState, { id: string }>;
     getTablePreview: StoreAction<
+      DatabaseStoreState,
+      { id: string; database: string; table: string }
+    >;
+    getTable: StoreAction<
       DatabaseStoreState,
       { id: string; database: string; table: string }
     >;

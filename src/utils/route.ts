@@ -19,6 +19,7 @@ import {
   TAB_NAME_SCHEDULES,
   TAB_NAME_SETTINGS,
   TAB_NAME_SPIDERS,
+  TAB_NAME_TABLE,
   TAB_NAME_TASKS,
   TAB_NAME_TEMPLATE,
   TAB_NAME_TRIGGERS,
@@ -171,6 +172,8 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'database'];
     case TAB_NAME_CONSOLE:
       return ['fa', 'terminal'];
+    case TAB_NAME_TABLE:
+      return ['fa', 'table'];
     case TAB_NAME_COLUMNS:
       return ['fa', 'columns'];
     case TAB_NAME_INDEXES:

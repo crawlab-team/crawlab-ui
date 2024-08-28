@@ -1,7 +1,12 @@
 <script setup lang="tsx">
 import { computed, type CSSProperties, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { CellStyle, ColumnStyle, ElMessage } from 'element-plus';
+import {
+  ElMessage,
+  type CellStyle,
+  type ColumnStyle,
+  type AutocompleteFetchSuggestionsCallback,
+} from 'element-plus';
 import {
   TAB_NAME_COLUMNS,
   TAB_NAME_DATA,
@@ -16,6 +21,7 @@ import {
   ClContextMenuList,
   ClTableEditCell,
 } from '@/components';
+import useRequest from '@/services/request';
 
 const props = withDefaults(
   defineProps<{
@@ -30,6 +36,12 @@ const props = withDefaults(
   }
 );
 
+const emit = defineEmits<{
+  (e: 'refresh'): void;
+}>();
+
+const { get, post } = useRequest();
+
 const t = translate;
 
 const ns: ListStoreNamespace = 'database';
@@ -39,10 +51,29 @@ const { database: state } = store.state as RootStoreState;
 const internalTable = ref<DatabaseTable | undefined>(plainClone(props.table));
 watch(
   () => props.table,
-  () => {
-    internalTable.value = plainClone(props.table);
-  }
+  () => onRollback()
 );
+
+const commitLoading = ref(false);
+const onCommit = async () => {
+  commitLoading.value = true;
+  try {
+    await post(`/databases/${props.activeId}/tables/modify`, {
+      database_name: props.databaseName,
+      table: internalTable.value,
+    });
+    emit('refresh');
+  } catch (error: any) {
+    ElMessage.error(error.message);
+  } finally {
+    commitLoading.value = false;
+  }
+};
+
+const onRollback = () => {
+  if (!internalTable.value) return;
+  internalTable.value = plainClone(props.table);
+};
 
 const activeTabName = ref<string>(props.defaultTabName);
 const tabsItems = computed<NavItem[]>(() =>
@@ -76,99 +107,6 @@ watch(
     await fetchData();
   }
 );
-
-const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
-  {
-    key: 'actions',
-    label: t('components.table.columns.actions'),
-    width: 80,
-    value: (row: DatabaseColumn) => (
-      <div class="actions">
-        <ClContextMenu
-          trigger="click"
-          placement="right"
-          visible={row.contextMenuVisible}
-        >
-          {{
-            default: () => (
-              <ClContextMenuList
-                items={[
-                  {
-                    title: t('common.actions.insertBefore'),
-                    icon: ['fa', 'arrows-up-to-line'],
-                    action: () => {
-                      onAddColumn(row, true);
-                    },
-                  },
-                  {
-                    title: t('common.actions.insertAfter'),
-                    icon: ['fa', 'arrows-down-to-line'],
-                    action: () => {
-                      onAddColumn(row, false);
-                    },
-                  },
-                ]}
-                onHide={() => {
-                  row.contextMenuVisible = false;
-                }}
-              />
-            ),
-            reference: () => (
-              <ClIcon
-                icon={['fa', 'plus']}
-                onClick={(event: MouseEvent) => {
-                  event.stopPropagation();
-                  row.contextMenuVisible = true;
-                }}
-              />
-            ),
-          }}
-        </ClContextMenu>
-        {row.status !== 'deleted' ? (
-          <ClIcon icon={['fa', 'minus']} onClick={() => onDeleteColumn(row)} />
-        ) : (
-          <ClIcon
-            icon={['fa', 'rotate-left']}
-            onClick={() => onRevertColumn(row)}
-          />
-        )}
-      </div>
-    ),
-  },
-  {
-    key: 'name',
-    label: t('components.database.databases.table.columns.name'),
-    width: 200,
-    value: (row: DatabaseColumn) => (
-      <ClTableEditCell
-        modelValue={row.name}
-        onChange={(val: string) => {
-          row.name = val;
-        }}
-      />
-    ),
-    noPadding: true,
-  },
-  {
-    key: 'type',
-    label: t('components.database.databases.table.columns.type'),
-    width: 200,
-  },
-  {
-    key: 'null',
-    label: t('components.database.databases.table.columns.null'),
-    width: 200,
-  },
-  {
-    key: 'default',
-    label: t('components.database.databases.table.columns.default'),
-    width: 200,
-  },
-]);
-
-const columnsTableData = computed<TableData<DatabaseColumn>>(() => {
-  return internalTable.value?.columns || [];
-});
 
 const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
   {
@@ -259,95 +197,10 @@ const onDataTablePaginationChange = (pagination: TablePagination) => {
   getTablePreview();
 };
 
-const onAddColumn = (column?: DatabaseColumn, before?: boolean) => {
-  const newColumn: DatabaseColumn = {
-    name: '',
-    type: '',
-    null: true,
-    default: '',
-    status: 'new',
-  };
-  if (column === undefined) {
-    internalTable.value?.columns?.push(newColumn);
-  } else {
-    const index = internalTable.value?.columns?.findIndex(
-      c => c.name === column.name
-    );
-    if (typeof index === 'undefined') return;
-    if (before) {
-      internalTable.value?.columns?.splice(index, 0, newColumn);
-    } else {
-      internalTable.value?.columns?.splice(index + 1, 0, newColumn);
-    }
-  }
-};
-const onDeleteColumn = (column: DatabaseColumn) => {
-  if (column.status === 'new') {
-    const index = internalTable.value?.columns?.findIndex(
-      c => c.name === column.name
-    );
-    if (typeof index === 'undefined') return;
-    internalTable.value?.columns?.splice(index, 1);
-    return;
-  } else {
-    column.status = 'deleted';
-  }
-};
-const onRevertColumn = (column: DatabaseColumn) => {
-  column.status = undefined;
-};
-
-const getColumnStatus = (column: DatabaseColumn) => {
-  if (column.status && column.status !== 'updated') return column.status;
-  const hasColumn = props.table?.columns?.some(
-    c =>
-      column.name === c.name &&
-      column.type === c.type &&
-      column.null === c.null &&
-      column.default === c.default
-  );
-  if (hasColumn) return;
-  return 'updated';
-};
-
-const columnRowStyle: ColumnStyle<DatabaseColumn> = ({
-  row,
-}): CSSProperties => {
-  let backgroundColor: string | undefined = undefined;
-  let color: string | undefined = undefined;
-  const status = getColumnStatus(row);
-  switch (status) {
-    case 'new':
-      color = 'var(--cl-success-color)';
-      backgroundColor = 'var(--cl-success-plain-color)';
-      break;
-    case 'updated':
-      color = 'var(--cl-primary-color)';
-      backgroundColor = 'var(--cl-primary-plain-color)';
-      break;
-    case 'deleted':
-      color = 'var(--cl-danger-color)';
-      backgroundColor = 'var(--cl-danger-plain-color)';
-      break;
-  }
-  return {
-    color,
-    backgroundColor,
-  };
-};
-const columnCellStyle: CellStyle<DatabaseColumn> = ({ row, column }) => {
-  if (column.columnKey === 'actions') {
-    return;
-  }
-  const originalColumn = props.table?.columns?.find(c => c.hash === row.hash);
-  if (!originalColumn) return;
-  if (row[column.columnKey] === originalColumn[column.columnKey]) {
-    return;
-  }
-  return {
-    fontWeight: 'bold',
-  };
-};
+const hasChanges = computed(() => {
+  if (!internalTable.value) return false;
+  return internalTable.value.columns?.some(c => getColumnStatus(c));
+});
 
 defineOptions({ name: 'ClDatabaseTableDetail' });
 </script>
@@ -358,39 +211,66 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
       :active-key="activeTabName"
       :items="tabsItems"
       @select="(key: string) => (activeTabName = key)"
-    />
+    >
+      <template #extra>
+        <div class="nav-tabs-actions">
+          <cl-fa-icon-button
+            type="primary"
+            :icon="['fa', 'save']"
+            :tooltip="t('components.database.actions.commitChanges')"
+            size="small"
+            :disabled="!hasChanges"
+            :loading="commitLoading"
+            @click.stop="onCommit"
+          />
+          <cl-fa-icon-button
+            type="info"
+            :icon="['fa', 'rotate-left']"
+            :tooltip="t('components.database.actions.rollbackChanges')"
+            size="small"
+            :disabled="!hasChanges"
+            @click.stop="onRollback"
+          />
+        </div>
+      </template>
+    </cl-nav-tabs>
     <div class="tab-content">
-      <template v-if="activeTabName === TAB_NAME_DATA">
-        <cl-table
-          :loading="tablePreviewLoading"
-          :key="JSON.stringify(internalTable)"
-          :row-key="(row: TableAnyRowData) => JSON.stringify(row)"
-          :columns="dataTableColumns"
-          :data="dataTableData"
-          :page="dataTablePagination.page"
-          :page-size="dataTablePagination.size"
-          :total="dataTableTotal"
-          @pagination-change="onDataTablePaginationChange"
-        />
-      </template>
-      <template v-else-if="activeTabName === TAB_NAME_COLUMNS">
-        <cl-table
-          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"
-          :columns="columnsTableColumns"
-          :data="columnsTableData"
-          :row-style="columnRowStyle"
-          :cell-style="columnCellStyle"
-          hide-footer
-        />
-      </template>
-      <template v-else-if="activeTabName === TAB_NAME_INDEXES">
-        <cl-table
-          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"
-          :columns="indexesTableColumns"
-          :data="indexesTableData"
-          hide-footer
-        />
-      </template>
+      <router-view />
+      <!--      <template v-if="activeTabName === TAB_NAME_DATA">-->
+      <!--        <cl-table-->
+      <!--          :loading="tablePreviewLoading"-->
+      <!--          :key="JSON.stringify(internalTable)"-->
+      <!--          :row-key="(row: TableAnyRowData) => JSON.stringify(row)"-->
+      <!--          :columns="dataTableColumns"-->
+      <!--          :data="dataTableData"-->
+      <!--          :page="dataTablePagination.page"-->
+      <!--          :page-size="dataTablePagination.size"-->
+      <!--          :total="dataTableTotal"-->
+      <!--          @pagination-change="onDataTablePaginationChange"-->
+      <!--        />-->
+      <!--      </template>-->
+      <!--      <template v-else-if="activeTabName === TAB_NAME_COLUMNS">-->
+      <!--        <cl-table-->
+      <!--          :loading="commitLoading"-->
+      <!--          :key="JSON.stringify(internalTable)"-->
+      <!--          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"-->
+      <!--          :columns="columnsTableColumns"-->
+      <!--          :data="columnsTableData"-->
+      <!--          :row-style="columnRowStyle"-->
+      <!--          :cell-style="columnCellStyle"-->
+      <!--          hide-footer-->
+      <!--        />-->
+      <!--      </template>-->
+      <!--      <template v-else-if="activeTabName === TAB_NAME_INDEXES">-->
+      <!--        <cl-table-->
+      <!--          :loading="commitLoading"-->
+      <!--          :key="JSON.stringify(internalTable)"-->
+      <!--          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"-->
+      <!--          :columns="indexesTableColumns"-->
+      <!--          :data="indexesTableData"-->
+      <!--          hide-footer-->
+      <!--        />-->
+      <!--      </template>-->
     </div>
   </div>
 </template>
@@ -403,6 +283,10 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
 
   .nav-tabs {
     flex: 0 0 40px;
+
+    &:deep(.nav-tabs-actions) {
+      display: flex;
+    }
   }
 
   .tab-content {

@@ -32,6 +32,7 @@ const state = {
     size: 10,
   },
   tablePreviewTotal: 0,
+  activeTable: undefined,
 } as DatabaseStoreState;
 
 const getters = {
@@ -58,6 +59,12 @@ const mutations = {
   ) {
     state.tablePreviewPagination = pagination;
   },
+  setActiveTable(state: DatabaseStoreState, table: DatabaseTable) {
+    state.activeTable = table;
+  },
+  resetActiveTable(state: DatabaseStoreState) {
+    state.activeTable = undefined;
+  },
 } as DatabaseStoreMutations;
 
 const actions = {
@@ -78,7 +85,7 @@ const actions = {
     { id, database, table }: { id: string; database: string; table: string }
   ) => {
     const res = await getList<Record<string, any>>(
-      `/databases/${id}/table-preview`,
+      `/databases/${id}/tables/preview`,
       {
         page: ctx.state.tablePreviewPagination?.page,
         size: ctx.state.tablePreviewPagination?.size,
@@ -88,6 +95,17 @@ const actions = {
     );
     ctx.commit('setTablePreviewData', res.data);
     ctx.commit('setTablePreviewTotal', res.total);
+    return res;
+  },
+  getTable: async (
+    ctx: StoreActionContext<DatabaseStoreState>,
+    { id, database, table }: { id: string; database: string; table: string }
+  ) => {
+    const res = await get(`/databases/${id}/tables/metadata`, {
+      database,
+      table,
+    });
+    ctx.commit('setActiveTable', res.data);
     return res;
   },
 } as DatabaseStoreActions;

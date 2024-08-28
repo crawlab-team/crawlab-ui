@@ -113,6 +113,10 @@ const database: LComponentsDatabase = {
       },
     },
   },
+  actions: {
+    commitChanges: '提交更改',
+    rollbackChanges: '回滚更改',
+  },
 };
 
 export default database;

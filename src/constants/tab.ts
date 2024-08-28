@@ -16,5 +16,6 @@ export const TAB_NAME_CHANNELS = 'channels';
 export const TAB_NAME_MAIL = 'mail';
 export const TAB_NAME_DATABASES = 'databases';
 export const TAB_NAME_CONSOLE = 'console';
+export const TAB_NAME_TABLE = 'table';
 export const TAB_NAME_COLUMNS = 'columns';
 export const TAB_NAME_INDEXES = 'indexes';

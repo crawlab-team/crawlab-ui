@@ -487,6 +487,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           :table="activeNavItem?.data"
           :default-tab-name="defaultTabName"
           :is-new="activeNavItem?.new"
+          @refresh="onRefresh"
         />
       </template>
     </div>
