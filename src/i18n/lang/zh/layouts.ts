@@ -124,6 +124,10 @@ const layouts: LLayouts = {
         overview: '概览',
         databases: '数据库',
         console: '控制台',
+        table: '表',
+        data: '数据',
+        columns: '列',
+        indexes: '索引',
       },
     },
     environments: {

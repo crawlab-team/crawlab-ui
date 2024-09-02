@@ -84,3 +84,19 @@ export const getDatabaseDefaultByDataSource = (
 ): Database | undefined => {
   return databaseDefaults.find(database => database.data_source === dataSource);
 };
+
+export const getColumnStatus = (
+  column: DatabaseColumn,
+  originalTable?: DatabaseTable
+) => {
+  if (column.status && column.status !== 'updated') return column.status;
+  const hasColumn = originalTable?.columns?.some(
+    c =>
+      column.name === c.name &&
+      column.type === c.type &&
+      column.null === c.null &&
+      column.default === c.default
+  );
+  if (hasColumn) return;
+  return 'updated';
+};

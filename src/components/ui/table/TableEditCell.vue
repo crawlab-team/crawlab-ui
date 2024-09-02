@@ -1,28 +1,35 @@
 <script setup lang="tsx">
-import { ref, watch } from 'vue';
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
 import {
   ElInput,
   ElAutocomplete,
   type AutocompleteFetchSuggestions,
 } from 'element-plus';
 import { ClIcon } from '@/components';
+import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
     modelValue?: string;
+    isEdit?: boolean;
     required?: boolean;
     autocomplete?: boolean;
     fetchSuggestions?: AutocompleteFetchSuggestions;
     triggerOnFocus?: boolean;
+    autoFocus?: boolean;
   }>(),
   {
     triggerOnFocus: true,
+    autoFocus: true,
   }
 );
 
 const emit = defineEmits<{
   (e: 'change', val: string): void;
+  (e: 'edit', val: boolean): void;
 }>();
+
+const t = translate;
 
 const inputRef = ref<typeof ElInput | null>(null);
 
@@ -30,21 +37,28 @@ const internalValue = ref<string>(props.modelValue || '');
 watch(
   () => props.modelValue,
   val => {
+    if (internalValue.value) return;
     internalValue.value = val || '';
   }
 );
 
-const isEdit = ref(false);
+const hasError = computed(() => {
+  return props.required && !internalValue.value;
+});
 
 const onEdit = () => {
-  isEdit.value = true;
-  setTimeout(() => {
-    inputRef.value?.focus();
-  }, 0);
+  emit('edit', true);
 };
+const focusInput = () => {
+  if (!props.isEdit) return;
+  if (!props.autoFocus) return;
+  inputRef.value?.focus();
+};
+onMounted(focusInput);
+watch(() => props.isEdit, focusInput);
 
 const onCheck = () => {
-  isEdit.value = false;
+  emit('edit', false);
   if (internalValue.value === props.modelValue) return;
   emit('change', internalValue.value);
 };
@@ -55,7 +69,7 @@ const onSelect = (item: SelectOption) => {
 };
 
 const onCancel = () => {
-  isEdit.value = false;
+  emit('edit', false);
   internalValue.value = props.modelValue || '';
 };
 
@@ -65,6 +79,7 @@ const CellActions = () => (
       icon={['fa', 'check']}
       onClick={(event: MouseEvent) => {
         event.stopPropagation();
+        if (hasError.value) return;
         onCheck();
       }}
     />
@@ -85,12 +100,21 @@ defineOptions({ name: 'ClTableEditCell' });
   <div
     class="table-edit-cell"
     :class="
-      [isEdit ? 'is-edit' : '', props.required ? 'required' : ''].join(' ')
+      [
+        isEdit ? 'is-edit' : '',
+        required ? 'required' : '',
+        hasError ? 'error' : '',
+      ].join(' ')
     "
   >
     <template v-if="!isEdit">
       <span class="display-value" @click.stop="onEdit">
-        {{ modelValue }}
+        <template v-if="modelValue">
+          {{ modelValue }}
+        </template>
+        <template v-else>
+          <span class="empty"> ({{ t('common.placeholder.empty') }}) </span>
+        </template>
       </span>
     </template>
     <template v-else>
@@ -102,6 +126,7 @@ defineOptions({ name: 'ClTableEditCell' });
         size="default"
         :trigger-on-focus="triggerOnFocus"
         :fetch-suggestions="fetchSuggestions"
+        :autofocus="autoFocus"
         @keyup.enter="onCheck"
         @select="onSelect"
       >
@@ -115,6 +140,7 @@ defineOptions({ name: 'ClTableEditCell' });
         v-model="internalValue"
         class="edit-input"
         size="default"
+        :autofocus="autoFocus"
         @keyup.enter="onCheck"
       >
         <template #suffix>
@@ -133,7 +159,7 @@ defineOptions({ name: 'ClTableEditCell' });
   position: relative;
   display: flex;
   align-items: center;
-  height: 100%;
+  height: 40px;
 
   .display-value {
     margin: 0 12px;
@@ -142,6 +168,11 @@ defineOptions({ name: 'ClTableEditCell' });
       cursor: pointer;
       color: var(--cl-primary-color);
       text-decoration: underline;
+    }
+
+    .empty {
+      color: var(--el-text-color-secondary);
+      font-style: italic;
     }
   }
 
@@ -153,6 +184,25 @@ defineOptions({ name: 'ClTableEditCell' });
   &:deep(.el-input),
   &:deep(.edit-input .el-input__inner) {
     height: 100%;
+  }
+
+  &:deep(.el-input .el-input__wrapper) {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  &.is-edit {
+    &:deep(.el-input .el-input__wrapper) {
+      border: 1px solid var(--cl-primary-color);
+    }
+  }
+
+  &.error {
+    border: 1px solid var(--cl-danger-color);
+
+    &:deep(.el-input .el-input__wrapper) {
+      border: none;
+    }
   }
 
   .cell-actions {

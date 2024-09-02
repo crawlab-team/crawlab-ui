@@ -51,14 +51,6 @@ export default [
         title: t('layouts.routes.databases.tabs.databases'),
         icon: getIconByTabName(TAB_NAME_DATABASES),
         component: async () => ClDatabaseDetailTabDatabases,
-        children: [
-          {
-            path: TAB_NAME_TABLE,
-            title: t('layouts.routes.databases.tabs.table'),
-            icon: getIconByTabName(TAB_NAME_INDEXES),
-            component: async () => ClDatabaseDetailTabDatabasesSubTabIndexes,
-          },
-        ],
       },
       {
         path: TAB_NAME_CONSOLE,

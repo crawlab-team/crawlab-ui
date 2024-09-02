@@ -1,15 +1,15 @@
 <script setup lang="tsx">
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { useDatabaseDetail } from '@/views';
-import { translate } from '@/utils';
 import { ElTree } from 'element-plus';
-import { debounce } from 'lodash';
-import {
+import type {
   FilterNodeMethodFunction,
   FilterValue,
   TreeNodeData,
 } from 'element-plus/es/components/tree/src/tree.type';
+import { debounce } from 'lodash';
+import { useDatabaseDetail } from '@/views';
+import { translate } from '@/utils';
 import {
   TAB_NAME_COLUMNS,
   TAB_NAME_DATA,

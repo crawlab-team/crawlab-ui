@@ -41,34 +41,37 @@ export declare global {
     databases: DatabaseDatabase[];
   }
 
-  interface DatabaseDatabase {
+  interface DatabaseItem {
+    timestamp?: number;
+  }
+
+  interface DatabaseDatabase extends DatabaseItem {
     name?: string;
     tables?: DatabaseTable[];
   }
 
-  interface DatabaseTable {
+  interface DatabaseTable extends DatabaseItem {
     name?: string;
     columns?: DatabaseColumn[];
     indexes?: DatabaseIndex[];
   }
 
-  interface DatabaseTableItem {
+  interface DatabaseTableItem<T> {
     hash?: string;
+    original_name?: string;
     status?: 'new' | 'updated' | 'deleted';
     contextMenuVisible?: boolean;
+    isEdit?: Partial<Record<keyof T, boolean>>;
   }
 
-  interface DatabaseColumn extends DatabaseTableItem {
+  interface DatabaseColumn extends DatabaseTableItem<DatabaseColumn> {
     name?: string;
     type?: string;
-    null?: boolean; // Use ? to make this property optional
-    key?: string;
+    null?: boolean;
     default?: string;
-    extra?: string;
-    children?: DatabaseColumn[];
   }
 
-  interface DatabaseIndex extends DatabaseTableItem {
+  interface DatabaseIndex extends DatabaseTableItem<DatabaseIndex> {
     name: string;
     type?: string;
     columns: DatabaseIndexColumn[];

@@ -126,6 +126,9 @@ export declare global {
           databases: string;
           console: string;
           table: string;
+          data: string;
+          columns: string;
+          indexes: string;
         };
       };
       environments: {

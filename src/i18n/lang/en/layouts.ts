@@ -124,6 +124,10 @@ const layouts: LLayouts = {
         overview: 'Overview',
         databases: 'Databases',
         console: 'Console',
+        table: 'Table',
+        data: 'Data',
+        columns: 'Columns',
+        indexes: 'Indexes',
       },
     },
     environments: {

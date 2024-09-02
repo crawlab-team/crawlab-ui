@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { computed, type CSSProperties, onBeforeMount, ref, watch } from 'vue';
+import { computed, type CSSProperties } from 'vue';
 import type {
   AutocompleteFetchSuggestionsCallback,
   CellStyle,
@@ -12,28 +12,22 @@ import {
   ClTableEditCell,
 } from '@/components';
 import { translate } from '@/utils';
-import { useStore } from 'vuex';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
+import { getColumnStatus } from '@/utils/database';
+
+const internalTable = defineModel<DatabaseTable>();
+
+const props = defineProps<{
+  loading?: boolean;
+  activeTable?: DatabaseTable;
+}>();
 
 const t = translate;
 
 const { get } = useRequest();
 
-const ns: ListStoreNamespace = 'database';
-const store = useStore();
-const { database: state } = store.state as RootStoreState;
-
 const { activeId } = useDatabaseDetail();
-
-const activeTable = computed(() => state.activeTable);
-const internalTable = ref<DatabaseTable | undefined>(activeTable.value);
-watch(activeTable, val => {
-  internalTable.value = val;
-});
-onBeforeMount(() => {
-  store.dispatch(`${ns}/getTable`, { id: activeId.value });
-});
 
 const onAddColumn = (column?: DatabaseColumn, before?: boolean) => {
   const newColumn: DatabaseColumn = {
@@ -141,8 +135,14 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
     value: (row: DatabaseColumn) => (
       <ClTableEditCell
         modelValue={row.name}
+        isEdit={row.isEdit?.name}
+        required
         onChange={(val: string) => {
           row.name = val;
+        }}
+        onEdit={(val: boolean) => {
+          if (!row.isEdit) row.isEdit = {};
+          row.isEdit.name = val;
         }}
       />
     ),
@@ -155,7 +155,9 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
     value: (row: DatabaseColumn) => (
       <ClTableEditCell
         modelValue={row.type}
+        isEdit={row.isEdit?.type}
         autocomplete
+        required
         fetchSuggestions={async (
           query: string,
           cb: AutocompleteFetchSuggestionsCallback
@@ -170,6 +172,10 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
         }}
         onChange={(val: string) => {
           row.type = val;
+        }}
+        onEdit={(val: boolean) => {
+          if (!row.isEdit) row.isEdit = {};
+          row.isEdit.type = val;
         }}
       />
     ),
@@ -190,25 +196,12 @@ const columnsTableData = computed<TableData<DatabaseColumn>>(() => {
   return internalTable.value?.columns || [];
 });
 
-const getColumnStatus = (column: DatabaseColumn) => {
-  if (column.status && column.status !== 'updated') return column.status;
-  const hasColumn = activeTable.value?.columns?.some(
-    c =>
-      column.name === c.name &&
-      column.type === c.type &&
-      column.null === c.null &&
-      column.default === c.default
-  );
-  if (hasColumn) return;
-  return 'updated';
-};
-
 const columnRowStyle: ColumnStyle<DatabaseColumn> = ({
   row,
 }): CSSProperties => {
   let backgroundColor: string | undefined = undefined;
   let color: string | undefined = undefined;
-  const status = getColumnStatus(row);
+  const status = getColumnStatus(row, props.activeTable);
   switch (status) {
     case 'new':
       color = 'var(--cl-success-color)';
@@ -233,7 +226,7 @@ const columnCellStyle: CellStyle<DatabaseColumn> = ({ row, column }) => {
   if (column.columnKey === 'actions') {
     return {};
   }
-  const originalColumn = activeTable.value?.columns?.find(
+  const originalColumn = props.activeTable?.columns?.find(
     c => c.hash === row.hash
   );
   if (!originalColumn) return {};
@@ -253,7 +246,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabasesSubTabColumns' });
 
 <template>
   <cl-table
-    :loading="commitLoading"
+    :loading="loading"
     :key="JSON.stringify(internalTable)"
     :row-key="(row: DatabaseColumn) => JSON.stringify(row)"
     :columns="columnsTableColumns"
@@ -263,5 +256,3 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabasesSubTabColumns' });
     hide-footer
   />
 </template>
-
-<style scoped lang="scss"></style>

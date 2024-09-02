@@ -1,12 +1,7 @@
 <script setup lang="tsx">
-import { computed, type CSSProperties, onBeforeMount, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import {
-  ElMessage,
-  type CellStyle,
-  type ColumnStyle,
-  type AutocompleteFetchSuggestionsCallback,
-} from 'element-plus';
+import { ElMessage } from 'element-plus';
 import {
   TAB_NAME_COLUMNS,
   TAB_NAME_DATA,
@@ -14,14 +9,9 @@ import {
   TAB_NAME_OVERVIEW,
 } from '@/constants';
 import { plainClone, translate } from '@/utils';
-import {
-  ClResultCell,
-  ClIcon,
-  ClContextMenu,
-  ClContextMenuList,
-  ClTableEditCell,
-} from '@/components';
+import { ClResultCell } from '@/components';
 import useRequest from '@/services/request';
+import { getColumnStatus } from '@/utils/database';
 
 const props = withDefaults(
   defineProps<{
@@ -48,11 +38,28 @@ const ns: ListStoreNamespace = 'database';
 const store = useStore();
 const { database: state } = store.state as RootStoreState;
 
-const internalTable = ref<DatabaseTable | undefined>(plainClone(props.table));
-watch(
-  () => props.table,
-  () => onRollback()
+const activeTable = ref<DatabaseTable | undefined>(
+  props.isNew ? plainClone(props.table) : undefined
 );
+const internalTable = ref<DatabaseTable | undefined>();
+
+const getTable = async () => {
+  if (props.isNew) {
+    activeTable.value = plainClone(props.table);
+  } else {
+    const res = await get(
+      `/databases/${props.activeId}/tables/metadata?database=${props.databaseName}&table=${props.table?.name}`
+    );
+    activeTable.value = { ...res.data, timestamp: Date.now() };
+  }
+};
+onBeforeMount(getTable);
+watch(() => props.table, getTable);
+
+const onRollback = () => {
+  internalTable.value = plainClone(activeTable.value);
+};
+watch(activeTable, onRollback);
 
 const commitLoading = ref(false);
 const onCommit = async () => {
@@ -60,19 +67,23 @@ const onCommit = async () => {
   try {
     await post(`/databases/${props.activeId}/tables/modify`, {
       database_name: props.databaseName,
-      table: internalTable.value,
+      table: {
+        ...internalTable.value,
+        columns: internalTable.value?.columns?.map(c => {
+          return {
+            ...c,
+            status: getColumnStatus(c, activeTable.value),
+          };
+        }),
+      },
     });
+    await getTable();
     emit('refresh');
   } catch (error: any) {
     ElMessage.error(error.message);
   } finally {
     commitLoading.value = false;
   }
-};
-
-const onRollback = () => {
-  if (!internalTable.value) return;
-  internalTable.value = plainClone(props.table);
 };
 
 const activeTabName = ref<string>(props.defaultTabName);
@@ -199,7 +210,9 @@ const onDataTablePaginationChange = (pagination: TablePagination) => {
 
 const hasChanges = computed(() => {
   if (!internalTable.value) return false;
-  return internalTable.value.columns?.some(c => getColumnStatus(c));
+  return internalTable.value.columns?.some(c =>
+    getColumnStatus(c, activeTable.value)
+  );
 });
 
 defineOptions({ name: 'ClDatabaseTableDetail' });
@@ -235,42 +248,36 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
       </template>
     </cl-nav-tabs>
     <div class="tab-content">
-      <router-view />
-      <!--      <template v-if="activeTabName === TAB_NAME_DATA">-->
-      <!--        <cl-table-->
-      <!--          :loading="tablePreviewLoading"-->
-      <!--          :key="JSON.stringify(internalTable)"-->
-      <!--          :row-key="(row: TableAnyRowData) => JSON.stringify(row)"-->
-      <!--          :columns="dataTableColumns"-->
-      <!--          :data="dataTableData"-->
-      <!--          :page="dataTablePagination.page"-->
-      <!--          :page-size="dataTablePagination.size"-->
-      <!--          :total="dataTableTotal"-->
-      <!--          @pagination-change="onDataTablePaginationChange"-->
-      <!--        />-->
-      <!--      </template>-->
-      <!--      <template v-else-if="activeTabName === TAB_NAME_COLUMNS">-->
-      <!--        <cl-table-->
-      <!--          :loading="commitLoading"-->
-      <!--          :key="JSON.stringify(internalTable)"-->
-      <!--          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"-->
-      <!--          :columns="columnsTableColumns"-->
-      <!--          :data="columnsTableData"-->
-      <!--          :row-style="columnRowStyle"-->
-      <!--          :cell-style="columnCellStyle"-->
-      <!--          hide-footer-->
-      <!--        />-->
-      <!--      </template>-->
-      <!--      <template v-else-if="activeTabName === TAB_NAME_INDEXES">-->
-      <!--        <cl-table-->
-      <!--          :loading="commitLoading"-->
-      <!--          :key="JSON.stringify(internalTable)"-->
-      <!--          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"-->
-      <!--          :columns="indexesTableColumns"-->
-      <!--          :data="indexesTableData"-->
-      <!--          hide-footer-->
-      <!--        />-->
-      <!--      </template>-->
+      <template v-if="activeTabName === TAB_NAME_DATA">
+        <cl-table
+          :loading="tablePreviewLoading"
+          :key="JSON.stringify(internalTable)"
+          :row-key="(row: TableAnyRowData) => JSON.stringify(row)"
+          :columns="dataTableColumns"
+          :data="dataTableData"
+          :page="dataTablePagination.page"
+          :page-size="dataTablePagination.size"
+          :total="dataTableTotal"
+          @pagination-change="onDataTablePaginationChange"
+        />
+      </template>
+      <template v-else-if="activeTabName === TAB_NAME_COLUMNS">
+        <cl-database-detail-tab-databases-sub-tab-columns
+          v-model="internalTable"
+          :active-table="activeTable"
+          :loading="commitLoading"
+        />
+      </template>
+      <template v-else-if="activeTabName === TAB_NAME_INDEXES">
+        <cl-table
+          :loading="commitLoading"
+          :key="JSON.stringify(internalTable)"
+          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"
+          :columns="indexesTableColumns"
+          :data="indexesTableData"
+          hide-footer
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -293,19 +300,6 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
     flex: 1;
     overflow: auto;
 
-    &:deep(.table .table-edit-cell) {
-      height: 40px;
-    }
-
-    &:deep(.table .table-edit-cell .el-input__wrapper) {
-      border-radius: 0;
-      box-shadow: none;
-    }
-
-    &:deep(.table .table-edit-cell.is-edit .el-input__wrapper) {
-      border: 1px solid var(--cl-primary-color);
-    }
-
     &:deep(.table .actions) {
       display: flex;
       align-items: center;
@@ -320,6 +314,8 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
       padding: 5px;
       cursor: pointer;
       color: var(--el-table-text-color);
+      width: 14px;
+      height: 14px;
     }
 
     &:deep(.table .actions .icon:hover) {
