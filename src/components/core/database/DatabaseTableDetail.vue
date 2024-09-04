@@ -332,6 +332,22 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
     &:deep(.table .el-table__cell:hover .cell-actions) {
       display: flex;
     }
+
+    &:deep(.table .el-table__cell .cell > div > .el-switch) {
+      height: inherit;
+    }
+
+    &:deep(.table .el-table__cell.updated) {
+      border-left: 4px solid var(--cl-primary-color);
+    }
+
+    &:deep(.table .el-table__cell.updated:not(.no-padding) .cell) {
+      padding-left: 8px;
+    }
+
+    &:deep(.table .el-table__cell.updated .cell .display-value) {
+      margin-left: 8px;
+    }
   }
 }
 </style>

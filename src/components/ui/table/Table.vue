@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, ref, computed } from 'vue';
-import { ColumnStyle, ElTable } from 'element-plus';
+import { CellCls, CellStyle, ColumnStyle, ElTable } from 'element-plus';
 import useColumn from '@/components/ui/table/column';
 import useHeader from '@/components/ui/table/header';
 import useAction from '@/components/ui/table/action';
@@ -37,10 +37,12 @@ const props = withDefaults(
     emptyText?: string;
     rowClassName?: ColumnCls<any>;
     rowStyle?: ColumnStyle<any>;
-    cellClassName?: ColumnCls<any>;
-    cellStyle?: ColumnStyle<any>;
-    headerCellClassName?: ColumnCls<any>;
-    headerCellStyle?: ColumnStyle<any>;
+    cellClassName?: CellCls<any>;
+    cellStyle?: CellStyle<any>;
+    headerRowClassName?: ColumnCls<any>;
+    headerRowStyle?: ColumnStyle<any>;
+    headerCellClassName?: CellCls<any>;
+    headerCellStyle?: CellStyle<any>;
   }>(),
   {
     data: emptyArrayFunc,
@@ -153,6 +155,8 @@ defineOptions({ name: 'ClTable' });
       :row-style="rowStyle"
       :cell-class-name="cellClassName"
       :cell-style="cellStyle"
+      :header-row-class-name="headerRowClassName"
+      :header-row-style="headerRowStyle"
       :header-cell-class-name="headerCellClassName"
       :header-cell-style="headerCellStyle"
       @selection-change="onSelectionChange"

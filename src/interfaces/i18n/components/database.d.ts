@@ -97,7 +97,7 @@ export declare global {
         columns: {
           name: string;
           type: string;
-          null: string;
+          notNull: string;
           default: string;
         };
         indexes: {

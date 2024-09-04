@@ -67,7 +67,7 @@ export declare global {
   interface DatabaseColumn extends DatabaseTableItem<DatabaseColumn> {
     name?: string;
     type?: string;
-    null?: boolean;
+    not_null?: boolean;
     default?: string;
   }
 

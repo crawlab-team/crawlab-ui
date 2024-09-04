@@ -94,7 +94,7 @@ export const getColumnStatus = (
     c =>
       column.name === c.name &&
       column.type === c.type &&
-      column.null === c.null &&
+      column.not_null === c.not_null &&
       column.default === c.default
   );
   if (hasColumn) return;

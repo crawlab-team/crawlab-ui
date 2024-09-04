@@ -98,7 +98,7 @@ const database: LComponentsDatabase = {
       columns: {
         name: 'Name',
         type: 'Data Type',
-        null: 'Nullable',
+        notNull: 'Not Null',
         default: 'Default Expression',
       },
       indexes: {

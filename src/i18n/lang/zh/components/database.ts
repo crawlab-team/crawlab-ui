@@ -96,7 +96,7 @@ const database: LComponentsDatabase = {
       columns: {
         name: '名称',
         type: '数据类型',
-        null: '可空',
+        notNull: '非空',
         default: '默认值',
       },
       indexes: {

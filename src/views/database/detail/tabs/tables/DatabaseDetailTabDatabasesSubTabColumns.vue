@@ -2,14 +2,20 @@
 import { computed, type CSSProperties } from 'vue';
 import type {
   AutocompleteFetchSuggestionsCallback,
+  CellCls,
   CellStyle,
   ColumnStyle,
 } from 'element-plus';
+import type {
+  ColumnCls,
+  TableColumnCtx,
+} from 'element-plus/es/components/table/src/table/defaults';
 import {
   ClContextMenu,
   ClContextMenuList,
   ClIcon,
   ClTableEditCell,
+  ClSwitch,
 } from '@/components';
 import { translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
@@ -33,7 +39,7 @@ const onAddColumn = (column?: DatabaseColumn, before?: boolean) => {
   const newColumn: DatabaseColumn = {
     name: '',
     type: '',
-    null: true,
+    not_null: true,
     default: '',
     status: 'new',
   };
@@ -181,14 +187,36 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
     ),
   },
   {
-    key: 'null',
-    label: t('components.database.databases.table.columns.null'),
-    width: 200,
+    key: 'not_null',
+    label: t('components.database.databases.table.columns.notNull'),
+    width: 120,
+    value: (row: DatabaseColumn) => (
+      <ClSwitch
+        modelValue={row.not_null}
+        onChange={(val: boolean) => {
+          row.not_null = val;
+        }}
+      />
+    ),
   },
   {
     key: 'default',
     label: t('components.database.databases.table.columns.default'),
     width: 200,
+    noPadding: true,
+    value: (row: DatabaseColumn) => (
+      <ClTableEditCell
+        modelValue={row.default}
+        isEdit={row.isEdit?.default}
+        onChange={(val: string) => {
+          row.default = val;
+        }}
+        onEdit={(val: boolean) => {
+          if (!row.isEdit) row.isEdit = {};
+          row.isEdit.default = val;
+        }}
+      />
+    ),
   },
 ]);
 
@@ -222,23 +250,37 @@ const columnRowStyle: ColumnStyle<DatabaseColumn> = ({
   };
 };
 
-const columnCellStyle: CellStyle<DatabaseColumn> = ({ row, column }) => {
+const isCellUpdated = (
+  row: DatabaseColumn,
+  column: TableColumnCtx<DatabaseColumn>
+) => {
   if (column.columnKey === 'actions') {
-    return {};
+    return false;
   }
   const originalColumn = props.activeTable?.columns?.find(
     c => c.hash === row.hash
   );
-  if (!originalColumn) return {};
-  if (
-    row[column.columnKey as keyof DatabaseColumn] ===
+  if (!originalColumn) return false;
+  return (
+    row[column.columnKey as keyof DatabaseColumn] !==
     originalColumn[column.columnKey as keyof DatabaseColumn]
-  ) {
-    return {};
+  );
+};
+
+const columnCellStyle: CellStyle<DatabaseColumn> = ({ row, column }) => {
+  if (isCellUpdated(row, column)) {
+    return {
+      fontWeight: 'bold',
+    };
   }
-  return {
-    fontWeight: 'bold',
-  };
+  return {};
+};
+
+const columnCellClassName: CellCls<DatabaseColumn> = ({ row, column }) => {
+  if (isCellUpdated(row, column)) {
+    return 'updated';
+  }
+  return '';
 };
 
 defineOptions({ name: 'ClDatabaseDetailTabDatabasesSubTabColumns' });
@@ -253,6 +295,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabasesSubTabColumns' });
     :data="columnsTableData"
     :row-style="columnRowStyle"
     :cell-style="columnCellStyle"
+    :cell-class-name="columnCellClassName"
     hide-footer
   />
 </template>
