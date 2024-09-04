@@ -19,10 +19,12 @@ const props = withDefaults(
     fetchSuggestions?: AutocompleteFetchSuggestions;
     triggerOnFocus?: boolean;
     autoFocus?: boolean;
+    automaticDropdown?: boolean;
   }>(),
   {
     triggerOnFocus: true,
     autoFocus: true,
+    automaticDropdown: true,
   }
 );
 
@@ -147,7 +149,10 @@ defineOptions({ name: 'ClTableEditCell' });
         v-model="internalValue"
         class="edit-input"
         size="default"
+        :autofocus="autoFocus"
+        :automatic-dropdown="automaticDropdown"
         @change="onCheck"
+        @blur="onCancel"
       >
         <el-option
           v-for="(op, $index) in options"

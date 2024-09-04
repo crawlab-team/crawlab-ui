@@ -296,6 +296,12 @@ defineOptions({ name: 'ClTable' });
 }
 
 .table.embedded {
+  &::before,
+  .el-table__inner-wrapper:after,
+  .el-table__border-left-patch {
+    background-color: transparent !important;
+  }
+
   &:deep(.el-table--border .el-table__inner-wrapper:after) {
     height: 0;
   }

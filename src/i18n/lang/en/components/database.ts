@@ -107,8 +107,8 @@ const database: LComponentsDatabase = {
         columns: 'Columns',
         unique: 'Unique',
         column: {
-          name: 'Name',
-          order: 'Order',
+          name: 'Column Name',
+          order: 'Column Order',
         },
       },
       create: {
@@ -116,6 +116,7 @@ const database: LComponentsDatabase = {
       },
       actions: {
         addColumn: 'Add Column',
+        editIndexColumns: 'Edit Index Columns',
       },
     },
   },

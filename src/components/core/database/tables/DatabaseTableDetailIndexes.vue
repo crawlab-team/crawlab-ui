@@ -4,7 +4,11 @@ import type { CellCls, CellStyle, ColumnStyle } from 'element-plus';
 import { ElCheckbox } from 'element-plus';
 import type { TableColumnCtx } from 'element-plus/es/components/table/src/table/defaults';
 import { translate, plainClone } from '@/utils';
-import { getIndexStatus } from '@/utils/database';
+import {
+  getDefaultIndexName,
+  getIndexStatus,
+  isDefaultIndexName,
+} from '@/utils/database';
 import {
   ClIcon,
   ClTag,
@@ -122,13 +126,14 @@ const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
     label: t('components.database.databases.table.indexes.columns'),
     width: 200,
     noPadding: true,
-    value: (row: DatabaseIndex) => (
+    value: (row: DatabaseIndex, rowIndex: number) => (
       <ClTableEditCell
         modelValue={row.columns?.map(c => c.name).join(',')}
         required
         isEdit={false}
         onEdit={() => {
-          activeIndex.value = plainClone(row);
+          activeIndexColumnsRowIndex.value = rowIndex;
+          activeIndexColumns.value = plainClone(row.columns);
           editColumnsDialogVisible.value = true;
         }}
       >
@@ -140,7 +145,8 @@ const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
                 icon={c.order > 0 ? ['fa', 'arrow-up'] : ['fa', 'arrow-down']}
                 label={c.name}
                 onClick={() => {
-                  activeIndex.value = plainClone(row);
+                  activeIndexColumnsRowIndex.value = rowIndex;
+                  activeIndexColumns.value = plainClone(row.columns);
                   editColumnsDialogVisible.value = true;
                 }}
               >
@@ -251,51 +257,50 @@ const indexCellClassName: CellCls<DatabaseIndex> = ({ row, column }) => {
 };
 
 const onAddIndexColumn = (
-  indexColumn: DatabaseIndexColumn,
-  before: boolean
+  indexColumn?: DatabaseIndexColumn,
+  before?: boolean
 ) => {
-  if (!activeIndex.value) return;
-  const idx = activeIndex.value?.columns?.findIndex(
-    i => i.name === indexColumn.name
-  );
-  if (typeof idx === 'undefined') return;
   const newIndexColumn: DatabaseIndexColumn = {
     name: '',
     order: 1,
-    isEdit: { name: true },
+    isEdit: {
+      name: true,
+    },
   };
+  const idx = activeIndexColumns.value?.findIndex(
+    i => i.name === indexColumn?.name
+  );
+  if (typeof idx === 'undefined') {
+    activeIndexColumns.value?.push(newIndexColumn);
+    return;
+  }
   if (before) {
-    activeIndex.value?.columns?.splice(idx, 0, newIndexColumn);
+    activeIndexColumns.value?.splice(idx, 0, newIndexColumn);
   } else {
-    activeIndex.value?.columns?.splice(idx + 1, 0, newIndexColumn);
+    activeIndexColumns.value?.splice(idx + 1, 0, newIndexColumn);
   }
 };
-const onDeleteIndexColumn = (indexColumn: DatabaseIndexColumn) => {
-  if (!activeIndex.value) return;
-  const idx = activeIndex.value?.columns?.findIndex(
-    i => i.name === indexColumn.name
-  );
-  if (typeof idx === 'undefined') return;
-  activeIndex.value?.columns?.splice(idx, 1);
+const onDeleteIndexColumn = (rowIndex: number) => {
+  activeIndexColumns.value?.splice(rowIndex, 1);
 };
-const activeIndex = ref<DatabaseIndex>();
+const activeIndexColumnsRowIndex = ref<number>();
+const activeIndexColumns = ref<DatabaseIndexColumn[]>();
 const activeIndexColumnsColumns = computed<TableColumns<DatabaseIndexColumn>>(
   () => [
     {
       key: 'actions',
       width: 80,
       label: t('components.table.columns.actions'),
-      value: (row: DatabaseIndexColumn) => (
+      value: (row: DatabaseIndexColumn, rowIndex: number) => (
         <ClEditTableActionCell
           onAddBefore={() => onAddIndexColumn(row, true)}
           onAddAfter={() => onAddIndexColumn(row, false)}
-          onDelete={() => onDeleteIndexColumn(row)}
+          onDelete={() => onDeleteIndexColumn(rowIndex)}
         />
       ),
     },
     {
       key: 'name',
-      width: 200,
       label: t('components.database.databases.table.indexes.column.name'),
       noPadding: true,
       value: (row: DatabaseIndexColumn) => (
@@ -314,21 +319,23 @@ const activeIndexColumnsColumns = computed<TableColumns<DatabaseIndexColumn>>(
             row.name = val;
           }}
           onEdit={(val: boolean) => {
+            console.debug('name.onEdit', row.isEdit?.name, val);
             if (!row.isEdit) row.isEdit = {};
             row.isEdit.name = val;
+            console.debug('name.onEdit', row.isEdit?.name, val);
           }}
         />
       ),
     },
     {
       key: 'order',
-      width: 200,
       label: t('components.database.databases.table.indexes.column.order'),
       value: (row: DatabaseIndexColumn) => (
         <ElCheckbox
           modelValue={row.order > 0}
           label={t(`common.order.${row.order > 0 ? 'asc' : 'desc'}`)}
           onChange={(val: boolean) => {
+            console.debug('order.onChange', row, val);
             row.order = val ? 1 : -1;
           }}
         />
@@ -337,8 +344,35 @@ const activeIndexColumnsColumns = computed<TableColumns<DatabaseIndexColumn>>(
   ]
 );
 const activeIndexColumnsData = computed<TableData<DatabaseIndexColumn>>(() => {
-  return activeIndex.value?.columns || [];
+  return activeIndexColumns.value || [];
 });
+const onActiveIndexColumnsDialogConfirm = () => {
+  if (typeof activeIndexColumnsRowIndex.value === 'undefined') return;
+  const index =
+    internalTable.value?.indexes?.[activeIndexColumnsRowIndex.value];
+  if (!index) return;
+
+  // Update name
+  if (
+    !index.name ||
+    isDefaultIndexName(internalTable.value as DatabaseTable, index)
+  ) {
+    index.name = getDefaultIndexName(
+      internalTable.value as DatabaseTable,
+      activeIndexColumns.value || []
+    );
+  }
+
+  // Update columns
+  index.columns = plainClone(activeIndexColumns.value || []);
+
+  editColumnsDialogVisible.value = false;
+};
+const onActiveIndexColumnsDialogClose = () => {
+  activeIndexColumnsRowIndex.value = undefined;
+  activeIndexColumns.value = undefined;
+  editColumnsDialogVisible.value = false;
+};
 
 defineOptions({ name: 'ClDatabaseTableDetailIndexes' });
 </script>
@@ -353,34 +387,24 @@ defineOptions({ name: 'ClDatabaseTableDetailIndexes' });
     :row-style="indexRowStyle"
     :cell-style="indexCellStyle"
     :cell-class-name="indexCellClassName"
+    embedded
     hide-footer
   />
 
   <cl-dialog
+    :title="t('components.database.databases.table.actions.editIndexColumns')"
     :visible="editColumnsDialogVisible"
-    @confirm="
-      () => {
-        if (!activeIndex) return;
-        const index = internalTable?.indexes?.find(
-          i => i.name === activeIndex?.name
-        );
-        if (!index) return;
-        index.columns = activeIndex.columns;
-        editColumnsDialogVisible = false;
-      }
-    "
-    @close="
-      () => {
-        activeIndex = undefined;
-        editColumnsDialogVisible = false;
-      }
-    "
+    @confirm="onActiveIndexColumnsDialogConfirm"
+    @close="onActiveIndexColumnsDialogClose"
   >
     <cl-edit-table
+      :key="JSON.stringify([activeIndexColumnsRowIndex, activeIndexColumns])"
       :row-key="(row: DatabaseIndexColumn) => JSON.stringify(row)"
       :columns="activeIndexColumnsColumns"
       :data="activeIndexColumnsData"
+      fit
       hide-footer
+      @add="onAddIndexColumn"
     />
   </cl-dialog>
 </template>

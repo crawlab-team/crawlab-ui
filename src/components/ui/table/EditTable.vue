@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ColumnCls } from 'element-plus/es/components/table/src/table/defaults';
 import { CellCls, CellStyle, ColumnStyle } from 'element-plus';
+import { translate } from '@/utils';
 
 withDefaults(
   defineProps<{
@@ -32,11 +33,18 @@ withDefaults(
     headerRowStyle?: ColumnStyle<any>;
     headerCellClassName?: CellCls<any>;
     headerCellStyle?: CellStyle<any>;
+    addButtonLabel?: string;
   }>(),
   {
     border: true,
   }
 );
+
+const emit = defineEmits<{
+  (e: 'add'): void;
+}>();
+
+const t = translate;
 
 defineOptions({ name: 'ClEditTable' });
 </script>
@@ -71,7 +79,15 @@ defineOptions({ name: 'ClEditTable' });
     :header-row-style="headerRowStyle"
     :header-cell-style="headerCellStyle"
     :header-cell-class-name="headerCellClassName"
-  />
+  >
+    <template #empty>
+      <cl-label-button
+        :icon="['fa', 'plus']"
+        :label="addButtonLabel || t('common.actions.add')"
+        @click="emit('add')"
+      />
+    </template>
+  </cl-table>
 </template>
 
 <style scoped>

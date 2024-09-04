@@ -270,6 +270,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
           :page="dataTablePagination.page"
           :page-size="dataTablePagination.size"
           :total="dataTableTotal"
+          embedded
           @pagination-change="onDataTablePaginationChange"
         />
       </template>

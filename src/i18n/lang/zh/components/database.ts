@@ -105,7 +105,7 @@ const database: LComponentsDatabase = {
         columns: '列',
         unique: '唯一',
         column: {
-          name: '名称',
+          name: '列名',
           order: '顺序',
         },
       },
@@ -114,6 +114,7 @@ const database: LComponentsDatabase = {
       },
       actions: {
         addColumn: '添加列',
+        editIndexColumns: '编辑索引列',
       },
     },
   },

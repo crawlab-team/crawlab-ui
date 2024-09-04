@@ -125,3 +125,17 @@ export const isValidTable = (table?: DatabaseTable) => {
     table.indexes?.some(i => !i.name || !i.columns?.length)
   );
 };
+
+export const getDefaultIndexName = (
+  table: DatabaseTable,
+  columns: DatabaseIndexColumn[]
+) => {
+  return `${table.name}_${columns.map(c => c.name).join('_')}_idx`;
+};
+
+export const isDefaultIndexName = (
+  table: DatabaseTable,
+  index: DatabaseIndex
+) => {
+  return index.name === getDefaultIndexName(table, index.columns);
+};

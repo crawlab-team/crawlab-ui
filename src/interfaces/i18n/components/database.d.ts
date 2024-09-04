@@ -115,6 +115,7 @@ export declare global {
         };
         actions: {
           addColumn: string;
+          editIndexColumns: string;
         };
       };
     };

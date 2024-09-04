@@ -70,7 +70,12 @@ defineOptions({ name: 'ClDatabaseDatabaseDetail' });
 
 <template>
   <div class="database-database-detail">
-    <cl-table :columns="tablesColumns" :data="tablesData" hide-footer />
+    <cl-table
+      :columns="tablesColumns"
+      :data="tablesData"
+      embedded
+      hide-footer
+    />
   </div>
 </template>
 

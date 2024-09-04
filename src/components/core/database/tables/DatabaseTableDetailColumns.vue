@@ -293,6 +293,7 @@ defineOptions({ name: 'ClDatabaseTableDetailColumns' });
     :row-style="columnRowStyle"
     :cell-style="columnCellStyle"
     :cell-class-name="columnCellClassName"
+    embedded
     hide-footer
   />
 </template>
