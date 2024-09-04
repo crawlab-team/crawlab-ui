@@ -78,7 +78,7 @@ export declare global {
     unique: boolean;
   }
 
-  interface DatabaseIndexColumn {
+  interface DatabaseIndexColumn extends DatabaseTableItem<DatabaseIndexColumn> {
     name: string;
     order: number;
   }

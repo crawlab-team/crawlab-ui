@@ -6,16 +6,13 @@ import type {
   CellStyle,
   ColumnStyle,
 } from 'element-plus';
-import type {
-  ColumnCls,
-  TableColumnCtx,
-} from 'element-plus/es/components/table/src/table/defaults';
+import { ElCheckbox } from 'element-plus';
+import type { TableColumnCtx } from 'element-plus/es/components/table/src/table/defaults';
 import {
   ClContextMenu,
   ClContextMenuList,
   ClIcon,
   ClTableEditCell,
-  ClSwitch,
 } from '@/components';
 import { translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
@@ -46,14 +43,14 @@ const onAddColumn = (column?: DatabaseColumn, before?: boolean) => {
   if (column === undefined) {
     internalTable.value?.columns?.push(newColumn);
   } else {
-    const index = internalTable.value?.columns?.findIndex(
+    const idx = internalTable.value?.columns?.findIndex(
       c => c.name === column.name
     );
-    if (typeof index === 'undefined') return;
+    if (typeof idx === 'undefined') return;
     if (before) {
-      internalTable.value?.columns?.splice(index, 0, newColumn);
+      internalTable.value?.columns?.splice(idx, 0, newColumn);
     } else {
-      internalTable.value?.columns?.splice(index + 1, 0, newColumn);
+      internalTable.value?.columns?.splice(idx + 1, 0, newColumn);
     }
   }
 };
@@ -191,7 +188,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
     label: t('components.database.databases.table.columns.notNull'),
     width: 120,
     value: (row: DatabaseColumn) => (
-      <ClSwitch
+      <ElCheckbox
         modelValue={row.not_null}
         onChange={(val: boolean) => {
           row.not_null = val;
@@ -250,7 +247,7 @@ const columnRowStyle: ColumnStyle<DatabaseColumn> = ({
   };
 };
 
-const isCellUpdated = (
+const isColumnCellUpdated = (
   row: DatabaseColumn,
   column: TableColumnCtx<DatabaseColumn>
 ) => {
@@ -268,7 +265,7 @@ const isCellUpdated = (
 };
 
 const columnCellStyle: CellStyle<DatabaseColumn> = ({ row, column }) => {
-  if (isCellUpdated(row, column)) {
+  if (isColumnCellUpdated(row, column)) {
     return {
       fontWeight: 'bold',
     };
@@ -277,17 +274,17 @@ const columnCellStyle: CellStyle<DatabaseColumn> = ({ row, column }) => {
 };
 
 const columnCellClassName: CellCls<DatabaseColumn> = ({ row, column }) => {
-  if (isCellUpdated(row, column)) {
+  if (isColumnCellUpdated(row, column)) {
     return 'updated';
   }
   return '';
 };
 
-defineOptions({ name: 'ClDatabaseDetailTabDatabasesSubTabColumns' });
+defineOptions({ name: 'ClDatabaseTableDetailColumns' });
 </script>
 
 <template>
-  <cl-table
+  <cl-edit-table
     :loading="loading"
     :key="JSON.stringify(internalTable)"
     :row-key="(row: DatabaseColumn) => JSON.stringify(row)"

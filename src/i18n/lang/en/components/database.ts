@@ -106,6 +106,10 @@ const database: LComponentsDatabase = {
         type: 'Type',
         columns: 'Columns',
         unique: 'Unique',
+        column: {
+          name: 'Name',
+          order: 'Order',
+        },
       },
       create: {
         name: 'New table name',

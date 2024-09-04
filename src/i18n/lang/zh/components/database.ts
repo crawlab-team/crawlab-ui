@@ -104,6 +104,10 @@ const database: LComponentsDatabase = {
         type: '类型',
         columns: '列',
         unique: '唯一',
+        column: {
+          name: '名称',
+          order: '顺序',
+        },
       },
       create: {
         name: '新表名称',

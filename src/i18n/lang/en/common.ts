@@ -140,6 +140,10 @@ const common: LCommon = {
   error: {
     common: 'An error occurred',
   },
+  order: {
+    asc: 'Ascending',
+    desc: 'Descending',
+  },
 };
 
 export default common;

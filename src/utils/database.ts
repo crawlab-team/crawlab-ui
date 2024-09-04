@@ -100,3 +100,28 @@ export const getColumnStatus = (
   if (hasColumn) return;
   return 'updated';
 };
+
+export const getIndexStatus = (
+  index: DatabaseIndex,
+  originalTable?: DatabaseTable
+) => {
+  if (index.status && index.status !== 'updated') return index.status;
+  const hasIndex = originalTable?.indexes?.some(
+    idx =>
+      index.name === idx.name &&
+      index.type === idx.type &&
+      JSON.stringify(index.columns) === JSON.stringify(idx.columns) &&
+      index.unique === idx.unique
+  );
+  if (hasIndex) return;
+  return 'updated';
+};
+
+export const isValidTable = (table?: DatabaseTable) => {
+  return !(
+    !table?.name ||
+    table.columns?.length === 0 ||
+    table.columns?.some(c => !c.name || !c.type) ||
+    table.indexes?.some(i => !i.name || !i.columns?.length)
+  );
+};

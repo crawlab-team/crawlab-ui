@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-defineOptions({ name: 'ClDatabaseDetailTabDatabasesSubTabData' });
+defineOptions({ name: 'ClDatabaseTableDetailData' });
 </script>
 
 <template>

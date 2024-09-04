@@ -9,9 +9,13 @@ import {
   TAB_NAME_OVERVIEW,
 } from '@/constants';
 import { plainClone, translate } from '@/utils';
-import { ClResultCell } from '@/components';
 import useRequest from '@/services/request';
-import { getColumnStatus } from '@/utils/database';
+import {
+  getColumnStatus,
+  getIndexStatus,
+  isValidTable,
+} from '@/utils/database';
+import { ClResultCell } from '@/components';
 
 const props = withDefaults(
   defineProps<{
@@ -210,10 +214,18 @@ const onDataTablePaginationChange = (pagination: TablePagination) => {
 
 const hasChanges = computed(() => {
   if (!internalTable.value) return false;
-  return internalTable.value.columns?.some(c =>
+  const hasColumnsChange = internalTable.value.columns?.some(c =>
     getColumnStatus(c, activeTable.value)
   );
+  const hasIndexesChange = internalTable.value.indexes?.some(i =>
+    getIndexStatus(i, activeTable.value)
+  );
+  return hasColumnsChange || hasIndexesChange;
 });
+
+const canSave = computed(
+  () => isValidTable(internalTable.value) && hasChanges.value
+);
 
 defineOptions({ name: 'ClDatabaseTableDetail' });
 </script>
@@ -232,7 +244,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
             :icon="['fa', 'save']"
             :tooltip="t('components.database.actions.commitChanges')"
             size="small"
-            :disabled="!hasChanges"
+            :disabled="!canSave"
             :loading="commitLoading"
             @click.stop="onCommit"
           />
@@ -262,20 +274,17 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
         />
       </template>
       <template v-else-if="activeTabName === TAB_NAME_COLUMNS">
-        <cl-database-detail-tab-databases-sub-tab-columns
+        <cl-database-table-detail-columns
           v-model="internalTable"
           :active-table="activeTable"
           :loading="commitLoading"
         />
       </template>
       <template v-else-if="activeTabName === TAB_NAME_INDEXES">
-        <cl-table
+        <cl-database-table-detail-indexes
+          v-model="internalTable"
+          :active-table="activeTable"
           :loading="commitLoading"
-          :key="JSON.stringify(internalTable)"
-          :row-key="(row: DatabaseColumn) => JSON.stringify(row)"
-          :columns="indexesTableColumns"
-          :data="indexesTableData"
-          hide-footer
         />
       </template>
     </div>
@@ -299,55 +308,6 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
   .tab-content {
     flex: 1;
     overflow: auto;
-
-    &:deep(.table .actions) {
-      display: flex;
-      align-items: center;
-    }
-
-    &:deep(.table .actions > div) {
-      display: flex;
-      align-items: center;
-    }
-
-    &:deep(.table .actions .icon) {
-      padding: 5px;
-      cursor: pointer;
-      color: var(--el-table-text-color);
-      width: 14px;
-      height: 14px;
-    }
-
-    &:deep(.table .actions .icon:hover) {
-      border-radius: 50%;
-      color: var(--cl-primary-color);
-      background-color: var(--cl-primary-plain-color);
-    }
-
-    &:deep(.table .el-table__row:hover),
-    &:deep(.table .el-table__row:hover .el-table__cell) {
-      background-color: inherit;
-    }
-
-    &:deep(.table .el-table__cell:hover .cell-actions) {
-      display: flex;
-    }
-
-    &:deep(.table .el-table__cell .cell > div > .el-switch) {
-      height: inherit;
-    }
-
-    &:deep(.table .el-table__cell.updated) {
-      border-left: 4px solid var(--cl-primary-color);
-    }
-
-    &:deep(.table .el-table__cell.updated:not(.no-padding) .cell) {
-      padding-left: 8px;
-    }
-
-    &:deep(.table .el-table__cell.updated .cell .display-value) {
-      margin-left: 8px;
-    }
   }
 }
 </style>

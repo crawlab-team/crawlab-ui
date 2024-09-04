@@ -5,6 +5,9 @@ import DatabaseDataSource from './core/database/DatabaseDataSource.vue';
 import DatabaseForm from './core/database/DatabaseForm.vue';
 import DatabaseStatus from './core/database/DatabaseStatus.vue';
 import DatabaseTableDetail from './core/database/DatabaseTableDetail.vue';
+import DatabaseTableDetailColumns from './core/database/tables/DatabaseTableDetailColumns.vue';
+import DatabaseTableDetailData from './core/database/tables/DatabaseTableDetailData.vue';
+import DatabaseTableDetailIndexes from './core/database/tables/DatabaseTableDetailIndexes.vue';
 import useDatabase from './core/database/useDatabase';
 import CreateEditEnvironmentDialog from './core/environment/CreateEditEnvironmentDialog.vue';
 import EnvironmentForm from './core/environment/EnvironmentForm.vue';
@@ -179,6 +182,8 @@ import ActionTab from './ui/tab/ActionTab.vue';
 import * as action from './ui/table/action';
 import * as column from './ui/table/column';
 import * as data from './ui/table/data';
+import EditTable from './ui/table/EditTable.vue';
+import EditTableActionCell from './ui/table/EditTableActionCell.vue';
 import * as header from './ui/table/header';
 import * as pagination from './ui/table/pagination';
 import * as store from './ui/table/store';
@@ -210,6 +215,9 @@ export {
   DatabaseForm as ClDatabaseForm,
   DatabaseStatus as ClDatabaseStatus,
   DatabaseTableDetail as ClDatabaseTableDetail,
+  DatabaseTableDetailColumns as ClDatabaseTableDetailColumns,
+  DatabaseTableDetailData as ClDatabaseTableDetailData,
+  DatabaseTableDetailIndexes as ClDatabaseTableDetailIndexes,
   useDatabase as useDatabase,
   CreateEditEnvironmentDialog as ClCreateEditEnvironmentDialog,
   EnvironmentForm as ClEnvironmentForm,
@@ -384,6 +392,8 @@ export {
   action as action,
   column as column,
   data as data,
+  EditTable as ClEditTable,
+  EditTableActionCell as ClEditTableActionCell,
   header as header,
   pagination as pagination,
   store as store,

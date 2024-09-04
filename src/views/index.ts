@@ -4,9 +4,6 @@ import DatabaseDetail from './database/detail/DatabaseDetail.vue';
 import DatabaseDetailTabConsole from './database/detail/tabs/DatabaseDetailTabConsole.vue';
 import DatabaseDetailTabDatabases from './database/detail/tabs/DatabaseDetailTabDatabases.vue';
 import DatabaseDetailTabOverview from './database/detail/tabs/DatabaseDetailTabOverview.vue';
-import DatabaseDetailTabDatabasesSubTabColumns from './database/detail/tabs/tables/DatabaseDetailTabDatabasesSubTabColumns.vue';
-import DatabaseDetailTabDatabasesSubTabData from './database/detail/tabs/tables/DatabaseDetailTabDatabasesSubTabData.vue';
-import DatabaseDetailTabDatabasesSubTabIndexes from './database/detail/tabs/tables/DatabaseDetailTabDatabasesSubTabIndexes.vue';
 import useDatabaseDetail from './database/detail/useDatabaseDetail';
 import DatabaseList from './database/list/DatabaseList.vue';
 import useDatabaseList from './database/list/useDatabaseList';
@@ -121,9 +118,6 @@ export {
   DatabaseDetailTabConsole as ClDatabaseDetailTabConsole,
   DatabaseDetailTabDatabases as ClDatabaseDetailTabDatabases,
   DatabaseDetailTabOverview as ClDatabaseDetailTabOverview,
-  DatabaseDetailTabDatabasesSubTabColumns as ClDatabaseDetailTabDatabasesSubTabColumns,
-  DatabaseDetailTabDatabasesSubTabData as ClDatabaseDetailTabDatabasesSubTabData,
-  DatabaseDetailTabDatabasesSubTabIndexes as ClDatabaseDetailTabDatabasesSubTabIndexes,
   useDatabaseDetail as useDatabaseDetail,
   DatabaseList as ClDatabaseList,
   useDatabaseList as useDatabaseList,

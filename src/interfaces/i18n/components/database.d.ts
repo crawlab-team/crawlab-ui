@@ -105,6 +105,10 @@ export declare global {
           type: string;
           columns: string;
           unique: string;
+          column: {
+            name: string;
+            order: string;
+          };
         };
         create: {
           name: string;

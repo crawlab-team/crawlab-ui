@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import {
   ElInput,
   ElAutocomplete,
@@ -14,6 +14,8 @@ const props = withDefaults(
     isEdit?: boolean;
     required?: boolean;
     autocomplete?: boolean;
+    select?: boolean;
+    options?: SelectOption[];
     fetchSuggestions?: AutocompleteFetchSuggestions;
     triggerOnFocus?: boolean;
     autoFocus?: boolean;
@@ -110,7 +112,12 @@ defineOptions({ name: 'ClTableEditCell' });
     <template v-if="!isEdit">
       <span class="display-value" @click.stop="onEdit">
         <template v-if="modelValue">
-          {{ modelValue }}
+          <template v-if="$slots.default">
+            <slot name="default" />
+          </template>
+          <template v-else>
+            {{ modelValue }}
+          </template>
         </template>
         <template v-else>
           <span class="empty"> ({{ t('common.placeholder.empty') }}) </span>
@@ -134,6 +141,21 @@ defineOptions({ name: 'ClTableEditCell' });
           <cell-actions />
         </template>
       </el-autocomplete>
+      <el-select
+        v-else-if="select"
+        ref="inputRef"
+        v-model="internalValue"
+        class="edit-input"
+        size="default"
+        @change="onCheck"
+      >
+        <el-option
+          v-for="(op, $index) in options"
+          :key="$index"
+          :value="op.value"
+          :label="op.label"
+        />
+      </el-select>
       <el-input
         v-else
         ref="inputRef"
@@ -182,17 +204,20 @@ defineOptions({ name: 'ClTableEditCell' });
   }
 
   &:deep(.el-input),
-  &:deep(.edit-input .el-input__inner) {
+  &:deep(.edit-input .el-input__inner),
+  &:deep(.edit-input .el-select__wrapper) {
     height: 100%;
   }
 
-  &:deep(.el-input .el-input__wrapper) {
+  &:deep(.el-input .el-input__wrapper),
+  &:deep(.el-select .el-select__wrapper) {
     border-radius: 0;
     box-shadow: none;
   }
 
   &.is-edit {
-    &:deep(.el-input .el-input__wrapper) {
+    &:deep(.el-input .el-input__wrapper),
+    &:deep(.el-select .el-select__wrapper) {
       border: 1px solid var(--cl-primary-color);
     }
   }
@@ -200,7 +225,8 @@ defineOptions({ name: 'ClTableEditCell' });
   &.error {
     border: 1px solid var(--cl-danger-color);
 
-    &:deep(.el-input .el-input__wrapper) {
+    &:deep(.el-input .el-input__wrapper),
+    &:deep(.el-select .el-select__wrapper) {
       border: none;
     }
   }

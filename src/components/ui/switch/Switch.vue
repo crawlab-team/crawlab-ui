@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, h, watch } from 'vue';
-import IconComp from '@/components/ui/icon/Icon.vue';
+import { ClIcon } from '@/components';
 
 const props = withDefaults(
   defineProps<{
@@ -44,13 +44,13 @@ const onChange = (value: boolean) => {
 
 const activeIconComp = computed(() => {
   if (props.activeIcon) {
-    return h(IconComp, { icon: props.activeIcon });
+    return h(ClIcon, { icon: props.activeIcon });
   }
 });
 
 const inactiveIconComp = computed(() => {
   if (props.inactiveIcon) {
-    return h(IconComp, { icon: props.inactiveIcon });
+    return h(ClIcon, { icon: props.inactiveIcon });
   }
 });
 

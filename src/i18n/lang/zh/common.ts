@@ -140,6 +140,10 @@ const common: LCommon = {
   error: {
     common: '发生错误',
   },
+  order: {
+    asc: '升序',
+    desc: '降序',
+  },
 };
 
 export default common;

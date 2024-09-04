@@ -153,5 +153,9 @@ export declare global {
     error: {
       common: string;
     };
+    order: {
+      asc: string;
+      desc: string;
+    };
   }
 }
