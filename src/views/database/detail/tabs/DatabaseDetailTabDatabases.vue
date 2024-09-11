@@ -29,7 +29,6 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
   const { metadata } = state;
   if (!metadata?.databases) return [] as DatabaseNavItem[];
   return metadata.databases.map(d => {
-    if (!d.tables) return [];
     return {
       id: `${d.name}`,
       name: d.name,
@@ -37,7 +36,7 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
       icon: ['fa', 'database'],
       type: 'database',
       data: d,
-      children: d.tables.map(t => {
+      children: d.tables?.map(t => {
         return {
           id: `${d.name}:${t.name}`,
           name: t.name,
@@ -93,7 +92,6 @@ const getMetadata = async () => {
   updateDefaultExpandedKeys();
 };
 const updateDefaultExpandedKeys = () => {
-  console.debug('updateDefaultExpandedKeys');
   if (treeItems.value.length === 1) {
     const currentItem = treeItems.value[0];
     defaultExpandedKeys.value = [currentItem.id];
