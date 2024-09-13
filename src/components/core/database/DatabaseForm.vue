@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { getStore } from '@/store';
 import useDatabase from '@/components/core/database/useDatabase';
 import useDatabaseDetail from '@/views/database/detail/useDatabaseDetail';
@@ -23,9 +23,7 @@ const { formRef, isSelectiveForm, onChangePasswordFunc, dataSourceOptions } =
 
 const { activeId } = useDatabaseDetail();
 
-const onChangePassword = () => onChangePasswordFunc(activeId.value);
-
-const isDetail = computed<boolean>(() => !!activeId.value);
+computed<boolean>(() => !!activeId.value);
 
 const form = computed(() => state.form);
 
@@ -40,6 +38,13 @@ const onDataSourceChange = (dataSource: DatabaseDataSource) => {
     port,
   });
 };
+
+// Add this watch effect to convert port to number
+watch(() => form.value.port, (newValue) => {
+  if (newValue !== undefined && newValue !== null) {
+    form.value.port = Number(newValue);
+  }
+});
 
 defineOptions({ name: 'ClDatabaseForm' });
 </script>
@@ -111,7 +116,7 @@ defineOptions({ name: 'ClDatabaseForm' });
       required
     >
       <el-input
-        v-model="form.port"
+        v-model.number="form.port"
         type="number"
         :placeholder="t('components.database.form.port')"
         :disabled="isDisabled"

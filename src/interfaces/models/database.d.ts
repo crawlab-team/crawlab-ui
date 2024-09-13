@@ -91,6 +91,8 @@ export declare global {
     database?: string;
     table?: DatabaseTable;
     new?: boolean;
+    edit?: boolean;
+    edit_name?: string;
   }
 
   type DatabaseTableClickRowType = 'name' | 'columns' | 'indexes';

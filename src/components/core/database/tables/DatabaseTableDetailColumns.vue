@@ -14,7 +14,7 @@ import {
   ClIcon,
   ClTableEditCell,
 } from '@/components';
-import { translate } from '@/utils';
+import { plainClone, translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
 import { getColumnStatus } from '@/utils/database';
@@ -72,150 +72,156 @@ const onRevertColumn = (column: DatabaseColumn) => {
   column.status = undefined;
 };
 
-const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => [
-  {
-    key: 'actions',
-    label: t('components.table.columns.actions'),
-    width: 80,
-    value: (row: DatabaseColumn) => (
-      <div class="actions">
-        <ClContextMenu
-          trigger="click"
-          placement="right"
-          visible={row.contextMenuVisible}
-        >
-          {{
-            default: () => (
-              <ClContextMenuList
-                items={[
-                  {
-                    title: t('common.actions.insertBefore'),
-                    icon: ['fa', 'arrows-up-to-line'],
-                    action: () => {
-                      onAddColumn(row, true);
+const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
+  if (!internalTable.value) return [];
+  return [
+    {
+      key: 'actions',
+      label: t('components.table.columns.actions'),
+      width: 80,
+      value: (row: DatabaseColumn) => (
+        <div class="actions">
+          <ClContextMenu
+            trigger="click"
+            placement="right"
+            visible={row.contextMenuVisible}
+          >
+            {{
+              default: () => (
+                <ClContextMenuList
+                  items={[
+                    {
+                      title: t('common.actions.insertBefore'),
+                      icon: ['fa', 'arrows-up-to-line'],
+                      action: () => {
+                        onAddColumn(row, true);
+                      },
                     },
-                  },
-                  {
-                    title: t('common.actions.insertAfter'),
-                    icon: ['fa', 'arrows-down-to-line'],
-                    action: () => {
-                      onAddColumn(row, false);
+                    {
+                      title: t('common.actions.insertAfter'),
+                      icon: ['fa', 'arrows-down-to-line'],
+                      action: () => {
+                        onAddColumn(row, false);
+                      },
                     },
-                  },
-                ]}
-                onHide={() => {
-                  row.contextMenuVisible = false;
-                }}
-              />
-            ),
-            reference: () => (
-              <ClIcon
-                icon={['fa', 'plus']}
-                onClick={(event: MouseEvent) => {
-                  event.stopPropagation();
-                  row.contextMenuVisible = true;
-                }}
-              />
-            ),
+                  ]}
+                  onHide={() => {
+                    row.contextMenuVisible = false;
+                  }}
+                />
+              ),
+              reference: () => (
+                <ClIcon
+                  icon={['fa', 'plus']}
+                  onClick={(event: MouseEvent) => {
+                    event.stopPropagation();
+                    row.contextMenuVisible = true;
+                  }}
+                />
+              ),
+            }}
+          </ClContextMenu>
+          {row.status !== 'deleted' ? (
+            <ClIcon
+              icon={['fa', 'minus']}
+              onClick={() => onDeleteColumn(row)}
+            />
+          ) : (
+            <ClIcon
+              icon={['fa', 'rotate-left']}
+              onClick={() => onRevertColumn(row)}
+            />
+          )}
+        </div>
+      ),
+    },
+    {
+      key: 'name',
+      label: t('components.database.databases.table.columns.name'),
+      width: 200,
+      noPadding: true,
+      value: (row: DatabaseColumn) => (
+        <ClTableEditCell
+          modelValue={row.name}
+          isEdit={row.isEdit?.name}
+          required
+          onChange={(val: string) => {
+            row.name = val;
           }}
-        </ClContextMenu>
-        {row.status !== 'deleted' ? (
-          <ClIcon icon={['fa', 'minus']} onClick={() => onDeleteColumn(row)} />
-        ) : (
-          <ClIcon
-            icon={['fa', 'rotate-left']}
-            onClick={() => onRevertColumn(row)}
-          />
-        )}
-      </div>
-    ),
-  },
-  {
-    key: 'name',
-    label: t('components.database.databases.table.columns.name'),
-    width: 200,
-    noPadding: true,
-    value: (row: DatabaseColumn) => (
-      <ClTableEditCell
-        modelValue={row.name}
-        isEdit={row.isEdit?.name}
-        required
-        onChange={(val: string) => {
-          row.name = val;
-        }}
-        onEdit={(val: boolean) => {
-          if (!row.isEdit) row.isEdit = {};
-          row.isEdit.name = val;
-        }}
-      />
-    ),
-  },
-  {
-    key: 'type',
-    label: t('components.database.databases.table.columns.type'),
-    width: 200,
-    noPadding: true,
-    value: (row: DatabaseColumn) => (
-      <ClTableEditCell
-        modelValue={row.type}
-        isEdit={row.isEdit?.type}
-        autocomplete
-        required
-        fetchSuggestions={async (
-          query: string,
-          cb: AutocompleteFetchSuggestionsCallback
-        ) => {
-          const res = await get(
-            `/databases/${activeId.value}/columns/types?query=${query}`
-          );
-          cb(
-            res.data?.map((type: string) => ({ value: type, label: type })) ||
-              []
-          );
-        }}
-        onChange={(val: string) => {
-          row.type = val;
-        }}
-        onEdit={(val: boolean) => {
-          if (!row.isEdit) row.isEdit = {};
-          row.isEdit.type = val;
-        }}
-      />
-    ),
-  },
-  {
-    key: 'not_null',
-    label: t('components.database.databases.table.columns.notNull'),
-    width: 120,
-    value: (row: DatabaseColumn) => (
-      <ElCheckbox
-        modelValue={row.not_null}
-        onChange={(val: boolean) => {
-          row.not_null = val;
-        }}
-      />
-    ),
-  },
-  {
-    key: 'default',
-    label: t('components.database.databases.table.columns.default'),
-    width: 200,
-    noPadding: true,
-    value: (row: DatabaseColumn) => (
-      <ClTableEditCell
-        modelValue={row.default}
-        isEdit={row.isEdit?.default}
-        onChange={(val: string) => {
-          row.default = val;
-        }}
-        onEdit={(val: boolean) => {
-          if (!row.isEdit) row.isEdit = {};
-          row.isEdit.default = val;
-        }}
-      />
-    ),
-  },
-]);
+          onEdit={(val: boolean) => {
+            if (!row.isEdit) row.isEdit = {};
+            row.isEdit.name = val;
+          }}
+        />
+      ),
+    },
+    {
+      key: 'type',
+      label: t('components.database.databases.table.columns.type'),
+      width: 200,
+      noPadding: true,
+      value: (row: DatabaseColumn) => (
+        <ClTableEditCell
+          modelValue={row.type}
+          isEdit={row.isEdit?.type}
+          autocomplete
+          required
+          fetchSuggestions={async (
+            query: string,
+            cb: AutocompleteFetchSuggestionsCallback
+          ) => {
+            const res = await get(
+              `/databases/${activeId.value}/columns/types?query=${query}`
+            );
+            cb(
+              res.data?.map((type: string) => ({ value: type, label: type })) ||
+                []
+            );
+          }}
+          onChange={(val: string) => {
+            row.type = val;
+          }}
+          onEdit={(val: boolean) => {
+            if (!row.isEdit) row.isEdit = {};
+            row.isEdit.type = val;
+          }}
+        />
+      ),
+    },
+    {
+      key: 'not_null',
+      label: t('components.database.databases.table.columns.notNull'),
+      width: 120,
+      value: (row: DatabaseColumn) => (
+        <ElCheckbox
+          modelValue={row.not_null}
+          onChange={(val: boolean) => {
+            row.not_null = val;
+          }}
+        />
+      ),
+    },
+    {
+      key: 'default',
+      label: t('components.database.databases.table.columns.default'),
+      width: 200,
+      noPadding: true,
+      value: (row: DatabaseColumn) => (
+        <ClTableEditCell
+          modelValue={row.default}
+          isEdit={row.isEdit?.default}
+          onChange={(val: string) => {
+            row.default = val;
+          }}
+          onEdit={(val: boolean) => {
+            if (!row.isEdit) row.isEdit = {};
+            row.isEdit.default = val;
+          }}
+        />
+      ),
+    },
+  ];
+});
 
 const columnsTableData = computed<TableData<DatabaseColumn>>(() => {
   return internalTable.value?.columns || [];
@@ -295,5 +301,6 @@ defineOptions({ name: 'ClDatabaseTableDetailColumns' });
     :cell-class-name="columnCellClassName"
     embedded
     hide-footer
+    @add="onAddColumn"
   />
 </template>

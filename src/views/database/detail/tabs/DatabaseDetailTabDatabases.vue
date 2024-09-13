@@ -286,6 +286,8 @@ const newTableNode = (): DatabaseNavItem<DatabaseTable> => {
     type: 'table',
     icon: ['fa', 'table'],
     new: true,
+    edit: true,
+    edit_name: name,
     children: [],
     data: {
       name,
@@ -327,7 +329,7 @@ const createContextMenuListItems: ContextMenuItem[] = [
         );
         treeRef.value?.insertBefore(newNode, firstTableNode);
       } else {
-        treeRef.value?.append(newNode, databaseNode);
+        treeRef.value?.append(newNode, databaseNode.id);
       }
       selectNode(newNode);
     },
@@ -403,9 +405,15 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
       <el-scrollbar>
         <el-tree
           ref="treeRef"
-          :filter-node-method="onSearchFilter"
           node-key="id"
           :data="treeItems"
+          :props="{
+            class: _data => {
+              if (_data.new) return 'new';
+              return '';
+            },
+          }"
+          :filter-node-method="onSearchFilter"
           :expand-on-click-node="false"
           :default-expanded-keys="defaultExpandedKeys"
           highlight-current
@@ -422,7 +430,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                   <span class="icon-wrapper">
                     <cl-icon :icon="data.icon" />
                   </span>
-                  <template v-if="!data.new">
+                  <template v-if="!data.edit">
                     <span class="label">
                       {{ data.label }}
                     </span>
@@ -433,7 +441,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                   <template v-else>
                     <div class="edit-wrapper">
                       <el-input
-                        v-model="data.data.name"
+                        v-model="data.edit_name"
                         size="small"
                         :placeholder="
                           t('components.database.databases.table.create.name')
@@ -442,7 +450,12 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                       <div class="edit-actions">
                         <cl-icon
                           :icon="['fa', 'check']"
-                          @click.stop="() => {}"
+                          @click.stop="
+                            () => {
+                              data.label = data.edit_name;
+                              data.edit = false;
+                            }
+                          "
                         />
                         <cl-icon
                           :icon="['fa', 'times']"
@@ -453,7 +466,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
                   </template>
                 </div>
                 <div class="actions" :class="data.new ? 'new' : ''">
-                  <template v-if="!data.new">
+                  <template v-if="!data.edit">
                     <cl-icon
                       :icon="['fa', 'ellipsis']"
                       @click.stop="onActionsClick(data)"
@@ -552,6 +565,10 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
     .el-tree {
       min-width: fit-content;
 
+      &:deep(.el-tree-node.new .el-tree-node__content) {
+        color: var(--cl-success-color);
+      }
+
       &:deep(.el-tree-node__content:hover) {
         .actions {
           display: flex !important;
@@ -604,11 +621,6 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           right: 5px;
           height: 100%;
           align-items: center;
-
-          &.new {
-            display: inline-flex;
-            gap: 5px;
-          }
         }
       }
     }
