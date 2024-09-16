@@ -157,5 +157,8 @@ export declare global {
       asc: string;
       desc: string;
     };
+    validate: {
+      cannotBeEmpty: string;
+    };
   }
 }

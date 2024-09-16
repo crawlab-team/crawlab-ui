@@ -144,6 +144,9 @@ const common: LCommon = {
     asc: 'Ascending',
     desc: 'Descending',
   },
+  validate: {
+    cannotBeEmpty: 'Cannot be empty',
+  },
 };
 
 export default common;

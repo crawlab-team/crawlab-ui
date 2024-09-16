@@ -144,6 +144,9 @@ const common: LCommon = {
     asc: '升序',
     desc: '降序',
   },
+  validate: {
+    cannotBeEmpty: '不能为空',
+  },
 };
 
 export default common;

@@ -1,7 +1,21 @@
 <script setup lang="tsx">
-import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
+import {
+  computed,
+  nextTick,
+  onBeforeMount,
+  onBeforeUnmount,
+  ref,
+  watch,
+} from 'vue';
 import { useStore } from 'vuex';
-import { ElTree } from 'element-plus';
+import {
+  ElInput,
+  ElTree,
+  ElForm,
+  ElFormItem,
+  FormInstance,
+  FormRules,
+} from 'element-plus';
 import type {
   FilterNodeMethodFunction,
   FilterValue,
@@ -24,6 +38,8 @@ const store = useStore();
 const { database: state } = store.state as RootStoreState;
 
 const { activeId } = useDatabaseDetail();
+
+const sidebarRef = ref<InstanceType<typeof DatabaseSidebar>>();
 
 const treeItems = computed<DatabaseNavItem[]>(() => {
   const { metadata } = state;
@@ -105,7 +121,7 @@ const activeDatabaseName = ref();
 const defaultTabName = ref<string>(TAB_NAME_OVERVIEW);
 const activeNavItem = ref<DatabaseNavItem>();
 const onNodeClick = async (data: DatabaseNavItem) => {
-  return selectNode(data);
+  await selectNode(data);
 };
 const selectNode = async (data: DatabaseNavItem) => {
   const { id, type, new: isNew } = data;
@@ -137,19 +153,44 @@ const selectNode = async (data: DatabaseNavItem) => {
 
   // highlight current node
   setTimeout(() => {
-    treeRef.value?.setCurrentKey(id);
+    sidebarRef.value?.treeRef?.setCurrentKey(id);
   }, 0);
 };
+
+const formRef = ref<FormInstance>();
+const formRules = ref<FormRules>({
+  edit_name: [
+    {
+      required: true,
+      message: t('common.validate.cannotBeEmpty'),
+      trigger: 'blur',
+    },
+  ],
+});
+
+const validateAndSave = async (data: DatabaseNavItem) => {
+  if (!formRef.value) return;
+
+  try {
+    await formRef.value.validate();
+    data.label = data.edit_name;
+    data.edit = false;
+  } catch (error) {
+    console.error('Validation failed', error);
+  }
+};
+
 const onNodeCancel = async (data: DatabaseNavItem) => {
   if (!data.new) return;
-  const node = treeRef.value?.getNode(data.id);
+  const node = sidebarRef.value?.treeRef?.getNode(data.id);
   if (!node) return;
-  treeRef.value?.remove(node);
+  sidebarRef.value?.treeRef?.remove(node);
   switch (data.type) {
     case 'table':
-      const { data } = treeRef.value?.getNode(activeDatabaseName.value) || {};
-      if (data) {
-        await selectNode(data);
+      const { data: parentData } =
+        sidebarRef.value?.treeRef?.getNode(activeDatabaseName.value) || {};
+      if (parentData) {
+        await selectNode(parentData);
       }
   }
 };
@@ -163,12 +204,11 @@ const onDatabaseTableClick = (
   if (type !== 'name') {
     key = `${key}:${type}`;
   }
-  const data = treeRef.value?.getNode?.(key)?.data;
+  const data = sidebarRef.value?.treeRef?.getNode?.(key)?.data;
   if (!data) return;
   selectNode(data);
 };
 
-const treeRef = ref<typeof ElTree>();
 const activeContextMenuNavItem = ref<DatabaseNavItem>();
 const contextMenuVisibleMap = ref<Record<string, boolean>>({});
 const isContextMenuVisible = (id: string) => {
@@ -218,7 +258,7 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
           icon: ['fa', 'table'],
           action: async () => {
             activeNavItem.value = activeContextMenuNavItem.value;
-            treeRef.value?.setCurrentKey(activeNavItem.value?.id);
+            sidebarRef.value?.treeRef?.setCurrentKey(activeNavItem.value?.id);
             await store.dispatch(`${ns}/getTablePreview`, {
               id: activeId.value,
               table: activeNavItem.value?.name,
@@ -324,39 +364,40 @@ const createContextMenuListItems: ContextMenuItem[] = [
 
       const newNode = newTableNode();
       if (databaseNode?.children?.length) {
-        const firstTableNode = treeRef.value?.getNode(
+        const firstTableNode = sidebarRef.value?.treeRef?.getNode(
           databaseNode.children[0].id
         );
-        treeRef.value?.insertBefore(newNode, firstTableNode);
+        sidebarRef.value?.treeRef?.insertBefore(newNode, firstTableNode);
       } else {
-        treeRef.value?.append(newNode, databaseNode.id);
+        sidebarRef.value?.treeRef?.append(newNode, databaseNode.id);
       }
       selectNode(newNode);
+      nextTick(() => {
+        const input = document.querySelector(
+          `#edit-input-${normalizeElementId(newNode.id)}`
+        );
+        if (input instanceof HTMLInputElement) {
+          input.focus();
+        }
+      });
     },
   },
 ];
 
-const searchKeyword = ref('');
-const showSearch = ref(false);
-const onSearchClick = () => {
-  showSearch.value = !showSearch.value;
-};
-watch(
-  searchKeyword,
-  debounce(() => {
-    treeRef.value?.filter(searchKeyword.value);
-  }, 300)
-);
-const onSearchFilter: FilterNodeMethodFunction = (
-  value: FilterValue,
-  data: TreeNodeData
-): boolean => {
-  if (!value) return true;
-  return data.label?.toLowerCase().includes(value.toString().toLowerCase());
+const normalizeElementId = (id: string) => {
+  return id.replaceAll(':', '_');
 };
 
-const onRefresh = async () => {
-  await store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
+const onRefresh = () => {
+  getMetadata();
+};
+
+const onCreateDatabase = () => {
+  createContextMenuListItems[0].action();
+};
+
+const onCreateTable = () => {
+  createContextMenuListItems[1].action();
 };
 
 defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
@@ -364,126 +405,16 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
 
 <template>
   <div class="database-detail-tab-databases">
-    <div class="sidebar">
-      <div class="sidebar-actions">
-        <cl-context-menu :visible="showCreateContextMenu">
-          <template #reference>
-            <cl-icon
-              :icon="['fa', 'plus']"
-              @click.stop="showCreateContextMenu = true"
-            />
-          </template>
-          <cl-context-menu-list
-            v-if="showCreateContextMenu"
-            :items="createContextMenuListItems"
-            @hide="showCreateContextMenu = false"
-          />
-        </cl-context-menu>
-        <cl-icon :icon="['fa', 'refresh']" @click="onRefresh" />
-        <cl-icon
-          :class="showSearch ? 'selected' : ''"
-          :icon="['fa', 'search']"
-          @click="onSearchClick"
-        />
-        <cl-icon :icon="['fas', 'terminal']" />
-      </div>
-      <div v-if="showSearch" class="sidebar-search">
-        <el-input
-          v-model="searchKeyword"
-          :placeholder="
-            t('views.database.databases.sidebar.search.placeholder')
-          "
-          clearable
-          @clear="
-            () => {
-              searchKeyword = '';
-              showSearch = false;
-            }
-          "
-        />
-      </div>
-      <el-scrollbar>
-        <el-tree
-          ref="treeRef"
-          node-key="id"
-          :data="treeItems"
-          :props="{
-            class: _data => {
-              if (_data.new) return 'new';
-              return '';
-            },
-          }"
-          :filter-node-method="onSearchFilter"
-          :expand-on-click-node="false"
-          :default-expanded-keys="defaultExpandedKeys"
-          highlight-current
-          @node-click="onNodeClick"
-          @node-contextmenu="onContextMenuClick"
-        >
-          <template #default="{ data }">
-            <cl-context-menu
-              :visible="isContextMenuVisible(data.id)"
-              :style="{ flex: 1, paddingRight: '5px' }"
-            >
-              <template #reference>
-                <div class="node-wrapper" :title="data.label">
-                  <span class="icon-wrapper">
-                    <cl-icon :icon="data.icon" />
-                  </span>
-                  <template v-if="!data.edit">
-                    <span class="label">
-                      {{ data.label }}
-                    </span>
-                    <span v-if="data.data_type" class="data-type">
-                      {{ data.data_type }}
-                    </span>
-                  </template>
-                  <template v-else>
-                    <div class="edit-wrapper">
-                      <el-input
-                        v-model="data.edit_name"
-                        size="small"
-                        :placeholder="
-                          t('components.database.databases.table.create.name')
-                        "
-                      />
-                      <div class="edit-actions">
-                        <cl-icon
-                          :icon="['fa', 'check']"
-                          @click.stop="
-                            () => {
-                              data.label = data.edit_name;
-                              data.edit = false;
-                            }
-                          "
-                        />
-                        <cl-icon
-                          :icon="['fa', 'times']"
-                          @click.stop="onNodeCancel(data)"
-                        />
-                      </div>
-                    </div>
-                  </template>
-                </div>
-                <div class="actions" :class="data.new ? 'new' : ''">
-                  <template v-if="!data.edit">
-                    <cl-icon
-                      :icon="['fa', 'ellipsis']"
-                      @click.stop="onActionsClick(data)"
-                    />
-                  </template>
-                </div>
-              </template>
-              <cl-context-menu-list
-                v-if="isContextMenuVisible(data.id)"
-                :items="contextMenuItems"
-                @hide="onContextMenuHide(data.id)"
-              />
-            </cl-context-menu>
-          </template>
-        </el-tree>
-      </el-scrollbar>
-    </div>
+    <cl-database-sidebar
+      ref="sidebarRef"
+      :tree-items="treeItems"
+      :default-expanded-keys="defaultExpandedKeys"
+      @node-click="onNodeClick"
+      @context-menu-click="onContextMenuClick"
+      @refresh="onRefresh"
+      @create-database="onCreateDatabase"
+      @create-table="onCreateTable"
+    />
     <div class="content">
       <template v-if="activeNavItem?.type === 'database'">
         <cl-database-database-detail
@@ -498,7 +429,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           :table="activeNavItem?.data"
           :default-tab-name="defaultTabName"
           :is-new="activeNavItem?.new"
-          @refresh="onRefresh"
+          @refresh="getMetadata"
         />
       </template>
     </div>
@@ -512,119 +443,6 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
   display: flex;
   height: calc(100vh - 64px - 40px - 41px - 50px);
   width: 100%;
-
-  .sidebar {
-    flex: 0 0 240px;
-    height: 100%;
-    overflow: auto;
-    border-right: 1px solid var(--el-border-color);
-    display: flex;
-    flex-direction: column;
-
-    .sidebar-actions {
-      height: 41px;
-      flex: 0 0 41px;
-      padding: 5px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      color: var(--cl-primary-color);
-      border-bottom: 1px solid var(--el-border-color);
-
-      & > * {
-        display: flex;
-        align-items: center;
-      }
-
-      &:deep(.icon) {
-        cursor: pointer;
-        padding: 6px;
-        font-size: 14px;
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-      }
-
-      &:deep(.icon.selected),
-      &:deep(.icon:hover) {
-        background-color: var(--cl-primary-plain-color);
-      }
-    }
-
-    .sidebar-search {
-      height: 38px;
-      flex: 0 0 38px;
-      border-bottom: 1px solid var(--el-border-color);
-
-      &:deep(.el-input .el-input__wrapper) {
-        box-shadow: none;
-        border: none;
-      }
-    }
-
-    .el-tree {
-      min-width: fit-content;
-
-      &:deep(.el-tree-node.new .el-tree-node__content) {
-        color: var(--cl-success-color);
-      }
-
-      &:deep(.el-tree-node__content:hover) {
-        .actions {
-          display: flex !important;
-        }
-      }
-
-      &:deep(.el-tree-node__content) {
-        width: 100%;
-        position: relative;
-
-        .node-wrapper {
-          display: flex;
-          align-items: center;
-          position: relative;
-          width: 100%;
-
-          .icon-wrapper {
-            width: 20px;
-            display: flex;
-          }
-
-          .label {
-            flex: 0 0 auto;
-          }
-
-          .edit-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex: 1;
-
-            .edit-actions {
-              display: flex;
-              gap: 5px;
-            }
-          }
-
-          .data-type {
-            font-size: 11px;
-            line-height: 100%;
-            color: var(--cl-info-medium-color);
-            margin-left: 5px;
-          }
-        }
-
-        .actions {
-          display: none;
-          position: absolute;
-          top: 0;
-          right: 5px;
-          height: 100%;
-          align-items: center;
-        }
-      }
-    }
-  }
 
   .content {
     flex: 1;
