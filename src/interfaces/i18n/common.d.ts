@@ -57,6 +57,8 @@ export declare global {
       previewData: string;
       insertBefore: string;
       insertAfter: string;
+      rename: string;
+      drop: string;
     };
     messageBox: {
       confirm: {

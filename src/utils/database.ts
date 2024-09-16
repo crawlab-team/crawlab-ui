@@ -95,7 +95,8 @@ export const getColumnStatus = (
       column.name === c.name &&
       column.type === c.type &&
       column.not_null === c.not_null &&
-      column.default === c.default
+      column.default === c.default &&
+      column.primary === c.primary
   );
   if (hasColumn) return;
   return 'updated';

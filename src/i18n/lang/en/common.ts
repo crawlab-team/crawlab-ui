@@ -44,6 +44,8 @@ const common: LCommon = {
     previewData: 'Preview Data',
     insertBefore: 'Insert Before',
     insertAfter: 'Insert After',
+    rename: 'Rename',
+    drop: 'Drop',
   },
   messageBox: {
     confirm: {

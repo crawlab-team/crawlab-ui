@@ -68,6 +68,16 @@ export declare global {
         change: string;
       };
     };
+    messageBox: {
+      prompt: {
+        dropTable: {
+          title: string;
+          message: string;
+          placeholder: string;
+          error: string;
+        };
+      };
+    };
     connectType: {
       label: {
         standard: string;
@@ -99,6 +109,7 @@ export declare global {
           type: string;
           notNull: string;
           default: string;
+          primary: string;
         };
         indexes: {
           name: string;

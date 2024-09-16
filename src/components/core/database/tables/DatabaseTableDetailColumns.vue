@@ -220,6 +220,19 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
         />
       ),
     },
+    {
+      key: 'primary',
+      label: t('components.database.databases.table.columns.primary'),
+      width: 120,
+      value: (row: DatabaseColumn) => (
+        <ElCheckbox
+          modelValue={row.primary}
+          onChange={(val: boolean) => {
+            row.primary = val;
+          }}
+        />
+      ),
+    },
   ];
 });
 

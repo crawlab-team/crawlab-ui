@@ -1,6 +1,5 @@
 <script setup lang="tsx">
 import { computed, ref } from 'vue';
-import { FormInstance, FormRules } from 'element-plus';
 import { useDatabaseDetail } from '@/views';
 import { translate } from '@/utils';
 import { ClDatabaseSidebar } from '@/components';
@@ -18,29 +17,6 @@ const activeDatabaseName = computed(() => state.activeDatabaseName);
 
 const sidebarRef = ref<InstanceType<typeof ClDatabaseSidebar>>();
 
-const formRef = ref<FormInstance>();
-const formRules = ref<FormRules>({
-  edit_name: [
-    {
-      required: true,
-      message: t('common.validate.cannotBeEmpty'),
-      trigger: 'blur',
-    },
-  ],
-});
-
-const validateAndSave = async (data: DatabaseNavItem) => {
-  if (!formRef.value) return;
-
-  try {
-    await formRef.value.validate();
-    data.label = data.edit_name;
-    data.edit = false;
-  } catch (error) {
-    console.error('Validation failed', error);
-  }
-};
-
 const onDatabaseTableClick = (
   table: DatabaseTable,
   type: DatabaseTableClickRowType
@@ -50,9 +26,10 @@ const onDatabaseTableClick = (
   if (type !== 'name') {
     key = `${key}:${type}`;
   }
-  const data = sidebarRef.value?.treeRef?.getNode?.(key)?.data;
+  const data = sidebarRef.value?.treeRef?.getNode?.(key)
+    ?.data as DatabaseNavItem;
   if (!data) return;
-  sidebarRef.value?.selectNode(data);
+  sidebarRef.value?.selectNode?.(data);
 };
 
 defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
@@ -74,7 +51,6 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
           :active-id="activeId"
           :database-name="activeDatabaseName"
           :table="activeNavItem?.data"
-          :default-tab-name="defaultTabName"
           :is-new="activeNavItem?.new"
         />
       </template>

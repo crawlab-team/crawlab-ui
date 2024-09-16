@@ -7,15 +7,25 @@ import {
   onBeforeMount,
   onBeforeUnmount,
 } from 'vue';
-import { ElTree, ElInput, ElForm, ElFormItem } from 'element-plus';
+import { useStore } from 'vuex';
+import {
+  ElTree,
+  ElInput,
+  ElForm,
+  ElFormItem,
+  ElMessageBox,
+  ElMessage,
+} from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { debounce } from 'lodash';
-import { translate } from '@/utils';
-import type { FilterNodeMethodFunction } from 'element-plus/es/components/tree/src/tree.type';
-import { ClDatabaseSidebar } from '@/components';
+import type {
+  FilterNodeMethodFunction,
+  TreeNodeData,
+} from 'element-plus/es/components/tree/src/tree.type';
 import { TAB_NAME_COLUMNS, TAB_NAME_DATA, TAB_NAME_INDEXES } from '@/constants';
-import { useStore } from 'vuex';
+import { translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
+import useRequest from '@/services/request';
 
 const t = translate;
 
@@ -25,7 +35,8 @@ const { database: state } = store.state as RootStoreState;
 
 const { activeId } = useDatabaseDetail();
 
-const sidebarRef = ref<InstanceType<typeof ClDatabaseSidebar>>();
+const { del } = useRequest();
+
 const treeRef = ref<InstanceType<typeof ElTree>>();
 const searchKeyword = ref('');
 const showSearch = ref(false);
@@ -104,14 +115,6 @@ const debouncedFilter = debounce(() => {
 
 watch(searchKeyword, debouncedFilter);
 
-const toggleSearch = () => {
-  showSearch.value = !showSearch.value;
-  if (!showSearch.value) {
-    searchKeyword.value = '';
-    treeRef.value?.filter('');
-  }
-};
-
 const getMetadata = async () => {
   await store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
   updateDefaultExpandedKeys();
@@ -160,11 +163,7 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
           title: t('common.actions.previewData'),
           icon: ['fa', 'table'],
           action: async () => {
-            store.commit(
-              `${ns}/setActiveNavItem`,
-              activeContextMenuNavItem.value
-            );
-            treeRef.value?.setCurrentKey(activeNavItem.value?.id);
+            await selectNode(activeContextMenuNavItem.value as DatabaseNavItem);
             await store.dispatch(`${ns}/getTablePreview`, {
               id: activeId.value,
               table: activeNavItem.value?.name,
@@ -172,41 +171,57 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
           },
         },
         {
-          title: t('common.actions.edit'),
+          title: t('common.actions.rename'),
           icon: ['fa', 'edit'],
-          action: () => {
-            // try to select a database first
-            let databaseName: string;
-            if (activeNavItem.value?.type === 'database') {
-              databaseName = activeNavItem.value?.name as string;
-            } else if (activeDatabaseName.value) {
-              databaseName = activeDatabaseName.value;
-            } else {
-              databaseName = treeItems.value?.[0]?.name as string;
-            }
-            const databaseNode = treeItems.value?.find(
-              d => d.name === databaseName
-            );
-            if (!databaseNode) return;
-
-            const newNode = newTableNode();
-            if (databaseNode?.children?.length) {
-              const firstTableNode = treeRef.value?.getNode(
-                databaseNode.children[0].id
-              );
-              treeRef.value?.insertBefore(newNode, firstTableNode as TreeNode);
-            } else {
-              treeRef.value?.append(newNode, databaseNode.id);
-            }
-            selectNode(newNode);
-            nextTick(() => {
+          action: async () => {
+            await selectNode(activeContextMenuNavItem.value as DatabaseNavItem);
+            const id = activeNavItem.value?.id as string;
+            const node = treeRef.value?.getNode(id) as TreeNodeData;
+            node.data.edit = true;
+            node.data.edit_name = node.data.label;
+            await nextTick(() => {
               const input = document.querySelector(
-                `#edit-input-${normalizeElementId(newNode.id)}`
+                `#edit-input-${normalizeElementId(id)}`
               );
               if (input instanceof HTMLInputElement) {
                 input.focus();
               }
             });
+          },
+        },
+        {
+          title: t('common.actions.drop'),
+          icon: ['fa', 'trash'],
+          action: async () => {
+            switch (activeContextMenuNavItem.value?.type) {
+              case 'table':
+                await selectNode(activeContextMenuNavItem.value);
+                const { value: promptTableName } = await ElMessageBox.prompt(
+                  t('components.database.messageBox.prompt.dropTable.message'),
+                  t('components.database.messageBox.prompt.dropTable.title'),
+                  {
+                    type: 'warning',
+                    inputPlaceholder: t(
+                      'components.database.messageBox.prompt.dropTable.placeholder'
+                    ),
+                    confirmButtonClass: 'el-button--danger',
+                  }
+                );
+                const tableName = activeNavItem.value?.data?.name;
+                if (!promptTableName || promptTableName !== tableName) {
+                  ElMessage.error(
+                    t('components.database.messageBox.prompt.dropTable.error')
+                  );
+                  return;
+                }
+                await del(`/databases/${activeId.value}/tables/drop`, {
+                  database_name: activeDatabaseName.value,
+                  table_name: tableName,
+                });
+                store.commit(`${ns}/setActiveNavItem`, undefined);
+                await getMetadata();
+                break;
+            }
           },
         },
       ];
@@ -343,7 +358,7 @@ const selectNode = async (data: DatabaseNavItem) => {
 
   // highlight current node
   setTimeout(() => {
-    sidebarRef.value?.treeRef?.setCurrentKey(id);
+    treeRef.value?.setCurrentKey(id);
   }, 0);
 };
 
@@ -436,7 +451,13 @@ const validateAndSave = async (data: DatabaseNavItem) => {
     await formRef.value.validate();
     data.label = data.edit_name;
     data.edit = false;
-    // Emit an event or call a method to save the changes
+    store.commit(`${ns}/setActiveNavItem`, {
+      ...data,
+      data: {
+        ...data.data,
+        name: data.edit_name,
+      },
+    });
   } catch (error) {
     console.error('Validation failed', error);
   }

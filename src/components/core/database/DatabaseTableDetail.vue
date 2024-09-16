@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import {
   TAB_NAME_COLUMNS,
   TAB_NAME_DATA,
@@ -63,6 +63,30 @@ watch(activeTable, onRollback);
 
 const commitLoading = ref(false);
 const onCommit = async () => {
+  if (props.isNew) {
+    return createTable();
+  } else {
+    return modifyTable();
+  }
+};
+
+const createTable = async () => {
+  commitLoading.value = true;
+  try {
+    await post(`/databases/${props.activeId}/tables/create`, {
+      database_name: props.databaseName,
+      table: internalTable.value,
+    });
+    await getTable();
+    emit('refresh');
+  } catch (error: any) {
+    ElMessage.error(error.message);
+  } finally {
+    commitLoading.value = false;
+  }
+};
+
+const modifyTable = async () => {
   commitLoading.value = true;
   try {
     await post(`/databases/${props.activeId}/tables/modify`, {
@@ -73,6 +97,12 @@ const onCommit = async () => {
           return {
             ...c,
             status: getColumnStatus(c, activeTable.value),
+          };
+        }),
+        indexes: internalTable.value?.indexes?.map(i => {
+          return {
+            ...i,
+            status: getIndexStatus(i, activeTable.value),
           };
         }),
       },

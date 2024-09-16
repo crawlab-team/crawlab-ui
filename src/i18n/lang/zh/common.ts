@@ -44,6 +44,8 @@ const common: LCommon = {
     previewData: '预览数据',
     insertBefore: '在前插入',
     insertAfter: '在后插入',
+    rename: '重命名',
+    drop: '删除',
   },
   messageBox: {
     confirm: {

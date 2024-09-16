@@ -67,6 +67,16 @@ const database: LComponentsDatabase = {
       change: '更改数据库成功',
     },
   },
+  messageBox: {
+    prompt: {
+      dropTable: {
+        title: '删除表',
+        message: '确定要删除表吗？',
+        placeholder: '请输入表名',
+        error: '表名不正确',
+      },
+    },
+  },
   connectType: {
     label: {
       standard: '标准',
@@ -98,6 +108,7 @@ const database: LComponentsDatabase = {
         type: '数据类型',
         notNull: '非空',
         default: '默认值',
+        primary: '主键',
       },
       indexes: {
         name: '名称',

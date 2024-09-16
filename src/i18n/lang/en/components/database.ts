@@ -67,6 +67,16 @@ const database: LComponentsDatabase = {
       change: 'Changed data source successfully',
     },
   },
+  messageBox: {
+    prompt: {
+      dropTable: {
+        title: 'Drop Table',
+        message: 'Are you sure you want to drop the table?',
+        placeholder: 'Please type the table name to confirm',
+        error: 'Table name does not match',
+      },
+    },
+  },
   connectType: {
     label: {
       standard: 'Standard',
@@ -100,6 +110,7 @@ const database: LComponentsDatabase = {
         type: 'Data Type',
         notNull: 'Not Null',
         default: 'Default Expression',
+        primary: 'Primary Key',
       },
       indexes: {
         name: 'Name',
