@@ -12,6 +12,9 @@ export declare global {
     tablePreviewPagination: TablePagination;
     tablePreviewTotal: number;
     activeTable?: DatabaseTable;
+    activeDatabaseName?: string;
+    activeNavItem?: DatabaseNavItem;
+    defaultTabName?: string;
   }
 
   type DatabaseStoreGetters = BaseStoreGetters<DatabaseStoreState>;
@@ -29,6 +32,9 @@ export declare global {
     >;
     setActiveTable: StoreMutation<DatabaseStoreState, DatabaseTable>;
     resetActiveTable: StoreMutation<DatabaseStoreState>;
+    setActiveDatabaseName: StoreMutation<DatabaseStoreState, string>;
+    setActiveNavItem: StoreMutation<DatabaseStoreState, DatabaseNavItem>;
+    setDefaultTabName: StoreMutation<DatabaseStoreState, string>;
   }
 
   interface DatabaseStoreActions extends BaseStoreActions<Database> {

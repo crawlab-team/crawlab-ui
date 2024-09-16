@@ -17,18 +17,12 @@ import {
 } from '@/utils/database';
 import { ClResultCell } from '@/components';
 
-const props = withDefaults(
-  defineProps<{
-    activeId?: string;
-    databaseName?: string;
-    table?: DatabaseTable;
-    defaultTabName?: string;
-    isNew?: boolean;
-  }>(),
-  {
-    defaultTabName: TAB_NAME_OVERVIEW,
-  }
-);
+const props = defineProps<{
+  activeId?: string;
+  databaseName?: string;
+  table?: DatabaseTable;
+  isNew?: boolean;
+}>();
 
 const emit = defineEmits<{
   (e: 'refresh'): void;
@@ -41,6 +35,8 @@ const t = translate;
 const ns: ListStoreNamespace = 'database';
 const store = useStore();
 const { database: state } = store.state as RootStoreState;
+
+const defaultTabName = computed(() => state.defaultTabName);
 
 const activeTable = ref<DatabaseTable | undefined>(
   props.isNew ? plainClone(props.table) : undefined
@@ -90,7 +86,7 @@ const onCommit = async () => {
   }
 };
 
-const activeTabName = ref<string>(props.defaultTabName);
+const activeTabName = ref<string>(defaultTabName.value || TAB_NAME_OVERVIEW);
 const tabsItems = computed<NavItem[]>(() =>
   [
     { id: TAB_NAME_DATA, title: t('common.tabs.data') },
@@ -103,12 +99,9 @@ const tabsItems = computed<NavItem[]>(() =>
     return true;
   })
 );
-watch(
-  () => props.defaultTabName,
-  () => {
-    activeTabName.value = props.defaultTabName;
-  }
-);
+watch(defaultTabName, () => {
+  activeTabName.value = defaultTabName.value || TAB_NAME_OVERVIEW;
+});
 watch(activeTabName, () => fetchData());
 onBeforeMount(() => {
   fetchData();

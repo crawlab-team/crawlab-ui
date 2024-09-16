@@ -33,6 +33,9 @@ const state = {
   },
   tablePreviewTotal: 0,
   activeTable: undefined,
+  activeDatabaseName: '',
+  activeNavItem: undefined,
+  defaultTabName: TAB_NAME_OVERVIEW,
 } as DatabaseStoreState;
 
 const getters = {
@@ -64,6 +67,15 @@ const mutations = {
   },
   resetActiveTable(state: DatabaseStoreState) {
     state.activeTable = undefined;
+  },
+  setActiveDatabaseName(state: DatabaseStoreState, name: string) {
+    state.activeDatabaseName = name;
+  },
+  setActiveNavItem(state: DatabaseStoreState, navItem: DatabaseNavItem) {
+    state.activeNavItem = navItem;
+  },
+  setDefaultTabName(state: DatabaseStoreState, tabName: string) {
+    state.defaultTabName = tabName;
   },
 } as DatabaseStoreMutations;
 
