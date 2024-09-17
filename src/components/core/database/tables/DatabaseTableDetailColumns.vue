@@ -14,7 +14,7 @@ import {
   ClIcon,
   ClTableEditCell,
 } from '@/components';
-import { plainClone, translate } from '@/utils';
+import { translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
 import { getColumnStatus } from '@/utils/database';
@@ -24,6 +24,10 @@ const internalTable = defineModel<DatabaseTable>();
 const props = defineProps<{
   loading?: boolean;
   activeTable?: DatabaseTable;
+}>();
+
+const emit = defineEmits<{
+  (e: 'change', value: DatabaseTable);
 }>();
 
 const t = translate;
@@ -53,6 +57,7 @@ const onAddColumn = (column?: DatabaseColumn, before?: boolean) => {
       internalTable.value?.columns?.splice(idx + 1, 0, newColumn);
     }
   }
+  emit('change', internalTable.value);
 };
 
 const onDeleteColumn = (column: DatabaseColumn) => {
@@ -66,10 +71,12 @@ const onDeleteColumn = (column: DatabaseColumn) => {
   } else {
     column.status = 'deleted';
   }
+  emit('change', internalTable.value);
 };
 
 const onRevertColumn = (column: DatabaseColumn) => {
   column.status = undefined;
+  emit('change', internalTable.value);
 };
 
 const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
@@ -147,6 +154,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
           required
           onChange={(val: string) => {
             row.name = val;
+            emit('change', internalTable.value);
           }}
           onEdit={(val: boolean) => {
             if (!row.isEdit) row.isEdit = {};
@@ -180,6 +188,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
           }}
           onChange={(val: string) => {
             row.type = val;
+            emit('change', internalTable.value);
           }}
           onEdit={(val: boolean) => {
             if (!row.isEdit) row.isEdit = {};
@@ -197,6 +206,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
           modelValue={row.not_null}
           onChange={(val: boolean) => {
             row.not_null = val;
+            emit('change', internalTable.value);
           }}
         />
       ),
@@ -212,6 +222,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
           isEdit={row.isEdit?.default}
           onChange={(val: string) => {
             row.default = val;
+            emit('change', internalTable.value);
           }}
           onEdit={(val: boolean) => {
             if (!row.isEdit) row.isEdit = {};
@@ -229,6 +240,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
           modelValue={row.primary}
           onChange={(val: boolean) => {
             row.primary = val;
+            emit('change', internalTable.value);
           }}
         />
       ),

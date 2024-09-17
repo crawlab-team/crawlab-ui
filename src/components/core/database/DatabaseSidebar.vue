@@ -367,7 +367,10 @@ const onNodeClick = async (data: DatabaseNavItem) => {
 };
 
 const onNodeCancel = async (data: DatabaseNavItem) => {
-  if (!data.new) return;
+  if (!data.new) {
+    data.edit = false;
+    return;
+  }
   const node = treeRef.value?.getNode(data.id);
   if (!node) return;
   treeRef.value?.remove(node);
@@ -451,13 +454,6 @@ const validateAndSave = async (data: DatabaseNavItem) => {
     await formRef.value.validate();
     data.label = data.edit_name;
     data.edit = false;
-    store.commit(`${ns}/setActiveNavItem`, {
-      ...data,
-      data: {
-        ...data.data,
-        name: data.edit_name,
-      },
-    });
   } catch (error) {
     console.error('Validation failed', error);
   }

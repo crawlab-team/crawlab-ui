@@ -38,10 +38,17 @@ const { database: state } = store.state as RootStoreState;
 
 const defaultTabName = computed(() => state.defaultTabName);
 
-const activeTable = ref<DatabaseTable | undefined>(
-  props.isNew ? plainClone(props.table) : undefined
+const activeTable = ref<DatabaseTable | undefined>(plainClone(props.table));
+const internalTable = ref<DatabaseTable | undefined>(plainClone(props.table));
+watch(
+  () => state.activeNavItem?.data?.name,
+  (name: string) => {
+    console.debug(name);
+    if (internalTable.value) {
+      internalTable.value.name = name;
+    }
+  }
 );
-const internalTable = ref<DatabaseTable | undefined>();
 
 const getTable = async () => {
   if (props.isNew) {
@@ -243,12 +250,18 @@ const hasChanges = computed(() => {
   const hasIndexesChange = internalTable.value.indexes?.some(i =>
     getIndexStatus(i, activeTable.value)
   );
+  console.debug(hasColumnsChange, hasIndexesChange);
   return hasColumnsChange || hasIndexesChange;
 });
+const tableValid = computed(() => isValidTable(internalTable.value));
 
-const canSave = computed(
-  () => isValidTable(internalTable.value) && hasChanges.value
-);
+const canSave = computed(() => {
+  console.debug(tableValid.value, hasChanges.value);
+  return tableValid.value && hasChanges.value;
+});
+watch(internalTable, () => {
+  console.debug(internalTable.value);
+});
 
 defineOptions({ name: 'ClDatabaseTableDetail' });
 </script>
@@ -262,6 +275,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
     >
       <template #extra>
         <div class="nav-tabs-actions">
+          {{ internalTable }}
           <cl-fa-icon-button
             type="primary"
             :icon="['fa', 'save']"
@@ -302,6 +316,12 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
           v-model="internalTable"
           :active-table="activeTable"
           :loading="commitLoading"
+          @change="
+            val => {
+              console.debug(val);
+              internalTable = val;
+            }
+          "
         />
       </template>
       <template v-else-if="activeTabName === TAB_NAME_INDEXES">
