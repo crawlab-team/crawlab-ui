@@ -101,8 +101,19 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
   }) as DatabaseNavItem<DatabaseDatabase>[];
 });
 
-const activeNavItem = computed(() => state.activeNavItem);
 const activeDatabaseName = computed(() => state.activeDatabaseName);
+
+const activeNavItem = computed(() => state.activeNavItem);
+watch(
+  () => state.activeNavItem?.new,
+  async () => {
+    // update the id of the active node
+    if (state.activeNavItem?.new === false) {
+      await getMetadata();
+      await selectNode(state.activeNavItem);
+    }
+  }
+);
 
 const onSearchFilter: FilterNodeMethodFunction = (value, data) => {
   if (!value) return true;
@@ -117,8 +128,8 @@ watch(searchKeyword, debouncedFilter);
 
 const getMetadata = async () => {
   await store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
-  updateDefaultExpandedKeys();
 };
+
 const activeContextMenuNavItem = ref<DatabaseNavItem>();
 const contextMenuVisibleMap = ref<Record<string, boolean>>({});
 const isContextMenuVisible = (id: string) => {
@@ -248,14 +259,12 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
 });
 
 const defaultExpandedKeys = ref<string[]>([]);
-const updateDefaultExpandedKeys = () => {
-  if (treeItems.value.length === 1) {
-    const currentItem = treeItems.value[0];
-    defaultExpandedKeys.value = [currentItem.id];
-    selectNode(currentItem);
-  } else {
-    defaultExpandedKeys.value = [];
-  }
+const onNodeExpand = (node: TreeNodeData) => {
+  defaultExpandedKeys.value.push(node.id);
+};
+const onNodeCollapse = (node: TreeNodeData) => {
+  const idx = defaultExpandedKeys.value.findIndex(id => id === node.id);
+  defaultExpandedKeys.value.splice(idx, 1);
 };
 
 const newTableNode = (): DatabaseNavItem<DatabaseTable> => {
@@ -325,13 +334,23 @@ const createContextMenuListItems: ContextMenuItem[] = [
   },
 ];
 
-const selectNode = async (data: DatabaseNavItem) => {
-  const { id, type, new: isNew } = data;
+const getNodeIdParts = (id: string) => {
   const idParts = id.split(':') || [];
   const databaseName = idParts[0];
   const database = treeItems.value?.find(d => d.name === databaseName);
   const tableName = idParts[1];
   const table = database?.children?.find(t => t.name === tableName);
+  return {
+    databaseName,
+    database,
+    tableName,
+    table,
+  };
+};
+
+const selectNode = async (data: DatabaseNavItem) => {
+  const { id, type, new: isNew } = data;
+  const { databaseName, table } = getNodeIdParts(id);
   store.commit(`${ns}/setActiveDatabaseName`, databaseName);
 
   switch (type) {
@@ -454,6 +473,10 @@ const validateAndSave = async (data: DatabaseNavItem) => {
     await formRef.value.validate();
     data.label = data.edit_name;
     data.edit = false;
+    data.data.name = data.edit_name;
+    store.commit(`${ns}/setActiveNavItem`, {
+      ...data,
+    });
   } catch (error) {
     console.error('Validation failed', error);
   }
@@ -514,6 +537,8 @@ const validateAndSave = async (data: DatabaseNavItem) => {
         highlight-current
         @node-click="onNodeClick"
         @node-contextmenu="onContextMenuClick"
+        @node-expand="onNodeExpand"
+        @node-collapse="onNodeCollapse"
       >
         <template #default="{ data }">
           <cl-context-menu
@@ -556,12 +581,7 @@ const validateAndSave = async (data: DatabaseNavItem) => {
                     <div class="edit-actions">
                       <cl-icon
                         :icon="['fa', 'check']"
-                        @click.stop="
-                          () => {
-                            data.label = data.edit_name;
-                            data.edit = false;
-                          }
-                        "
+                        @click.stop="validateAndSave(data)"
                       />
                       <cl-icon
                         :icon="['fa', 'times']"

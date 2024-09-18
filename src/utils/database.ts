@@ -119,12 +119,10 @@ export const getIndexStatus = (
 };
 
 export const isValidTable = (table?: DatabaseTable) => {
-  console.debug(table?.name, table?.columns);
   if (!table?.name) return false;
   if (table.columns?.length === 0) return false;
   if (table.columns?.some(c => !c.name || !c.type)) return false;
   if (table.indexes?.some(i => !i.name || !i.columns?.length)) return false;
-  console.debug('true');
   return true;
 };
 

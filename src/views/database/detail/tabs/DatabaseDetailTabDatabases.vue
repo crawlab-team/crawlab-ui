@@ -1,15 +1,11 @@
 <script setup lang="tsx">
 import { computed, ref } from 'vue';
 import { useDatabaseDetail } from '@/views';
-import { translate } from '@/utils';
 import { ClDatabaseSidebar } from '@/components';
 import { useStore } from 'vuex';
 
-const t = translate;
-
 const { activeId } = useDatabaseDetail();
 
-const ns: ListStoreNamespace = 'database';
 const store = useStore();
 const { database: state } = store.state as RootStoreState;
 const activeNavItem = computed(() => state.activeNavItem);
@@ -50,8 +46,6 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
         <cl-database-table-detail
           :active-id="activeId"
           :database-name="activeDatabaseName"
-          :table="activeNavItem?.data"
-          :is-new="activeNavItem?.new"
         />
       </template>
     </div>

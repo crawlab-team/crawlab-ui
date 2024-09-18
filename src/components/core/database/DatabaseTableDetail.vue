@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import {
   TAB_NAME_COLUMNS,
   TAB_NAME_DATA,
@@ -20,8 +20,6 @@ import { ClResultCell } from '@/components';
 const props = defineProps<{
   activeId?: string;
   databaseName?: string;
-  table?: DatabaseTable;
-  isNew?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -38,30 +36,33 @@ const { database: state } = store.state as RootStoreState;
 
 const defaultTabName = computed(() => state.defaultTabName);
 
-const activeTable = ref<DatabaseTable | undefined>(plainClone(props.table));
-const internalTable = ref<DatabaseTable | undefined>(plainClone(props.table));
+const table = computed<DatabaseTable | undefined>(
+  () => state.activeNavItem?.data
+);
+const isNew = computed(() => state.activeNavItem?.new);
+const activeTable = ref<DatabaseTable | undefined>(plainClone(table.value));
+const internalTable = ref<DatabaseTable | undefined>(plainClone(table.value));
 watch(
-  () => state.activeNavItem?.data?.name,
-  (name: string) => {
-    console.debug(name);
+  () => table.value?.name,
+  () => {
     if (internalTable.value) {
-      internalTable.value.name = name;
+      internalTable.value.name = table.value?.name;
     }
   }
 );
 
 const getTable = async () => {
-  if (props.isNew) {
-    activeTable.value = plainClone(props.table);
+  if (isNew.value) {
+    activeTable.value = plainClone(table.value);
   } else {
     const res = await get(
-      `/databases/${props.activeId}/tables/metadata?database=${props.databaseName}&table=${props.table?.name}`
+      `/databases/${props.activeId}/tables/metadata?database=${props.databaseName}&table=${table.value?.name}`
     );
     activeTable.value = { ...res.data, timestamp: Date.now() };
   }
 };
 onBeforeMount(getTable);
-watch(() => props.table, getTable);
+watch(table, getTable);
 
 const onRollback = () => {
   internalTable.value = plainClone(activeTable.value);
@@ -70,7 +71,7 @@ watch(activeTable, onRollback);
 
 const commitLoading = ref(false);
 const onCommit = async () => {
-  if (props.isNew) {
+  if (isNew.value) {
     return createTable();
   } else {
     return modifyTable();
@@ -85,7 +86,11 @@ const createTable = async () => {
       table: internalTable.value,
     });
     await getTable();
-    emit('refresh');
+    store.commit(`${ns}/setActiveNavItem`, {
+      ...state.activeNavItem,
+      id: `${props.databaseName}:${internalTable.value?.name}`,
+      new: false,
+    });
   } catch (error: any) {
     ElMessage.error(error.message);
   } finally {
@@ -130,7 +135,7 @@ const tabsItems = computed<NavItem[]>(() =>
     { id: TAB_NAME_COLUMNS, title: t('common.tabs.columns') },
     { id: TAB_NAME_INDEXES, title: t('common.tabs.indexes') },
   ].filter(item => {
-    if (props.isNew) {
+    if (isNew.value) {
       return item.id !== TAB_NAME_DATA;
     }
     return true;
@@ -275,7 +280,6 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
     >
       <template #extra>
         <div class="nav-tabs-actions">
-          {{ internalTable }}
           <cl-fa-icon-button
             type="primary"
             :icon="['fa', 'save']"
@@ -317,8 +321,7 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
           :active-table="activeTable"
           :loading="commitLoading"
           @change="
-            val => {
-              console.debug(val);
+            (val: DatabaseTable) => {
               internalTable = val;
             }
           "
