@@ -158,33 +158,6 @@ watch(
   }
 );
 
-const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
-  {
-    key: 'name',
-    label: t('components.database.databases.table.indexes.name'),
-    width: 200,
-  },
-  {
-    key: 'type',
-    label: t('components.database.databases.table.indexes.type'),
-    width: 200,
-  },
-  {
-    key: 'columns',
-    label: t('components.database.databases.table.indexes.columns'),
-    width: 200,
-  },
-  {
-    key: 'unique',
-    label: t('components.database.databases.table.indexes.unique'),
-    width: 200,
-  },
-]);
-
-const indexesTableData = computed<TableData<DatabaseIndex>>(() => {
-  return internalTable.value?.indexes || [];
-});
-
 const resetData = () => {
   store.commit(`${ns}/setTablePreviewData`, []);
   store.commit(`${ns}/setTablePreviewTotal`, 0);
@@ -255,17 +228,12 @@ const hasChanges = computed(() => {
   const hasIndexesChange = internalTable.value.indexes?.some(i =>
     getIndexStatus(i, activeTable.value)
   );
-  console.debug(hasColumnsChange, hasIndexesChange);
   return hasColumnsChange || hasIndexesChange;
 });
 const tableValid = computed(() => isValidTable(internalTable.value));
 
 const canSave = computed(() => {
-  console.debug(tableValid.value, hasChanges.value);
   return tableValid.value && hasChanges.value;
-});
-watch(internalTable, () => {
-  console.debug(internalTable.value);
 });
 
 defineOptions({ name: 'ClDatabaseTableDetail' });
@@ -332,6 +300,11 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
           v-model="internalTable"
           :active-table="activeTable"
           :loading="commitLoading"
+          @change="
+            (val: DatabaseTable) => {
+              internalTable = val;
+            }
+          "
         />
       </template>
     </div>

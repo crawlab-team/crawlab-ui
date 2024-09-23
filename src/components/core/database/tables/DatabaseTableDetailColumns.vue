@@ -17,7 +17,7 @@ import {
 import { translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
-import { getColumnStatus } from '@/utils/database';
+import { getColumnStatus, canColumnAutoIncrement } from '@/utils/database';
 
 const internalTable = defineModel<DatabaseTable>();
 
@@ -27,7 +27,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'change', value: DatabaseTable);
+  (e: 'change', value: DatabaseTable): void;
 }>();
 
 const t = translate;
@@ -44,6 +44,7 @@ const onAddColumn = (column?: DatabaseColumn, before?: boolean) => {
     default: '',
     status: 'new',
   };
+  if (!internalTable.value) return;
   if (column === undefined) {
     internalTable.value?.columns?.push(newColumn);
   } else {
@@ -61,6 +62,7 @@ const onAddColumn = (column?: DatabaseColumn, before?: boolean) => {
 };
 
 const onDeleteColumn = (column: DatabaseColumn) => {
+  if (!internalTable.value) return;
   if (column.status === 'new') {
     const index = internalTable.value?.columns?.findIndex(
       c => c.name === column.name
@@ -75,6 +77,7 @@ const onDeleteColumn = (column: DatabaseColumn) => {
 };
 
 const onRevertColumn = (column: DatabaseColumn) => {
+  if (!internalTable.value) return;
   column.status = undefined;
   emit('change', internalTable.value);
 };
@@ -153,6 +156,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
           isEdit={row.isEdit?.name}
           required
           onChange={(val: string) => {
+            if (!internalTable.value) return;
             row.name = val;
             emit('change', internalTable.value);
           }}
@@ -187,6 +191,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
             );
           }}
           onChange={(val: string) => {
+            if (!internalTable.value) return;
             row.type = val;
             emit('change', internalTable.value);
           }}
@@ -205,6 +210,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
         <ElCheckbox
           modelValue={row.not_null}
           onChange={(val: boolean) => {
+            if (!internalTable.value) return;
             row.not_null = val;
             emit('change', internalTable.value);
           }}
@@ -221,6 +227,7 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
           modelValue={row.default}
           isEdit={row.isEdit?.default}
           onChange={(val: string) => {
+            if (!internalTable.value) return;
             row.default = val;
             emit('change', internalTable.value);
           }}
@@ -234,12 +241,32 @@ const columnsTableColumns = computed<TableColumns<DatabaseColumn>>(() => {
     {
       key: 'primary',
       label: t('components.database.databases.table.columns.primary'),
-      width: 120,
+      width: 100,
       value: (row: DatabaseColumn) => (
         <ElCheckbox
           modelValue={row.primary}
           onChange={(val: boolean) => {
+            if (!internalTable.value) return;
             row.primary = val;
+            if (canColumnAutoIncrement(row)) {
+              row.auto_increment = true;
+            }
+            emit('change', internalTable.value);
+          }}
+        />
+      ),
+    },
+    {
+      key: 'auto_increment',
+      label: t('components.database.databases.table.columns.autoIncrement'),
+      width: 100,
+      value: (row: DatabaseColumn) => (
+        <ElCheckbox
+          disabled={!canColumnAutoIncrement(row)}
+          modelValue={row.auto_increment}
+          onChange={(val: boolean) => {
+            if (!internalTable.value) return;
+            row.auto_increment = val;
             emit('change', internalTable.value);
           }}
         />

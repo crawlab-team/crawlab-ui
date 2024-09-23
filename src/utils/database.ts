@@ -96,7 +96,8 @@ export const getColumnStatus = (
       column.type === c.type &&
       column.not_null === c.not_null &&
       column.default === c.default &&
-      column.primary === c.primary
+      column.primary === c.primary &&
+      column.auto_increment === c.auto_increment
   );
   if (hasColumn) return;
   return 'updated';
@@ -138,4 +139,8 @@ export const isDefaultIndexName = (
   index: DatabaseIndex
 ) => {
   return index.name === getDefaultIndexName(table, index.columns);
+};
+
+export const canColumnAutoIncrement = (column: DatabaseColumn) => {
+  return column.primary && column.type?.match(/int/i);
 };

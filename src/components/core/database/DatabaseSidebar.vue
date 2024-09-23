@@ -23,7 +23,7 @@ import type {
   TreeNodeData,
 } from 'element-plus/es/components/tree/src/tree.type';
 import { TAB_NAME_COLUMNS, TAB_NAME_DATA, TAB_NAME_INDEXES } from '@/constants';
-import { translate } from '@/utils';
+import { selectElement, translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
 
@@ -43,54 +43,54 @@ const showSearch = ref(false);
 const treeItems = computed<DatabaseNavItem[]>(() => {
   const { metadata } = state;
   if (!metadata?.databases) return [] as DatabaseNavItem[];
-  return metadata.databases.map(d => {
+  return metadata.databases.map(db => {
     return {
-      id: `${d.name}`,
-      name: d.name,
-      label: d.name,
+      id: `${db.name}`,
+      name: db.name,
+      label: db.name,
       icon: ['fa', 'database'],
       type: 'database',
-      data: d,
-      children: d.tables?.map(t => {
+      data: db,
+      children: db.tables?.map(tbl => {
         return {
-          id: `${d.name}:${t.name}`,
-          name: t.name,
-          label: t.name,
+          id: `${db.name}:${tbl.name}`,
+          name: tbl.name,
+          label: tbl.name,
           icon: ['fa', 'table'],
           type: 'table',
-          database: d.name,
-          data: t,
+          database: db.name,
+          data: tbl,
           children: [
             {
-              id: `${d.name}:${t.name}:columns`,
-              label: 'columns',
+              id: `${db.name}:${tbl.name}:columns`,
+              label: `${t('components.database.databases.labels.columns')} (${tbl.columns?.length || 0})`,
               icon: ['fa', 'columns'],
               type: 'columns',
-              children: t.columns?.map(c => {
+              children: tbl.columns?.map(col => {
                 return {
-                  id: `${d.name}:${t.name}:columns:${c.name}`,
-                  name: c.name,
-                  label: c.name,
+                  id: `${db.name}:${tbl.name}:columns:${col.name}`,
+                  name: col.name,
+                  label: col.name,
                   icon: ['fa', 'tag'],
                   type: 'column',
-                  data_type: c.type,
-                  data: c,
+                  data_type: col.type,
+                  data: col,
                 } as DatabaseNavItem<DatabaseColumn>;
               }),
             },
             {
-              id: `${d.name}:${t.name}:indexes`,
-              label: 'indexes',
+              id: `${db.name}:${tbl.name}:indexes`,
+              label: `${t('components.database.databases.labels.indexes')} (${tbl.indexes?.length || 0})`,
               icon: ['fa', 'key'],
               type: 'indexes',
-              children: t.indexes?.map(i => {
+              children: tbl.indexes?.map(idx => {
                 return {
-                  id: `${d.name}:${t.name}:indexes:${i.name}`,
-                  name: i.name,
-                  label: i.name,
+                  id: `${db.name}:${tbl.name}:indexes:${idx.name}`,
+                  name: idx.name,
+                  label: idx.name,
                   icon: ['fa', 'key'],
                   type: 'index',
-                  data: i,
+                  data: idx,
                 };
               }),
             },
@@ -130,6 +130,37 @@ const getMetadata = async () => {
   await store.dispatch(`${ns}/getMetadata`, { id: activeId.value });
 };
 
+const createTable = async () => {
+  // try to select a database first
+  let databaseName: string;
+  if (activeNavItem.value?.type === 'database') {
+    databaseName = activeNavItem.value?.name as string;
+  } else if (activeDatabaseName.value) {
+    databaseName = activeDatabaseName.value;
+  } else {
+    databaseName = treeItems.value?.[0]?.name as string;
+  }
+  const databaseNode = treeItems.value?.find(d => d.name === databaseName);
+  if (!databaseNode) return;
+
+  const newNode = newTableNode();
+  if (databaseNode?.children?.length) {
+    const firstTableNode = treeRef.value?.getNode(
+      databaseNode.children[0].id
+    ) as TreeNode;
+    treeRef.value?.insertBefore(newNode, firstTableNode);
+  } else {
+    treeRef.value?.append(newNode, databaseNode.id);
+  }
+  await selectNode(newNode);
+  const input = await selectElement(
+    `#edit-input-${normalizeElementId(newNode.id)}`
+  );
+  if (input instanceof HTMLInputElement) {
+    input.focus();
+  }
+};
+
 const activeContextMenuNavItem = ref<DatabaseNavItem>();
 const contextMenuVisibleMap = ref<Record<string, boolean>>({});
 const isContextMenuVisible = (id: string) => {
@@ -154,11 +185,9 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
     case 'database':
       return [
         {
-          title: t('common.actions.view'),
-          icon: ['fa', 'search'],
-          action: () => {
-            console.debug('view');
-          },
+          title: t('views.database.databases.actions.createTable'),
+          icon: ['fa', 'table'],
+          action: createTable,
         },
         {
           title: t('common.actions.edit'),
@@ -182,6 +211,26 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
           },
         },
         {
+          title: t('components.database.databases.table.actions.editColumns'),
+          icon: ['fa', 'columns'],
+          action: async () => {
+            await selectNode(
+              activeContextMenuNavItem.value as DatabaseNavItem,
+              TAB_NAME_COLUMNS
+            );
+          },
+        },
+        {
+          title: t('components.database.databases.table.actions.editIndexes'),
+          icon: ['fa', 'key'],
+          action: async () => {
+            await selectNode(
+              activeContextMenuNavItem.value as DatabaseNavItem,
+              TAB_NAME_INDEXES
+            );
+          },
+        },
+        {
           title: t('common.actions.rename'),
           icon: ['fa', 'edit'],
           action: async () => {
@@ -190,14 +239,12 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
             const node = treeRef.value?.getNode(id) as TreeNodeData;
             node.data.edit = true;
             node.data.edit_name = node.data.label;
-            await nextTick(() => {
-              const input = document.querySelector(
-                `#edit-input-${normalizeElementId(id)}`
-              );
-              if (input instanceof HTMLInputElement) {
-                input.focus();
-              }
-            });
+            const input = await selectElement(
+              `#edit-input-${normalizeElementId(id)}`
+            );
+            if (input instanceof HTMLInputElement) {
+              input.focus();
+            }
           },
         },
         {
@@ -236,20 +283,31 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
           },
         },
       ];
+    case 'columns':
     case 'column':
       return [
         {
-          title: t('common.actions.view'),
-          icon: ['fa', 'search'],
-          action: () => {
-            console.debug('view');
+          title: t('components.database.databases.table.actions.editColumns'),
+          icon: ['fa', 'columns'],
+          action: async () => {
+            await selectNode(
+              activeContextMenuNavItem.value as DatabaseNavItem,
+              TAB_NAME_COLUMNS
+            );
           },
         },
+      ];
+    case 'indexes':
+    case 'index':
+      return [
         {
-          title: t('common.actions.edit'),
-          icon: ['fa', 'edit'],
-          action: () => {
-            console.debug('Edit');
+          title: t('components.database.databases.table.actions.editIndexes'),
+          icon: ['fa', 'key'],
+          action: async () => {
+            await selectNode(
+              activeContextMenuNavItem.value as DatabaseNavItem,
+              TAB_NAME_INDEXES
+            );
           },
         },
       ];
@@ -299,38 +357,7 @@ const createContextMenuListItems: ContextMenuItem[] = [
   {
     title: t('views.database.databases.actions.createTable'),
     icon: ['fa', 'table'],
-    action: () => {
-      // try to select a database first
-      let databaseName: string;
-      if (activeNavItem.value?.type === 'database') {
-        databaseName = activeNavItem.value?.name as string;
-      } else if (activeDatabaseName.value) {
-        databaseName = activeDatabaseName.value;
-      } else {
-        databaseName = treeItems.value?.[0]?.name as string;
-      }
-      const databaseNode = treeItems.value?.find(d => d.name === databaseName);
-      if (!databaseNode) return;
-
-      const newNode = newTableNode();
-      if (databaseNode?.children?.length) {
-        const firstTableNode = treeRef.value?.getNode(
-          databaseNode.children[0].id
-        ) as TreeNode;
-        treeRef.value?.insertBefore(newNode, firstTableNode);
-      } else {
-        treeRef.value?.append(newNode, databaseNode.id);
-      }
-      selectNode(newNode);
-      nextTick(() => {
-        const input = document.querySelector(
-          `#edit-input-${normalizeElementId(newNode.id)}`
-        );
-        if (input instanceof HTMLInputElement) {
-          input.focus();
-        }
-      });
-    },
+    action: createTable,
   },
 ];
 
@@ -348,7 +375,7 @@ const getNodeIdParts = (id: string) => {
   };
 };
 
-const selectNode = async (data: DatabaseNavItem) => {
+const selectNode = async (data: DatabaseNavItem, tabName?: string) => {
   const { id, type, new: isNew } = data;
   const { databaseName, table } = getNodeIdParts(id);
   store.commit(`${ns}/setActiveDatabaseName`, databaseName);
@@ -357,18 +384,18 @@ const selectNode = async (data: DatabaseNavItem) => {
     case 'table':
       store.commit(
         `${ns}/setDefaultTabName`,
-        !isNew ? TAB_NAME_DATA : TAB_NAME_COLUMNS
+        tabName || (!isNew ? TAB_NAME_DATA : TAB_NAME_COLUMNS)
       );
       store.commit(`${ns}/setActiveNavItem`, data);
       break;
     case 'columns':
     case 'column':
-      store.commit(`${ns}/setDefaultTabName`, TAB_NAME_COLUMNS);
+      store.commit(`${ns}/setDefaultTabName`, tabName || TAB_NAME_COLUMNS);
       store.commit(`${ns}/setActiveNavItem`, table);
       break;
     case 'indexes':
     case 'index':
-      store.commit(`${ns}/setDefaultTabName`, TAB_NAME_INDEXES);
+      store.commit(`${ns}/setDefaultTabName`, tabName || TAB_NAME_INDEXES);
       store.commit(`${ns}/setActiveNavItem`, table);
       break;
     default:
@@ -473,7 +500,15 @@ const validateAndSave = async (data: DatabaseNavItem) => {
     await formRef.value.validate();
     data.label = data.edit_name;
     data.edit = false;
-    data.data.name = data.edit_name;
+    if (data.data.name !== data.edit_name) {
+      data.data.name = data.edit_name;
+
+      // Set node status as updated
+      const id = activeNavItem.value?.id as string;
+      const node = treeRef.value?.getNode(id) as TreeNodeData;
+      node.data.updated = true;
+      console.debug(node);
+    }
     store.commit(`${ns}/setActiveNavItem`, {
       ...data,
     });
@@ -527,8 +562,10 @@ const validateAndSave = async (data: DatabaseNavItem) => {
         :data="treeItems"
         :props="{
           class: _data => {
-            if (_data.new) return 'new';
-            return '';
+            const cls = [];
+            if (_data.new) cls.push('new');
+            if (_data.updated) cls.push('updated');
+            return cls.join(' ');
           },
         }"
         :filter-node-method="onSearchFilter"
@@ -594,6 +631,11 @@ const validateAndSave = async (data: DatabaseNavItem) => {
               <div class="actions" :class="data.new ? 'new' : ''">
                 <template v-if="!data.edit">
                   <cl-icon
+                    v-if="data.status === 'updated'"
+                    :icon="['fa', 'save']"
+                  />
+                  <cl-icon
+                    class="more"
                     :icon="['fa', 'ellipsis']"
                     @click.stop="onActionsClick(data)"
                   />
@@ -669,10 +711,12 @@ const validateAndSave = async (data: DatabaseNavItem) => {
       color: var(--cl-success-color);
     }
 
-    &:deep(.el-tree-node__content:hover) {
-      .actions {
-        display: flex !important;
-      }
+    &:deep(.el-tree-node.updated .el-tree-node__content) {
+      color: var(--cl-primary-color);
+    }
+
+    &:deep(.el-tree-node__content:hover .actions .icon) {
+      display: flex !important;
     }
 
     &:deep(.el-tree-node__content) {
@@ -724,12 +768,17 @@ const validateAndSave = async (data: DatabaseNavItem) => {
       }
 
       .actions {
-        display: none;
+        display: flex;
+        gap: 5px;
         position: absolute;
         top: 0;
         right: 5px;
         height: 100%;
         align-items: center;
+
+        &:deep(.icon.more) {
+          display: none;
+        }
       }
     }
   }

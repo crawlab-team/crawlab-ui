@@ -109,6 +109,7 @@ const database: LComponentsDatabase = {
         notNull: '非空',
         default: '默认值',
         primary: '主键',
+        autoIncrement: '自增',
       },
       indexes: {
         name: '名称',
@@ -125,8 +126,14 @@ const database: LComponentsDatabase = {
       },
       actions: {
         addColumn: '添加列',
+        editColumns: '编辑列',
         editIndexColumns: '编辑索引列',
+        editIndexes: '编辑索引',
       },
+    },
+    labels: {
+      columns: '列',
+      indexes: '索引',
     },
   },
   actions: {

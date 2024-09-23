@@ -110,6 +110,7 @@ export declare global {
           notNull: string;
           default: string;
           primary: string;
+          autoIncrement: string;
         };
         indexes: {
           name: string;
@@ -126,8 +127,14 @@ export declare global {
         };
         actions: {
           addColumn: string;
+          editColumns: string;
           editIndexColumns: string;
+          editIndexes: string;
         };
+      };
+      labels: {
+        columns: string;
+        indexes: string;
       };
     };
     actions: {

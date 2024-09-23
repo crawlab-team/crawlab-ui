@@ -110,7 +110,8 @@ const database: LComponentsDatabase = {
         type: 'Data Type',
         notNull: 'Not Null',
         default: 'Default Expression',
-        primary: 'Primary Key',
+        primary: 'PK',
+        autoIncrement: 'Auto Inc',
       },
       indexes: {
         name: 'Name',
@@ -127,8 +128,14 @@ const database: LComponentsDatabase = {
       },
       actions: {
         addColumn: 'Add Column',
+        editColumns: 'Edit Columns',
         editIndexColumns: 'Edit Index Columns',
+        editIndexes: 'Edit Indexes',
       },
+    },
+    labels: {
+      columns: 'Columns',
+      indexes: 'Indexes',
     },
   },
   actions: {

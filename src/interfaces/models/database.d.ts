@@ -70,6 +70,7 @@ export declare global {
     not_null?: boolean;
     default?: string;
     primary?: boolean;
+    auto_increment?: boolean;
   }
 
   interface DatabaseIndex extends DatabaseTableItem<DatabaseIndex> {
@@ -91,6 +92,7 @@ export declare global {
     children: DatabaseNavItem[];
     database?: string;
     new?: boolean;
+    updated?: boolean;
     edit?: boolean;
     edit_name?: string;
   }

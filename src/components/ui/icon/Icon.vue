@@ -68,7 +68,7 @@ defineOptions({ name: 'ClIcon' });
         :icon="icon"
         :style="{ fontSize, color }"
         class="icon"
-        @click="event => emit('click', event)"
+        @click="(event: MouseEvent) => emit('click', event)"
       />
     </template>
     <template v-else-if="isSvg">

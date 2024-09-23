@@ -23,11 +23,16 @@ const props = defineProps<{
   activeTable?: DatabaseTable;
 }>();
 
+const emit = defineEmits<{
+  (e: 'change', value: DatabaseTable): void;
+}>();
+
 const t = translate;
 
 const editColumnsDialogVisible = ref(false);
 
 const onAddIndex = (index?: DatabaseIndex, before?: boolean) => {
+  if (!internalTable.value) return;
   const newIndex: DatabaseIndex = {
     name: '',
     type: '',
@@ -48,9 +53,11 @@ const onAddIndex = (index?: DatabaseIndex, before?: boolean) => {
       internalTable.value?.indexes?.splice(idx + 1, 0, newIndex);
     }
   }
+  emit('change', internalTable.value);
 };
 
 const onDeleteIndex = (index: DatabaseIndex) => {
+  if (!internalTable.value) return;
   if (index.status === 'new') {
     const idx = internalTable.value?.columns?.findIndex(
       i => i.name === index.name
@@ -61,10 +68,13 @@ const onDeleteIndex = (index: DatabaseIndex) => {
   } else {
     index.status = 'deleted';
   }
+  emit('change', internalTable.value);
 };
 
 const onRevertIndex = (index: DatabaseIndex) => {
+  if (!internalTable.value) return;
   index.status = undefined;
+  emit('change', internalTable.value);
 };
 
 const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
@@ -93,7 +103,9 @@ const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
         isEdit={row.isEdit?.name}
         required
         onChange={(val: string) => {
+          if (!internalTable.value) return;
           row.name = val;
+          emit('change', internalTable.value);
         }}
         onEdit={(val: boolean) => {
           if (!row.isEdit) row.isEdit = {};
@@ -112,7 +124,9 @@ const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
         modelValue={row.type}
         isEdit={row.isEdit?.type}
         onChange={(val: string) => {
+          if (!internalTable.value) return;
           row.type = val;
+          emit('change', internalTable.value);
         }}
         onEdit={(val: boolean) => {
           if (!row.isEdit) row.isEdit = {};
@@ -188,7 +202,9 @@ const indexesTableColumns = computed<TableColumns<DatabaseIndex>>(() => [
       <ElCheckbox
         modelValue={row.unique}
         onChange={(val: boolean) => {
+          if (!internalTable.value) return;
           row.unique = val;
+          emit('change', internalTable.value);
         }}
       />
     ),
@@ -260,6 +276,7 @@ const onAddIndexColumn = (
   indexColumn?: DatabaseIndexColumn,
   before?: boolean
 ) => {
+  if (!internalTable.value) return;
   const newIndexColumn: DatabaseIndexColumn = {
     name: '',
     order: 1,
@@ -279,6 +296,7 @@ const onAddIndexColumn = (
   } else {
     activeIndexColumns.value?.splice(idx + 1, 0, newIndexColumn);
   }
+  emit('change', internalTable.value);
 };
 const onDeleteIndexColumn = (rowIndex: number) => {
   activeIndexColumns.value?.splice(rowIndex, 1);
@@ -319,10 +337,8 @@ const activeIndexColumnsColumns = computed<TableColumns<DatabaseIndexColumn>>(
             row.name = val;
           }}
           onEdit={(val: boolean) => {
-            console.debug('name.onEdit', row.isEdit?.name, val);
             if (!row.isEdit) row.isEdit = {};
             row.isEdit.name = val;
-            console.debug('name.onEdit', row.isEdit?.name, val);
           }}
         />
       ),
@@ -347,6 +363,7 @@ const activeIndexColumnsData = computed<TableData<DatabaseIndexColumn>>(() => {
   return activeIndexColumns.value || [];
 });
 const onActiveIndexColumnsDialogConfirm = () => {
+  if (!internalTable.value) return;
   if (typeof activeIndexColumnsRowIndex.value === 'undefined') return;
   const index =
     internalTable.value?.indexes?.[activeIndexColumnsRowIndex.value];
@@ -367,6 +384,8 @@ const onActiveIndexColumnsDialogConfirm = () => {
   index.columns = plainClone(activeIndexColumns.value || []);
 
   editColumnsDialogVisible.value = false;
+
+  emit('change', internalTable.value);
 };
 const onActiveIndexColumnsDialogClose = () => {
   activeIndexColumnsRowIndex.value = undefined;
@@ -389,6 +408,7 @@ defineOptions({ name: 'ClDatabaseTableDetailIndexes' });
     :cell-class-name="indexCellClassName"
     embedded
     hide-footer
+    @add="onAddIndex"
   />
 
   <cl-dialog
