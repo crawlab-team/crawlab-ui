@@ -1,12 +1,5 @@
 <script setup lang="tsx">
-import {
-  ref,
-  computed,
-  watch,
-  nextTick,
-  onBeforeMount,
-  onBeforeUnmount,
-} from 'vue';
+import { ref, computed, watch, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import {
   ElTree,
@@ -23,7 +16,7 @@ import type {
   TreeNodeData,
 } from 'element-plus/es/components/tree/src/tree.type';
 import { TAB_NAME_COLUMNS, TAB_NAME_DATA, TAB_NAME_INDEXES } from '@/constants';
-import { selectElement, translate } from '@/utils';
+import { plainClone, selectElement, translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
 
@@ -40,7 +33,7 @@ const { del } = useRequest();
 const treeRef = ref<InstanceType<typeof ElTree>>();
 const searchKeyword = ref('');
 const showSearch = ref(false);
-const treeItems = computed<DatabaseNavItem[]>(() => {
+const computedTreeItems = computed<DatabaseNavItem[]>(() => {
   const { metadata } = state;
   if (!metadata?.databases) return [] as DatabaseNavItem[];
   return metadata.databases.map(db => {
@@ -100,6 +93,13 @@ const treeItems = computed<DatabaseNavItem[]>(() => {
     };
   }) as DatabaseNavItem<DatabaseDatabase>[];
 });
+const treeItems = ref<DatabaseNavItem[]>([]);
+watch(
+  () => state.metadata,
+  () => {
+    treeItems.value = plainClone(computedTreeItems.value);
+  }
+);
 
 const activeDatabaseName = computed(() => state.activeDatabaseName);
 
@@ -493,22 +493,31 @@ const formRules = ref<FormRules>({
   ],
 });
 
+const renameTable = async (data: DatabaseNavItem) => {};
+
 const validateAndSave = async (data: DatabaseNavItem) => {
   if (!formRef.value) return;
 
   try {
+    // validate form
     await formRef.value.validate();
-    data.label = data.edit_name;
+
+    // switch off edit mode
     data.edit = false;
+
     if (data.data.name !== data.edit_name) {
+      // set name
+      data.label = data.edit_name;
       data.data.name = data.edit_name;
 
-      // Set node status as updated
+      // set node status as updated
       const id = activeNavItem.value?.id as string;
       const node = treeRef.value?.getNode(id) as TreeNodeData;
-      node.data.updated = true;
-      console.debug(node);
+      if (!node.data.new) {
+        await renameTable(data);
+      }
     }
+
     store.commit(`${ns}/setActiveNavItem`, {
       ...data,
     });
@@ -562,10 +571,9 @@ const validateAndSave = async (data: DatabaseNavItem) => {
         :data="treeItems"
         :props="{
           class: _data => {
-            const cls = [];
-            if (_data.new) cls.push('new');
-            if (_data.updated) cls.push('updated');
-            return cls.join(' ');
+            if (_data.new) return 'new';
+            if (_data.updated) return 'updated';
+            return '';
           },
         }"
         :filter-node-method="onSearchFilter"
@@ -630,10 +638,6 @@ const validateAndSave = async (data: DatabaseNavItem) => {
               </div>
               <div class="actions" :class="data.new ? 'new' : ''">
                 <template v-if="!data.edit">
-                  <cl-icon
-                    v-if="data.status === 'updated'"
-                    :icon="['fa', 'save']"
-                  />
                   <cl-icon
                     class="more"
                     :icon="['fa', 'ellipsis']"
