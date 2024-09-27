@@ -42,6 +42,7 @@ withDefaults(
 
 const emit = defineEmits<{
   (e: 'add'): void;
+  (e: 'pagination-change', data: TablePagination): void;
 }>();
 
 const t = translate;
@@ -79,6 +80,10 @@ defineOptions({ name: 'ClEditTable' });
     :header-row-style="headerRowStyle"
     :header-cell-style="headerCellStyle"
     :header-cell-class-name="headerCellClassName"
+    @pagination-change="
+      (paginationData: TablePagination) =>
+        emit('pagination-change', paginationData)
+    "
   >
     <template #empty>
       <cl-label-button

@@ -144,19 +144,15 @@ const tabsItems = computed<NavItem[]>(() =>
 watch(defaultTabName, () => {
   activeTabName.value = defaultTabName.value || TAB_NAME_OVERVIEW;
 });
-watch(activeTabName, () => fetchData());
-onBeforeMount(() => {
-  fetchData();
-});
+// watch(activeTabName, () => fetchData());
+// onBeforeMount(() => {
+//   fetchData();
+// });
 
 const form = ref<DatabaseTable>(internalTable.value || {});
-watch(
-  () => internalTable.value,
-  async () => {
-    form.value = internalTable.value || {};
-    await fetchData();
-  }
-);
+watch(internalTable, () => {
+  form.value = internalTable.value || {};
+});
 
 const resetData = () => {
   store.commit(`${ns}/setTablePreviewData`, []);
@@ -270,18 +266,24 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
     </cl-nav-tabs>
     <div class="tab-content">
       <template v-if="activeTabName === TAB_NAME_DATA">
-        <cl-table
-          :loading="tablePreviewLoading"
-          :key="JSON.stringify(internalTable)"
-          :row-key="(row: TableAnyRowData) => JSON.stringify(row)"
-          :columns="dataTableColumns"
-          :data="dataTableData"
-          :page="dataTablePagination.page"
-          :page-size="dataTablePagination.size"
-          :total="dataTableTotal"
-          embedded
-          @pagination-change="onDataTablePaginationChange"
+        <cl-database-table-detail-data
+          :loading="commitLoading"
+          :active-table="activeTable"
+          :active-id="activeId"
+          :database-name="databaseName"
         />
+        <!--        <cl-table-->
+        <!--          :loading="tablePreviewLoading"-->
+        <!--          :key="JSON.stringify(internalTable)"-->
+        <!--          :row-key="(row: TableAnyRowData) => JSON.stringify(row)"-->
+        <!--          :columns="dataTableColumns"-->
+        <!--          :data="dataTableData"-->
+        <!--          :page="dataTablePagination.page"-->
+        <!--          :page-size="dataTablePagination.size"-->
+        <!--          :total="dataTableTotal"-->
+        <!--          embedded-->
+        <!--          @pagination-change="onDataTablePaginationChange"-->
+        <!--        />-->
       </template>
       <template v-else-if="activeTabName === TAB_NAME_COLUMNS">
         <cl-database-table-detail-columns
