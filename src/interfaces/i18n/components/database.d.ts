@@ -69,6 +69,12 @@ export declare global {
       };
     };
     messageBox: {
+      confirm: {
+        renameTable: {
+          title: string;
+          message: string;
+        };
+      };
       prompt: {
         dropTable: {
           title: string;

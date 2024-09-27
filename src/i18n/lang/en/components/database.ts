@@ -68,6 +68,12 @@ const database: LComponentsDatabase = {
     },
   },
   messageBox: {
+    confirm: {
+      renameTable: {
+        title: 'Rename Table',
+        message: 'Are you sure you want to rename the table?',
+      },
+    },
     prompt: {
       dropTable: {
         title: 'Drop Table',

@@ -86,6 +86,7 @@ const common: LCommon = {
     },
     error: {
       login: 'Login failed',
+      action: 'Action failed',
     },
   },
   notification: {

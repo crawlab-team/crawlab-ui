@@ -86,6 +86,7 @@ const common: LCommon = {
     },
     error: {
       login: '登陆失败',
+      action: '操作失败',
     },
   },
   notification: {

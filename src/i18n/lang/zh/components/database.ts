@@ -68,6 +68,12 @@ const database: LComponentsDatabase = {
     },
   },
   messageBox: {
+    confirm: {
+      renameTable: {
+        title: '重命名表',
+        message: '确定要重命名表吗？',
+      },
+    },
     prompt: {
       dropTable: {
         title: '删除表',

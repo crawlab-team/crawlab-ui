@@ -28,7 +28,7 @@ const { database: state } = store.state as RootStoreState;
 
 const { activeId } = useDatabaseDetail();
 
-const { del } = useRequest();
+const { post, del } = useRequest();
 
 const treeRef = ref<InstanceType<typeof ElTree>>();
 const searchKeyword = ref('');
@@ -493,7 +493,30 @@ const formRules = ref<FormRules>({
   ],
 });
 
-const renameTable = async (data: DatabaseNavItem) => {};
+const renameTable = async (data: DatabaseNavItem) => {
+  await ElMessageBox.confirm(
+    t('components.database.messageBox.confirm.renameTable.message'),
+    t('components.database.messageBox.confirm.renameTable.title'),
+    {
+      type: 'warning',
+    }
+  );
+
+  data.loading = true;
+  try {
+    await post(`/databases/${activeId.value}/tables/rename`, {
+      database_name: activeDatabaseName.value,
+      table_name: data.data.name,
+      new_table_name: data.edit_name,
+    });
+    ElMessage.success(t('common.message.success.action'));
+  } catch (error) {
+    ElMessage.error(t('common.message.error.action'));
+    throw error;
+  } finally {
+    data.loading = false;
+  }
+};
 
 const validateAndSave = async (data: DatabaseNavItem) => {
   if (!formRef.value) return;
@@ -506,16 +529,15 @@ const validateAndSave = async (data: DatabaseNavItem) => {
     data.edit = false;
 
     if (data.data.name !== data.edit_name) {
-      // set name
-      data.label = data.edit_name;
-      data.data.name = data.edit_name;
-
-      // set node status as updated
       const id = activeNavItem.value?.id as string;
       const node = treeRef.value?.getNode(id) as TreeNodeData;
       if (!node.data.new) {
         await renameTable(data);
       }
+
+      // set name
+      data.label = data.edit_name;
+      data.data.name = data.edit_name;
     }
 
     store.commit(`${ns}/setActiveNavItem`, {
@@ -593,7 +615,12 @@ const validateAndSave = async (data: DatabaseNavItem) => {
             <template #reference>
               <div class="node-wrapper" :title="data.label">
                 <span class="icon-wrapper">
-                  <cl-icon :icon="data.icon" />
+                  <cl-icon
+                    v-if="data.loading"
+                    :icon="['fa', 'spinner']"
+                    spinning
+                  />
+                  <cl-icon v-else :icon="data.icon" />
                 </span>
                 <template v-if="!data.edit">
                   <span class="label">

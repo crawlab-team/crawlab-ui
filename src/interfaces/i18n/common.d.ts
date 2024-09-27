@@ -99,6 +99,7 @@ export declare global {
       };
       error: {
         login: string;
+        action: string;
       };
     };
     notification: {
