@@ -40,7 +40,7 @@ const computedTreeItems = computed<DatabaseNavItem[]>(() => {
     return {
       id: `${db.name}`,
       name: db.name,
-      label: db.name,
+      label: `${db.name} (${db.tables?.length || 0})`,
       icon: ['fa', 'database'],
       type: 'database',
       data: db,
