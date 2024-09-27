@@ -149,7 +149,7 @@ export const getIconByTabName = (tabName: string): Icon => {
     case TAB_NAME_SPIDERS:
       return ['fa', 'spider'];
     case TAB_NAME_DATA:
-      return ['fa', 'database'];
+      return ['fa', 'table'];
     case TAB_NAME_SCHEDULES:
       return ['fa', 'calendar-alt'];
     case TAB_NAME_LOGS:

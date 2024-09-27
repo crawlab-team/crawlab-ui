@@ -43,6 +43,7 @@ const props = withDefaults(
     headerRowStyle?: ColumnStyle<any>;
     headerCellClassName?: CellCls<any>;
     headerCellStyle?: CellStyle<any>;
+    hideDefaultActions?: boolean;
   }>(),
   {
     data: emptyArrayFunc,
@@ -210,6 +211,7 @@ defineOptions({ name: 'ClTable' });
       <cl-table-actions
         :selection="internalSelection"
         :visible-buttons="visibleButtons"
+        :hide="hideDefaultActions"
         @delete="onDelete"
         @edit="onEdit"
         @export="onExport"

@@ -56,10 +56,12 @@ export declare global {
     indexes?: DatabaseIndex[];
   }
 
+  type DatabaseTableItemStatus = 'new' | 'updated' | 'deleted';
+
   interface DatabaseTableItem<T> {
     hash?: string;
     original_name?: string;
-    status?: 'new' | 'updated' | 'deleted';
+    status?: DatabaseTableItemStatus;
     contextMenuVisible?: boolean;
     isEdit?: Partial<Record<keyof T, boolean>>;
   }
@@ -99,4 +101,12 @@ export declare global {
   }
 
   type DatabaseTableClickRowType = 'name' | 'columns' | 'indexes';
+
+  interface DatabaseTableRow extends TableAnyRowData {
+    __status__?: DatabaseTableItemStatus;
+    __hash__?: string;
+    __edit__?: {
+      [key: string]: boolean;
+    };
+  }
 }

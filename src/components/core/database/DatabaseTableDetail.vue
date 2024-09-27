@@ -15,7 +15,7 @@ import {
   getIndexStatus,
   isValidTable,
 } from '@/utils/database';
-import { ClResultCell } from '@/components';
+import { ClDatabaseTableDetailData } from '@/components';
 
 const props = defineProps<{
   activeId?: string;
@@ -29,6 +29,8 @@ const emit = defineEmits<{
 const { get, post } = useRequest();
 
 const t = translate;
+
+const dataRef = ref<typeof ClDatabaseTableDetailData | null>(null);
 
 const ns: ListStoreNamespace = 'database';
 const store = useStore();
@@ -66,20 +68,32 @@ watch(table, getTable);
 
 const onRollback = () => {
   internalTable.value = plainClone(activeTable.value);
+  dataRef.value?.rollback?.();
 };
 watch(activeTable, onRollback);
 
 const commitLoading = ref(false);
 const onCommit = async () => {
-  if (isNew.value) {
-    return createTable();
-  } else {
-    return modifyTable();
+  const tasks: Promise<void>[] = [];
+  if (hasDataChange.value) {
+    tasks.push(dataRef.value?.commit?.());
+  }
+  if (hasColumnsChange.value || hasIndexesChange.value) {
+    if (isNew.value) {
+      tasks.push(createTable());
+    } else {
+      tasks.push(modifyTable());
+    }
+  }
+  commitLoading.value = true;
+  try {
+    return await Promise.all(tasks);
+  } finally {
+    commitLoading.value = false;
   }
 };
 
 const createTable = async () => {
-  commitLoading.value = true;
   try {
     await post(`/databases/${props.activeId}/tables/create`, {
       database_name: props.databaseName,
@@ -93,13 +107,11 @@ const createTable = async () => {
     });
   } catch (error: any) {
     ElMessage.error(error.message);
-  } finally {
-    commitLoading.value = false;
+    throw error;
   }
 };
 
 const modifyTable = async () => {
-  commitLoading.value = true;
   try {
     await post(`/databases/${props.activeId}/tables/modify`, {
       database_name: props.databaseName,
@@ -123,8 +135,7 @@ const modifyTable = async () => {
     emit('refresh');
   } catch (error: any) {
     ElMessage.error(error.message);
-  } finally {
-    commitLoading.value = false;
+    throw error;
   }
 };
 
@@ -144,87 +155,36 @@ const tabsItems = computed<NavItem[]>(() =>
 watch(defaultTabName, () => {
   activeTabName.value = defaultTabName.value || TAB_NAME_OVERVIEW;
 });
-// watch(activeTabName, () => fetchData());
-// onBeforeMount(() => {
-//   fetchData();
-// });
 
 const form = ref<DatabaseTable>(internalTable.value || {});
 watch(internalTable, () => {
   form.value = internalTable.value || {};
 });
 
-const resetData = () => {
-  store.commit(`${ns}/setTablePreviewData`, []);
-  store.commit(`${ns}/setTablePreviewTotal`, 0);
-  store.commit(`${ns}/setTablePreviewPagination`, {
-    page: 1,
-    size: 10,
-  });
-};
-const fetchData = async () => {
-  if (activeTabName.value === TAB_NAME_DATA) {
-    resetData();
-    await getTablePreview();
-  }
-};
-const tablePreviewLoading = ref(false);
-const getTablePreview = async () => {
-  if (!internalTable.value) return;
-  tablePreviewLoading.value = true;
-  const { name: table } = internalTable.value;
-  const database = props.databaseName;
-  try {
-    await store.dispatch(`${ns}/getTablePreview`, {
-      id: props.activeId,
-      database,
-      table,
-    });
-  } catch (error: any) {
-    ElMessage.error(error.message);
-  } finally {
-    tablePreviewLoading.value = false;
-  }
-};
-const dataTableColumns = computed<TableColumns<Record<string, any>>>(() => {
-  const { columns } = internalTable.value || {};
-  if (!columns) return [];
-  return columns.map(c => {
-    return {
-      key: c.name,
-      label: c.name,
-      value: (row: Record<string, any>) => (
-        <ClResultCell fieldKey={c.name} value={row[c.name || '']} />
-      ),
-      minWidth: 120,
-    } as TableColumn<Record<string, any>>;
-  });
+const hasDataChange = computed<boolean>(() => {
+  if (!dataRef.value) return false;
+  return dataRef.value.hasChanges;
 });
-
-const dataTableData = computed<Record<string, any>[]>(() => {
-  return state.tablePreviewData || [];
-});
-
-const dataTablePagination = computed<TablePagination>(
-  () => state.tablePreviewPagination
-);
-
-const dataTableTotal = computed<number>(() => state.tablePreviewTotal);
-
-const onDataTablePaginationChange = (pagination: TablePagination) => {
-  store.commit(`${ns}/setTablePreviewPagination`, pagination);
-  getTablePreview();
-};
-
-const hasChanges = computed(() => {
+const hasColumnsChange = computed<boolean>(() => {
   if (!internalTable.value) return false;
-  const hasColumnsChange = internalTable.value.columns?.some(c =>
-    getColumnStatus(c, activeTable.value)
+  return (
+    internalTable.value.columns?.some(c =>
+      getColumnStatus(c, activeTable.value)
+    ) || false
   );
-  const hasIndexesChange = internalTable.value.indexes?.some(i =>
-    getIndexStatus(i, activeTable.value)
+});
+const hasIndexesChange = computed<boolean>(() => {
+  if (!internalTable.value) return false;
+  return (
+    internalTable.value.indexes?.some(i =>
+      getIndexStatus(i, activeTable.value)
+    ) || false
   );
-  return hasColumnsChange || hasIndexesChange;
+});
+const hasChanges = computed(() => {
+  return (
+    hasDataChange.value || hasColumnsChange.value || hasIndexesChange.value
+  );
 });
 const tableValid = computed(() => isValidTable(internalTable.value));
 
@@ -267,23 +227,12 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
     <div class="tab-content">
       <template v-if="activeTabName === TAB_NAME_DATA">
         <cl-database-table-detail-data
+          ref="dataRef"
           :loading="commitLoading"
           :active-table="activeTable"
           :active-id="activeId"
           :database-name="databaseName"
         />
-        <!--        <cl-table-->
-        <!--          :loading="tablePreviewLoading"-->
-        <!--          :key="JSON.stringify(internalTable)"-->
-        <!--          :row-key="(row: TableAnyRowData) => JSON.stringify(row)"-->
-        <!--          :columns="dataTableColumns"-->
-        <!--          :data="dataTableData"-->
-        <!--          :page="dataTablePagination.page"-->
-        <!--          :page-size="dataTablePagination.size"-->
-        <!--          :total="dataTableTotal"-->
-        <!--          embedded-->
-        <!--          @pagination-change="onDataTablePaginationChange"-->
-        <!--        />-->
       </template>
       <template v-else-if="activeTabName === TAB_NAME_COLUMNS">
         <cl-database-table-detail-columns

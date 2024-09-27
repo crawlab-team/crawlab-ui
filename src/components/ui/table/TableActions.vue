@@ -13,6 +13,7 @@ const props = withDefaults(
   defineProps<{
     selection: TableData;
     visibleButtons: BuiltInTableActionButtonName[];
+    hide?: boolean;
   }>(),
   {
     selection: emptyArrayFunc,
@@ -57,6 +58,7 @@ const onCustomizeColumns = () => {
 };
 
 const showButton = (name: string): boolean => {
+  if (props.hide) return false;
   const { visibleButtons } = props;
   if (
     visibleButtons &&

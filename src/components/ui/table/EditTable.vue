@@ -2,6 +2,8 @@
 import { ColumnCls } from 'element-plus/es/components/table/src/table/defaults';
 import { CellCls, CellStyle, ColumnStyle } from 'element-plus';
 import { translate } from '@/utils';
+import { ref } from 'vue';
+import { ClTable } from '@/components';
 
 withDefaults(
   defineProps<{
@@ -34,6 +36,7 @@ withDefaults(
     headerCellClassName?: CellCls<any>;
     headerCellStyle?: CellStyle<any>;
     addButtonLabel?: string;
+    hideDefaultActions?: boolean;
   }>(),
   {
     border: true,
@@ -43,15 +46,23 @@ withDefaults(
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'pagination-change', data: TablePagination): void;
+  (e: 'selection-change', data: TableData): void;
 }>();
 
 const t = translate;
+
+const tableRef = ref<typeof ClTable | null>(null);
+
+defineExpose({
+  clearSelection: () => tableRef.value?.clearSelection?.(),
+});
 
 defineOptions({ name: 'ClEditTable' });
 </script>
 
 <template>
   <cl-table
+    ref="tableRef"
     :data="data"
     :columns="columns"
     :selected-column-keys="selectedColumnKeys"
@@ -80,9 +91,13 @@ defineOptions({ name: 'ClEditTable' });
     :header-row-style="headerRowStyle"
     :header-cell-style="headerCellStyle"
     :header-cell-class-name="headerCellClassName"
+    :hide-default-actions="hideDefaultActions"
     @pagination-change="
       (paginationData: TablePagination) =>
         emit('pagination-change', paginationData)
+    "
+    @selection-change="
+      (selectionData: TableData) => emit('selection-change', selectionData)
     "
   >
     <template #empty>
@@ -91,6 +106,12 @@ defineOptions({ name: 'ClEditTable' });
         :label="addButtonLabel || t('common.actions.add')"
         @click="emit('add')"
       />
+    </template>
+    <template #actions-prefix>
+      <slot name="actions-prefix" />
+    </template>
+    <template #actions-suffix>
+      <slot name="actions-suffix" />
     </template>
   </cl-table>
 </template>

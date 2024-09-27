@@ -88,7 +88,7 @@ export const getDatabaseDefaultByDataSource = (
 export const getColumnStatus = (
   column: DatabaseColumn,
   originalTable?: DatabaseTable
-) => {
+): DatabaseTableItemStatus | undefined => {
   if (column.status && column.status !== 'updated') return column.status;
   const hasColumn = originalTable?.columns?.some(
     c =>
@@ -106,7 +106,7 @@ export const getColumnStatus = (
 export const getIndexStatus = (
   index: DatabaseIndex,
   originalTable?: DatabaseTable
-) => {
+): DatabaseTableItemStatus | undefined => {
   if (index.status && index.status !== 'updated') return index.status;
   const hasIndex = originalTable?.indexes?.some(
     idx =>
