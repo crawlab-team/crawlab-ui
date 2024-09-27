@@ -144,3 +144,92 @@ export const isDefaultIndexName = (
 export const canColumnAutoIncrement = (column: DatabaseColumn) => {
   return column.primary && column.type?.match(/int/i);
 };
+
+export const normalizeDataType = (value: any, type: string) => {
+  if (!type) return value;
+
+  const lowerType = type.toLowerCase();
+
+  // Helper function for fuzzy matching
+  const fuzzyMatch = (pattern: string) =>
+    new RegExp(pattern, 'i').test(lowerType);
+
+  // Integer types
+  if (fuzzyMatch('int|integer|smallint|bigint|tinyint|mediumint')) {
+    return Number.isInteger(Number(value))
+      ? Number(value)
+      : Math.floor(Number(value));
+  }
+
+  // Floating point types
+  if (fuzzyMatch('float|real|double|numeric|decimal')) {
+    return isNaN(parseFloat(value)) ? null : parseFloat(value);
+  }
+
+  // Boolean type
+  if (fuzzyMatch('bool|bit')) {
+    if (typeof value === 'boolean') return value;
+    if (typeof value === 'string')
+      return value.toLowerCase() === 'true' || value === '1';
+    return Boolean(value);
+  }
+
+  // String types
+  if (fuzzyMatch('char|text|string')) {
+    return value !== null && value !== undefined ? String(value) : null;
+  }
+
+  // Date type
+  if (/^date$/.test(lowerType)) {
+    return value ? new Date(value).toISOString().split('T')[0] : null;
+  }
+
+  // Time type
+  if (/^time$/.test(lowerType)) {
+    return value
+      ? new Date(`1970-01-01T${value}`)
+          .toISOString()
+          .split('T')[1]
+          .split('.')[0]
+      : null;
+  }
+
+  // Timestamp/DateTime types
+  if (/^(timestamp|datetime|timestamptz)$/.test(lowerType)) {
+    return value ? new Date(value).toISOString() : null;
+  }
+
+  // JSON types
+  if (/^(json|jsonb)$/.test(lowerType)) {
+    if (typeof value === 'object') return value;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+
+  // Array type
+  if (/^array$/.test(lowerType) || lowerType.endsWith('[]')) {
+    return Array.isArray(value) ? value : [value];
+  }
+
+  // UUID type
+  if (/^(uuid|uniqueidentifier)$/.test(lowerType)) {
+    return value !== null && value !== undefined ? String(value) : null;
+  }
+
+  // Binary data type
+  if (/^(bytea|blob|binary|varbinary|image)$/.test(lowerType)) {
+    // For binary data, we might need to handle this differently depending on the frontend requirements
+    return value;
+  }
+
+  // MongoDB-specific types
+  if (/^(objectid|long|decimal128)$/.test(lowerType)) {
+    return value; // These types are typically handled by MongoDB drivers
+  }
+
+  // Default case
+  return value;
+};

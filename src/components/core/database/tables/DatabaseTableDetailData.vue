@@ -5,6 +5,7 @@ import type { TableColumnCtx } from 'element-plus/es/components/table/src/table/
 import useRequest from '@/services/request';
 import { ClEditTable, ClTableEditCell } from '@/components';
 import { getMd5, plainClone, translate } from '@/utils';
+import { normalizeDataType } from '@/utils/database';
 
 const props = defineProps<{
   loading?: boolean;
@@ -196,25 +197,28 @@ const onDeleteDataRows = () => {
 
 const rollback = () => {
   tableData.value = plainClone(originalTableData.value);
+  tablePagination.value = { page: 1, size: 10 };
+  tableRef.value?.clearSelection?.();
 };
 
 const commit = async () => {
   await post(`/databases/${props.activeId}/tables/data`, {
-    database: props.databaseName,
-    table: props.activeTable?.name,
+    database_name: props.databaseName,
+    table_name: props.activeTable?.name,
     rows: tableData.value
-      .filter(row => !!row.__status__)
+      .filter(row => getDataRowStatus(row))
       .map(row => {
-        const d: any = {
-          status: row.__status__,
-        };
-        switch (row.__status__) {
+        switch (getDataRowStatus(row)) {
           case 'new':
+            const d: any = {};
             props.activeTable?.columns?.forEach(column => {
               const colName = column.name as string;
-              d[colName] = row[colName];
+              d[colName] = normalizeDataType(
+                row[colName],
+                column.type as string
+              );
             });
-            return { row: d };
+            return { row: d, status: 'new' };
           case 'updated':
             const updateFilter: any = {};
             const update: any = {};
@@ -224,7 +228,10 @@ const commit = async () => {
                 originalTableDataMap.value[getRowHash(row)]?.[colName];
               const currentValue = row[colName];
               if (currentValue !== originalValue) {
-                update[colName] = currentValue;
+                update[colName] = normalizeDataType(
+                  currentValue,
+                  column.type as string
+                );
               }
             });
             if (primaryColumnName.value) {
@@ -235,7 +242,7 @@ const commit = async () => {
             } else {
               throw new Error('Primary column not found');
             }
-            return { filter: updateFilter, update };
+            return { filter: updateFilter, update, status: 'updated' };
           case 'deleted':
             const deleteFilter: any = {};
             if (primaryColumnName.value) {
@@ -246,10 +253,11 @@ const commit = async () => {
             } else {
               throw new Error('Primary column not found');
             }
-            return { filter: deleteFilter };
+            return { filter: deleteFilter, status: 'deleted' };
         }
       }),
   });
+  await getTableData();
 };
 
 const hasChanges = computed(() => {
