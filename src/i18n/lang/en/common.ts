@@ -150,6 +150,10 @@ const common: LCommon = {
   validate: {
     cannotBeEmpty: 'Cannot be empty',
   },
+  boolean: {
+    true: 'True',
+    false: 'False',
+  },
 };
 
 export default common;

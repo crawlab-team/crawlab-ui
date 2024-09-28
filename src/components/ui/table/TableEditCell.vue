@@ -7,10 +7,11 @@ import {
 } from 'element-plus';
 import { ClIcon } from '@/components';
 import { translate } from '@/utils';
+import dayjs from 'dayjs';
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: string;
+    modelValue?: any;
     isEdit?: boolean;
     required?: boolean;
     autocomplete?: boolean;
@@ -57,7 +58,7 @@ const onEdit = () => {
 const focusInput = () => {
   if (!props.isEdit) return;
   if (!props.autoFocus) return;
-  inputRef.value?.focus();
+  inputRef.value?.focus?.();
 };
 onMounted(focusInput);
 watch(() => props.isEdit, focusInput);
@@ -98,6 +99,27 @@ const CellActions = () => (
   </div>
 );
 
+const labelValue = computed<string>(() => {
+  const { modelValue, dataType } = props;
+  if (modelValue === null || modelValue === undefined) return '';
+  switch (dataType) {
+    case 'number':
+      return modelValue;
+    case 'boolean':
+      return modelValue ? t('common.boolean.true') : t('common.boolean.false');
+    case 'string':
+      return modelValue;
+    case 'datetime':
+      return dayjs(modelValue).format('YYYY-MM-DD HH:mm:ss');
+    case 'date':
+      return dayjs(modelValue).format('YYYY-MM-DD');
+    case 'object':
+      return JSON.stringify(props.modelValue);
+    default:
+      return modelValue;
+  }
+});
+
 defineOptions({ name: 'ClTableEditCell' });
 </script>
 
@@ -119,7 +141,7 @@ defineOptions({ name: 'ClTableEditCell' });
             <slot name="default" />
           </template>
           <template v-else>
-            {{ modelValue }}
+            {{ labelValue }}
           </template>
         </template>
         <template v-else>
@@ -139,11 +161,7 @@ defineOptions({ name: 'ClTableEditCell' });
         :autofocus="autoFocus"
         @keyup.enter="onCheck"
         @select="onSelect"
-      >
-        <template #suffix>
-          <cell-actions />
-        </template>
-      </el-autocomplete>
+      />
       <el-select
         v-else-if="select"
         ref="inputRef"
@@ -169,10 +187,23 @@ defineOptions({ name: 'ClTableEditCell' });
           v-model="internalValue"
           class="edit-input"
           size="default"
+          type="date"
+          value-format="YYYY-MM-DD"
+          @keyup.enter="onCheck"
+          @change="onCheck"
+          @blur="onCancel"
+        />
+        <el-date-picker
+          v-else-if="dataType === 'datetime'"
+          ref="inputRef"
+          v-model="internalValue"
+          class="edit-input"
+          size="default"
           type="datetime"
           value-format="YYYY-MM-DD hh:mm:ss"
           @keyup.enter="onCheck"
           @change="onCheck"
+          @blur="onCancel"
         />
         <el-input
           v-else-if="dataType === 'number'"
@@ -183,6 +214,13 @@ defineOptions({ name: 'ClTableEditCell' });
           :autofocus="autoFocus"
           type="number"
           @keyup.enter="onCheck"
+        />
+        <el-checkbox
+          v-else-if="dataType === 'boolean'"
+          ref="inputRef"
+          v-model="internalValue"
+          class="edit-input"
+          size="default"
         />
         <el-input
           v-else
@@ -197,7 +235,9 @@ defineOptions({ name: 'ClTableEditCell' });
     </template>
     <div class="cell-actions">
       <cl-icon v-if="!isEdit" :icon="['fa', 'edit']" @click.stop="onEdit" />
-      <cell-actions v-else />
+      <cell-actions
+        v-else-if="dataType && !['date', 'datetime'].includes(dataType)"
+      />
     </div>
   </div>
 </template>

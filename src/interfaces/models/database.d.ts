@@ -115,6 +115,7 @@ export declare global {
     | 'number'
     | 'boolean'
     | 'date'
+    | 'datetime'
     | 'object'
     | 'array'
     | 'null';

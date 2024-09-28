@@ -168,6 +168,11 @@ export const getDataType = (type: string): DatabaseDataType => {
     return 'string';
   }
 
+  // Timestamp/DateTime types
+  if (/^(timestamp|datetime|timestamptz)$/.test(lowerType)) {
+    return 'datetime';
+  }
+
   // Date type
   if (/^date$/.test(lowerType)) {
     return 'date';
@@ -176,11 +181,6 @@ export const getDataType = (type: string): DatabaseDataType => {
   // Time type
   if (/^time$/.test(lowerType)) {
     return 'string'; // Time represented as string
-  }
-
-  // Timestamp/DateTime types
-  if (/^(timestamp|datetime|timestamptz)$/.test(lowerType)) {
-    return 'date';
   }
 
   // JSON types
@@ -213,7 +213,7 @@ export const getDataType = (type: string): DatabaseDataType => {
 };
 
 export const normalizeDataType = (value: any, type: string) => {
-  const dataType = getDataType(value, type);
+  const dataType = getDataType(type);
   if (dataType === 'null') return value;
 
   switch (dataType) {

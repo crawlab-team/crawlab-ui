@@ -163,5 +163,9 @@ export declare global {
     validate: {
       cannotBeEmpty: string;
     };
+    boolean: {
+      true: string;
+      false: string;
+    };
   }
 }

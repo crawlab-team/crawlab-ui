@@ -237,15 +237,27 @@ const commit = async () => {
       .map(row => {
         switch (getDataRowStatus(row)) {
           case 'new':
+            // create new row
             const d: any = {};
+
+            // iterate through columns
             props.activeTable?.columns?.forEach(column => {
+              // get column name
               const colName = column.name as string;
+
+              // skip undefined or null values
+              if (row[colName] === undefined || row[colName] === null) return;
+
+              // normalize data type
               d[colName] = normalizeDataType(
                 row[colName],
                 column.type as string
               );
             });
+
+            // return new row
             return { row: d, status: 'new' };
+
           case 'updated':
             const updateFilter: any = {};
             const update: any = {};
