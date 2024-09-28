@@ -5,7 +5,7 @@ import type { TableColumnCtx } from 'element-plus/es/components/table/src/table/
 import useRequest from '@/services/request';
 import { ClEditTable, ClTableEditCell } from '@/components';
 import { getMd5, plainClone, translate } from '@/utils';
-import { normalizeDataType } from '@/utils/database';
+import { getDataType, normalizeDataType } from '@/utils/database';
 
 const props = defineProps<{
   loading?: boolean;
@@ -34,6 +34,24 @@ const getRowHash = (row: DatabaseTableRow) => {
   return getMd5(JSON.stringify(row));
 };
 
+const getHeaderIcon = (column: DatabaseColumn) => {
+  const dataType = getDataType(column.type);
+  switch (dataType) {
+    case 'string':
+      return ['fa', 'font'];
+    case 'number':
+      return ['fa', 'hashtag'];
+    case 'boolean':
+      return ['fa', 'check'];
+    case 'date':
+      return ['fa', 'calendar-alt'];
+    case 'object':
+      return ['fa', 'object-group'];
+    default:
+      return ['fa', 'font'];
+  }
+};
+
 const tableColumns = computed<TableColumns>(() => {
   const { columns } = props.activeTable || {};
   if (!columns) return [];
@@ -46,6 +64,7 @@ const tableColumns = computed<TableColumns>(() => {
         <ClTableEditCell
           modelValue={row[c.name as string]}
           isEdit={row.__edit__?.[c.name as string]}
+          dataType={getDataType(c.type)}
           onChange={(val: any) => {
             const colName = c.name as string;
             row[colName] = val;
@@ -59,6 +78,14 @@ const tableColumns = computed<TableColumns>(() => {
             row.__edit__[colName] = val;
           }}
         />
+      ),
+      header: () => (
+        <div>
+          <span style={{ marginRight: '5px' }}>
+            <ClIcon size="small" icon={getHeaderIcon(c)} />
+          </span>
+          <span>{c.name}</span>
+        </div>
       ),
     } as TableColumn;
   });

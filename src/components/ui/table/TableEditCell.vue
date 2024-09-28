@@ -20,6 +20,7 @@ const props = withDefaults(
     triggerOnFocus?: boolean;
     autoFocus?: boolean;
     automaticDropdown?: boolean;
+    dataType?: DatabaseDataType;
   }>(),
   {
     triggerOnFocus: true,
@@ -161,22 +162,42 @@ defineOptions({ name: 'ClTableEditCell' });
           :label="op.label"
         />
       </el-select>
-      <el-input
-        v-else
-        ref="inputRef"
-        v-model="internalValue"
-        class="edit-input"
-        size="default"
-        :autofocus="autoFocus"
-        @keyup.enter="onCheck"
-      >
-        <template #suffix>
-          <cell-actions />
-        </template>
-      </el-input>
+      <template v-else>
+        <el-date-picker
+          v-if="dataType === 'date'"
+          ref="inputRef"
+          v-model="internalValue"
+          class="edit-input"
+          size="default"
+          type="datetime"
+          value-format="YYYY-MM-DD hh:mm:ss"
+          @keyup.enter="onCheck"
+          @change="onCheck"
+        />
+        <el-input
+          v-else-if="dataType === 'number'"
+          ref="inputRef"
+          v-model="internalValue"
+          class="edit-input"
+          size="default"
+          :autofocus="autoFocus"
+          type="number"
+          @keyup.enter="onCheck"
+        />
+        <el-input
+          v-else
+          ref="inputRef"
+          v-model="internalValue"
+          class="edit-input"
+          size="default"
+          :autofocus="autoFocus"
+          @keyup.enter="onCheck"
+        />
+      </template>
     </template>
     <div class="cell-actions">
       <cl-icon v-if="!isEdit" :icon="['fa', 'edit']" @click.stop="onEdit" />
+      <cell-actions v-else />
     </div>
   </div>
 </template>

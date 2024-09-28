@@ -145,91 +145,95 @@ export const canColumnAutoIncrement = (column: DatabaseColumn) => {
   return column.primary && column.type?.match(/int/i);
 };
 
-export const normalizeDataType = (value: any, type: string) => {
-  if (!type) return value;
-
+export const getDataType = (type: string): DatabaseDataType => {
   const lowerType = type.toLowerCase();
 
-  // Helper function for fuzzy matching
-  const fuzzyMatch = (pattern: string) =>
-    new RegExp(pattern, 'i').test(lowerType);
-
   // Integer types
-  if (fuzzyMatch('int|integer|smallint|bigint|tinyint|mediumint')) {
-    return Number.isInteger(Number(value))
-      ? Number(value)
-      : Math.floor(Number(value));
+  if (/^int|integer|smallint|bigint|tinyint|mediumint$/.test(lowerType)) {
+    return 'number';
   }
 
   // Floating point types
-  if (fuzzyMatch('float|real|double|numeric|decimal')) {
-    return isNaN(parseFloat(value)) ? null : parseFloat(value);
+  if (/^float|real|double|numeric|decimal/.test(lowerType)) {
+    return 'number';
   }
 
   // Boolean type
-  if (fuzzyMatch('bool|bit')) {
-    if (typeof value === 'boolean') return value;
-    if (typeof value === 'string')
-      return value.toLowerCase() === 'true' || value === '1';
-    return Boolean(value);
+  if (/^bool|bit$/.test(lowerType)) {
+    return 'boolean';
   }
 
   // String types
-  if (fuzzyMatch('char|text|string')) {
-    return value !== null && value !== undefined ? String(value) : null;
+  if (/^char|text|string$/.test(lowerType)) {
+    return 'string';
   }
 
   // Date type
   if (/^date$/.test(lowerType)) {
-    return value ? new Date(value).toISOString().split('T')[0] : null;
+    return 'date';
   }
 
   // Time type
   if (/^time$/.test(lowerType)) {
-    return value
-      ? new Date(`1970-01-01T${value}`)
-          .toISOString()
-          .split('T')[1]
-          .split('.')[0]
-      : null;
+    return 'string'; // Time represented as string
   }
 
   // Timestamp/DateTime types
   if (/^(timestamp|datetime|timestamptz)$/.test(lowerType)) {
-    return value ? new Date(value).toISOString() : null;
+    return 'date';
   }
 
   // JSON types
   if (/^(json|jsonb)$/.test(lowerType)) {
-    if (typeof value === 'object') return value;
-    try {
-      return JSON.parse(value);
-    } catch {
-      return null;
-    }
+    return 'object';
   }
 
   // Array type
   if (/^array$/.test(lowerType) || lowerType.endsWith('[]')) {
-    return Array.isArray(value) ? value : [value];
+    return 'array';
   }
 
   // UUID type
   if (/^(uuid|uniqueidentifier)$/.test(lowerType)) {
-    return value !== null && value !== undefined ? String(value) : null;
+    return 'string';
   }
 
   // Binary data type
   if (/^(bytea|blob|binary|varbinary|image)$/.test(lowerType)) {
-    // For binary data, we might need to handle this differently depending on the frontend requirements
-    return value;
+    return 'object'; // Assuming binary data is treated as an object
   }
 
   // MongoDB-specific types
   if (/^(objectid|long|decimal128)$/.test(lowerType)) {
-    return value; // These types are typically handled by MongoDB drivers
+    return 'object'; // Handled by MongoDB drivers
   }
 
   // Default case
-  return value;
+  return 'null';
+};
+
+export const normalizeDataType = (value: any, type: string) => {
+  const dataType = getDataType(value, type);
+  if (dataType === 'null') return value;
+
+  switch (dataType) {
+    case 'number':
+      return Number(value);
+    case 'boolean':
+      if (typeof value === 'boolean') return value;
+      if (typeof value === 'string') {
+        return value.toLowerCase() === 'true' || value === '1';
+      }
+      return Boolean(value); // Fallback for other types
+    case 'string':
+      return String(value);
+    case 'date':
+      return value ? new Date(value) : null; // Convert to Date object
+    case 'array':
+      return Array.isArray(value) ? value : [value];
+    case 'object':
+      return typeof value === 'object' ? value : JSON.parse(value);
+    default:
+      return value; // Default case
+  }
 };

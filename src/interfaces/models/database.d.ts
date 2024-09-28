@@ -109,4 +109,13 @@ export declare global {
       [key: string]: boolean;
     };
   }
+
+  type DatabaseDataType =
+    | 'string'
+    | 'number'
+    | 'boolean'
+    | 'date'
+    | 'object'
+    | 'array'
+    | 'null';
 }

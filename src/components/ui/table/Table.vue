@@ -189,7 +189,9 @@ defineOptions({ name: 'ClTable' });
         "
       >
         <template #header="scope">
+          <component v-if="c.header" :is="c.header" />
           <cl-table-header
+            v-else
             :column="c"
             :index="scope.$index"
             @change="onHeaderChange"
