@@ -66,8 +66,12 @@ const getTable = async () => {
 onBeforeMount(getTable);
 watch(table, getTable);
 
-const onRollback = () => {
+const resetTable = () => {
   internalTable.value = plainClone(activeTable.value);
+};
+
+const onRollback = () => {
+  resetTable();
   dataRef.value?.rollback?.();
 };
 watch(activeTable, onRollback);
@@ -154,6 +158,19 @@ const tabsItems = computed<NavItem[]>(() =>
 );
 watch(defaultTabName, () => {
   activeTabName.value = defaultTabName.value || TAB_NAME_OVERVIEW;
+});
+watch(activeTabName, () => {
+  switch (activeTabName.value) {
+    case 'data':
+      resetTable();
+      break;
+    case 'columns':
+    case 'indexes':
+      if (!isNew.value) {
+        resetTable();
+      }
+      break;
+  }
 });
 
 const form = ref<DatabaseTable>(internalTable.value || {});
