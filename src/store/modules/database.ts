@@ -7,6 +7,7 @@ import {
 } from '@/utils';
 import {
   TAB_NAME_CONSOLE,
+  TAB_NAME_DATA,
   TAB_NAME_DATABASES,
   TAB_NAME_OVERVIEW,
 } from '@/constants';
@@ -35,7 +36,7 @@ const state = {
   activeTable: undefined,
   activeDatabaseName: '',
   activeNavItem: undefined,
-  defaultTabName: TAB_NAME_OVERVIEW,
+  defaultTabName: TAB_NAME_DATA,
 } as DatabaseStoreState;
 
 const getters = {

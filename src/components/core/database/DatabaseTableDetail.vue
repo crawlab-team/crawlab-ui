@@ -2,12 +2,7 @@
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
-import {
-  TAB_NAME_COLUMNS,
-  TAB_NAME_DATA,
-  TAB_NAME_INDEXES,
-  TAB_NAME_OVERVIEW,
-} from '@/constants';
+import { TAB_NAME_COLUMNS, TAB_NAME_DATA, TAB_NAME_INDEXES } from '@/constants';
 import { plainClone, translate } from '@/utils';
 import useRequest from '@/services/request';
 import {
@@ -78,20 +73,25 @@ watch(activeTable, onRollback);
 
 const commitLoading = ref(false);
 const onCommit = async () => {
-  const tasks: Promise<void>[] = [];
-  if (hasDataChange.value) {
-    tasks.push(dataRef.value?.commit?.());
-  }
-  if (hasColumnsChange.value || hasIndexesChange.value) {
-    if (isNew.value) {
-      tasks.push(createTable());
-    } else {
-      tasks.push(modifyTable());
-    }
-  }
   commitLoading.value = true;
   try {
-    return await Promise.all(tasks);
+    switch (activeTabName.value) {
+      case TAB_NAME_DATA:
+        await dataRef.value?.commit?.();
+        break;
+      case TAB_NAME_COLUMNS:
+      case TAB_NAME_INDEXES:
+        if (isNew.value) {
+          await createTable();
+        } else {
+          await modifyTable();
+        }
+        break;
+    }
+    ElMessage.success(t('common.message.success.action'));
+  } catch (error: any) {
+    ElMessage.error(error.message);
+    throw error;
   } finally {
     commitLoading.value = false;
   }
@@ -143,7 +143,7 @@ const modifyTable = async () => {
   }
 };
 
-const activeTabName = ref<string>(defaultTabName.value || TAB_NAME_OVERVIEW);
+const activeTabName = ref<string>(defaultTabName.value || TAB_NAME_DATA);
 const tabsItems = computed<NavItem[]>(() =>
   [
     { id: TAB_NAME_DATA, title: t('common.tabs.data') },
@@ -157,15 +157,15 @@ const tabsItems = computed<NavItem[]>(() =>
   })
 );
 watch(defaultTabName, () => {
-  activeTabName.value = defaultTabName.value || TAB_NAME_OVERVIEW;
+  activeTabName.value = defaultTabName.value || TAB_NAME_DATA;
 });
 watch(activeTabName, () => {
   switch (activeTabName.value) {
-    case 'data':
+    case TAB_NAME_DATA:
       resetTable();
       break;
-    case 'columns':
-    case 'indexes':
+    case TAB_NAME_COLUMNS:
+    case TAB_NAME_INDEXES:
       if (!isNew.value) {
         resetTable();
       }
