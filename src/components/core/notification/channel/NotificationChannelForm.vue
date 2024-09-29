@@ -32,11 +32,6 @@ const onTypeChange = () => {
   store.commit(`${ns}/setForm`, {
     ...form.value,
     provider: 'custom',
-    smtp_server: '',
-    smtp_port: '',
-    smtp_username: '',
-    smtp_password: '',
-    webhook_url: '',
   });
 };
 
@@ -44,11 +39,6 @@ const onProviderChange = (val: string) => {
   if (val === 'custom') {
     store.commit(`${ns}/setForm`, {
       ...form.value,
-      smtp_server: '',
-      smtp_port: '',
-      smtp_username: '',
-      smtp_password: '',
-      webhook_url: '',
     });
     return;
   }
