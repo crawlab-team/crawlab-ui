@@ -1,19 +1,12 @@
 import {
-  TAB_NAME_COLUMNS,
   TAB_NAME_CONSOLE,
-  TAB_NAME_DATA,
   TAB_NAME_DATABASES,
-  TAB_NAME_INDEXES,
   TAB_NAME_OVERVIEW,
-  TAB_NAME_TABLE,
 } from '@/constants';
 import {
   ClDatabaseDetail,
   ClDatabaseDetailTabConsole,
   ClDatabaseDetailTabDatabases,
-  ClDatabaseDetailTabDatabasesSubTabColumns,
-  ClDatabaseDetailTabDatabasesSubTabData,
-  ClDatabaseDetailTabDatabasesSubTabIndexes,
   ClDatabaseDetailTabOverview,
   ClDatabaseList,
 } from '@/views';

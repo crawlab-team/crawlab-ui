@@ -66,6 +66,9 @@ const database: LComponentsDatabase = {
     success: {
       change: 'Changed data source successfully',
     },
+    warning: {
+      emptyQuery: 'Query is empty. Please select a query to run',
+    },
   },
   messageBox: {
     confirm: {
@@ -147,6 +150,7 @@ const database: LComponentsDatabase = {
   actions: {
     commitChanges: 'Commit Changes',
     rollbackChanges: 'Rollback Changes',
+    runQuery: 'Run Query',
   },
 };
 

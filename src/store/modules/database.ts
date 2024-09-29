@@ -4,13 +4,19 @@ import {
   getDefaultStoreGetters,
   getDefaultStoreMutations,
   getDefaultStoreState,
+  translate,
 } from '@/utils';
 import {
   TAB_NAME_CONSOLE,
-  TAB_NAME_DATA,
   TAB_NAME_DATABASES,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_DATA,
+  TAB_NAME_RESULTS,
+  TAB_NAME_OUTPUT,
 } from '@/constants';
+import { ElMessage } from 'element-plus';
+
+const t = translate;
 
 const { get, getList, post } = useRequest();
 
@@ -37,6 +43,11 @@ const state = {
   activeDatabaseName: '',
   activeNavItem: undefined,
   defaultTabName: TAB_NAME_DATA,
+  consoleContent: '',
+  consoleSelectedContent: undefined,
+  consoleQueryLoading: false,
+  consoleQueryResults: undefined,
+  consoleQueryResultsActiveTabName: undefined,
 } as DatabaseStoreState;
 
 const getters = {
@@ -77,6 +88,27 @@ const mutations = {
   },
   setDefaultTabName(state: DatabaseStoreState, tabName: string) {
     state.defaultTabName = tabName;
+  },
+  setConsoleContent(state: DatabaseStoreState, content: string) {
+    state.consoleContent = content;
+  },
+  setConsoleSelectedContent(state: DatabaseStoreState, content?: string) {
+    state.consoleSelectedContent = content;
+  },
+  setConsoleQueryLoading(state: DatabaseStoreState, loading: boolean) {
+    state.consoleQueryLoading = loading;
+  },
+  setConsoleQueryResults(
+    state: DatabaseStoreState,
+    results?: DatabaseQueryResults
+  ) {
+    state.consoleQueryResults = results;
+  },
+  setConsoleQueryResultsActiveTabName(
+    state: DatabaseStoreState,
+    tabName?: string
+  ) {
+    state.consoleQueryResultsActiveTabName = tabName;
   },
 } as DatabaseStoreMutations;
 
@@ -120,6 +152,39 @@ const actions = {
     });
     ctx.commit('setActiveTable', res.data);
     return res;
+  },
+  runQuery: async (
+    ctx: StoreActionContext<DatabaseStoreState>,
+    { id, database, query }: { id: string; database?: string; query?: string }
+  ) => {
+    if (!query) {
+      query = ctx.state.consoleSelectedContent;
+    }
+    if (!query) {
+      ElMessage.warning(t('components.database.message.warning.emptyQuery'));
+      return;
+    }
+    ctx.commit('setConsoleQueryLoading', true);
+    try {
+      const res = await post<any, ResponseWithData<DatabaseQueryResults>>(
+        `/databases/${id}/query`,
+        {
+          database,
+          query,
+        }
+      );
+      ctx.commit('setConsoleQueryResults', res.data);
+      if (res.data?.columns?.length && res.data?.rows?.length) {
+        ctx.commit('setConsoleQueryResultsActiveTabName', TAB_NAME_RESULTS);
+      } else {
+        ctx.commit('setConsoleQueryResultsActiveTabName', TAB_NAME_OUTPUT);
+      }
+      return res;
+    } catch (e: any) {
+      ElMessage.error(e.message);
+    } finally {
+      ctx.commit('setConsoleQueryLoading', false);
+    }
   },
 } as DatabaseStoreActions;
 

@@ -15,6 +15,11 @@ export declare global {
     activeDatabaseName?: string;
     activeNavItem?: DatabaseNavItem;
     defaultTabName?: string;
+    consoleContent: string;
+    consoleSelectedContent?: string;
+    consoleQueryLoading?: boolean;
+    consoleQueryResults?: DatabaseQueryResults;
+    consoleQueryResultsActiveTabName?: string;
   }
 
   type DatabaseStoreGetters = BaseStoreGetters<DatabaseStoreState>;
@@ -35,6 +40,20 @@ export declare global {
     setActiveDatabaseName: StoreMutation<DatabaseStoreState, string>;
     setActiveNavItem: StoreMutation<DatabaseStoreState, DatabaseNavItem>;
     setDefaultTabName: StoreMutation<DatabaseStoreState, string>;
+    setConsoleContent: StoreMutation<DatabaseStoreState, string>;
+    setConsoleSelectedContent: StoreMutation<
+      DatabaseStoreState,
+      string | undefined
+    >;
+    setConsoleQueryLoading: StoreMutation<DatabaseStoreState, boolean>;
+    setConsoleQueryResults: StoreMutation<
+      DatabaseStoreState,
+      DatabaseQueryResults
+    >;
+    setConsoleQueryResultsActiveTabName: StoreMutation<
+      DatabaseStoreState,
+      string | undefined
+    >;
   }
 
   interface DatabaseStoreActions extends BaseStoreActions<Database> {
@@ -50,6 +69,10 @@ export declare global {
     getTable: StoreAction<
       DatabaseStoreState,
       { id: string; database: string; table: string }
+    >;
+    runQuery: StoreAction<
+      DatabaseStoreState,
+      { id: string; database: string; query: string }
     >;
   }
 }

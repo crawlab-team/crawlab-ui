@@ -66,6 +66,9 @@ const database: LComponentsDatabase = {
     success: {
       change: '更改数据库成功',
     },
+    warning: {
+      emptyQuery: '查询为空, 请选择执行查询语句',
+    },
   },
   messageBox: {
     confirm: {
@@ -145,6 +148,7 @@ const database: LComponentsDatabase = {
   actions: {
     commitChanges: '提交更改',
     rollbackChanges: '回滚更改',
+    runQuery: '运行查询',
   },
 };
 

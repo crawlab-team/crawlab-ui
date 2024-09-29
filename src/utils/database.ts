@@ -237,3 +237,31 @@ export const normalizeDataType = (value: any, type: string) => {
       return value; // Default case
   }
 };
+
+export const SQL_KEYWORDS = [
+  'SELECT',
+  'FROM',
+  'WHERE',
+  'JOIN',
+  'INNER JOIN',
+  'LEFT JOIN',
+  'RIGHT JOIN',
+  'ORDER BY',
+  'GROUP BY',
+  'HAVING',
+  'INSERT INTO',
+  'VALUES',
+  'UPDATE',
+  'DELETE',
+  'CREATE TABLE',
+  'DROP TABLE',
+  'ALTER TABLE',
+  'ADD COLUMN',
+  'DISTINCT',
+  'LIMIT',
+  'COUNT',
+  'SUM',
+  'MAX',
+  'MIN',
+  'AVG',
+];

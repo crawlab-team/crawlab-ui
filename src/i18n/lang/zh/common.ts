@@ -118,6 +118,8 @@ const common: LCommon = {
     console: '控制台',
     columns: '列',
     indexes: '索引',
+    results: '结果',
+    output: '输出',
   },
   status: {
     unassigned: '未指定',

@@ -118,6 +118,8 @@ const common: LCommon = {
     console: 'Console',
     columns: 'Columns',
     indexes: 'Indexes',
+    results: 'Results',
+    output: 'Output',
   },
   status: {
     unassigned: 'Unassigned',

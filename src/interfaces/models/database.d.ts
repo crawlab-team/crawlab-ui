@@ -119,4 +119,11 @@ export declare global {
     | 'object'
     | 'array'
     | 'null';
+
+  interface DatabaseQueryResults {
+    columns?: DatabaseColumn[];
+    rows?: DatabaseTableRow[];
+    output?: string;
+    error?: string;
+  }
 }

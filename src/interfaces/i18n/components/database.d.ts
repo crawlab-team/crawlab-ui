@@ -67,6 +67,9 @@ export declare global {
       success: {
         change: string;
       };
+      warning: {
+        emptyQuery: string;
+      };
     };
     messageBox: {
       confirm: {
@@ -146,6 +149,7 @@ export declare global {
     actions: {
       commitChanges: string;
       rollbackChanges: string;
+      runQuery: string;
     };
   }
 }

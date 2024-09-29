@@ -15,7 +15,9 @@ import {
   TAB_NAME_LOGS,
   TAB_NAME_MAIL,
   TAB_NAME_MONITORING,
+  TAB_NAME_OUTPUT,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_RESULTS,
   TAB_NAME_SCHEDULES,
   TAB_NAME_SETTINGS,
   TAB_NAME_SPIDERS,
@@ -178,6 +180,10 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'columns'];
     case TAB_NAME_INDEXES:
       return ['fa', 'list-ol'];
+    case TAB_NAME_RESULTS:
+      return ['fa', 'table'];
+    case TAB_NAME_OUTPUT:
+      return ['fa', 'file-alt'];
     default:
       return ['fa', 'circle'];
   }

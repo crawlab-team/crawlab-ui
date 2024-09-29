@@ -131,6 +131,8 @@ export declare global {
       console: string;
       columns: string;
       indexes: string;
+      results: string;
+      output: string;
     };
     status: {
       unassigned: string;

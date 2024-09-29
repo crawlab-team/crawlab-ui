@@ -3,7 +3,7 @@ import { computed, type CSSProperties, onBeforeMount, ref, watch } from 'vue';
 import type { CellCls, CellStyle, ColumnStyle } from 'element-plus';
 import type { TableColumnCtx } from 'element-plus/es/components/table/src/table/defaults';
 import useRequest from '@/services/request';
-import { ClEditTable, ClTableEditCell } from '@/components';
+import { ClIcon, ClEditTable, ClTableEditCell } from '@/components';
 import { getMd5, plainClone, translate } from '@/utils';
 import { getDataType, normalizeDataType } from '@/utils/database';
 
@@ -35,7 +35,7 @@ const getRowHash = (row: DatabaseTableRow) => {
 };
 
 const getHeaderIcon = (column: DatabaseColumn) => {
-  const dataType = getDataType(column.type);
+  const dataType = getDataType(column.type as string);
   switch (dataType) {
     case 'string':
       return ['fa', 'font'];
@@ -44,6 +44,7 @@ const getHeaderIcon = (column: DatabaseColumn) => {
     case 'boolean':
       return ['fa', 'check'];
     case 'date':
+    case 'datetime':
       return ['fa', 'calendar-alt'];
     case 'object':
       return ['fa', 'object-group'];
@@ -64,7 +65,7 @@ const tableColumns = computed<TableColumns>(() => {
         <ClTableEditCell
           modelValue={row[c.name as string]}
           isEdit={row.__edit__?.[c.name as string]}
-          dataType={getDataType(c.type)}
+          dataType={getDataType(c.type as string)}
           onChange={(val: any) => {
             const colName = c.name as string;
             row[colName] = val;

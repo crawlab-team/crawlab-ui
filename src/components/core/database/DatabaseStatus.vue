@@ -53,29 +53,25 @@ defineOptions({ name: 'ClDatabaseStatus' });
 </script>
 
 <template>
-  <cl-tag
-    :key="data"
-    :icon="data.icon"
-    :label="data.label"
-    :size="size"
-    :spinning="data.spinning"
-    :type="data.type"
-    @click="emit('click')"
-  >
-    <template #tooltip>
-      <div v-html="data.tooltip" />
-    </template>
-  </cl-tag>
+  <div class="database-status">
+    <cl-tag
+      :key="data"
+      :icon="data.icon"
+      :label="data.label"
+      :size="size"
+      :spinning="data.spinning"
+      :type="data.type"
+      @click="emit('click')"
+    >
+      <template #tooltip>
+        <div v-html="data.tooltip" />
+      </template>
+    </cl-tag>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-.task-status {
-  width: 80px;
-  cursor: default;
-
-  .icon {
-    width: 10px;
-    margin-right: 5px;
-  }
+<style scoped>
+.database-status {
+  margin-right: 10px;
 }
 </style>
