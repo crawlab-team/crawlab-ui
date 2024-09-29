@@ -174,7 +174,7 @@ const actions = {
         }
       );
       ctx.commit('setConsoleQueryResults', res.data);
-      if (res.data?.columns?.length && res.data?.rows?.length) {
+      if (res.data?.columns?.length) {
         ctx.commit('setConsoleQueryResultsActiveTabName', TAB_NAME_RESULTS);
       } else {
         ctx.commit('setConsoleQueryResultsActiveTabName', TAB_NAME_OUTPUT);
