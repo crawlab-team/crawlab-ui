@@ -5,9 +5,10 @@ import {
   ElAutocomplete,
   type AutocompleteFetchSuggestions,
 } from 'element-plus';
+import dayjs from 'dayjs';
+import JsonEditorVue from 'json-editor-vue';
 import { ClIcon } from '@/components';
 import { translate } from '@/utils';
-import dayjs from 'dayjs';
 
 const props = withDefaults(
   defineProps<{
@@ -114,10 +115,15 @@ const labelValue = computed<string>(() => {
     case 'date':
       return dayjs(modelValue).format('YYYY-MM-DD');
     case 'object':
+    case 'array':
       return JSON.stringify(props.modelValue);
     default:
       return modelValue;
   }
+});
+
+const isJson = computed(() => {
+  return ['object', 'array'].includes(props.dataType || '');
 });
 
 defineOptions({ name: 'ClTableEditCell' });
@@ -134,8 +140,8 @@ defineOptions({ name: 'ClTableEditCell' });
       ].join(' ')
     "
   >
-    <template v-if="!isEdit">
-      <span class="display-value" @click.stop="onEdit">
+    <template v-if="!isEdit || isJson">
+      <span class="display-value" @click.stop="onEdit" :title="labelValue">
         <template v-if="modelValue">
           <template v-if="$slots.default">
             <slot name="default" />
@@ -203,7 +209,11 @@ defineOptions({ name: 'ClTableEditCell' });
           value-format="YYYY-MM-DD hh:mm:ss"
           @keyup.enter="onCheck"
           @change="onCheck"
-          @blur="onCancel"
+          @visible-change="(visible: boolean) => {
+            if (!visible) {
+              onCheck();
+            }
+          }"
         />
         <el-input
           v-else-if="dataType === 'number'"
@@ -240,6 +250,17 @@ defineOptions({ name: 'ClTableEditCell' });
       />
     </div>
   </div>
+
+  <template v-if="isEdit && dataType && ['object', 'array'].includes(dataType)">
+    <cl-dialog
+      :visible="isEdit"
+      append-to-body
+      @confirm="onCheck"
+      @close="onCancel"
+    >
+      <JsonEditorVue v-model="internalValue" />
+    </cl-dialog>
+  </template>
 </template>
 
 <style scoped>
@@ -251,6 +272,10 @@ defineOptions({ name: 'ClTableEditCell' });
 
   .display-value {
     margin: 0 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 24px);
 
     &:hover {
       cursor: pointer;

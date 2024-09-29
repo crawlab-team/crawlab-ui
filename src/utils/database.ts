@@ -204,8 +204,18 @@ export const getDataType = (type: string): DatabaseDataType => {
   }
 
   // MongoDB-specific types
-  if (/^(objectid|long|decimal128)$/.test(lowerType)) {
-    return 'object'; // Handled by MongoDB drivers
+  if (/^(objectid|long|decimal128|object|isodate)$/.test(lowerType)) {
+    switch (lowerType) {
+      case 'long':
+      case 'decimal128':
+        return 'number';
+      case 'objectid':
+        return 'string';
+      case 'object':
+        return 'object';
+      case 'isodate':
+        return 'datetime';
+    }
   }
 
   // Default case
@@ -228,7 +238,8 @@ export const normalizeDataType = (value: any, type: string) => {
     case 'string':
       return String(value);
     case 'date':
-      return value ? new Date(value) : null; // Convert to Date object
+    case 'datetime':
+      return value;
     case 'array':
       return Array.isArray(value) ? value : [value];
     case 'object':

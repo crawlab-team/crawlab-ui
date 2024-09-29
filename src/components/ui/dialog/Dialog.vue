@@ -14,6 +14,7 @@ withDefaults(
     confirmLoading?: boolean;
     confirmType?: BasicType;
     className?: string;
+    appendToBody?: boolean;
   }>(),
   {
     top: '15vh',
@@ -44,6 +45,7 @@ defineOptions({ name: 'ClDialog' });
     :custom-class="
       ['cl-dialog', className, visible ? 'visible' : 'hidden'].join(' ')
     "
+    :append-to-body="appendToBody"
     :modal-class="modalClass"
     :before-close="onClose"
     :model-value="visible"

@@ -98,49 +98,40 @@ const onCommit = async () => {
 };
 
 const createTable = async () => {
-  try {
-    await post(`/databases/${props.activeId}/tables/create`, {
-      database_name: props.databaseName,
-      table: internalTable.value,
-    });
-    await getTable();
-    store.commit(`${ns}/setActiveNavItem`, {
-      ...state.activeNavItem,
-      id: `${props.databaseName}:${internalTable.value?.name}`,
-      new: false,
-    });
-  } catch (error: any) {
-    ElMessage.error(error.message);
-    throw error;
-  }
+  await post(`/databases/${props.activeId}/tables/create`, {
+    database_name: props.databaseName,
+    table: internalTable.value,
+  });
+  await getTable();
+  store.commit(`${ns}/setActiveNavItem`, {
+    ...state.activeNavItem,
+    id: `${props.databaseName}:${internalTable.value?.name}`,
+    new: false,
+  });
+  emit('refresh');
 };
 
 const modifyTable = async () => {
-  try {
-    await post(`/databases/${props.activeId}/tables/modify`, {
-      database_name: props.databaseName,
-      table: {
-        ...internalTable.value,
-        columns: internalTable.value?.columns?.map(c => {
-          return {
-            ...c,
-            status: getColumnStatus(c, activeTable.value),
-          };
-        }),
-        indexes: internalTable.value?.indexes?.map(i => {
-          return {
-            ...i,
-            status: getIndexStatus(i, activeTable.value),
-          };
-        }),
-      },
-    });
-    await getTable();
-    emit('refresh');
-  } catch (error: any) {
-    ElMessage.error(error.message);
-    throw error;
-  }
+  await post(`/databases/${props.activeId}/tables/modify`, {
+    database_name: props.databaseName,
+    table: {
+      ...internalTable.value,
+      columns: internalTable.value?.columns?.map(c => {
+        return {
+          ...c,
+          status: getColumnStatus(c, activeTable.value),
+        };
+      }),
+      indexes: internalTable.value?.indexes?.map(i => {
+        return {
+          ...i,
+          status: getIndexStatus(i, activeTable.value),
+        };
+      }),
+    },
+  });
+  await getTable();
+  emit('refresh');
 };
 
 const activeTabName = ref<string>(defaultTabName.value || TAB_NAME_DATA);

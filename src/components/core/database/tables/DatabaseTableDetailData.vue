@@ -48,48 +48,51 @@ const getHeaderIcon = (column: DatabaseColumn) => {
       return ['fa', 'calendar-alt'];
     case 'object':
       return ['fa', 'object-group'];
+    case 'array':
+      return ['fa', 'list'];
     default:
       return ['fa', 'font'];
   }
 };
 
-const tableColumns = computed<TableColumns>(() => {
+const tableColumns = computed<TableColumns<DatabaseTableRow>>(() => {
   const { columns } = props.activeTable || {};
   if (!columns) return [];
   return columns.map(c => {
+    const value = (row: DatabaseTableRow) => (
+      <ClTableEditCell
+        modelValue={row[c.name as string]}
+        isEdit={row.__edit__?.[c.name as string]}
+        dataType={getDataType(c.type as string)}
+        onChange={(val: any) => {
+          const colName = c.name as string;
+          row[colName] = val;
+        }}
+        onEdit={(val: boolean) => {
+          const colName = c.name as string;
+          row =
+            tableData.value.find(r => getRowHash(r) === getRowHash(row)) || row;
+          if (!row.__edit__) row.__edit__ = { [colName]: val };
+          row.__edit__[colName] = val;
+        }}
+      />
+    );
+    const header = () => (
+      <div>
+        <span style={{ marginRight: '5px' }}>
+          <ClIcon size="small" icon={getHeaderIcon(c)} />
+        </span>
+        <span>{c.name}</span>
+      </div>
+    );
     return {
       label: c.name,
       key: c.name,
       width: 200,
-      value: (row: DatabaseTableRow) => (
-        <ClTableEditCell
-          modelValue={row[c.name as string]}
-          isEdit={row.__edit__?.[c.name as string]}
-          dataType={getDataType(c.type as string)}
-          onChange={(val: any) => {
-            const colName = c.name as string;
-            row[colName] = val;
-          }}
-          onEdit={(val: boolean) => {
-            const colName = c.name as string;
-            row =
-              tableData.value.find(r => getRowHash(r) === getRowHash(row)) ||
-              row;
-            if (!row.__edit__) row.__edit__ = { [colName]: val };
-            row.__edit__[colName] = val;
-          }}
-        />
-      ),
-      header: () => (
-        <div>
-          <span style={{ marginRight: '5px' }}>
-            <ClIcon size="small" icon={getHeaderIcon(c)} />
-          </span>
-          <span>{c.name}</span>
-        </div>
-      ),
-    } as TableColumn;
-  });
+      value,
+      header,
+    };
+  }) as TableColumns<DatabaseTableRow>;
 });
 const tableData = ref<TableData<DatabaseTableRow>>([]);
 const tablePagination = ref<TablePagination>({

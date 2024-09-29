@@ -62,7 +62,7 @@ export declare global {
     className?: string;
     proOnly?: boolean;
     noPadding?: boolean;
-    header?: JSX.Element | VNode;
+    header?: JSX.Element | (() => JSX.Element) | (() => VNode) | VNode;
   }
 
   type TableColumns<T = any> = TableColumn<T>[];
