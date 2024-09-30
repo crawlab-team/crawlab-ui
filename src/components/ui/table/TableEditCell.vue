@@ -231,6 +231,9 @@ defineOptions({ name: 'ClTableEditCell' });
           v-model="internalValue"
           class="edit-input"
           size="default"
+          :label="
+            internalValue ? t('common.boolean.true') : t('common.boolean.false')
+          "
         />
         <el-input
           v-else
