@@ -444,14 +444,6 @@ const onSearchClick = () => {
   showSearch.value = !showSearch.value;
 };
 
-const onCreateDatabase = () => {
-  createContextMenuListItems[0].action?.();
-};
-
-const onCreateTable = () => {
-  createContextMenuListItems[1].action?.();
-};
-
 const reset = () => {
   store.commit(`${ns}/setActiveNavItem`, undefined);
   activeContextMenuNavItem.value = undefined;
