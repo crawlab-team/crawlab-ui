@@ -118,7 +118,8 @@ export declare global {
     | 'datetime'
     | 'object'
     | 'array'
-    | 'null';
+    | 'null'
+    | 'objectid';
 
   interface DatabaseQueryResults {
     columns?: DatabaseColumn[];

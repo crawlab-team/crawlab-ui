@@ -210,7 +210,7 @@ export const getDataType = (type: string): DatabaseDataType => {
       case 'decimal128':
         return 'number';
       case 'objectid':
-        return 'string';
+        return 'objectid';
       case 'object':
         return 'object';
       case 'isodate':
@@ -244,6 +244,8 @@ export const normalizeDataType = (value: any, type: string) => {
       return Array.isArray(value) ? value : [value];
     case 'object':
       return typeof value === 'object' ? value : JSON.parse(value);
+    case 'objectid':
+      return value;
     default:
       return value; // Default case
   }

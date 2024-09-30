@@ -50,6 +50,8 @@ const getHeaderIcon = (column: DatabaseColumn) => {
       return ['fa', 'object-group'];
     case 'array':
       return ['fa', 'list'];
+    case 'objectid':
+      return ['fa', 'id-card'];
     default:
       return ['fa', 'font'];
   }

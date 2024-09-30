@@ -50,7 +50,17 @@ watch(
 );
 
 const hasError = computed(() => {
-  return props.required && !internalValue.value;
+  const { required, dataType } = props;
+  if (required && !internalValue.value) {
+    return true;
+  }
+  if (
+    dataType === 'objectid' &&
+    !/^([0-9]|[a-f]){24}$/i.test(internalValue.value)
+  ) {
+    return true;
+  }
+  return false;
 });
 
 const onEdit = () => {
@@ -117,6 +127,8 @@ const labelValue = computed<string>(() => {
     case 'object':
     case 'array':
       return JSON.stringify(props.modelValue);
+    case 'objectid':
+      return modelValue;
     default:
       return modelValue;
   }
@@ -234,6 +246,15 @@ defineOptions({ name: 'ClTableEditCell' });
           :label="
             internalValue ? t('common.boolean.true') : t('common.boolean.false')
           "
+        />
+        <el-input
+          v-else-if="dataType === 'objectid'"
+          ref="inputRef"
+          v-model="internalValue"
+          class="edit-input"
+          size="default"
+          :autofocus="autoFocus"
+          @keyup.enter="onCheck"
         />
         <el-input
           v-else
