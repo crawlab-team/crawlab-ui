@@ -16,6 +16,7 @@ import 'element-plus/theme-chalk/index.css';
 import '@/styles/index.scss';
 import { initChartJS } from '@/utils/chart';
 import clickOutsideDirective from '@/directives/click-outside/clickOutside';
+import { initMonaco } from '@/utils/monaco';
 
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
@@ -82,6 +83,8 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
 
   // initialize chart.js
   initChartJS();
+
+  initMonaco();
 
   // load modules
   if (options.loadElementPlus) app.use(ElementPlus as any);

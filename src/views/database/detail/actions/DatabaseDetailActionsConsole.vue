@@ -30,6 +30,7 @@ defineOptions({ name: 'ClDatabaseDetailActionsConsole' });
         :loading="runQueryLoading"
         :disabled="runQueryLoading"
         :icon="runQueryLoading ? ['fa', 'spinner'] : ['fa', 'play']"
+        :spin="runQueryLoading"
         :tooltip="t('components.database.actions.runQuery')"
         type="success"
         @click="onRunQuery"

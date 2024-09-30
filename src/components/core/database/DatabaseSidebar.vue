@@ -15,10 +15,21 @@ import type {
   FilterNodeMethodFunction,
   TreeNodeData,
 } from 'element-plus/es/components/tree/src/tree.type';
-import { TAB_NAME_COLUMNS, TAB_NAME_DATA, TAB_NAME_INDEXES } from '@/constants';
+import {
+  TAB_NAME_COLUMNS,
+  TAB_NAME_CONSOLE,
+  TAB_NAME_DATA,
+  TAB_NAME_DATABASES,
+  TAB_NAME_INDEXES,
+} from '@/constants';
 import { plainClone, selectElement, translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
+import { getTableManipulationStatementsByDataSource } from '@/utils/database';
+
+const props = defineProps<{
+  tabName: string;
+}>();
 
 const t = translate;
 
@@ -164,8 +175,9 @@ const createTable = async () => {
 const activeContextMenuNavItem = ref<DatabaseNavItem>();
 const contextMenuVisibleMap = ref<Record<string, boolean>>({});
 const isContextMenuVisible = (id: string) => {
+  if (!contextMenuItems.value?.length) return false;
   if (!activeContextMenuNavItem.value) return false;
-  if (activeContextMenuNavItem.value.id !== id) return false;
+  if (activeContextMenuNavItem.value?.id !== id) return false;
   return contextMenuVisibleMap.value[id] || false;
 };
 const onActionsClick = (item: DatabaseNavItem) => {
@@ -178,6 +190,16 @@ const onContextMenuHide = (id: string) => {
   contextMenuVisibleMap.value[id] = false;
 };
 const contextMenuItems = computed<ContextMenuItem[]>(() => {
+  switch (props.tabName) {
+    case TAB_NAME_DATABASES:
+      return contextMenuItemsDatabases.value;
+    case TAB_NAME_CONSOLE:
+      return contextMenuItemsConsole.value;
+    default:
+      return [];
+  }
+});
+const contextMenuItemsDatabases = computed<ContextMenuItem[]>(() => {
   if (!activeContextMenuNavItem.value) return [];
   const { id, type } = activeContextMenuNavItem.value;
   if (!contextMenuVisibleMap.value[id]) return [];
@@ -188,13 +210,6 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
           title: t('views.database.databases.actions.createTable'),
           icon: ['fa', 'table'],
           action: createTable,
-        },
-        {
-          title: t('common.actions.edit'),
-          icon: ['fa', 'edit'],
-          action: () => {
-            console.debug('Edit');
-          },
         },
       ];
     case 'table':
@@ -315,6 +330,77 @@ const contextMenuItems = computed<ContextMenuItem[]>(() => {
       return [];
   }
 });
+const contextMenuItemsConsole = computed<ContextMenuItem[]>(() => {
+  if (!activeContextMenuNavItem.value) return [];
+
+  // Get type and name
+  const { type, name } = activeContextMenuNavItem.value;
+
+  // Existing console content
+  const consoleContent = state.consoleContent
+    ? state.consoleContent + '\n'
+    : '';
+
+  // Initialize context menu items
+  const items: ContextMenuItem[] = [];
+
+  switch (type) {
+    case 'database':
+      const { create } = getTableManipulationStatementsByDataSource(
+        state.form.data_source || 'mongo'
+      );
+      if (create) {
+        items.push({
+          title: t('views.database.databases.actions.createTable'),
+          icon: ['fa', 'table'],
+          action: () => {
+            store.commit(`${ns}/setConsoleContent`, consoleContent + create);
+          },
+        });
+      }
+      return items;
+    case 'table':
+      const { select, truncate, drop } =
+        getTableManipulationStatementsByDataSource(
+          state.form.data_source || 'mongo',
+          name
+        );
+      if (select) {
+        items.push({
+          title: t('common.actions.previewData'),
+          icon: ['fa', 'table'],
+          action: () => {
+            store.commit(`${ns}/setConsoleContent`, consoleContent + select);
+          },
+        });
+      }
+      if (truncate) {
+        items.push({
+          title: t('components.database.databases.table.actions.truncate'),
+          icon: ['fa', 'eraser'],
+          action: () => {
+            store.commit(`${ns}/setConsoleContent`, consoleContent + truncate);
+          },
+        });
+      }
+      if (drop) {
+        items.push({
+          title: t('components.database.databases.table.actions.drop'),
+          icon: ['fa', 'trash'],
+          action: () => {
+            store.commit(`${ns}/setConsoleContent`, consoleContent + drop);
+          },
+        });
+      }
+      return items;
+    case 'column':
+      return [];
+    case 'index':
+      return [];
+    default:
+      return [];
+  }
+});
 
 const defaultExpandedKeys = ref<string[]>([]);
 const onNodeExpand = (node: TreeNodeData) => {
@@ -376,10 +462,24 @@ const getNodeIdParts = (id: string) => {
 };
 
 const selectNode = async (data: DatabaseNavItem, tabName?: string) => {
+  const { id } = data;
+
+  switch (props.tabName) {
+    case TAB_NAME_DATABASES:
+      selectNodeDatabases(data, tabName);
+      break;
+  }
+
+  // highlight current node
+  setTimeout(() => {
+    treeRef.value?.setCurrentKey(id);
+  }, 0);
+};
+
+const selectNodeDatabases = (data: DatabaseNavItem, tabName?: string) => {
   const { id, type, new: isNew } = data;
   const { databaseName, table } = getNodeIdParts(id);
   store.commit(`${ns}/setActiveDatabaseName`, databaseName);
-
   switch (type) {
     case 'table':
       store.commit(
@@ -401,11 +501,6 @@ const selectNode = async (data: DatabaseNavItem, tabName?: string) => {
     default:
       store.commit(`${ns}/setActiveNavItem`, data);
   }
-
-  // highlight current node
-  setTimeout(() => {
-    treeRef.value?.setCurrentKey(id);
-  }, 0);
 };
 
 const onNodeClick = async (data: DatabaseNavItem) => {

@@ -138,6 +138,8 @@ const database: LComponentsDatabase = {
         editColumns: '编辑列',
         editIndexColumns: '编辑索引列',
         editIndexes: '编辑索引',
+        truncate: '清空 (Truncate)',
+        drop: '删除 (Drop)',
       },
     },
     labels: {

@@ -139,6 +139,8 @@ export declare global {
           editColumns: string;
           editIndexColumns: string;
           editIndexes: string;
+          truncate: string;
+          drop: string;
         };
       };
       labels: {

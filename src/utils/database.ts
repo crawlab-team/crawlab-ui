@@ -278,3 +278,98 @@ export const SQL_KEYWORDS = [
   'MIN',
   'AVG',
 ];
+
+export const MONGO_KEYWORDS = [
+  'db',
+  'collection',
+  'find',
+  'findOne',
+  'insertOne',
+  'insertMany',
+  'updateOne',
+  'updateMany',
+  'deleteOne',
+  'deleteMany',
+  'drop',
+  'createIndex',
+  'dropIndex',
+];
+
+export const getTableManipulationStatementsByDataSource = (
+  dataSource: DatabaseDataSource,
+  tableName?: string
+): DatabaseTableManipulationStatements => {
+  switch (dataSource) {
+    case 'mongo':
+      return {
+        select: `db.${tableName}.find({});`,
+        truncate: `db.${tableName}.deleteMany({});`,
+        drop: `db.${tableName}.drop();`,
+      };
+    case 'mysql':
+    case 'postgres':
+    case 'mssql':
+      return {
+        select: 'SELECT * FROM ' + `${tableName};`,
+        create: 'CREATE TABLE new_table_name (id INT PRIMARY KEY ...);',
+        alter: 'ALTER TABLE ${tableName} ...',
+        truncate: `TRUNCATE TABLE ${tableName};`,
+        drop: `DROP TABLE ${tableName};`,
+      };
+    default:
+      return {};
+  }
+};
+
+export const getDatabaseSyntaxKeywordRegexByDataSource = (
+  dataSource: DatabaseDataSource
+): DatabaseSyntaxKeywordRegex => {
+  switch (dataSource) {
+    case 'mongo':
+      return {
+        from: /\bdb\./i,
+      };
+    case 'mysql':
+    case 'postgres':
+    case 'mssql':
+      return {
+        from: /\b(FROM|JOIN)\b/i,
+        manipulateTable:
+          /\b(INSERT\s+INTO|UPDATE|ALTER\s+TABLE|DROP\s+TABLE)\b/i,
+        manipulateField:
+          /\b(FROM|JOIN|INSERT\s+INTO|UPDATE|ALTER\s+TABLE|DROP\s+TABLE)\s+(\w+)/i,
+      };
+    default:
+      return {};
+  }
+};
+
+export const getDatabaseEditorLanguage = (
+  dataSource: DatabaseDataSource
+): string => {
+  switch (dataSource) {
+    case 'mongo':
+      return 'javascript';
+    case 'mysql':
+    case 'postgres':
+    case 'mssql':
+      return 'sql';
+    default:
+      return 'plaintext';
+  }
+};
+
+export const getDatabaseSyntaxKeywords = (
+  dataSource: DatabaseDataSource
+): string[] => {
+  switch (dataSource) {
+    case 'mongo':
+      return MONGO_KEYWORDS;
+    case 'mysql':
+    case 'postgres':
+    case 'mssql':
+      return SQL_KEYWORDS;
+    default:
+      return [];
+  }
+};

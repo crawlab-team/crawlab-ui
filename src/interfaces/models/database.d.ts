@@ -127,4 +127,18 @@ export declare global {
     output?: string;
     error?: string;
   }
+
+  interface DatabaseTableManipulationStatements {
+    select?: string;
+    create?: string;
+    alter?: string;
+    truncate?: string;
+    drop?: string;
+  }
+
+  interface DatabaseSyntaxKeywordRegex {
+    from?: RegExp;
+    manipulateTable?: RegExp;
+    manipulateField?: RegExp;
+  }
 }

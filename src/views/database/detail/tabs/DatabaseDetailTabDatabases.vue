@@ -1,8 +1,8 @@
 <script setup lang="tsx">
 import { computed, ref } from 'vue';
 import { useDatabaseDetail } from '@/views';
-import { ClDatabaseSidebar } from '@/components';
 import { useStore } from 'vuex';
+import { TAB_NAME_DATABASES } from '@/constants';
 
 const { activeId } = useDatabaseDetail();
 
@@ -11,7 +11,7 @@ const { database: state } = store.state as RootStoreState;
 const activeNavItem = computed(() => state.activeNavItem);
 const activeDatabaseName = computed(() => state.activeDatabaseName);
 
-const sidebarRef = ref<InstanceType<typeof ClDatabaseSidebar>>();
+const sidebarRef = ref();
 
 const onDatabaseTableClick = (
   table: DatabaseTable,
@@ -33,7 +33,7 @@ defineOptions({ name: 'ClDatabaseDetailTabDatabases' });
 
 <template>
   <div class="database-detail-tab-databases">
-    <cl-database-sidebar ref="sidebarRef" />
+    <cl-database-sidebar ref="sidebarRef" :tab-name="TAB_NAME_DATABASES" />
 
     <div class="content">
       <template v-if="activeNavItem?.type === 'database'">

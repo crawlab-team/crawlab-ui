@@ -140,6 +140,8 @@ const database: LComponentsDatabase = {
         editColumns: 'Edit Columns',
         editIndexColumns: 'Edit Index Columns',
         editIndexes: 'Edit Indexes',
+        truncate: 'Truncate',
+        drop: 'Drop',
       },
     },
     labels: {
