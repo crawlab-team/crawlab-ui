@@ -1,7 +1,14 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import * as monaco from 'monaco-editor';
 import { debounce } from 'lodash';
-import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
+import {
+  computed,
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from 'vue';
 import { useStore } from 'vuex';
 import {
   TAB_NAME_CONSOLE,
@@ -14,7 +21,9 @@ import {
   getDatabaseEditorLanguage,
   getDatabaseSyntaxKeywordRegexByDataSource,
   getDatabaseSyntaxKeywords,
+  getDataType,
 } from '@/utils/database';
+import { ClTableEditCell } from '@/components';
 
 const t = translate;
 
@@ -186,6 +195,10 @@ watch(
     }
   }
 );
+onMounted(initEditor);
+watch(activeId, () => {
+  store.commit(`${ns}/setConsoleContent`, '');
+});
 
 const resultsVisible = computed(() => !!activeResultsTabName.value);
 
@@ -197,6 +210,13 @@ const resultsColumns = computed(() => {
         index: c.name,
         label: c.name,
         width: 200,
+        value: (row: DatabaseTableRow) => (
+          <ClTableEditCell
+            modelValue={row[c.name as string]}
+            dataType={getDataType(c.type as string)}
+            readonly
+          />
+        ),
       } as TableColumn;
     }) || []
   );
@@ -222,10 +242,14 @@ const activeResultsTabName = computed(
 
 const onResultsTabSelect = (id: string) => {
   if (activeResultsTabName.value === id) {
-    store.commit(`${ns}/setConsoleQueryResultsActiveTabName`, undefined);
+    hideResults();
   } else {
     store.commit(`${ns}/setConsoleQueryResultsActiveTabName`, id);
   }
+};
+
+const hideResults = () => {
+  store.commit(`${ns}/setConsoleQueryResultsActiveTabName`, undefined);
 };
 
 onBeforeMount(() => {
@@ -237,19 +261,104 @@ onBeforeUnmount(() => {
   completionItemProvider?.dispose();
 });
 
+// Dragging resize handle
+const heightKey = 'database.console.resultsContainerHeight';
+const isDragging = ref(false);
+const handleDragStart = (event: DragEvent) => {
+  isDragging.value = true;
+  event.dataTransfer?.setData('text/plain', ''); // Required for Firefox
+};
+const handleDragEnd = () => {
+  isDragging.value = false;
+};
+const isResizing = ref(false);
+const initialHeight = ref(0);
+const startY = ref(0);
+const resultsContainerRef = ref<HTMLElement | null>(null);
+const initResize = (event: MouseEvent) => {
+  event.preventDefault();
+  isResizing.value = true;
+  initialHeight.value = resultsContainerRef.value?.clientHeight || 0;
+  startY.value = event.clientY;
+  document.addEventListener('mousemove', resize);
+  document.addEventListener('mouseup', stopResize);
+};
+const updateHeights = (newHeight: number) => {
+  if (resultsContainerRef.value && editorRef.value) {
+    if (newHeight < 41) newHeight = 41;
+    resultsContainerRef.value.style.flex = `0 0 ${newHeight}px`;
+    resultsContainerRef.value.style.height = `${newHeight}px`;
+    editorRef.value.style.flex = `0 0 calc(100% - ${newHeight}px)`;
+    editorRef.value.style.height = `calc(100% - ${newHeight}px)`;
+  }
+};
+const loadHeights = () => {
+  // If results are not visible, set the height to 0
+  if (!resultsVisible.value) {
+    updateHeights(0);
+    return;
+  }
+
+  // Load the saved height from local storage
+  const savedHeight = localStorage.getItem(heightKey);
+  if (savedHeight && resultsContainerRef.value && editorRef.value) {
+    const newHeight = parseInt(savedHeight, 10);
+    updateHeights(newHeight);
+  }
+};
+const saveHeights = () => {
+  if (resultsContainerRef.value) {
+    localStorage.setItem(
+      heightKey,
+      resultsContainerRef.value.clientHeight.toString()
+    );
+  }
+};
+const resize = (event: MouseEvent) => {
+  event.preventDefault();
+  if (isResizing.value && resultsContainerRef.value && editorRef.value) {
+    const deltaY = event.clientY - startY.value;
+    const newHeight = initialHeight.value - deltaY;
+    updateHeights(newHeight);
+  }
+};
+const stopResize = () => {
+  isResizing.value = false;
+  saveHeights();
+  document.removeEventListener('mousemove', resize);
+  document.removeEventListener('mouseup', stopResize);
+};
+onMounted(loadHeights);
+watch(resultsVisible, loadHeights);
+
 defineOptions({ name: 'ClDatabaseDetailTabConsole' });
 </script>
 
 <template>
   <div
     class="database-detail-tab-console"
-    :class="resultsVisible ? 'results-visible' : ''"
+    :class="
+      [resultsVisible ? 'results-visible' : '', isResizing ? 'resizing' : '']
+        .filter(Boolean)
+        .join(' ')
+    "
   >
     <cl-database-sidebar :tab-name="TAB_NAME_CONSOLE" />
 
     <div class="content">
       <div ref="editorRef" class="editor" />
-      <div class="results-container">
+      <div
+        ref="resultsContainerRef"
+        class="results-container"
+        @dragover.prevent
+        @dragstart="handleDragStart"
+        @dragend="handleDragEnd"
+      >
+        <div
+          v-if="resultsVisible"
+          class="resize-handle"
+          @mousedown="initResize"
+        />
         <cl-nav-tabs
           :active-key="activeResultsTabName"
           :items="resultsTabItems"
@@ -261,7 +370,7 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
                 v-if="resultsVisible"
                 color="var(--cl-info-color)"
                 :icon="['fa', 'minus']"
-                @click="resultsVisible = false"
+                @click="hideResults"
               />
             </div>
           </template>
@@ -296,15 +405,29 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
   overflow: hidden;
 
   &.results-visible {
-    .editor {
-      flex: 0 0 50% !important;
-      height: 50% !important;
-    }
+    .content {
+      .editor {
+        flex: 0 0 50%;
+        height: 50%;
+      }
 
-    .results-container {
-      overflow: auto;
-      flex: 0 0 50% !important;
-      height: 50% !important;
+      .results-container {
+        overflow: auto;
+        flex: 0 0 50%;
+        height: 50%;
+      }
+    }
+  }
+
+  &.resizing {
+    .content {
+      & > * {
+        transition: none;
+      }
+
+      .results-container {
+        border-top: 1px solid var(--cl-primary-color);
+      }
     }
   }
 
@@ -321,10 +444,20 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
     }
 
     .results-container {
+      position: relative;
       border-top: 1px solid var(--el-border-color);
       flex: 0 0 41px;
       overflow: hidden;
       transition: flex 0.3s;
+
+      .resize-handle {
+        position: absolute;
+        width: 100%;
+        top: -10px;
+        height: 20px;
+        cursor: ns-resize;
+        z-index: 999;
+      }
 
       .results-actions {
         display: flex;

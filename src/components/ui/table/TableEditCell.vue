@@ -23,6 +23,7 @@ const props = withDefaults(
     autoFocus?: boolean;
     automaticDropdown?: boolean;
     dataType?: DatabaseDataType;
+    readonly?: boolean;
   }>(),
   {
     triggerOnFocus: true,
@@ -138,6 +139,16 @@ const isJson = computed(() => {
   return ['object', 'array'].includes(props.dataType || '');
 });
 
+const dialogVisible = ref(false);
+
+const onView = () => {
+  dialogVisible.value = true;
+};
+
+const onHide = () => {
+  dialogVisible.value = false;
+};
+
 defineOptions({ name: 'ClTableEditCell' });
 </script>
 
@@ -152,8 +163,12 @@ defineOptions({ name: 'ClTableEditCell' });
       ].join(' ')
     "
   >
-    <template v-if="!isEdit || isJson">
-      <span class="display-value" @click.stop="onEdit" :title="labelValue">
+    <template v-if="!isEdit || isJson || readonly">
+      <span
+        class="display-value"
+        @click.stop="() => (!readonly ? onEdit() : onView())"
+        :title="labelValue"
+      >
         <template v-if="modelValue">
           <template v-if="$slots.default">
             <slot name="default" />
@@ -267,7 +282,7 @@ defineOptions({ name: 'ClTableEditCell' });
         />
       </template>
     </template>
-    <div class="cell-actions">
+    <div v-if="!readonly" class="cell-actions">
       <cl-icon v-if="!isEdit" :icon="['fa', 'edit']" @click.stop="onEdit" />
       <cell-actions
         v-else-if="dataType && !['date', 'datetime'].includes(dataType)"
@@ -275,12 +290,18 @@ defineOptions({ name: 'ClTableEditCell' });
     </div>
   </div>
 
-  <template v-if="isEdit && dataType && ['object', 'array'].includes(dataType)">
+  <template
+    v-if="
+      (dialogVisible || isEdit) &&
+      dataType &&
+      ['object', 'array'].includes(dataType)
+    "
+  >
     <cl-dialog
-      :visible="isEdit"
+      :visible="dialogVisible || isEdit"
       append-to-body
-      @confirm="onCheck"
-      @close="onCancel"
+      @confirm="() => (!readonly ? onCheck() : onHide())"
+      @close="() => (!readonly ? onCancel() : onHide())"
     >
       <JsonEditorVue v-model="internalValue" />
     </cl-dialog>
