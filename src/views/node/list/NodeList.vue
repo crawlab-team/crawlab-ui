@@ -46,4 +46,10 @@ defineOptions({ name: 'ClNodeList' });
   </cl-list-layout>
 </template>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.node-list {
+  &:deep(.current-metrics .tag) {
+    margin: 3px 0;
+  }
+}
+</style>

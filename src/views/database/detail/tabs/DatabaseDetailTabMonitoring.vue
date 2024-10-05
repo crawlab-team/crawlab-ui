@@ -11,7 +11,9 @@ const defaultTimeRange = ref<string>(loadLocalStorage(timeRangeKey) || '1h');
 const defaultMetricGroups = ref<string[]>(
   loadLocalStorage(metricGroupsKey) || [
     'used_memory_percent',
+    'used_memory',
     'used_disk_percent',
+    'used_disk',
     'connections',
     'query_per_second',
   ]

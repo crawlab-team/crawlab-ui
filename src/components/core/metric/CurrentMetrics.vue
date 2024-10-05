@@ -11,6 +11,8 @@ withDefaults(
       | 'cpu_usage_percent'
       | 'used_memory_percent'
       | 'used_disk_percent'
+      | 'used_memory'
+      | 'used_disk'
     )[];
   }>(),
   {
@@ -126,6 +128,50 @@ defineOptions({ name: 'ClCurrentMetrics' });
           </div>
         </template>
       </cl-tag>
+      <cl-tag
+        v-if="metrics.includes('used_memory')"
+        :size="size"
+        :clickable="clickable"
+        :icon="['fa', 'memory']"
+        type="primary"
+        :label="`${formatBytes(metric?.used_memory)}`"
+        @click="(event: MouseEvent) => emit('click', event)"
+      >
+        <template #tooltip>
+          <div>
+            <label> {{ t('components.metric.metrics.used_memory') }}: </label>
+            <span
+              :style="{
+                color: 'var(--cl-primary-color)',
+              }"
+            >
+              {{ formatBytes(metric?.used_memory) }}
+            </span>
+          </div>
+        </template>
+      </cl-tag>
+      <cl-tag
+        v-if="metrics.includes('used_disk')"
+        :size="size"
+        :clickable="clickable"
+        :icon="['fa', 'hdd']"
+        type="primary"
+        :label="`${formatBytes(metric?.used_disk)}`"
+        @click="(event: MouseEvent) => emit('click', event)"
+      >
+        <template #tooltip>
+          <div>
+            <label> {{ t('components.metric.metrics.used_disk') }}: </label>
+            <span
+              :style="{
+                color: 'var(--cl-primary-color)',
+              }"
+            >
+              {{ formatBytes(metric?.used_disk) }}
+            </span>
+          </div>
+        </template>
+      </cl-tag>
     </template>
     <template v-else>
       <cl-tag
@@ -144,10 +190,5 @@ defineOptions({ name: 'ClCurrentMetrics' });
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-
-  &:deep(.tag) {
-    margin-top: 3px;
-    margin-bottom: 3px;
-  }
 }
 </style>

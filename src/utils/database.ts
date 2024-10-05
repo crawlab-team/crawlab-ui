@@ -419,6 +419,7 @@ export const getDatabaseAllMetricGroups = (): MetricGroup<DatabaseMetric>[] => [
     name: 'used_disk',
     label: t('components.metric.metrics.used_disk'),
     metrics: ['used_disk'],
+    format: 'bytes',
   },
   {
     name: 'used_disk_percent',

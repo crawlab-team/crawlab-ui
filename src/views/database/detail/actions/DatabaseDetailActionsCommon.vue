@@ -4,12 +4,11 @@ import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { isPro } from '@/utils';
 import useRequest from '@/services/request';
 import useDetail from '../../../../layouts/content/detail/useDetail';
+import { useDatabaseDetail } from '@/views';
 
 const { get } = useRequest();
 
-const ns = 'node';
-
-const { activeId } = useDetail<Database>(ns);
+const { activeId } = useDatabaseDetail();
 
 const store = useStore();
 const { database: state } = store.state as RootStoreState;
@@ -32,6 +31,19 @@ onBeforeUnmount(() => {
 });
 watch(activeId, getCurrentMetricsData);
 
+const metricNames = computed(() => {
+  switch (form.value?.data_source) {
+    case 'mysql':
+      return ['used_memory_percent', 'used_disk'];
+    case 'postgres':
+      return ['used_memory', 'used_disk'];
+    case 'mssql':
+      return ['used_memory_percent', 'used_disk_percent'];
+    default:
+      return ['used_memory_percent', 'used_disk_percent'];
+  }
+});
+
 defineOptions({ name: 'ClDatabaseDetailActionsCommon' });
 </script>
 
@@ -52,7 +64,7 @@ defineOptions({ name: 'ClDatabaseDetailActionsCommon' });
       <cl-current-metrics
         :metric="currentMetricsData"
         size="large"
-        :metrics="['used_memory_percent', 'used_disk_percent']"
+        :metrics="metricNames"
       />
     </cl-nav-action-item>
   </cl-nav-action-group>
