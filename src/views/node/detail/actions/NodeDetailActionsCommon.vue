@@ -6,13 +6,11 @@ import useDetail from '@/layouts/content/detail/useDetail';
 
 const { get } = useRequest();
 
-const t = translate;
-
 const ns = 'node';
 
 const { activeId } = useDetail<CNode>(ns);
 
-const currentMetricsData = ref<Metric>();
+const currentMetricsData = ref<BasicMetric>();
 const getCurrentMetricsData = async () => {
   const res = await get(`/nodes/${activeId.value}/metrics/current`);
   currentMetricsData.value = res.data;
@@ -35,7 +33,7 @@ defineOptions({ name: 'ClNodeDetailActionsCommon' });
   <cl-nav-action-group v-if="isPro()">
     <cl-nav-action-fa-icon :icon="['fa', 'tachometer-alt']" />
     <cl-nav-action-item>
-      <cl-node-current-metrics :metric="currentMetricsData" size="large" />
+      <cl-current-metrics :metric="currentMetricsData" size="large" />
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>

@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { getAllMetricGroups } from '@/utils/metric';
+import { getDatabaseAllMetricGroups } from '@/utils/database';
 import { loadLocalStorage, saveLocalStorage } from '@/utils/storage';
 
-const timeRangeKey = 'node.monitoring.timeRange';
-const metricGroupsKey = 'node.monitoring.metricGroups';
+const timeRangeKey = 'database.monitoring.timeRange';
+const metricGroupsKey = 'database.monitoring.metricGroups';
 
 const defaultTimeRange = ref<string>(loadLocalStorage(timeRangeKey) || '1h');
 
 const defaultMetricGroups = ref<string[]>(
   loadLocalStorage(metricGroupsKey) || [
-    'cpu_usage_percent',
     'used_memory_percent',
     'used_disk_percent',
-    'disk_io_bytes_rate',
-    'network_io_bytes_rate',
+    'connections',
+    'query_per_second',
   ]
 );
 
@@ -26,16 +25,16 @@ const onMetricGroupsChange = (metricGroups: string[]) => {
   saveLocalStorage(metricGroupsKey, metricGroups);
 };
 
-defineOptions({ name: 'ClNodeDetailTabMonitoring' });
+defineOptions({ name: 'ClDatabaseDetailTabMonitoring' });
 </script>
 
 <template>
   <cl-metric-monitoring-detail
-    ns="node"
-    api-prefix="/nodes"
+    ns="database"
+    api-prefix="/databases"
     :default-metric-groups="defaultMetricGroups"
     :default-time-range="defaultTimeRange"
-    :all-metric-groups-fn="getAllMetricGroups"
+    :all-metric-groups-fn="getDatabaseAllMetricGroups"
     @time-range-change="onTimeRangeChange"
     @metric-groups-change="onMetricGroupsChange"
   />

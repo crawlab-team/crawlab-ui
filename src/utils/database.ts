@@ -1,3 +1,7 @@
+import { translate } from '@/utils/i18n';
+
+const t = translate;
+
 export const databaseDefaults: Database[] = [
   {
     name: 'MongoDB',
@@ -373,3 +377,85 @@ export const getDatabaseSyntaxKeywords = (
       return [];
   }
 };
+
+export const getDatabaseAllMetricGroups = (): MetricGroup<DatabaseMetric>[] => [
+  {
+    name: 'total_memory',
+    label: t('components.metric.metrics.total_memory'),
+    metrics: ['total_memory'],
+    format: 'bytes',
+  },
+  {
+    name: 'available_memory',
+    label: t('components.metric.metrics.available_memory'),
+    metrics: ['available_memory'],
+    format: 'bytes',
+  },
+  {
+    name: 'used_memory',
+    label: t('components.metric.metrics.used_memory'),
+    metrics: ['used_memory'],
+    format: 'bytes',
+  },
+  {
+    name: 'used_memory_percent',
+    label: t('components.metric.metrics.used_memory_percent'),
+    metrics: ['used_memory_percent'],
+    format: 'percent',
+  },
+  {
+    name: 'total_disk',
+    label: t('components.metric.metrics.total_disk'),
+    metrics: ['total_disk'],
+    format: 'bytes',
+  },
+  {
+    name: 'available_disk',
+    label: t('components.metric.metrics.available_disk'),
+    metrics: ['available_disk'],
+    format: 'bytes',
+  },
+  {
+    name: 'used_disk',
+    label: t('components.metric.metrics.used_disk'),
+    metrics: ['used_disk'],
+  },
+  {
+    name: 'used_disk_percent',
+    label: t('components.metric.metrics.used_disk_percent'),
+    metrics: ['used_disk_percent'],
+    format: 'percent',
+  },
+  {
+    name: 'connections',
+    label: t('components.metric.metrics.connections'),
+    metrics: ['connections'],
+    format: 'number',
+  },
+  {
+    name: 'query_per_second',
+    label: t('components.metric.metrics.query_per_second'),
+    metrics: ['query_per_second'],
+    format: 'number',
+    formatDecimal: 1,
+  },
+  {
+    name: 'cache_hit_ratio',
+    label: t('components.metric.metrics.cache_hit_ratio'),
+    metrics: ['cache_hit_ratio'],
+    format: 'percent',
+    formatDecimal: 1,
+  },
+  {
+    name: 'replication_lag',
+    label: t('components.metric.metrics.replication_lag'),
+    metrics: ['replication_lag'],
+    format: 'duration',
+  },
+  {
+    name: 'lock_wait_time',
+    label: t('components.metric.metrics.lock_wait_time'),
+    metrics: ['lock_wait_time'],
+    format: 'duration',
+  },
+];

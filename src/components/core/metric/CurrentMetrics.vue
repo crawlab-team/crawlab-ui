@@ -2,11 +2,25 @@
 import { formatBytes } from '@/utils/metric';
 import { translate } from '@/utils';
 
-defineProps<{
-  metric?: Metric;
-  size?: BasicSize;
-  clickable?: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    metric?: BasicMetric;
+    size?: BasicSize;
+    clickable?: boolean;
+    metrics?: (
+      | 'cpu_usage_percent'
+      | 'used_memory_percent'
+      | 'used_disk_percent'
+    )[];
+  }>(),
+  {
+    metrics: () => [
+      'cpu_usage_percent',
+      'used_memory_percent',
+      'used_disk_percent',
+    ],
+  }
+);
 
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
@@ -21,13 +35,15 @@ const getTagType = (percent?: number) => {
   if (percent < 90) return 'warning';
   return 'danger';
 };
-defineOptions({ name: 'ClNodeCurrentMetrics' });
+
+defineOptions({ name: 'ClCurrentMetrics' });
 </script>
 
 <template>
-  <div class="node-current-metrics">
+  <div class="current-metrics">
     <template v-if="metric">
       <cl-tag
+        v-if="metrics.includes('cpu_usage_percent')"
         :size="size"
         :clickable="clickable"
         :icon="['fa', 'microchip']"
@@ -38,7 +54,7 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
         <template #tooltip>
           <div>
             <label>
-              {{ t('components.node.metric.metrics.cpu_usage_percent') }}:
+              {{ t('components.metric.metrics.cpu_usage_percent') }}:
             </label>
             <span
               :style="{
@@ -51,6 +67,7 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
         </template>
       </cl-tag>
       <cl-tag
+        v-if="metrics.includes('used_memory_percent')"
         :size="size"
         :clickable="clickable"
         :icon="['fa', 'memory']"
@@ -60,9 +77,7 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
       >
         <template #tooltip>
           <div>
-            <label>
-              {{ t('components.node.metric.metrics.used_memory') }}:
-            </label>
+            <label> {{ t('components.metric.metrics.used_memory') }}: </label>
             <span
               :style="{
                 color: `var(--cl-${getTagType(metric?.used_memory_percent)}-color)`,
@@ -74,9 +89,7 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
             </span>
           </div>
           <div>
-            <label>
-              {{ t('components.node.metric.metrics.total_memory') }}:
-            </label>
+            <label> {{ t('components.metric.metrics.total_memory') }}: </label>
             <span>
               {{ formatBytes(metric?.total_memory) }}
             </span>
@@ -84,6 +97,7 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
         </template>
       </cl-tag>
       <cl-tag
+        v-if="metrics.includes('used_disk_percent')"
         :size="size"
         :clickable="clickable"
         :icon="['fa', 'hdd']"
@@ -93,9 +107,7 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
       >
         <template #tooltip>
           <div>
-            <label>
-              {{ t('components.node.metric.metrics.used_disk') }}:
-            </label>
+            <label> {{ t('components.metric.metrics.used_disk') }}: </label>
             <span
               :style="{
                 color: `var(--cl-${getTagType(metric?.used_disk_percent)}-color)`,
@@ -107,9 +119,7 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
             </span>
           </div>
           <div>
-            <label>
-              {{ t('components.node.metric.metrics.total_disk') }}:
-            </label>
+            <label> {{ t('components.metric.metrics.total_disk') }}: </label>
             <span>
               {{ formatBytes(metric?.total_disk) }}
             </span>
@@ -122,15 +132,15 @@ defineOptions({ name: 'ClNodeCurrentMetrics' });
         :size="size"
         type="info"
         :icon="['fa', 'times-circle']"
-        :label="t('components.node.metric.noData.label')"
-        :tooltip="t('components.node.metric.noData.tooltip')"
+        :label="t('components.metric.noData.label')"
+        :tooltip="t('components.metric.noData.tooltip')"
       />
     </template>
   </div>
 </template>
 
 <style scoped>
-.node-current-metrics {
+.current-metrics {
   display: flex;
   align-items: center;
   flex-wrap: wrap;

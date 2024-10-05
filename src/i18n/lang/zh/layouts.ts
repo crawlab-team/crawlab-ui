@@ -124,6 +124,7 @@ const layouts: LLayouts = {
         overview: '概览',
         databases: '数据库',
         console: '控制台',
+        monitoring: '监控',
         table: '表',
         data: '数据',
         columns: '列',

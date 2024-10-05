@@ -40,7 +40,7 @@ import {
   FILTER_OP_EQUAL,
 } from '@/constants';
 import { isAllowedAction, isPro, setupAutoUpdate } from '@/utils';
-import { ClNodeCurrentMetrics } from '@/components';
+import { ClCurrentMetrics } from '@/components';
 
 type Node = CNode;
 
@@ -321,11 +321,10 @@ const useNodeList = () => {
             if (!row._id) return;
             const currentMetrics = state.nodeMetricsMap[row._id];
             return (
-              <ClNodeCurrentMetrics
+              <ClCurrentMetrics
                 metric={currentMetrics}
                 clickable
                 onClick={async () => {
-                  console.debug('click');
                   await router.push(`/nodes/${row._id}/monitoring`);
                 }}
               />

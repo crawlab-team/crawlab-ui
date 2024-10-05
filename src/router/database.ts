@@ -1,13 +1,15 @@
 import {
-  TAB_NAME_CONSOLE,
-  TAB_NAME_DATABASES,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_DATABASES,
+  TAB_NAME_CONSOLE,
+  TAB_NAME_MONITORING,
 } from '@/constants';
 import {
   ClDatabaseDetail,
-  ClDatabaseDetailTabConsole,
-  ClDatabaseDetailTabDatabases,
   ClDatabaseDetailTabOverview,
+  ClDatabaseDetailTabDatabases,
+  ClDatabaseDetailTabConsole,
+  ClDatabaseDetailTabMonitoring,
   ClDatabaseList,
 } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
@@ -50,6 +52,12 @@ export default [
         title: t('layouts.routes.databases.tabs.console'),
         icon: getIconByTabName(TAB_NAME_CONSOLE),
         component: async () => ClDatabaseDetailTabConsole,
+      },
+      {
+        path: TAB_NAME_MONITORING,
+        title: t('layouts.routes.databases.tabs.monitoring'),
+        icon: getIconByTabName(TAB_NAME_MONITORING),
+        component: async () => ClDatabaseDetailTabMonitoring,
       },
     ],
   },

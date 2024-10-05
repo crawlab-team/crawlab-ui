@@ -7,9 +7,10 @@ import {
   translate,
 } from '@/utils';
 import {
-  TAB_NAME_CONSOLE,
-  TAB_NAME_DATABASES,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_DATABASES,
+  TAB_NAME_CONSOLE,
+  TAB_NAME_MONITORING,
   TAB_NAME_DATA,
   TAB_NAME_RESULTS,
   TAB_NAME_OUTPUT,
@@ -31,6 +32,7 @@ const state = {
     { id: TAB_NAME_OVERVIEW, title: 'common.tabs.overview' },
     { id: TAB_NAME_DATABASES, title: 'common.tabs.databases' },
     { id: TAB_NAME_CONSOLE, title: 'common.tabs.console' },
+    { id: TAB_NAME_MONITORING, title: 'common.tabs.monitoring' },
   ],
   metadata: undefined,
   tablePreviewData: [],

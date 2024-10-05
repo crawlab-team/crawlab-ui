@@ -141,4 +141,14 @@ export declare global {
     manipulateTable?: RegExp;
     manipulateField?: RegExp;
   }
+
+  interface DatabaseMetric extends BasicMetric {
+    database_id?: string;
+    connections?: number;
+    query_per_second?: number;
+    transaction_per_second?: number;
+    cache_hit_ratio?: number;
+    replication_lag?: number;
+    lock_wait_time?: number;
+  }
 }

@@ -124,6 +124,7 @@ const layouts: LLayouts = {
         overview: 'Overview',
         databases: 'Databases',
         console: 'Console',
+        monitoring: 'Monitoring',
         table: 'Table',
         data: 'Data',
         columns: 'Columns',
