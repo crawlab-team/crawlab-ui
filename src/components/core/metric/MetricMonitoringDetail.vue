@@ -288,6 +288,7 @@ defineOptions({ name: 'ClMetricMonitoringDetail' });
       <el-space v-if="metricsTimeSeriesData?.length" wrap>
         <el-card v-for="name in metricGroups" shadow="hover">
           <cl-chart
+            :key="JSON.stringify([name, metricsTimeSeriesData])"
             type="line"
             :data="getLineChartData(name)"
             :options="getLineChartOptions(name)"

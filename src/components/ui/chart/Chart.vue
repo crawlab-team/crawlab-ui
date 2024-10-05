@@ -56,11 +56,11 @@ defineOptions({ name: 'ClChart' });
 
 <template>
   <div v-if="data && computedOptions" class="chart" :style="style">
-    <chart :type="type" :data="data" :options="computedOptions" />
+    <chart
+      :key="JSON.stringify([type, data, computedOptions])"
+      :type="type"
+      :data="data"
+      :options="computedOptions"
+    />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.chart {
-}
-</style>
