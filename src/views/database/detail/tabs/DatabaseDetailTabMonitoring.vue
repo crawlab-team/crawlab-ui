@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { getDatabaseAllMetricGroups } from '@/utils/database';
 import { loadLocalStorage, saveLocalStorage } from '@/utils/storage';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const { database: state } = store.state as RootStoreState;
 
 const timeRangeKey = 'database.monitoring.timeRange';
 const metricGroupsKey = 'database.monitoring.metricGroups';
@@ -27,6 +31,46 @@ const onMetricGroupsChange = (metricGroups: string[]) => {
   saveLocalStorage(metricGroupsKey, metricGroups);
 };
 
+const availableMetricGroups = computed(() => {
+  const { form } = state;
+  if (!form) return [];
+  const { data_source } = form;
+  return getDatabaseAllMetricGroups()
+    .map(({ name }) => name)
+    .filter(name => {
+      switch (data_source) {
+        case 'mysql':
+          return ![
+            'cpu_usage_percent',
+            'total_disk',
+            'available_disk',
+            'used_disk_percent',
+          ].includes(name);
+        case 'postgres':
+          return ![
+            'cpu_usage_percent',
+            'total_memory',
+            'available_memory',
+            'used_memory_percent',
+            'total_disk',
+            'available_disk',
+            'used_disk_percent',
+          ].includes(name);
+        case 'mssql':
+          return !['cpu_usage_percent'].includes(name);
+        case 'elasticsearch':
+          return ![
+            'connections',
+            'cache_hit_ratio',
+            'replication_lag',
+            'lock_wait_time',
+          ].includes(name);
+        default:
+          return true;
+      }
+    });
+});
+
 defineOptions({ name: 'ClDatabaseDetailTabMonitoring' });
 </script>
 
@@ -37,6 +81,7 @@ defineOptions({ name: 'ClDatabaseDetailTabMonitoring' });
     :default-metric-groups="defaultMetricGroups"
     :default-time-range="defaultTimeRange"
     :all-metric-groups-fn="getDatabaseAllMetricGroups"
+    :available-metric-groups="availableMetricGroups"
     @time-range-change="onTimeRangeChange"
     @metric-groups-change="onMetricGroupsChange"
   />

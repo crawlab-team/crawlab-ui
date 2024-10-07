@@ -7,7 +7,6 @@ const formatValue = (value: number, sizes: string[], decimal?: number) => {
   const formattedValue = decimal
     ? (value / Math.pow(1000, i)).toFixed(decimal)
     : Math.round(value / Math.pow(1000, i)); // Ensure division result is a number
-  console.debug(formattedValue, i, sizes[i]);
   return formattedValue + sizes[i];
 };
 

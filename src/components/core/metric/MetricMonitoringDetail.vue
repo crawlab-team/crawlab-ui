@@ -15,6 +15,7 @@ const props = defineProps<{
   defaultMetricGroups?: string[];
   defaultTimeRange?: string;
   allMetricGroupsFn?: () => MetricGroup[];
+  availableMetricGroups?: string[];
 }>();
 
 const emit = defineEmits<{
@@ -240,6 +241,21 @@ onBeforeUnmount(() => {
 watch(metricGroups, getMetricsTimeSeriesData);
 watch(timeUnit, getMetricsTimeSeriesData);
 watch(activeId, getMetricsTimeSeriesData);
+
+const getMetricGroupLabel = (name: string) => {
+  const { allMetricGroupsFn } = props;
+  const metricGroup = allMetricGroupsFn?.()?.find(
+    ({ name: groupName }) => groupName === name
+  );
+  return metricGroup?.label || name;
+};
+
+const isAvailable = (metricGroupName: string) => {
+  const { availableMetricGroups } = props;
+  if (!availableMetricGroups) return true;
+  return availableMetricGroups.includes(metricGroupName);
+};
+
 defineOptions({ name: 'ClMetricMonitoringDetail' });
 </script>
 
@@ -278,7 +294,11 @@ defineOptions({ name: 'ClMetricMonitoringDetail' });
           </template>
           <el-option
             v-for="{ label, value } in metricOptions"
-            :label="label"
+            :label="
+              isAvailable(value)
+                ? label
+                : `${label} (${t('components.metric.unavailable.option')})`
+            "
             :value="value"
           />
         </el-select>
@@ -288,11 +308,18 @@ defineOptions({ name: 'ClMetricMonitoringDetail' });
       <el-space v-if="metricsTimeSeriesData?.length" wrap>
         <el-card v-for="name in metricGroups" shadow="hover">
           <cl-chart
+            v-if="isAvailable(name)"
             :key="JSON.stringify([name, metricsTimeSeriesData])"
             type="line"
             :data="getLineChartData(name)"
             :options="getLineChartOptions(name)"
           />
+          <div v-else class="unavailable-metric">
+            <el-empty :description="t('components.metric.unavailable.chart')" />
+            <div class="label">
+              {{ getMetricGroupLabel(name) }}
+            </div>
+          </div>
         </el-card>
       </el-space>
       <cl-empty v-else />
@@ -307,6 +334,11 @@ defineOptions({ name: 'ClMetricMonitoringDetail' });
   height: 100%;
   overflow: auto;
   position: relative;
+
+  &:deep(.el-empty) {
+    width: 300px;
+    height: 300px;
+  }
 
   .control-panel {
     padding: 10px;
@@ -329,6 +361,19 @@ defineOptions({ name: 'ClMetricMonitoringDetail' });
 
   .metric-list {
     padding: 10px;
+
+    .unavailable-metric {
+      position: relative;
+
+      .label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 12px;
+        font-weight: 500;
+        color: #666666;
+      }
+    }
   }
 }
 </style>

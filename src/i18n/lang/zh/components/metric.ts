@@ -45,6 +45,10 @@ const metric: LComponentsMetric = {
     label: '无数据',
     tooltip: '该节点暂无最近的监控数据',
   },
+  unavailable: {
+    chart: '该指标不可用',
+    option: '不可用',
+  },
 };
 
 export default metric;

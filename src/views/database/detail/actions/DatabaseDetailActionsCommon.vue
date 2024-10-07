@@ -39,6 +39,8 @@ const metricNames = computed(() => {
       return ['used_memory', 'used_disk'];
     case 'mssql':
       return ['used_memory_percent', 'used_disk_percent'];
+    case 'elasticsearch':
+      return ['cpu_usage_percent', 'used_memory_percent', 'used_disk_percent'];
     default:
       return ['used_memory_percent', 'used_disk_percent'];
   }

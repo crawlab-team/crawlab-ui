@@ -45,4 +45,8 @@ interface LComponentsMetric {
     label: string;
     tooltip: string;
   };
+  unavailable: {
+    chart: string;
+    option: string;
+  };
 }

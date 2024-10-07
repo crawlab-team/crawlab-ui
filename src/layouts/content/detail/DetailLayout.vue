@@ -137,6 +137,7 @@ defineOptions({ name: 'ClDetailLayout' });
 
     .content-container {
       flex: 1;
+      height: calc(100% - 41px - 50px);
     }
   }
 }

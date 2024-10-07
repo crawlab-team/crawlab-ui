@@ -45,6 +45,10 @@ const metric: LComponentsMetric = {
     label: 'No Data',
     tooltip: 'No recent monitoring data available for this node',
   },
+  unavailable: {
+    chart: 'This metric is unavailable',
+    option: 'Unavailable',
+  },
 };
 
 export default metric;

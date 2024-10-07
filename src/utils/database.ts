@@ -380,6 +380,12 @@ export const getDatabaseSyntaxKeywords = (
 
 export const getDatabaseAllMetricGroups = (): MetricGroup<DatabaseMetric>[] => [
   {
+    name: 'cpu_usage_percent',
+    label: t('components.metric.metrics.cpu_usage_percent'),
+    metrics: ['cpu_usage_percent'],
+    format: 'percent',
+  },
+  {
     name: 'total_memory',
     label: t('components.metric.metrics.total_memory'),
     metrics: ['total_memory'],
@@ -438,7 +444,6 @@ export const getDatabaseAllMetricGroups = (): MetricGroup<DatabaseMetric>[] => [
     label: t('components.metric.metrics.query_per_second'),
     metrics: ['query_per_second'],
     format: 'number',
-    formatDecimal: 1,
   },
   {
     name: 'cache_hit_ratio',
