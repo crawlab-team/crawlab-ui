@@ -2,6 +2,7 @@
 import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
+import { isPro } from '@/utils';
 
 const ns = 'spider';
 const store = useStore();
@@ -21,8 +22,9 @@ defineOptions({ name: 'ClSpiderDetail' });
     <template #actions>
       <cl-spider-detail-actions-common />
       <cl-spider-detail-actions-files v-if="activeTabName === 'files'" />
-      <cl-spider-detail-actions-data v-if="activeTabName === 'data'" />
-      <cl-spider-detail-actions-database v-if="activeTabName === 'data'" />
+      <template v-if="isPro()">
+        <cl-spider-detail-actions-data v-if="activeTabName === 'data'" />
+      </template>
       <slot name="actions-suffix" />
     </template>
   </cl-detail-layout>

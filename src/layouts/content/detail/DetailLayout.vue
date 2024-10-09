@@ -10,6 +10,7 @@ const props = withDefaults(
     navItemNameKey?: string;
     showBackButton?: boolean;
     showSaveButton?: boolean;
+    allListSelectOptions?: SelectOption[];
   }>(),
   {
     noSidebar: false,
@@ -37,7 +38,10 @@ const computedTabs = computed<NavItem[]>(
   () => store.getters[`${ns.value}/tabs`]
 );
 
-const allListSelectOptions = computed(() => {
+const computedAllListSelectOptions = computed(() => {
+  if (props.allListSelectOptions) {
+    return props.allListSelectOptions;
+  }
   return store.state[ns.value].allList.map((item: BaseModel) => ({
     label: item[props.navItemNameKey],
     value: item._id,
@@ -81,7 +85,7 @@ defineOptions({ name: 'ClDetailLayout' });
               @change="onNavSelect"
             >
               <el-option
-                v-for="op in allListSelectOptions"
+                v-for="op in computedAllListSelectOptions"
                 :key="op.value"
                 :label="op.label"
                 :value="op.value"

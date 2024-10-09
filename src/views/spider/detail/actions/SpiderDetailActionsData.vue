@@ -1,146 +1,145 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { translate } from '@/utils';
-import { inferDataFieldTypes } from '@/utils/dataFields';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { DEDUP_TYPE_IGNORE, DEDUP_TYPE_OVERWRITE } from '@/constants/dedup';
+import { EMPTY_OBJECT_ID, translate } from '@/utils';
+import { useDatabase } from '@/components';
+import useRequest from '@/services/request';
 
 const t = translate;
 
+const { get } = useRequest();
+
 // store
 const ns = 'spider';
-const nsDc = 'dataCollection';
 const store = useStore();
-const { spider: spiderState, dataCollection: dataCollectionState } =
-  store.state as RootStoreState;
-
-// spider col name
-const colName = () => spiderState.form.col_name as string;
+const { spider: state } = store.state as RootStoreState;
 
 // display all fields
-const displayAllFields = ref<boolean>(spiderState.dataDisplayAllFields);
+const displayAllFields = ref<boolean>(state.dataDisplayAllFields);
 const onDisplayAllFieldsChange = (val: boolean) => {
   store.commit(`${ns}/setDataDisplayAllFields`, val);
 };
 
-const inferFields = async () => {
-  let fields = store.getters[`${nsDc}/resultFields`] as DataField[];
-  const data = dataCollectionState.resultTableData as Result[];
-  fields = inferDataFieldTypes(fields, data);
-  const form = {
-    ...dataCollectionState.form,
-    fields,
-  };
-  store.commit(`${nsDc}/setForm`, form);
-  await store.dispatch(`${nsDc}/updateById`, {
-    id: form._id,
-    form,
-  });
-  await store.dispatch(`${nsDc}/getById`, form._id);
-};
+const form = computed(() => state.form);
 
-const onClickInferDataFieldsTypes = async () => {
-  await ElMessageBox.confirm(
-    t('common.messageBox.confirm.proceed'),
-    t('common.actions.inferDataFieldsTypes'),
-    { type: 'warning' }
+const {
+  allListSelectOptions: allDatabaseSelectOptions,
+  allDict: allDatabaseDict,
+} = useDatabase(store);
+onBeforeMount(() => {
+  store.dispatch(`database/getAllList`);
+});
+
+const tableNames = ref<string[]>([]);
+const getTableNames = async () => {
+  if (!form.value?.data_source_id) return;
+  const res = await get<any, Promise<ResponseWithData<DatabaseMetadata>>>(
+    `/databases/${form.value.data_source_id}/metadata`
   );
-  await inferFields();
-  await ElMessage.success(t('common.message.success.action'));
+  tableNames.value =
+    res?.data?.databases?.[0]?.tables?.map(table => table.name as string) || [];
+};
+const tableSelectOptions = computed<SelectOption[]>(() =>
+  tableNames.value.map(name => ({ label: name, value: name }))
+);
+onBeforeMount(getTableNames);
+watch(() => form.value?.data_source_id, getTableNames);
+
+const onDatabaseChange = async (value: string) => {
+  // TODO: implement
 };
 
-watch(
-  () => JSON.stringify(dataCollectionState.resultTableData),
-  async () => {
-    if (
-      !dataCollectionState.form?.fields?.length &&
-      dataCollectionState.resultTableData?.length
-    ) {
-      await inferFields();
-    }
-  }
-);
-
-const dedupEnabled = ref<boolean>(
-  dataCollectionState.form?.dedup?.enabled as boolean
-);
-watch(
-  () => dataCollectionState.form?.dedup?.enabled,
-  async val => {
-    dedupEnabled.value = val as boolean;
-  }
-);
-const onDedupEnabledChange = async (val: boolean) => {
-  store.commit(`${nsDc}/setForm`, {
-    ...dataCollectionState.form,
-    dedup: {
-      ...dataCollectionState.form?.dedup,
-      enabled: val,
-    },
-  });
-  await store.dispatch(`${nsDc}/updateById`, {
-    id: dataCollectionState.form._id,
-    form: dataCollectionState.form,
-  });
-  await ElMessage.success(
-    val
-      ? t('common.message.success.enabled')
-      : t('common.message.success.disabled')
-  );
+const getDataSourceByDatabaseId = (id: string): DatabaseDataSource => {
+  const db = allDatabaseDict.value.get(id) as Database | undefined;
+  if (!db?.data_source) return 'mongo';
+  return db.data_source;
 };
 
-const dedupType = ref<string>(
-  (dataCollectionState.form?.dedup?.type as string) || DEDUP_TYPE_IGNORE
-);
-watch(
-  () => dataCollectionState.form?.dedup?.type,
-  async val => {
-    dedupType.value = val || DEDUP_TYPE_IGNORE;
-  }
-);
-const onDedupTypeChange = async (val: string) => {
-  store.commit(`${nsDc}/setForm`, {
-    ...dataCollectionState.form,
-    dedup: {
-      ...dataCollectionState.form?.dedup,
-      type: val,
-    },
-  });
-  await store.dispatch(`${nsDc}/updateById`, {
-    id: dataCollectionState.form._id,
-    form: dataCollectionState.form,
-  });
-  await ElMessage.success(t('common.message.success.update'));
-};
+onBeforeMount(() => {});
 
-const onClickDedupFields = () => {
-  store.commit(`${nsDc}/setDedupFieldsDialogVisible`, true);
-};
 defineOptions({ name: 'ClSpiderDetailActionsData' });
 </script>
 
 <template>
-  <cl-nav-action-group class="spider-detail-actions-data">
-    <cl-nav-action-fa-icon
-      :icon="['fa', 'table']"
-      :label="t('components.spider.actions.data.tooltip.dataActions')"
-    />
+  <cl-nav-action-group v-if="form" class="spider-detail-actions-data">
+    <cl-nav-action-fa-icon :icon="['fa', 'table']" />
+    <cl-nav-action-item>
+      <el-select
+        class="database"
+        v-model="form.data_source_id"
+        @select="onDatabaseChange"
+      >
+        <template #label="{ label }">
+          <div>
+            <div>
+              <cl-database-data-source
+                :data-source="
+                  getDataSourceByDatabaseId(form.data_source_id as string)
+                "
+                icon-only
+              />
+              <span style="margin: 5px">{{ label }}</span>
+              <cl-icon
+                v-if="form.data_source_id === EMPTY_OBJECT_ID"
+                color="var(--cl-warning-color)"
+                :icon="['fa', 'star']"
+              />
+            </div>
+          </div>
+        </template>
+        <el-option
+          v-for="(op, $index) in allDatabaseSelectOptions"
+          :key="$index"
+          :label="op.label"
+          :value="op.value"
+        >
+          <div>
+            <cl-database-data-source
+              :data-source="getDataSourceByDatabaseId(op.value)"
+              icon-only
+            />
+            <span style="margin: 5px">{{ op.label }}</span>
+            <cl-icon
+              v-if="op.value === EMPTY_OBJECT_ID"
+              color="var(--cl-warning-color)"
+              :icon="['fa', 'star']"
+            />
+          </div>
+        </el-option>
+      </el-select>
+    </cl-nav-action-item>
+    <cl-nav-action-item>
+      <el-select class="table" v-model="form.col_name" filterable>
+        <template #label="{ label }">
+          <div>
+            <cl-icon :icon="['fa', 'table']" />
+            <span style="margin-left: 5px">{{ label }}</span>
+          </div>
+        </template>
+        <el-option
+          v-for="(op, $index) in tableSelectOptions"
+          :key="$index"
+          :label="op.label"
+          :value="op.value"
+        />
+      </el-select>
+    </cl-nav-action-item>
     <cl-nav-action-item>
       <el-tooltip
         :content="t('components.spider.actions.data.tooltip.displayAllFields')"
       >
-        <cl-switch
-          class="display-all-fields"
-          :active-icon="['fa', 'eye']"
-          :inactive-icon="['fa', 'eye']"
-          inline-prompt
-          v-model="displayAllFields"
-          @change="onDisplayAllFieldsChange"
-        />
+        <div class="display-all-fields">
+          <cl-switch
+            v-model="displayAllFields"
+            :active-icon="['fa', 'eye']"
+            :inactive-icon="['fa', 'eye']"
+            inline-prompt
+            @change="onDisplayAllFieldsChange"
+          />
+        </div>
       </el-tooltip>
     </cl-nav-action-item>
-    <cl-nav-action-item v-export="colName">
+    <cl-nav-action-item v-export="form.col_name">
       <cl-fa-icon-button
         :icon="['fa', 'download']"
         :tooltip="t('components.spider.actions.data.tooltip.export')"
@@ -149,73 +148,22 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
         class-name="export-btn"
       />
     </cl-nav-action-item>
-    <cl-nav-action-item>
-      <cl-fa-icon-button
-        :icon="['fa', 'lightbulb']"
-        :tooltip="
-          t('components.spider.actions.data.tooltip.inferDataFieldsTypes')
-        "
-        type="primary"
-        class-name="infer-data-fields-types-btn"
-        @click="onClickInferDataFieldsTypes"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item>
-      <el-tooltip
-        :content="
-          dedupEnabled
-            ? t('components.spider.actions.data.tooltip.dedup.enabled')
-            : t('components.spider.actions.data.tooltip.dedup.disabled')
-        "
-      >
-        <cl-switch
-          class="dedup"
-          :active-icon="['fa', 'filter']"
-          :inactive-icon="['fa', 'filter']"
-          inline-prompt
-          v-model="dedupEnabled"
-          @change="onDedupEnabledChange"
-        />
-      </el-tooltip>
-    </cl-nav-action-item>
-    <cl-nav-action-item v-if="dedupEnabled">
-      <cl-fa-icon-button
-        :icon="['fa', 'list']"
-        :tooltip="t('components.spider.actions.data.tooltip.dedup.fields')"
-        type="primary"
-        class-name="infer-data-fields-types-btn"
-        @click="onClickDedupFields"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item v-if="dedupEnabled">
-      <el-tooltip :content="t('components.result.dedup.labels.dedupType')">
-        <el-select
-          class="dedup-type"
-          v-model="dedupType"
-          @change="onDedupTypeChange"
-          style="margin-right: 10px"
-        >
-          <el-option
-            :value="DEDUP_TYPE_IGNORE"
-            :label="t('components.result.dedup.types.ignore')"
-          />
-          <el-option
-            :value="DEDUP_TYPE_OVERWRITE"
-            :label="t('components.result.dedup.types.overwrite')"
-          />
-        </el-select>
-      </el-tooltip>
-    </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
 
 <style scoped>
-.spider-detail-actions-data:deep(.display-all-fields),
-.spider-detail-actions-data:deep(.dedup) {
-  margin-right: 10px;
-}
+.spider-detail-actions-data {
+  &:deep(.display-all-fields) {
+    margin-right: 10px;
+  }
 
-.spider-detail-actions-data:deep(.dedup-type) {
-  width: 120px;
+  &:deep(.el-select) {
+    width: 150px;
+    margin-right: 10px;
+
+    &.database {
+      width: 160px;
+    }
+  }
 }
 </style>

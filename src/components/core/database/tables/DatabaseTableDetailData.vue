@@ -12,11 +12,12 @@ const props = defineProps<{
   activeTable?: DatabaseTable;
   activeId?: string;
   databaseName?: string;
+  filter?: { [key: string]: any };
 }>();
 
 const t = translate;
 
-const { getList, post } = useRequest();
+const { post } = useRequest();
 
 const tableRef = ref<typeof ClEditTable | null>(null);
 
@@ -114,12 +115,16 @@ const originalTableDataMap = computed(() => {
 });
 
 const getTableData = async () => {
-  const res = await getList(`/databases/${props.activeId}/tables/data`, {
-    database: props.databaseName,
-    table: props.activeTable?.name,
-    page: tablePagination.value.page,
-    size: tablePagination.value.size,
-  });
+  const res = await post<any, Promise<ResponseWithListData>>(
+    `/databases/${props.activeId}/tables/data/get`,
+    {
+      database: props.databaseName,
+      table: props.activeTable?.name,
+      filter: props.filter,
+      page: tablePagination.value.page,
+      size: tablePagination.value.size,
+    }
+  );
   originalTableData.value =
     res.data?.map(row => {
       return { ...row, __hash__: getRowHash(row) };

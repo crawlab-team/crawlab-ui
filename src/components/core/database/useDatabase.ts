@@ -2,7 +2,12 @@ import { computed } from 'vue';
 import { Store } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import useDatabaseService from '@/services/database/databaseService';
-import { getDefaultFormComponentData, plainClone, translate } from '@/utils';
+import {
+  EMPTY_OBJECT_ID,
+  getDefaultFormComponentData,
+  plainClone,
+  translate,
+} from '@/utils';
 import useForm from '@/components/ui/form/useForm';
 import { databaseDefaults } from '@/utils/database';
 
@@ -67,10 +72,21 @@ export const useDatabase = (store: Store<RootStoreState>) => {
     store.commit(`${ns}/setForm`, { ...form });
   };
 
+  const allListSelectOptions = computed<SelectOption[]>(
+    () =>
+      store.getters[`${ns}/allListSelectOptions`]?.map((op: SelectOption) => {
+        if (op.value === EMPTY_OBJECT_ID) {
+          return { ...op, label: t('components.database.default.name') };
+        }
+        return op;
+      }) || []
+  );
+
   return {
     ...useForm(ns, store, useDatabaseService(store), formComponentData),
     formRules,
     dataSourceOptions,
+    allListSelectOptions,
     getTypeOptionsWithDefault,
     onChangePasswordFunc,
     onHostsAdd,

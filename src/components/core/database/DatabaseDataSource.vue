@@ -4,6 +4,7 @@ import { translate } from '@/utils';
 
 const props = defineProps<{
   dataSource?: DatabaseDataSource;
+  iconOnly?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -106,11 +107,16 @@ defineOptions({ name: 'ClDatabaseDataSource' });
 </script>
 
 <template>
-  <cl-tag
-    :icon="data.icon"
-    :label="data.label"
-    :tooltip="data.tooltip"
-    :type="data.type"
-    @click="emit('click')"
-  />
+  <template v-if="iconOnly">
+    <cl-icon :icon="data.icon" @click="emit('click')" />
+  </template>
+  <template v-else>
+    <cl-tag
+      :icon="data.icon"
+      :label="data.label"
+      :tooltip="data.tooltip"
+      :type="data.type"
+      @click="emit('click')"
+    />
+  </template>
 </template>

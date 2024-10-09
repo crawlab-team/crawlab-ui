@@ -39,12 +39,16 @@ const availableMetricGroups = computed(() => {
     .map(({ name }) => name)
     .filter(name => {
       switch (data_source) {
+        case 'mongo':
+          return !['cpu_usage_percent'].includes(name);
         case 'mysql':
           return ![
             'cpu_usage_percent',
             'total_disk',
             'available_disk',
             'used_disk_percent',
+            'replication_lag',
+            'lock_wait_time',
           ].includes(name);
         case 'postgres':
           return ![

@@ -205,33 +205,18 @@ defineOptions({ name: 'ClDatabaseTableDetail' });
 
 <template>
   <div class="database-table-detail">
-    <cl-nav-tabs
-      :active-key="activeTabName"
-      :items="tabsItems"
-      @select="(key: string) => (activeTabName = key)"
-    >
-      <template #extra>
-        <div class="nav-tabs-actions">
-          <cl-fa-icon-button
-            type="primary"
-            :icon="['fa', 'save']"
-            :tooltip="t('components.database.actions.commitChanges')"
-            size="small"
-            :disabled="!canSave"
-            :loading="commitLoading"
-            @click.stop="onCommit"
-          />
-          <cl-fa-icon-button
-            type="info"
-            :icon="['fa', 'rotate-left']"
-            :tooltip="t('components.database.actions.rollbackChanges')"
-            size="small"
-            :disabled="!hasChanges"
-            @click.stop="onRollback"
-          />
-        </div>
-      </template>
-    </cl-nav-tabs>
+    <!-- Nav Tabs -->
+    <cl-database-nav-tabs
+      v-model="activeTabName"
+      :tabs-items="tabsItems"
+      :can-save="canSave"
+      :has-changes="hasChanges"
+      :commit-loading="commitLoading"
+      @commit="onCommit"
+      @rollback="onRollback"
+    />
+
+    <!-- Tab Content -->
     <div class="tab-content">
       <template v-if="activeTabName === TAB_NAME_DATA">
         <cl-database-table-detail-data
