@@ -285,7 +285,7 @@ const initResize = (event: MouseEvent) => {
 };
 const updateHeights = (newHeight: number) => {
   if (resultsContainerRef.value && editorRef.value) {
-    if (newHeight < 41) newHeight = 41;
+    if (newHeight < 240) newHeight = 240;
     resultsContainerRef.value.style.flex = `0 0 ${newHeight}px`;
     resultsContainerRef.value.style.height = `${newHeight}px`;
     editorRef.value.style.flex = `0 0 calc(100% - ${newHeight}px)`;
@@ -419,6 +419,19 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
     }
   }
 
+  &:not(.results-visible) {
+    .content {
+      .editor {
+        flex: 0 0 calc(100% - 41px) !important;
+      }
+
+      .results-container {
+        flex: 0 0 41px !important;
+        height: 41px !important;
+      }
+    }
+  }
+
   &.resizing {
     .content {
       & > * {
@@ -439,14 +452,12 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
     flex-direction: column;
 
     .editor {
-      flex: 0 0 calc(100% - 41px);
       transition: flex 0.3s;
     }
 
     .results-container {
       position: relative;
       border-top: 1px solid var(--el-border-color);
-      flex: 0 0 41px;
       overflow: hidden;
       transition: flex 0.3s;
 
