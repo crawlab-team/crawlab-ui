@@ -39,6 +39,9 @@ interface LComponentsSpider {
           fields: string;
         };
       };
+      placeholder: {
+        table: string;
+      };
     };
   };
   stat: {
@@ -56,6 +59,14 @@ interface LComponentsSpider {
   message: {
     success: {
       scheduleTask: string;
+    };
+  };
+  messageBox: {
+    confirm: {
+      changeDatabase: {
+        title: string;
+        message: string;
+      };
     };
   };
 }

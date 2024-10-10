@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { EMPTY_OBJECT_ID, translate } from '@/utils';
 import { useDatabase } from '@/components';
 import useRequest from '@/services/request';
+import { useSpiderDetail } from '@/views';
 
 const t = translate;
 
@@ -21,6 +23,8 @@ const onDisplayAllFieldsChange = (val: boolean) => {
 };
 
 const form = computed(() => state.form);
+
+const { activeId } = useSpiderDetail();
 
 const {
   allListSelectOptions: allDatabaseSelectOptions,
@@ -45,9 +49,36 @@ const tableSelectOptions = computed<SelectOption[]>(() =>
 onBeforeMount(getTableNames);
 watch(() => form.value?.data_source_id, getTableNames);
 
+const dataSourceId = ref<string>(form.value?.data_source_id || EMPTY_OBJECT_ID);
 const onDatabaseChange = async (value: string) => {
-  // TODO: implement
+  dataSourceId.value = form.value?.data_source_id || EMPTY_OBJECT_ID;
+  await ElMessageBox.confirm(
+    t('components.spider.messageBox.confirm.changeDatabase.message'),
+    t('components.spider.messageBox.confirm.changeDatabase.title'),
+    {
+      type: 'warning',
+    }
+  );
+  store.commit(`${ns}/setForm`, {
+    ...form.value,
+    data_source_id: value,
+  });
+  try {
+    await store.dispatch(`${ns}/updateById`, {
+      id: activeId.value,
+      form: form.value,
+    });
+    ElMessage.success(t('common.message.success.save'));
+  } catch (e: any) {
+    ElMessage.error(e.message);
+  }
 };
+watch(
+  () => form.value?.data_source_id,
+  value => {
+    dataSourceId.value = value || EMPTY_OBJECT_ID;
+  }
+);
 
 const getDataSourceByDatabaseId = (id: string): DatabaseDataSource => {
   const db = allDatabaseDict.value.get(id) as Database | undefined;
@@ -66,25 +97,23 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
     <cl-nav-action-item>
       <el-select
         class="database"
-        v-model="form.data_source_id"
-        @select="onDatabaseChange"
+        v-model="dataSourceId"
+        @change="onDatabaseChange"
       >
         <template #label="{ label }">
           <div>
-            <div>
-              <cl-database-data-source
-                :data-source="
-                  getDataSourceByDatabaseId(form.data_source_id as string)
-                "
-                icon-only
-              />
-              <span style="margin: 5px">{{ label }}</span>
-              <cl-icon
-                v-if="form.data_source_id === EMPTY_OBJECT_ID"
-                color="var(--cl-warning-color)"
-                :icon="['fa', 'star']"
-              />
-            </div>
+            <cl-database-data-source
+              :data-source="
+                getDataSourceByDatabaseId(form.data_source_id as string)
+              "
+              icon-only
+            />
+            <span style="margin: 5px">{{ label }}</span>
+            <cl-icon
+              v-if="form.data_source_id === EMPTY_OBJECT_ID"
+              color="var(--cl-warning-color)"
+              :icon="['fa', 'star']"
+            />
           </div>
         </template>
         <el-option
@@ -109,7 +138,12 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
       </el-select>
     </cl-nav-action-item>
     <cl-nav-action-item>
-      <el-select class="table" v-model="form.col_name" filterable>
+      <el-select
+        class="table"
+        v-model="form.col_name"
+        filterable
+        :placeholder="t('components.spider.actions.data.placeholder.table')"
+      >
         <template #label="{ label }">
           <div>
             <cl-icon :icon="['fa', 'table']" />

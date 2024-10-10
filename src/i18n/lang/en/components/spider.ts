@@ -39,6 +39,9 @@ const spider: LComponentsSpider = {
           fields: 'Configure Deduplication Fields',
         },
       },
+      placeholder: {
+        table: 'Please select table',
+      },
     },
   },
   stat: {
@@ -56,6 +59,15 @@ const spider: LComponentsSpider = {
   message: {
     success: {
       scheduleTask: 'Scheduled task successfully',
+    },
+  },
+  messageBox: {
+    confirm: {
+      changeDatabase: {
+        title: 'Change Database',
+        message:
+          'Are you sure you want to change the database? The change may result in issues when viewing or saving data with the spider.',
+      },
     },
   },
 };

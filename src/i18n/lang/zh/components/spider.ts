@@ -39,6 +39,9 @@ const spider: LComponentsSpider = {
           fields: '设置去重字段',
         },
       },
+      placeholder: {
+        table: '请选择表',
+      },
     },
   },
   stat: {
@@ -56,6 +59,15 @@ const spider: LComponentsSpider = {
   message: {
     success: {
       scheduleTask: '派发任务成功',
+    },
+  },
+  messageBox: {
+    confirm: {
+      changeDatabase: {
+        title: '更改数据库',
+        message:
+          '确定要更改数据库吗？此更改可能导致查看或保存爬虫数据时出现问题。',
+      },
     },
   },
 };
