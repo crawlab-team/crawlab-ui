@@ -2,8 +2,8 @@
 import { computed, h, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants';
-import ResultCell from '@/components/core/result/ResultCell.vue';
 import { getDataFieldIconByType } from '@/utils/dataFields';
+import { ClResultCell } from '@/components';
 
 interface FilterConditionData {
   key?: string;
@@ -79,7 +79,7 @@ const tableColumns = computed<TableColumns<Result>>(() => {
         value: (row: Result) => {
           const value = row[key as string];
           const type = dataFieldsMap.value.get(key as string);
-          return h(ResultCell, {
+          return h(ClResultCell, {
             fieldKey: key,
             type,
             value,
@@ -107,7 +107,6 @@ const actionFunctions = {
     return store.dispatch(`${ns}/getResultData`, {
       id,
       params: {
-        data_source_id: props.dataSourceId,
         conditions: filterConditions.value,
         ...tablePagination.value,
       },
@@ -154,7 +153,7 @@ defineOptions({ name: 'ClResultList' });
   <cl-result-cell-dialog />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .result-list {
   .nav-actions {
     border-bottom: none;

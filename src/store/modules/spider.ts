@@ -26,7 +26,7 @@ const t = translate;
 
 const endpoint = '/spiders';
 
-const { post, getList } = useRequest();
+const { get, post, getList } = useRequest();
 
 const state = {
   ...getDefaultStoreState<Spider>('spider'),
@@ -47,10 +47,40 @@ const state = {
     // {id: TAB_NAME_SETTINGS, title: t('common.tabs.settings')},
   ],
   dataDisplayAllFields: false,
+  databaseMetadata: undefined,
 } as SpiderStoreState;
 
 const getters = {
   ...getDefaultStoreGetters<Spider>(),
+  databaseTableSelectOptions: (state: SpiderStoreState) => {
+    const { databaseMetadata } = state;
+    if (!databaseMetadata) return [];
+    const { databases } = databaseMetadata;
+    if (!databases?.length) return [];
+    if (databases.length === 1) {
+      return (
+        databases[0].tables?.map(table => ({
+          label: table.name,
+          value: table.name,
+        })) || []
+      );
+    } else {
+      const options: SelectOption[] = [];
+      databases.forEach(database => {
+        const { tables } = database;
+        if (!tables?.length) return;
+        options.push({
+          label: database.name,
+          value: database.name,
+          children: tables.map(table => ({
+            label: table.name,
+            value: `${database.name}|${table.name}`,
+          })),
+        });
+      });
+      return options;
+    }
+  },
 } as SpiderStoreGetters;
 
 const mutations = {
@@ -58,6 +88,9 @@ const mutations = {
   ...getBaseFileStoreMutations<SpiderStoreState>(),
   setDataDisplayAllFields: (state: SpiderStoreState, display: boolean) => {
     state.dataDisplayAllFields = display;
+  },
+  setDatabaseMetadata: (state: SpiderStoreState, metadata: any) => {
+    state.databaseMetadata = metadata;
   },
 } as SpiderStoreMutations;
 
@@ -81,6 +114,14 @@ const actions = {
   ) => {
     const res = await post(`/spiders/${id}/run`, options);
     return res;
+  },
+  getDatabaseMetadata: async (
+    { commit }: StoreActionContext<SpiderStoreState>,
+    id: string
+  ) => {
+    const res = await get(`/databases/${id}/metadata`);
+    commit('setDatabaseMetadata', res.data);
+    return res.data;
   },
 } as SpiderStoreActions;
 

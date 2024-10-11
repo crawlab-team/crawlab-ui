@@ -34,20 +34,11 @@ onBeforeMount(() => {
   store.dispatch(`database/getAllList`);
 });
 
-const tableNames = ref<string[]>([]);
-const getTableNames = async () => {
-  if (!form.value?.data_source_id) return;
-  const res = await get<any, Promise<ResponseWithData<DatabaseMetadata>>>(
-    `/databases/${form.value.data_source_id}/metadata`
-  );
-  tableNames.value =
-    res?.data?.databases?.[0]?.tables?.map(table => table.name as string) || [];
-};
-const tableSelectOptions = computed<SelectOption[]>(() =>
-  tableNames.value.map(name => ({ label: name, value: name }))
-);
-onBeforeMount(getTableNames);
-watch(() => form.value?.data_source_id, getTableNames);
+const databaseMetadata = computed(() => state.databaseMetadata);
+const isMultiDatabases = computed<boolean>(() => {
+  if (!databaseMetadata.value?.databases?.length) return false;
+  return databaseMetadata.value.databases.length > 1;
+});
 
 const dataSourceId = ref<string>(form.value?.data_source_id || EMPTY_OBJECT_ID);
 const onDatabaseChange = async (value: string) => {
@@ -79,14 +70,60 @@ watch(
     dataSourceId.value = value || EMPTY_OBJECT_ID;
   }
 );
-
 const getDataSourceByDatabaseId = (id: string): DatabaseDataSource => {
   const db = allDatabaseDict.value.get(id) as Database | undefined;
   if (!db?.data_source) return 'mongo';
   return db.data_source;
 };
 
-onBeforeMount(() => {});
+const dbName = ref<string>(form.value?.db_name || '');
+watch(
+  () => form.value?.db_name,
+  value => {
+    dbName.value = value || '';
+  }
+);
+
+const colName = ref<string>(form.value?.col_name || '');
+watch(
+  () => form.value?.col_name,
+  value => {
+    colName.value = value || '';
+  }
+);
+
+const databaseTableSelectOptions = computed<SelectOption[]>(() => {
+  return store.getters[`${ns}/databaseTableSelectOptions`];
+});
+const onDatabaseTableChange = async (value: string) => {
+  if (isMultiDatabases.value) {
+    const dbName = value.split('|')[0];
+    const colName = value.split('|')[1];
+    store.commit(`${ns}/setForm`, {
+      ...form.value,
+      db_name: value,
+    });
+  } else {
+    store.commit(`${ns}/setForm`, {
+      ...form.value,
+      db_name: '',
+      col_name: value,
+    });
+  }
+  store.commit(`${ns}/setForm`, {
+    ...form.value,
+    col_name: value,
+  });
+  try {
+    await store.dispatch(`${ns}/updateById`, {
+      id: activeId.value,
+      form: form.value,
+    });
+    ElMessage.success(t('common.message.success.save'));
+  } catch (e: any) {
+    ElMessage.error(e.message);
+  }
+};
 
 defineOptions({ name: 'ClSpiderDetailActionsData' });
 </script>
@@ -138,25 +175,45 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
       </el-select>
     </cl-nav-action-item>
     <cl-nav-action-item>
-      <el-select
-        class="table"
-        v-model="form.col_name"
-        filterable
-        :placeholder="t('components.spider.actions.data.placeholder.table')"
-      >
-        <template #label="{ label }">
-          <div>
-            <cl-icon :icon="['fa', 'table']" />
-            <span style="margin-left: 5px">{{ label }}</span>
-          </div>
-        </template>
-        <el-option
-          v-for="(op, $index) in tableSelectOptions"
-          :key="$index"
-          :label="op.label"
-          :value="op.value"
-        />
-      </el-select>
+      <template v-if="isMultiDatabases">
+        <el-cascader
+          class="table"
+          v-model="colName"
+          :options="databaseTableSelectOptions"
+          filterable
+          :placeholder="t('components.spider.actions.data.placeholder.table')"
+          @change="onDatabaseTableChange"
+        >
+          <template #label="{ label }">
+            <div>
+              <cl-icon :icon="['fa', 'table']" />
+              <span style="margin-left: 5px">{{ label }}</span>
+            </div>
+          </template>
+        </el-cascader>
+      </template>
+      <template v-else>
+        <el-select
+          class="table"
+          v-model="colName"
+          filterable
+          :placeholder="t('components.spider.actions.data.placeholder.table')"
+          @change="onDatabaseTableChange"
+        >
+          <template #label="{ label }">
+            <div>
+              <cl-icon :icon="['fa', 'table']" />
+              <span style="margin-left: 5px">{{ label }}</span>
+            </div>
+          </template>
+          <el-option
+            v-for="(op, $index) in databaseTableSelectOptions"
+            :key="$index"
+            :label="op.label"
+            :value="op.value"
+          />
+        </el-select>
+      </template>
     </cl-nav-action-item>
     <cl-nav-action-item>
       <el-tooltip
@@ -191,6 +248,7 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
     margin-right: 10px;
   }
 
+  &:deep(.el-cascader),
   &:deep(.el-select) {
     width: 150px;
     margin-right: 10px;
@@ -198,6 +256,10 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
     &.database {
       width: 160px;
     }
+  }
+
+  &:deep(.el-cascader) {
+    width: 200px;
   }
 }
 </style>

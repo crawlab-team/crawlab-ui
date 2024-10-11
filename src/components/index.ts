@@ -61,6 +61,7 @@ import useSchedule from './core/schedule/useSchedule';
 import CreateEditSpiderDialog from './core/spider/CreateEditSpiderDialog.vue';
 import RunSpiderDialog from './core/spider/RunSpiderDialog.vue';
 import SpiderForm from './core/spider/SpiderForm.vue';
+import SpiderResultDataWithDatabase from './core/spider/SpiderResultDataWithDatabase.vue';
 import SpiderStat from './core/spider/SpiderStat.vue';
 import SpiderTag from './core/spider/SpiderTag.vue';
 import UploadSpiderFilesDialog from './core/spider/UploadSpiderFilesDialog.vue';
@@ -274,6 +275,7 @@ export {
   CreateEditSpiderDialog as ClCreateEditSpiderDialog,
   RunSpiderDialog as ClRunSpiderDialog,
   SpiderForm as ClSpiderForm,
+  SpiderResultDataWithDatabase as ClSpiderResultDataWithDatabase,
   SpiderStat as ClSpiderStat,
   SpiderTag as ClSpiderTag,
   UploadSpiderFilesDialog as ClUploadSpiderFilesDialog,
