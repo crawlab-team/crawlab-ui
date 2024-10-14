@@ -7,6 +7,7 @@ import { useDatabase } from '@/components';
 import useRequest from '@/services/request';
 import { useSpiderDetail } from '@/views';
 import { debounce } from 'lodash';
+import { DATABASE_STATUS_OFFLINE } from '@/constants/database';
 
 const t = translate;
 
@@ -15,7 +16,8 @@ const { get } = useRequest();
 // store
 const ns = 'spider';
 const store = useStore();
-const { spider: state } = store.state as RootStoreState;
+const { spider: state, database: databaseState } =
+  store.state as RootStoreState;
 
 // display all fields
 const displayAllFields = ref<boolean>(state.dataDisplayAllFields);
@@ -27,12 +29,49 @@ const form = computed(() => state.form);
 
 const { activeId } = useSpiderDetail();
 
-const {
-  allListSelectOptions: allDatabaseSelectOptions,
-  allDict: allDatabaseDict,
-} = useDatabase(store);
+const { allDict: allDatabaseDict } = useDatabase(store);
 onBeforeMount(() => {
   store.dispatch(`database/getAllList`);
+});
+
+const allDatabaseSelectOptions = computed<SelectOption[]>(() => {
+  return databaseState.allList.map(db => {
+    const value = db._id;
+    let dbName = db.name;
+    if (db._id === EMPTY_OBJECT_ID) {
+      dbName = t('components.database.default.name');
+    }
+    let label = dbName;
+    if (db.status === DATABASE_STATUS_OFFLINE) {
+      label = `${dbName} (${t('components.database.status.label.offline')})`;
+    }
+    return {
+      value,
+      label,
+    };
+  });
+});
+
+const currentDatabase = computed(() => {
+  return allDatabaseDict.value.get(dataSourceId.value) as Database | undefined;
+});
+
+const isDatabaseOffline = computed(() => {
+  return currentDatabase.value?.status === DATABASE_STATUS_OFFLINE;
+});
+
+const isDatabaseTableMissing = computed(() => {
+  if (isMultiDatabases.value) {
+    return !databaseTableSelectOptions.value.some(
+      op =>
+        op.value === form.value?.db_name &&
+        op.children?.some(c => c.value === form.value?.col_name)
+    );
+  } else {
+    return !databaseTableSelectOptions.value.some(
+      op => op.value === form.value?.col_name
+    );
+  }
 });
 
 const databaseMetadata = computed(() => state.databaseMetadata);
@@ -153,6 +192,7 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
     <cl-nav-action-item>
       <el-select
         class="database"
+        :class="isDatabaseOffline ? 'offline' : ''"
         v-model="dataSourceId"
         @change="onDatabaseChange"
       >
@@ -197,10 +237,12 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
       <template v-if="isMultiDatabases">
         <el-cascader
           class="table"
+          :class="isDatabaseTableMissing ? 'missing' : ''"
           v-model="multiDbTableName"
           :options="databaseTableSelectOptions"
           filterable
           :placeholder="t('components.spider.actions.data.placeholder.table')"
+          :disabled="isDatabaseOffline"
           @change="onMultiDbTableChange"
         >
           <template #label="{ label }">
@@ -214,9 +256,11 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
       <template v-else>
         <el-select
           class="table"
+          :class="isDatabaseTableMissing ? 'missing' : ''"
           v-model="tableName"
           filterable
           :placeholder="t('components.spider.actions.data.placeholder.table')"
+          :disabled="isDatabaseOffline"
           @change="onTableChange"
         >
           <template #label="{ label }">
@@ -274,6 +318,20 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
 
     &.database {
       width: 160px;
+
+      &.offline {
+        &:deep(.el-select__wrapper) {
+          box-shadow: 0 0 0 1px var(--cl-danger-color) inset;
+        }
+      }
+    }
+
+    &.table {
+      &.missing {
+        &:deep(.el-select__wrapper) {
+          box-shadow: 0 0 0 1px var(--cl-danger-color) inset;
+        }
+      }
     }
   }
 

@@ -20,6 +20,7 @@ import {
   getBaseFileStoreMutations,
   getBaseFileStoreState,
 } from '@/store/utils/file';
+import { ElMessage } from 'element-plus';
 
 // i18n
 const t = translate;
@@ -119,9 +120,14 @@ const actions = {
     { commit }: StoreActionContext<SpiderStoreState>,
     id: string
   ) => {
-    const res = await get(`/databases/${id}/metadata`);
-    commit('setDatabaseMetadata', res.data);
-    return res.data;
+    try {
+      const res = await get(`/databases/${id}/metadata`);
+      commit('setDatabaseMetadata', res.data);
+      return res.data;
+    } catch (e: any) {
+      ElMessage.error(e.message);
+      commit('setDatabaseMetadata', undefined);
+    }
   },
 } as SpiderStoreActions;
 
