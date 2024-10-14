@@ -74,7 +74,7 @@ const getters = {
           value: database.name,
           children: tables.map(table => ({
             label: table.name,
-            value: `${database.name}|${table.name}`,
+            value: table.name,
           })),
         });
       });

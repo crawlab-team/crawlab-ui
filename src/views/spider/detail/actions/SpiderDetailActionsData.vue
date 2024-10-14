@@ -6,6 +6,7 @@ import { EMPTY_OBJECT_ID, translate } from '@/utils';
 import { useDatabase } from '@/components';
 import useRequest from '@/services/request';
 import { useSpiderDetail } from '@/views';
+import { debounce } from 'lodash';
 
 const t = translate;
 
@@ -38,6 +39,13 @@ const databaseMetadata = computed(() => state.databaseMetadata);
 const isMultiDatabases = computed<boolean>(() => {
   if (!databaseMetadata.value?.databases?.length) return false;
   return databaseMetadata.value.databases.length > 1;
+});
+watch(isMultiDatabases, () => {
+  if (isMultiDatabases.value) {
+    updateMultiDbTableName();
+  } else {
+    updateTableName();
+  }
 });
 
 const dataSourceId = ref<string>(form.value?.data_source_id || EMPTY_OBJECT_ID);
@@ -76,44 +84,53 @@ const getDataSourceByDatabaseId = (id: string): DatabaseDataSource => {
   return db.data_source;
 };
 
-const dbName = ref<string>(form.value?.db_name || '');
-watch(
-  () => form.value?.db_name,
-  value => {
-    dbName.value = value || '';
-  }
-);
-
-const colName = ref<string>(form.value?.col_name || '');
-watch(
-  () => form.value?.col_name,
-  value => {
-    colName.value = value || '';
-  }
-);
-
+// database table options
 const databaseTableSelectOptions = computed<SelectOption[]>(() => {
   return store.getters[`${ns}/databaseTableSelectOptions`];
 });
-const onDatabaseTableChange = async (value: string) => {
-  if (isMultiDatabases.value) {
-    const dbName = value.split('|')[0];
-    const colName = value.split('|')[1];
-    store.commit(`${ns}/setForm`, {
-      ...form.value,
-      db_name: value,
-    });
-  } else {
-    store.commit(`${ns}/setForm`, {
-      ...form.value,
-      db_name: '',
-      col_name: value,
-    });
-  }
+
+// single database table name
+const tableName = ref<string>('');
+const updateTableName = () => {
+  if (isMultiDatabases.value) return;
+  tableName.value = form.value?.col_name || '';
+};
+watch(() => form.value?.col_name, updateTableName);
+const onTableChange = debounce(async (value: string | string[]) => {
   store.commit(`${ns}/setForm`, {
     ...form.value,
+    db_name: '',
     col_name: value,
   });
+  await updateForm();
+});
+
+// multi database table name
+const multiDbTableName = ref<string[]>([]);
+const updateMultiDbTableName = () => {
+  if (!isMultiDatabases.value) return;
+  multiDbTableName.value = [
+    form.value.db_name || '',
+    form.value.col_name || '',
+  ];
+};
+watch(
+  () => JSON.stringify([form.value?.db_name, form.value?.col_name]),
+  updateMultiDbTableName
+);
+const onMultiDbTableChange = debounce(async (value: string[]) => {
+  const dbName = value[0];
+  const colName = value[1];
+  store.commit(`${ns}/setForm`, {
+    ...form.value,
+    db_name: dbName,
+    col_name: colName,
+  });
+  await updateForm();
+});
+
+// update form (save spider)
+const updateForm = async () => {
   try {
     await store.dispatch(`${ns}/updateById`, {
       id: activeId.value,
@@ -178,11 +195,11 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
       <template v-if="isMultiDatabases">
         <el-cascader
           class="table"
-          v-model="colName"
+          v-model="multiDbTableName"
           :options="databaseTableSelectOptions"
           filterable
           :placeholder="t('components.spider.actions.data.placeholder.table')"
-          @change="onDatabaseTableChange"
+          @change="onMultiDbTableChange"
         >
           <template #label="{ label }">
             <div>
@@ -195,10 +212,10 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
       <template v-else>
         <el-select
           class="table"
-          v-model="colName"
+          v-model="tableName"
           filterable
           :placeholder="t('components.spider.actions.data.placeholder.table')"
-          @change="onDatabaseTableChange"
+          @change="onTableChange"
         >
           <template #label="{ label }">
             <div>
