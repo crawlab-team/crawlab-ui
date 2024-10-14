@@ -21,3 +21,6 @@ export const TAB_NAME_COLUMNS = 'columns';
 export const TAB_NAME_INDEXES = 'indexes';
 export const TAB_NAME_RESULTS = 'results';
 export const TAB_NAME_OUTPUT = 'output';
+export const TAB_NAME_USERS = 'users';
+export const TAB_NAME_ROLES = 'roles';
+export const TAB_NAME_PERMISSIONS = 'permissions';

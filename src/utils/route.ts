@@ -17,7 +17,9 @@ import {
   TAB_NAME_MONITORING,
   TAB_NAME_OUTPUT,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_PERMISSIONS,
   TAB_NAME_RESULTS,
+  TAB_NAME_ROLES,
   TAB_NAME_SCHEDULES,
   TAB_NAME_SETTINGS,
   TAB_NAME_SPIDERS,
@@ -25,9 +27,13 @@ import {
   TAB_NAME_TASKS,
   TAB_NAME_TEMPLATE,
   TAB_NAME_TRIGGERS,
+  TAB_NAME_USERS,
 } from '@/constants';
 import { getDefaultRoutes } from '@/router';
 import { normalizeTree } from '@/utils/tree';
+import { translate } from '@/utils/i18n';
+
+const t = translate;
 
 const routePathRegex = /(\/[\w\/-]+)\/([0-9a-f]{24})\/([\w-]+)/i;
 
@@ -82,8 +88,48 @@ export const getRouteMenuItems = (): MenuItem[] => {
   });
 };
 
+const getExtraMenuItems = (): MenuItem[] => {
+  return [
+    {
+      title: t('layouts.routes.roles.title'),
+      icon: ['fa', 'user-lock'],
+      path: '/roles',
+    },
+    {
+      title: t('layouts.routes.roles.tabs.overview'),
+      icon: getIconByTabName(TAB_NAME_OVERVIEW) as any,
+      path: '/roles/:id/overview',
+    },
+    {
+      title: t('layouts.routes.roles.tabs.permissions'),
+      icon: getIconByTabName(TAB_NAME_PERMISSIONS) as any,
+      path: '/roles/:id/permissions',
+    },
+    {
+      title: t('layouts.routes.roles.tabs.users'),
+      icon: getIconByTabName(TAB_NAME_USERS) as any,
+      path: '/roles/:id/users',
+    },
+    {
+      title: t('layouts.routes.permissions.title'),
+      icon: ['fa', 'user-lock'],
+      path: '/permissions',
+    },
+    {
+      title: t('layouts.routes.permissions.tabs.overview'),
+      icon: getIconByTabName(TAB_NAME_OVERVIEW) as any,
+      path: '/permissions/:id/overview',
+    },
+    {
+      title: t('layouts.routes.permissions.tabs.roles'),
+      icon: getIconByTabName(TAB_NAME_ROLES) as any,
+      path: '/permissions/:id/roles',
+    },
+  ];
+};
+
 export const getRouteMenuItemsMap = () => {
-  const menuItems = getRouteMenuItems();
+  const menuItems = [...getRouteMenuItems(), ...getExtraMenuItems()];
   const map = new Map<string, MenuItem>();
   for (const item of menuItems) {
     map.set(item.path || '', item);
@@ -184,6 +230,12 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'table'];
     case TAB_NAME_OUTPUT:
       return ['fa', 'file-alt'];
+    case TAB_NAME_USERS:
+      return ['fa', 'users'];
+    case TAB_NAME_ROLES:
+      return ['fa', 'user-lock'];
+    case TAB_NAME_PERMISSIONS:
+      return ['fa', 'user-check'];
     default:
       return ['fa', 'circle'];
   }

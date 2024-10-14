@@ -70,6 +70,21 @@ const layouts: LLayouts = {
         overview: '概览',
       },
     },
+    roles: {
+      title: '角色',
+      tabs: {
+        overview: '概览',
+        permissions: '权限',
+        users: '用户',
+      },
+    },
+    permissions: {
+      title: '权限',
+      tabs: {
+        overview: '概览',
+        roles: '角色',
+      },
+    },
     tokens: {
       title: '令牌',
     },

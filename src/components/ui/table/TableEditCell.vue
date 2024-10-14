@@ -57,6 +57,7 @@ const hasError = computed(() => {
   }
   if (
     dataType === 'objectid' &&
+    internalValue.value &&
     !/^([0-9]|[a-f]){24}$/i.test(internalValue.value)
   ) {
     return true;

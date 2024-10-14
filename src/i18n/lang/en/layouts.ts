@@ -70,6 +70,21 @@ const layouts: LLayouts = {
         overview: 'Overview',
       },
     },
+    roles: {
+      title: 'Roles',
+      tabs: {
+        overview: 'Overview',
+        permissions: 'Permissions',
+        users: 'Users',
+      },
+    },
+    permissions: {
+      title: 'Permissions',
+      tabs: {
+        overview: 'Overview',
+        roles: 'Roles',
+      },
+    },
     tokens: {
       title: 'Tokens',
     },
