@@ -264,6 +264,10 @@ defineOptions({ name: 'ClTable' });
   .el-table {
     flex: 1;
     width: 100%;
+
+    &:deep(.el-table__cell) {
+      overflow: hidden;
+    }
   }
 
   .table-header {
