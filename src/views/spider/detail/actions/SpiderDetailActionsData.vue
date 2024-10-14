@@ -96,6 +96,7 @@ const updateTableName = () => {
   tableName.value = form.value?.col_name || '';
 };
 watch(() => form.value?.col_name, updateTableName);
+onBeforeMount(updateTableName);
 const onTableChange = debounce(async (value: string | string[]) => {
   store.commit(`${ns}/setForm`, {
     ...form.value,
@@ -118,6 +119,7 @@ watch(
   () => JSON.stringify([form.value?.db_name, form.value?.col_name]),
   updateMultiDbTableName
 );
+onBeforeMount(updateMultiDbTableName);
 const onMultiDbTableChange = debounce(async (value: string[]) => {
   const dbName = value[0];
   const colName = value[1];

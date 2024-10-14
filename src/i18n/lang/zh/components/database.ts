@@ -80,8 +80,8 @@ const database: LComponentsDatabase = {
     prompt: {
       dropTable: {
         title: '删除表',
-        message: '确定要删除表吗？',
-        placeholder: '请输入表名',
+        message: '确定要删除表 "{tableName}" 吗？',
+        placeholder: '请输入表名 "{tableName}" 以确认',
         error: '表名不正确',
       },
     },

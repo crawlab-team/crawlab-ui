@@ -80,8 +80,8 @@ const database: LComponentsDatabase = {
     prompt: {
       dropTable: {
         title: 'Drop Table',
-        message: 'Are you sure you want to drop the table?',
-        placeholder: 'Please type the table name to confirm',
+        message: 'Are you sure you want to drop the table "{tableName}"?',
+        placeholder: 'Please type the table name "{tableName}" to confirm',
         error: 'Table name does not match',
       },
     },

@@ -143,7 +143,6 @@ defineOptions({ name: 'ClTable' });
 
     <!-- Table Body -->
     <el-table
-      v-if="selectedColumns.length > 0"
       ref="tableRef"
       :data="tableData"
       :fit="fit"

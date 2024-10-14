@@ -4,15 +4,13 @@ import { LOCAL_STORAGE_KEY_LANG } from '@/constants/localStorage';
 
 export const translate = (
   path: string,
-  number?: any,
+  number?: number,
   args?: Record<string, any>
 ): string => {
   const i18n = getI18n();
   const global = i18n.global;
   const { t } = global;
-  const res = t(path, number, { named: args });
-  if (typeof res === 'string') return res;
-  return path;
+  return t(path, number, { named: args });
 };
 window._t = translate;
 

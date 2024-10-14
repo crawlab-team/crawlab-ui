@@ -33,6 +33,7 @@ import { plainClone, selectElement, translate } from '@/utils';
 import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
 import { getTableManipulationStatementsByDataSource } from '@/utils/database';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   tabName: string;
@@ -47,6 +48,8 @@ const { database: state } = store.state as RootStoreState;
 const { activeId } = useDatabaseDetail();
 
 const { post, del } = useRequest();
+
+const router = useRouter();
 
 const treeRef = ref<InstanceType<typeof ElTree>>();
 const searchKeyword = ref('');
@@ -276,18 +279,28 @@ const contextMenuItemsDatabases = computed<ContextMenuItem[]>(() => {
             switch (activeContextMenuNavItem.value?.type) {
               case 'table':
                 await selectNode(activeContextMenuNavItem.value);
+                const tableName = activeNavItem.value?.data?.name;
                 const { value: promptTableName } = await ElMessageBox.prompt(
-                  t('components.database.messageBox.prompt.dropTable.message'),
+                  t(
+                    'components.database.messageBox.prompt.dropTable.message',
+                    null,
+                    {
+                      tableName,
+                    }
+                  ),
                   t('components.database.messageBox.prompt.dropTable.title'),
                   {
                     type: 'warning',
                     inputPlaceholder: t(
-                      'components.database.messageBox.prompt.dropTable.placeholder'
+                      'components.database.messageBox.prompt.dropTable.placeholder',
+                      null,
+                      {
+                        tableName,
+                      }
                     ),
                     confirmButtonClass: 'el-button--danger',
                   }
                 );
-                const tableName = activeNavItem.value?.data?.name;
                 if (!promptTableName || promptTableName !== tableName) {
                   ElMessage.error(
                     t('components.database.messageBox.prompt.dropTable.error')
@@ -546,6 +559,11 @@ const onSearchClick = () => {
   showSearch.value = !showSearch.value;
 };
 
+const onClickTerminal = () => {
+  reset();
+  router.push(`/databases/${activeId.value}/console`);
+};
+
 const reset = () => {
   store.commit(`${ns}/setActiveNavItem`, undefined);
   activeContextMenuNavItem.value = undefined;
@@ -725,7 +743,7 @@ onMounted(loadWidth);
         :icon="['fa', 'search']"
         @click="onSearchClick"
       />
-      <cl-icon :icon="['fas', 'terminal']" />
+      <cl-icon :icon="['fas', 'terminal']" @click="onClickTerminal" />
     </div>
     <div v-if="showSearch" class="sidebar-search">
       <el-input

@@ -30,6 +30,7 @@ const getDatabaseMetadata = debounce(async () => {
   await store.dispatch(`${ns}/getDatabaseMetadata`, form.value.data_source_id);
 });
 watch(() => form.value?.data_source_id, getDatabaseMetadata);
+onBeforeMount(getDatabaseMetadata);
 
 const activeTable = ref<DatabaseTable>();
 const getActiveTable = debounce(async () => {
