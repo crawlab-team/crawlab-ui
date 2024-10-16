@@ -25,12 +25,28 @@ export const useDatabase = (store: Store<RootStoreState>) => {
   // form rules
   const formRules: FormRules = {};
 
+  const availableDatabaseNames: DatabaseDataSource[] = [
+    'mongo',
+    'mysql',
+    'postgres',
+    'mssql',
+    'elasticsearch',
+  ];
+
   // type options
   const dataSourceOptions = computed<SelectOption<DatabaseDataSource>[]>(() =>
-    databaseDefaults.map(item => ({
-      label: item.name,
-      value: item.data_source,
-    }))
+    databaseDefaults.map(item => {
+      const disabled = !availableDatabaseNames.includes(item.data_source!);
+      const label = !disabled
+        ? item.name
+        : `${item.name} (${t('common.status.currentlyUnavailable')})`;
+      const value = item.data_source;
+      return {
+        label,
+        value,
+        disabled,
+      };
+    })
   );
   const getTypeOptionsWithDefault = (): SelectOption[] => {
     return [

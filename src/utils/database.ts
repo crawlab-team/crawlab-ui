@@ -28,6 +28,12 @@ export const databaseDefaults: Database[] = [
     port: 1433,
   },
   {
+    name: 'ElasticSearch',
+    data_source: 'elasticsearch',
+    host: 'localhost',
+    port: 9200,
+  },
+  {
     name: 'Oracle',
     data_source: 'oracle',
     host: 'localhost',
@@ -62,12 +68,6 @@ export const databaseDefaults: Database[] = [
     data_source: 'snowflake',
     host: 'localhost',
     port: 443,
-  },
-  {
-    name: 'ElasticSearch',
-    data_source: 'elasticsearch',
-    host: 'localhost',
-    port: 9200,
   },
   {
     name: 'Redis',

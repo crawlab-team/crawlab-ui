@@ -40,11 +40,14 @@ const onDataSourceChange = (dataSource: DatabaseDataSource) => {
 };
 
 // Add this watch effect to convert port to number
-watch(() => form.value.port, (newValue) => {
-  if (newValue !== undefined && newValue !== null) {
-    form.value.port = Number(newValue);
+watch(
+  () => form.value.port,
+  newValue => {
+    if (newValue !== undefined && newValue !== null) {
+      form.value.port = Number(newValue);
+    }
   }
-});
+);
 
 defineOptions({ name: 'ClDatabaseForm' });
 </script>
@@ -91,7 +94,15 @@ defineOptions({ name: 'ClDatabaseForm' });
           :key="op.value"
           :label="op.label"
           :value="op.value"
-        />
+          :disabled="op.disabled"
+        >
+          <template #default>
+            <div>
+              <cl-database-data-source :data-source="op.value" icon-only />
+              <span style="margin: 5px">{{ op.label }}</span>
+            </div>
+          </template>
+        </el-option>
       </el-select>
     </cl-form-item>
     <!--./Row-->

@@ -51,7 +51,7 @@ const data = computed<TagProps>(() => {
       return {
         label: t('components.database.dataSources.db2'),
         type: 'info',
-        icon: ['svg', 'postgres'],
+        icon: ['svg', 'db2'],
       };
     case 'cassandra':
       return {
@@ -108,7 +108,9 @@ defineOptions({ name: 'ClDatabaseDataSource' });
 
 <template>
   <template v-if="iconOnly">
-    <cl-icon :icon="data.icon" @click="emit('click')" />
+    <span :style="{ width: '24px', height: '24px' }">
+      <cl-icon :icon="data.icon" @click="emit('click')" />
+    </span>
   </template>
   <template v-else>
     <cl-tag
