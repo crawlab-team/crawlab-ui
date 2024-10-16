@@ -18,7 +18,7 @@ const dialogVisible = computed(() => activeDialogKey.value === 'logs');
 
 const logsViewRef = ref<typeof ClLogsView>();
 
-let handle: number;
+let handle: any;
 const update = () => {
   if (dialogVisible) {
     handle = setInterval(async () => {

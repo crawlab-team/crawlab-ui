@@ -2,6 +2,7 @@ import { plainClone } from '@/utils/object';
 import { normalizeTree } from '@/utils/tree';
 import { getDefaultMenuItems } from '@/router';
 import { isPro } from '@/utils';
+import { saveLocalStorage } from '@/utils/storage';
 
 // persistent sidebar collapsed
 const getDefaultSidebarCollapsed = (): boolean => {
@@ -104,8 +105,9 @@ export default {
     setMenuItems(state: LayoutStoreState, items: MenuItem[]) {
       state.menuItems = items;
     },
-    setSideBarCollapsed(state: LayoutStoreState, value: boolean) {
+    setSidebarCollapsed(state: LayoutStoreState, value: boolean) {
       state.sidebarCollapsed = value;
+      saveLocalStorage('sidebarCollapsed', value);
     },
     setTabs(state: LayoutStoreState, tabs: Tab[]) {
       state.tabs = tabs;

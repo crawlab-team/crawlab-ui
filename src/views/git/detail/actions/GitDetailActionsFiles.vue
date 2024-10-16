@@ -9,5 +9,3 @@ defineOptions({ name: 'ClGitDetailActionsFiles' });
 <template>
   <cl-file-actions :ns="ns" :active-id="activeId" />
 </template>
-
-<style scoped lang="scss"></style>

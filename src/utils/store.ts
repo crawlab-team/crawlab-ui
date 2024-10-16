@@ -3,42 +3,27 @@ import { useService } from '@/services';
 import { plainClone } from '@/utils/object';
 import { emptyObjectFunc } from '@/utils/func';
 import { translate } from '@/utils/i18n';
+import {
+  loadNamespaceLocalStorage,
+  saveNamespaceLocalStorage,
+} from '@/utils/storage';
 
 // i18n
 const t = translate;
 
-// New utility functions to handle global layout settings
-const GLOBAL_LAYOUT_KEY = 'globalLayoutSettings';
-
-const getGlobalLayoutSettings = (): Record<string, any> => {
-  const savedSettings = localStorage.getItem(GLOBAL_LAYOUT_KEY);
-  return savedSettings ? JSON.parse(savedSettings) : {};
-};
-
-const saveGlobalLayoutSettings = (settings: Record<string, any>) => {
-  localStorage.setItem(GLOBAL_LAYOUT_KEY, JSON.stringify(settings));
-};
-
-const getNamespaceLayoutSettings = (ns: string): Record<string, any> => {
-  const globalSettings = getGlobalLayoutSettings();
-  return globalSettings[ns] || {};
-};
-
-const saveNamespaceLayoutSettings = (ns: string, settings: Record<string, any>) => {
-  const globalSettings = getGlobalLayoutSettings();
-  globalSettings[ns] = settings;
-  console.debug('saveNamespaceLayoutSettings', globalSettings);
-  saveGlobalLayoutSettings(globalSettings);
-};
+export const globalLayoutSettingsKey = 'globalLayoutSettings';
 
 export const getDefaultStoreState = <T = any>(
   ns: StoreNamespace
 ): BaseStoreState<T> => {
-  const namespaceSettings = getNamespaceLayoutSettings(ns);
+  const namespaceSettings = loadNamespaceLocalStorage(
+    ns,
+    globalLayoutSettingsKey
+  );
   const defaultPagination = getDefaultPagination();
   const tablePagination = {
     ...defaultPagination,
-    ...namespaceSettings.pagination
+    ...namespaceSettings.pagination,
   };
 
   return {
@@ -160,19 +145,16 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
       pagination: TablePagination
     ) => {
       state.tablePagination = pagination;
-      const namespaceSettings = getNamespaceLayoutSettings(state.ns);
-      namespaceSettings.pagination = {
-        ...namespaceSettings.pagination,
-        ...pagination
-      };
-      saveNamespaceLayoutSettings(state.ns, namespaceSettings);
+      saveNamespaceLocalStorage(state.ns, globalLayoutSettingsKey, {
+        pagination,
+      });
     },
     resetTablePagination: (state: BaseStoreState<T>) => {
-      const defaultPagination = getDefaultPagination();
-      state.tablePagination = defaultPagination;
-      const namespaceSettings = getNamespaceLayoutSettings(state.ns);
-      delete namespaceSettings.pagination;
-      saveNamespaceLayoutSettings(state.ns, namespaceSettings);
+      const pagination = getDefaultPagination();
+      state.tablePagination = pagination;
+      saveNamespaceLocalStorage(state.ns, globalLayoutSettingsKey, {
+        pagination,
+      });
     },
     setTableListFilter: (
       state: BaseStoreState<T>,

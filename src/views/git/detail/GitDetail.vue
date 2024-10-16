@@ -23,7 +23,6 @@ const router = useRouter();
 
 const ns = 'git';
 const store = useStore<RootStoreState>();
-const { git: state } = store.state;
 
 const {
   activeId,
@@ -39,17 +38,6 @@ const {
 
 // update tab disabled keys
 const { form } = useGit(store);
-let handle: any;
-watch(
-  form,
-  debounce(() => {
-    clearInterval(handle);
-    handle = setInterval(
-      () => store.dispatch(`${ns}/getById`, activeId.value),
-      5000
-    );
-  })
-);
 
 // get local and remote branches
 const getBranches = debounce(() => {
@@ -76,7 +64,6 @@ const reset = () => {
   store.commit(`${ns}/resetGitBranches`);
   store.commit(`${ns}/resetGitRemoteBranches`);
   store.commit(`${ns}/resetGitChanges`);
-  clearInterval(handle);
 };
 onBeforeUnmount(reset);
 watch(activeId, reset);

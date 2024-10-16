@@ -56,7 +56,7 @@ const onMenuItemClick = (_: string, indexPath: string[]) => {
 
 const toggleSidebar = () => {
   store.commit(
-    `${storeNamespace}/setSideBarCollapsed`,
+    `${storeNamespace}/setSidebarCollapsed`,
     !sidebarCollapsed.value
   );
 };

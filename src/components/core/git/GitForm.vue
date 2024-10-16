@@ -90,7 +90,7 @@ defineOptions({ name: 'ClGitForm' });
         pattern: /^https?:\/\/|^git@/,
       }"
     >
-      <div style="display: flex; align-items: center; gap: 5px">
+      <div style="display: flex; align-items: center; gap: 5px; width: 100%">
         <el-input
           v-model="form.url"
           :placeholder="t('components.git.form.repoUrl')"
@@ -181,5 +181,3 @@ defineOptions({ name: 'ClGitForm' });
     </template>
   </cl-form>
 </template>
-
-<style lang="scss" scoped></style>

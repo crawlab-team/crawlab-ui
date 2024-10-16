@@ -75,5 +75,3 @@ defineOptions({ name: 'ClFileActions' });
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
-
-<style lang="scss" scoped></style>

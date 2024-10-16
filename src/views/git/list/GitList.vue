@@ -41,7 +41,6 @@ defineOptions({ name: 'ClGitList' });
   </cl-list-layout>
 </template>
 
-<style scoped lang="scss"></style>
 <style scoped>
 .git-list:deep(.git-status) {
   margin-right: 0;

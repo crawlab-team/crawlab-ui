@@ -178,14 +178,14 @@ const getTaskStatusColorByLabel = (label: string) => {
 const tasksByStatusData = ref([]);
 const tasksByStatusChartData = computed<ChartData>(() => {
   return {
-    labels: tasksByStatusData.value.map((d: any) =>
+    labels: tasksByStatusData.value?.map((d: any) =>
       t('components.task.status.label.' + d.status)
     ),
     datasets: [
       {
         label: t('views.home.metrics.tasks'),
-        data: tasksByStatusData.value.map((d: any) => d.tasks),
-        backgroundColor: tasksByStatusData.value.map((d: any) =>
+        data: tasksByStatusData.value?.map((d: any) => d.tasks),
+        backgroundColor: tasksByStatusData.value?.map((d: any) =>
           getTaskStatusColorByLabel(d.status)
         ),
       },
@@ -204,12 +204,12 @@ const tasksByStatusChartOptions = ref<ChartOptions>({
 const tasksByNodeData = ref([]);
 const tasksByNodeChartData = computed<ChartData>(() => {
   return {
-    labels: tasksByNodeData.value.map((d: any) => d.node_name),
+    labels: tasksByNodeData.value?.map((d: any) => d.node_name),
     datasets: [
       {
         label: t('views.home.metrics.tasks'),
-        data: tasksByNodeData.value.map((d: any) => d.tasks),
-        backgroundColor: tasksByNodeData.value.map(
+        data: tasksByNodeData.value?.map((d: any) => d.tasks),
+        backgroundColor: tasksByNodeData.value?.map(
           (_: any, index: number) => colorPalette[index % colorPalette.length]
         ),
       },
@@ -228,12 +228,12 @@ const tasksByNodeChartOptions = ref<ChartOptions>({
 const tasksBySpiderData = ref([]);
 const tasksBySpiderChartData = computed<ChartData>(() => {
   return {
-    labels: tasksBySpiderData.value.map((d: any) => d.spider_name),
+    labels: tasksBySpiderData.value?.map((d: any) => d.spider_name),
     datasets: [
       {
         label: t('views.home.metrics.tasks'),
-        data: tasksBySpiderData.value.map((d: any) => d.tasks),
-        backgroundColor: tasksBySpiderData.value.map(
+        data: tasksBySpiderData.value?.map((d: any) => d.tasks),
+        backgroundColor: tasksBySpiderData.value?.map(
           (_: any, index: number) => colorPalette[index % colorPalette.length]
         ),
       },
