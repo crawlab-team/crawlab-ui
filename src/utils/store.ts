@@ -7,9 +7,40 @@ import { translate } from '@/utils/i18n';
 // i18n
 const t = translate;
 
+// New utility functions to handle global layout settings
+const GLOBAL_LAYOUT_KEY = 'globalLayoutSettings';
+
+const getGlobalLayoutSettings = (): Record<string, any> => {
+  const savedSettings = localStorage.getItem(GLOBAL_LAYOUT_KEY);
+  return savedSettings ? JSON.parse(savedSettings) : {};
+};
+
+const saveGlobalLayoutSettings = (settings: Record<string, any>) => {
+  localStorage.setItem(GLOBAL_LAYOUT_KEY, JSON.stringify(settings));
+};
+
+const getNamespaceLayoutSettings = (ns: string): Record<string, any> => {
+  const globalSettings = getGlobalLayoutSettings();
+  return globalSettings[ns] || {};
+};
+
+const saveNamespaceLayoutSettings = (ns: string, settings: Record<string, any>) => {
+  const globalSettings = getGlobalLayoutSettings();
+  globalSettings[ns] = settings;
+  console.debug('saveNamespaceLayoutSettings', globalSettings);
+  saveGlobalLayoutSettings(globalSettings);
+};
+
 export const getDefaultStoreState = <T = any>(
   ns: StoreNamespace
 ): BaseStoreState<T> => {
+  const namespaceSettings = getNamespaceLayoutSettings(ns);
+  const defaultPagination = getDefaultPagination();
+  const tablePagination = {
+    ...defaultPagination,
+    ...namespaceSettings.pagination
+  };
+
   return {
     ns,
     dialogVisible: {
@@ -25,7 +56,7 @@ export const getDefaultStoreState = <T = any>(
     confirmLoading: false,
     tableData: [],
     tableTotal: 0,
-    tablePagination: getDefaultPagination(),
+    tablePagination,
     tableListFilter: [],
     tableListSort: [],
     allList: [],
@@ -129,9 +160,19 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
       pagination: TablePagination
     ) => {
       state.tablePagination = pagination;
+      const namespaceSettings = getNamespaceLayoutSettings(state.ns);
+      namespaceSettings.pagination = {
+        ...namespaceSettings.pagination,
+        ...pagination
+      };
+      saveNamespaceLayoutSettings(state.ns, namespaceSettings);
     },
     resetTablePagination: (state: BaseStoreState<T>) => {
-      state.tablePagination = getDefaultPagination();
+      const defaultPagination = getDefaultPagination();
+      state.tablePagination = defaultPagination;
+      const namespaceSettings = getNamespaceLayoutSettings(state.ns);
+      delete namespaceSettings.pagination;
+      saveNamespaceLayoutSettings(state.ns, namespaceSettings);
     },
     setTableListFilter: (
       state: BaseStoreState<T>,

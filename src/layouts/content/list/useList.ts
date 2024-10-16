@@ -168,8 +168,8 @@ const useList = <T = any>(
 
   onBeforeUnmount(() => {
     store.commit(`${ns}/resetTableData`);
-    store.commit(`${ns}/resetTablePagination`);
     store.commit(`${ns}/resetTableListFilter`);
+    store.commit(`${ns}/resetTableListSort`);
   });
 
   return {
