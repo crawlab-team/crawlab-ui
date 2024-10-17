@@ -2,6 +2,7 @@
 import { useStore } from 'vuex';
 import { useTaskDetail } from '@/views';
 import { useTask } from '@/components';
+import { isPro } from '@/utils';
 
 const { activeTabName } = useTaskDetail();
 
@@ -19,7 +20,9 @@ defineOptions({ name: 'ClTaskDetail' });
     <template #actions>
       <cl-task-detail-actions-common />
       <cl-task-detail-actions-logs v-if="activeTabName === 'logs'" />
-      <cl-task-detail-actions-data v-if="activeTabName === 'data'" />
+      <template v-if="isPro()">
+        <cl-task-detail-actions-data v-if="activeTabName === 'data'" />
+      </template>
     </template>
   </cl-detail-layout>
 </template>

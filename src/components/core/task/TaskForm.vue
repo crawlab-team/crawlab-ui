@@ -148,7 +148,7 @@ defineOptions({ name: 'ClTaskForm' });
       />
       <cl-nav-link
         v-else
-        :label="getNodeName(form.node_id)"
+        :label="form.node?.name || getNodeName(form.node_id)"
         :path="`/nodes/${form.node_id}`"
       />
     </cl-form-item>

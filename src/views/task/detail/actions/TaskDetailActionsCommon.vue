@@ -6,7 +6,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import dayjs from 'dayjs';
 import { TASK_STATUS_PENDING, TASK_STATUS_RUNNING } from '@/constants';
 import useRequest from '@/services/request';
-import { translate, isCancellable } from '@/utils';
+import { translate, isCancellable, isPro } from '@/utils';
 import useTask from '@/components/core/task/useTask';
 import useTaskDetail from '@/views/task/detail/useTaskDetail';
 
@@ -84,29 +84,7 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
 </script>
 
 <template>
-  <cl-nav-action-group class="task-detail-actions-common">
-    <cl-nav-action-fa-icon :icon="['fa', 'compass']" />
-    <cl-nav-action-item>
-      <cl-tag
-        type="primary"
-        size="large"
-        :icon="['fa', 'spider']"
-        :tooltip="t('components.task.form.spider')"
-        clickable
-        @click="router.push(`/spiders/${form.spider_id}`)"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item v-if="form.schedule_id">
-      <cl-tag
-        type="primary"
-        size="large"
-        :icon="['fa', 'clock']"
-        :tooltip="t('components.task.form.schedule')"
-        clickable
-        @click="router.push(`/spiders/${form.spider_id}`)"
-      />
-    </cl-nav-action-item>
-  </cl-nav-action-group>
+  <cl-task-detail-action-group-nav v-if="isPro()" />
   <cl-nav-action-group class="task-detail-actions-common">
     <cl-nav-action-fa-icon :icon="['fa', 'tools']" />
     <cl-nav-action-item>

@@ -72,20 +72,6 @@ defineOptions({ name: 'ClTaskDetailActionsData' });
         </div>
       </el-tooltip>
     </cl-nav-action-item>
-    <cl-nav-action-item
-      v-export="{
-        target,
-        conditions,
-      }"
-    >
-      <cl-fa-icon-button
-        :icon="['fa', 'download']"
-        :tooltip="t('components.task.actions.data.tooltip.export')"
-        type="primary"
-        id="export-btn"
-        class-name="export-btn"
-      />
-    </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
 

@@ -99,6 +99,7 @@ import TaskDetail from './task/detail/TaskDetail.vue';
 import TaskDetailActionsCommon from './task/detail/actions/TaskDetailActionsCommon.vue';
 import TaskDetailActionsData from './task/detail/actions/TaskDetailActionsData.vue';
 import TaskDetailActionsLogs from './task/detail/actions/TaskDetailActionsLogs.vue';
+import TaskDetailActionGroupNav from './task/detail/actions/groups/TaskDetailActionGroupNav.vue';
 import TaskDetailTabData from './task/detail/tabs/TaskDetailTabData.vue';
 import TaskDetailTabLogs from './task/detail/tabs/TaskDetailTabLogs.vue';
 import TaskDetailTabOverview from './task/detail/tabs/TaskDetailTabOverview.vue';
@@ -215,6 +216,7 @@ export {
   TaskDetailActionsCommon as ClTaskDetailActionsCommon,
   TaskDetailActionsData as ClTaskDetailActionsData,
   TaskDetailActionsLogs as ClTaskDetailActionsLogs,
+  TaskDetailActionGroupNav as ClTaskDetailActionGroupNav,
   TaskDetailTabData as ClTaskDetailTabData,
   TaskDetailTabLogs as ClTaskDetailTabLogs,
   TaskDetailTabOverview as ClTaskDetailTabOverview,
