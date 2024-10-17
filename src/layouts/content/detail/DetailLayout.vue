@@ -80,6 +80,7 @@ defineOptions({ name: 'ClDetailLayout' });
               :model-value="activeId"
               size="small"
               placement="bottom-end"
+              filterable
               @change="onNavSelect"
             >
               <el-option
