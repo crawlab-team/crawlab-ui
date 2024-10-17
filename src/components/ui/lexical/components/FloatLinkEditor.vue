@@ -125,7 +125,6 @@ const resetLinkEditor = () => {
 
 const updateLinkEditor = () => {
   selection = $getSelection() as RangeSelection;
-  console.debug('selection', selection);
   if (!selection) {
     resetLinkEditor();
     return;

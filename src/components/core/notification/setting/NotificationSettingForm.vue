@@ -105,7 +105,6 @@ const onCreateAlertConfirm = async () => {
     notificationAlertState.form
   );
   ElMessage.success(t('views.notification.message.success.create.alert'));
-  console.debug('newAlert', newAlert);
 
   // set alert all list
   store.commit('notificationAlert/setAllList', [

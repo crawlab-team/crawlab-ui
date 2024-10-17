@@ -351,7 +351,6 @@ const activeIndexColumnsColumns = computed<TableColumns<DatabaseIndexColumn>>(
           modelValue={row.order > 0}
           label={t(`common.order.${row.order > 0 ? 'asc' : 'desc'}`)}
           onChange={(val: boolean) => {
-            console.debug('order.onChange', row, val);
             row.order = val ? 1 : -1;
           }}
         />

@@ -109,11 +109,6 @@ const useGitDetail = () => {
         store.dispatch(`${ns}/getChanges`, { id: id.value }),
         store.dispatch(`${ns}/getLogs`, { id: id.value }),
       ]);
-      console.debug(
-        t('components.git.common.message.success.commit', fileCount, {
-          fileCount,
-        })
-      );
       ElMessage.success(
         t('components.git.common.message.success.commit', fileCount, {
           fileCount,

@@ -1,19 +1,21 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useTaskDetail from '@/views/task/detail/useTaskDetail';
+<script setup lang="ts">
+import { useStore } from 'vuex';
+import { useTaskDetail } from '@/views';
+import { useTask } from '@/components';
 
-export default defineComponent({
-  name: 'TaskDetail',
-  setup() {
-    return {
-      ...useTaskDetail(),
-    };
-  },
-});
+const { activeTabName } = useTaskDetail();
+
+const store = useStore();
+const { allListSelectOptions } = useTask(store);
+
+defineOptions({ name: 'ClTaskDetail' });
 </script>
 
 <template>
-  <cl-detail-layout no-sidebar store-namespace="task">
+  <cl-detail-layout
+    store-namespace="task"
+    :all-list-select-options="allListSelectOptions"
+  >
     <template #actions>
       <cl-task-detail-actions-common />
       <cl-task-detail-actions-logs v-if="activeTabName === 'logs'" />

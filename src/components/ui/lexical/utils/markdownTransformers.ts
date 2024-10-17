@@ -212,7 +212,6 @@ export const VARIABLE_TRANSFORMER: ElementTransformer = {
     if (children?.[0]) {
       // children[0].replace(node);
     }
-    console.debug(parentNode, children, node);
     // parentNode.replace(node);
   },
   type: 'element',

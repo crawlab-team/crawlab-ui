@@ -87,9 +87,14 @@ export default {
         .filter(d => {
           if (!d.path) return false;
           return !(
-            ['/notifications', '/environments', '/system', '/deps'].includes(
-              d.path
-            ) && !isPro()
+            [
+              '/notifications',
+              '/environments',
+              '/system',
+              '/deps',
+              '/gits',
+              '/databases',
+            ].includes(d.path) && !isPro()
           );
         })
         .filter(d => {

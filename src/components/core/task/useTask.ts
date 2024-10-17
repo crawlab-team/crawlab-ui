@@ -10,12 +10,13 @@ import {
   getModeOptionsDict,
   getPriorityLabel,
 } from '@/utils/task';
+import { formatTimeAgo } from '@/utils/time';
 
 // form component data
 const formComponentData = getDefaultFormComponentData<Task>();
 
 const useTask = (store: Store<RootStoreState>) => {
-  // store state
+  const ns = 'task' as ListStoreNamespace;
   const { task: state } = store.state as RootStoreState;
 
   // options for default mode
@@ -42,6 +43,17 @@ const useTask = (store: Store<RootStoreState>) => {
   // task id
   const id = computed(() => route.params.id);
 
+  const allListSelectOptions = computed<SelectOption[]>(() =>
+    state.allList.map(task => {
+      const spider = allSpiderDict.value.get(task.spider_id!);
+      const timeAgo = formatTimeAgo(task.created_ts);
+      return {
+        label: `${spider?.name} (${timeAgo})`,
+        value: task._id,
+      };
+    })
+  );
+
   return {
     ...useForm('task', store, useTaskService(store), formComponentData),
     allSpiderDict,
@@ -50,6 +62,7 @@ const useTask = (store: Store<RootStoreState>) => {
     modeOptionsDict,
     priorityOptions,
     getPriorityLabel,
+    allListSelectOptions,
   };
 };
 

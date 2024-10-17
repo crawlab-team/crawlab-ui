@@ -8,7 +8,7 @@ import {
   DATA_FIELD_TYPE_LONG_TEXT,
   DATA_FIELD_TYPE_TIME,
 } from '@/constants/dataFields';
-import { translate } from '@/utils';
+import { formatTimeAgo, translate } from '@/utils';
 import { useStore } from 'vuex';
 import dayjs from 'dayjs';
 import { getI18n } from '@/i18n';
@@ -44,11 +44,7 @@ const tooltipValue = computed<string>(() => {
       return value.substring(0, 200) + '...';
     case DATA_FIELD_TYPE_TIME:
       if (typeof value !== 'string' && typeof value !== 'number') return '';
-      const time = dayjs(value);
-      const timeAgo = new TimeAgo(
-        getI18n().global.locale.value === 'zh' ? 'zh' : 'en'
-      );
-      const ago = timeAgo.format(time.toDate()) as string;
+      const ago = formatTimeAgo(value);
       return `${time.format('YYYY-MM-DD HH:mm:ssZ')} (${ago})`;
     default:
       return typeof value === 'string' ? value : JSON.stringify(value);

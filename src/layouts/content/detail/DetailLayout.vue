@@ -6,14 +6,12 @@ import useDetail from '@/layouts/content/detail/useDetail';
 const props = withDefaults(
   defineProps<{
     storeNamespace: ListStoreNamespace;
-    noSidebar?: boolean;
     navItemNameKey?: string;
     showBackButton?: boolean;
     showSaveButton?: boolean;
     allListSelectOptions?: SelectOption[];
   }>(),
   {
-    noSidebar: false,
     navItemNameKey: 'name',
     showSaveButton: true,
     showBackButton: true,
@@ -110,7 +108,7 @@ defineOptions({ name: 'ClDetailLayout' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .detail-layout {
   display: flex;
   height: 100%;
