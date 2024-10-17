@@ -158,7 +158,6 @@ export default defineComponent({
         resizeObserver.unobserve(editorRef.value);
       }
       logEditor?.dispose();
-      store.commit(`${ns}/setLogEditor`, undefined);
     });
 
     return {

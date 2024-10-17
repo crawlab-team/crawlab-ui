@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, onBeforeUnmount, watch } from 'vue';
+import { computed, h, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants';
 import { getDataFieldIconByType } from '@/utils/dataFields';
@@ -13,8 +13,7 @@ interface FilterConditionData {
 
 const props = withDefaults(
   defineProps<{
-    id: string;
-    dataSourceId?: string;
+    spiderId?: string;
     noActions?: boolean;
     embedded?: boolean;
     visibleButtons?: BuiltInTableActionButtonName[];
@@ -43,7 +42,7 @@ const tablePagination = computed<TablePagination>(
 );
 
 // default fields
-const defaultFields = ['_id', '_tid', '_h'];
+const defaultFields = ['_id', '_tid', '_sid', '_h'];
 
 // data fields
 const dataFields = computed<DataField[]>(() => state.form?.fields || []);
@@ -102,10 +101,10 @@ const actionFunctions = {
   setPagination: pagination =>
     store.commit(`${ns}/setResultTablePagination`, pagination),
   getList: async () => {
-    const { id } = props;
-    if (!id) return;
+    const { spiderId } = props;
+    if (!spiderId) return;
     return store.dispatch(`${ns}/getResultData`, {
-      id,
+      id: spiderId,
       params: {
         conditions: filterConditions.value,
         ...tablePagination.value,
@@ -124,9 +123,8 @@ const actionFunctions = {
 } as ListLayoutActionFunctions;
 
 const { getList } = actionFunctions;
-
-watch(() => props.id, getList);
-
+onBeforeMount(getList);
+watch(() => props.spiderId, getList);
 watch(() => tablePagination.value, getList);
 
 onBeforeUnmount(() => {

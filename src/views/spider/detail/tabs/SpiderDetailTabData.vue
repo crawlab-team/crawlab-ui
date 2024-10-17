@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import useSpider from '@/components/core/spider/useSpider';
 import { isPro } from '@/utils';
+import { useSpiderDetail } from '@/views';
 
 // store
 const store = useStore();
@@ -10,7 +10,7 @@ const { spider: state } = store.state;
 
 const displayAllFields = computed<boolean>(() => state.dataDisplayAllFields);
 
-const { form } = useSpider(store);
+const { activeId } = useSpiderDetail();
 
 defineOptions({ name: 'ClSpiderDetailTabData' });
 </script>
@@ -22,7 +22,7 @@ defineOptions({ name: 'ClSpiderDetailTabData' });
     </template>
     <template v-else>
       <cl-result-list
-        :id="form?.col_id"
+        :spider-id="activeId"
         :display-all-fields="displayAllFields"
         no-actions
         embedded

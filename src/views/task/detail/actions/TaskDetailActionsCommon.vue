@@ -32,11 +32,11 @@ const { activeId } = useTaskDetail();
 const onRestart = async () => {
   await ElMessageBox.confirm(
     t('common.messageBox.confirm.restart'),
-    'Restart',
+    t('common.actions.restart'),
     { type: 'warning' }
   );
   await post(`/tasks/${activeId.value}/restart`);
-  ElMessage.success('common.message.success.restart');
+  ElMessage.success(t('common.message.success.restart'));
   await store.dispatch(`${ns}/getById`, activeId.value);
 };
 

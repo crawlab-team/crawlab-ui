@@ -71,6 +71,7 @@ import TaskCommand from './core/task/TaskCommand.vue';
 import TaskForm from './core/task/TaskForm.vue';
 import TaskMode from './core/task/TaskMode.vue';
 import TaskPriority from './core/task/TaskPriority.vue';
+import TaskResultDataWithDatabase from './core/task/TaskResultDataWithDatabase.vue';
 import TaskResults from './core/task/TaskResults.vue';
 import TaskStatus from './core/task/TaskStatus.vue';
 import useTask from './core/task/useTask';
@@ -285,6 +286,7 @@ export {
   TaskForm as ClTaskForm,
   TaskMode as ClTaskMode,
   TaskPriority as ClTaskPriority,
+  TaskResultDataWithDatabase as ClTaskResultDataWithDatabase,
   TaskResults as ClTaskResults,
   TaskStatus as ClTaskStatus,
   useTask as useTask,

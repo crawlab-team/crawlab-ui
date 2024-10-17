@@ -107,7 +107,7 @@ const actions = {
     payload: { id: string; params: ListRequestParams }
   ) => {
     const { id, params } = payload;
-    const res = await getList(`/results/${id}`, params);
+    const res = await getList(`/spiders/${id}/results`, params);
     commit('setResultTableData', { data: res.data || [], total: res.total });
     return res;
   },
