@@ -1,6 +1,7 @@
 const task: LComponentsTask = {
   form: {
     spider: '爬虫',
+    schedule: '定时任务',
     node: '节点',
     status: '状态',
     command: '执行命令',

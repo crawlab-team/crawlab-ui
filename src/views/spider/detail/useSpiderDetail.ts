@@ -30,15 +30,6 @@ const useSpiderDetail = () => {
     await save(id.value, activeNavItem.value?.path, fileContent.value);
   };
 
-  watch(
-    () => state.form?.col_id,
-    async val => {
-      if (val) {
-        await store.dispatch(`${nsDc}/getById`, val);
-      }
-    }
-  );
-
   onBeforeMount(() => store.dispatch(`node/getAllList`));
 
   return {

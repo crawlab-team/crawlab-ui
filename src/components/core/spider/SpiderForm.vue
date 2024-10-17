@@ -28,13 +28,7 @@ const { allListSelectOptionsWithEmpty: allProjectSelectOptions } =
 const { priorityOptions } = useTask(store);
 
 // use spider
-const {
-  form,
-  formRef,
-  fetchDataCollectionSuggestions,
-  isFormItemDisabled,
-  modeOptions,
-} = useSpider(store);
+const { form, formRef, isFormItemDisabled, modeOptions } = useSpider(store);
 
 // use spider detail
 const { activeId } = useSpiderDetail();
@@ -205,11 +199,10 @@ defineOptions({ name: 'ClSpiderForm' });
       prop="col_name"
       required
     >
-      <el-autocomplete
+      <el-input
         v-model="form.col_name"
         :disabled="isFormItemDisabled('col_name')"
         :placeholder="t('components.spider.form.resultsCollection')"
-        :fetch-suggestions="fetchDataCollectionSuggestions"
         id="col_name"
         class="col_name"
         @input="onDataCollectionInput"

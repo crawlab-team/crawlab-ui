@@ -1,6 +1,7 @@
 const task: LComponentsTask = {
   form: {
     spider: 'Spider',
+    schedule: 'Schedule',
     node: 'Node',
     status: 'Status',
     command: 'Execute Command',

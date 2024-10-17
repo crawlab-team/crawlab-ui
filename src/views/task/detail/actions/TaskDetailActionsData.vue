@@ -4,8 +4,6 @@ import { useStore } from 'vuex';
 import useSpider from '@/components/core/spider/useSpider';
 import useRequest from '@/services/request';
 import { FILTER_OP_EQUAL } from '@/constants';
-import { inferDataFieldTypes } from '@/utils/dataFields';
-import { ElMessage, ElMessageBox } from 'element-plus';
 import { translate } from '@/utils';
 
 const { get } = useRequest();
@@ -15,10 +13,8 @@ const t = translate;
 
 // store
 const ns = 'task';
-const nsDc = 'dataCollection';
 const store = useStore();
-const { task: taskState, dataCollection: dataCollectionState } =
-  store.state as RootStoreState;
+const { task: taskState } = store.state as RootStoreState;
 
 const { allDict: allSpiderDict } = useSpider(store);
 
@@ -52,43 +48,6 @@ const onDisplayAllFieldsChange = (val: boolean) => {
   store.commit(`${ns}/setDataDisplayAllFields`, val);
 };
 
-const inferFields = async () => {
-  let fields = store.getters[`${nsDc}/resultFields`] as DataField[];
-  const data = dataCollectionState.resultTableData as Result[];
-  fields = inferDataFieldTypes(fields, data);
-  const form = {
-    ...dataCollectionState.form,
-    fields,
-  };
-  store.commit(`${nsDc}/setForm`, form);
-  await store.dispatch(`${nsDc}/updateById`, {
-    id: form._id,
-    form,
-  });
-  await store.dispatch(`${nsDc}/getById`, form._id);
-};
-
-const onClickInferDataFieldsTypes = async () => {
-  await ElMessageBox.confirm(
-    t('common.messageBox.confirm.proceed'),
-    t('common.actions.inferDataFieldsTypes'),
-    { type: 'warning' }
-  );
-  await inferFields();
-  ElMessage.success(t('common.message.success.action'));
-};
-
-watch(
-  () => JSON.stringify(dataCollectionState.resultTableData),
-  async () => {
-    if (
-      !dataCollectionState.form?.fields?.length &&
-      dataCollectionState.resultTableData?.length
-    ) {
-      await inferFields();
-    }
-  }
-);
 defineOptions({ name: 'ClTaskDetailActionsData' });
 </script>
 
@@ -102,14 +61,15 @@ defineOptions({ name: 'ClTaskDetailActionsData' });
       <el-tooltip
         :content="t('components.task.actions.data.tooltip.displayAllFields')"
       >
-        <cl-switch
-          class="display-all-fields"
-          :active-icon="['fa', 'eye']"
-          :inactive-icon="['fa', 'eye']"
-          inline-prompt
-          v-model="displayAllFields"
-          @change="onDisplayAllFieldsChange"
-        />
+        <div class="display-all-fields">
+          <cl-switch
+            :active-icon="['fa', 'eye']"
+            :inactive-icon="['fa', 'eye']"
+            inline-prompt
+            v-model="displayAllFields"
+            @change="onDisplayAllFieldsChange"
+          />
+        </div>
       </el-tooltip>
     </cl-nav-action-item>
     <cl-nav-action-item
@@ -124,17 +84,6 @@ defineOptions({ name: 'ClTaskDetailActionsData' });
         type="primary"
         id="export-btn"
         class-name="export-btn"
-      />
-    </cl-nav-action-item>
-    <cl-nav-action-item>
-      <cl-fa-icon-button
-        :icon="['fa', 'lightbulb']"
-        :tooltip="
-          t('components.task.actions.data.tooltip.inferDataFieldsTypes')
-        "
-        type="primary"
-        class-name="infer-data-fields-types-btn"
-        @click="onClickInferDataFieldsTypes"
       />
     </cl-nav-action-item>
   </cl-nav-action-group>

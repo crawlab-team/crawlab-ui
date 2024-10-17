@@ -25,6 +25,7 @@ export declare global {
 
     // view model
     spider?: Spider;
+    schedule?: Schedule;
   }
 
   interface TaskStat {

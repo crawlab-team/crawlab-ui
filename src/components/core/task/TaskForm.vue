@@ -95,7 +95,10 @@ const onCancel = async () => {
   }
 };
 
-const noNodeId = computed<boolean>(() => isZeroObjectId(form.value.node_id));
+const noNodeId = computed<boolean>(() => isZeroObjectId(form.value?.node_id));
+const noScheduleId = computed<boolean>(() =>
+  isZeroObjectId(form.value?.schedule_id)
+);
 defineOptions({ name: 'ClTaskForm' });
 </script>
 
@@ -147,6 +150,21 @@ defineOptions({ name: 'ClTaskForm' });
         v-else
         :label="getNodeName(form.node_id)"
         :path="`/nodes/${form.node_id}`"
+      />
+    </cl-form-item>
+    <!-- ./Row -->
+
+    <!-- Row -->
+    <cl-form-item
+      v-if="!noScheduleId && readonly"
+      :offset="2"
+      :span="2"
+      :label="t('components.task.form.schedule')"
+      prop="schedule_id"
+    >
+      <cl-nav-link
+        :label="form.schedule?.name"
+        :path="`/schedules/${form.schedule_id}`"
       />
     </cl-form-item>
     <!-- ./Row -->

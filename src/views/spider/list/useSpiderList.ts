@@ -347,7 +347,7 @@ const useSpiderList = () => {
   } as UseListOptions<Spider>;
 
   // init
-  setupListComponent(ns, store, ['node', 'project', 'dataCollection']);
+  setupListComponent(ns, store, ['node', 'project']);
 
   return {
     ...useList<Spider>(ns, store, opts),

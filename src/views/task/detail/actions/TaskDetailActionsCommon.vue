@@ -85,6 +85,29 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
 
 <template>
   <cl-nav-action-group class="task-detail-actions-common">
+    <cl-nav-action-fa-icon :icon="['fa', 'compass']" />
+    <cl-nav-action-item>
+      <cl-tag
+        type="primary"
+        size="large"
+        :icon="['fa', 'spider']"
+        :tooltip="t('components.task.form.spider')"
+        clickable
+        @click="router.push(`/spiders/${form.spider_id}`)"
+      />
+    </cl-nav-action-item>
+    <cl-nav-action-item v-if="form.schedule_id">
+      <cl-tag
+        type="primary"
+        size="large"
+        :icon="['fa', 'clock']"
+        :tooltip="t('components.task.form.schedule')"
+        clickable
+        @click="router.push(`/spiders/${form.spider_id}`)"
+      />
+    </cl-nav-action-item>
+  </cl-nav-action-group>
+  <cl-nav-action-group class="task-detail-actions-common">
     <cl-nav-action-fa-icon :icon="['fa', 'tools']" />
     <cl-nav-action-item>
       <cl-task-status :status="form.status" size="large" />
@@ -133,6 +156,7 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
 </template>
 
 <style scoped>
+.task-detail-actions-common:deep(.tag),
 .task-detail-actions-common:deep(.task-results),
 .task-detail-actions-common:deep(.task-status),
 .task-detail-actions-common:deep(.duration) {
