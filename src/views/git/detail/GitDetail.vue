@@ -24,17 +24,8 @@ const router = useRouter();
 const ns = 'git';
 const store = useStore<RootStoreState>();
 
-const {
-  activeId,
-  activeTabName,
-  tabs,
-  pullLoading,
-  pullBoxVisible,
-  pullBoxLogs,
-  pushLoading,
-  pushBoxVisible,
-  pushBoxLogs,
-} = useGitDetail();
+const { activeId, activeTabName, tabs, pullLoading, pushLoading } =
+  useGitDetail();
 
 // update tab disabled keys
 const { form } = useGit(store);
@@ -122,21 +113,6 @@ defineOptions({ name: 'ClGitDetail' });
   <cl-create-git-branch-dialog />
   <cl-git-file-diff-dialog />
   <!-- ./Dialogs -->
-
-  <!-- Boxes -->
-  <cl-git-logs-box
-    :visible="pullBoxVisible"
-    :loading="pullLoading"
-    :logs="pullBoxLogs"
-    :title="t('components.git.common.box.title.pull')"
-  />
-  <cl-git-logs-box
-    :visible="pushBoxVisible"
-    :loading="pushLoading"
-    :logs="pushBoxLogs"
-    :title="t('components.git.common.box.title.push')"
-  />
-  <!-- ./Boxes -->
 </template>
 
 <style scoped lang="scss"></style>

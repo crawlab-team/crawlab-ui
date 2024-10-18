@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue';
+import { ref, watch, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import { GIT_STATUS_CLONING } from '@/constants';
@@ -37,6 +37,9 @@ const update = () => {
 };
 watch(dialogVisible, update);
 onMounted(update);
+onBeforeUnmount(() => {
+  clearInterval(handle);
+});
 defineOptions({ name: 'ClGitLogsDialog' });
 </script>
 
@@ -50,5 +53,3 @@ defineOptions({ name: 'ClGitLogsDialog' });
     <cl-logs-view ref="logsViewRef" :logs="state.form?.clone_logs || []" />
   </cl-dialog>
 </template>
-
-<style scoped lang="scss"></style>

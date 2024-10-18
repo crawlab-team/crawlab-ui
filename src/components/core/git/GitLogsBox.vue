@@ -1,7 +1,4 @@
 <script setup lang="ts">
-
-import { translate } from '@/utils';
-
 defineProps<{
   visible?: boolean;
   loading?: boolean;
@@ -9,7 +6,6 @@ defineProps<{
   logs?: string[];
 }>();
 
-const t = translate;
 defineOptions({ name: 'ClGitLogsBox' });
 </script>
 
@@ -30,7 +26,7 @@ defineOptions({ name: 'ClGitLogsBox' });
   </cl-box>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .logs-list {
   min-height: 240px;
 }

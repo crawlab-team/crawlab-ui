@@ -3,16 +3,12 @@ import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import { translate } from '@/utils';
-import useGitDetail from '@/views/git/detail/useGitDetail';
-import useSpider from '@/components/core/spider/useSpider';
-import ClCreateGitSpiderDialog from '@/components/core/git/CreateGitSpiderDialog.vue';
+import { useGitDetail } from '@/views';
 
 const t = translate;
 
 const ns = 'git';
 const store = useStore<RootStoreState>();
-
-const { form: spiderForm } = useSpider(store);
 
 const { activeId, isDisabled } = useGitDetail();
 

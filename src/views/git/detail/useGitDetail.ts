@@ -18,13 +18,9 @@ import { getRequestBaseUrlWs } from '@/utils';
 const t = translate;
 
 const pullLoading = ref(false);
-const pullBoxVisible = ref(false);
-const pullBoxLogs = ref<string[]>([]);
 const commitLoading = ref(false);
 const rollbackLoading = ref(false);
 const pushLoading = ref(false);
-const pushBoxLogs = ref<string[]>([]);
-const pushBoxVisible = ref(false);
 
 const useGitDetail = () => {
   const ns = 'git';
@@ -160,44 +156,6 @@ const useGitDetail = () => {
     }
   };
 
-  const onPullWs = async () => {
-    const ws = new WebSocket(
-      getRequestBaseUrlWs() + `/gits/${id.value}/pull/ws`
-    );
-    ws.onopen = () => {
-      pullLoading.value = true;
-      pullBoxVisible.value = true;
-    };
-    ws.onmessage = event => {
-      if (event.data) pullBoxLogs.value.push(event.data);
-    };
-    ws.onerror = error => {
-      pullLoading.value = false;
-      pullBoxVisible.value = false;
-      pullBoxLogs.value = [];
-      ElMessage.error(error.toString());
-    };
-    ws.onclose = event => {
-      pullLoading.value = false;
-      pullBoxVisible.value = false;
-      pullBoxLogs.value = [];
-      if (event.code === 1000) {
-        if (event.reason) {
-          ElMessage.info(event.reason);
-        } else {
-          ElMessage.success(t('components.git.common.message.success.pull'));
-          if (activeTabName.value === TAB_NAME_FILES) {
-            store.dispatch(`${ns}/listDir`, { id: id.value });
-          } else if (activeTabName.value === TAB_NAME_LOGS) {
-            store.dispatch(`${ns}/getLogs`, { id: id.value });
-          }
-        }
-      } else {
-        ElMessage.error(event.reason);
-      }
-    };
-  };
-
   const onPush = async () => {
     pushLoading.value = true;
     try {
@@ -222,43 +180,6 @@ const useGitDetail = () => {
     }
   };
 
-  const onPushWs = async () => {
-    const ws = new WebSocket(
-      getRequestBaseUrlWs() + `/gits/${id.value}/push/ws`
-    );
-    ws.onopen = () => {
-      pushLoading.value = true;
-      pushBoxVisible.value = true;
-    };
-    ws.onmessage = event => {
-      if (event.data) pushBoxLogs.value.push(event.data);
-    };
-    ws.onerror = error => {
-      pushLoading.value = false;
-      pushBoxVisible.value = false;
-      pushBoxLogs.value = [];
-      ElMessage.error(error.toString());
-    };
-    ws.onclose = event => {
-      pushLoading.value = false;
-      pushBoxVisible.value = false;
-      pushBoxLogs.value = [];
-      if (event.code === 1000) {
-        if (event.reason) {
-          ElMessage.info(event.reason);
-        } else {
-          ElMessage.success(t('components.git.common.message.success.push'));
-          if (activeTabName.value === TAB_NAME_LOGS) {
-            store.dispatch(`${ns}/getLogs`, { id: id.value });
-            store.dispatch(`${ns}/getRemoteBranches`, { id: id.value });
-          }
-        }
-      } else {
-        ElMessage.error(event.reason);
-      }
-    };
-  };
-
   return {
     ...useDetail('git'),
     currentBranch,
@@ -272,12 +193,8 @@ const useGitDetail = () => {
     rollbackLoading,
     onRollback,
     pullLoading,
-    pullBoxVisible,
-    pullBoxLogs,
     onPull,
     pushLoading,
-    pushBoxVisible,
-    pushBoxLogs,
     onPush,
   };
 };
