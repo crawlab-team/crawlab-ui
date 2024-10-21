@@ -27,5 +27,3 @@ defineOptions({ name: 'ClNodeDetail' });
     </template>
   </cl-detail-layout>
 </template>
-
-<style lang="scss" scoped></style>

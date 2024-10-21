@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 interface ButtonProps {
   tooltip?: string;
   type?: BasicType;
@@ -42,6 +41,7 @@ defineOptions({ name: 'ClNavActionButton' });
       :tooltip="tooltip"
       :type="type"
       :id="id"
+      :data-test="id"
       :class-name="className"
       @click="onClick"
     />
@@ -53,6 +53,7 @@ defineOptions({ name: 'ClNavActionButton' });
       :tooltip="tooltip"
       :type="type"
       :id="id"
+      :data-test="id"
       :class-name="className"
       @click="onClick"
     />

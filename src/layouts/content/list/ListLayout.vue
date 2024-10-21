@@ -122,6 +122,7 @@ defineOptions({ name: 'ClListLayout' });
           >
             <template v-if="item.action === ACTION_FILTER_SEARCH">
               <cl-filter-input
+                :id="(item as ListActionFilter).id"
                 :placeholder="(item as ListActionFilter).placeholder"
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)
@@ -130,6 +131,7 @@ defineOptions({ name: 'ClListLayout' });
             </template>
             <template v-else-if="item.action === ACTION_FILTER_SELECT">
               <cl-filter-select
+                :id="(item as ListActionFilter).id"
                 :label="(item as ListActionFilter).label"
                 :placeholder="(item as ListActionFilter).placeholder"
                 :options="(item as ListActionFilter).options"

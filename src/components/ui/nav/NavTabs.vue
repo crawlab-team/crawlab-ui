@@ -31,6 +31,7 @@ defineOptions({ name: 'ClNavTabs' });
       <el-menu-item
         v-for="item in items"
         :key="item.id"
+        :data-test="item.id"
         :class="getClassName(item)"
         :index="item.id"
         :style="item.style"

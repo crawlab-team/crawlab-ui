@@ -128,6 +128,7 @@ const common: LCommon = {
     currentlyUnavailable: '暂不可用',
     unauthorized: '未授权',
     loading: '加载中',
+    upgradePro: '请升级为 Crawlab 专业版',
   },
   mode: {
     default: '默认',

@@ -3,6 +3,7 @@ import { computed, provide, reactive, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
+    id?: string;
     model?: FormModel;
     inline?: boolean;
     labelWidth?: string;
@@ -53,6 +54,7 @@ defineOptions({ name: 'ClForm' });
 
 <template>
   <el-form
+    v-locate="id"
     ref="formRef"
     :inline="inline"
     :label-width="labelWidth"

@@ -141,6 +141,7 @@ export declare global {
       currentlyUnavailable: string;
       unauthorized: string;
       loading: string;
+      upgradePro: string;
     };
     mode: {
       default: string;

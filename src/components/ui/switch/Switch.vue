@@ -65,6 +65,7 @@ defineOptions({ name: 'ClSwitch' });
   <el-tooltip :content="tooltip" :disabled="!tooltip">
     <el-switch
       v-model="internalValue"
+      :data-test="internalValue"
       :active-color="activeColor"
       :active-icon="activeIconComp"
       :active-text="activeText"

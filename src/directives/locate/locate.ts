@@ -1,20 +1,18 @@
-import { Directive } from 'vue';
+import type { Directive } from 'vue';
 
-export const locate: Directive<HTMLElement, Locate> = {
+const locate: Directive = {
   mounted(el, binding) {
-    let name: string;
-    if (typeof binding.value === 'string') {
-      name = binding.value;
-    } else if (typeof binding.value === 'object') {
-      name = binding.value.name;
+    if (binding.value) {
+      el.setAttribute('data-test', binding.value);
+    }
+  },
+  updated(el, binding) {
+    if (binding.value) {
+      el.setAttribute('data-test', binding.value);
     } else {
-      return;
+      el.removeAttribute('data-test');
     }
-    const className = el.getAttribute('class') || '';
-    const cls = className.split(' ');
-    if (!cls.includes(name)) {
-      el.setAttribute('class', className + ' name');
-    }
-    el.setAttribute('id', name);
   },
 };
+
+export default locate;

@@ -4,6 +4,7 @@ import useRequest from '@/services/request';
 import { cloneArray, prependAllToSelectOptions } from '@/utils';
 
 const props = defineProps<{
+  id?: string;
   label?: string;
   placeholder?: string;
   filterable?: boolean;
@@ -49,7 +50,7 @@ defineOptions({ name: 'ClFilterSelect' });
 </script>
 
 <template>
-  <div class="filter-select">
+  <div class="filter-select" :id="id">
     <label v-if="label" class="label">
       {{ label }}
     </label>
@@ -63,10 +64,12 @@ defineOptions({ name: 'ClFilterSelect' });
       @change="onChange"
     >
       <el-option
+        v-locate="option.value"
         v-for="(option, $index) in computedOptions"
         :key="$index"
         :label="option.label"
         :value="option.value"
+        :data-test="option.value"
       />
     </el-select>
   </div>

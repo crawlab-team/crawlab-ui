@@ -15,8 +15,8 @@ import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
 import '@/styles/index.scss';
 import { initChartJS } from '@/utils/chart';
-import clickOutsideDirective from '@/directives/click-outside/clickOutside';
 import { initMonaco } from '@/utils/monaco';
+import clickOutsideDirective from '@/directives/click-outside/clickOutside';
 
 export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {

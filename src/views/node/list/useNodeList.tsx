@@ -348,6 +348,7 @@ const useNodeList = () => {
           width: '200',
           buttons: [
             {
+              className: 'view-btn',
               type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
@@ -357,15 +358,20 @@ const useNodeList = () => {
               action: ACTION_VIEW,
             },
             {
+              className: 'view-monitoring',
               type: 'info',
               icon: ['fa', 'line-chart'],
-              tooltip: t('common.actions.viewMonitoring'),
+              tooltip: isPro()
+                ? t('common.actions.viewMonitoring')
+                : t('common.status.upgradePro'),
               onClick: async row => {
                 await router.push(`/nodes/${row._id}/monitoring`);
               },
+              disabled: () => !isPro(),
               action: ACTION_VIEW_MONITORING,
             },
             {
+              className: 'delete-btn',
               type: 'danger',
               size: 'small',
               icon: ['fa', 'trash-alt'],

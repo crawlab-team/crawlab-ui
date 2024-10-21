@@ -243,6 +243,7 @@ defineOptions({ name: 'ClLogin' });
           style="width: 100%"
           type="primary"
           size="large"
+          name="submit"
         >
           {{ t('views.login.loginForm.signUp') }}
         </el-button>
@@ -252,6 +253,7 @@ defineOptions({ name: 'ClLogin' });
           style="width: 100%"
           type="primary"
           size="large"
+          name="submit"
           @click="onLogin"
         >
           {{ t('views.login.loginForm.signIn') }}

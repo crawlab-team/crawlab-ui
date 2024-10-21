@@ -128,6 +128,7 @@ const common: LCommon = {
     currentlyUnavailable: 'Currently unavailable',
     unauthorized: 'Unauthorized',
     loading: 'Loading',
+    upgradePro: 'Please upgrade to Crawlab Pro',
   },
   mode: {
     default: 'Default',

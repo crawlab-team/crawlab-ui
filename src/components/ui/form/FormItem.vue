@@ -118,7 +118,7 @@ defineOptions({ name: 'ClFormItem' });
 </script>
 
 <template>
-  <div ref="formItem" :style="style" class="form-item">
+  <div ref="formItem" :style="style" class="form-item" :data-test="prop">
     <el-form-item
       :prop="prop"
       :label="label"

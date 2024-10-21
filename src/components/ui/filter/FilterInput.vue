@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { debounce } from '@/utils';
 
 defineProps<{
+  id?: string;
   label?: string;
   placeholder?: string;
 }>();
@@ -25,7 +26,7 @@ defineOptions({ name: 'ClFilterInput' });
 </script>
 
 <template>
-  <div class="filter-input">
+  <div class="filter-input" :id="id">
     <label v-if="label" class="label">
       {{ label }}
     </label>
