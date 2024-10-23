@@ -38,6 +38,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
 
   const tabs = computed(() => {
     return state.tabs.map(tab => {
+      console.debug(state.disabledTabKeys);
       return {
         ...tab,
         title: t(tab.title || ''),

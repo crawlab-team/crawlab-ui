@@ -30,10 +30,11 @@ const {
   onNavTabsSelect,
   onBack,
   onSave,
+  tabs,
 } = useDetail(ns.value);
 
-const computedTabs = computed<NavItem[]>(
-  () => store.getters[`${ns.value}/tabs`]
+const computedTabs = computed<NavItem[]>(() =>
+  tabs.value.map((tab: NavItem) => ({ ...tab }))
 );
 
 const computedAllListSelectOptions = computed(() => {
