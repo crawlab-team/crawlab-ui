@@ -107,8 +107,9 @@ defineOptions({ name: 'ClSpiderForm' });
         filterable
         id="project"
         class="project"
+        popper-class="spider-form-project"
       >
-        <el-option
+        <cl-option
           v-for="op in allProjectSelectOptions"
           :key="op.value"
           :label="op.label"

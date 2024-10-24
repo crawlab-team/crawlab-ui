@@ -60,15 +60,15 @@ defineOptions({ name: 'ClFilterSelect' });
       :placeholder="placeholder"
       :filterable="filterable"
       clearable
+      :popper-class="id"
       @clear="onClear"
       @change="onChange"
     >
-      <el-option
+      <cl-option
         v-for="(option, $index) in computedOptions"
         :key="$index"
         :label="option.label"
         :value="option.value"
-        :data-test="option.value"
       />
     </el-select>
   </div>

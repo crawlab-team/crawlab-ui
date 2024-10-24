@@ -163,6 +163,7 @@ defineOptions({ name: 'ClUploadFilesDialog' });
 <template>
   <cl-dialog
     :visible="fileUploadVisible"
+    class-name="upload-files-dialog"
     :title="title"
     :confirm-loading="confirmLoading"
     :confirm-disabled="confirmDisabled"

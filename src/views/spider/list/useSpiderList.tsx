@@ -1,6 +1,6 @@
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { computed, h } from 'vue';
+import { computed } from 'vue';
 import { translate } from '@/utils/i18n';
 import {
   ACTION_ADD,
@@ -18,11 +18,11 @@ import {
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import useList from '@/layouts/content/list/useList';
-import TaskStatus from '@/components/core/task/TaskStatus.vue';
-import NavLink from '@/components/ui/nav/NavLink.vue';
-import Time from '@/components/ui/time/Time.vue';
-import SpiderStat from '@/components/core/spider/SpiderStat.vue';
-import GitRepo from '@/components/core/git/GitRepo.vue';
+import ClTaskStatus from '@/components/core/task/TaskStatus.vue';
+import ClNavLink from '@/components/ui/nav/NavLink.vue';
+import ClTime from '@/components/ui/time/Time.vue';
+import ClSpiderStat from '@/components/core/spider/SpiderStat.vue';
+import ClGitRepo from '@/components/core/git/GitRepo.vue';
 import useProject from '@/components/core/project/useProject';
 import { EMPTY_OBJECT_ID, isPro } from '@/utils';
 
@@ -120,11 +120,12 @@ const useSpiderList = () => {
           icon: ['fa', 'font'],
           width: '160',
           align: 'left',
-          value: (row: Spider) =>
-            h(NavLink, {
-              path: `/spiders/${row._id}`,
-              label: row.name,
-            }),
+          value: (row: Spider) => (
+            <ClNavLink
+              path={`/spiders/${row._id}`}
+              label={row.name}
+            />
+          ),
           hasSort: true,
           hasFilter: true,
           allowFilterSearch: true,
@@ -138,10 +139,12 @@ const useSpiderList = () => {
           value: (row: Spider) => {
             if (!row.project_id) return;
             const p = allProjectDict.value.get(row.project_id);
-            return h(NavLink, {
-              label: p?.name,
-              path: `/projects/${row.project_id}`,
-            });
+            return (
+              <ClNavLink
+                label={p?.name}
+                path={`/projects/${row.project_id}`}
+              />
+            );
           },
           hasFilter: true,
           allowFilterSearch: true,
@@ -156,11 +159,13 @@ const useSpiderList = () => {
           width: '240',
           value: (row: Spider) => {
             if (!row.git_id || row.git_id === EMPTY_OBJECT_ID) return;
-            return h(GitRepo, {
-              name: row.git?.name,
-              gitRootPath: row.git_root_path,
-              onClick: () => router.push(`/gits/${row.git_id}`),
-            });
+            return (
+              <ClGitRepo
+                name={row.git?.name}
+                gitRootPath={row.git_root_path}
+                onClick={() => router.push(`/gits/${row.git_id}`)}
+              />
+            );
           },
           hasFilter: true,
           allowFilterSearch: true,
@@ -175,12 +180,14 @@ const useSpiderList = () => {
           value: (row: Spider) => {
             const { _id, status, error } = row.stat?.last_task || {};
             if (!status) return;
-            return h(TaskStatus, {
-              status,
-              error,
-              clickable: true,
-              onClick: () => router.push(`/tasks/${_id}`),
-            });
+            return (
+              <ClTaskStatus
+                status={status}
+                error={error}
+                clickable={true}
+                onClick={() => router.push(`/tasks/${_id}`)}
+              />
+            );
           },
         },
         {
@@ -192,7 +199,7 @@ const useSpiderList = () => {
           value: (row: Spider) => {
             const time = row.stat?.last_task?.stat?.start_ts;
             if (!time) return;
-            return h(Time, { time });
+            return <ClTime time={time} />;
           },
         },
         {
@@ -204,12 +211,14 @@ const useSpiderList = () => {
           value: (row: Spider) => {
             const stat = row.stat;
             if (!stat || !stat.tasks) return;
-            return h(SpiderStat, {
-              stat,
-              onTasksClick: () => router.push(`/spiders/${row._id}/tasks`),
-              onResultsClick: () => router.push(`/spiders/${row._id}/data`),
-              onDurationClick: () => router.push(`/spiders/${row._id}/tasks`),
-            } as SpiderStatProps);
+            return (
+              <ClSpiderStat
+                stat={stat}
+                onTasksClick={() => router.push(`/spiders/${row._id}/tasks`)}
+                onResultsClick={() => router.push(`/spiders/${row._id}/data`)}
+                onDurationClick={() => router.push(`/spiders/${row._id}/tasks`)}
+              />
+            );
           },
         },
         {
