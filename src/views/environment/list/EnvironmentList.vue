@@ -30,4 +30,4 @@ export default defineComponent({
   </cl-list-layout>
 </template>
 
-<style lang="scss" scoped></style>
+

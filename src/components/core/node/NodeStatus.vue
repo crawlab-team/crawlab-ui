@@ -75,4 +75,4 @@ defineOptions({ name: 'ClNodeStatus' });
   />
 </template>
 
-<style lang="scss" scoped></style>
+

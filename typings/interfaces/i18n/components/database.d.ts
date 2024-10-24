@@ -67,6 +67,25 @@ export declare global {
       success: {
         change: string;
       };
+      warning: {
+        emptyQuery: string;
+      };
+    };
+    messageBox: {
+      confirm: {
+        renameTable: {
+          title: string;
+          message: string;
+        };
+      };
+      prompt: {
+        dropTable: {
+          title: string;
+          message: string;
+          placeholder: string;
+          error: string;
+        };
+      };
     };
     connectType: {
       label: {
@@ -79,6 +98,60 @@ export declare global {
         url: string;
         hosts: string;
       };
+    };
+    databases: {
+      database: {
+        name: string;
+        tables: {
+          name: string;
+          columns: string;
+          indexes: string;
+        };
+        create: {
+          name: string;
+        };
+      };
+      table: {
+        name: string;
+        columns: {
+          name: string;
+          type: string;
+          notNull: string;
+          default: string;
+          primary: string;
+          autoIncrement: string;
+        };
+        indexes: {
+          name: string;
+          type: string;
+          columns: string;
+          unique: string;
+          column: {
+            name: string;
+            order: string;
+          };
+        };
+        create: {
+          name: string;
+        };
+        actions: {
+          addColumn: string;
+          editColumns: string;
+          editIndexColumns: string;
+          editIndexes: string;
+          truncate: string;
+          drop: string;
+        };
+      };
+      labels: {
+        columns: string;
+        indexes: string;
+      };
+    };
+    actions: {
+      commitChanges: string;
+      rollbackChanges: string;
+      runQuery: string;
     };
   }
 }

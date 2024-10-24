@@ -8,6 +8,7 @@ export declare global {
     priority?: number;
     col_id?: string;
     col_name?: string;
+    db_name?: string;
     data_source_id?: string;
     mode?: TaskMode;
     node_ids?: string[];

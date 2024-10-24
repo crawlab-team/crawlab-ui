@@ -41,44 +41,114 @@ export declare global {
     databases: DatabaseDatabase[];
   }
 
-  interface DatabaseDatabase {
-    name: string;
-    tables: DatabaseTable[];
+  interface DatabaseItem {
+    timestamp?: number;
   }
 
-  interface DatabaseTable {
-    name: string;
+  interface DatabaseDatabase extends DatabaseItem {
+    name?: string;
+    tables?: DatabaseTable[];
+  }
+
+  interface DatabaseTable extends DatabaseItem {
+    name?: string;
     columns?: DatabaseColumn[];
     indexes?: DatabaseIndex[];
   }
 
-  interface DatabaseColumn {
-    name: string;
-    type: string;
-    null?: boolean; // Use ? to make this property optional
-    key?: string;
-    default?: string;
-    extra?: string;
-    children?: DatabaseColumn[];
+  type DatabaseTableItemStatus = 'new' | 'updated' | 'deleted';
+
+  interface DatabaseTableItem<T> {
+    hash?: string;
+    original_name?: string;
+    status?: DatabaseTableItemStatus;
+    contextMenuVisible?: boolean;
+    isEdit?: Partial<Record<keyof T, boolean>>;
   }
 
-  interface DatabaseIndex {
+  interface DatabaseColumn extends DatabaseTableItem<DatabaseColumn> {
+    name?: string;
+    type?: string;
+    not_null?: boolean;
+    default?: string;
+    primary?: boolean;
+    auto_increment?: boolean;
+  }
+
+  interface DatabaseIndex extends DatabaseTableItem<DatabaseIndex> {
     name: string;
     type?: string;
     columns: DatabaseIndexColumn[];
     unique: boolean;
   }
 
-  interface DatabaseIndexColumn {
+  interface DatabaseIndexColumn extends DatabaseTableItem<DatabaseIndexColumn> {
     name: string;
     order: number;
   }
 
-  interface DatabaseNavItem extends NavItem {
-    type?: 'database' | 'table' | 'column' | 'index';
+  interface DatabaseNavItem<T = any> extends NavItem<T> {
+    type?: 'database' | 'table' | 'columns' | 'indexes' | 'column' | 'index';
     name?: string;
     data_type?: string;
     children: DatabaseNavItem[];
     database?: string;
+    new?: boolean;
+    updated?: boolean;
+    edit?: boolean;
+    edit_name?: string;
+    loading?: boolean;
+  }
+
+  type DatabaseTableClickRowType = 'name' | 'columns' | 'indexes';
+
+  interface DatabaseTableRow extends TableAnyRowData {
+    __status__?: DatabaseTableItemStatus;
+    __hash__?: string;
+    __edit__?: {
+      [key: string]: boolean;
+    };
+  }
+
+  type DatabaseDataType =
+    | 'string'
+    | 'number'
+    | 'boolean'
+    | 'date'
+    | 'datetime'
+    | 'object'
+    | 'array'
+    | 'null'
+    | 'objectid';
+
+  interface DatabaseQueryResults {
+    columns?: DatabaseColumn[];
+    rows?: DatabaseTableRow[];
+    output?: string;
+    error?: string;
+  }
+
+  interface DatabaseTableManipulationStatements {
+    select?: string;
+    create?: string;
+    alter?: string;
+    truncate?: string;
+    drop?: string;
+  }
+
+  interface DatabaseSyntaxKeywordRegex {
+    from?: RegExp;
+    manipulateTable?: RegExp;
+    manipulateField?: RegExp;
+  }
+
+  interface DatabaseMetric extends BasicMetric {
+    database_id?: string;
+    connections?: number;
+    query_per_second?: number;
+    transaction_per_second?: number;
+    cache_hit_ratio?: number;
+    replication_lag?: number;
+    lock_wait_time?: number;
   }
 }

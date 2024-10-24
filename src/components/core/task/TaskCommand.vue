@@ -78,4 +78,4 @@ defineOptions({ name: 'ClTaskCommand' });
   </cl-tag>
 </template>
 
-<style lang="scss" scoped></style>
+

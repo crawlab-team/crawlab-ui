@@ -7,14 +7,18 @@ type SpiderStoreModule = BaseModule<
 
 interface SpiderStoreState extends BaseStoreState<Spider>, BaseFileStoreState {
   dataDisplayAllFields: boolean;
+  databaseMetadata?: DatabaseMetadata;
 }
 
-type SpiderStoreGetters = BaseStoreGetters<SpiderStoreState>;
+interface SpiderStoreGetters extends BaseStoreGetters<SpiderStoreState> {
+  databaseTableSelectOptions: StoreGetter<SpiderStoreState, SelectOption[]>;
+}
 
 interface SpiderStoreMutations
   extends BaseStoreMutations<Spider>,
     BaseFileStoreMutations<SpiderStoreState> {
   setDataDisplayAllFields: StoreMutation<SpiderStoreState, boolean>;
+  setDatabaseMetadata: StoreMutation<SpiderStoreState, DatabaseMetadata>;
 }
 
 interface SpiderStoreActions
@@ -24,4 +28,5 @@ interface SpiderStoreActions
     SpiderStoreState,
     { id: string; options: SpiderRunOptions }
   >;
+  getDatabaseMetadata: StoreAction<SpiderStoreState, string>;
 }

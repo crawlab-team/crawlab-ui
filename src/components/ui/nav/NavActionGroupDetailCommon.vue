@@ -55,4 +55,4 @@ defineOptions({ name: 'ClNavActionGroupDetailCommon' });
   </cl-nav-action-group>
 </template>
 
-<style lang="scss" scoped></style>
+

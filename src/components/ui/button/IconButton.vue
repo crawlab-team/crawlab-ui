@@ -42,7 +42,7 @@ defineOptions({ name: 'ClIconButton' });
   </el-tooltip>
 </template>
 
-<style lang="scss" scoped></style>
+
 <style scoped>
 .icon-button {
   padding: 7px;

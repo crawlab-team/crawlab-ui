@@ -27,4 +27,4 @@ defineOptions({ name: 'ClTaskDetail' });
   </cl-detail-layout>
 </template>
 
-<style lang="scss" scoped></style>
+

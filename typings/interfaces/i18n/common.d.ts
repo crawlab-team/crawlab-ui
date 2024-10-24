@@ -55,6 +55,10 @@ export declare global {
       viewChannels: string;
       viewMonitoring: string;
       previewData: string;
+      insertBefore: string;
+      insertAfter: string;
+      rename: string;
+      drop: string;
     };
     messageBox: {
       confirm: {
@@ -95,6 +99,7 @@ export declare global {
       };
       error: {
         login: string;
+        action: string;
       };
     };
     notification: {
@@ -124,6 +129,10 @@ export declare global {
       mail: string;
       databases: string;
       console: string;
+      columns: string;
+      indexes: string;
+      results: string;
+      output: string;
     };
     status: {
       unassigned: string;
@@ -132,6 +141,7 @@ export declare global {
       currentlyUnavailable: string;
       unauthorized: string;
       loading: string;
+      upgradePro: string;
     };
     mode: {
       default: string;
@@ -148,6 +158,17 @@ export declare global {
     };
     error: {
       common: string;
+    };
+    order: {
+      asc: string;
+      desc: string;
+    };
+    validate: {
+      cannotBeEmpty: string;
+    };
+    boolean: {
+      true: string;
+      false: string;
     };
   }
 }

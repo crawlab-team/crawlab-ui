@@ -55,4 +55,4 @@ defineOptions({ name: 'ClConfirmDialog' });
   </cl-dialog>
 </template>
 
-<style lang="scss" scoped></style>
+

@@ -71,6 +71,21 @@ export declare global {
           overview: string;
         };
       };
+      roles: {
+        title: string;
+        tabs: {
+          overview: string;
+          permissions: string;
+          users: string;
+        };
+      };
+      permissions: {
+        title: string;
+        tabs: {
+          overview: string;
+          roles: string;
+        };
+      };
       tokens: {
         title: string;
       };
@@ -125,6 +140,11 @@ export declare global {
           overview: string;
           databases: string;
           console: string;
+          monitoring: string;
+          table: string;
+          data: string;
+          columns: string;
+          indexes: string;
         };
       };
       environments: {

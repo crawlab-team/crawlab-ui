@@ -24,4 +24,4 @@ defineOptions({ name: 'ClSpiderDetailTabFiles' });
   />
 </template>
 
-<style lang="scss" scoped></style>
+

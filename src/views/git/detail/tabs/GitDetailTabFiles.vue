@@ -46,4 +46,4 @@ defineOptions({ name: 'ClGitDetailTabFiles' });
   />
 </template>
 
-<style lang="scss" scoped></style>
+

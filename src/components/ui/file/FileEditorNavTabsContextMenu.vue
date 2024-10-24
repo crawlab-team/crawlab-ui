@@ -62,4 +62,4 @@ defineOptions({ name: 'ClFileEditorNavTabsContextMenu' });
   </cl-context-menu>
 </template>
 
-<style lang="scss" scoped></style>
+

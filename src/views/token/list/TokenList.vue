@@ -37,4 +37,4 @@ defineOptions({ name: 'ClTokenList' });
   </cl-list-layout>
 </template>
 
-<style lang="scss" scoped></style>
+

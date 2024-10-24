@@ -67,4 +67,4 @@ defineOptions({ name: 'ClSpiderDetailActionsCommon' });
   <!-- ./Dialogs -->
 </template>
 
-<style lang="scss" scoped></style>
+

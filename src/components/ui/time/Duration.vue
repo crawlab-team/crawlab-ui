@@ -49,4 +49,4 @@ defineOptions({ name: 'ClDuration' });
   />
 </template>
 
-<style lang="scss" scoped></style>
+

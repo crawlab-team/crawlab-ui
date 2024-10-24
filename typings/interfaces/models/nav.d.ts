@@ -4,7 +4,7 @@ export declare global {
     title?: string;
     subtitle?: string;
     data?: T;
-    icon?: string[] | string;
+    icon?: Icon;
     tooltip?: string;
     emphasis?: boolean;
     style?: any;

@@ -10,4 +10,4 @@ defineOptions({ name: 'ClSpiderDetailActionsFiles' });
   <cl-file-actions :ns="ns" :active-id="activeId" />
 </template>
 
-<style lang="scss" scoped></style>
+

@@ -22,4 +22,4 @@ defineOptions({ name: 'ClAtomMaterialIcon' });
   <span class="atom-material-icon" v-html="html" />
 </template>
 
-<style lang="scss" scoped></style>
+

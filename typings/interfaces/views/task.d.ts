@@ -24,7 +24,9 @@ export declare global {
     priority?: number;
 
     // view model
+    node?: CNode;
     spider?: Spider;
+    schedule?: Schedule;
   }
 
   interface TaskStat {

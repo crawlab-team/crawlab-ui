@@ -16,4 +16,4 @@ export default defineComponent({
   <cl-detail-layout nav-item-name-key="username" store-namespace="user" />
 </template>
 
-<style lang="scss" scoped></style>
+

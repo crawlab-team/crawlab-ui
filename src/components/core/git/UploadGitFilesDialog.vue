@@ -23,4 +23,4 @@ defineOptions({ name: 'ClUploadGitFilesDialog' });
   />
 </template>
 
-<style lang="scss" scoped></style>
+

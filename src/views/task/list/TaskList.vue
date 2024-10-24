@@ -41,4 +41,4 @@ defineOptions({ name: 'ClTaskList' });
   </cl-list-layout>
 </template>
 
-<style lang="scss" scoped></style>
+

@@ -23,4 +23,4 @@ defineOptions({ name: 'ClUploadSpiderFilesDialog' });
   />
 </template>
 
-<style lang="scss" scoped></style>
+

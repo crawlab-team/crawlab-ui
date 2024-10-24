@@ -6,4 +6,4 @@ defineOptions({ name: 'ClProjectDetail' });
   <cl-detail-layout store-namespace="project" />
 </template>
 
-<style lang="scss" scoped></style>
+

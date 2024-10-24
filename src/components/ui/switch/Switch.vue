@@ -82,4 +82,4 @@ defineOptions({ name: 'ClSwitch' });
   </el-tooltip>
 </template>
 
-<style lang="scss" scoped></style>
+

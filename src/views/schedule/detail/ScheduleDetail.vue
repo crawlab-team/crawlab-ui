@@ -16,4 +16,4 @@ export default defineComponent({
   <cl-detail-layout store-namespace="schedule" />
 </template>
 
-<style lang="scss" scoped></style>
+

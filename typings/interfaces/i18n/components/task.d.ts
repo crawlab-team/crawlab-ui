@@ -1,6 +1,7 @@
 interface LComponentsTask {
   form: {
     spider: string;
+    schedule: string;
     node: string;
     status: string;
     command: string;

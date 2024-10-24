@@ -43,4 +43,4 @@ defineOptions({ name: 'ClNavActionBack' });
   </cl-nav-action-group>
 </template>
 
-<style lang="scss" scoped></style>
+

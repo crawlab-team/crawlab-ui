@@ -52,6 +52,6 @@ interface DataCollectionStoreMutations
 interface DataCollectionStoreActions extends BaseStoreActions<DataCollection> {
   getResultData: StoreAction<
     DataCollectionStoreState,
-    { string; ListRequestParams }
+    { id: string; params: ListRequestParams }
   >;
 }

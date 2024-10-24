@@ -51,7 +51,7 @@ defineOptions({ name: 'ClLabelButton' });
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+
 <style scoped>
 .label-button:deep(.icon) {
   width: 20px;
