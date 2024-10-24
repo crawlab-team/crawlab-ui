@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-import rd from 'rd';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { log } from './utils.js';
@@ -24,12 +23,22 @@ const genInterfaces = async moduleName => {
 
   log('Getting all files...', 'info');
 
-  // read each file
-  rd.eachSync(modulePath, (f, s) => {
-    // skip non-definition files
-    if (!f.endsWith('.d.ts')) return;
-    files.push(f);
-  });
+  // Recursive function to read directory
+  const readDirRecursively = (dir) => {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        readDirRecursively(fullPath);
+      } else if (entry.isFile() && fullPath.endsWith('.d.ts')) {
+        files.push(fullPath);
+      }
+    }
+  };
+
+  // Read files recursively
+  readDirRecursively(modulePath);
+  
   log(`Found ${files.length} files.`, 'info');
 
   log('Generating definitions...', 'info');

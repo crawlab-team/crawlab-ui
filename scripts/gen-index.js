@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-import rd from 'rd';
 import os from 'os';
 
 const EXPORT_MODULES = ['components', 'views', 'directives', 'layouts'];
@@ -101,15 +100,27 @@ function genIndex(moduleName) {
     if (lines) importExportLines.push(lines);
   };
 
+  // Recursive function to read directory
+  function readDirRecursively(dir) {
+    const files = fs.readdirSync(dir, { withFileTypes: true });
+    for (const file of files) {
+      const filePath = path.join(dir, file.name).replace(/\\/g, '/');
+      if (file.isDirectory()) {
+        readDirRecursively(filePath);
+      } else {
+        processEachFile(filePath);
+      }
+    }
+  }
+
+  // Read directory recursively
+  readDirRecursively(modulePath);
+
   // sort import lines by file name
   importExportLines.sort((a, b) => {
     const aName = a.importLine.match(/import (.*) from/)[1];
     const bName = b.importLine.match(/import (.*) from/)[1];
     return aName.localeCompare(bName);
-  });
-
-  rd.eachSync(modulePath, (f, s) => {
-    processEachFile(f.replace(/\\/g, '/'));
   });
 
   const importLines = importExportLines.map(line => line.importLine).join('\n');
