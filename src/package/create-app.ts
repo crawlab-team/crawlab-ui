@@ -9,7 +9,7 @@ import { initBaiduTonji } from '@/admin/baidu';
 import { getRouter } from '@/router';
 import { initRequest } from '@/services/request';
 import { setGlobalLang } from '@/utils/i18n';
-import { locate, auth, export_ } from '@/directives';
+import { auth, export_ } from '@/directives';
 import { initClarity } from '@/admin/clarity';
 import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
@@ -22,16 +22,6 @@ export const getDefaultCreateAppOptions = (): CreateAppOptions => {
   return {
     initBaiduTongji: true,
     initClarity: false,
-    loadStore: true,
-    loadRouter: true,
-    loadElementPlus: true,
-    loadCrawlabUI: true,
-    loadI18n: true,
-    loadFontAwesome: true,
-    loadLocate: true,
-    loadAuth: true,
-    loadExport: true,
-    mount: true,
     store: undefined,
     rootRoutes: undefined,
     routes: undefined,
@@ -84,29 +74,23 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   // initialize chart.js
   initChartJS();
 
+  // initialize monaco
   initMonaco();
 
   // load modules
-  if (options.loadElementPlus) app.use(ElementPlus as any);
-  if (options.loadCrawlabUI) app.use(CrawlabUI as any);
-  if (options.loadStore) app.use(store as any);
-  if (options.loadRouter) app.use(router as any);
-  if (options.loadI18n) {
-    app.use(getI18n() as any);
-    setGlobalLang((window.localStorage.getItem('lang') as Lang) || 'en');
-  }
-  if (options.loadFontAwesome) {
-    app.component('font-awesome-icon', FontAwesomeIcon);
-  }
-  if (options.loadLocate) app.directive('locate', locate as any);
-  if (options.loadAuth) app.directive('auth', auth as any);
-  if (options.loadExport) app.directive('export', export_ as any);
+  app.use(ElementPlus as any);
+  app.use(CrawlabUI as any);
+  app.use(store as any);
+  app.use(router as any);
+  app.use(getI18n() as any);
+  setGlobalLang((window.localStorage.getItem('lang') as Lang) || 'en');
+  app.component('font-awesome-icon', FontAwesomeIcon);
+  app.directive('auth', auth as any);
+  app.directive('export', export_ as any);
   app.directive('click-outside', clickOutsideDirective);
 
   // mount
-  if (options.mount) {
-    app.mount(typeof options.mount === 'string' ? options.mount : '#app');
-  }
+  app.mount(typeof options.mount === 'string' ? options.mount : '#app');
 
   return app;
 };

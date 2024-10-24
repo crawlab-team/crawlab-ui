@@ -17,14 +17,18 @@ const getCurrentMetricsData = async () => {
 };
 
 let handle: any;
-onBeforeMount(getCurrentMetricsData);
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  if (!isPro()) return;
+  await getCurrentMetricsData();
   handle = setInterval(getCurrentMetricsData, 60 * 1000);
 });
 onBeforeUnmount(() => {
   clearInterval(handle);
 });
-watch(activeId, getCurrentMetricsData);
+watch(activeId, async () => {
+  if (!isPro()) return;
+  await getCurrentMetricsData();
+});
 
 defineOptions({ name: 'ClNodeDetailActionsCommon' });
 </script>

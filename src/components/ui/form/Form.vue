@@ -54,7 +54,6 @@ defineOptions({ name: 'ClForm' });
 
 <template>
   <el-form
-    v-locate="id"
     ref="formRef"
     :inline="inline"
     :label-width="labelWidth"

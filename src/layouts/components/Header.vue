@@ -146,7 +146,7 @@ defineOptions({ name: 'ClHeader' });
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <el-dropdown v-locate="'me'" class="me">
+        <el-dropdown class="me">
           <span class="el-dropdown-link item action">
             <font-awesome-icon class="icon" :icon="['far', 'user']" />
             {{ username }}
@@ -163,7 +163,7 @@ defineOptions({ name: 'ClHeader' });
                 {{ t('layouts.components.header.mySettings') }}
               </el-dropdown-item>
               <el-dropdown-item @click="onLogout">
-                <span v-locate="'logout'">{{
+                <span class="logout">{{
                   t('layouts.components.header.logout')
                 }}</span>
               </el-dropdown-item>

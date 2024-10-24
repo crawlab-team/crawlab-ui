@@ -63,7 +63,6 @@ defineOptions({ name: 'ClScheduleForm' });
       required
     >
       <el-input
-        v-locate="'name'"
         v-model="form.name"
         :disabled="isFormItemDisabled('name')"
         :placeholder="t('components.schedule.form.name')"
@@ -76,7 +75,6 @@ defineOptions({ name: 'ClScheduleForm' });
       required
     >
       <el-select
-        v-locate="'spider_id'"
         v-model="form.spider_id"
         :disabled="isFormItemDisabled('spider_id')"
         filterable
@@ -99,7 +97,6 @@ defineOptions({ name: 'ClScheduleForm' });
       required
     >
       <el-input
-        v-locate="'cron'"
         v-model="form.cron"
         :disabled="isFormItemDisabled('cron')"
         :placeholder="t('components.schedule.form.cron')"
@@ -123,7 +120,6 @@ defineOptions({ name: 'ClScheduleForm' });
       prop="cmd"
     >
       <el-input
-        v-locate="'cmd'"
         v-model="form.cmd"
         :disabled="isFormItemDisabled('cmd')"
         :placeholder="t('components.schedule.form.command')"
@@ -135,7 +131,6 @@ defineOptions({ name: 'ClScheduleForm' });
       prop="param"
     >
       <el-input
-        v-locate="'param'"
         v-model="form.param"
         :disabled="isFormItemDisabled('param')"
         :placeholder="t('components.schedule.form.param')"
@@ -174,7 +169,6 @@ defineOptions({ name: 'ClScheduleForm' });
       prop="mode"
     >
       <el-select
-        v-locate="'mode'"
         v-model="form.mode"
         :disabled="isFormItemDisabled('mode')"
       >
@@ -193,7 +187,6 @@ defineOptions({ name: 'ClScheduleForm' });
       required
     >
       <cl-switch
-        v-locate="'enabled'"
         v-model="form.enabled"
         @change="onEnabledChange"
       />
@@ -207,7 +200,6 @@ defineOptions({ name: 'ClScheduleForm' });
       required
     >
       <cl-check-tag-group
-        v-locate="'node_ids'"
         v-model="form.node_ids"
         :disabled="isFormItemDisabled('node_ids')"
         :options="allNodeSelectOptions"
@@ -221,7 +213,6 @@ defineOptions({ name: 'ClScheduleForm' });
       prop="description"
     >
       <el-input
-        v-locate="'description'"
         v-model="form.description"
         :disabled="isFormItemDisabled('description')"
         :placeholder="t('components.schedule.form.description')"

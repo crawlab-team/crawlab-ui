@@ -114,7 +114,6 @@ defineOptions({ name: 'ClTaskForm' });
     >
       <el-select
         v-if="!isFormItemDisabled('spider_id') && !readonly"
-        v-locate="'spider_id'"
         v-model="form.spider_id"
         filterable
       >
@@ -207,7 +206,6 @@ defineOptions({ name: 'ClTaskForm' });
     >
       <el-input
         v-if="!isFormItemDisabled('cmd') && !readonly"
-        v-locate="'cmd'"
         v-model="form.cmd"
         :placeholder="t('components.task.form.command')"
       />
@@ -220,7 +218,6 @@ defineOptions({ name: 'ClTaskForm' });
     >
       <el-input
         v-if="!isFormItemDisabled('param') && !readonly"
-        v-locate="'param'"
         v-model="form.param"
         :placeholder="t('components.task.form.param')"
       />
@@ -237,7 +234,6 @@ defineOptions({ name: 'ClTaskForm' });
     >
       <el-select
         v-if="!isFormItemDisabled('mode') && !readonly"
-        v-locate="'mode'"
         v-model="form.mode"
       >
         <el-option
@@ -257,7 +253,6 @@ defineOptions({ name: 'ClTaskForm' });
     >
       <el-select
         v-if="!isFormItemDisabled('priority') && !readonly"
-        v-locate="'priority'"
         v-model="form.priority"
       >
         <el-option
@@ -278,7 +273,6 @@ defineOptions({ name: 'ClTaskForm' });
       required
     >
       <cl-check-tag-group
-        v-locate="'node_ids'"
         v-model="form.node_ids"
         :disabled="isFormItemDisabled('node_ids') || readonly"
         :options="allNodeSelectOptions"

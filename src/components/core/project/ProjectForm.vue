@@ -30,7 +30,6 @@ defineOptions({ name: 'ClProjectForm' });
       required
     >
       <el-input
-        v-locate="'name'"
         v-model="form.name"
         :disabled="isFormItemDisabled('name')"
         :placeholder="t('components.project.form.name')"
@@ -42,7 +41,6 @@ defineOptions({ name: 'ClProjectForm' });
       prop="description"
     >
       <el-input
-        v-locate="'description'"
         v-model="form.description"
         :disabled="isFormItemDisabled('description')"
         :placeholder="t('components.project.form.description')"

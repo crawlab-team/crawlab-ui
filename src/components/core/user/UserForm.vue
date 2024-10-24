@@ -42,7 +42,6 @@ defineOptions({ name: 'ClUserForm' });
       required
     >
       <el-input
-        v-locate="'username'"
         v-model="form.username"
         :disabled="isFormItemDisabled('username')"
         :placeholder="t('components.user.form.username')"
@@ -56,7 +55,6 @@ defineOptions({ name: 'ClUserForm' });
     >
       <el-input
         v-if="isSelectiveForm || !isDetail"
-        v-locate="'password'"
         v-model="form.password"
         :disabled="isFormItemDisabled('password')"
         :placeholder="t('components.user.form.password')"
@@ -81,7 +79,6 @@ defineOptions({ name: 'ClUserForm' });
       prop="email"
     >
       <el-input
-        v-locate="'email'"
         v-model="form.email"
         :disabled="isFormItemDisabled('email')"
         :placeholder="t('components.user.form.email')"
@@ -95,17 +92,14 @@ defineOptions({ name: 'ClUserForm' });
       required
     >
       <el-select
-        v-locate="'role'"
         v-model="form.role"
         :disabled="isFormItemDisabled('role')"
       >
         <el-option
-          v-locate="ROLE_ADMIN"
           :value="ROLE_ADMIN"
           :label="t('components.user.role.admin')"
         />
         <el-option
-          v-locate="ROLE_NORMAL"
           :value="ROLE_NORMAL"
           :label="t('components.user.role.normal')"
         />

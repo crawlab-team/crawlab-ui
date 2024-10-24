@@ -64,7 +64,6 @@ defineOptions({ name: 'ClFilterSelect' });
       @change="onChange"
     >
       <el-option
-        v-locate="option.value"
         v-for="(option, $index) in computedOptions"
         :key="$index"
         :label="option.label"
