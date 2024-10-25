@@ -1,10 +1,8 @@
-@import './variables.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './element-ui.scss';
-@import './sidebar.scss';
-@import './lexical.scss';
-//@import './tailwind.scss';
+@import 'variables.css';
+@import 'transition.css';
+@import 'element-ui.css';
+@import 'sidebar.css';
+@import 'lexical.css';
 
 body {
   height: 100%;
@@ -72,7 +70,6 @@ a:hover {
   }
 }
 
-//main-container全局样式
 .app-main {
   min-height: 100%
 }
@@ -81,7 +78,6 @@ a:hover {
   padding: 20px;
 }
 
-// context-menu
 .el-popover.context-menu {
   margin: 0;
   padding: 0;

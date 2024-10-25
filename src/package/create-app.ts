@@ -13,7 +13,7 @@ import { auth, export_ } from '@/directives';
 import { initClarity } from '@/admin/clarity';
 import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
-import '@/styles/index.scss';
+import '@/styles/index.css';
 import { initChartJS } from '@/utils/chart';
 import { initMonaco } from '@/utils/monaco';
 import clickOutsideDirective from '@/directives/click-outside/clickOutside';
