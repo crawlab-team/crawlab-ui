@@ -48,7 +48,7 @@ const props = withDefaults(
     noActions: false,
     selectableFunction: () => true,
     visibleButtons: emptyArrayFunc,
-  }
+  },
 );
 
 const emit = defineEmits<{
@@ -108,7 +108,7 @@ defineOptions({ name: 'ClListLayout' });
 </script>
 
 <template>
-  <div class="list-layout">
+  <div class="list-layout" :data-test-total="tableTotal">
     <div class="content">
       <!-- Nav Actions -->
       <cl-nav-actions v-if="!noActions" ref="navActions" class="nav-actions">
