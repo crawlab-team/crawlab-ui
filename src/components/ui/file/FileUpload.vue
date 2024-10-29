@@ -110,10 +110,16 @@ const uploadFilesTree = computed<TreeNode[]>(() => {
       let currentPath = '';
       parts.forEach((_, index) => {
         const parentPath = currentPath;
-        currentPath = parentPath ? `${parentPath}/${parts[index]}` : `/${parts[index]}`;
-        
-        if (index < parts.length - 1) { // It's a folder
-          fileCountMap.set(currentPath, (fileCountMap.get(currentPath) || 0) + 1);
+        currentPath = parentPath
+          ? `${parentPath}/${parts[index]}`
+          : `/${parts[index]}`;
+
+        if (index < parts.length - 1) {
+          // It's a folder
+          fileCountMap.set(
+            currentPath,
+            (fileCountMap.get(currentPath) || 0) + 1
+          );
         }
       });
     });
@@ -234,7 +240,7 @@ defineOptions({ name: 'ClFileUpload' });
         <template v-else-if="mode === FILE_UPLOAD_MODE_FILES">
           <el-upload
             ref="uploadRef"
-            class="file-upload-action"
+            class="file-upload-action-wrapper"
             :on-change="onFileChange"
             :http-request="async () => {}"
             drag
@@ -284,12 +290,13 @@ defineOptions({ name: 'ClFileUpload' });
   &:deep(.el-upload),
   &:deep(.el-upload .el-upload-dragger),
   &:deep(.file-upload-tree),
+  &:deep(.file-upload-action-wrapper),
   &:deep(.file-upload-tree .el-tree) {
     width: 100%;
   }
 
   &:deep(.file-upload-tree .file-upload-tree-container) {
-    height: 300px;
+    max-height: 300px;
     overflow: auto;
     border: 1px solid var(--el-border-color);
   }
