@@ -86,7 +86,7 @@ defineOptions({ name: 'ClHeader' });
           </el-breadcrumb-item>
           <template v-for="item in navMenuItems" :key="item.path">
             <el-breadcrumb-item v-if="item?.path !== '/home'">
-              <router-link :to="item.path">
+              <router-link :to="item.path!">
                 <cl-icon :icon="item.icon" />
                 {{ item.title }}
               </router-link>
@@ -175,12 +175,18 @@ defineOptions({ name: 'ClHeader' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .header-container {
   height: var(--cl-header-height);
   width: calc(100vw - var(--cl-sidebar-width));
   background-color: var(--cl-header-bg);
   transition: width var(--cl-sidebar-collapse-transition-duration);
+  border-bottom: 1px solid var(--el-border-color-light);
+  z-index: 1;
+
+  &:deep(.button-wrapper) {
+    margin-right: 0;
+  }
 
   &.collapsed {
     width: calc(100vw - var(--cl-sidebar-width-collapsed));
@@ -193,7 +199,6 @@ defineOptions({ name: 'ClHeader' });
     align-items: center;
     justify-content: space-between;
     border-left: none;
-    border-bottom: 1px solid var(--cl-header-border-color);
 
     .left {
       display: flex;
@@ -223,10 +228,5 @@ defineOptions({ name: 'ClHeader' });
       }
     }
   }
-}
-</style>
-<style scoped>
-.header-container:deep(.button-wrapper) {
-  margin-right: 0;
 }
 </style>

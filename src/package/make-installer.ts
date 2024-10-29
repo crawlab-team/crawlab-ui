@@ -5,7 +5,7 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'normalize.css/normalize.css';
 import 'element-plus/theme-chalk/index.css';
-import '@/styles/index.scss';
+import '@/styles/index.css';
 
 // fontawesome
 library.add(fab, far, fas);

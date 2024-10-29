@@ -215,7 +215,6 @@ defineOptions({ name: 'ClSidebar' });
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 999;
     display: inline-block;
     height: var(--cl-header-height);
     width: var(--cl-sidebar-width);
