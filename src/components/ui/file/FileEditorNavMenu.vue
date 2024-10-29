@@ -585,6 +585,8 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
             user-select: none;
 
             .icon {
+              display: inline-flex;
+              align-items: center;
               margin-right: 5px;
             }
           }

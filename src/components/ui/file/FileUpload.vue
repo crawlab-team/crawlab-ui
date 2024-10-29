@@ -93,6 +93,66 @@ const onDirFilesChange = (e: Event) => {
 const onClickUploadDir = () => {
   fileInput.value?.click();
 };
+
+const uploadFilesTree = computed<TreeNode[]>(() => {
+  if (!props.uploadInfo?.filePaths) return [];
+
+  const buildTree = (paths: string[]): TreeNode[] => {
+    const rootNodes: TreeNode[] = [];
+    const nodeMap = new Map<string, TreeNode>();
+    const fileCountMap = new Map<string, number>();
+
+    // First pass - count files in each folder
+    paths.forEach(p => {
+      const parts = p.split('/').filter(Boolean);
+      if (parts.length === 0) return;
+
+      let currentPath = '';
+      parts.forEach((_, index) => {
+        const parentPath = currentPath;
+        currentPath = parentPath ? `${parentPath}/${parts[index]}` : `/${parts[index]}`;
+        
+        if (index < parts.length - 1) { // It's a folder
+          fileCountMap.set(currentPath, (fileCountMap.get(currentPath) || 0) + 1);
+        }
+      });
+    });
+
+    // Second pass - build tree with file counts
+    paths.forEach(p => {
+      const parts = p.split('/').filter(Boolean);
+      if (parts.length === 0) return;
+
+      let currentPath = '';
+      parts.forEach((part, index) => {
+        const parentPath = currentPath;
+        currentPath = parentPath ? `${parentPath}/${part}` : `/${part}`;
+
+        if (!nodeMap.has(currentPath)) {
+          const fileCount = fileCountMap.get(currentPath);
+          const node: TreeNode = {
+            value: currentPath,
+            label: fileCount ? `${part} (${fileCount})` : part,
+            children: [],
+          };
+          nodeMap.set(currentPath, node);
+
+          if (index === 0) {
+            rootNodes.push(node);
+          } else {
+            const parentNode = nodeMap.get(parentPath);
+            parentNode?.children?.push(node);
+          }
+        }
+      });
+    });
+
+    return rootNodes;
+  };
+
+  return buildTree(props.uploadInfo.filePaths);
+});
+
 defineOptions({ name: 'ClFileUpload' });
 </script>
 
@@ -161,29 +221,6 @@ defineOptions({ name: 'ClFileUpload' });
                 )
               }}
             </cl-button>
-            <template v-if="uploadInfo?.dirName && uploadInfo?.fileCount">
-              <cl-tag
-                type="primary"
-                class="info-tag"
-                :label="`${uploadInfo?.dirName} (${uploadInfo?.fileCount})`"
-                :icon="['fa', 'folder']"
-              >
-                <template #tooltip>
-                  <div>
-                    <label>
-                      {{ t('components.file.upload.tooltip.folderName') }}:
-                    </label>
-                    <span>{{ uploadInfo?.dirName }}</span>
-                  </div>
-                  <div>
-                    <label>
-                      {{ t('components.file.upload.tooltip.filesCount') }}:
-                    </label>
-                    <span>{{ uploadInfo?.fileCount }}</span>
-                  </div>
-                </template>
-              </cl-tag>
-            </template>
           </div>
           <input
             v-show="false"
@@ -215,61 +252,62 @@ defineOptions({ name: 'ClFileUpload' });
             </div>
           </el-upload>
         </template>
-        <div v-if="uploadInfo?.filePaths?.length" class="file-list-wrapper">
+      </cl-form-item>
+      <cl-form-item :span="4">
+        <div v-if="uploadFilesTree.length > 0" class="file-upload-tree">
           <h4 class="title">
             {{ t('components.file.upload.fileList.title') }}
           </h4>
-          <ul class="file-list">
-            <li
-              v-for="(path, $index) in uploadInfo?.filePaths"
-              :key="$index"
-              class="file-item"
-            >
-              {{ path }}
-            </li>
-          </ul>
+          <div class="file-upload-tree-container">
+            <el-scrollbar>
+              <el-tree :data="uploadFilesTree" default-expand-all>
+                <template #default="{ data }">
+                  <div class="tree-node">
+                    <cl-atom-material-icon
+                      :is-dir="data.children?.length > 0"
+                      :name="data.label"
+                    />
+                    <span class="label">{{ data.label }}</span>
+                  </div>
+                </template>
+              </el-tree>
+            </el-scrollbar>
+          </div>
         </div>
       </cl-form-item>
     </cl-form>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .file-upload {
-  .el-upload {
+  &:deep(.el-upload),
+  &:deep(.el-upload .el-upload-dragger),
+  &:deep(.file-upload-tree),
+  &:deep(.file-upload-tree .el-tree) {
     width: 100%;
   }
 
-  .folder-upload {
+  &:deep(.file-upload-tree .file-upload-tree-container) {
+    height: 300px;
+    overflow: auto;
+    border: 1px solid var(--el-border-color);
+  }
+
+  &:deep(.file-upload-tree .file-upload-tree-container .tree-node) {
     display: flex;
     align-items: center;
-  }
 
-  .file-list-wrapper {
-    .title {
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .file-list {
-      list-style: none;
-      max-height: 400px;
-      overflow: auto;
-      border: 1px solid var(--cl-info-plain-color);
-      padding: 10px;
-      margin-top: 10px;
+    .atom-material-icon {
+      height: 100%;
+      width: 20px;
+      display: inline-flex;
+      align-items: center;
     }
   }
-}
-</style>
 
-<style scoped>
-.file-upload:deep(.el-upload),
-.file-upload:deep(.el-upload .el-upload-dragger) {
-  width: 100%;
-}
-
-.file-upload:deep(.folder-upload .info-tag) {
-  margin-left: 10px;
+  &:deep(.file-upload-tree .title) {
+    margin: 0 0;
+  }
 }
 </style>
