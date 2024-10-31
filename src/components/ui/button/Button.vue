@@ -1,30 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
-interface ButtonProps {
-  tooltip?: string;
-  type?: BasicType;
-  size?: BasicSize;
-  round?: boolean;
-  circle?: boolean;
-  plain?: boolean;
-  disabled?: boolean;
-  isIcon?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
-  className?: string;
-  id?: string;
-  noMargin?: boolean;
-}
+import { ButtonProps, ButtonEmits } from './types';
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'primary',
   size: 'default',
 });
 
-const emit = defineEmits<{
-  (e: 'click', event: Event): void;
-}>();
+const emit = defineEmits<ButtonEmits>();
 
 const cls = computed<string>(() => {
   const { noMargin, className, isIcon } = props;
@@ -34,46 +17,41 @@ const cls = computed<string>(() => {
   if (className) classes.push(className);
   return classes.join(' ');
 });
+
 defineOptions({ name: 'ClButton' });
 </script>
 
 <template>
   <el-tooltip :content="tooltip" :disabled="!tooltip">
-    <span :id="id" :class="['button-wrapper', cls].join(' ')">
-      <el-button
-        :circle="circle"
-        :disabled="disabled"
-        :plain="plain"
-        :round="round"
-        :size="size"
-        :title="tooltip"
-        :type="type"
-        :loading="loading"
-        @click="(event: Event) => emit('click', event)"
-      >
-        <slot></slot>
-      </el-button>
-    </span>
+    <el-button
+      :id="id"
+      :class="cls"
+      :circle="circle"
+      :disabled="disabled"
+      :plain="plain"
+      :round="round"
+      :size="size"
+      :title="tooltip"
+      :type="type"
+      :loading="loading"
+      @click="(event: Event) => emit('click', event)"
+      @mouseenter="(event: Event) => emit('mouseenter', event)"
+      @mouseleave="(event: Event) => emit('mouseleave', event)"
+    >
+      <slot></slot>
+    </el-button>
   </el-tooltip>
 </template>
 
-<style lang="scss" scoped>
-.button-wrapper {
-  position: relative;
-  margin-right: 10px;
-
-  &.no-margin {
-    margin-right: 0;
-  }
-
-  .el-button {
-    vertical-align: inherit;
-  }
-}
-</style>
-
 <style scoped>
-.button-wrapper:deep(.icon-button) {
-  padding: 7px;
+.el-button {
+  position: relative;
+  vertical-align: inherit;
+
+  &:deep(.icon-button) {
+    padding: 7px;
+  }
 }
 </style>
+
+<style scoped></style>

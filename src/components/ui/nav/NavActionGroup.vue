@@ -9,7 +9,7 @@ defineOptions({ name: 'ClNavActionGroup' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .nav-action-group {
   height: fit-content;
   display: flex;
@@ -19,7 +19,6 @@ defineOptions({ name: 'ClNavActionGroup' });
   position: relative;
 
   & + .nav-action-group {
-    //padding-left: 10px;
     margin-left: 10px;
   }
 

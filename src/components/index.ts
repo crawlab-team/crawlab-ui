@@ -22,6 +22,7 @@ import AtomMaterialIcon from './ui/icon/AtomMaterialIcon.vue';
 import BlockOptionsDropdownList from './ui/lexical/components/BlockOptionsDropdownList.vue';
 import Box from './ui/box/Box.vue';
 import Button from './ui/button/Button.vue';
+import ButtonGroup from './ui/button/ButtonGroup.vue';
 import Chart from './ui/chart/Chart.vue';
 import CheckTag from './ui/tag/CheckTag.vue';
 import CheckTagGroup from './ui/tag/CheckTagGroup.vue';
@@ -239,6 +240,7 @@ export {
   BlockOptionsDropdownList as ClBlockOptionsDropdownList,
   Box as ClBox,
   Button as ClButton,
+  ButtonGroup as ClButtonGroup,
   Chart as ClChart,
   CheckTag as ClCheckTag,
   CheckTagGroup as ClCheckTagGroup,

@@ -45,6 +45,7 @@ function processFile(filePath, moduleName) {
     readFileAndModify(filePath, compName);
     return { importLine, exportLine };
   } else if (
+    !filePath.endsWith('.d.ts') &&
     (filePath.endsWith('.ts') || filePath.endsWith('.tsx')) &&
     fileName !== INDEX_COMP_NAME
   ) {

@@ -1,26 +1,10 @@
 <script setup lang="ts">
+import { ButtonEmits, IconButtonProps } from './types';
 
-interface ButtonProps {
-  tooltip?: string;
-  type?: BasicType;
-  size?: BasicSize;
-  round?: boolean;
-  circle?: boolean;
-  plain?: boolean;
-  disabled?: boolean;
-  isIcon?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
-  className?: string;
-  id?: string;
-  noMargin?: boolean;
-}
+defineProps<IconButtonProps>();
 
-defineProps<
-  ButtonProps & {
-    icon: string;
-  }
->();
+const emit = defineEmits<ButtonEmits>();
+
 defineOptions({ name: 'ClIconButton' });
 </script>
 
@@ -36,12 +20,13 @@ defineOptions({ name: 'ClIconButton' });
         :size="size"
         :title="tooltip"
         :type="type"
-        @click="() => $emit('click')"
+        @click="(event: Event) => emit('click', event)"
+        @mouseenter="(event: Event) => emit('mouseenter', event)"
+        @mouseleave="(event: Event) => emit('mouseleave', event)"
       />
     </div>
   </el-tooltip>
 </template>
-
 
 <style scoped>
 .icon-button {

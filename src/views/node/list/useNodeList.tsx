@@ -345,11 +345,10 @@ const useNodeList = () => {
           className: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
           fixed: 'right',
-          width: '200',
+          width: '150',
           buttons: [
             {
               className: 'view-btn',
-              type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async row => {
@@ -359,7 +358,6 @@ const useNodeList = () => {
             },
             {
               className: 'view-monitoring',
-              type: 'info',
               icon: ['fa', 'line-chart'],
               tooltip: isPro()
                 ? t('common.actions.viewMonitoring')
@@ -372,8 +370,6 @@ const useNodeList = () => {
             },
             {
               className: 'delete-btn',
-              type: 'danger',
-              size: 'small',
               icon: ['fa', 'trash-alt'],
               tooltip: t('common.actions.delete'),
               disabled: (row: Node) => !!row.active,
@@ -392,6 +388,7 @@ const useNodeList = () => {
                 await getList();
               },
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,

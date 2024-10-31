@@ -401,38 +401,33 @@ const useTaskList = () => {
           key: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
           icon: ['fa', 'tools'],
-          width: '240',
+          width: '150',
           fixed: 'right',
-          buttons: row => [
+          buttons: (row: Task) => [
             {
               className: 'view-btn',
-              type: 'primary',
-              size: 'small',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
-              onClick: async row => {
+              onClick: async (row: Task) => {
                 await router.push(`/tasks/${row._id}`);
               },
               action: ACTION_VIEW,
             },
             {
               className: 'view-logs-btn',
-              type: 'info',
-              size: 'small',
               icon: ['fa', 'file-alt'],
               tooltip: t('common.actions.viewLogs'),
-              onClick: async row => {
+              onClick: async (row: Task) => {
                 await router.push(`/tasks/${row._id}/logs`);
               },
               action: ACTION_VIEW_LOGS,
             },
             {
               className: 'restart-btn',
-              type: 'warning',
-              size: 'small',
               icon: ['fa', 'redo'],
               tooltip: t('common.actions.restart'),
-              onClick: async row => {
+              contextMenu: true,
+              onClick: async (row: Task) => {
                 await ElMessageBox.confirm(
                   t('common.messageBox.confirm.restart'),
                   t('common.actions.restart'),
@@ -446,11 +441,10 @@ const useTaskList = () => {
             },
             {
               className: 'view-data-btn',
-              type: 'success',
-              size: 'small',
               icon: ['fa', 'database'],
               tooltip: t('common.actions.viewData'),
-              onClick: async row => {
+              contextMenu: true,
+              onClick: async (row: Task) => {
                 await router.push(`/tasks/${row._id}/data`);
               },
               action: ACTION_VIEW_DATA,
@@ -458,10 +452,9 @@ const useTaskList = () => {
             isCancellable(row.status)
               ? {
                   className: 'cancel-btn',
-                  type: 'info',
-                  size: 'small',
                   icon: ['fa', 'stop'],
                   tooltip: t('common.actions.cancel'),
+                  contextMenu: true,
                   onClick: async (row: Task) => {
                     await ElMessageBox.confirm(
                       t('common.messageBox.confirm.cancel'),
@@ -479,10 +472,9 @@ const useTaskList = () => {
                 }
               : {
                   className: 'delete-btn',
-                  type: 'danger',
-                  size: 'small',
                   icon: ['fa', 'trash-alt'],
                   tooltip: t('common.actions.delete'),
+                  contextMenu: true,
                   onClick: deleteByIdConfirm,
                   action: ACTION_DELETE,
                 },

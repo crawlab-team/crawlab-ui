@@ -142,11 +142,10 @@ const useUserList = () => {
         key: TABLE_COLUMN_NAME_ACTIONS,
         label: t('components.table.columns.actions'),
         fixed: 'right',
-        width: '200',
+        width: '150',
         buttons: [
           {
             className: 'view-btn',
-            type: 'primary',
             icon: ['fa', 'search'],
             tooltip: t('common.actions.view'),
             onClick: async (row: User) => {
@@ -156,8 +155,6 @@ const useUserList = () => {
           },
           {
             className: 'delete-btn',
-            type: 'danger',
-            size: 'small',
             icon: ['fa', 'trash-alt'],
             tooltip: (row: User) =>
               row.username === USERNAME_ADMIN
@@ -166,6 +163,7 @@ const useUserList = () => {
             disabled: (row: User) => row.username === USERNAME_ADMIN,
             onClick: deleteByIdConfirm,
             action: ACTION_DELETE,
+            contextMenu: true,
           },
         ],
         disableTransfer: true,

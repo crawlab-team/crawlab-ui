@@ -12,6 +12,7 @@ import {
   ACTION_UPLOAD,
   ACTION_VIEW,
   ACTION_VIEW_DATA,
+  ACTION_VIEW_FILES,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
@@ -121,10 +122,7 @@ const useSpiderList = () => {
           width: '160',
           align: 'left',
           value: (row: Spider) => (
-            <ClNavLink
-              path={`/spiders/${row._id}`}
-              label={row.name}
-            />
+            <ClNavLink path={`/spiders/${row._id}`} label={row.name} />
           ),
           hasSort: true,
           hasFilter: true,
@@ -140,10 +138,7 @@ const useSpiderList = () => {
             if (!row.project_id) return;
             const p = allProjectDict.value.get(row.project_id);
             return (
-              <ClNavLink
-                label={p?.name}
-                path={`/projects/${row.project_id}`}
-              />
+              <ClNavLink label={p?.name} path={`/projects/${row.project_id}`} />
             );
           },
           hasFilter: true,
@@ -249,12 +244,19 @@ const useSpiderList = () => {
           className: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
           icon: ['fa', 'tools'],
-          width: '240',
+          width: '150',
           fixed: 'right',
           buttons: [
             {
-              type: 'success',
-              size: 'small',
+              icon: ['fa', 'search'],
+              tooltip: t('common.actions.view'),
+              onClick: async (row: Spider) => {
+                await router.push(`/spiders/${row._id}`);
+              },
+              className: 'view-btn',
+              action: ACTION_VIEW,
+            },
+            {
               icon: ['fa', 'play'],
               tooltip: t('common.actions.run'),
               onClick: (row: Spider) => {
@@ -265,19 +267,6 @@ const useSpiderList = () => {
               action: ACTION_RUN,
             },
             {
-              type: 'primary',
-              size: 'small',
-              icon: ['fa', 'search'],
-              tooltip: t('common.actions.view'),
-              onClick: async (row: Spider) => {
-                await router.push(`/spiders/${row._id}`);
-              },
-              className: 'view-btn',
-              action: ACTION_VIEW,
-            },
-            {
-              type: 'info',
-              size: 'small',
               icon: ['fa', 'upload'],
               tooltip: t('common.actions.uploadFiles'),
               onClick: (row: Spider) => {
@@ -286,10 +275,19 @@ const useSpiderList = () => {
               },
               className: 'upload-files-btn',
               action: ACTION_UPLOAD,
+              contextMenu: true,
             },
             {
-              type: 'success',
-              size: 'small',
+              icon: ['fa', 'edit'],
+              tooltip: t('common.actions.viewFiles'),
+              onClick: async (row: Spider) => {
+                await router.push(`/spiders/${row._id}/files`);
+              },
+              className: 'view-files-btn',
+              action: ACTION_VIEW_FILES,
+              contextMenu: true,
+            },
+            {
               icon: ['fa', 'database'],
               tooltip: t('common.actions.viewData'),
               onClick: async (row: Spider) => {
@@ -297,15 +295,15 @@ const useSpiderList = () => {
               },
               className: 'view-data-btn',
               action: ACTION_VIEW_DATA,
+              contextMenu: true,
             },
             {
-              type: 'danger',
-              size: 'small',
               icon: ['fa', 'trash-alt'],
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               className: 'delete-btn',
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,

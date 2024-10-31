@@ -49,7 +49,10 @@ export declare global {
     sortable?: boolean;
     fixed?: string | boolean;
     rowKey?: string;
-    buttons?: TableColumnButton[] | TableColumnButtonsFunction;
+    buttonsType?: 'button' | 'button-group';
+    buttonGroupType?: BasicType;
+    buttonGroupSize?: BasicSize;
+    buttons?: TableColumnButtons;
     value?: TableValueFunction<T> | any;
     disableTransfer?: boolean;
     defaultHidden?: boolean;
@@ -138,11 +141,11 @@ export declare global {
     [key: string]: TableColumnCtx;
   }
 
-  interface TableColumnButton {
+  interface TableColumnButton<T = any> {
     key?: 'filter' | 'sort';
     type?: string;
     size?: string;
-    icon?: Icon | TableValueFunction;
+    icon?: Icon | TableValueFunction<T, Icon>;
     tooltip?: string | TableButtonTooltipFunction;
     isHtml?: boolean;
     disabled?: TableButtonDisabledFunction;
@@ -150,15 +153,20 @@ export declare global {
     id?: string;
     className?: string;
     action?: GenericAction;
+    contextMenu?: boolean;
   }
 
   type TableColumnButtonsFunction<T = any> = (row?: T) => TableColumnButton[];
 
-  type TableValueFunction<T = any> = (
+  type TableColumnButtons<T = any> =
+    | TableColumnButton[]
+    | TableColumnButtonsFunction<T>;
+
+  type TableValueFunction<T = any, R = VNode> = (
     row: T,
     rowIndex?: number,
     column?: TableColumn<T>
-  ) => VNode;
+  ) => R;
   type TableButtonOnClickFunction<T = any> = (
     row: T,
     rowIndex?: number,

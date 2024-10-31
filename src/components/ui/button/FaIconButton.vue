@@ -1,33 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { ButtonEmits, FaIconButtonProps } from './types';
 
-interface ButtonProps {
-  tooltip?: string;
-  type?: BasicType;
-  size?: BasicSize;
-  round?: boolean;
-  circle?: boolean;
-  plain?: boolean;
-  disabled?: boolean;
-  isIcon?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
-  className?: string;
-  id?: string;
-  noMargin?: boolean;
-}
+const props = defineProps<FaIconButtonProps>();
 
-const props = defineProps<
-  ButtonProps & {
-    icon: Icon;
-    badgeIcon?: Icon;
-    spin?: boolean;
-  }
->();
-
-const emit = defineEmits<{
-  (e: 'click', event: Event): void;
-}>();
+const emit = defineEmits<ButtonEmits>();
 
 const cls = computed<string>(() => {
   const { className } = props;
@@ -35,6 +12,7 @@ const cls = computed<string>(() => {
   if (className) classes.push(className);
   return classes.join(' ');
 });
+
 defineOptions({ name: 'ClFaIconButton' });
 </script>
 
@@ -51,6 +29,8 @@ defineOptions({ name: 'ClFaIconButton' });
     :id="id"
     :class-name="cls"
     @click="(event: Event) => emit('click', event)"
+    @mouseenter="(event: Event) => emit('mouseenter', event)"
+    @mouseleave="(event: Event) => emit('mouseleave', event)"
   >
     <cl-icon :icon="icon" :spinning="spin" />
     <div v-if="badgeIcon" class="badge-icon">
@@ -59,7 +39,7 @@ defineOptions({ name: 'ClFaIconButton' });
   </cl-button>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .badge-icon {
   position: absolute;
   top: -2px;

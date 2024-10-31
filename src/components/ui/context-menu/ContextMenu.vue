@@ -1,14 +1,6 @@
 <script setup lang="ts">
-import { computed, provide, StyleValue } from 'vue';
-import { Placement } from '@popperjs/core';
-import { TooltipTriggerType } from 'element-plus/es/components/tooltip/src/trigger';
-
-interface ContextMenuProps {
-  trigger?: TooltipTriggerType;
-  visible?: boolean;
-  placement?: Placement;
-  style?: StyleValue;
-}
+import { computed, provide } from 'vue';
+import { ContextMenuProps } from './types';
 
 const props = withDefaults(defineProps<ContextMenuProps>(), {
   placement: 'right-start',
@@ -34,9 +26,9 @@ defineOptions({ name: 'ClContextMenu' });
       <slot name="default"></slot>
     </template>
     <template #reference>
-      <div :style="style">
-        <slot name="reference"></slot>
-      </div>
+      <!--      <div :style="style">-->
+      <slot name="reference"></slot>
+      <!--      </div>-->
     </template>
   </el-popover>
 </template>

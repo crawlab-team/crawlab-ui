@@ -48,7 +48,7 @@ const props = withDefaults(
     noActions: false,
     selectableFunction: () => true,
     visibleButtons: emptyArrayFunc,
-  },
+  }
 );
 
 const emit = defineEmits<{
@@ -220,8 +220,12 @@ defineOptions({ name: 'ClListLayout' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .list-layout {
+  &:deep(.tag) {
+    margin-right: 10px;
+  }
+
   .nav-actions {
     background-color: var(--cl-container-white-bg);
     border-bottom: none;
@@ -237,15 +241,15 @@ defineOptions({ name: 'ClListLayout' });
 
   .content {
     background-color: var(--cl-container-white-bg);
+
+    &:deep(.actions .button-wrapper) {
+      margin-right: 5px;
+    }
+
+    &:deep(.actions .el-button-group .button-wrapper) {
+      margin-right: inherit;
+    }
   }
 }
 </style>
-<style scoped>
-.list-layout:deep(.tag) {
-  margin-right: 10px;
-}
-
-.list-layout:deep(.actions .button-wrapper) {
-  margin-right: 5px;
-}
-</style>
+<style scoped></style>

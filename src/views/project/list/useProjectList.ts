@@ -126,11 +126,10 @@ const useProjectList = () => {
           key: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
           fixed: 'right',
-          width: '200',
+          width: '150',
           buttons: [
             {
               className: 'view-btn',
-              type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async row => {
@@ -138,32 +137,13 @@ const useProjectList = () => {
               },
               action: ACTION_VIEW,
             },
-            // {
-            //   type: 'warning',
-            //   icon: ['fa', 'edit'],
-            //   tooltip: t('common.actions.edit'),
-            //   onClick: (row) => {
-            //     store.commit(`${ns}/setForm`, row);
-            //     store.commit(`${ns}/showDialog`, 'edit');
-            //   },
-            // },
-            // {
-            //   type: 'info',
-            //   size: 'small',
-            //   icon: ['fa', 'clone'],
-            //   tooltip: t('common.actions.clone'),
-            //   onClick: (row) => {
-            //     console.log('clone', row);
-            //   }
-            // },
             {
               className: 'delete-btn',
-              type: 'danger',
-              size: 'small',
               icon: ['fa', 'trash-alt'],
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,

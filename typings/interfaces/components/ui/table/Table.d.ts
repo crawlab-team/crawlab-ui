@@ -49,7 +49,10 @@ export declare global {
     sortable?: boolean;
     fixed?: string | boolean;
     rowKey?: string;
-    buttons?: TableColumnButton[] | TableColumnButtonsFunction;
+    buttonsType?: 'button' | 'button-group';
+    buttonGroupType?: BasicType;
+    buttonGroupSize?: BasicSize;
+    buttons?: TableColumnButtons;
     value?: TableValueFunction<T> | any;
     disableTransfer?: boolean;
     defaultHidden?: boolean;
@@ -153,6 +156,10 @@ export declare global {
   }
 
   type TableColumnButtonsFunction<T = any> = (row?: T) => TableColumnButton[];
+
+  type TableColumnButtons<T = any> =
+    | TableColumnButton[]
+    | TableColumnButtonsFunction<T>;
 
   type TableValueFunction<T = any> = (
     row: T,

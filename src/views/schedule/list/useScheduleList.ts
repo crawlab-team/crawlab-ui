@@ -281,11 +281,10 @@ const useScheduleList = () => {
           key: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
           fixed: 'right',
-          width: '200',
+          width: '150',
           buttons: [
             {
               className: 'view-btn',
-              type: 'primary',
               icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async row => {
@@ -293,19 +292,7 @@ const useScheduleList = () => {
               },
               action: ACTION_VIEW,
             },
-            // {
-            //   type: 'info',
-            //   size: 'small',
-            //   icon: ['fa', 'clone'],
-            //   tooltip: t('common.actions.clone'),
-            //   onClick: (row) => {
-            //     // TODO: implement
-            //     console.log('clone', row);
-            //   }
-            // },
             {
-              type: 'success',
-              size: 'small',
               icon: ['fa', 'play'],
               tooltip: t('common.actions.run'),
               onClick: async row => {
@@ -325,7 +312,7 @@ const useScheduleList = () => {
                   cmd: row.cmd,
                   param: row.param,
                 });
-                await ElMessage.success(t('common.message.success.run'));
+                ElMessage.success(t('common.message.success.run'));
               },
               className: 'run-btn',
               action: ACTION_RUN,
@@ -338,6 +325,7 @@ const useScheduleList = () => {
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,

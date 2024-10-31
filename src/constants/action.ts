@@ -8,6 +8,7 @@ export const ACTION_UPLOAD = 'upload';
 export const ACTION_CANCEL = 'cancel';
 export const ACTION_RESTART = 'restart';
 export const ACTION_VIEW_LOGS = 'view-logs';
+export const ACTION_VIEW_FILES = 'view-files';
 export const ACTION_VIEW_DATA = 'view-data';
 export const ACTION_VIEW_MONITORING = 'view-monitoring';
 export const ACTION_COPY = 'copy';

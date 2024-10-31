@@ -135,6 +135,7 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
 
 <style scoped>
 .task-detail-actions-common:deep(.tag),
+.task-detail-actions-common:deep(.el-button),
 .task-detail-actions-common:deep(.task-results),
 .task-detail-actions-common:deep(.task-status),
 .task-detail-actions-common:deep(.duration) {

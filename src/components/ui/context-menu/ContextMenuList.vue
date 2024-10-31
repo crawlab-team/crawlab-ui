@@ -1,16 +1,8 @@
 <script setup lang="ts">
 import { ComputedRef, inject, ref } from 'vue';
+import { ContextMenuListProps } from './types';
 
-interface ContextMenuItem {
-  title: string;
-  icon?: Icon;
-  action?: () => void | Promise<void>;
-  className?: string;
-}
-
-defineProps<{
-  items?: ContextMenuItem[];
-}>();
+defineProps<ContextMenuListProps>();
 
 const contextMenu = inject<{ visible: ComputedRef<boolean> }>('context-menu');
 
@@ -65,7 +57,7 @@ defineOptions({ name: 'ClContextMenuList' });
   </ul>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .context-menu-list {
   list-style: none;
   margin: 0;

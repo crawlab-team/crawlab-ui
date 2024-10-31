@@ -1,4 +1,2 @@
-export * from './table';
-export * from './form';
-export * from './select';
-export * from './icon';
+export * from './core';
+export * from './ui';

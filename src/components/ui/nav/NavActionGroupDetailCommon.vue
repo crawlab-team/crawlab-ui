@@ -55,4 +55,14 @@ defineOptions({ name: 'ClNavActionGroupDetailCommon' });
   </cl-nav-action-group>
 </template>
 
+<style scoped>
+.nav-action-group {
+  &:deep(.back-btn) {
+    margin-right: 10px;
+  }
 
+  .nav-action-item:last-child {
+    margin-right: 10px;
+  }
+}
+</style>

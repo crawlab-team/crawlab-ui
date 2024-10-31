@@ -1,31 +1,10 @@
 <script setup lang="ts">
+import { ButtonEmits, LabelButtonProps } from './types';
 
-interface ButtonProps {
-  tooltip?: string;
-  type?: BasicType;
-  size?: BasicSize;
-  round?: boolean;
-  circle?: boolean;
-  plain?: boolean;
-  disabled?: boolean;
-  isIcon?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
-  className?: string;
-  id?: string;
-  noMargin?: boolean;
-}
+defineProps<LabelButtonProps>();
 
-defineProps<
-  ButtonProps & {
-    label?: string;
-    icon?: Icon;
-  }
->();
+const emit = defineEmits<ButtonEmits>();
 
-const emit = defineEmits<{
-  (e: 'click'): void;
-}>();
 defineOptions({ name: 'ClLabelButton' });
 </script>
 
@@ -43,14 +22,15 @@ defineOptions({ name: 'ClLabelButton' });
       :id="id"
       :class-name="['label-button', className].join(' ')"
       :loading="loading"
-      @click="() => emit('click')"
+      @click="(event: Event) => emit('click', event)"
+      @mouseenter="(event: Event) => emit('mouseenter', event)"
+      @mouseleave="(event: Event) => emit('mouseleave', event)"
     >
       <font-awesome-icon v-if="icon && !loading" :icon="icon" class="icon" />
       {{ label }}
     </cl-button>
   </div>
 </template>
-
 
 <style scoped>
 .label-button:deep(.icon) {
