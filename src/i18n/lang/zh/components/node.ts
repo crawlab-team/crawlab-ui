@@ -19,8 +19,6 @@ const node: LComponentsNode = {
   },
   nodeStatus: {
     label: {
-      unregistered: '未注册',
-      registered: '已注册',
       online: '在线',
       offline: '离线',
       unknown: '未知',

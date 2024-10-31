@@ -31,6 +31,7 @@ const task: LComponentsTask = {
   status: {
     label: {
       pending: 'Pending',
+      assigned: 'Assigned',
       running: 'Running',
       finished: 'Finished',
       error: 'Error',
@@ -40,6 +41,7 @@ const task: LComponentsTask = {
     },
     tooltip: {
       pending: 'Task is pending in the queue',
+      assigned: 'Task is assigned to a node to run',
       running: 'Task is currently running',
       finished: 'Task finished successfully',
       error: 'Task ended with an error:',

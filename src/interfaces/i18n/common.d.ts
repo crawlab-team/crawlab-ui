@@ -26,6 +26,7 @@ export declare global {
       bookmark: string;
       restart: string;
       cancel: string;
+      forceCancel: string;
       confirm: string;
       copy: string;
       create: string;
@@ -65,6 +66,7 @@ export declare global {
         delete: string;
         restart: string;
         cancel: string;
+        forceCancel: string;
         run: string;
         stop: string;
         install: string;
@@ -95,6 +97,7 @@ export declare global {
       };
       info: {
         cancel: string;
+        forceCancel: string;
         stop: string;
       };
       error: {

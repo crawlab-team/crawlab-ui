@@ -13,6 +13,7 @@ const common: LCommon = {
     bookmark: '添加书签',
     restart: '重新运行',
     cancel: '取消',
+    forceCancel: '强制取消',
     confirm: '确认',
     copy: '复制',
     create: '创建',
@@ -52,6 +53,7 @@ const common: LCommon = {
       delete: '您是否确定删除?',
       restart: '您是否确定重新运行?',
       cancel: '您是否确定取消?',
+      forceCancel: '您是否确定强制取消?',
       run: '您是否确定运行?',
       stop: '您是否确定停止?',
       install: '您是否确定安装?',
@@ -82,6 +84,7 @@ const common: LCommon = {
     },
     info: {
       cancel: '尝试取消',
+      forceCancel: '尝试强制取消',
       stop: '尝试停止',
     },
     error: {

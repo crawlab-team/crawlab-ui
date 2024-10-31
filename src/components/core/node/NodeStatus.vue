@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import {
-  NODE_STATUS_OFFLINE,
-  NODE_STATUS_ONLINE,
-  NODE_STATUS_REGISTERED,
-  NODE_STATUS_UNREGISTERED,
-} from '@/constants/node';
+import { NODE_STATUS_OFFLINE, NODE_STATUS_ONLINE } from '@/constants/node';
 import { translate } from '@/utils';
 
 const props = defineProps<{
@@ -22,20 +17,6 @@ const t = translate;
 const data = computed<TagProps>(() => {
   const { status } = props;
   switch (status) {
-    case NODE_STATUS_UNREGISTERED:
-      return {
-        label: t('components.node.nodeStatus.label.unregistered'),
-        tooltip: t('components.node.nodeStatus.tooltip.unregistered'),
-        type: 'danger',
-        icon: ['fa', 'exclamation'],
-      };
-    case NODE_STATUS_REGISTERED:
-      return {
-        label: t('components.node.nodeStatus.label.registered'),
-        tooltip: t('components.node.nodeStatus.tooltip.registered'),
-        type: 'warning',
-        icon: ['far', 'check-square'],
-      };
     case NODE_STATUS_ONLINE:
       return {
         label: t('components.node.nodeStatus.label.online'),
@@ -74,5 +55,3 @@ defineOptions({ name: 'ClNodeStatus' });
     @click="emit('click')"
   />
 </template>
-
-

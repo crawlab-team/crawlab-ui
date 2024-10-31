@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import {
   TASK_STATUS_ABNORMAL,
+  TASK_STATUS_ASSIGNED,
   TASK_STATUS_CANCELLED,
   TASK_STATUS_ERROR,
   TASK_STATUS_FINISHED,
@@ -33,6 +34,14 @@ const data = computed<TagProps>(() => {
         tooltip: t('components.task.status.tooltip.pending'),
         type: 'primary',
         icon: ['fa', 'hourglass-start'],
+        spinning: true,
+      };
+    case TASK_STATUS_ASSIGNED:
+      return {
+        label: t('components.task.status.label.assigned'),
+        tooltip: t('components.task.status.tooltip.assigned'),
+        type: 'warning',
+        icon: ['fa', 'spinner'],
         spinning: true,
       };
     case TASK_STATUS_RUNNING:
@@ -100,5 +109,3 @@ defineOptions({ name: 'ClTaskStatus' });
     </template>
   </cl-tag>
 </template>
-
-

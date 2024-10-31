@@ -20,12 +20,7 @@ import { useRouter } from 'vue-router';
 import NodeRunners from '@/components/core/node/NodeRunners.vue';
 import Switch from '@/components/ui/switch/Switch.vue';
 import NodeStatus from '@/components/core/node/NodeStatus.vue';
-import {
-  NODE_STATUS_OFFLINE,
-  NODE_STATUS_ONLINE,
-  NODE_STATUS_REGISTERED,
-  NODE_STATUS_UNREGISTERED,
-} from '@/constants/node';
+import { NODE_STATUS_OFFLINE, NODE_STATUS_ONLINE } from '@/constants/node';
 import { translate } from '@/utils/i18n';
 import {
   ACTION_ADD,
@@ -146,14 +141,6 @@ const useNodeList = () => {
           label: t('views.nodes.navActionsExtra.filter.select.status.label'),
           options: [
             {
-              label: t('components.node.nodeStatus.label.unregistered'),
-              value: NODE_STATUS_UNREGISTERED,
-            },
-            {
-              label: t('components.node.nodeStatus.label.registered'),
-              value: NODE_STATUS_REGISTERED,
-            },
-            {
               label: t('components.node.nodeStatus.label.online'),
               value: NODE_STATUS_ONLINE,
             },
@@ -234,14 +221,6 @@ const useNodeList = () => {
           hasFilter: true,
           allowFilterItems: true,
           filterItems: [
-            {
-              label: t('components.node.nodeStatus.label.unregistered'),
-              value: NODE_STATUS_UNREGISTERED,
-            },
-            {
-              label: t('components.node.nodeStatus.label.registered'),
-              value: NODE_STATUS_REGISTERED,
-            },
             {
               label: t('components.node.nodeStatus.label.online'),
               value: NODE_STATUS_ONLINE,

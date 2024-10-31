@@ -9,6 +9,7 @@ import {
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_FILTER_SELECT,
+  ACTION_FORCE_CANCEL,
   ACTION_RESTART,
   ACTION_VIEW,
   ACTION_VIEW_DATA,
@@ -16,6 +17,8 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
   TABLE_COLUMN_NAME_ACTIONS,
+  TASK_STATUS_PENDING,
+  TASK_STATUS_RUNNING,
 } from '@/constants';
 import useList from '@/layouts/content/list/useList';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
@@ -56,6 +59,22 @@ const useTaskList = () => {
 
   // action functions
   const { deleteByIdConfirm } = actionFunctions;
+
+  // cancel task function
+  const cancelTask = async (row: Task, force: boolean) => {
+    if (force) {
+      ElMessage.info(t('common.message.info.forceCancel'));
+    } else {
+      ElMessage.info(t('common.message.info.cancel'));
+    }
+
+    try {
+      await post(`/tasks/${row._id}/cancel`, { force });
+      await store.dispatch(`${ns}/getList`);
+    } catch (e) {
+      ElMessage.error(t('common.message.error.action'));
+    }
+  };
 
   // all node dict
   const allNodeDict = computed<Map<string, CNode>>(
@@ -403,82 +422,116 @@ const useTaskList = () => {
           icon: ['fa', 'tools'],
           width: '150',
           fixed: 'right',
-          buttons: (row: Task) => [
-            {
-              className: 'view-btn',
-              icon: ['fa', 'search'],
-              tooltip: t('common.actions.view'),
-              onClick: async (row: Task) => {
-                await router.push(`/tasks/${row._id}`);
-              },
-              action: ACTION_VIEW,
-            },
-            {
-              className: 'view-logs-btn',
-              icon: ['fa', 'file-alt'],
-              tooltip: t('common.actions.viewLogs'),
-              onClick: async (row: Task) => {
-                await router.push(`/tasks/${row._id}/logs`);
-              },
-              action: ACTION_VIEW_LOGS,
-            },
-            {
-              className: 'restart-btn',
-              icon: ['fa', 'redo'],
-              tooltip: t('common.actions.restart'),
-              contextMenu: true,
-              onClick: async (row: Task) => {
-                await ElMessageBox.confirm(
-                  t('common.messageBox.confirm.restart'),
-                  t('common.actions.restart'),
-                  { type: 'warning', confirmButtonClass: 'restart-confirm-btn' }
-                );
-                await post(`/tasks/${row._id}/restart`);
-                ElMessage.success(t('common.message.success.restart'));
-                await store.dispatch(`task/getList`);
-              },
-              action: ACTION_RESTART,
-            },
-            {
-              className: 'view-data-btn',
-              icon: ['fa', 'database'],
-              tooltip: t('common.actions.viewData'),
-              contextMenu: true,
-              onClick: async (row: Task) => {
-                await router.push(`/tasks/${row._id}/data`);
-              },
-              action: ACTION_VIEW_DATA,
-            },
-            isCancellable(row.status)
-              ? {
-                  className: 'cancel-btn',
-                  icon: ['fa', 'stop'],
-                  tooltip: t('common.actions.cancel'),
-                  contextMenu: true,
-                  onClick: async (row: Task) => {
-                    await ElMessageBox.confirm(
-                      t('common.messageBox.confirm.cancel'),
-                      t('common.actions.cancel'),
-                      {
-                        type: 'warning',
-                        confirmButtonClass: 'cancel-confirm-btn',
-                      }
-                    );
-                    ElMessage.info(t('common.message.info.cancel'));
-                    await post(`/tasks/${row._id}/cancel`);
-                    await store.dispatch(`${ns}/getList`);
-                  },
-                  action: ACTION_CANCEL,
-                }
-              : {
-                  className: 'delete-btn',
-                  icon: ['fa', 'trash-alt'],
-                  tooltip: t('common.actions.delete'),
-                  contextMenu: true,
-                  onClick: deleteByIdConfirm,
-                  action: ACTION_DELETE,
+          buttons: (row: Task) =>
+            [
+              {
+                className: 'view-btn',
+                icon: ['fa', 'search'],
+                tooltip: t('common.actions.view'),
+                onClick: async (row: Task) => {
+                  await router.push(`/tasks/${row._id}`);
                 },
-          ],
+                action: ACTION_VIEW,
+              },
+              {
+                className: 'view-logs-btn',
+                icon: ['fa', 'file-alt'],
+                tooltip: t('common.actions.viewLogs'),
+                onClick: async (row: Task) => {
+                  await router.push(`/tasks/${row._id}/logs`);
+                },
+                action: ACTION_VIEW_LOGS,
+              },
+              {
+                className: 'restart-btn',
+                icon: ['fa', 'redo'],
+                tooltip: t('common.actions.restart'),
+                contextMenu: true,
+                onClick: async (row: Task) => {
+                  await ElMessageBox.confirm(
+                    t('common.messageBox.confirm.restart'),
+                    t('common.actions.restart'),
+                    {
+                      type: 'warning',
+                      confirmButtonClass: 'restart-confirm-btn',
+                    }
+                  );
+                  await post(`/tasks/${row._id}/restart`);
+                  ElMessage.success(t('common.message.success.restart'));
+                  await store.dispatch(`task/getList`);
+                },
+                action: ACTION_RESTART,
+              },
+              {
+                className: 'view-data-btn',
+                icon: ['fa', 'database'],
+                tooltip: t('common.actions.viewData'),
+                contextMenu: true,
+                onClick: async (row: Task) => {
+                  await router.push(`/tasks/${row._id}/data`);
+                },
+                action: ACTION_VIEW_DATA,
+              },
+              {
+                className: 'cancel-btn',
+                icon: ['fa', 'stop'],
+                tooltip: t('common.actions.cancel'),
+                contextMenu: true,
+                onClick: async (row: Task) => {
+                  await ElMessageBox.confirm(
+                    t('common.messageBox.confirm.cancel'),
+                    t('common.actions.cancel'),
+                    {
+                      type: 'warning',
+                      confirmButtonClass: 'cancel-confirm-btn',
+                    }
+                  );
+                  await cancelTask(row, false);
+                },
+                action: ACTION_CANCEL,
+              },
+              {
+                className: 'force-cancel-btn',
+                icon: ['fa', 'skull-crossbones'],
+                tooltip: t('common.actions.forceCancel'),
+                contextMenu: true,
+                onClick: async (row: Task) => {
+                  await ElMessageBox.confirm(
+                    t('common.messageBox.confirm.forceCancel'),
+                    t('common.actions.forceCancel'),
+                    {
+                      type: 'warning',
+                      confirmButtonClass: 'cancel-confirm-btn',
+                    }
+                  );
+                  await cancelTask(row, true);
+                },
+                action: ACTION_FORCE_CANCEL,
+              },
+              {
+                className: 'delete-btn',
+                icon: ['fa', 'trash-alt'],
+                tooltip: t('common.actions.delete'),
+                contextMenu: true,
+                onClick: deleteByIdConfirm,
+                action: ACTION_DELETE,
+              },
+            ].filter(btn => {
+              switch (btn.action) {
+                case ACTION_CANCEL:
+                  return [TASK_STATUS_PENDING, TASK_STATUS_RUNNING].includes(
+                    row.status!
+                  );
+                case ACTION_FORCE_CANCEL:
+                  return row.status === TASK_STATUS_RUNNING;
+                case ACTION_DELETE:
+                  return ![TASK_STATUS_PENDING, TASK_STATUS_RUNNING].includes(
+                    row.status!
+                  );
+                default:
+                  return true;
+              }
+            }),
           disableTransfer: true,
         },
       ] as TableColumns<Task>

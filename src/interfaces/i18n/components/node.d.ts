@@ -19,8 +19,6 @@ interface LComponentsNode {
   };
   nodeStatus: {
     label: {
-      unregistered: string;
-      registered: string;
       online: string;
       offline: string;
       unknown: string;

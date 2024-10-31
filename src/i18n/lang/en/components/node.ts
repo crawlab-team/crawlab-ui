@@ -19,8 +19,6 @@ const node: LComponentsNode = {
   },
   nodeStatus: {
     label: {
-      unregistered: 'Unregistered',
-      registered: 'Registered',
       online: 'Online',
       offline: 'Offline',
       unknown: 'Unknown',

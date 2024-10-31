@@ -51,5 +51,6 @@ export declare global {
     | 'error'
     | 'finished'
     | 'running'
+    | 'assigned'
     | 'pending';
 }

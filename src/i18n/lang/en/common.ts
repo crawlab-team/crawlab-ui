@@ -13,6 +13,7 @@ const common: LCommon = {
     bookmark: 'Bookmark',
     restart: 'Restart',
     cancel: 'Cancel',
+    forceCancel: 'Force Cancel',
     confirm: 'Confirm',
     copy: 'Copy',
     create: 'Create',
@@ -52,6 +53,7 @@ const common: LCommon = {
       delete: 'Are you sure to delete?',
       restart: 'Are you sure to restart?',
       cancel: 'Are you sure to cancel?',
+      forceCancel: 'Are you sure to force cancel?',
       run: 'Are you sure to run?',
       stop: 'Are you sure to stop?',
       install: 'Are you sure to install?',
@@ -82,6 +84,7 @@ const common: LCommon = {
     },
     info: {
       cancel: 'Attempt to cancel',
+      forceCancel: 'Attempt to force cancel',
       stop: 'Attempt to stop',
     },
     error: {

@@ -31,6 +31,7 @@ const task: LComponentsTask = {
   status: {
     label: {
       pending: '待定',
+      assigned: '已分配',
       running: '运行中',
       finished: '已完成',
       error: '错误',
@@ -40,6 +41,7 @@ const task: LComponentsTask = {
     },
     tooltip: {
       pending: '任务正在队列中待定',
+      assigned: '任务已分配到节点运行',
       running: '任务正在运行',
       finished: '任务已成功完成',
       error: '任务发生错误:',

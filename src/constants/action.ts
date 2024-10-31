@@ -6,6 +6,7 @@ export const ACTION_DELETE = 'delete';
 export const ACTION_RUN = 'run';
 export const ACTION_UPLOAD = 'upload';
 export const ACTION_CANCEL = 'cancel';
+export const ACTION_FORCE_CANCEL = 'force-cancel';
 export const ACTION_RESTART = 'restart';
 export const ACTION_VIEW_LOGS = 'view-logs';
 export const ACTION_VIEW_FILES = 'view-files';

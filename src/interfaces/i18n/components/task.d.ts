@@ -31,6 +31,7 @@ interface LComponentsTask {
   status: {
     label: {
       pending: string;
+      assigned: string;
       running: string;
       finished: string;
       error: string;
@@ -40,6 +41,7 @@ interface LComponentsTask {
     };
     tooltip: {
       pending: string;
+      assigned: string;
       running: string;
       finished: string;
       error: string;
