@@ -7,6 +7,11 @@ import {
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
+  ACTION_VIEW_CHANGES,
+  ACTION_VIEW_COMMITS,
+  ACTION_VIEW_FILES,
+  ACTION_VIEW_LOGS,
+  ACTION_VIEW_SPIDERS,
   FILTER_OP_CONTAINS,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
@@ -17,10 +22,11 @@ import {
   translate,
 } from '@/utils';
 import useGit from '@/components/core/git/useGit';
-import NavLink from '@/components/ui/nav/NavLink.vue';
-import GitStatus from '@/components/core/git/GitStatus.vue';
-import ClTag from '@/components/ui/tag/Tag.vue';
-import ClIcon from '@/components/ui/icon/Icon.vue';
+// import NavLink from '@/components/ui/nav/NavLink.vue';
+// import GitStatus from '@/components/core/git/GitStatus.vue';
+// import ClTag from '@/components/ui/tag/Tag.vue';
+// import ClIcon from '@/components/ui/icon/Icon.vue';
+import { ClNavLink, ClGitStatus, ClTag, ClIcon } from '@/components';
 
 const useGitList = () => {
   // router
@@ -92,28 +98,22 @@ const useGitList = () => {
           label: t('views.gits.table.columns.name'),
           icon: ['fa', 'font'],
           width: '240',
-          value: (row: Git) =>
-            h(
-              'div',
-              {
-                style: {
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'start',
-                  gap: '8px',
-                },
-              },
-              [
-                h(ClIcon, {
-                  icon: getGitIcon(row).icon,
-                  color: getGitIcon(row).color,
-                }),
-                h(NavLink, {
-                  path: `/gits/${row._id}`,
-                  label: row.name,
-                }),
-              ]
-            ),
+          value: (row: Git) => (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'start',
+                gap: '8px',
+              }}
+            >
+              <ClIcon
+                icon={getGitIcon(row).icon}
+                color={getGitIcon(row).color}
+              />
+              <ClNavLink path={`/gits/${row._id}`} label={row.name} />
+            </div>
+          ),
           hasSort: true,
           hasFilter: true,
           allowFilterSearch: true,
@@ -126,38 +126,36 @@ const useGitList = () => {
           width: '160',
           value: (row: Git) => {
             const { _id, status, error, clone_logs } = row;
-            return h(
-              'div',
-              {
-                style: {
+            return (
+              <div
+                style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'start',
-                },
-              },
-              [
-                h(GitStatus, {
-                  id: _id,
-                  status,
-                  error,
-                  onClick: () => {
+                }}
+              >
+                <ClGitStatus
+                  id={_id}
+                  status={status}
+                  error={error}
+                  onClick={() => {
                     router.push(`/gits/${_id}`);
-                  },
-                  onRetry: () => store.dispatch(`${ns}/getList`),
-                }),
-                clone_logs?.length
-                  ? h(ClTag, {
-                      type: 'info',
-                      icon: ['fa', 'file-alt'],
-                      tooltip: t('components.git.form.cloneLogs'),
-                      clickable: true,
-                      onClick: () => {
-                        store.commit(`${ns}/showDialog`, 'logs');
-                        store.commit(`${ns}/setForm`, row);
-                      },
-                    })
-                  : null,
-              ]
+                  }}
+                  onRetry={() => store.dispatch(`${ns}/getList`)}
+                />
+                {clone_logs?.length ? (
+                  <ClTag
+                    type="info"
+                    icon={['fa', 'file-alt']}
+                    tooltip={t('components.git.form.cloneLogs')}
+                    clickable
+                    onClick={() => {
+                      store.commit(`${ns}/showDialog`, 'logs');
+                      store.commit(`${ns}/setForm`, row);
+                    }}
+                  />
+                ) : null}
+              </div>
             );
           },
           hasSort: true,
@@ -170,11 +168,12 @@ const useGitList = () => {
           label: t('views.gits.table.columns.spiders'),
           icon: ['fa', 'spider'],
           width: '120',
-          value: (row: Git) =>
-            h(NavLink, {
-              path: `/gits/${row._id}/spiders`,
-              label: row.spiders?.length || 0,
-            }),
+          value: (row: Git) => (
+            <ClNavLink
+              path={`/gits/${row._id}/spiders`}
+              label={row.spiders?.length || 0}
+            />
+          ),
           hasSort: false,
         },
         {
@@ -184,9 +183,6 @@ const useGitList = () => {
           width: '200',
           buttons: [
             {
-              className: 'view-btn',
-              type: 'primary',
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async (row: Git) => {
                 await router.push(`/gits/${row._id}`);
@@ -194,10 +190,37 @@ const useGitList = () => {
               action: ACTION_VIEW,
             },
             {
-              className: 'delete-btn',
-              type: 'danger',
-              size: 'small',
-              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.viewFiles'),
+              onClick: async (row: Git) => {
+                await router.push(`/gits/${row._id}/files`);
+              },
+              action: ACTION_VIEW_FILES,
+            },
+            {
+              tooltip: t('common.actions.viewChanges'),
+              onClick: async (row: Git) => {
+                await router.push(`/gits/${row._id}/changes`);
+              },
+              action: ACTION_VIEW_CHANGES,
+              contextMenu: true,
+            },
+            {
+              tooltip: t('common.actions.viewCommits'),
+              onClick: async (row: Git) => {
+                await router.push(`/gits/${row._id}/commits`);
+              },
+              action: ACTION_VIEW_COMMITS,
+              contextMenu: true,
+            },
+            {
+              tooltip: t('common.actions.viewSpiders'),
+              onClick: async (row: Git) => {
+                await router.push(`/gits/${row._id}/spiders`);
+              },
+              action: ACTION_VIEW_SPIDERS,
+              contextMenu: true,
+            },
+            {
               tooltip: row =>
                 !row.spiders?.length
                   ? t('common.actions.delete')
@@ -205,6 +228,7 @@ const useGitList = () => {
               disabled: row => row.spiders?.length > 0,
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,

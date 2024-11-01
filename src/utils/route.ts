@@ -2,15 +2,47 @@ import { Router } from 'vue-router';
 import { getStore } from '@/store';
 import urljoin from 'url-join';
 import {
+  ACTION_ADD,
+  ACTION_BACK,
+  ACTION_CANCEL,
+  ACTION_CLONE,
+  ACTION_COPY,
+  ACTION_DELETE,
+  ACTION_EDIT,
+  ACTION_ENABLE,
+  ACTION_FILTER,
+  ACTION_FILTER_SEARCH,
+  ACTION_FILTER_SELECT,
+  ACTION_FORCE_CANCEL,
+  ACTION_LINK,
+  ACTION_RESTART,
+  ACTION_RUN,
+  ACTION_SAVE,
+  ACTION_START,
+  ACTION_STOP,
+  ACTION_UNLINK,
+  ACTION_UPLOAD_FILES,
+  ACTION_VIEW,
+  ACTION_VIEW_CHANGES,
+  ACTION_VIEW_COMMITS,
+  ACTION_VIEW_CONSOLE,
+  ACTION_VIEW_DATA,
+  ACTION_VIEW_DATABASES,
+  ACTION_VIEW_FILES,
+  ACTION_VIEW_LOGS,
+  ACTION_VIEW_MONITORING,
+  ACTION_VIEW_SCHEDULES,
+  ACTION_VIEW_SPIDERS,
+  ACTION_VIEW_TASKS,
   TAB_NAME_CHANGES,
   TAB_NAME_CHANNELS,
   TAB_NAME_COLUMNS,
+  TAB_NAME_COMMITS,
   TAB_NAME_CONSOLE,
   TAB_NAME_DATA,
   TAB_NAME_DATABASES,
   TAB_NAME_DEPENDENCIES,
   TAB_NAME_FILES,
-  TAB_NAME_GIT,
   TAB_NAME_INDEXES,
   TAB_NAME_LOGS,
   TAB_NAME_MAIL,
@@ -188,8 +220,6 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'tachometer-alt'];
     case TAB_NAME_FILES:
       return ['fa', 'file-code'];
-    case TAB_NAME_GIT:
-      return ['fa', 'code-branch'];
     case TAB_NAME_TASKS:
       return ['fa', 'tasks'];
     case TAB_NAME_SETTINGS:
@@ -210,6 +240,8 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'file-code'];
     case TAB_NAME_CHANGES:
       return ['fa', 'code-commit'];
+    case TAB_NAME_COMMITS:
+      return ['fa', 'code-branch'];
     case TAB_NAME_MONITORING:
       return ['fa', 'line-chart'];
     case TAB_NAME_CHANNELS:
@@ -243,4 +275,88 @@ export const getIconByTabName = (tabName: string): Icon => {
 
 export const getIconByNavItem = (item: NavItem): Icon => {
   return getIconByTabName(item.id);
+};
+
+export const getIconByAction = (action: string): Icon | undefined => {
+  switch (action) {
+    // Basic Actions
+    case ACTION_ADD:
+      return ['fa', 'plus'];
+    case ACTION_VIEW:
+      return ['fa', 'search'];
+    case ACTION_EDIT:
+      return ['fa', 'edit'];
+    case ACTION_CLONE:
+      return ['fa', 'copy'];
+    case ACTION_DELETE:
+      return ['fa', 'trash-alt'];
+    case ACTION_COPY:
+      return ['fa', 'copy'];
+    case ACTION_SAVE:
+      return ['fa', 'save'];
+    case ACTION_BACK:
+      return ['fa', 'undo'];
+
+    // Task/Process Actions
+    case ACTION_RUN:
+      return ['fa', 'play'];
+    case ACTION_START:
+      return ['fa', 'play'];
+    case ACTION_STOP:
+      return ['fa', 'stop'];
+    case ACTION_CANCEL:
+      return ['fa', 'stop'];
+    case ACTION_FORCE_CANCEL:
+      return ['fa', 'skull-crossbones'];
+    case ACTION_RESTART:
+      return ['fa', 'redo'];
+    case ACTION_ENABLE:
+      return ['fa', 'toggle-on'];
+
+    // File Actions
+    case ACTION_UPLOAD_FILES:
+      return ['fa', 'upload'];
+
+    // View Actions
+    case ACTION_VIEW_LOGS:
+      return ['fa', 'file-alt'];
+    case ACTION_VIEW_FILES:
+      return ['fa', 'file-code'];
+    case ACTION_VIEW_TASKS:
+      return ['fa', 'tasks'];
+    case ACTION_VIEW_SCHEDULES:
+      return ['fa', 'calendar-alt'];
+    case ACTION_VIEW_DATA:
+      return ['fa', 'table'];
+    case ACTION_VIEW_MONITORING:
+      return ['fa', 'chart-line'];
+    case ACTION_VIEW_SPIDERS:
+      return ['fa', 'spider'];
+    case ACTION_VIEW_CHANGES:
+      return ['fa', 'code-commit'];
+    case ACTION_VIEW_COMMITS:
+      return ['fa', 'code-branch'];
+    case ACTION_VIEW_DATABASES:
+      return ['fa', 'database'];
+    case ACTION_VIEW_CONSOLE:
+      return ['fa', 'terminal'];
+
+    // Filter Actions
+    case ACTION_FILTER:
+      return ['fa', 'filter'];
+    case ACTION_FILTER_SEARCH:
+      return ['fa', 'search'];
+    case ACTION_FILTER_SELECT:
+      return ['fa', 'check-square'];
+
+    // Link Actions
+    case ACTION_LINK:
+      return ['fa', 'link'];
+    case ACTION_UNLINK:
+      return ['fa', 'unlink'];
+
+    // Default
+    default:
+      return;
+  }
 };

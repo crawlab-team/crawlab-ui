@@ -129,8 +129,8 @@ export declare global {
         tabs: {
           overview: string;
           files: string;
-          logs: string;
           changes: string;
+          commits: string;
           spiders: string;
         };
       };

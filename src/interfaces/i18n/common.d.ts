@@ -39,11 +39,16 @@ export declare global {
       install: string;
       uninstall: string;
       viewLogs: string;
+      viewSpiders: string;
       viewData: string;
       viewFiles: string;
       uploadFiles: string;
       viewTasks: string;
       viewSchedules: string;
+      viewChanges: string;
+      viewCommits: string;
+      viewDatabases: string;
+      viewConsole: string;
       export: string;
       configure: string;
       update: string;
@@ -128,6 +133,7 @@ export declare global {
       tags: string;
       references: string;
       changes: string;
+      commits: string;
       ignore: string;
       monitoring: string;
       channels: string;

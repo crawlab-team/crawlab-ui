@@ -3,6 +3,7 @@ import { h } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { ClButtonGroup, ClFaIconButton } from '@/components';
+import { getIconByAction } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
@@ -86,20 +87,27 @@ const getNormalizedButtons = (
     .map(btn => {
       const { tooltip, type, size, icon, disabled, onClick, id, className } =
         btn;
-      const _icon =
-        typeof icon === 'function' ? icon(row, rowIndex, column) : icon;
+      let _icon: Icon | undefined;
+      if (typeof icon === 'function') {
+        _icon = icon(row, rowIndex, column);
+      } else if (typeof icon === 'undefined') {
+        _icon = getIconByAction(btn.action);
+      } else {
+        _icon = icon;
+      }
+      let _className = className || `${btn.action}-btn`;
       return {
         buttonType: 'fa-icon',
+        id,
+        type,
         key: JSON.stringify({ tooltip, type, size, icon: _icon }),
         tooltip: typeof tooltip === 'function' ? tooltip(row) : tooltip,
-        type,
-        icon: _icon,
         disabled: disabled?.(row),
+        icon: _icon,
+        className: _className,
         onClick: () => {
           onClick?.(row, rowIndex, column);
         },
-        id,
-        className,
       };
     });
 };
@@ -107,12 +115,19 @@ const getNormalizedButtons = (
 const getButtonGroupDropdownItems = (
   buttons: TableColumnButtons
 ): ContextMenuItem[] => {
-  return getNormalizedButtons(buttons, true).map(btn => {
+  // skip if no context menu buttons
+  const contextMenuButtons = getNormalizedButtons(buttons, true);
+  if (contextMenuButtons.length === 0) return [];
+
+  // get all buttons
+  const allButtons = getNormalizedButtons(buttons);
+  return allButtons.map(btn => {
     return {
       title: btn.tooltip,
       icon: btn.icon,
       className: btn.className,
       action: btn.onClick,
+      disabled: btn.disabled,
     } as ContextMenuItem;
   });
 };

@@ -12,6 +12,7 @@ import {
   TAB_NAME_LOGS,
   TAB_NAME_SPIDERS,
   GIT_STATUS_READY,
+  TAB_NAME_COMMITS,
 } from '@/constants';
 import useRequest from '@/services/request';
 import {
@@ -42,8 +43,8 @@ const state = {
       icon: ['fa', 'code-commit'],
     },
     {
-      id: TAB_NAME_LOGS,
-      title: 'common.tabs.logs',
+      id: TAB_NAME_COMMITS,
+      title: 'common.tabs.commits',
       icon: ['fa', 'code-branch'],
     },
     {

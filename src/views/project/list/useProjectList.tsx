@@ -2,9 +2,7 @@ import { computed, h } from 'vue';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { useStore } from 'vuex';
 import useList from '@/layouts/content/list/useList';
-import NavLink from '@/components/ui/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
-import { TAB_NAME_SPIDERS } from '@/constants/tab';
 import { translate } from '@/utils/i18n';
 import {
   ACTION_ADD,
@@ -12,9 +10,11 @@ import {
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
+  ACTION_VIEW_SPIDERS,
   FILTER_OP_CONTAINS,
 } from '@/constants';
-import { onListFilterChangeByKey } from '@/utils';
+import { getIconByAction, onListFilterChangeByKey } from '@/utils';
+import { ClNavLink } from '@/components';
 
 const useProjectList = () => {
   // router
@@ -46,7 +46,7 @@ const useProjectList = () => {
           buttonType: 'label',
           label: t('views.projects.navActions.new.label'),
           tooltip: t('views.projects.navActions.new.tooltip'),
-          icon: ['fa', 'plus'],
+          icon: getIconByAction(ACTION_ADD),
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
@@ -84,11 +84,9 @@ const useProjectList = () => {
           label: t('views.projects.table.columns.name'),
           icon: ['fa', 'font'],
           width: '150',
-          value: (row: Project) =>
-            h(NavLink, {
-              path: `/projects/${row._id}`,
-              label: row.name,
-            }),
+          value: (row: Project) => (
+            <ClNavLink path={`/projects/${row._id}`} label={row.name} />
+          ),
           hasSort: true,
           hasFilter: true,
           allowFilterSearch: true,
@@ -98,22 +96,14 @@ const useProjectList = () => {
           key: 'spiders',
           label: t('views.projects.table.columns.spiders'),
           icon: ['fa', 'spider'],
-          value: (row: Project) =>
-            h(NavLink, {
-              path: `/projects/${row._id}/${TAB_NAME_SPIDERS}`,
-              label: row.spiders,
-            }),
+          value: (row: Project) => (
+            <ClNavLink
+              path={`/projects/${row._id}/spiders`}
+              label={row.spiders}
+            />
+          ),
           width: '120',
         },
-        // {
-        //   key: 'tags',
-        //   label: t('views.projects.table.columns.tags'),
-        //   icon: ['fa', 'hashtag'],
-        //   value: ({tags}: Project) => {
-        //     return h(TagList, {tags});
-        //   },
-        //   width: '200',
-        // },
         {
           key: 'description',
           label: t('views.projects.table.columns.description'),
@@ -129,8 +119,6 @@ const useProjectList = () => {
           width: '150',
           buttons: [
             {
-              className: 'view-btn',
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async row => {
                 await router.push(`/projects/${row._id}`);
@@ -138,8 +126,14 @@ const useProjectList = () => {
               action: ACTION_VIEW,
             },
             {
-              className: 'delete-btn',
-              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.viewSpiders'),
+              onClick: async row => {
+                await router.push(`/projects/${row._id}/spiders`);
+              },
+              action: ACTION_VIEW_SPIDERS,
+              contextMenu: true,
+            },
+            {
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,

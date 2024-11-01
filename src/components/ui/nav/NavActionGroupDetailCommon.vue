@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ACTION_BACK, ACTION_SAVE } from '@/constants';
-import { translate } from '@/utils';
+import { getIconByAction, translate } from '@/utils';
 
 withDefaults(
   defineProps<{
@@ -30,7 +30,7 @@ defineOptions({ name: 'ClNavActionGroupDetailCommon' });
       <cl-nav-action-button
         v-auth="ACTION_BACK"
         :disabled="disabled"
-        :icon="['fa', 'undo']"
+        :icon="getIconByAction(ACTION_BACK)"
         button-type="label"
         :label="t('components.nav.actions.back')"
         type="primary"
@@ -43,7 +43,7 @@ defineOptions({ name: 'ClNavActionGroupDetailCommon' });
       <cl-nav-action-button
         v-auth="ACTION_SAVE"
         :disabled="disabled"
-        :icon="['fa', 'save']"
+        :icon="getIconByAction(ACTION_SAVE)"
         button-type="label"
         :label="t('components.nav.actions.save')"
         type="success"

@@ -21,8 +21,8 @@ import GitDetailActionsCommon from './git/detail/actions/GitDetailActionsCommon.
 import GitDetailActionsFiles from './git/detail/actions/GitDetailActionsFiles.vue';
 import GitDetailActionsSpiders from './git/detail/actions/GitDetailActionsSpiders.vue';
 import GitDetailTabChanges from './git/detail/tabs/GitDetailTabChanges.vue';
+import GitDetailTabCommits from './git/detail/tabs/GitDetailTabCommits.vue';
 import GitDetailTabFiles from './git/detail/tabs/GitDetailTabFiles.vue';
-import GitDetailTabLogs from './git/detail/tabs/GitDetailTabLogs.vue';
 import GitDetailTabOverview from './git/detail/tabs/GitDetailTabOverview.vue';
 import GitDetailTabSpiders from './git/detail/tabs/GitDetailTabSpiders.vue';
 import GitList from './git/list/GitList.vue';
@@ -138,8 +138,8 @@ export {
   GitDetailActionsFiles as ClGitDetailActionsFiles,
   GitDetailActionsSpiders as ClGitDetailActionsSpiders,
   GitDetailTabChanges as ClGitDetailTabChanges,
+  GitDetailTabCommits as ClGitDetailTabCommits,
   GitDetailTabFiles as ClGitDetailTabFiles,
-  GitDetailTabLogs as ClGitDetailTabLogs,
   GitDetailTabOverview as ClGitDetailTabOverview,
   GitDetailTabSpiders as ClGitDetailTabSpiders,
   GitList as ClGitList,

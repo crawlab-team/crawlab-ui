@@ -20,9 +20,14 @@ import {
 } from '@/utils';
 import { getRouter } from '@/router';
 import {
+  ACTION_DELETE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_FILTER_SELECT,
+  ACTION_VIEW,
+  ACTION_VIEW_CONSOLE,
+  ACTION_VIEW_DATABASES,
+  ACTION_VIEW_MONITORING,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
   TABLE_COLUMN_NAME_ACTIONS,
@@ -186,17 +191,36 @@ const useDatabaseList = () => {
           width: '200',
           buttons: [
             {
-              type: 'primary',
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async row => {
                 await router.push(`/databases/${row._id}`);
               },
+              action: ACTION_VIEW,
             },
             {
-              type: 'danger',
-              size: 'small',
-              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.viewDatabases'),
+              onClick: async row => {
+                await router.push(`/databases/${row._id}/databases`);
+              },
+              action: ACTION_VIEW_DATABASES,
+            },
+            {
+              tooltip: t('common.actions.viewConsole'),
+              onClick: async row => {
+                await router.push(`/databases/${row._id}/console`);
+              },
+              action: ACTION_VIEW_CONSOLE,
+              contextMenu: true,
+            },
+            {
+              tooltip: t('common.actions.viewMonitoring'),
+              onClick: async row => {
+                await router.push(`/databases/${row._id}/monitoring`);
+              },
+              action: ACTION_VIEW_MONITORING,
+              contextMenu: true,
+            },
+            {
               tooltip: t('common.actions.delete'),
               disabled: (row: Database) => row.is_default,
               onClick: async (row: Database) => {
@@ -214,6 +238,8 @@ const useDatabaseList = () => {
                 }
                 await getList();
               },
+              action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,

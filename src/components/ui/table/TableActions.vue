@@ -147,9 +147,10 @@ defineOptions({ name: 'ClTableActions' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .table-actions {
   display: inline-flex;
+  gap: 5px;
 
   .nav-action-button {
     display: inline-flex;

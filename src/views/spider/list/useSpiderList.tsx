@@ -9,7 +9,7 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_FILTER_SELECT,
   ACTION_RUN,
-  ACTION_UPLOAD,
+  ACTION_UPLOAD_FILES,
   ACTION_VIEW,
   ACTION_VIEW_DATA,
   ACTION_VIEW_FILES,
@@ -21,13 +21,15 @@ import {
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import useList from '@/layouts/content/list/useList';
-import ClTaskStatus from '@/components/core/task/TaskStatus.vue';
-import ClNavLink from '@/components/ui/nav/NavLink.vue';
-import ClTime from '@/components/ui/time/Time.vue';
-import ClSpiderStat from '@/components/core/spider/SpiderStat.vue';
-import ClGitRepo from '@/components/core/git/GitRepo.vue';
+import {
+  ClTaskStatus,
+  ClNavLink,
+  ClTime,
+  ClSpiderStat,
+  ClGitRepo,
+} from '@/components';
 import useProject from '@/components/core/project/useProject';
-import { EMPTY_OBJECT_ID, isPro } from '@/utils';
+import { EMPTY_OBJECT_ID, getIconByAction, isPro } from '@/utils';
 
 const useSpiderList = () => {
   // i18n
@@ -69,7 +71,7 @@ const useSpiderList = () => {
           buttonType: 'label',
           label: t('views.spiders.navActions.new.label'),
           tooltip: t('views.spiders.navActions.new.tooltip'),
-          icon: ['fa', 'plus'],
+          icon: getIconByAction(ACTION_ADD),
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
@@ -250,80 +252,64 @@ const useSpiderList = () => {
           fixed: 'right',
           buttons: [
             {
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async (row: Spider) => {
                 await router.push(`/spiders/${row._id}`);
               },
-              className: 'view-btn',
               action: ACTION_VIEW,
             },
             {
-              icon: ['fa', 'play'],
               tooltip: t('common.actions.run'),
               onClick: (row: Spider) => {
                 store.commit(`${ns}/setForm`, row);
                 store.commit(`${ns}/showDialog`, 'run');
               },
-              className: 'run-btn',
               action: ACTION_RUN,
             },
             {
-              icon: ['fa', 'upload'],
               tooltip: t('common.actions.uploadFiles'),
               onClick: (row: Spider) => {
                 store.commit(`${ns}/setForm`, row);
                 store.commit(`${ns}/showDialog`, 'uploadFiles');
               },
-              className: 'upload-files-btn',
-              action: ACTION_UPLOAD,
+              action: ACTION_UPLOAD_FILES,
               contextMenu: true,
             },
             {
-              icon: ['fa', 'edit'],
               tooltip: t('common.actions.viewFiles'),
               onClick: async (row: Spider) => {
                 await router.push(`/spiders/${row._id}/files`);
               },
-              className: 'view-files-btn',
               action: ACTION_VIEW_FILES,
               contextMenu: true,
             },
             {
-              icon: ['fa', 'tasks'],
               tooltip: t('common.actions.viewTasks'),
               onClick: async (row: Spider) => {
                 await router.push(`/spiders/${row._id}/tasks`);
               },
-              className: 'view-tasks-btn',
               action: ACTION_VIEW_TASKS,
               contextMenu: true,
             },
             {
-              icon: ['fa', 'calendar-alt'],
               tooltip: t('common.actions.viewSchedules'),
               onClick: async (row: Spider) => {
                 await router.push(`/spiders/${row._id}/schedules`);
               },
-              className: 'view-schedules-btn',
               action: ACTION_VIEW_SCHEDULES,
               contextMenu: true,
             },
             {
-              icon: ['fa', 'database'],
               tooltip: t('common.actions.viewData'),
               onClick: async (row: Spider) => {
                 await router.push(`/spiders/${row._id}/data`);
               },
-              className: 'view-data-btn',
               action: ACTION_VIEW_DATA,
               contextMenu: true,
             },
             {
-              icon: ['fa', 'trash-alt'],
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
-              className: 'delete-btn',
               action: ACTION_DELETE,
               contextMenu: true,
             },

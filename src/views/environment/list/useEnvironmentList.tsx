@@ -4,7 +4,8 @@ import useEnvironmentService from '@/services/environment/environmentService';
 import { getStore } from '@/store';
 import { onListFilterChangeByKey, translate } from '@/utils';
 import {
-  ACTION_COPY,
+  ACTION_DELETE,
+  ACTION_EDIT,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   FILTER_OP_CONTAINS,
@@ -87,20 +88,14 @@ const useEnvironmentList = () => {
       width: '200',
       buttons: [
         {
-          type: 'warning',
-          size: 'small',
-          icon: ['far', 'edit'],
           tooltip: t('common.actions.edit'),
           onClick: async (row: Environment) => {
             commit(`${ns}/setForm`, row);
             commit(`${ns}/showDialog`, 'edit');
           },
-          action: ACTION_COPY,
+          action: ACTION_EDIT,
         },
         {
-          type: 'danger',
-          size: 'small',
-          icon: ['fa', 'trash-alt'],
           tooltip: t('common.actions.delete'),
           onClick: async (row: Environment) => {
             const res = await ElMessageBox.confirm(
@@ -117,6 +112,8 @@ const useEnvironmentList = () => {
             }
             await getList();
           },
+          action: ACTION_DELETE,
+          contextMenu: true,
         },
       ],
       disableTransfer: true,

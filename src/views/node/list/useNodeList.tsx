@@ -15,11 +15,7 @@ import {
 } from '@/constants/table';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import useNodeService from '@/services/node/nodeService';
-import NavLink from '@/components/ui/nav/NavLink.vue';
 import { useRouter } from 'vue-router';
-import NodeRunners from '@/components/core/node/NodeRunners.vue';
-import Switch from '@/components/ui/switch/Switch.vue';
-import NodeStatus from '@/components/core/node/NodeStatus.vue';
 import { NODE_STATUS_OFFLINE, NODE_STATUS_ONLINE } from '@/constants/node';
 import { translate } from '@/utils/i18n';
 import {
@@ -31,11 +27,23 @@ import {
   ACTION_FILTER_SELECT,
   ACTION_VIEW,
   ACTION_VIEW_MONITORING,
+  ACTION_VIEW_TASKS,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
-import { isAllowedAction, isPro, setupAutoUpdate } from '@/utils';
-import { ClCurrentMetrics } from '@/components';
+import {
+  getIconByAction,
+  isAllowedAction,
+  isPro,
+  setupAutoUpdate,
+} from '@/utils';
+import {
+  ClCurrentMetrics,
+  ClNavLink,
+  ClNodeRunners,
+  ClNodeStatus,
+  ClSwitch,
+} from '@/components';
 
 type Node = CNode;
 
@@ -66,7 +74,7 @@ const useNodeList = () => {
           buttonType: 'label',
           label: t('views.nodes.navActions.new.label'),
           tooltip: t('views.nodes.navActions.new.tooltip'),
-          icon: ['fa', 'plus'],
+          icon: getIconByAction(ACTION_ADD),
           type: 'success',
           onClick: async () => {
             const message = (
@@ -187,7 +195,7 @@ const useNodeList = () => {
           icon: ['fa', 'font'],
           width: '150',
           value: (row: Node) => (
-            <NavLink path={`/nodes/${row._id}`} label={row.name} />
+            <ClNavLink path={`/nodes/${row._id}`} label={row.name} />
           ),
           hasSort: true,
           hasFilter: true,
@@ -216,7 +224,7 @@ const useNodeList = () => {
           icon: ['fa', 'heartbeat'],
           width: '150',
           value: (row: Node) => {
-            return <NodeStatus status={row.status} />;
+            return <ClNodeStatus status={row.status} />;
           },
           hasFilter: true,
           allowFilterItems: true,
@@ -245,7 +253,7 @@ const useNodeList = () => {
             )
               return;
             return (
-              <NodeRunners
+              <ClNodeRunners
                 available={row.available_runners}
                 max={row.max_runners}
               />
@@ -260,7 +268,7 @@ const useNodeList = () => {
           width: '120',
           value: (row: Node) => {
             return (
-              <Switch
+              <ClSwitch
                 modelValue={row.enabled}
                 disabled={
                   !isAllowedAction(
@@ -325,51 +333,60 @@ const useNodeList = () => {
           label: t('components.table.columns.actions'),
           fixed: 'right',
           width: '150',
-          buttons: [
-            {
-              className: 'view-btn',
-              icon: ['fa', 'search'],
-              tooltip: t('common.actions.view'),
-              onClick: async row => {
-                await router.push(`/nodes/${row._id}`);
+          buttons: (
+            [
+              {
+                tooltip: t('common.actions.view'),
+                onClick: async row => {
+                  await router.push(`/nodes/${row._id}`);
+                },
+                action: ACTION_VIEW,
               },
-              action: ACTION_VIEW,
-            },
-            {
-              className: 'view-monitoring',
-              icon: ['fa', 'line-chart'],
-              tooltip: isPro()
-                ? t('common.actions.viewMonitoring')
-                : t('common.status.upgradePro'),
-              onClick: async row => {
-                await router.push(`/nodes/${row._id}/monitoring`);
+              {
+                tooltip: t('common.actions.viewTasks'),
+                onClick: async row => {
+                  await router.push(`/nodes/${row._id}/tasks`);
+                },
+                action: ACTION_VIEW_TASKS,
+                contextMenu: true,
               },
-              disabled: () => !isPro(),
-              action: ACTION_VIEW_MONITORING,
-            },
-            {
-              className: 'delete-btn',
-              icon: ['fa', 'trash-alt'],
-              tooltip: t('common.actions.delete'),
-              disabled: (row: Node) => !!row.active,
-              onClick: async (row: Node) => {
-                const res = await ElMessageBox.confirm(
-                  t('common.messageBox.confirm.delete'),
-                  t('common.actions.delete'),
-                  {
-                    type: 'warning',
-                    confirmButtonClass: 'el-button--danger',
+              {
+                tooltip: t('common.actions.viewMonitoring'),
+                onClick: async row => {
+                  await router.push(`/nodes/${row._id}/monitoring`);
+                },
+                disabled: () => !isPro(),
+                action: ACTION_VIEW_MONITORING,
+                contextMenu: true,
+              },
+              {
+                tooltip: t('common.actions.delete'),
+                disabled: (row: Node) => !!row.active,
+                onClick: async (row: Node) => {
+                  if (row.active) return;
+                  const res = await ElMessageBox.confirm(
+                    t('common.messageBox.confirm.delete'),
+                    t('common.actions.delete'),
+                    {
+                      type: 'warning',
+                      confirmButtonClass: 'el-button--danger',
+                    }
+                  );
+                  if (res) {
+                    await deleteById(row._id as string);
                   }
-                );
-                if (res) {
-                  await deleteById(row._id as string);
-                }
-                await getList();
+                  await getList();
+                },
+                action: ACTION_DELETE,
+                contextMenu: true,
               },
-              action: ACTION_DELETE,
-              contextMenu: true,
-            },
-          ],
+            ] as TableColumnButton<Node>[]
+          ).filter(btn => {
+            if (!isPro()) {
+              return ![ACTION_VIEW_MONITORING].includes(btn.action);
+            }
+            return true;
+          }),
           disableTransfer: true,
         },
       ] as TableColumns<Node>

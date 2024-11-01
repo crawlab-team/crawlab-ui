@@ -4,5 +4,6 @@ export declare global {
     icon?: Icon;
     action?: () => void | Promise<void>;
     className?: string;
+    disabled?: boolean;
   }
 }
