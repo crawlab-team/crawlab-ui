@@ -42,6 +42,8 @@ export declare global {
       viewData: string;
       viewFiles: string;
       uploadFiles: string;
+      viewTasks: string;
+      viewSchedules: string;
       export: string;
       configure: string;
       update: string;

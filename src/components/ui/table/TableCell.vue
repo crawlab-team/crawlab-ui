@@ -111,6 +111,7 @@ const getButtonGroupDropdownItems = (
     return {
       title: btn.tooltip,
       icon: btn.icon,
+      className: btn.className,
       action: btn.onClick,
     } as ContextMenuItem;
   });

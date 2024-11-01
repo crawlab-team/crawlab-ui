@@ -23,18 +23,6 @@ const useTask = (store: Store<RootStoreState>) => {
   const modeOptions = getModeOptions();
   const modeOptionsDict = computed(() => getModeOptionsDict());
 
-  // priority options
-  const priorityOptions = (() => {
-    const opts = [] as SelectOption[];
-    for (let i = 1; i <= 10; i++) {
-      opts.push({
-        label: getPriorityLabel(i),
-        value: i,
-      });
-    }
-    return opts;
-  })();
-
   const { allDict: allSpiderDict } = useSpider(store);
 
   // route
@@ -46,7 +34,7 @@ const useTask = (store: Store<RootStoreState>) => {
   const allListSelectOptions = computed<SelectOption[]>(() =>
     state.allList.map(task => {
       const spider = allSpiderDict.value.get(task.spider_id!);
-      const timeAgo = formatTimeAgo(task.created_ts);
+      const timeAgo = formatTimeAgo(task.created_ts!);
       return {
         label: `${spider?.name} (${timeAgo})`,
         value: task._id,
@@ -60,7 +48,6 @@ const useTask = (store: Store<RootStoreState>) => {
     id,
     modeOptions,
     modeOptionsDict,
-    priorityOptions,
     getPriorityLabel,
     allListSelectOptions,
   };

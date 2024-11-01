@@ -29,6 +29,8 @@ const common: LCommon = {
     viewData: 'View Data',
     viewFiles: 'View Files',
     uploadFiles: 'Upload Files',
+    viewTasks: 'View Tasks',
+    viewSchedules: 'View Schedules',
     export: 'Export',
     configure: 'Configure',
     update: 'Update',

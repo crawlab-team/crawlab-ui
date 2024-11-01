@@ -13,6 +13,8 @@ import {
   ACTION_VIEW,
   ACTION_VIEW_DATA,
   ACTION_VIEW_FILES,
+  ACTION_VIEW_SCHEDULES,
+  ACTION_VIEW_TASKS,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
@@ -285,6 +287,26 @@ const useSpiderList = () => {
               },
               className: 'view-files-btn',
               action: ACTION_VIEW_FILES,
+              contextMenu: true,
+            },
+            {
+              icon: ['fa', 'tasks'],
+              tooltip: t('common.actions.viewTasks'),
+              onClick: async (row: Spider) => {
+                await router.push(`/spiders/${row._id}/tasks`);
+              },
+              className: 'view-tasks-btn',
+              action: ACTION_VIEW_TASKS,
+              contextMenu: true,
+            },
+            {
+              icon: ['fa', 'calendar-alt'],
+              tooltip: t('common.actions.viewSchedules'),
+              onClick: async (row: Spider) => {
+                await router.push(`/spiders/${row._id}/schedules`);
+              },
+              className: 'view-schedules-btn',
+              action: ACTION_VIEW_SCHEDULES,
               contextMenu: true,
             },
             {

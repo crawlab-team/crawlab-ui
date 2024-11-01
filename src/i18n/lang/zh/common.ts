@@ -29,6 +29,8 @@ const common: LCommon = {
     viewData: '查看数据',
     viewFiles: '查看文件',
     uploadFiles: '上传文件',
+    viewTasks: '查看任务',
+    viewSchedules: '查看定时任务',
     export: '导出',
     configure: '配置',
     update: '更新',

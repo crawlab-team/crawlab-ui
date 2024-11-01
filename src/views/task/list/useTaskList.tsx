@@ -443,6 +443,16 @@ const useTaskList = () => {
                 action: ACTION_VIEW_LOGS,
               },
               {
+                className: 'view-data-btn',
+                icon: ['fa', 'database'],
+                tooltip: t('common.actions.viewData'),
+                contextMenu: true,
+                onClick: async (row: Task) => {
+                  await router.push(`/tasks/${row._id}/data`);
+                },
+                action: ACTION_VIEW_DATA,
+              },
+              {
                 className: 'restart-btn',
                 icon: ['fa', 'redo'],
                 tooltip: t('common.actions.restart'),
@@ -461,16 +471,6 @@ const useTaskList = () => {
                   await store.dispatch(`task/getList`);
                 },
                 action: ACTION_RESTART,
-              },
-              {
-                className: 'view-data-btn',
-                icon: ['fa', 'database'],
-                tooltip: t('common.actions.viewData'),
-                contextMenu: true,
-                onClick: async (row: Task) => {
-                  await router.push(`/tasks/${row._id}/data`);
-                },
-                action: ACTION_VIEW_DATA,
               },
               {
                 className: 'cancel-btn',

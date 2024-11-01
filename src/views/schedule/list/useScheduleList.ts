@@ -21,6 +21,7 @@ import {
   ACTION_FILTER_SELECT,
   ACTION_RUN,
   ACTION_VIEW,
+  ACTION_VIEW_TASKS,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
   TASK_MODE_ALL_NODES,
@@ -316,6 +317,16 @@ const useScheduleList = () => {
               },
               className: 'run-btn',
               action: ACTION_RUN,
+            },
+            {
+              icon: ['fa', 'tasks'],
+              tooltip: t('common.actions.viewTasks'),
+              onClick: async (row: Schedule) => {
+                await router.push(`/schedules/${row._id}/tasks`);
+              },
+              className: 'view-tasks-btn',
+              action: ACTION_VIEW_TASKS,
+              contextMenu: true,
             },
             {
               className: 'delete-btn',
