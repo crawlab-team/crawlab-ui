@@ -14,12 +14,14 @@ import {
   ACTION_FILTER_SEARCH,
   ACTION_FILTER_SELECT,
   ACTION_FORCE_CANCEL,
+  ACTION_INSTALL,
   ACTION_LINK,
   ACTION_RESTART,
   ACTION_RUN,
   ACTION_SAVE,
   ACTION_START,
   ACTION_STOP,
+  ACTION_UNINSTALL,
   ACTION_UNLINK,
   ACTION_UPLOAD_FILES,
   ACTION_VIEW,
@@ -354,6 +356,12 @@ export const getIconByAction = (action: string): Icon | undefined => {
       return ['fa', 'link'];
     case ACTION_UNLINK:
       return ['fa', 'unlink'];
+
+    // Dependency Actions
+    case ACTION_INSTALL:
+      return ['fa', 'download'];
+    case ACTION_UNINSTALL:
+      return ['fa', 'trash-alt'];
 
     // Default
     default:

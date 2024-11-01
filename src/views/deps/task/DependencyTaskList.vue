@@ -37,7 +37,7 @@ export default defineComponent({
       logs: false,
     });
 
-    const logs = ref<EnvDepsLog[]>([]);
+    const logs = ref<DependencyLog[]>([]);
 
     const getLogs = async (id: string) => {
       const res = await getList_(`${endpoint}/${id}/logs`);
@@ -60,13 +60,13 @@ export default defineComponent({
 
     const allNodeDict = computed(() => store.getters[`node/allDict`]);
 
-    const tableColumns = computed<TableColumns<EnvDepsTask>>(() => [
+    const tableColumns = computed<TableColumns<DependencyTask>>(() => [
       {
         key: 'action',
         label: t('views.env.deps.task.form.action'),
         icon: ['fa', 'hammer'],
         width: '120',
-        value: (row: EnvDepsTask) => {
+        value: (row: DependencyTask) => {
           return h(TaskAction, { action: row.action });
         },
       },
@@ -75,7 +75,7 @@ export default defineComponent({
         label: t('views.env.deps.task.form.node'),
         icon: ['fa', 'server'],
         width: '120',
-        value: (row: EnvDepsTask) => {
+        value: (row: DependencyTask) => {
           const n = allNodeDict.value.get(row.node_id);
           if (!n) return;
           return h(NodeType, {
@@ -89,7 +89,7 @@ export default defineComponent({
         label: t('views.env.deps.task.form.status'),
         icon: ['fa', 'check-square'],
         width: '120',
-        value: (row: EnvDepsTask) => {
+        value: (row: DependencyTask) => {
           return h(TaskStatusComp, {
             status: row.status as TaskStatus,
             error: row.error,
@@ -101,7 +101,7 @@ export default defineComponent({
         label: t('views.env.deps.task.form.dependencies'),
         icon: ['fa', 'puzzle-piece'],
         width: '380',
-        value: (row: EnvDepsTask) => {
+        value: (row: DependencyTask) => {
           if (!row.dep_names) return [];
           return row.dep_names.map(depName => {
             return h(Tag, { label: depName });
@@ -113,7 +113,7 @@ export default defineComponent({
         label: t('views.env.deps.task.form.time'),
         icon: ['fa', 'clock'],
         width: '150',
-        value: (row: EnvDepsTask) => {
+        value: (row: DependencyTask) => {
           return h(Time, { time: row.update_ts });
         },
       },
@@ -122,13 +122,13 @@ export default defineComponent({
         label: t('components.table.columns.actions'),
         fixed: 'right',
         width: '80',
-        buttons: (row: EnvDepsTask) => {
+        buttons: (row: DependencyTask) => {
           return [
             {
               type: 'primary',
               icon: ['fa', 'file-alt'],
               tooltip: t('views.env.deps.task.form.logs'),
-              onClick: async (row: EnvDepsTask) => {
+              onClick: async (row: DependencyTask) => {
                 await onLogsOpen(row._id as string);
               },
             },
@@ -138,7 +138,7 @@ export default defineComponent({
       },
     ]);
 
-    const tableData = ref<TableData<EnvDepsTask>>([]);
+    const tableData = ref<TableData<DependencyTask>>([]);
 
     const tablePagination = ref({
       page: 1,

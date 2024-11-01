@@ -23,7 +23,7 @@ const allNodes = computed<CNode[]>(() => store.state.node.allList);
 
 onMounted(() => store.dispatch(`node/getAllList`));
 
-const isInstallable = (dep: EnvDepsDependency) => {
+const isInstallable = (dep: Dependency) => {
   const { result } = dep;
   if (!result) return true;
   if (result.upgradable || result.downgradable) return true;
@@ -31,21 +31,21 @@ const isInstallable = (dep: EnvDepsDependency) => {
   return node_ids.length < allNodes.value.length;
 };
 
-const isUninstallable = (dep: EnvDepsDependency) => {
+const isUninstallable = (dep: Dependency) => {
   const { result } = dep;
   if (!result) return true;
   const node_ids = result.node_ids || [];
   return node_ids.length > 0;
 };
 
-const tableColumns = computed<TableColumns<EnvDepsDependency>>(() => {
+const tableColumns = computed<TableColumns<Dependency>>(() => {
   return [
     {
       key: 'name',
       label: t('views.env.deps.spider.form.name'),
       icon: ['fa', 'font'],
       width: '200',
-      value: (row: EnvDepsDependency) =>
+      value: (row: Dependency) =>
         h(NavLink, {
           label: row.name,
           path: `https://pypi.org/project/${row.name}`,
@@ -69,7 +69,7 @@ const tableColumns = computed<TableColumns<EnvDepsDependency>>(() => {
       label: t('views.env.deps.spider.form.installedVersion'),
       icon: ['fa', 'tag'],
       width: '200',
-      value: (row: EnvDepsDependency) => {
+      value: (row: Dependency) => {
         const res = [];
         if (!row.result || !row.result.versions) return;
         const { result } = row;
@@ -107,7 +107,7 @@ const tableColumns = computed<TableColumns<EnvDepsDependency>>(() => {
       label: t('views.env.deps.spider.form.installedNodes'),
       icon: ['fa', 'server'],
       width: 'auto',
-      value: (row: EnvDepsDependency) => {
+      value: (row: Dependency) => {
         const result = row.result || {};
         let { node_ids } = result;
         if (!node_ids) return;
@@ -126,7 +126,7 @@ const tableColumns = computed<TableColumns<EnvDepsDependency>>(() => {
       label: t('components.table.columns.actions'),
       fixed: 'right',
       width: '200',
-      buttons: (row: EnvDepsDependency) => {
+      buttons: (row: Dependency) => {
         let { result } = row;
         if (!result) result = {};
         let tooltip;
@@ -155,7 +155,7 @@ const tableColumns = computed<TableColumns<EnvDepsDependency>>(() => {
             icon: ['fa', 'trash-alt'],
             tooltip: t('common.actions.uninstall'),
             disabled: row => !isUninstallable(row),
-            onClick: async (row: EnvDepsDependency) => {
+            onClick: async (row: Dependency) => {
               uninstallForm.value.names = [row.name as string];
               dialogVisible.value.uninstall = true;
             },
@@ -232,12 +232,13 @@ const lang = computed(() => {
   }
 });
 
-const installForm = ref<EnvDepsInstallPayload>({
+const installForm = ref<DependencyInstallPayload>({
+  node_ids: [],
   names: [],
 });
 
-const uninstallForm = ref<EnvDepsUninstallPayload>({
-  nodes: [],
+const uninstallForm = ref<DependencyUninstallPayload>({
+  node_ids: [],
   names: [],
 });
 
@@ -248,10 +249,11 @@ const dialogVisible = ref<{ [key: string]: boolean }>({
 
 const resetForms = () => {
   installForm.value = {
+    node_ids: [],
     names: [],
   };
   uninstallForm.value = {
-    nodes: [],
+    node_ids: [],
     names: [],
   };
 };
@@ -282,7 +284,7 @@ const onInstall = async ({
     data['node_id'] = nodeIds;
   }
   await post(`${endpoint}/spiders/${id}/install`, data);
-  await ElMessage.success(t('common.messageBox.success.startInstall'));
+  ElMessage.success(t('common.messageBox.success.startInstall'));
   onDialogClose('install');
 };
 
@@ -308,7 +310,7 @@ const onUninstall = async ({
   onDialogClose('uninstall');
 };
 
-const onSelect = (rows: EnvDepsDependency[]) => {
+const onSelect = (rows: Dependency[]) => {
   installForm.value.names = rows.map(d => d.name as string);
 };
 

@@ -4,6 +4,10 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { ClButtonGroup, ClFaIconButton } from '@/components';
 import { getIconByAction } from '@/utils';
+import {
+  FaIconButtonProps,
+  GenericButtonProps,
+} from '@/components/ui/button/types';
 
 const props = withDefaults(
   defineProps<{
@@ -85,8 +89,7 @@ const getNormalizedButtons = (
       return actionVisibleFn(currentRoutePath, btn.action);
     })
     .map(btn => {
-      const { tooltip, type, size, icon, disabled, onClick, id, className } =
-        btn;
+      const { tooltip, type, icon, disabled, onClick, id, className } = btn;
       let _icon: Icon | undefined;
       if (typeof icon === 'function') {
         _icon = icon(row, rowIndex, column);
@@ -100,7 +103,6 @@ const getNormalizedButtons = (
         buttonType: 'fa-icon',
         id,
         type,
-        key: JSON.stringify({ tooltip, type, size, icon: _icon }),
         tooltip: typeof tooltip === 'function' ? tooltip(row) : tooltip,
         disabled: disabled?.(row),
         icon: _icon,
@@ -108,7 +110,7 @@ const getNormalizedButtons = (
         onClick: () => {
           onClick?.(row, rowIndex, column);
         },
-      };
+      } as FaIconButtonProps;
     });
 };
 

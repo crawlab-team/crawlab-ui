@@ -5,7 +5,7 @@ import { translate } from '@/utils';
 defineProps<{
   visible?: boolean;
   names?: string[];
-  nodes?: any[];
+  nodes?: CNode[];
   loading?: boolean;
 }>();
 

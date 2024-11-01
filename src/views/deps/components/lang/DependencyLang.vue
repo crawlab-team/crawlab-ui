@@ -1,12 +1,11 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { computed, h, onBeforeUnmount, onMounted, PropType, ref } from 'vue';
-import { ElMessage } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
-import { translate } from '@/utils';
+import { getIconByAction, translate } from '@/utils';
 import useRequest from '@/services/request';
-import NavLink from '@/components/ui/nav/NavLink.vue';
-import NodeType from '@/components/core/node/NodeType.vue';
+import { ClNavLink, ClButton, ClNodeType, useNode } from '@/components';
+import { ACTION_INSTALL, ACTION_UNINSTALL } from '@/constants';
 
 const props = defineProps<{
   lang: string;
@@ -22,24 +21,26 @@ const endpoint = computed<string>(() => `/deps/lang/${props.lang}`);
 
 const { get, getList: getList_, post } = useRequest();
 
-const getDefaultForm = () => {
-  return {
-    type: 'mail',
-    enabled: true,
-  };
-};
-
 const store = useStore();
 
 const viewMode = ref('installed');
 
 const installed = computed(() => viewMode.value === 'installed');
 
-const allNodeDict = computed(() => store.getters[`node/allDict`]);
-
 const allNodes = computed<CNode[]>(() => store.state.node.allList);
 
-const runningTaskList = ref<TableData<EnvDepsTask>>([]);
+const { allDict: allNodeDict } = useNode(store);
+
+// const allNodeDict = computed<Map<string, CNode>>(() => {
+//   const dict = new Map<string, CNode>();
+//   allNodes.value.forEach(node => {
+//     dict.set(node._id!, node);
+//   });
+//   console.debug(dict);
+//   return dict;
+// });
+
+const runningTaskList = ref<TableData<DependencyTask>>([]);
 const runningTaskTotal = ref(0);
 
 const getRunningTaskList = async () => {
@@ -98,125 +99,113 @@ const updateTooltip = computed(() => {
   return t('common.actions.update');
 });
 
-const installForm = ref<EnvDepsInstallPayload>({
+const installForm = ref<DependencyInstallPayload>({
   names: [],
-});
-
-const uninstallForm = ref<EnvDepsUninstallPayload>({
   nodes: [],
-  names: [],
 });
 
-const isUninstallable = (dep: EnvDepsDependency) => {
+const uninstallForm = ref<DependencyUninstallPayload>({
+  names: [],
+  nodes: [],
+});
+
+const isUninstallable = (dep: DependencyResult) => {
   let node_ids = [];
   if (installed.value) {
     node_ids = dep.node_ids || [];
-  } else if (dep.result) {
-    node_ids = dep.result.node_ids || [];
   } else {
     return false;
   }
   return node_ids.length > 0;
 };
 
-const getNodes = (dep: EnvDepsDependency) => {
-  let node_ids: string[] = [];
-  if (installed.value) {
-    node_ids = dep.node_ids || [];
-  } else if (dep.result) {
-    node_ids = dep.result.node_ids || [];
-  } else {
-    return [];
-  }
-  return node_ids.map(id => allNodeDict.value.get(id));
-};
-
-const tableColumns = computed<TableColumns<EnvDepsDependency>>(() => {
+const tableColumns = computed<TableColumns<DependencyResult>>(() => {
   return [
     {
       key: 'name',
       label: t('views.env.deps.dependency.form.name'),
       icon: ['fa', 'font'],
       width: '200',
-      value: (row: EnvDepsDependency) =>
-        h(NavLink, {
-          label: row.name,
-          path: props.pathFunc(row.name as string),
-          external: true,
-        }),
+      value: (row: DependencyResult) => (
+        <ClNavLink label={row.name} path={props.pathFunc(row.name!)} external />
+      ),
     },
     {
       key: 'versions',
       label: t('views.env.deps.dependency.form.installedVersion'),
       icon: ['fa', 'tag'],
       width: '200',
-      value: (row: EnvDepsDependency) => {
-        const res = [];
-        let versions = [];
-        if (installed.value) {
-          if (!row.versions) return;
-          versions = row.versions;
-        } else {
-          if (!row.result || !row.result.versions) return;
-          versions = row.result.versions;
-        }
-        res.push(
-          h('span', { style: 'margin-right: 5px' }, versions.join(', '))
-        );
-        return res;
-      },
+      value: (row: DependencyResult) => (
+        <span style={{ marginRight: '5px' }}>{row.versions?.join(', ')}</span>
+      ),
     },
     {
       key: 'node_ids',
       label: t('views.env.deps.dependency.form.installedNodes'),
       icon: ['fa', 'server'],
       width: '580',
-      value: (row: EnvDepsDependency) => {
-        const result = (installed.value ? row : row.result) || {};
-        const node_ids = result.node_ids || [];
-        return allNodes.value
-          .filter(n => node_ids.includes(n._id))
-          .map(n => {
-            return h(NodeType, {
-              isMaster: n.is_master,
-              label: n.name,
-            });
-          });
-      },
+      value: (row: DependencyResult) =>
+        row.node_ids?.map(id => {
+          const node = allNodeDict.value.get(id);
+          return node ? (
+            <ClNodeType isMaster={node.is_master} label={node.name}>
+              {{
+                tooltip: () => (
+                  <>
+                    <div>
+                      <label>{t('components.node.form.name')}: </label>
+                      <span>{node.name}</span>
+                    </div>
+                    <div>
+                      <label>{t('components.node.form.type')}: </label>
+                      <span>
+                        {node.is_master
+                          ? t('components.node.nodeType.label.master')
+                          : t('components.node.nodeType.label.worker')}
+                      </span>
+                    </div>
+                  </>
+                ),
+              }}
+            </ClNodeType>
+          ) : (
+            ''
+          );
+        }),
     },
     {
       key: 'actions',
       label: t('components.table.columns.actions'),
       fixed: 'right',
       width: '200',
-      buttons: (_: EnvDepsDependency) => [
+      buttons: (_: DependencyResult) => [
         {
-          type: 'primary',
-          icon: ['fa', 'download'],
+          icon: getIconByAction(ACTION_INSTALL),
           tooltip: t('common.actions.install'),
           onClick: async row => {
             installForm.value.names = [row.name];
             dialogVisible.value.install = true;
           },
+          action: ACTION_INSTALL,
         },
         {
-          type: 'danger',
-          icon: ['fa', 'trash-alt'],
+          icon: getIconByAction(ACTION_UNINSTALL),
           tooltip: t('common.actions.uninstall'),
           disabled: row => !isUninstallable(row),
           onClick: async row => {
-            uninstallForm.value.nodes = getNodes(row);
+            uninstallForm.value.node_ids = row.node_ids || [];
             uninstallForm.value.names = [row.name];
             dialogVisible.value.uninstall = true;
           },
+          action: ACTION_UNINSTALL,
         },
       ],
       disableTransfer: true,
     },
-  ] as TableColumns<EnvDepsDependency>;
+  ] as TableColumns<DependencyResult>;
 });
 
-const tableData = ref<TableData<EnvDepsDependency>>([]);
+const tableData = ref<TableData<DependencyResult>>([]);
 
 const tablePagination = ref({
   page: 1,
@@ -327,9 +316,25 @@ const onInstalledChange = async () => {
   await actionFunctions.value.getList();
 };
 
-const onSelect = (rows: TableData<EnvDepsDependency>) => {
+const onSelect = (rows: TableData<Dependency>) => {
   installForm.value.names = rows.map(d => d.name || '');
   uninstallForm.value.names = rows.map(d => d.name || '');
+};
+
+const onDialogClose = (key: string) => {
+  dialogVisible.value[key] = false;
+};
+
+const onInstall = async (data: DependencyInstallPayload) => {
+  await post(`${endpoint.value}/install`, data);
+  await actionFunctions.value.getList();
+  onDialogClose('install');
+};
+
+const onUninstall = async (data: DependencyUninstallPayload) => {
+  await post(`${endpoint.value}/uninstall`, data);
+  await actionFunctions.value.getList();
+  onDialogClose('uninstall');
 };
 
 onMounted(() => store.dispatch(`node/getAllList`));
@@ -348,6 +353,8 @@ defineOptions({ name: 'ClDependencyLang' });
     :visible-buttons="['export', 'customize-columns']"
     table-pagination-layout="total, prev, pager, next"
     :table-actions-prefix="tableActionsPrefix"
+    :row-key="({ name, versions, node_ids }: DependencyResult) =>
+        [name, JSON.stringify(versions), JSON.stringify(node_ids), JSON.stringify(allNodes?.map(n => n._id))].join('_')"
     @select="onSelect"
   >
     <template #nav-actions-extra>
@@ -417,6 +424,21 @@ defineOptions({ name: 'ClDependencyLang' });
       </div>
     </template>
   </cl-list-layout>
+  <cl-install-form
+    :visible="dialogVisible.install"
+    :lang="lang"
+    :nodes="allNodes"
+    :names="installForm.names"
+    @confirm="onInstall"
+    @close="() => onDialogClose('install')"
+  />
+  <cl-uninstall-form
+    :visible="dialogVisible.uninstall"
+    :nodes="uninstallForm.nodes"
+    :names="uninstallForm.names"
+    @confirm="onUninstall"
+    @close="() => onDialogClose('uninstall')"
+  />
 </template>
 
 <style scoped>

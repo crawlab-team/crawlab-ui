@@ -115,7 +115,7 @@ defineOptions({ name: 'ClTag' });
       <span class="prefix-icon">
         <cl-icon v-if="icon" :icon="icon" :spinning="spinning" />
       </span>
-      <span>{{ label }}</span>
+      <span class="label">{{ label }}</span>
       <span class="suffix-icon">
         <cl-icon v-if="suffixIcon" :icon="suffixIcon" />
       </span>
@@ -126,9 +126,22 @@ defineOptions({ name: 'ClTag' });
   </el-tooltip>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .tag {
   cursor: default;
+  text-overflow: ellipsis;
+
+  &:deep(.el-tag__close:hover) {
+    font-weight: bolder;
+  }
+
+  &:not(.no-label):deep(.prefix-icon) {
+    margin-right: 5px;
+  }
+
+  &:not(.no-label):deep(.suffix-icon) {
+    margin-left: 5px;
+  }
 
   &.disabled {
     cursor: not-allowed;
@@ -142,18 +155,5 @@ defineOptions({ name: 'ClTag' });
       cursor: pointer;
     }
   }
-}
-</style>
-<style scoped>
-.tag:deep(.el-tag__close:hover) {
-  font-weight: bolder;
-}
-
-.tag:not(.no-label):deep(.prefix-icon) {
-  margin-right: 5px;
-}
-
-.tag:not(.no-label):deep(.suffix-icon) {
-  margin-left: 5px;
 }
 </style>

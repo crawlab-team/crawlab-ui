@@ -14,10 +14,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (
-    e: 'confirm',
-    data: { mode: string; nodeIds: string[]; version: string }
-  ): void;
+  (e: 'confirm', data: DependencyInstallPayload): void;
   (e: 'close'): void;
 }>();
 

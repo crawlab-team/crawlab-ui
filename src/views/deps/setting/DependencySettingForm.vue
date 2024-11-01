@@ -4,7 +4,7 @@ import { translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
-    form: EnvDepsSetting;
+    form: DependencySetting;
   }>(),
   {
     form: () => ({}),
@@ -12,12 +12,12 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'change', value: EnvDepsSetting): void;
+  (e: 'change', value: DependencySetting): void;
 }>();
 
 const t = translate;
 
-const internalForm = ref<EnvDepsSetting>({});
+const internalForm = ref<DependencySetting>({});
 
 const onChange = () => {
   emit('change', internalForm.value);

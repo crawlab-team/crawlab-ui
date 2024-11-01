@@ -41,3 +41,7 @@ export const ACTION_FILTER_SELECT = 'filter-select';
 // Link Actions
 export const ACTION_LINK = 'link';
 export const ACTION_UNLINK = 'unlink';
+
+// Dependency Actions
+export const ACTION_INSTALL = 'install';
+export const ACTION_UNINSTALL = 'uninstall';

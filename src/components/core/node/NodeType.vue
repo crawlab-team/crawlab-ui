@@ -2,10 +2,18 @@
 import { computed } from 'vue';
 import { translate } from '@/utils';
 
-const props = defineProps<{
-  isMaster?: boolean;
-  label?: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    isMaster?: boolean;
+    label?: string;
+    tooltip?: string;
+    showFullLabel?: boolean;
+    clickable?: boolean;
+  }>(),
+  {
+    clickable: true,
+  }
+);
 
 const t = translate;
 
@@ -16,7 +24,9 @@ const type = computed<BasicType>(() => {
 
 const computedLabel = computed<string>(() => {
   const { isMaster, label } = props;
-  if (label) return label;
+  if (label) {
+    return label;
+  }
   return isMaster
     ? t('components.node.nodeType.label.master')
     : t('components.node.nodeType.label.worker');
@@ -26,22 +36,55 @@ const icon = computed<string[]>(() => {
   const { isMaster } = props;
   return isMaster ? ['fa', 'home'] : ['fa', 'server'];
 });
+
+const className = computed(() => {
+  const { isMaster, showFullLabel } = props;
+  const cls: string[] = [];
+  cls.push(isMaster ? 'node-type-master' : 'node-type-worker');
+  cls.push(showFullLabel ? 'node-type-full' : 'node-type-short');
+  return cls.join(' ');
+});
+
 defineOptions({ name: 'ClNodeType' });
 </script>
 
 <template>
-  <el-tag :type="type" class="node-type">
-    <font-awesome-icon :icon="icon" class="icon" />
-    <span>{{ computedLabel }}</span>
-  </el-tag>
+  <span class="node-type">
+    <cl-tag
+      :class-name="className"
+      :type="type"
+      :tooltip="tooltip"
+      :label="computedLabel"
+      :icon="icon"
+      :clickable="clickable"
+    >
+      <template #tooltip>
+        <slot name="tooltip" />
+      </template>
+    </cl-tag>
+  </span>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .node-type {
-  cursor: pointer;
+  &:deep(.node-type-short) {
+    max-width: 120px;
+    overflow: hidden;
+    justify-content: start;
+    align-items: center;
+  }
 
-  .icon {
-    margin-right: 5px;
+  &:deep(.node-type-short .el-tag__content) {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+  }
+
+  &:deep(.node-type-short .el-tag__content .label) {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>
