@@ -128,8 +128,8 @@ const layouts: LLayouts = {
       tabs: {
         overview: 'Overview',
         files: 'Files',
-        logs: 'Logs',
         changes: 'Changes',
+        commits: 'Commits',
         spiders: 'Spiders',
       },
     },

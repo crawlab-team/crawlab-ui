@@ -152,7 +152,7 @@ export declare global {
     onClick?: TableButtonOnClickFunction;
     id?: string;
     className?: string;
-    action?: GenericAction;
+    action: string;
     contextMenu?: boolean;
   }
 
@@ -210,11 +210,6 @@ export declare global {
     page: number;
     size: number;
   }
-
-  type TableActionName =
-    | ActionName
-    | TABLE_ACTION_EXPORT
-    | TABLE_ACTION_CUSTOMIZE_COLUMNS;
 
   type TablePaginationPosition =
     | TABLE_PAGINATION_POSITION_TOP

@@ -6,7 +6,7 @@ import useNode from '@/components/core/node/useNode';
 import { TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useTask from '@/components/core/task/useTask';
 import { ElMessage } from 'element-plus';
-import { translate } from '@/utils';
+import { priorityOptions, translate } from '@/utils';
 
 // i18n
 const t = translate;
@@ -19,8 +19,6 @@ const { spider: state } = store.state as RootStoreState;
 const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
 
 const { modeOptions, form } = useSpider(store);
-
-const { priorityOptions } = useTask(store);
 
 // spider
 const spider = computed<Spider>(() => form.value);
@@ -154,5 +152,3 @@ defineOptions({ name: 'ClRunSpiderDialog' });
     </cl-form>
   </cl-dialog>
 </template>
-
-

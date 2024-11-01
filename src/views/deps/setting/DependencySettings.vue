@@ -55,7 +55,6 @@ const tableColumns = computed(() => [
     width: '200',
     buttons: [
       {
-        type: 'warning',
         icon: ['fa', 'cog'],
         tooltip: t('common.actions.manage'),
         onClick: (row: any) => {

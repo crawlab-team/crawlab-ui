@@ -14,7 +14,7 @@ import {
   ACTION_VIEW,
   FILTER_OP_CONTAINS,
 } from '@/constants';
-import { onListFilterChangeByKey } from '@/utils';
+import { getIconByAction, onListFilterChangeByKey } from '@/utils';
 
 // i18n
 const t = translate;
@@ -44,7 +44,7 @@ const useTokenList = () => {
           buttonType: 'label',
           label: t('views.tokens.navActions.new.label'),
           tooltip: t('views.tokens.navActions.new.tooltip'),
-          icon: ['fa', 'plus'],
+          icon: getIconByAction(ACTION_ADD),
           type: 'success',
           onClick: async () => {
             const res = await ElMessageBox.prompt(
@@ -139,7 +139,6 @@ const useTokenList = () => {
             action: ACTION_COPY,
           },
           {
-            icon: ['fa', 'trash-alt'],
             tooltip: t('common.actions.delete'),
             onClick: deleteByIdConfirm,
             action: ACTION_DELETE,

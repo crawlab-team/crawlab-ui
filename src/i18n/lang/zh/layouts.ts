@@ -128,8 +128,8 @@ const layouts: LLayouts = {
       tabs: {
         overview: '概览',
         files: '文件',
-        logs: '日志',
         changes: '变更',
+        commits: '提交历史',
         spiders: '爬虫',
       },
     },

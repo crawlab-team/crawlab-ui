@@ -23,7 +23,7 @@ import {
 import useList from '@/layouts/content/list/useList';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import { translate } from '@/utils/i18n';
-import { getStatusOptions, isCancellable } from '@/utils/task';
+import { getStatusOptions, isCancellable, priorityOptions } from '@/utils/task';
 import useRequest from '@/services/request';
 import NavLink from '@/components/ui/nav/NavLink.vue';
 import Time from '@/components/ui/time/Time.vue';
@@ -36,7 +36,7 @@ import TaskCommand from '@/components/core/task/TaskCommand.vue';
 import useSchedule from '@/components/core/schedule/useSchedule';
 import useNode from '@/components/core/node/useNode';
 import useSpider from '@/components/core/spider/useSpider';
-import useTask from '@/components/core/task/useTask';
+import { getIconByAction } from '@/utils/route';
 
 const { post } = useRequest();
 
@@ -54,8 +54,6 @@ const useTaskList = () => {
 
   // use list
   const { actionFunctions } = useList<Task>(ns, store);
-
-  const { priorityOptions } = useTask(store);
 
   // action functions
   const { deleteByIdConfirm } = actionFunctions;
@@ -103,7 +101,7 @@ const useTaskList = () => {
           buttonType: 'label',
           label: t('views.tasks.navActions.new.label'),
           tooltip: t('views.tasks.navActions.new.tooltip'),
-          icon: ['fa', 'plus'],
+          icon: getIconByAction(ACTION_ADD),
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
@@ -423,100 +421,90 @@ const useTaskList = () => {
           width: '150',
           fixed: 'right',
           buttons: (row: Task) =>
-            [
-              {
-                className: 'view-btn',
-                icon: ['fa', 'search'],
-                tooltip: t('common.actions.view'),
-                onClick: async (row: Task) => {
-                  await router.push(`/tasks/${row._id}`);
+            (
+              [
+                {
+                  tooltip: t('common.actions.view'),
+                  onClick: async (row: Task) => {
+                    await router.push(`/tasks/${row._id}`);
+                  },
+                  action: ACTION_VIEW,
                 },
-                action: ACTION_VIEW,
-              },
-              {
-                className: 'view-logs-btn',
-                icon: ['fa', 'file-alt'],
-                tooltip: t('common.actions.viewLogs'),
-                onClick: async (row: Task) => {
-                  await router.push(`/tasks/${row._id}/logs`);
+                {
+                  tooltip: t('common.actions.viewLogs'),
+                  onClick: async (row: Task) => {
+                    await router.push(`/tasks/${row._id}/logs`);
+                  },
+                  action: ACTION_VIEW_LOGS,
                 },
-                action: ACTION_VIEW_LOGS,
-              },
-              {
-                className: 'restart-btn',
-                icon: ['fa', 'redo'],
-                tooltip: t('common.actions.restart'),
-                contextMenu: true,
-                onClick: async (row: Task) => {
-                  await ElMessageBox.confirm(
-                    t('common.messageBox.confirm.restart'),
-                    t('common.actions.restart'),
-                    {
-                      type: 'warning',
-                      confirmButtonClass: 'restart-confirm-btn',
-                    }
-                  );
-                  await post(`/tasks/${row._id}/restart`);
-                  ElMessage.success(t('common.message.success.restart'));
-                  await store.dispatch(`task/getList`);
+                {
+                  icon: getIconByAction(ACTION_VIEW_DATA),
+                  className: 'view-data-btn',
+                  tooltip: t('common.actions.viewData'),
+                  contextMenu: true,
+                  onClick: async (row: Task) => {
+                    await router.push(`/tasks/${row._id}/data`);
+                  },
+                  action: ACTION_VIEW_DATA,
                 },
-                action: ACTION_RESTART,
-              },
-              {
-                className: 'view-data-btn',
-                icon: ['fa', 'database'],
-                tooltip: t('common.actions.viewData'),
-                contextMenu: true,
-                onClick: async (row: Task) => {
-                  await router.push(`/tasks/${row._id}/data`);
+                {
+                  tooltip: t('common.actions.restart'),
+                  contextMenu: true,
+                  onClick: async (row: Task) => {
+                    await ElMessageBox.confirm(
+                      t('common.messageBox.confirm.restart'),
+                      t('common.actions.restart'),
+                      {
+                        type: 'warning',
+                        confirmButtonClass: 'restart-confirm-btn',
+                      }
+                    );
+                    await post(`/tasks/${row._id}/restart`);
+                    ElMessage.success(t('common.message.success.restart'));
+                    await store.dispatch(`task/getList`);
+                  },
+                  action: ACTION_RESTART,
                 },
-                action: ACTION_VIEW_DATA,
-              },
-              {
-                className: 'cancel-btn',
-                icon: ['fa', 'stop'],
-                tooltip: t('common.actions.cancel'),
-                contextMenu: true,
-                onClick: async (row: Task) => {
-                  await ElMessageBox.confirm(
-                    t('common.messageBox.confirm.cancel'),
-                    t('common.actions.cancel'),
-                    {
-                      type: 'warning',
-                      confirmButtonClass: 'cancel-confirm-btn',
-                    }
-                  );
-                  await cancelTask(row, false);
+                {
+                  tooltip: t('common.actions.cancel'),
+                  contextMenu: true,
+                  onClick: async (row: Task) => {
+                    await ElMessageBox.confirm(
+                      t('common.messageBox.confirm.cancel'),
+                      t('common.actions.cancel'),
+                      {
+                        type: 'warning',
+                        confirmButtonClass: 'cancel-confirm-btn',
+                      }
+                    );
+                    await cancelTask(row, false);
+                  },
+                  action: ACTION_CANCEL,
                 },
-                action: ACTION_CANCEL,
-              },
-              {
-                className: 'force-cancel-btn',
-                icon: ['fa', 'skull-crossbones'],
-                tooltip: t('common.actions.forceCancel'),
-                contextMenu: true,
-                onClick: async (row: Task) => {
-                  await ElMessageBox.confirm(
-                    t('common.messageBox.confirm.forceCancel'),
-                    t('common.actions.forceCancel'),
-                    {
-                      type: 'warning',
-                      confirmButtonClass: 'cancel-confirm-btn',
-                    }
-                  );
-                  await cancelTask(row, true);
+                {
+                  tooltip: t('common.actions.forceCancel'),
+                  contextMenu: true,
+                  onClick: async (row: Task) => {
+                    await ElMessageBox.confirm(
+                      t('common.messageBox.confirm.forceCancel'),
+                      t('common.actions.forceCancel'),
+                      {
+                        type: 'warning',
+                        confirmButtonClass: 'cancel-confirm-btn',
+                      }
+                    );
+                    await cancelTask(row, true);
+                  },
+                  action: ACTION_FORCE_CANCEL,
                 },
-                action: ACTION_FORCE_CANCEL,
-              },
-              {
-                className: 'delete-btn',
-                icon: ['fa', 'trash-alt'],
-                tooltip: t('common.actions.delete'),
-                contextMenu: true,
-                onClick: deleteByIdConfirm,
-                action: ACTION_DELETE,
-              },
-            ].filter(btn => {
+                {
+                  tooltip: t('common.actions.delete'),
+                  contextMenu: true,
+                  onClick: deleteByIdConfirm,
+                  action: ACTION_DELETE,
+                },
+              ] as TableColumnButton<Task>[]
+            ).filter(btn => {
               switch (btn.action) {
                 case ACTION_CANCEL:
                   return [TASK_STATUS_PENDING, TASK_STATUS_RUNNING].includes(

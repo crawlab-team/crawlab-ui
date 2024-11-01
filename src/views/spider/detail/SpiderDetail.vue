@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 import { isPro } from '@/utils';
+import { TAB_NAME_DEPENDENCIES, TAB_NAME_MONITORING } from '@/constants';
 
 const ns = 'spider';
 const store = useStore();
+const { common: commonState } = store.state as RootStoreState;
 
 const { activeTabName, saveFile } = useSpiderDetail();
 
@@ -14,6 +16,17 @@ onBeforeMount(async () => {
 
   store.commit(`${ns}/setAfterSave`, [saveFile]);
 });
+
+const updateDisabledTabKeys = () => {
+  if (!isPro()) {
+    store.commit(`${ns}/setDisabledTabKeys`, [TAB_NAME_DEPENDENCIES]);
+  } else {
+    store.commit(`${ns}/setDisabledTabKeys`, []);
+  }
+};
+onBeforeMount(updateDisabledTabKeys);
+watch(() => commonState.systemInfo, updateDisabledTabKeys);
+
 defineOptions({ name: 'ClSpiderDetail' });
 </script>
 

@@ -232,9 +232,7 @@ defineOptions({ name: 'ClListLayout' });
 
     .nav-action-group {
       .nav-action-item {
-        &:not(:last-child) {
-          margin-right: 10px;
-        }
+        margin-right: 10px;
       }
     }
   }
@@ -252,4 +250,3 @@ defineOptions({ name: 'ClListLayout' });
   }
 }
 </style>
-<style scoped></style>

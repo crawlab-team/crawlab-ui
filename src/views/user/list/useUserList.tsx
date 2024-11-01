@@ -17,7 +17,7 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
-import { onListFilterChangeByKey } from '@/utils';
+import { getIconByAction, onListFilterChangeByKey } from '@/utils';
 import useUser from '@/components/core/user/useUser';
 
 // i18n
@@ -52,7 +52,7 @@ const useUserList = () => {
           buttonType: 'label',
           label: t('views.users.navActions.new.label'),
           tooltip: t('views.users.navActions.new.tooltip'),
-          icon: ['fa', 'plus'],
+          icon: getIconByAction(ACTION_ADD),
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
@@ -145,8 +145,6 @@ const useUserList = () => {
         width: '150',
         buttons: [
           {
-            className: 'view-btn',
-            icon: ['fa', 'search'],
             tooltip: t('common.actions.view'),
             onClick: async (row: User) => {
               await router.push(`/users/${row._id}`);
@@ -154,8 +152,6 @@ const useUserList = () => {
             action: ACTION_VIEW,
           },
           {
-            className: 'delete-btn',
-            icon: ['fa', 'trash-alt'],
             tooltip: (row: User) =>
               row.username === USERNAME_ADMIN
                 ? t('components.user.delete.tooltip.adminUserNonDeletable')

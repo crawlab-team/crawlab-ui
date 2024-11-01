@@ -1,6 +1,5 @@
 export const TAB_NAME_OVERVIEW = 'overview';
 export const TAB_NAME_FILES = 'files';
-export const TAB_NAME_GIT = 'git';
 export const TAB_NAME_TASKS = 'tasks';
 export const TAB_NAME_SETTINGS = 'settings';
 export const TAB_NAME_LOGS = 'logs';
@@ -11,6 +10,7 @@ export const TAB_NAME_DEPENDENCIES = 'dependencies';
 export const TAB_NAME_TRIGGERS = 'triggers';
 export const TAB_NAME_TEMPLATE = 'template';
 export const TAB_NAME_CHANGES = 'changes';
+export const TAB_NAME_COMMITS = 'commits';
 export const TAB_NAME_MONITORING = 'monitoring';
 export const TAB_NAME_CHANNELS = 'channels';
 export const TAB_NAME_MAIL = 'mail';

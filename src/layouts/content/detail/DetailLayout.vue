@@ -124,6 +124,10 @@ defineOptions({ name: 'ClDetailLayout' });
 
     .nav-actions {
       height: fit-content;
+
+      &:deep(.nav-action-group .nav-action-item) {
+        margin-right: 10px;
+      }
     }
 
     .nav-select {

@@ -6,7 +6,7 @@ import useSchedule from '@/components/core/schedule/useSchedule';
 import useSpider from '@/components/core/spider/useSpider';
 import useNode from '@/components/core/node/useNode';
 import useTask from '@/components/core/task/useTask';
-import { translate } from '@/utils';
+import { priorityOptions, translate } from '@/utils';
 
 const t = translate;
 
@@ -28,9 +28,6 @@ const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
 
 // use spider
 const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
-
-// use task
-const { priorityOptions } = useTask(store);
 
 // on enabled change
 const onEnabledChange = async (value: boolean) => {
@@ -168,10 +165,7 @@ defineOptions({ name: 'ClScheduleForm' });
       :label="t('components.schedule.form.defaultMode')"
       prop="mode"
     >
-      <el-select
-        v-model="form.mode"
-        :disabled="isFormItemDisabled('mode')"
-      >
+      <el-select v-model="form.mode" :disabled="isFormItemDisabled('mode')">
         <el-option
           v-for="op in modeOptions"
           :key="op.value"
@@ -186,10 +180,7 @@ defineOptions({ name: 'ClScheduleForm' });
       prop="enabled"
       required
     >
-      <cl-switch
-        v-model="form.enabled"
-        @change="onEnabledChange"
-      />
+      <cl-switch v-model="form.enabled" @change="onEnabledChange" />
     </cl-form-item>
     <!-- ./Row -->
 

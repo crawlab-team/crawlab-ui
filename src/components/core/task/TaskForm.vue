@@ -6,7 +6,7 @@ import useNode from '@/components/core/node/useNode';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useRequest from '@/services/request';
 import useTask from '@/components/core/task/useTask';
-import { isCancellable } from '@/utils/task';
+import { isCancellable, priorityOptions } from '@/utils/task';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { isZeroObjectId } from '@/utils/mongo';
 import useTaskDetail from '@/views/task/detail/useTaskDetail';
@@ -39,7 +39,6 @@ const {
   allSpiderDict,
   modeOptions,
   modeOptionsDict,
-  priorityOptions,
   isFormItemDisabled,
 } = useTask(store);
 

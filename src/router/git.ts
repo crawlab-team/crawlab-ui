@@ -2,14 +2,14 @@ import {
   TAB_NAME_OVERVIEW,
   TAB_NAME_FILES,
   TAB_NAME_CHANGES,
-  TAB_NAME_LOGS,
   TAB_NAME_SPIDERS,
+  TAB_NAME_COMMITS,
 } from '@/constants/tab';
 import {
   ClGitDetail,
   ClGitDetailTabChanges,
+  ClGitDetailTabCommits,
   ClGitDetailTabFiles,
-  ClGitDetailTabLogs,
   ClGitDetailTabOverview,
   ClGitDetailTabSpiders,
   ClGitList,
@@ -50,10 +50,10 @@ export default [
         component: async () => ClGitDetailTabFiles,
       },
       {
-        path: TAB_NAME_LOGS,
-        title: t('layouts.routes.gits.tabs.logs'),
-        icon: getIconByTabName(TAB_NAME_LOGS),
-        component: async () => ClGitDetailTabLogs,
+        path: TAB_NAME_COMMITS,
+        title: t('layouts.routes.gits.tabs.commits'),
+        icon: getIconByTabName(TAB_NAME_COMMITS),
+        component: async () => ClGitDetailTabCommits,
       },
       {
         path: TAB_NAME_CHANGES,

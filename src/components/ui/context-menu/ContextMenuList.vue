@@ -12,7 +12,12 @@ const emit = defineEmits<{
 
 const clicking = ref(false);
 const onClick = (event: MouseEvent, item: ContextMenuItem) => {
+  // skip if not visible
   if (!contextMenu?.visible.value) return;
+
+  // skip disabled
+  if (item.disabled) return;
+
   clicking.value = true;
   setTimeout(() => {
     clicking.value = false;
@@ -30,6 +35,18 @@ const onClickOutside = () => {
   emit('hide');
 };
 
+const getItemClassName = (item: ContextMenuItem) => {
+  const cls = [];
+  cls.push('context-menu-item');
+  if (item.className) {
+    cls.push(item.className);
+  }
+  if (item.disabled) {
+    cls.push('disabled');
+  }
+  return cls.join(' ');
+};
+
 defineOptions({ name: 'ClContextMenuList' });
 </script>
 
@@ -38,7 +55,8 @@ defineOptions({ name: 'ClContextMenuList' });
     <li
       v-for="(item, $index) in items"
       :key="$index"
-      :class="['context-menu-item', item.className].join(' ')"
+      :class="getItemClassName(item)"
+      :title="item.title"
       @click="onClick($event, item)"
     >
       <span class="prefix">
@@ -90,6 +108,7 @@ defineOptions({ name: 'ClContextMenuList' });
 
     .prefix {
       width: 24px;
+      flex: 0 0 24px;
       display: flex;
       align-items: center;
     }

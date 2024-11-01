@@ -102,7 +102,7 @@ watch(activeId, () => {
   getLogs();
 });
 onBeforeMount(getLogs);
-defineOptions({ name: 'ClGitDetailTabLogs' });
+defineOptions({ name: 'ClGitDetailTabCommits' });
 </script>
 
 <template>

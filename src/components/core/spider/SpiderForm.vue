@@ -9,7 +9,7 @@ import pinyin, { STYLE_NORMAL } from 'pinyin';
 import { isZeroObjectId } from '@/utils/mongo';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 import useTask from '@/components/core/task/useTask';
-import { translate } from '@/utils';
+import { priorityOptions, translate } from '@/utils';
 
 // i18n
 const t = translate;
@@ -23,9 +23,6 @@ const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
 // use project
 const { allListSelectOptionsWithEmpty: allProjectSelectOptions } =
   useProject(store);
-
-// use task
-const { priorityOptions } = useTask(store);
 
 // use spider
 const { form, formRef, isFormItemDisabled, modeOptions } = useSpider(store);
@@ -250,5 +247,3 @@ defineOptions({ name: 'ClSpiderForm' });
     <slot name="footer" />
   </cl-form>
 </template>
-
-

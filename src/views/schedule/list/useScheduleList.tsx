@@ -21,13 +21,14 @@ import {
   ACTION_FILTER_SELECT,
   ACTION_RUN,
   ACTION_VIEW,
+  ACTION_VIEW_TASKS,
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
   TASK_MODE_ALL_NODES,
   TASK_MODE_RANDOM,
   TASK_MODE_SELECTED_NODES,
 } from '@/constants';
-import { isAllowedAction } from '@/utils';
+import { getIconByAction, isAllowedAction } from '@/utils';
 
 // i18n
 const t = translate;
@@ -68,7 +69,7 @@ const useScheduleList = () => {
           buttonType: 'label',
           label: t('views.schedules.navActions.new.label'),
           tooltip: t('views.schedules.navActions.new.tooltip'),
-          icon: ['fa', 'plus'],
+          icon: getIconByAction(ACTION_ADD),
           type: 'success',
           onClick: () => {
             commit(`${ns}/showDialog`, 'create');
@@ -284,8 +285,6 @@ const useScheduleList = () => {
           width: '150',
           buttons: [
             {
-              className: 'view-btn',
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async row => {
                 await router.push(`/schedules/${row._id}`);
@@ -293,7 +292,6 @@ const useScheduleList = () => {
               action: ACTION_VIEW,
             },
             {
-              icon: ['fa', 'play'],
               tooltip: t('common.actions.run'),
               onClick: async row => {
                 await ElMessageBox.confirm(
@@ -314,14 +312,17 @@ const useScheduleList = () => {
                 });
                 ElMessage.success(t('common.message.success.run'));
               },
-              className: 'run-btn',
               action: ACTION_RUN,
             },
             {
-              className: 'delete-btn',
-              type: 'danger',
-              size: 'small',
-              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.viewTasks'),
+              onClick: async (row: Schedule) => {
+                await router.push(`/schedules/${row._id}/tasks`);
+              },
+              action: ACTION_VIEW_TASKS,
+              contextMenu: true,
+            },
+            {
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,
