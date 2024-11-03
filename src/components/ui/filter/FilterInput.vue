@@ -10,6 +10,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'change', value: any): void;
+  (e: 'enter'): void;
 }>();
 
 const internalModelValue = ref();
@@ -24,7 +25,7 @@ const onClear = () => {
 };
 
 const onEnter = () => {
-  onChange(internalModelValue.value);
+  emit('enter');
 };
 
 defineOptions({ name: 'ClFilterInput' });

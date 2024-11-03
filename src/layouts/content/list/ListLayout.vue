@@ -127,6 +127,7 @@ defineOptions({ name: 'ClListLayout' });
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)
                 "
+                @enter="() => (item as ListActionFilter).onEnter?.()"
               />
             </template>
             <template v-else-if="item.action === ACTION_FILTER_SELECT">

@@ -64,7 +64,6 @@ const useDependencyList = () => {
           className: 'search',
           placeholder: t('views.env.deps.navActions.filter.search.placeholder'),
           onChange: value => {
-            console.debug(value);
             onListFilterChangeByKey(
               store,
               ns,
@@ -72,6 +71,12 @@ const useDependencyList = () => {
               FILTER_OP_CONTAINS
             )(value);
             store.commit(`${ns}/setSearchQuery`, value);
+          },
+          onEnter: async () => {
+            await Promise.all([
+              store.dispatch(`${ns}/getList`),
+              store.dispatch(`${ns}/searchRepoList`),
+            ]);
           },
         },
         {

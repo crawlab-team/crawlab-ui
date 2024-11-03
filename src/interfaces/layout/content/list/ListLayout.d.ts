@@ -47,6 +47,7 @@ export declare global {
     options?: SelectOption[];
     optionsRemote?: FilterSelectOptionsRemote;
     onChange?: (value: any) => void;
+    onEnter?: (value: any) => void;
     noAllOption?: boolean;
   }
 
