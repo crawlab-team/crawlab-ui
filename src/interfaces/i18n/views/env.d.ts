@@ -1,5 +1,24 @@
 interface LViewsEnv {
   deps: {
+    navActions: LNavActions;
+    navActionsExtra: {
+      filter: {
+        select: {
+          lang: {
+            label: string;
+          };
+        };
+      };
+    };
+    repos: {
+      tabs: {
+        installed: string;
+        search: {
+          pypi: string;
+          npm: string;
+        };
+      };
+    };
     settings: {
       form: {
         key: string;

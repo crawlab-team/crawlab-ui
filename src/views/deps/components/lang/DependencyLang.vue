@@ -99,17 +99,17 @@ const updateTooltip = computed(() => {
   return t('common.actions.update');
 });
 
-const installForm = ref<DependencyInstallPayload>({
+const installForm = ref<DependencyInstallForm>({
   names: [],
   nodes: [],
 });
 
-const uninstallForm = ref<DependencyUninstallPayload>({
+const uninstallForm = ref<DependencyUninstallForm>({
   names: [],
   nodes: [],
 });
 
-const isUninstallable = (dep: DependencyResult) => {
+const isUninstallable = (dep: DependencyRepo) => {
   let node_ids = [];
   if (installed.value) {
     node_ids = dep.node_ids || [];
@@ -119,14 +119,14 @@ const isUninstallable = (dep: DependencyResult) => {
   return node_ids.length > 0;
 };
 
-const tableColumns = computed<TableColumns<DependencyResult>>(() => {
+const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
   return [
     {
       key: 'name',
       label: t('views.env.deps.dependency.form.name'),
       icon: ['fa', 'font'],
       width: '200',
-      value: (row: DependencyResult) => (
+      value: (row: DependencyRepo) => (
         <ClNavLink label={row.name} path={props.pathFunc(row.name!)} external />
       ),
     },
@@ -135,7 +135,7 @@ const tableColumns = computed<TableColumns<DependencyResult>>(() => {
       label: t('views.env.deps.dependency.form.installedVersion'),
       icon: ['fa', 'tag'],
       width: '200',
-      value: (row: DependencyResult) => (
+      value: (row: DependencyRepo) => (
         <span style={{ marginRight: '5px' }}>{row.versions?.join(', ')}</span>
       ),
     },
@@ -144,7 +144,7 @@ const tableColumns = computed<TableColumns<DependencyResult>>(() => {
       label: t('views.env.deps.dependency.form.installedNodes'),
       icon: ['fa', 'server'],
       width: '580',
-      value: (row: DependencyResult) =>
+      value: (row: DependencyRepo) =>
         row.node_ids?.map(id => {
           const node = allNodeDict.value.get(id);
           return node ? (
@@ -178,9 +178,8 @@ const tableColumns = computed<TableColumns<DependencyResult>>(() => {
       label: t('components.table.columns.actions'),
       fixed: 'right',
       width: '200',
-      buttons: (_: DependencyResult) => [
+      buttons: (_: DependencyRepo) => [
         {
-          icon: getIconByAction(ACTION_INSTALL),
           tooltip: t('common.actions.install'),
           onClick: async row => {
             installForm.value.names = [row.name];
@@ -189,7 +188,6 @@ const tableColumns = computed<TableColumns<DependencyResult>>(() => {
           action: ACTION_INSTALL,
         },
         {
-          icon: getIconByAction(ACTION_UNINSTALL),
           tooltip: t('common.actions.uninstall'),
           disabled: row => !isUninstallable(row),
           onClick: async row => {
@@ -202,10 +200,10 @@ const tableColumns = computed<TableColumns<DependencyResult>>(() => {
       ],
       disableTransfer: true,
     },
-  ] as TableColumns<DependencyResult>;
+  ] as TableColumns<DependencyRepo>;
 });
 
-const tableData = ref<TableData<DependencyResult>>([]);
+const tableData = ref<TableData<DependencyRepo>>([]);
 
 const tablePagination = ref({
   page: 1,
@@ -325,13 +323,13 @@ const onDialogClose = (key: string) => {
   dialogVisible.value[key] = false;
 };
 
-const onInstall = async (data: DependencyInstallPayload) => {
+const onInstall = async (data: DependencyInstallForm) => {
   await post(`${endpoint.value}/install`, data);
   await actionFunctions.value.getList();
   onDialogClose('install');
 };
 
-const onUninstall = async (data: DependencyUninstallPayload) => {
+const onUninstall = async (data: DependencyUninstallForm) => {
   await post(`${endpoint.value}/uninstall`, data);
   await actionFunctions.value.getList();
   onDialogClose('uninstall');
@@ -353,7 +351,7 @@ defineOptions({ name: 'ClDependencyLang' });
     :visible-buttons="['export', 'customize-columns']"
     table-pagination-layout="total, prev, pager, next"
     :table-actions-prefix="tableActionsPrefix"
-    :row-key="({ name, versions, node_ids }: DependencyResult) =>
+    :row-key="({ name, versions, node_ids }: DependencyRepo) =>
         [name, JSON.stringify(versions), JSON.stringify(node_ids), JSON.stringify(allNodes?.map(n => n._id))].join('_')"
     @select="onSelect"
   >

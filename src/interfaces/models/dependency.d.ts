@@ -26,37 +26,37 @@ export declare global {
     version?: string;
     latest_version?: string;
     description?: string;
-    result?: DependencyResult;
   }
 
-  interface DependencyResult {
+  interface DependencyRepo {
     name?: string;
     node_ids?: string[];
     versions?: string[];
     latest_version?: string;
-    count?: number;
-    upgradable?: boolean;
-    downgradable?: boolean;
-    installable?: boolean;
+    type?: DependencyLang;
   }
+
+  type DependencyRepoTabName = 'installed' | 'search';
 
   interface DependencyLog extends BaseModel {
     task_id?: string;
     content?: string;
   }
 
-  interface DependencyInstallPayload {
-    mode?: string;
-    names: string[];
+  interface DependencyInstallForm {
+    mode?: 'all' | 'selected-nodes';
+    names?: string[];
     version?: string;
     node_ids?: string[];
     nodes?: CNode[];
   }
 
-  interface DependencyUninstallPayload {
+  interface DependencyUninstallForm {
     mode?: string;
     names?: string[];
     node_ids?: string[];
     nodes?: CNode[];
   }
+
+  type DependencyLang = 'python' | 'node';
 }

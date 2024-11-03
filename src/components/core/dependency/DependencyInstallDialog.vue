@@ -1,75 +1,48 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, watch } from 'vue';
+import { computed, onBeforeMount, watch } from 'vue';
+import { useStore } from 'vuex';
 import { translate } from '@/utils';
-import useRequest from '@/services/request';
-
-type Node = CNode;
-
-const props = defineProps<{
-  visible?: boolean;
-  lang?: string;
-  names?: string[];
-  nodes?: Node[];
-  loading?: boolean;
-}>();
-
-const emit = defineEmits<{
-  (e: 'confirm', data: DependencyInstallForm): void;
-  (e: 'close'): void;
-}>();
 
 const t = translate;
 
-const endpointL = '/deps/lang';
+const ns: ListStoreNamespace = 'dependency';
+const store = useStore();
+const { dependency: state, node: nodeState } = store.state as RootStoreState;
 
-const { get } = useRequest();
+const nodes = computed(() => nodeState.allList);
 
-const mode = ref('all');
-const nodeIds = ref([]);
-const version = ref('');
+const visible = computed(() => state.activeDialogKey === 'install');
 
-const reset = () => {
-  mode.value = 'all';
-  nodeIds.value = [];
-  version.value = '';
-};
+const form = computed(() => state.installForm);
 
-const onConfirm = () => {
-  emit('confirm', {
-    mode: mode.value,
-    node_ids: nodeIds.value,
-    names: props.names,
-    version: version.value,
-  });
-  reset();
+const loading = computed(() => state.installLoading);
+
+const versions = computed(() => state.versions);
+const getVersionsLoading = computed(() => state.getVersionsLoading);
+
+const onConfirm = async () => {
+  // store.dispatch('dependency/install');
+  store.commit(`${ns}/setInstallLoading`, true);
+  store.commit(`${ns}/hideDialog`);
 };
 
 const onClose = () => {
-  emit('close');
-  reset();
+  store.commit(`${ns}/hideDialog`);
 };
 
-const versions = ref([]);
-const versionsLoading = ref(false);
-const getVersions = async () => {
-  const { lang, names, visible } = props;
-  if (!visible || !lang || !names?.length) return;
-  versionsLoading.value = true;
-  try {
-    const res = await get(`${endpointL}/${lang}/versions`, {
-      repo: names[0],
+watch(visible, async () => {
+  if (visible.value) {
+    await store.dispatch(`${ns}/getRepoVersions`);
+    store.commit(`${ns}/setInstallForm`, {
+      ...form.value,
+      version: state.versions[0],
     });
-    versions.value = res.data;
-    if (versions.value.length > 0) {
-      version.value = versions.value[0];
-    }
-  } finally {
-    versionsLoading.value = false;
+  } else {
+    store.commit(`${ns}/resetInstallForm`);
   }
-};
-watch(() => props.visible, getVersions);
-onBeforeMount(getVersions);
-defineOptions({ name: 'ClInstallForm' });
+});
+
+defineOptions({ name: 'ClDependencyInstallDialog' });
 </script>
 
 <template>
@@ -78,13 +51,14 @@ defineOptions({ name: 'ClInstallForm' });
     :visible="visible"
     width="640px"
     :confirm-loading="loading"
+    :confirm-disabled="loading"
     @confirm="onConfirm"
     @close="onClose"
   >
     <cl-form>
       <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.name')">
         <cl-tag
-          v-for="n in names"
+          v-for="n in form.names"
           :key="n"
           class="dep-name"
           type="primary"
@@ -93,7 +67,7 @@ defineOptions({ name: 'ClInstallForm' });
         />
       </cl-form-item>
       <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.mode')">
-        <el-select v-model="mode">
+        <el-select v-model="form.mode">
           <el-option
             value="all"
             :label="t('views.env.deps.dependency.form.allNodes')"
@@ -105,12 +79,12 @@ defineOptions({ name: 'ClInstallForm' });
         </el-select>
       </cl-form-item>
       <cl-form-item
-        v-if="mode === 'selected-nodes'"
+        v-if="form.mode === 'selected-nodes'"
         :span="4"
         :label="t('views.env.deps.dependency.form.selectedNodes')"
       >
         <el-select
-          v-model="nodeIds"
+          v-model="form.node_ids"
           multiple
           :placeholder="t('views.env.deps.dependency.form.selectedNodes')"
         >
@@ -127,9 +101,10 @@ defineOptions({ name: 'ClInstallForm' });
         :label="t('views.env.deps.dependency.form.version')"
       >
         <el-select
-          v-model="version"
-          :disabled="versionsLoading"
+          v-model="form.version"
+          :disabled="getVersionsLoading"
           :placeholder="t('common.status.loading')"
+          filterable
         >
           <el-option
             v-for="(v, $index) in versions"
@@ -142,9 +117,3 @@ defineOptions({ name: 'ClInstallForm' });
     </cl-form>
   </cl-dialog>
 </template>
-
-<style scoped>
-.dep-name {
-  margin-right: 10px;
-}
-</style>

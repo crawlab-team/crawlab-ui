@@ -22,6 +22,11 @@ const onClear = () => {
   internalModelValue.value = undefined;
   emit('change', internalModelValue.value);
 };
+
+const onEnter = () => {
+  onChange(internalModelValue.value);
+};
+
 defineOptions({ name: 'ClFilterInput' });
 </script>
 
@@ -36,8 +41,7 @@ defineOptions({ name: 'ClFilterInput' });
       clearable
       @clear="onClear"
       @input="onChange"
+      @keyup.enter="onEnter"
     />
   </div>
 </template>
-
-

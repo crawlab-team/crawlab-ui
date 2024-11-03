@@ -60,6 +60,7 @@ const useList = <T = any>(
   const state = store.state[ns as keyof RootStoreState] as BaseStoreState;
 
   // table
+  const tableLoading = computed<boolean>(() => state.tableLoading);
   const tableData = computed<TableData<T>>(
     () => state.tableData as TableData<T>
   );
@@ -174,6 +175,7 @@ const useList = <T = any>(
 
   return {
     ...opts,
+    tableLoading,
     tableData,
     tableTotal,
     tablePagination,

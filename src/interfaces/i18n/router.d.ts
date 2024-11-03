@@ -12,7 +12,7 @@ export declare global {
       users: string;
       tags: string;
       tokens: string;
-      plugins: string;
+      dependencies: string;
       env: {
         deps: {
           title: string;

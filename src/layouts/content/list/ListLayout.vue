@@ -136,6 +136,7 @@ defineOptions({ name: 'ClListLayout' });
                 :placeholder="(item as ListActionFilter).placeholder"
                 :options="(item as ListActionFilter).options"
                 :options-remote="(item as ListActionFilter).optionsRemote"
+                :no-all-option="(item as ListActionFilter).noAllOption"
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)
                 "
@@ -143,7 +144,6 @@ defineOptions({ name: 'ClListLayout' });
             </template>
             <template v-else>
               <cl-nav-action-button
-                v-auth="ACTION_ADD"
                 :id="(item as ListActionButton).id"
                 :class-name="(item as ListActionButton).className"
                 :button-type="(item as ListActionButton).buttonType"
@@ -161,6 +161,10 @@ defineOptions({ name: 'ClListLayout' });
         <slot name="nav-actions-extra"></slot>
       </cl-nav-actions>
       <!-- ./Nav Actions -->
+
+      <div v-if="$slots.tabs" class="tabs">
+        <slot name="tabs" />
+      </div>
 
       <!-- Table -->
       <cl-table
@@ -233,7 +237,25 @@ defineOptions({ name: 'ClListLayout' });
     .nav-action-group {
       .nav-action-item {
         margin-right: 10px;
+
+        #filter-search {
+          width: 200px;
+        }
       }
+    }
+  }
+
+  .tabs {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-content: center;
+    border-top: 1px solid var(--el-border-color);
+
+    &:deep(.nav-tabs) {
+      width: 100%;
+      display: flex;
+      align-items: center;
     }
   }
 

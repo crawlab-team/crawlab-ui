@@ -17,6 +17,7 @@ import notificationChannel from '@/store/modules/notificationChannel';
 import notificationRequest from '@/store/modules/notificationRequest';
 import notificationAlert from '@/store/modules/notificationAlert';
 import database from '@/store/modules/database';
+import dependency from '@/store/modules/dependency';
 import environment from '@/store/modules/environment';
 import system from '@/store/modules/system';
 
@@ -43,6 +44,7 @@ export const createStore = (): Store<RootStoreState> => {
       notificationRequest,
       notificationAlert,
       database,
+      dependency,
       environment,
       system,
     },

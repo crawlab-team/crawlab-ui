@@ -232,12 +232,12 @@ const lang = computed(() => {
   }
 });
 
-const installForm = ref<DependencyInstallPayload>({
+const installForm = ref<DependencyInstallForm>({
   node_ids: [],
   names: [],
 });
 
-const uninstallForm = ref<DependencyUninstallPayload>({
+const uninstallForm = ref<DependencyUninstallForm>({
   node_ids: [],
   names: [],
 });

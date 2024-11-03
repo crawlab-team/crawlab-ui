@@ -58,6 +58,7 @@ import DatabaseTableDetailData from './core/database/tables/DatabaseTableDetailD
 import DatabaseTableDetailIndexes from './core/database/tables/DatabaseTableDetailIndexes.vue';
 import DateRangePicker from './ui/date/DateRangePicker.vue';
 import DateTimeRangePicker from './ui/date/DateTimeRangePicker.vue';
+import DependencyInstallDialog from './core/dependency/DependencyInstallDialog.vue';
 import DetailTabList from './ui/list/DetailTabList.vue';
 import Dialog from './ui/dialog/Dialog.vue';
 import DraggableItem from './ui/drag/DraggableItem.vue';
@@ -276,6 +277,7 @@ export {
   DatabaseTableDetailIndexes as ClDatabaseTableDetailIndexes,
   DateRangePicker as ClDateRangePicker,
   DateTimeRangePicker as ClDateTimeRangePicker,
+  DependencyInstallDialog as ClDependencyInstallDialog,
   DetailTabList as ClDetailTabList,
   Dialog as ClDialog,
   DraggableItem as ClDraggableItem,

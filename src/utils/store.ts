@@ -39,6 +39,7 @@ export const getDefaultStoreState = <T = any>(
     formList: [],
     newFormFn: emptyObjectFunc,
     confirmLoading: false,
+    tableLoading: false,
     tableData: [],
     tableTotal: 0,
     tablePagination,
@@ -129,8 +130,8 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
     setConfirmLoading: (state: BaseStoreState<T>, value: boolean) => {
       state.confirmLoading = value;
     },
-    resetTableData: (state: BaseStoreState<T>) => {
-      state.tableData = [];
+    setTableLoading: (state: BaseStoreState<T>, value: boolean) => {
+      state.tableLoading = value;
     },
     setTableData: (
       state: BaseStoreState<T>,
@@ -139,6 +140,9 @@ export const getDefaultStoreMutations = <T = any>(): BaseStoreMutations<T> => {
       const { data, total } = payload;
       state.tableData = data;
       state.tableTotal = total;
+    },
+    resetTableData: (state: BaseStoreState<T>) => {
+      state.tableData = [];
     },
     setTablePagination: (
       state: BaseStoreState<T>,
@@ -313,14 +317,21 @@ export const getDefaultStoreActions = <T = any>(
       commit,
     }: StoreActionContext<BaseStoreState<T>>) => {
       const { page, size } = state.tablePagination;
-      const res = await getList({
-        page,
-        size,
-        conditions: JSON.stringify(state.tableListFilter),
-        sort: JSON.stringify(state.tableListSort),
-      } as ListRequestParams);
-      commit('setTableData', { data: res.data || [], total: res.total });
-      return res;
+      try {
+        commit('setTableLoading', true);
+        const res = await getList({
+          page,
+          size,
+          conditions: JSON.stringify(state.tableListFilter),
+          sort: JSON.stringify(state.tableListSort),
+        } as ListRequestParams);
+        commit('setTableData', { data: res.data || [], total: res.total });
+        return res;
+      } catch (e) {
+        throw e;
+      } finally {
+        commit('setTableLoading', false);
+      }
     },
     getListWithParams: async (
       _: StoreActionContext<BaseStoreState<T>>,

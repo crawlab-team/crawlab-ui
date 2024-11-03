@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import useRequest from '@/services/request';
 import { cloneArray, prependAllToSelectOptions } from '@/utils';
+import { debounce } from 'lodash';
 
 const props = defineProps<{
   id?: string;
@@ -10,6 +11,7 @@ const props = defineProps<{
   filterable?: boolean;
   options?: SelectOption[];
   optionsRemote?: FilterSelectOptionsRemote;
+  noAllOption?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -23,6 +25,9 @@ const internalOptions = ref<SelectOption[]>([]);
 
 const computedOptions = computed<SelectOption[]>(() => {
   const options = cloneArray(props.options || internalOptions.value || []);
+  if (props.noAllOption) {
+    return options;
+  }
   return prependAllToSelectOptions(options);
 });
 
@@ -31,8 +36,12 @@ const onChange = (value: any) => {
 };
 
 const onClear = () => {
-  internalModelValue.value = undefined;
-  emit('change', undefined);
+  const { options, noAllOption } = props;
+  if (noAllOption) {
+    internalModelValue.value = options ? options[0]?.value : undefined;
+  } else {
+    internalModelValue.value = undefined;
+  }
 };
 
 const getOptions = async () => {
@@ -44,8 +53,27 @@ const getOptions = async () => {
   const res = await get(url);
   internalOptions.value = res.data;
 };
-
 onBeforeMount(getOptions);
+
+const initializeModelValue = () => {
+  const { options, noAllOption } = props;
+  if (noAllOption) {
+    internalModelValue.value = options ? options[0]?.value : undefined;
+  }
+};
+onBeforeMount(initializeModelValue);
+watch(internalOptions, initializeModelValue);
+
+const hasIcon = computed(() => {
+  return computedOptions.value.some(option => option.icon);
+});
+
+const activeOption = computed(() => {
+  return computedOptions.value.find(
+    option => option.value === internalModelValue.value
+  );
+});
+
 defineOptions({ name: 'ClFilterSelect' });
 </script>
 
@@ -61,24 +89,32 @@ defineOptions({ name: 'ClFilterSelect' });
       :filterable="filterable"
       clearable
       :popper-class="id"
-      @clear="onClear"
       @change="onChange"
+      @clear="onClear"
     >
       <cl-option
         v-for="(option, $index) in computedOptions"
         :key="$index"
-        :label="option.label"
-        :value="option.value"
+        v-bind="option"
       />
+      <template v-if="activeOption && hasIcon" #label>
+        <cl-icon :icon="activeOption?.icon" />
+        <span>{{ activeOption?.label }}</span>
+      </template>
     </el-select>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .filter-select {
   display: flex;
   align-items: center;
   flex: 1 0 auto;
+
+  &:deep(.icon) {
+    width: 14px;
+    margin-right: 5px;
+  }
 
   .content {
     flex: 1 0 180px;

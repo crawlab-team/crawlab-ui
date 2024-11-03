@@ -44,7 +44,10 @@ defineOptions({ name: 'ClNavTabs' });
             :offset="[10, 10]"
           >
             <div class="item-wrapper">
-              <cl-icon :icon="item.icon ?? getIconByNavItem(item)" />
+              <cl-icon
+                :icon="item.icon ?? getIconByNavItem(item)"
+                :spinning="item.iconSpinning"
+              />
               <span class="label">{{ t(item.title || '') }}</span>
             </div>
           </el-badge>
@@ -57,7 +60,7 @@ defineOptions({ name: 'ClNavTabs' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .nav-tabs {
   display: flex;
   border-bottom: 1px solid #e6e6e6;
@@ -101,8 +104,8 @@ defineOptions({ name: 'ClNavTabs' });
         display: flex;
         align-items: center;
 
-        .icon {
-          margin-right: 3px;
+        &:deep(.icon) {
+          margin-right: 5px;
         }
       }
     }
@@ -114,10 +117,5 @@ defineOptions({ name: 'ClNavTabs' });
     align-items: center;
     height: var(--cl-nav-tabs-height);
   }
-}
-</style>
-<style scoped>
-.nav-tabs:deep(.el-menu-item .icon) {
-  margin-right: 5px;
 }
 </style>

@@ -14,6 +14,7 @@ const {
   tablePagination,
   actionFunctions,
 } = useTaskList();
+
 defineOptions({ name: 'ClTaskList' });
 </script>
 
@@ -40,5 +41,3 @@ defineOptions({ name: 'ClTaskList' });
     </template>
   </cl-list-layout>
 </template>
-
-

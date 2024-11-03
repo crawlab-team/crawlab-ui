@@ -11,7 +11,7 @@ const router: LRouter = {
     users: '用户',
     tags: '标签',
     tokens: '令牌',
-    plugins: '插件',
+    dependencies: '环境依赖',
     env: {
       deps: {
         title: '环境依赖',

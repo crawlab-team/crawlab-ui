@@ -9,6 +9,7 @@ const {
   tablePagination,
   tableTotal,
 } = useDatabaseList();
+
 defineOptions({ name: 'ClDatabaseList' });
 </script>
 

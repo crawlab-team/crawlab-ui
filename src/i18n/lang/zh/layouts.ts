@@ -89,7 +89,7 @@ const layouts: LLayouts = {
       title: '令牌',
     },
     dependencies: {
-      title: '依赖',
+      title: '环境依赖',
       settings: '设置',
       lang: {
         python: 'Python',

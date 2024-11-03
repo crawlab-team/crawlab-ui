@@ -1,5 +1,34 @@
 const env: LViewsEnv = {
   deps: {
+    navActions: {
+      new: {
+        label: 'New Dependency',
+        tooltip: 'Install a new dependency',
+      },
+      filter: {
+        search: {
+          placeholder: 'Search dependencies',
+        },
+      },
+    },
+    navActionsExtra: {
+      filter: {
+        select: {
+          lang: {
+            label: 'Programming Language',
+          },
+        },
+      },
+    },
+    repos: {
+      tabs: {
+        installed: 'Installed',
+        search: {
+          pypi: 'PyPI',
+          npm: 'NPM',
+        },
+      },
+    },
     settings: {
       form: {
         key: 'Key',

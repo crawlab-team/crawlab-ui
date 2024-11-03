@@ -1,5 +1,34 @@
 const env: LViewsEnv = {
   deps: {
+    navActions: {
+      new: {
+        label: '安装依赖',
+        tooltip: '安装新依赖',
+      },
+      filter: {
+        search: {
+          placeholder: '搜索依赖',
+        },
+      },
+    },
+    navActionsExtra: {
+      filter: {
+        select: {
+          lang: {
+            label: '编程语言',
+          },
+        },
+      },
+    },
+    repos: {
+      tabs: {
+        installed: '已安装',
+        search: {
+          pypi: 'PyPI',
+          npm: 'NPM',
+        },
+      },
+    },
     settings: {
       form: {
         key: '键',

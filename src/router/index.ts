@@ -16,7 +16,8 @@ import token from '@/router/token';
 import deps from '@/router/deps';
 import notification from '@/router/notification';
 import git from '@/router/git';
-import ds from '@/router/database';
+import database from '@/router/database';
+import dependency from '@/router/dependency';
 import environment from '@/router/environment';
 import system from '@/router/system';
 import misc from '@/router/misc';
@@ -44,7 +45,8 @@ export function getDefaultRoutes(): Array<ExtendedRouterRecord> {
         ...deps,
         ...notification,
         ...git,
-        ...ds,
+        ...database,
+        ...dependency,
         ...environment,
         ...system,
         ...misc,
@@ -102,6 +104,11 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
           icon: ['fab', 'node'],
         },
       ],
+    },
+    {
+      path: '/dependencies',
+      title: 'router.menuItems.dependencies',
+      icon: ['fa', 'cubes'],
     },
     {
       path: '/notifications',

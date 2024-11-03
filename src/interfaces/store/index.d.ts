@@ -27,6 +27,7 @@ export declare global {
     notificationRequest: NotificationRequestStoreState;
     notificationAlert: NotificationAlertStoreState;
     database: DatabaseStoreState;
+    dependency: DependencyStoreState;
     environment: EnvironmentStoreState;
     system: SystemStoreState;
   }
@@ -73,6 +74,7 @@ export declare global {
     formList: T[];
     newFormFn: DefaultFormFunc<T | {}>;
     confirmLoading: boolean;
+    tableLoading: boolean;
     tableData: TableData<T>;
     tableTotal: number;
     tablePagination: TablePagination;
@@ -109,6 +111,7 @@ export declare global {
     setFormList: StoreMutation<BaseStoreState<T>, T[]>;
     resetFormList: StoreMutation<BaseStoreState<T>>;
     setConfirmLoading: StoreMutation<BaseStoreState<T>, boolean>;
+    setTableLoading: StoreMutation<BaseStoreState<T>, boolean>;
     setTableData: StoreMutation<BaseStoreState<T>, TableDataWithTotal<T>>;
     resetTableData: StoreMutation<BaseStoreState<T>>;
     setTablePagination: StoreMutation<BaseStoreState<T>, TablePagination>;
@@ -171,6 +174,7 @@ export declare global {
     | 'notificationRequest'
     | 'notificationAlert'
     | 'database'
+    | 'dependency'
     | 'environment';
   type StoreNamespace = ListStoreNamespace | 'layout';
 

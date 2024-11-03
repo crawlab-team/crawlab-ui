@@ -11,7 +11,7 @@ const router: LRouter = {
     users: 'Users',
     tags: 'Tags',
     tokens: 'Tokens',
-    plugins: 'Plugins',
+    dependencies: 'Dependencies',
     env: {
       deps: {
         title: 'Dependencies',

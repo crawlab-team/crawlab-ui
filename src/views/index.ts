@@ -7,6 +7,7 @@ import DatabaseDetailTabMonitoring from './database/detail/tabs/DatabaseDetailTa
 import DatabaseDetailTabOverview from './database/detail/tabs/DatabaseDetailTabOverview.vue';
 import DatabaseList from './database/list/DatabaseList.vue';
 import DependencyLang from './deps/components/lang/DependencyLang.vue';
+import DependencyList from './dependency/list/DependencyList.vue';
 import DependencyNode from './deps/node/DependencyNode.vue';
 import DependencyPython from './deps/python/DependencyPython.vue';
 import DependencySettingForm from './deps/setting/DependencySettingForm.vue';
@@ -90,6 +91,7 @@ import TokenList from './token/list/TokenList.vue';
 import UninstallForm from './deps/components/form/UninstallForm.vue';
 import useDatabaseDetail from './database/detail/useDatabaseDetail';
 import useDatabaseList from './database/list/useDatabaseList';
+import useDependencyList from './dependency/list/useDependencyList';
 import useEnvironmentList from './environment/list/useEnvironmentList';
 import useGitDetail from './git/detail/useGitDetail';
 import useGitList from './git/list/useGitList';
@@ -124,6 +126,7 @@ export {
   DatabaseDetailTabOverview as ClDatabaseDetailTabOverview,
   DatabaseList as ClDatabaseList,
   DependencyLang as ClDependencyLang,
+  DependencyList as ClDependencyList,
   DependencyNode as ClDependencyNode,
   DependencyPython as ClDependencyPython,
   DependencySettingForm as ClDependencySettingForm,
@@ -207,6 +210,7 @@ export {
   UninstallForm as ClUninstallForm,
   useDatabaseDetail as useDatabaseDetail,
   useDatabaseList as useDatabaseList,
+  useDependencyList as useDependencyList,
   useEnvironmentList as useEnvironmentList,
   useGitDetail as useGitDetail,
   useGitList as useGitList,

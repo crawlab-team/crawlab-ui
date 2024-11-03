@@ -17,6 +17,7 @@ const {
   actionFunctions,
   tableActionsPrefix,
 } = useSpiderList();
+
 defineOptions({ name: 'ClSpiderList' });
 </script>
 
@@ -48,15 +49,3 @@ defineOptions({ name: 'ClSpiderList' });
     </template>
   </cl-list-layout>
 </template>
-
-<style lang="scss" scoped>
-.spider-list {
-  .nav-actions {
-    border-bottom: none;
-  }
-
-  .content {
-    background-color: var(--cl-container-white-bg);
-  }
-}
-</style>

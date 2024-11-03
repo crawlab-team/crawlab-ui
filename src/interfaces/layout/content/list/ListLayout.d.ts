@@ -4,6 +4,7 @@ import Table from '@/components/ui/table/Table.vue';
 export declare global {
   interface ListLayoutComponentData<T = any> {
     navActions?: Ref<ListActionGroup[]>;
+    tableLoading: Ref<boolean>;
     tableColumns?: Ref<TableColumns<T>>;
     tableData: Ref<TableData<T>>;
     tableTotal: Ref<number>;
@@ -46,6 +47,7 @@ export declare global {
     options?: SelectOption[];
     optionsRemote?: FilterSelectOptionsRemote;
     onChange?: (value: any) => void;
+    noAllOption?: boolean;
   }
 
   interface ListLayoutActionFunctions {

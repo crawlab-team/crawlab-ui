@@ -92,10 +92,7 @@ const actions = {
     commit('setTableData', { data: res.data || [], total: res.total });
     return res;
   },
-  create: async (
-    { state, commit }: StoreActionContext<TaskStoreState>,
-    form: Task
-  ) => {
+  create: async (_: StoreActionContext<TaskStoreState>, form: Task) => {
     return await post(`/tasks/run`, form);
   },
   getLogs: async (
