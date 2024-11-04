@@ -21,6 +21,12 @@ const env: LViewsEnv = {
       },
     },
     repos: {
+      actions: {
+        search: {
+          label: 'Search Dependencies',
+          tooltip: 'Search and install dependencies',
+        },
+      },
       tabs: {
         installed: 'Installed',
         search: {

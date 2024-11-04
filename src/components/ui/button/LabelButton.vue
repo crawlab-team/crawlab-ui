@@ -25,18 +25,15 @@ defineOptions({ name: 'ClLabelButton' });
     @mouseenter="(event: Event) => emit('mouseenter', event)"
     @mouseleave="(event: Event) => emit('mouseleave', event)"
   >
-    <font-awesome-icon v-if="icon && !loading" :icon="icon" class="icon" />
-    {{ label }}
+    <span class="icon-wrapper">
+      <cl-icon v-if="icon && !loading" :icon="icon" />
+    </span>
+    <span class="label">{{ label }}</span>
   </cl-button>
 </template>
 
 <style scoped>
-.label-button:deep(.icon) {
-  width: 20px;
+.icon-wrapper {
   margin-right: 3px;
-}
-
-.label-button:deep(.el-icon.is-loading) {
-  width: 17px;
 }
 </style>

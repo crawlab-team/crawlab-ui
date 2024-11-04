@@ -13,22 +13,29 @@ import {
 import { emptyArrayFunc } from '@/utils';
 import { ColumnCls } from 'element-plus/es/components/table/src/table/defaults';
 
+defineSlots<{
+  empty?: void;
+  'actions-prefix'?: void;
+  'actions-suffix'?: void;
+}>();
+
 const props = withDefaults(
   defineProps<{
+    loading?: boolean;
     data: TableData;
     columns: TableColumn[];
     selectedColumnKeys?: string[];
     total?: number;
     page?: number;
     pageSize?: number;
+    pageSizes?: number[];
+    paginationLayout?: string;
+    paginationPosition?: TablePaginationPosition;
     rowKey?: string | ((row: any) => string);
     selectable?: boolean;
     visibleButtons?: BuiltInTableActionButtonName[];
     hideFooter?: boolean;
     selectableFunction?: TableSelectableFunction;
-    paginationLayout?: string;
-    loading?: boolean;
-    paginationPosition?: TablePaginationPosition;
     height?: string | number;
     maxHeight?: string | number;
     embedded?: boolean;
@@ -43,6 +50,7 @@ const props = withDefaults(
     headerRowStyle?: ColumnStyle<any>;
     headerCellClassName?: CellCls<any>;
     headerCellStyle?: CellStyle<any>;
+    stickyHeader?: boolean;
     hideDefaultActions?: boolean;
   }>(),
   {
@@ -57,6 +65,7 @@ const props = withDefaults(
     paginationLayout: 'total, sizes, prev, pager, next',
     paginationPosition: TABLE_PAGINATION_POSITION_BOTTOM,
     border: true,
+    stickyHeader: true,
   }
 );
 
@@ -108,6 +117,18 @@ const checkAll = () => {
   tableRef.value?.toggleRowSelection(true);
 };
 
+const className = computed(() => {
+  const { embedded, stickyHeader } = props;
+  const cls = [];
+  if (embedded) {
+    cls.push('embedded');
+  }
+  if (stickyHeader) {
+    cls.push('sticky-header');
+  }
+  return cls.join(' ');
+});
+
 defineExpose({
   clearSelection,
   checkAll,
@@ -119,7 +140,8 @@ defineOptions({ name: 'ClTable' });
   <div
     v-loading="loading"
     ref="tableWrapperRef"
-    :class="['table', embedded ? 'embedded' : ''].join(' ')"
+    class="table"
+    :class="className"
   >
     <!-- Table Header -->
     <div class="table-header">
@@ -130,10 +152,11 @@ defineOptions({ name: 'ClTable' });
             TABLE_PAGINATION_POSITION_TOP,
           ].includes(paginationPosition)
         "
+        class="pagination"
         :current-page="page"
         :page-size="pageSize"
+        :page-sizes="pageSizes"
         :total="total"
-        class="pagination"
         :layout="paginationLayout"
         @current-change="onCurrentChange"
         @size-change="onSizeChange"
@@ -232,10 +255,11 @@ defineOptions({ name: 'ClTable' });
             TABLE_PAGINATION_POSITION_BOTTOM,
           ].includes(paginationPosition)
         "
+        class="pagination"
         :current-page="page"
         :page-size="pageSize"
+        :page-sizes="pageSizes"
         :total="total"
-        class="pagination"
         :layout="paginationLayout"
         @current-change="onCurrentChange"
         @size-change="onSizeChange"
@@ -255,7 +279,7 @@ defineOptions({ name: 'ClTable' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .table {
   background-color: var(--cl-container-white-bg);
   display: flex;
@@ -285,21 +309,41 @@ defineOptions({ name: 'ClTable' });
       text-align: right;
     }
   }
-}
-</style>
-<style scoped>
-.el-table:deep(th > .cell) {
-  line-height: 1.5;
-  word-break: normal;
+
+  &.sticky-header {
+    height: 100%;
+
+    .el-table {
+      height: 100%;
+
+      &:deep(.el-table__inner-wrapper) {
+        height: 100%;
+        overflow: auto;
+      }
+
+      &:deep(.el-table__header-wrapper) {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+    }
+  }
 }
 
-.el-table:deep(td > .cell) {
-  overflow: inherit;
-}
+.el-table {
+  &:deep(th > .cell) {
+    line-height: 1.5;
+    word-break: normal;
+  }
 
-.el-table:deep(td.no-padding),
-.el-table:deep(td.no-padding > .cell) {
-  padding: 0;
+  &:deep(td > .cell) {
+    overflow: inherit;
+  }
+
+  &:deep(td.no-padding),
+  &:deep(td.no-padding > .cell) {
+    padding: 0;
+  }
 }
 
 .table.embedded {

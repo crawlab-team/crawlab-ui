@@ -25,7 +25,7 @@ defineOptions({ name: 'ClNormalLayout' });
   </el-container>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .normal-layout {
   height: 100vh;
 

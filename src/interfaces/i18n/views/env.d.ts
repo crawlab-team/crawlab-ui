@@ -11,6 +11,12 @@ interface LViewsEnv {
       };
     };
     repos: {
+      actions: {
+        search: {
+          label: string;
+          tooltip: string;
+        };
+      };
       tabs: {
         installed: string;
         search: {

@@ -61,7 +61,10 @@ export const onListFilterChangeByKey = (
   store: Store<RootStoreState>,
   ns: ListStoreNamespace,
   key: string,
-  op?: string
+  op?: string,
+  options: {
+    update: boolean;
+  } = { update: true }
 ) => {
   if (!op) op = FILTER_OP_EQUAL;
   return async (value: string) => {
@@ -69,6 +72,8 @@ export const onListFilterChangeByKey = (
       key,
       conditions: value !== undefined ? [{ key, op, value }] : [],
     });
-    await store.dispatch(`${ns}/getList`);
+    if (options.update) {
+      await store.dispatch(`${ns}/getList`);
+    }
   };
 };

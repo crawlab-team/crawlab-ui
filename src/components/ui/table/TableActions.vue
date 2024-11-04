@@ -150,6 +150,7 @@ defineOptions({ name: 'ClTableActions' });
 <style scoped>
 .table-actions {
   display: inline-flex;
+  align-items: center;
   gap: 5px;
 
   .nav-action-button {

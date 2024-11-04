@@ -39,6 +39,7 @@ const common: LCommon = {
     export: '导出',
     configure: '配置',
     update: '更新',
+    upgrade: '升级',
     save: '保存',
     change: '更改',
     manage: '管理',
@@ -140,6 +141,7 @@ const common: LCommon = {
     unauthorized: '未授权',
     loading: '加载中',
     upgradePro: '请升级为 Crawlab 专业版',
+    alreadyUpToDate: '已是最新版本',
   },
   mode: {
     default: '默认',

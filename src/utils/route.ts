@@ -23,6 +23,7 @@ import {
   ACTION_STOP,
   ACTION_UNINSTALL,
   ACTION_UNLINK,
+  ACTION_UPGRADE,
   ACTION_UPLOAD_FILES,
   ACTION_VIEW,
   ACTION_VIEW_CHANGES,
@@ -362,6 +363,8 @@ export const getIconByAction = (action: string): Icon | undefined => {
       return ['fa', 'download'];
     case ACTION_UNINSTALL:
       return ['fa', 'trash-alt'];
+    case ACTION_UPGRADE:
+      return ['fa', 'arrow-up'];
 
     // Default
     default:

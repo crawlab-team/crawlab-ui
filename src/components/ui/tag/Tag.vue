@@ -19,6 +19,7 @@ interface TagProps {
   closable?: boolean;
   disabled?: boolean;
   className?: string;
+  short?: boolean;
 }
 
 const props = defineProps<TagProps>();
@@ -49,11 +50,12 @@ const onClose = (ev?: Event) => {
 };
 
 const cls = computed<string[]>(() => {
-  const { clickable, disabled, label, className } = props;
+  const { clickable, disabled, label, short, className } = props;
   const cls = [] as string[];
   if (clickable) cls.push('clickable');
   if (disabled) cls.push('disabled');
   if (!label) cls.push('no-label');
+  if (short) cls.push('short');
   if (className) cls.push(className);
   return cls;
 });
@@ -153,6 +155,26 @@ defineOptions({ name: 'ClTag' });
   &.clickable {
     &:not(.disabled) {
       cursor: pointer;
+    }
+  }
+
+  &.short {
+    max-width: 150px;
+    overflow: hidden;
+    justify-content: start;
+    align-items: center;
+
+    &:deep(.el-tag__content) {
+      display: inline-flex;
+      width: 100%;
+      align-items: center;
+    }
+
+    &:deep(.el-tag__content .label) {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

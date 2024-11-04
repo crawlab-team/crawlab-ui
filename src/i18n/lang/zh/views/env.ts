@@ -21,6 +21,12 @@ const env: LViewsEnv = {
       },
     },
     repos: {
+      actions: {
+        search: {
+          label: '搜索依赖',
+          tooltip: '搜索并安装依赖',
+        },
+      },
       tabs: {
         installed: '已安装',
         search: {

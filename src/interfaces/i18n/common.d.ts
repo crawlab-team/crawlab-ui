@@ -52,6 +52,7 @@ export declare global {
       export: string;
       configure: string;
       update: string;
+      upgrade: string;
       save: string;
       change: string;
       manage: string;
@@ -153,6 +154,7 @@ export declare global {
       unauthorized: string;
       loading: string;
       upgradePro: string;
+      alreadyUpToDate: string;
     };
     mode: {
       default: string;

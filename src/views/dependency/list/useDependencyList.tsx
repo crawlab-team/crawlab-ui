@@ -1,5 +1,4 @@
-import { computed } from 'vue';
-import { getRouter } from '@/router';
+import { computed, watch } from 'vue';
 import { getStore } from '@/store';
 import { useList } from '@/layouts/content';
 import {
@@ -17,15 +16,18 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
-import { ClNavLink, ClNodeType, useNode } from '@/components';
+import {
+  ClDependencyVersions,
+  ClNavLink,
+  ClNodeType,
+  useNode,
+} from '@/components';
 import { getRepoExternalPath } from '@/utils/dependency';
+import { compare, valid } from 'semver';
 
 const t = translate;
 
 const useDependencyList = () => {
-  // router
-  const router = getRouter();
-
   // store
   const ns = 'dependency';
   const store = getStore();
@@ -63,16 +65,11 @@ const useDependencyList = () => {
           id: 'filter-search',
           className: 'search',
           placeholder: t('views.env.deps.navActions.filter.search.placeholder'),
-          onChange: value => {
-            onListFilterChangeByKey(
-              store,
-              ns,
-              'name',
-              FILTER_OP_CONTAINS
-            )(value);
-            store.commit(`${ns}/setSearchQuery`, value);
+          onChange: async value => {
+            await updateSearchQuery(value);
           },
-          onEnter: async () => {
+          onEnter: async value => {
+            await updateSearchQuery(value);
             await Promise.all([
               store.dispatch(`${ns}/getList`),
               store.dispatch(`${ns}/searchRepoList`),
@@ -83,6 +80,7 @@ const useDependencyList = () => {
           className: 'search-btn',
           buttonType: 'label',
           label: t('common.actions.search'),
+          icon: ['fa', 'search'],
           onClick: async () => {
             await Promise.all([
               store.dispatch(`${ns}/getList`),
@@ -93,6 +91,21 @@ const useDependencyList = () => {
       ],
     },
   ]);
+
+  const updateSearchQuery = async (value: any) => {
+    await onListFilterChangeByKey(store, ns, 'name', FILTER_OP_CONTAINS, {
+      update: false,
+    })(value);
+    store.commit(`${ns}/setSearchQuery`, value);
+  };
+
+  const onClickInstall = async (row: DependencyRepo) => {
+    store.commit(`${ns}/setInstallForm`, {
+      ...state.installForm,
+      names: [row.name],
+    });
+    store.commit(`${ns}/showDialog`, 'install');
+  };
 
   // table columns
   const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
@@ -114,7 +127,10 @@ const useDependencyList = () => {
         icon: ['fa', 'tag'],
         width: '200',
         value: (row: DependencyRepo) => (
-          <span style={{ marginRight: '5px' }}>{row.versions?.join(', ')}</span>
+          <ClDependencyVersions
+            repo={row}
+            onClick={() => onClickInstall(row)}
+          />
         ),
       },
       {
@@ -159,13 +175,7 @@ const useDependencyList = () => {
         buttons: (_: DependencyRepo) => [
           {
             tooltip: t('common.actions.install'),
-            onClick: async row => {
-              store.commit(`${ns}/setInstallForm`, {
-                ...state.installForm,
-                names: [row.name],
-              });
-              store.commit(`${ns}/showDialog`, 'install');
-            },
+            onClick: onClickInstall,
             action: ACTION_INSTALL,
           },
           {
@@ -196,13 +206,25 @@ const useDependencyList = () => {
   const searchRepoTableData = computed(() =>
     state.searchRepoTableData.map(d => {
       const key = d.name!;
-      const item = tableDataDict.value.get(key);
-      return item ? item : d;
+      const installedItem = tableDataDict.value.get(key);
+      return {
+        ...installedItem,
+        ...d,
+        node_ids: installedItem?.node_ids || [],
+        versions: installedItem?.versions || ['N/A'],
+        latest_version: d.latest_version || '',
+      } as DependencyRepo;
     })
   );
 
   // programming language
   const lang = computed<DependencyLang>(() => state.lang);
+  watch(lang, async () => {
+    await Promise.all([
+      store.dispatch(`${ns}/getList`),
+      store.dispatch(`${ns}/searchRepoList`),
+    ]);
+  });
 
   // table data
   const tableLoading = computed(() => {
@@ -243,6 +265,23 @@ const useDependencyList = () => {
         return state.searchRepoTablePagination;
       default:
         return getDefaultPagination();
+    }
+  });
+  const tablePageSizes = computed(() => {
+    if (state.lang === 'python' && state.repoTabName === 'search') {
+      return [20];
+    }
+  });
+  watch(tablePageSizes, () => {
+    // set default page size if not in the list
+    if (
+      tablePageSizes.value &&
+      !tablePageSizes.value.some(size => size === tablePagination.value.size)
+    ) {
+      store.commit(`${ns}/setSearchRepoTablePagination`, {
+        ...tablePagination.value,
+        size: tablePageSizes.value[0],
+      });
     }
   });
 
@@ -312,10 +351,19 @@ const useDependencyList = () => {
         iconSpinning: true,
       };
     }
-    searchItem.title = `${searchItem.title} (${state.searchRepoTableTotal})`;
+    if (state.searchQuery) {
+      searchItem.title = `${searchItem.title} (${state.searchRepoTableTotal})`;
+    }
     return [installedItem, searchItem] as NavItem[];
   });
   const repoTabName = computed(() => state.repoTabName);
+
+  const onClickTableEmptySearch = () => {
+    const elVNodeCtx = (
+      document.querySelector<HTMLDivElement>('#filter-search .el-input') as any
+    )?.__vnode?.ctx;
+    elVNodeCtx?.exposed?.focus?.();
+  };
 
   // row key
   const allNodes = computed(() => nodeState.allList);
@@ -343,9 +391,11 @@ const useDependencyList = () => {
     tableData,
     tableTotal,
     tablePagination,
+    tablePageSizes,
     actionFunctions,
     repoTabName,
     repoTabItems,
+    onClickTableEmptySearch,
     rowKey,
   };
 };

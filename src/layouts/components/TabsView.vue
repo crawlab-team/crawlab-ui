@@ -151,6 +151,10 @@ defineOptions({ name: 'ClTabsView' });
     transform-origin: 100% 50%;
   }
 
+  &:deep(.el-tabs__item > .icon) {
+    margin-right: 3px;
+  }
+
   &:deep(.el-tabs__new-tab) {
     margin-right: 10px;
     background-color: #ffffff;

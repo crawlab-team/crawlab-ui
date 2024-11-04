@@ -120,6 +120,32 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<Dependency>('/dependencies/repos'),
+  getList: async ({
+    state,
+    commit,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang, tablePagination, tableListFilter, tableListSort } = state;
+    const { page, size } = tablePagination;
+    try {
+      commit('setTableLoading', true);
+      const res = await getList(`${endpoint}`, {
+        page,
+        size,
+        conditions: JSON.stringify(tableListFilter),
+        sort: JSON.stringify(tableListSort),
+        lang,
+      });
+      commit('setTableData', {
+        data: res.data || [],
+        total: res.total,
+      });
+      return res;
+    } catch (e) {
+      throw e;
+    } finally {
+      commit('setTableLoading', false);
+    }
+  },
   searchRepoList: async ({
     state,
     commit,

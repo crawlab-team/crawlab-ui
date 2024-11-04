@@ -45,3 +45,4 @@ export const ACTION_UNLINK = 'unlink';
 // Dependency Actions
 export const ACTION_INSTALL = 'install';
 export const ACTION_UNINSTALL = 'uninstall';
+export const ACTION_UPGRADE = 'upgrade';

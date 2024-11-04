@@ -2,11 +2,14 @@
 import { computed, onMounted, provide, ref, watch } from 'vue';
 import { emptyArrayFunc, emptyObjectFunc } from '@/utils/func';
 import { getMd5 } from '@/utils/hash';
-import {
-  ACTION_ADD,
-  ACTION_FILTER_SEARCH,
-  ACTION_FILTER_SELECT,
-} from '@/constants/action';
+import { ACTION_FILTER_SEARCH, ACTION_FILTER_SELECT } from '@/constants/action';
+
+const slots = defineSlots<{
+  tabs?: void;
+  'nav-actions-extra'?: void;
+  'table-empty'?: void;
+  extra?: void;
+}>();
 
 const props = withDefaults(
   defineProps<{
@@ -16,6 +19,7 @@ const props = withDefaults(
     tableData: TableData;
     tableTotal?: number;
     tablePagination?: TablePagination;
+    tablePageSizes?: number[];
     tableListFilter?: FilterConditionData[];
     tableListSort?: SortData[];
     tableActionsPrefix?: ListActionButton[];
@@ -104,11 +108,26 @@ const tableColumnsHash = computed<string>(() => {
   const { tableColumns } = props;
   return getMd5(JSON.stringify(tableColumns));
 });
+
+const className = computed(() => {
+  const cls = [];
+  if (props.noActions) {
+    cls.push('no-actions');
+  }
+  if (slots.tabs) {
+    cls.push('has-tabs');
+  }
+  if (props.embedded) {
+    cls.push('embedded');
+  }
+  return cls.join(' ');
+});
+
 defineOptions({ name: 'ClListLayout' });
 </script>
 
 <template>
-  <div class="list-layout" :data-test-total="tableTotal">
+  <div class="list-layout" :class="className" :data-test-total="tableTotal">
     <div class="content">
       <!-- Nav Actions -->
       <cl-nav-actions v-if="!noActions" ref="navActions" class="nav-actions">
@@ -127,7 +146,10 @@ defineOptions({ name: 'ClListLayout' });
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)
                 "
-                @enter="() => (item as ListActionFilter).onEnter?.()"
+                @clear="() => (item as ListActionFilter).onEnter?.(undefined)"
+                @enter="
+                  (value: any) => (item as ListActionFilter).onEnter?.(value)
+                "
               />
             </template>
             <template v-else-if="item.action === ACTION_FILTER_SELECT">
@@ -163,7 +185,7 @@ defineOptions({ name: 'ClListLayout' });
       </cl-nav-actions>
       <!-- ./Nav Actions -->
 
-      <div v-if="$slots.tabs" class="tabs">
+      <div v-if="slots.tabs" class="tabs">
         <slot name="tabs" />
       </div>
 
@@ -177,6 +199,7 @@ defineOptions({ name: 'ClListLayout' });
         :total="tableTotal"
         :page="tablePagination.page"
         :page-size="tablePagination.size"
+        :page-sizes="tablePageSizes"
         selectable
         :selectable-function="selectableFunction"
         :visible-buttons="visibleButtons"
@@ -217,6 +240,9 @@ defineOptions({ name: 'ClListLayout' });
             @click="btn.onClick"
           />
         </template>
+        <template #empty>
+          <slot name="table-empty" />
+        </template>
       </cl-table>
       <!-- ./Table -->
     </div>
@@ -227,11 +253,28 @@ defineOptions({ name: 'ClListLayout' });
 
 <style scoped>
 .list-layout {
+  height: 100%;
+
+  &:not(.embedded):not(.no-actions) {
+    &:not(.has-tabs):deep(.table.sticky-header) {
+      height: calc(100% - 52px);
+    }
+
+    &.has-tabs:deep(.table.sticky-header) {
+      height: calc(100% - 52px - 40px);
+    }
+
+    &:deep(.table .table-footer) {
+      border-top: 1px solid var(--el-border-color);
+    }
+  }
+
   &:deep(.tag) {
     margin-right: 10px;
   }
 
   .nav-actions {
+    max-height: 52px;
     background-color: var(--cl-container-white-bg);
     border-bottom: none;
 
@@ -261,6 +304,7 @@ defineOptions({ name: 'ClListLayout' });
   }
 
   .content {
+    height: 100%;
     background-color: var(--cl-container-white-bg);
 
     &:deep(.actions .button-wrapper) {

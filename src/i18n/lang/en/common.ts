@@ -39,6 +39,7 @@ const common: LCommon = {
     export: 'Export',
     configure: 'Configure',
     update: 'Update',
+    upgrade: 'Upgrade',
     save: 'Save',
     change: 'Change',
     manage: 'Manage',
@@ -140,6 +141,7 @@ const common: LCommon = {
     unauthorized: 'Unauthorized',
     loading: 'Loading',
     upgradePro: 'Please upgrade to Crawlab Pro',
+    alreadyUpToDate: 'Already up-to-date',
   },
   mode: {
     default: 'Default',
