@@ -73,5 +73,6 @@ export declare global {
   interface DependencyStoreActions extends BaseStoreActions<DependencyRepo> {
     searchRepoList: StoreAction<DependencyStoreState>;
     getRepoVersions: StoreAction<DependencyStoreState>;
+    installDependency: StoreAction<DependencyStoreState>;
   }
 }

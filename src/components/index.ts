@@ -148,6 +148,7 @@ import NodeActive from './core/node/NodeActive.vue';
 import NodeForm from './core/node/NodeForm.vue';
 import NodeRunners from './core/node/NodeRunners.vue';
 import NodeStatus from './core/node/NodeStatus.vue';
+import NodeTag from './core/node/NodeTag.vue';
 import NodeType from './core/node/NodeType.vue';
 import NotificationAlertForm from './core/notification/alert/NotificationAlertForm.vue';
 import NotificationChannelForm from './core/notification/channel/NotificationChannelForm.vue';
@@ -368,6 +369,7 @@ export {
   NodeForm as ClNodeForm,
   NodeRunners as ClNodeRunners,
   NodeStatus as ClNodeStatus,
+  NodeTag as ClNodeTag,
   NodeType as ClNodeType,
   NotificationAlertForm as ClNotificationAlertForm,
   NotificationChannelForm as ClNotificationChannelForm,

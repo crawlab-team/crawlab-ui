@@ -4,10 +4,14 @@ import {
   getDefaultStoreGetters,
   getDefaultStoreMutations,
   getDefaultStoreState,
+  translate,
 } from '@/utils';
 import useRequest from '@/services/request';
+import { ElMessage } from 'element-plus';
 
-const { getList } = useRequest();
+const t = translate;
+
+const { getList, post } = useRequest();
 
 const endpoint = '/dependencies/repos';
 
@@ -180,12 +184,33 @@ const actions = {
     try {
       const res = await getList(`${endpoint}/versions`, {
         lang,
-        repo: installForm?.names?.[0],
+        repo: installForm?.name,
       });
       commit('setVersions', res.data || []);
       return res;
     } finally {
       commit('setGetVersionsLoading', false);
+    }
+  },
+  installDependency: async ({
+    state,
+    commit,
+    dispatch,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang, installForm } = state;
+    commit('setInstallLoading', true);
+    try {
+      await post(`${endpoint}/install`, {
+        ...installForm,
+        lang,
+      });
+      ElMessage.success(t('common.message.success.startInstall'));
+      await dispatch('getList');
+    } catch (e: any) {
+      ElMessage.error(e.message);
+      throw e;
+    } finally {
+      commit('setInstallLoading', false);
     }
   },
 } as DependencyStoreActions;

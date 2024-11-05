@@ -58,7 +58,7 @@ defineOptions({ name: 'ClNodeType' });
       :icon="icon"
       :clickable="clickable"
     >
-      <template #tooltip>
+      <template v-if="tooltip || $slots.tooltip" #tooltip>
         <slot name="tooltip" />
       </template>
     </cl-tag>

@@ -21,8 +21,7 @@ const versions = computed(() => state.versions);
 const getVersionsLoading = computed(() => state.getVersionsLoading);
 
 const onConfirm = async () => {
-  // store.dispatch('dependency/install');
-  store.commit(`${ns}/setInstallLoading`, true);
+  await store.dispatch(`${ns}/installDependency`);
   store.commit(`${ns}/hideDialog`);
 };
 

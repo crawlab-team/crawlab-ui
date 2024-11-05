@@ -34,6 +34,7 @@ export declare global {
     versions?: string[];
     latest_version?: string;
     type?: DependencyLang;
+    dependencies?: Dependency[];
   }
 
   type DependencyRepoTabName = 'installed' | 'search';
@@ -45,7 +46,7 @@ export declare global {
 
   interface DependencyInstallForm {
     mode?: 'all' | 'selected-nodes';
-    names?: string[];
+    name?: string;
     version?: string;
     node_ids?: string[];
     nodes?: CNode[];

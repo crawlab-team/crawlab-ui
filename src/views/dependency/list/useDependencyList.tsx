@@ -20,10 +20,10 @@ import {
   ClDependencyVersions,
   ClNavLink,
   ClNodeType,
+  ClNodeTag,
   useNode,
 } from '@/components';
 import { getRepoExternalPath } from '@/utils/dependency';
-import { compare, valid } from 'semver';
 
 const t = translate;
 
@@ -102,8 +102,8 @@ const useDependencyList = () => {
   const onClickInstall = async (row: DependencyRepo) => {
     store.commit(`${ns}/setInstallForm`, {
       ...state.installForm,
-      names: [row.name],
-    });
+      name: row.name,
+    } as DependencyInstallForm);
     store.commit(`${ns}/showDialog`, 'install');
   };
 
@@ -142,7 +142,7 @@ const useDependencyList = () => {
           row.node_ids?.map(id => {
             const node = allNodeDict.value.get(id);
             return node ? (
-              <ClNodeType isMaster={node.is_master} label={node.name}>
+              <ClNodeTag node={node}>
                 {{
                   tooltip: () => (
                     <>
@@ -161,8 +161,28 @@ const useDependencyList = () => {
                     </>
                   ),
                 }}
-              </ClNodeType>
+              </ClNodeTag>
             ) : (
+              // <ClNodeType isMaster={node.is_master} label={node.name}>
+              //   {{
+              //     tooltip: () => (
+              //       <>
+              //         <div>
+              //           <label>{t('components.node.form.name')}: </label>
+              //           <span>{node.name}</span>
+              //         </div>
+              //         <div>
+              //           <label>{t('components.node.form.type')}: </label>
+              //           <span>
+              //             {node.is_master
+              //               ? t('components.node.nodeType.label.master')
+              //               : t('components.node.nodeType.label.worker')}
+              //           </span>
+              //         </div>
+              //       </>
+              //     ),
+              //   }}
+              // </ClNodeType>
               ''
             );
           }),

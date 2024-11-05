@@ -20,6 +20,7 @@ interface TagProps {
   disabled?: boolean;
   className?: string;
   short?: boolean;
+  shortWidth?: string;
 }
 
 const props = defineProps<TagProps>();
@@ -159,7 +160,7 @@ defineOptions({ name: 'ClTag' });
   }
 
   &.short {
-    max-width: 150px;
+    max-width: 120px;
     overflow: hidden;
     justify-content: start;
     align-items: center;
