@@ -13,7 +13,6 @@ import task from '@/router/task';
 import schedule from '@/router/schedule';
 import user from '@/router/user';
 import token from '@/router/token';
-import deps from '@/router/deps';
 import notification from '@/router/notification';
 import git from '@/router/git';
 import database from '@/router/database';
@@ -42,7 +41,6 @@ export function getDefaultRoutes(): Array<ExtendedRouterRecord> {
         ...schedule,
         ...user,
         ...token,
-        ...deps,
         ...notification,
         ...git,
         ...database,
@@ -81,30 +79,6 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
       title: 'router.menuItems.databases',
       icon: ['fa', 'database'],
     },
-    { path: '/users', title: 'router.menuItems.users', icon: ['fa', 'users'] },
-    { path: '/tokens', title: 'router.menuItems.tokens', icon: ['fa', 'key'] },
-    {
-      path: '/deps',
-      title: 'router.menuItems.env.deps.title',
-      icon: ['fa', 'puzzle-piece'],
-      children: [
-        {
-          path: '/deps/settings',
-          title: 'router.menuItems.env.deps.settings',
-          icon: ['fa', 'cog'],
-        },
-        {
-          path: '/deps/python',
-          title: 'router.menuItems.env.deps.python',
-          icon: ['fab', 'python'],
-        },
-        {
-          path: '/deps/node',
-          title: 'router.menuItems.env.deps.node',
-          icon: ['fab', 'node'],
-        },
-      ],
-    },
     {
       path: '/dependencies',
       title: 'router.menuItems.dependencies',
@@ -137,11 +111,13 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
         },
       ],
     },
+    { path: '/users', title: 'router.menuItems.users', icon: ['fa', 'users'] },
     {
       path: '/environments',
       title: 'router.menuItems.environment',
       icon: ['fa', 'percent'],
     },
+    { path: '/tokens', title: 'router.menuItems.tokens', icon: ['fa', 'key'] },
     { path: '/system', title: 'router.menuItems.system', icon: ['fa', 'cogs'] },
   ];
 }
