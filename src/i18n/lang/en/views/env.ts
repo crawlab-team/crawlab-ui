@@ -17,6 +17,9 @@ const env: LViewsEnv = {
           lang: {
             label: 'Programming Language',
           },
+          nodes: {
+            label: 'Nodes',
+          },
         },
       },
     },

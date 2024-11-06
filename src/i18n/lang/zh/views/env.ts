@@ -17,6 +17,9 @@ const env: LViewsEnv = {
           lang: {
             label: '编程语言',
           },
+          nodes: {
+            label: '节点',
+          },
         },
       },
     },

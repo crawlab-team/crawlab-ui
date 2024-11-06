@@ -7,6 +7,9 @@ interface LViewsEnv {
           lang: {
             label: string;
           };
+          nodes: {
+            label: string;
+          };
         };
       };
     };

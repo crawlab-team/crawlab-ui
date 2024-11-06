@@ -79,6 +79,31 @@ const useDependencyList = () => {
           },
         },
         {
+          action: ACTION_FILTER_SELECT,
+          id: 'filter-nodes',
+          className: 'select-nodes',
+          placeholder: t(
+            'views.env.deps.navActionsExtra.filter.select.nodes.label'
+          ),
+          onChange: async value => {
+            await onListFilterChangeByKey(
+              store,
+              ns,
+              'node_id',
+              FILTER_OP_EQUAL,
+              { update: false }
+            )(value);
+          },
+          options: nodeState.allList
+            .filter(n => n.active)
+            .map(node => {
+              return {
+                label: node.name,
+                value: node._id,
+              };
+            }),
+        },
+        {
           className: 'search-btn',
           buttonType: 'label',
           label: t('common.actions.search'),
