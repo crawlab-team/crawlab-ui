@@ -63,6 +63,8 @@ defineOptions({ name: 'ClDependencyList' });
     <template #extra>
       <!-- Dialogs (handled by store) -->
       <cl-dependency-install-dialog />
+      <cl-dependency-uninstall-dialog />
+      <cl-dependency-logs-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>

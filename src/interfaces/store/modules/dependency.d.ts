@@ -20,6 +20,8 @@ export declare global {
     uninstallLoading: boolean;
     versions: string[];
     getVersionsLoading: boolean;
+    activeDependency?: Dependency;
+    activeDependencyLogs: DependencyLog[];
   }
 
   interface DependencyStoreGetters
@@ -68,11 +70,23 @@ export declare global {
       state: DependencyStoreState,
       loading: boolean
     ) => void;
+    setActiveDependency: (
+      state: DependencyStoreState,
+      dependency: Dependency
+    ) => void;
+    resetActiveDependency: (state: DependencyStoreState) => void;
+    setActiveDependencyLogs: (
+      state: DependencyStoreState,
+      logs: DependencyLog[]
+    ) => void;
+    resetActiveDependencyLogs: (state: DependencyStoreState) => void;
   }
 
   interface DependencyStoreActions extends BaseStoreActions<DependencyRepo> {
     searchRepoList: StoreAction<DependencyStoreState>;
     getRepoVersions: StoreAction<DependencyStoreState>;
     installDependency: StoreAction<DependencyStoreState>;
+    uninstallDependency: StoreAction<DependencyStoreState>;
+    getActiveDependencyLogs: StoreAction<DependencyStoreState>;
   }
 }

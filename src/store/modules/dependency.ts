@@ -13,7 +13,7 @@ const t = translate;
 
 const { getList, post } = useRequest();
 
-const endpoint = '/dependencies/repos';
+const endpoint = '/dependencies';
 
 const state = {
   ...getDefaultStoreState<DependencyRepo>('dependency' as StoreNamespace),
@@ -29,10 +29,14 @@ const state = {
     mode: 'all',
   },
   installLoading: false,
-  uninstallForm: {},
+  uninstallForm: {
+    mode: 'all',
+  },
   uninstallLoading: false,
   getVersionsLoading: false,
   versions: [],
+  activeDependency: undefined,
+  activeDependencyLogs: [],
 } as DependencyStoreState;
 
 const getters = {
@@ -100,7 +104,9 @@ const mutations = {
     state.uninstallForm = form;
   },
   resetUninstallForm: (state: DependencyStoreState): void => {
-    state.uninstallForm = {};
+    state.uninstallForm = {
+      mode: 'all',
+    };
   },
   setUninstallLoading: (
     state: DependencyStoreState,
@@ -120,6 +126,24 @@ const mutations = {
   ): void => {
     state.getVersionsLoading = loading;
   },
+  setActiveDependency: (
+    state: DependencyStoreState,
+    activeDependency: DependencyRepo
+  ): void => {
+    state.activeDependency = activeDependency;
+  },
+  resetActiveDependency: (state: DependencyStoreState): void => {
+    state.activeDependency = undefined;
+  },
+  setActiveDependencyLogs: (
+    state: DependencyStoreState,
+    activeDependencyLogs: DependencyLog[]
+  ): void => {
+    state.activeDependencyLogs = activeDependencyLogs;
+  },
+  resetActiveDependencyLogs: (state: DependencyStoreState): void => {
+    state.activeDependencyLogs = [];
+  },
 } as DependencyStoreMutations;
 
 const actions = {
@@ -132,7 +156,7 @@ const actions = {
     const { page, size } = tablePagination;
     try {
       commit('setTableLoading', true);
-      const res = await getList(`${endpoint}`, {
+      const res = await getList(`${endpoint}/repos`, {
         page,
         size,
         conditions: JSON.stringify(tableListFilter),
@@ -158,7 +182,7 @@ const actions = {
     const { page, size } = searchRepoTablePagination;
     try {
       commit('setSearchRepoTableLoading', true);
-      const res = await getList(`${endpoint}/search`, {
+      const res = await getList(`${endpoint}/repos/search`, {
         page,
         size,
         lang,
@@ -182,7 +206,7 @@ const actions = {
     const { lang, installForm } = state;
     commit('setGetVersionsLoading', true);
     try {
-      const res = await getList(`${endpoint}/versions`, {
+      const res = await getList(`${endpoint}/repos/versions`, {
         lang,
         repo: installForm?.name,
       });
@@ -200,7 +224,7 @@ const actions = {
     const { lang, installForm } = state;
     commit('setInstallLoading', true);
     try {
-      await post(`${endpoint}/install`, {
+      await post(`${endpoint}/repos/install`, {
         ...installForm,
         lang,
       });
@@ -211,6 +235,44 @@ const actions = {
       throw e;
     } finally {
       commit('setInstallLoading', false);
+    }
+  },
+  uninstallDependency: async ({
+    state,
+    commit,
+    dispatch,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang, uninstallForm } = state;
+    commit('setUninstallLoading', true);
+    try {
+      await post(`${endpoint}/repos/uninstall`, {
+        ...uninstallForm,
+        lang,
+      });
+      ElMessage.success(t('common.message.success.startUninstall'));
+      await dispatch('getList');
+    } catch (e: any) {
+      ElMessage.error(e.message);
+      throw e;
+    } finally {
+      commit('setUninstallLoading', false);
+    }
+  },
+  getActiveDependencyLogs: async ({
+    state,
+    commit,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang, activeDependency } = state;
+    if (!activeDependency) return;
+    try {
+      const res = await getList(`${endpoint}/${activeDependency._id}/logs`, {
+        lang,
+        repo: activeDependency?.name,
+      });
+      commit('setActiveDependencyLogs', res.data || []);
+      return res;
+    } catch (e) {
+      throw e;
     }
   },
 } as DependencyStoreActions;

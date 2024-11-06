@@ -2,7 +2,6 @@ const node: LComponentsNode = {
   form: {
     key: 'Unique Identity Key',
     name: 'Name',
-    tags: 'Tags',
     type: 'Type',
     ip: 'IP',
     mac: 'MAC Address',
@@ -10,6 +9,7 @@ const node: LComponentsNode = {
     enabled: 'Enabled',
     max_runners: 'Max Runners',
     description: 'Description',
+    status: 'Status',
   },
   nodeType: {
     label: {

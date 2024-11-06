@@ -19,6 +19,14 @@ export declare global {
     dep_names?: string[];
   }
 
+  type DependencyStatus =
+    | 'installing'
+    | 'installed'
+    | 'uninstalling'
+    | 'uninstalled'
+    | 'error'
+    | 'abnormal';
+
   interface Dependency extends BaseModel {
     node_id?: string;
     type?: string;
@@ -26,6 +34,8 @@ export declare global {
     version?: string;
     latest_version?: string;
     description?: string;
+    status?: DependencyStatus;
+    error?: string;
   }
 
   interface DependencyRepo {
@@ -40,7 +50,7 @@ export declare global {
   type DependencyRepoTabName = 'installed' | 'search';
 
   interface DependencyLog extends BaseModel {
-    task_id?: string;
+    dependency_id?: string;
     content?: string;
   }
 

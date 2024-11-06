@@ -2,7 +2,6 @@ const node: LComponentsNode = {
   form: {
     key: '唯一标识',
     name: '名称',
-    tags: '标签',
     type: '类别',
     ip: 'IP',
     mac: 'MAC 地址',
@@ -10,6 +9,7 @@ const node: LComponentsNode = {
     enabled: '是否启用',
     max_runners: '最大执行器数',
     description: '描述',
+    status: '状态',
   },
   nodeType: {
     label: {

@@ -5,10 +5,10 @@ import { getMd5 } from '@/utils/hash';
 import { ACTION_FILTER_SEARCH, ACTION_FILTER_SELECT } from '@/constants/action';
 
 const slots = defineSlots<{
-  tabs?: void;
-  'nav-actions-extra'?: void;
-  'table-empty'?: void;
-  extra?: void;
+  tabs?: any;
+  'nav-actions-extra'?: any;
+  'table-empty'?: any;
+  extra?: any;
 }>();
 
 const props = withDefaults(

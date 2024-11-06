@@ -2,18 +2,13 @@
 import { computed } from 'vue';
 import { translate } from '@/utils';
 
-const props = withDefaults(
-  defineProps<{
-    isMaster?: boolean;
-    label?: string;
-    tooltip?: string;
-    showFullLabel?: boolean;
-    clickable?: boolean;
-  }>(),
-  {
-    clickable: true,
-  }
-);
+const props = defineProps<{
+  isMaster?: boolean;
+  label?: string;
+  tooltip?: string;
+  showFullLabel?: boolean;
+  clickable?: boolean;
+}>();
 
 const t = translate;
 
@@ -34,7 +29,7 @@ const computedLabel = computed<string>(() => {
 
 const icon = computed<string[]>(() => {
   const { isMaster } = props;
-  return isMaster ? ['fa', 'home'] : ['fa', 'server'];
+  return isMaster ? ['fa', 'server'] : ['fa', 'tools'];
 });
 
 const className = computed(() => {

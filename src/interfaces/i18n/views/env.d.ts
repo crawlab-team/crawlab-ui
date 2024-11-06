@@ -54,6 +54,18 @@ interface LViewsEnv {
         upgrade: string;
         mode: string;
         version: string;
+        toInstallNodes: string;
+        toUninstallNodes: string;
+        status: string;
+        error: string;
+      };
+      status: {
+        installing: string;
+        installed: string;
+        uninstalled: string;
+        uninstalling: string;
+        error: string;
+        abnormal: string;
       };
     };
     task: {

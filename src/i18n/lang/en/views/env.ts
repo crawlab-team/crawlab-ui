@@ -64,6 +64,18 @@ const env: LViewsEnv = {
         upgrade: 'Upgrade',
         mode: 'Mode',
         version: 'Version',
+        toInstallNodes: 'Nodes to install',
+        toUninstallNodes: 'Nodes to uninstall',
+        status: 'Status',
+        error: 'Error',
+      },
+      status: {
+        installing: 'Installing',
+        installed: 'Installed',
+        uninstalling: 'Uninstalling',
+        uninstalled: 'Uninstalled',
+        error: 'Error',
+        abnormal: 'Abnormal',
       },
     },
     task: {

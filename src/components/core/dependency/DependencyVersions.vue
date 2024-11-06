@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { compare, valid } from 'semver';
+import { compare, valid, coerce } from 'semver';
 import { getIconByAction, translate } from '@/utils';
 import { ACTION_INSTALL, ACTION_UPGRADE } from '@/constants';
+import { computed } from 'vue';
 
 const t = translate;
 
@@ -16,15 +17,17 @@ const emit = defineEmits<{
 // Helper to safely compare versions
 const isOutdated = (version: string) => {
   const { repo } = props;
+
   // Validate both versions first
-  const validCurrent = valid(version);
-  const validLatest = repo.latest_version && valid(repo.latest_version);
+  const validCurrent = valid(coerce(version));
+  const validLatest = repo.latest_version && valid(coerce(repo.latest_version));
+  console.debug(validCurrent, validLatest, repo.latest_version);
 
   if (!validCurrent || !validLatest) return false;
-  return compare(version, repo.latest_version!) < 0;
+  return compare(validCurrent, validLatest) < 0;
 };
 
-const isUninstalled = (version: string) => version === 'N/A';
+const isUninstalled = (version: string) => !version || version === 'N/A';
 
 const onClick = (version: string) => {
   if (!isOutdated(version) && !isUninstalled(version)) {
@@ -47,7 +50,7 @@ const getTagProps = (version: string) => {
   if (isOutdated(version)) {
     return {
       icon: getIconByAction(ACTION_UPGRADE),
-      type: 'danger',
+      type: 'warning',
       label: `${version} → ${repo.latest_version}`,
       tooltip: `${t('common.actions.upgrade')} ${repo.name} (${version} → ${repo.latest_version})`,
       clickable: true,
@@ -62,14 +65,25 @@ const getTagProps = (version: string) => {
   };
 };
 
+const versions = computed(() => {
+  const { repo } = props;
+  const versions = new Set<string>();
+  repo.dependencies?.forEach(dep => {
+    if (!dep.version) return;
+    console.debug(dep.version);
+    versions.add(dep.version);
+  });
+  return versions;
+});
+
 defineOptions({ name: 'ClDependencyVersions' });
 </script>
 
 <template>
   <div class="dependency-versions">
     <cl-tag
-      v-for="version in repo.versions"
-      :key="version"
+      v-for="(version, $index) in versions"
+      :key="$index"
       :icon="getTagProps(version).icon"
       :type="getTagProps(version).type"
       :label="getTagProps(version).label"

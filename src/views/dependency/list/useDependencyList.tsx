@@ -4,6 +4,7 @@ import { useList } from '@/layouts/content';
 import {
   getDefaultPagination,
   onListFilterChangeByKey,
+  setupAutoUpdate,
   setupListComponent,
   translate,
 } from '@/utils';
@@ -24,6 +25,7 @@ import {
   useNode,
 } from '@/components';
 import { getRepoExternalPath } from '@/utils/dependency';
+import { ElRow } from 'element-plus';
 
 const t = translate;
 
@@ -107,6 +109,29 @@ const useDependencyList = () => {
     store.commit(`${ns}/showDialog`, 'install');
   };
 
+  const onClickUninstall = async (row: DependencyRepo) => {
+    store.commit(`${ns}/setUninstallForm`, {
+      ...state.uninstallForm,
+      names: [row.name],
+    } as DependencyUninstallForm);
+    store.commit(`${ns}/showDialog`, 'uninstall');
+  };
+
+  const isLoading = (dep: Dependency) => {
+    return dep.status === 'installing' || dep.status === 'uninstalling';
+  };
+
+  const getTypeByDep = (dep: Dependency): BasicType | undefined => {
+    switch (dep.status) {
+      case 'installing':
+      case 'uninstalling':
+        return 'warning';
+      case 'error':
+      case 'abnormal':
+        return 'danger';
+    }
+  };
+
   // table columns
   const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
     return [
@@ -139,50 +164,88 @@ const useDependencyList = () => {
         icon: ['fa', 'server'],
         width: '580',
         value: (row: DependencyRepo) =>
-          row.node_ids?.map(id => {
-            const node = allNodeDict.value.get(id);
+          row.dependencies?.map(dep => {
+            const node = allNodeDict.value.get(dep.node_id!);
             return node ? (
-              <ClNodeTag node={node}>
+              <ClNodeTag
+                node={node}
+                loading={isLoading(dep)}
+                effect={isLoading(dep) ? 'dark' : 'light'}
+                type={getTypeByDep(dep)}
+                clickable
+                onClick={() => {
+                  store.commit(`${ns}/setActiveDependency`, dep);
+                  store.commit(`${ns}/showDialog`, 'logs');
+                }}
+              >
                 {{
-                  tooltip: () => (
-                    <>
-                      <div>
-                        <label>{t('components.node.form.name')}: </label>
-                        <span>{node.name}</span>
-                      </div>
-                      <div>
-                        <label>{t('components.node.form.type')}: </label>
-                        <span>
-                          {node.is_master
-                            ? t('components.node.nodeType.label.master')
-                            : t('components.node.nodeType.label.worker')}
-                        </span>
-                      </div>
-                    </>
-                  ),
+                  'extra-items': () => {
+                    let color: string;
+                    switch (dep.status) {
+                      case 'installing':
+                      case 'uninstalling':
+                        color = 'var(--cl-warning-color)';
+                        break;
+                      case 'installed':
+                      case 'uninstalled':
+                        color = 'var(--cl-success-color)';
+                        break;
+                      case 'error':
+                      case 'abnormal':
+                        color = 'var(--cl-danger-color)';
+                        break;
+                      default:
+                        color = 'inherit';
+                    }
+                    return (
+                      <>
+                        <div class="tooltip-title">
+                          <label>
+                            {t('layouts.routes.dependencies.title')}
+                          </label>
+                        </div>
+                        <div class="tooltip-item">
+                          <label>
+                            {t('views.env.deps.dependency.form.status')}:
+                          </label>
+                          <span
+                            style={{
+                              color,
+                            }}
+                          >
+                            {t(
+                              `views.env.deps.dependency.status.${dep.status}`
+                            )}
+                          </span>
+                        </div>
+                        {dep.error && (
+                          <div class="tooltip-item">
+                            <label>
+                              {t('views.env.deps.dependency.form.error')}:
+                            </label>
+                            <span
+                              style={{
+                                color,
+                              }}
+                            >
+                              {dep.error}
+                            </span>
+                          </div>
+                        )}
+                        {dep.version && (
+                          <div class="tooltip-item">
+                            <label>
+                              {t('views.env.deps.dependency.form.version')}:
+                            </label>
+                            <span>{dep.version}</span>
+                          </div>
+                        )}
+                      </>
+                    );
+                  },
                 }}
               </ClNodeTag>
             ) : (
-              // <ClNodeType isMaster={node.is_master} label={node.name}>
-              //   {{
-              //     tooltip: () => (
-              //       <>
-              //         <div>
-              //           <label>{t('components.node.form.name')}: </label>
-              //           <span>{node.name}</span>
-              //         </div>
-              //         <div>
-              //           <label>{t('components.node.form.type')}: </label>
-              //           <span>
-              //             {node.is_master
-              //               ? t('components.node.nodeType.label.master')
-              //               : t('components.node.nodeType.label.worker')}
-              //           </span>
-              //         </div>
-              //       </>
-              //     ),
-              //   }}
-              // </ClNodeType>
               ''
             );
           }),
@@ -200,12 +263,15 @@ const useDependencyList = () => {
           },
           {
             tooltip: t('common.actions.uninstall'),
-            // disabled: row => !isUninstallable(row),
-            // onClick: async row => {
-            //   uninstallForm.value.node_ids = row.node_ids || [];
-            //   uninstallForm.value.names = [row.name];
-            //   dialogVisible.value.uninstall = true;
-            // },
+            disabled: (row: DependencyRepo) => {
+              return (
+                !row.node_ids?.length ||
+                !row.dependencies?.some(dep => {
+                  return dep.status === 'installed';
+                })
+              );
+            },
+            onClick: onClickUninstall,
             action: ACTION_UNINSTALL,
           },
         ],
@@ -232,6 +298,7 @@ const useDependencyList = () => {
         ...d,
         node_ids: installedItem?.node_ids || [],
         versions: installedItem?.versions || ['N/A'],
+        dependencies: installedItem?.dependencies || [],
         latest_version: d.latest_version || '',
       } as DependencyRepo;
     })
@@ -249,8 +316,8 @@ const useDependencyList = () => {
   // table data
   const tableLoading = computed(() => {
     switch (state.repoTabName) {
-      case 'installed':
-        return state.tableLoading;
+      // case 'installed':
+      //   return state.tableLoading;
       case 'search':
         return state.searchRepoTableLoading;
       default:
@@ -386,14 +453,7 @@ const useDependencyList = () => {
   };
 
   // row key
-  const allNodes = computed(() => nodeState.allList);
-  const rowKey = ({ name, versions, node_ids }: DependencyRepo) =>
-    [
-      name,
-      JSON.stringify(versions),
-      JSON.stringify(node_ids),
-      JSON.stringify(allNodes.value?.map(n => n._id)),
-    ].join('_');
+  const rowKey = (repo: DependencyRepo) => JSON.stringify(repo);
 
   // options
   const opts = {
@@ -402,6 +462,8 @@ const useDependencyList = () => {
   } as UseListOptions<Task>;
 
   setupListComponent(ns, store, ['node'], false);
+
+  setupAutoUpdate(() => store.dispatch(`${ns}/getList`), 10000);
 
   return {
     ...useList<Dependency>(ns, store, opts),

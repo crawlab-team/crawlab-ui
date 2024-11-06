@@ -23,12 +23,11 @@ import {
 import useList from '@/layouts/content/list/useList';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import { translate } from '@/utils/i18n';
-import { getStatusOptions, isCancellable, priorityOptions } from '@/utils/task';
+import { getStatusOptions, priorityOptions } from '@/utils/task';
 import useRequest from '@/services/request';
 import NavLink from '@/components/ui/nav/NavLink.vue';
 import Time from '@/components/ui/time/Time.vue';
 import Duration from '@/components/ui/time/Duration.vue';
-import NodeType from '@/components/core/node/NodeType.vue';
 import TaskStatusComp from '@/components/core/task/TaskStatus.vue';
 import TaskPriority from '@/components/core/task/TaskPriority.vue';
 import TaskResults from '@/components/core/task/TaskResults.vue';
@@ -37,6 +36,7 @@ import useSchedule from '@/components/core/schedule/useSchedule';
 import useNode from '@/components/core/node/useNode';
 import useSpider from '@/components/core/spider/useSpider';
 import { getIconByAction } from '@/utils/route';
+import { ClNodeTag } from '@/components';
 
 const { post } = useRequest();
 
@@ -235,9 +235,9 @@ const useTaskList = () => {
             const node = allNodeDict.value.get(row.node_id);
             if (!node) return;
             return (
-              <NodeType
-                isMaster={node?.is_master}
-                label={node?.name}
+              <ClNodeTag
+                node={node}
+                clickable
                 onClick={async () => {
                   await router.push(`/nodes/${node?._id}`);
                 }}

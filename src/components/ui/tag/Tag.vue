@@ -32,6 +32,11 @@ const emit = defineEmits<{
   (e: 'mouseleave'): void;
 }>();
 
+const slots = defineSlots<{
+  default: any;
+  tooltip: any;
+}>();
+
 const tagRef = ref<typeof ElTag>();
 
 const onClick = (ev?: Event) => {
@@ -115,16 +120,21 @@ defineOptions({ name: 'ClTag' });
       @mouseenter="$emit('mouseenter')"
       @mouseleave="$emit('mouseleave')"
     >
-      <span class="prefix-icon">
-        <cl-icon v-if="icon" :icon="icon" :spinning="spinning" />
-      </span>
-      <span class="label">{{ label }}</span>
-      <span class="suffix-icon">
-        <cl-icon v-if="suffixIcon" :icon="suffixIcon" />
-      </span>
+      <template v-if="slots.default">
+        <slot name="default" />
+      </template>
+      <template v-else>
+        <span class="prefix-icon">
+          <cl-icon v-if="icon" :icon="icon" :spinning="spinning" />
+        </span>
+        <span class="label">{{ label }}</span>
+        <span class="suffix-icon">
+          <cl-icon v-if="suffixIcon" :icon="suffixIcon" />
+        </span>
+      </template>
     </el-tag>
-    <template #content>
-      <slot name="tooltip"></slot>
+    <template v-if="slots.tooltip" #content>
+      <slot name="tooltip" />
     </template>
   </el-tooltip>
 </template>
