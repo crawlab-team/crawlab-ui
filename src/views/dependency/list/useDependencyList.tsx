@@ -191,11 +191,12 @@ const useDependencyList = () => {
         value: (row: DependencyRepo) =>
           row.dependencies?.map(dep => {
             const node = allNodeDict.value.get(dep.node_id!);
-            return node ? (
+            if (!node?.active) return;
+            return (
               <ClNodeTag
                 node={node}
                 loading={isLoading(dep)}
-                effect={isLoading(dep) ? 'dark' : 'light'}
+                hit={isLoading(dep)}
                 type={getTypeByDep(dep)}
                 clickable
                 onClick={() => {
@@ -270,8 +271,6 @@ const useDependencyList = () => {
                   },
                 }}
               </ClNodeTag>
-            ) : (
-              ''
             );
           }),
       },

@@ -2,7 +2,6 @@
 import { computed } from 'vue';
 import { NODE_STATUS_OFFLINE, NODE_STATUS_ONLINE } from '@/constants';
 import { translate } from '@/utils';
-import { ElTag } from 'element-plus';
 
 const t = translate;
 
@@ -14,6 +13,7 @@ const props = defineProps<{
   clickable?: boolean;
   loading?: boolean;
   effect?: BasicEffect;
+  hit?: boolean;
   iconOnly?: boolean;
 }>();
 
@@ -75,8 +75,9 @@ defineOptions({ name: 'ClNodeTag' });
     :tooltip="tooltip"
     :clickable="clickable"
     :effect="effect"
+    :hit="hit"
+    max-width="150px"
     short
-    short-width="100px"
     @click="emit('click')"
     @mouseenter="emit('mouseenter')"
     @mouseleave="emit('mouseleave')"

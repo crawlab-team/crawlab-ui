@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, CSSProperties, onMounted, ref, watch } from 'vue';
 import { ElTag } from 'element-plus';
 
 interface TagProps {
@@ -14,13 +14,13 @@ interface TagProps {
   size?: BasicSize;
   spinning?: boolean;
   width?: string;
+  maxWidth?: string;
   effect?: BasicEffect;
   clickable?: boolean;
   closable?: boolean;
   disabled?: boolean;
   className?: string;
   short?: boolean;
-  shortWidth?: string;
 }
 
 const props = defineProps<TagProps>();
@@ -94,27 +94,38 @@ const setStyle = () => {
   elTagClose.setAttribute('style', styleTagClose);
 };
 
-watch(() => props.color, setStyle);
-watch(() => props.backgroundColor, setStyle);
-watch(() => props.borderColor, setStyle);
-
-onMounted(() => {
-  setStyle();
+const style = computed<CSSProperties>(() => {
+  const { color, borderColor, width, maxWidth } = props;
+  return {
+    color,
+    borderColor,
+    width,
+    maxWidth,
+  };
 });
+
+// watch(() => props.color, setStyle);
+// watch(() => props.backgroundColor, setStyle);
+// watch(() => props.borderColor, setStyle);
+// onMounted(() => {
+//   setStyle();
+// });
+
 defineOptions({ name: 'ClTag' });
 </script>
 
 <template>
-  <el-tooltip :content="tooltip" :disabled="!tooltip && !$slots.tooltip">
+  <el-tooltip :content="tooltip" :disabled="!tooltip && !slots.tooltip">
     <el-tag
       ref="tagRef"
-      :closable="closable"
+      class="tag"
       :class="cls"
       :size="size"
       :type="type"
+      :closable="closable"
       :color="backgroundColor"
       :effect="effect"
-      class="tag"
+      :style="style"
       @click="onClick($event)"
       @close="onClose($event)"
       @mouseenter="$emit('mouseenter')"
@@ -170,7 +181,7 @@ defineOptions({ name: 'ClTag' });
   }
 
   &.short {
-    max-width: 120px;
+    max-width: 150px;
     overflow: hidden;
     justify-content: start;
     align-items: center;

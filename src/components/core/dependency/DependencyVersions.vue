@@ -70,7 +70,6 @@ const versions = computed(() => {
   const versions = new Set<string>();
   repo.dependencies?.forEach(dep => {
     if (!dep.version) return;
-    console.debug(dep.version);
     versions.add(dep.version);
   });
   return versions;
