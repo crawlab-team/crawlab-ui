@@ -138,9 +138,9 @@ defineOptions({ name: 'ClTag' });
         <span class="prefix-icon">
           <cl-icon v-if="icon" :icon="icon" :spinning="spinning" />
         </span>
-        <span class="label">{{ label }}</span>
-        <span class="suffix-icon">
-          <cl-icon v-if="suffixIcon" :icon="suffixIcon" />
+        <span v-if="label" class="label">{{ label }}</span>
+        <span v-if="suffixIcon" class="suffix-icon">
+          <cl-icon :icon="suffixIcon" />
         </span>
       </template>
     </el-tag>

@@ -49,5 +49,3 @@ defineOptions({ name: 'ClTaskDetailActionGroupNav' });
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
-
-<style scoped lang="scss"></style>

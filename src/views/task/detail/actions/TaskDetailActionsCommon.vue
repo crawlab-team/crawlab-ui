@@ -123,6 +123,8 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
         :status="form?.status"
         size="large"
       />
+    </cl-nav-action-item>
+    <cl-nav-action-item>
       <cl-duration
         :duration="totalDuration"
         is-tag
@@ -132,13 +134,3 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
-
-<style scoped>
-.task-detail-actions-common:deep(.tag),
-.task-detail-actions-common:deep(.el-button),
-.task-detail-actions-common:deep(.task-results),
-.task-detail-actions-common:deep(.task-status),
-.task-detail-actions-common:deep(.duration) {
-  margin-right: 10px;
-}
-</style>
