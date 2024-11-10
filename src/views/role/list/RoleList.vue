@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import useUserList from './useUserList';
-
-defineProps<{
-  noActions: boolean;
-  embedded: boolean;
-}>();
+import { useRoleList } from '@/views';
 
 const {
   navActions,
@@ -14,27 +9,25 @@ const {
   tablePagination,
   actionFunctions,
   selectableFunction,
-} = useUserList();
+} = useRoleList();
 
-defineOptions({ name: 'ClUserList' });
+defineOptions({ name: 'ClRoleList' });
 </script>
 
 <template>
   <cl-list-layout
-    class="user-list"
+    class="role-list"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
-    :no-actions="noActions"
-    :embedded="embedded"
     :selectable-function="selectableFunction"
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
-      <cl-create-edit-user-dialog />
+      <cl-create-edit-role-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>

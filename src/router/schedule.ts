@@ -16,13 +16,14 @@ export default [
   {
     name: 'ScheduleList',
     path: endpoint,
-    title: t('layouts.routes.schedules.title'),
+    title: t('layouts.routes.schedules.list.title'),
     icon: ['fa', 'clock'],
     component: async () => ClScheduleList,
   },
   {
     name: 'ScheduleDetail',
     path: `${endpoint}/:id`,
+    title: t('layouts.routes.schedules.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
@@ -30,13 +31,13 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.schedules.tabs.overview'),
+        title: t('layouts.routes.schedules.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClScheduleDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
-        title: t('layouts.routes.schedules.tabs.tasks'),
+        title: t('layouts.routes.schedules.detail.tabs.tasks'),
         icon: getIconByTabName(TAB_NAME_TASKS),
         component: async () => ClScheduleDetailTabTasks,
       },

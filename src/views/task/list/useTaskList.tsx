@@ -35,8 +35,8 @@ import TaskCommand from '@/components/core/task/TaskCommand.vue';
 import useSchedule from '@/components/core/schedule/useSchedule';
 import useNode from '@/components/core/node/useNode';
 import useSpider from '@/components/core/spider/useSpider';
-import { getIconByAction } from '@/utils/route';
 import { ClNodeTag } from '@/components';
+import { getIconByAction } from '@/utils/icon';
 
 const { post } = useRequest();
 

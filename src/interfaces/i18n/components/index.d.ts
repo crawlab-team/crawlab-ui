@@ -28,7 +28,7 @@ export declare global {
     schedule: LComponentsSchedule;
     task: LComponentsTask;
     user: LComponentsUser;
+    role: LComponentsRole;
     tag: LComponentsTag;
-    plugin: LComponentsPlugin;
   }
 }

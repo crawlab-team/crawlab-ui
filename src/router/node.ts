@@ -21,13 +21,14 @@ export default [
   {
     name: 'NodeList',
     path: endpoint,
-    title: t('layouts.routes.nodes.title'),
+    title: t('layouts.routes.nodes.list.title'),
     icon: ['fa', 'server'],
     component: async () => ClNodeList,
   },
   {
     name: 'NodeDetail',
     path: `${endpoint}/:id`,
+    title: t('layouts.routes.nodes.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
@@ -35,19 +36,19 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.nodes.tabs.overview'),
+        title: t('layouts.routes.nodes.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClNodeDetailTabOverview,
       },
       {
         path: TAB_NAME_TASKS,
-        title: t('layouts.routes.nodes.tabs.tasks'),
+        title: t('layouts.routes.nodes.detail.tabs.tasks'),
         icon: getIconByTabName(TAB_NAME_TASKS),
         component: async () => ClNodeDetailTabTasks,
       },
       {
         path: TAB_NAME_MONITORING,
-        title: t('layouts.routes.nodes.tabs.monitoring'),
+        title: t('layouts.routes.nodes.detail.tabs.monitoring'),
         icon: getIconByTabName(TAB_NAME_MONITORING),
         component: async () => ClNodeDetailTabMonitoring,
       },

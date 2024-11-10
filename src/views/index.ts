@@ -60,6 +60,9 @@ import ProjectDetailTabOverview from './project/detail/tabs/ProjectDetailTabOver
 import ProjectDetailTabSpiders from './project/detail/tabs/ProjectDetailTabSpiders.vue';
 import ProjectList from './project/list/ProjectList.vue';
 import ResultList from './data/list/ResultList.vue';
+import RoleDetail from './role/detail/RoleDetail.vue';
+import RoleDetailTabOverview from './role/detail/tabs/RoleDetailTabOverview.vue';
+import RoleList from './role/list/RoleList.vue';
 import ScheduleDetail from './schedule/detail/ScheduleDetail.vue';
 import ScheduleDetailTabOverview from './schedule/detail/tabs/ScheduleDetailTabOverview.vue';
 import ScheduleDetailTabTasks from './schedule/detail/tabs/ScheduleDetailTabTasks.vue';
@@ -106,6 +109,8 @@ import useProjectList from './project/list/useProjectList';
 import UserDetail from './user/detail/UserDetail.vue';
 import UserDetailTabOverview from './user/detail/tabs/UserDetailTabOverview.vue';
 import UserList from './user/list/UserList.vue';
+import useRoleDetail from './role/detail/useRoleDetail';
+import useRoleList from './role/list/useRoleList';
 import useScheduleDetail from './schedule/detail/useScheduleDetail';
 import useScheduleList from './schedule/list/useScheduleList';
 import useSpiderDetail from './spider/detail/useSpiderDetail';
@@ -179,6 +184,9 @@ export {
   ProjectDetailTabSpiders as ClProjectDetailTabSpiders,
   ProjectList as ClProjectList,
   ResultList as ClResultList,
+  RoleDetail as ClRoleDetail,
+  RoleDetailTabOverview as ClRoleDetailTabOverview,
+  RoleList as ClRoleList,
   ScheduleDetail as ClScheduleDetail,
   ScheduleDetailTabOverview as ClScheduleDetailTabOverview,
   ScheduleDetailTabTasks as ClScheduleDetailTabTasks,
@@ -225,6 +233,8 @@ export {
   UserDetail as ClUserDetail,
   UserDetailTabOverview as ClUserDetailTabOverview,
   UserList as ClUserList,
+  useRoleDetail as useRoleDetail,
+  useRoleList as useRoleList,
   useScheduleDetail as useScheduleDetail,
   useScheduleList as useScheduleList,
   useSpiderDetail as useSpiderDetail,

@@ -10,7 +10,13 @@ export declare global {
       git: string;
       databases: string;
       users: string;
-      tags: string;
+      usersManagement: {
+        title: string;
+        children: {
+          users: string;
+          roles: string;
+        };
+      };
       tokens: string;
       dependencies: string;
       env: {

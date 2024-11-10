@@ -23,8 +23,8 @@ import schedule from './schedule';
 import task from './task';
 import database from './database';
 import user from './user';
+import role from './role';
 import tag from './tag';
-import plugin from './plugin';
 import environment from './environment';
 
 const components: LComponents = {
@@ -53,8 +53,8 @@ const components: LComponents = {
   task,
   database,
   user,
+  role,
   tag,
-  plugin,
   environment,
 };
 

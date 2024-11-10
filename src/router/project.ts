@@ -16,13 +16,14 @@ export default [
   {
     name: 'ProjectList',
     path: endpoint,
-    title: t('layouts.routes.projects.title'),
+    title: t('layouts.routes.projects.list.title'),
     icon: ['fa', 'project-diagram'],
     component: async () => ClProjectList,
   },
   {
     name: 'ProjectDetail',
     path: `${endpoint}/:id`,
+    title: t('layouts.routes.projects.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/overview' };
     },
@@ -30,13 +31,13 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.projects.tabs.overview'),
+        title: t('layouts.routes.projects.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClProjectDetailTabOverview,
       },
       {
         path: TAB_NAME_SPIDERS,
-        title: t('layouts.routes.projects.tabs.spiders'),
+        title: t('layouts.routes.projects.detail.tabs.spiders'),
         icon: getIconByTabName(TAB_NAME_SPIDERS),
         component: async () => ClProjectDetailTabSpiders,
       },

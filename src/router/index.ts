@@ -12,6 +12,7 @@ import spider from '@/router/spider';
 import task from '@/router/task';
 import schedule from '@/router/schedule';
 import user from '@/router/user';
+import role from '@/router/role';
 import token from '@/router/token';
 import notification from '@/router/notification';
 import git from '@/router/git';
@@ -40,6 +41,7 @@ export function getDefaultRoutes(): Array<ExtendedRouterRecord> {
         ...task,
         ...schedule,
         ...user,
+        ...role,
         ...token,
         ...notification,
         ...git,
@@ -112,6 +114,24 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
       ],
     },
     { path: '/users', title: 'router.menuItems.users', icon: ['fa', 'users'] },
+    {
+      path: '/users',
+      title: 'router.menuItems.usersManagement.title',
+      icon: ['fa', 'users'],
+      children: [
+        {
+          path: '/users',
+          title: 'router.menuItems.usersManagement.children.users',
+          icon: ['fa', 'user'],
+        },
+        {
+          path: '/roles',
+          title: 'router.menuItems.usersManagement.children.roles',
+          icon: ['fa', 'user-tag'],
+        },
+      ],
+    },
+    { path: '/auth', title: 'router.menuItems.users', icon: ['fa', 'users'] },
     {
       path: '/environments',
       title: 'router.menuItems.environment',

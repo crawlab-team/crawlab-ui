@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { useUser } from '@/components';
+import { useRole } from '@/components';
 
 // store
 const store = useStore();
@@ -10,11 +10,10 @@ const {
   confirmDisabled,
   confirmLoading,
   createEditDialogVisible,
-  formRules,
   activeDialogKey,
-} = useUser(store);
+} = useRole(store);
 
-defineOptions({ name: 'ClCreateEditUserDialog' });
+defineOptions({ name: 'ClCreateEditRoleDialog' });
 </script>
 
 <template>
@@ -22,12 +21,11 @@ defineOptions({ name: 'ClCreateEditUserDialog' });
     :action-functions="actionFunctions"
     :confirm-disabled="confirmDisabled"
     :confirm-loading="confirmLoading"
-    :form-rules="formRules"
     :type="activeDialogKey"
     :visible="createEditDialogVisible"
   >
     <template #default>
-      <cl-user-form />
+      <cl-role-form />
     </template>
   </cl-create-edit-dialog>
 </template>

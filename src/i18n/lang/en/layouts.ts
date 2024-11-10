@@ -23,131 +23,199 @@ const layouts: LLayouts = {
   routes: {
     home: 'Home',
     nodes: {
-      title: 'Nodes',
-      tabs: {
-        overview: 'Overview',
-        tasks: 'Tasks',
-        monitoring: 'Monitoring',
+      list: {
+        title: 'Nodes',
+      },
+      detail: {
+        title: 'Node',
+        tabs: {
+          overview: 'Overview',
+          tasks: 'Tasks',
+          monitoring: 'Monitoring',
+        },
       },
     },
     projects: {
-      title: 'Projects',
-      tabs: {
-        overview: 'Overview',
-        spiders: 'Spiders',
+      list: {
+        title: 'Projects',
+      },
+      detail: {
+        title: 'Project',
+        tabs: {
+          overview: 'Overview',
+          spiders: 'Spiders',
+        },
       },
     },
     spiders: {
-      title: 'Spiders',
-      tabs: {
-        overview: 'Overview',
-        files: 'Files',
-        tasks: 'Tasks',
-        schedules: 'Schedules',
-        data: 'Data',
-        settings: 'Settings',
-        dependencies: 'Dependencies',
+      list: {
+        title: 'Spiders',
+      },
+      detail: {
+        title: 'Spider',
+        tabs: {
+          overview: 'Overview',
+          files: 'Files',
+          tasks: 'Tasks',
+          schedules: 'Schedules',
+          data: 'Data',
+          settings: 'Settings',
+          dependencies: 'Dependencies',
+        },
       },
     },
     tasks: {
-      title: 'Tasks',
-      tabs: {
-        overview: 'Overview',
-        logs: 'Logs',
-        data: 'Data',
+      list: {
+        title: 'Tasks',
+      },
+      detail: {
+        title: 'Task',
+        tabs: {
+          overview: 'Overview',
+          logs: 'Logs',
+          data: 'Data',
+        },
       },
     },
     schedules: {
-      title: 'Schedules',
-      tabs: {
-        overview: 'Overview',
-        tasks: 'Tasks',
+      list: {
+        title: 'Schedules',
+      },
+      detail: {
+        title: 'Schedule',
+        tabs: {
+          overview: 'Overview',
+          tasks: 'Tasks',
+        },
       },
     },
     users: {
-      title: 'Users',
-      tabs: {
-        overview: 'Overview',
+      list: {
+        title: 'Users',
+      },
+      detail: {
+        title: 'User',
+        tabs: {
+          overview: 'Overview',
+        },
       },
     },
     roles: {
-      title: 'Roles',
-      tabs: {
-        overview: 'Overview',
-        permissions: 'Permissions',
-        users: 'Users',
+      list: {
+        title: 'Roles',
+      },
+      detail: {
+        title: 'Role',
+        tabs: {
+          overview: 'Overview',
+          permissions: 'Permissions',
+          users: 'Users',
+        },
       },
     },
     permissions: {
-      title: 'Permissions',
-      tabs: {
-        overview: 'Overview',
-        roles: 'Roles',
+      list: {
+        title: 'Permissions',
+      },
+      detail: {
+        title: 'Permission',
+        tabs: {
+          overview: 'Overview',
+          roles: 'Roles',
+        },
       },
     },
     tokens: {
-      title: 'Tokens',
+      list: {
+        title: 'Tokens',
+      },
     },
     dependencies: {
-      title: 'Dependencies',
-      settings: 'Settings',
-      lang: {
-        python: 'Python',
-        node: 'Node',
+      list: {
+        title: 'Dependencies',
       },
     },
     notifications: {
       title: 'Notifications',
       settings: {
-        title: 'Settings',
-        tabs: {
-          overview: 'Overview',
-          mail: 'Mail Config',
-          template: 'Template',
-          channels: 'Channels',
+        list: {
+          title: 'Settings',
+        },
+        detail: {
+          title: 'Setting',
+          tabs: {
+            overview: 'Overview',
+            mail: 'Mail Config',
+            template: 'Template',
+            channels: 'Channels',
+          },
         },
       },
       channels: {
-        title: 'Channels',
-        tabs: {
-          overview: 'Overview',
+        list: {
+          title: 'Channels',
+        },
+        detail: {
+          title: 'Channel',
+          tabs: {
+            overview: 'Overview',
+          },
         },
       },
       requests: {
-        title: 'Requests',
+        list: {
+          title: 'Requests',
+        },
       },
       alerts: {
-        title: 'Alerts',
-        tabs: {
-          overview: 'Overview',
+        list: {
+          title: 'Alerts',
+        },
+        detail: {
+          title: 'Alert',
+          tabs: {
+            overview: 'Overview',
+          },
         },
       },
     },
     gits: {
-      title: 'Git Repo',
-      tabs: {
-        overview: 'Overview',
-        files: 'Files',
-        changes: 'Changes',
-        commits: 'Commits',
-        spiders: 'Spiders',
+      list: {
+        title: 'Git Repos',
+      },
+      detail: {
+        title: 'Git Repo',
+        tabs: {
+          overview: 'Overview',
+          files: 'Files',
+          changes: 'Changes',
+          commits: 'Commits',
+          spiders: 'Spiders',
+        },
       },
     },
     databases: {
-      title: 'Data Sources',
-      tabs: {
-        overview: 'Overview',
-        databases: 'Databases',
-        console: 'Console',
-        monitoring: 'Monitoring',
-        table: 'Table',
-        data: 'Data',
-        columns: 'Columns',
-        indexes: 'Indexes',
+      list: {
+        title: 'Data Sources',
+      },
+      detail: {
+        title: 'Data Source',
+        tabs: {
+          overview: 'Overview',
+          databases: 'Databases',
+          console: 'Console',
+          monitoring: 'Monitoring',
+          table: 'Table',
+          data: 'Data',
+          columns: 'Columns',
+          indexes: 'Indexes',
+        },
       },
     },
     environments: {
-      title: 'Environments',
+      list: {
+        title: 'Environments',
+      },
     },
     system: {
       title: 'System',

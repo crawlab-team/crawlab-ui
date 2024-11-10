@@ -152,11 +152,8 @@ const useUserList = () => {
             action: ACTION_VIEW,
           },
           {
-            tooltip: (row: User) =>
-              row.username === USERNAME_ADMIN
-                ? t('components.user.delete.tooltip.adminUserNonDeletable')
-                : t('common.actions.delete'),
-            disabled: (row: User) => row.username === USERNAME_ADMIN,
+            tooltip: t('common.actions.delete'),
+            disabled: (row: User) => row.admin,
             onClick: deleteByIdConfirm,
             action: ACTION_DELETE,
             contextMenu: true,

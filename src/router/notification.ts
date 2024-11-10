@@ -38,7 +38,7 @@ export default [
   {
     name: 'NotificationSettingList',
     path: `${endpoint}/settings`,
-    title: t('layouts.routes.notifications.settings.title'),
+    title: t('layouts.routes.notifications.settings.list.title'),
     icon: ['fa', 'cog'],
     component: async () => ClNotificationSettingList,
   },
@@ -52,25 +52,25 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.notifications.settings.tabs.overview'),
+        title: t('layouts.routes.notifications.settings.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClNotificationSettingDetailTabOverview,
       },
       {
         path: TAB_NAME_MAIL,
-        title: t('layouts.routes.notifications.settings.tabs.mail'),
+        title: t('layouts.routes.notifications.settings.detail.tabs.mail'),
         icon: getIconByTabName(TAB_NAME_MAIL),
         component: async () => ClNotificationSettingDetailTabMailConfig,
       },
       {
         path: TAB_NAME_TEMPLATE,
-        title: t('layouts.routes.notifications.settings.tabs.template'),
+        title: t('layouts.routes.notifications.settings.detail.tabs.template'),
         icon: getIconByTabName(TAB_NAME_TEMPLATE),
         component: async () => ClNotificationSettingDetailTabTemplate,
       },
       {
         path: TAB_NAME_CHANNELS,
-        title: t('layouts.routes.notifications.settings.tabs.channels'),
+        title: t('layouts.routes.notifications.settings.detail.tabs.channels'),
         icon: getIconByTabName(TAB_NAME_CHANNELS),
         component: async () => ClNotificationSettingDetailTabChannels,
       },
@@ -79,13 +79,14 @@ export default [
   {
     name: 'NotificationChannelList',
     path: `${endpoint}/channels`,
-    title: t('layouts.routes.notifications.channels.title'),
+    title: t('layouts.routes.notifications.channels.list.title'),
     icon: ['fa', 'broadcast-tower'],
     component: async () => ClNotificationChannelList,
   },
   {
     name: 'NotificationChannelDetail',
     path: `${endpoint}/channels/:id`,
+    title: t('layouts.routes.notifications.channels.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
@@ -93,7 +94,7 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.notifications.channels.tabs.overview'),
+        title: t('layouts.routes.notifications.channels.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClNotificationChannelDetailTabOverview,
       },
@@ -102,20 +103,21 @@ export default [
   {
     name: 'NotificationRequestList',
     path: `${endpoint}/requests`,
-    title: t('layouts.routes.notifications.requests.title'),
+    title: t('layouts.routes.notifications.requests.list.title'),
     icon: ['fa', 'paper-plane'],
     component: async () => ClNotificationRequestList,
   },
   {
     name: 'NotificationAlertList',
     path: `${endpoint}/alerts`,
-    title: t('layouts.routes.notifications.alerts.title'),
+    title: t('layouts.routes.notifications.alerts.list.title'),
     icon: ['fa', 'bell'],
     component: async () => ClNotificationAlertList,
   },
   {
     name: 'NotificationAlertDetail',
     path: `${endpoint}/alerts/:id`,
+    title: t('layouts.routes.notifications.alerts.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
@@ -124,7 +126,7 @@ export default [
       {
         name: 'NotificationAlertDetailOverview',
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.notifications.alerts.tabs.overview'),
+        title: t('layouts.routes.notifications.alerts.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClNotificationAlertDetailTabOverview,
       },

@@ -9,7 +9,7 @@ export default [
   {
     name: 'TokenList',
     path: endpoint,
-    title: t('layouts.routes.tokens.title'),
+    title: t('layouts.routes.tokens.list.title'),
     icon: ['fa', 'key'],
     component: async () => ClTokenList,
   },

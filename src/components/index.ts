@@ -39,6 +39,7 @@ import CreateEditNotificationAlertDialog from './core/notification/alert/CreateE
 import CreateEditNotificationChannelDialog from './core/notification/channel/CreateEditNotificationChannelDialog.vue';
 import CreateEditNotificationSettingDialog from './core/notification/setting/CreateEditNotificationSettingDialog.vue';
 import CreateEditProjectDialog from './core/project/CreateEditProjectDialog.vue';
+import CreateEditRoleDialog from './core/role/CreateEditRoleDialog.vue';
 import CreateEditScheduleDialog from './core/schedule/CreateEditScheduleDialog.vue';
 import CreateEditSpiderDialog from './core/spider/CreateEditSpiderDialog.vue';
 import CreateEditUserDialog from './core/user/CreateEditUserDialog.vue';
@@ -163,6 +164,7 @@ import RangePicker from './ui/date/RangePicker.vue';
 import ResultCell from './core/result/ResultCell.vue';
 import ResultCellDialog from './core/result/ResultCellDialog.vue';
 import ResultDedupFieldsDialog from './core/result/ResultDedupFieldsDialog.vue';
+import RoleForm from './core/role/RoleForm.vue';
 import RunSpiderDialog from './core/spider/RunSpiderDialog.vue';
 import ScheduleCron from './core/schedule/ScheduleCron.vue';
 import ScheduleForm from './core/schedule/ScheduleForm.vue';
@@ -213,6 +215,7 @@ import useNotificationSetting from './core/notification/setting/useNotificationS
 import useProject from './core/project/useProject';
 import UserForm from './core/user/UserForm.vue';
 import useRichTextSetup from './ui/lexical/composables/useRichTextSetup';
+import useRole from './core/role/useRole';
 import UserRole from './core/user/UserRole.vue';
 import useSchedule from './core/schedule/useSchedule';
 import useSpider from './core/spider/useSpider';
@@ -262,6 +265,7 @@ export {
   CreateEditNotificationChannelDialog as ClCreateEditNotificationChannelDialog,
   CreateEditNotificationSettingDialog as ClCreateEditNotificationSettingDialog,
   CreateEditProjectDialog as ClCreateEditProjectDialog,
+  CreateEditRoleDialog as ClCreateEditRoleDialog,
   CreateEditScheduleDialog as ClCreateEditScheduleDialog,
   CreateEditSpiderDialog as ClCreateEditSpiderDialog,
   CreateEditUserDialog as ClCreateEditUserDialog,
@@ -386,6 +390,7 @@ export {
   ResultCell as ClResultCell,
   ResultCellDialog as ClResultCellDialog,
   ResultDedupFieldsDialog as ClResultDedupFieldsDialog,
+  RoleForm as ClRoleForm,
   RunSpiderDialog as ClRunSpiderDialog,
   ScheduleCron as ClScheduleCron,
   ScheduleForm as ClScheduleForm,
@@ -436,6 +441,7 @@ export {
   useProject as useProject,
   UserForm as ClUserForm,
   useRichTextSetup as useRichTextSetup,
+  useRole as useRole,
   UserRole as ClUserRole,
   useSchedule as useSchedule,
   useSpider as useSpider,

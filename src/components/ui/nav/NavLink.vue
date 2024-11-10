@@ -8,6 +8,10 @@ const props = defineProps<{
   external?: boolean;
 }>();
 
+const slots = defineSlots<{
+  default: any;
+}>();
+
 const emit = defineEmits<{
   (e: 'click'): void;
 }>();
@@ -31,7 +35,8 @@ defineOptions({ name: 'ClNavLink' });
 <template>
   <div class="nav-link" @click="onClick">
     <cl-icon :icon="icon" class="icon" />
-    <span class="title">{{ label }}</span>
+    <slot v-if="slots.default" />
+    <span class="title" v-else>{{ label }}</span>
   </div>
 </template>
 

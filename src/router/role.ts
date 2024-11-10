@@ -1,34 +1,34 @@
 import { TAB_NAME_OVERVIEW } from '@/constants/tab';
-import { ClUserDetail, ClUserDetailTabOverview, ClUserList } from '@/views';
+import { ClRoleList, ClRoleDetail, ClRoleDetailTabOverview } from '@/views';
 import { getIconByTabName, translate } from '@/utils';
 import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'users';
+const endpoint = 'roles';
 
 export default [
   {
-    name: 'UserList',
+    name: 'RoleList',
     path: endpoint,
-    title: t('layouts.routes.users.list.title'),
-    icon: ['fa', 'users'],
-    component: async () => ClUserList,
+    title: t('layouts.routes.roles.list.title'),
+    icon: ['fa', 'user-tag'],
+    component: async () => ClRoleList,
   },
   {
-    name: 'UserDetail',
+    name: 'RoleDetail',
     path: `${endpoint}/:id`,
-    title: t('layouts.routes.users.detail.title'),
+    title: t('layouts.routes.roles.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
-    component: async () => ClUserDetail,
+    component: async () => ClRoleDetail,
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.users.detail.tabs.overview'),
+        title: t('layouts.routes.roles.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
-        component: async () => ClUserDetailTabOverview,
+        component: async () => ClRoleDetailTabOverview,
       },
     ],
   },

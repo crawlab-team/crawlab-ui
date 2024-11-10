@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { isPro, translate } from '@/utils';
+import { translate } from '@/utils';
 
 interface ContextMenuProps {
   activeItem?: FileNavItem;

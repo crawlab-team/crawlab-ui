@@ -9,7 +9,13 @@ const router: LRouter = {
     git: 'Git 仓库',
     databases: '数据库',
     users: '用户',
-    tags: '标签',
+    usersManagement: {
+      title: '用户管理',
+      children: {
+        users: '用户',
+        roles: '角色',
+      },
+    },
     tokens: '令牌',
     dependencies: '环境依赖',
     env: {

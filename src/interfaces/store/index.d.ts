@@ -19,8 +19,8 @@ export declare global {
     dataCollection: DataCollectionStoreState;
     schedule: ScheduleStoreState;
     user: UserStoreState;
+    role: RoleStoreState;
     token: TokenStoreState;
-    plugin: PluginStoreState;
     git: GitStoreState;
     notificationSetting: NotificationSettingStoreState;
     notificationChannel: NotificationChannelStoreState;
@@ -166,8 +166,8 @@ export declare global {
     | 'dataCollection'
     | 'schedule'
     | 'user'
+    | 'role'
     | 'token'
-    | 'plugin'
     | 'git'
     | 'notificationSetting'
     | 'notificationChannel'

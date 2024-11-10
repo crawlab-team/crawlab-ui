@@ -85,16 +85,24 @@ export default {
       return state.menuItems
         .filter(d => !d.hidden)
         .filter(d => {
+          // skip if no path
           if (!d.path) return false;
-          return !(
-            [
+
+          // skip some items if pro
+          if (isPro()) {
+            return !['router.menuItems.users'].includes(d.title);
+          }
+
+          // skip some items if not pro
+          return (
+            ![
               '/notifications',
               '/environments',
               '/system',
               '/deps',
               '/gits',
               '/databases',
-            ].includes(d.path) && !isPro()
+            ].includes(d.path) || !['userManagement'].includes(d.title)
           );
         })
         .filter(d => {

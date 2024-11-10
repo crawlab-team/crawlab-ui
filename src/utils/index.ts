@@ -27,3 +27,4 @@ export * from './tree';
 export * from './validate';
 export * from './notification';
 export * from './time';
+export * from './icon';

@@ -9,8 +9,8 @@ import file from '@/store/modules/file';
 import dataCollection from '@/store/modules/dataCollection';
 import schedule from '@/store/modules/schedule';
 import user from '@/store/modules/user';
+import role from '@/store/modules/role';
 import token from '@/store/modules/token';
-import plugin from '@/store/modules/plugin';
 import git from '@/store/modules/git';
 import notificationSetting from '@/store/modules/notificationSetting';
 import notificationChannel from '@/store/modules/notificationChannel';
@@ -36,8 +36,8 @@ export const createStore = (): Store<RootStoreState> => {
       dataCollection,
       schedule,
       user,
+      role,
       token,
-      plugin,
       git,
       notificationSetting,
       notificationChannel,

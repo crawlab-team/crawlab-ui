@@ -9,7 +9,13 @@ const router: LRouter = {
     git: 'Git Repo',
     databases: 'Databases',
     users: 'Users',
-    tags: 'Tags',
+    usersManagement: {
+      title: 'User Management',
+      children: {
+        users: 'Users',
+        roles: 'Roles',
+      },
+    },
     tokens: 'Tokens',
     dependencies: 'Dependencies',
     env: {

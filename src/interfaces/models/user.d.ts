@@ -4,6 +4,8 @@ export declare global {
     username?: string;
     password?: string;
     role?: string;
+    role_id?: string;
     email?: string;
+    admin?: boolean;
   }
 }
