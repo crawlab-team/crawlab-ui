@@ -135,8 +135,8 @@ defineOptions({ name: 'ClTag' });
         <slot name="default" />
       </template>
       <template v-else>
-        <span class="prefix-icon">
-          <cl-icon v-if="icon" :icon="icon" :spinning="spinning" />
+        <span v-if="icon" class="prefix-icon">
+          <cl-icon :icon="icon" :spinning="spinning" />
         </span>
         <span v-if="label" class="label">{{ label }}</span>
         <span v-if="suffixIcon" class="suffix-icon">

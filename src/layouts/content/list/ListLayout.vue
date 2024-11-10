@@ -159,6 +159,7 @@ defineOptions({ name: 'ClListLayout' });
                 :placeholder="(item as ListActionFilter).placeholder"
                 :options="(item as ListActionFilter).options"
                 :options-remote="(item as ListActionFilter).optionsRemote"
+                :clearable="(item as ListActionFilter).clearable"
                 :no-all-option="(item as ListActionFilter).noAllOption"
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)

@@ -23,27 +23,32 @@ const data = computed<TagProps>(() => {
   if (priority <= 2) {
     return {
       label: getPriorityLabel(priority),
-      color: 'var(--cl-red)',
+      color: 'var(--cl-success-color)',
+      type: 'success',
     };
   } else if (priority <= 4) {
     return {
       label: getPriorityLabel(priority),
-      color: 'var(--cl-orange)',
+      color: 'var(--cl-success-color)',
+      type: 'success',
     };
   } else if (priority <= 6) {
     return {
       label: getPriorityLabel(priority),
-      color: 'var(--cl-lime-green)',
+      color: 'var(--cl-warning-color)',
+      type: 'warning',
     };
   } else if (priority <= 8) {
     return {
       label: getPriorityLabel(priority),
-      color: 'var(--cl-cyan)',
+      color: 'var(--cl-danger-color)',
+      type: 'danger',
     };
   } else {
     return {
       label: getPriorityLabel(priority),
-      color: 'var(--cl-blue)',
+      color: 'var(--cl-danger-color)',
+      type: 'danger',
     };
   }
 });
@@ -64,5 +69,3 @@ defineOptions({ name: 'ClTaskPriority' });
     @click="emit('click')"
   />
 </template>
-
-

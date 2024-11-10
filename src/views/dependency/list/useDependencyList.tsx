@@ -54,6 +54,7 @@ const useDependencyList = () => {
             { label: 'Python', value: 'python', icon: ['fab', 'python'] },
             { label: 'Node.js', value: 'node', icon: ['fab', 'node-js'] },
           ],
+          clearable: false,
           noAllOption: true,
         },
       ],

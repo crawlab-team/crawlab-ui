@@ -4,15 +4,21 @@ import useRequest from '@/services/request';
 import { cloneArray, prependAllToSelectOptions } from '@/utils';
 import { debounce } from 'lodash';
 
-const props = defineProps<{
-  id?: string;
-  label?: string;
-  placeholder?: string;
-  filterable?: boolean;
-  options?: SelectOption[];
-  optionsRemote?: FilterSelectOptionsRemote;
-  noAllOption?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    id?: string;
+    label?: string;
+    placeholder?: string;
+    filterable?: boolean;
+    clearable?: boolean;
+    options?: SelectOption[];
+    optionsRemote?: FilterSelectOptionsRemote;
+    noAllOption?: boolean;
+  }>(),
+  {
+    clearable: true,
+  }
+);
 
 const emit = defineEmits<{
   (e: 'change', value: any): void;
@@ -87,7 +93,7 @@ defineOptions({ name: 'ClFilterSelect' });
       v-model="internalModelValue"
       :placeholder="placeholder"
       :filterable="filterable"
-      clearable
+      :clearable="clearable"
       :popper-class="id"
       @change="onChange"
       @clear="onClear"
