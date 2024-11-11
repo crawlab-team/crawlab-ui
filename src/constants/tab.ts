@@ -24,3 +24,4 @@ export const TAB_NAME_OUTPUT = 'output';
 export const TAB_NAME_USERS = 'users';
 export const TAB_NAME_ROLES = 'roles';
 export const TAB_NAME_PERMISSIONS = 'permissions';
+export const TAB_NAME_PAGES = 'pages';

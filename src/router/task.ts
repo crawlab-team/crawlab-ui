@@ -19,13 +19,14 @@ const endpoint = 'tasks';
 
 export default [
   {
+    routeConcept: 'task',
     name: 'TaskList',
     path: endpoint,
     title: t('layouts.routes.tasks.list.title'),
-    icon: ['fa', 'tasks'],
     component: async () => ClTaskList,
   },
   {
+    routeConcept: 'task',
     name: 'TaskDetail',
     path: `${endpoint}/:id`,
     title: t('layouts.routes.tasks.detail.title'),

@@ -24,10 +24,10 @@ const layouts: LLayouts = {
     home: 'Home',
     nodes: {
       list: {
-        title: 'Nodes',
+        title: 'Node List',
       },
       detail: {
-        title: 'Node',
+        title: 'Node Detail',
         tabs: {
           overview: 'Overview',
           tasks: 'Tasks',
@@ -37,10 +37,10 @@ const layouts: LLayouts = {
     },
     projects: {
       list: {
-        title: 'Projects',
+        title: 'Project List',
       },
       detail: {
-        title: 'Project',
+        title: 'Project Detail',
         tabs: {
           overview: 'Overview',
           spiders: 'Spiders',
@@ -49,10 +49,10 @@ const layouts: LLayouts = {
     },
     spiders: {
       list: {
-        title: 'Spiders',
+        title: 'Spider List',
       },
       detail: {
-        title: 'Spider',
+        title: 'Spider Detail',
         tabs: {
           overview: 'Overview',
           files: 'Files',
@@ -66,10 +66,10 @@ const layouts: LLayouts = {
     },
     tasks: {
       list: {
-        title: 'Tasks',
+        title: 'Task List',
       },
       detail: {
-        title: 'Task',
+        title: 'Task Detail',
         tabs: {
           overview: 'Overview',
           logs: 'Logs',
@@ -79,10 +79,10 @@ const layouts: LLayouts = {
     },
     schedules: {
       list: {
-        title: 'Schedules',
+        title: 'Schedule List',
       },
       detail: {
-        title: 'Schedule',
+        title: 'Schedule Detail',
         tabs: {
           overview: 'Overview',
           tasks: 'Tasks',
@@ -91,10 +91,10 @@ const layouts: LLayouts = {
     },
     users: {
       list: {
-        title: 'Users',
+        title: 'User List',
       },
       detail: {
-        title: 'User',
+        title: 'User Detail',
         tabs: {
           overview: 'Overview',
         },
@@ -102,37 +102,25 @@ const layouts: LLayouts = {
     },
     roles: {
       list: {
-        title: 'Roles',
+        title: 'Role List',
       },
       detail: {
-        title: 'Role',
+        title: 'Role Detail',
         tabs: {
           overview: 'Overview',
-          permissions: 'Permissions',
+          pages: 'Pages',
           users: 'Users',
-        },
-      },
-    },
-    permissions: {
-      list: {
-        title: 'Permissions',
-      },
-      detail: {
-        title: 'Permission',
-        tabs: {
-          overview: 'Overview',
-          roles: 'Roles',
         },
       },
     },
     tokens: {
       list: {
-        title: 'Tokens',
+        title: 'Token List',
       },
     },
     dependencies: {
       list: {
-        title: 'Dependencies',
+        title: 'Dependency List',
       },
     },
     notifications: {
@@ -142,7 +130,7 @@ const layouts: LLayouts = {
           title: 'Settings',
         },
         detail: {
-          title: 'Setting',
+          title: 'Setting Detail',
           tabs: {
             overview: 'Overview',
             mail: 'Mail Config',
@@ -156,7 +144,7 @@ const layouts: LLayouts = {
           title: 'Channels',
         },
         detail: {
-          title: 'Channel',
+          title: 'Channel Detail',
           tabs: {
             overview: 'Overview',
           },
@@ -172,7 +160,7 @@ const layouts: LLayouts = {
           title: 'Alerts',
         },
         detail: {
-          title: 'Alert',
+          title: 'Alert Detail',
           tabs: {
             overview: 'Overview',
           },
@@ -181,10 +169,10 @@ const layouts: LLayouts = {
     },
     gits: {
       list: {
-        title: 'Git Repos',
+        title: 'Git Repo List',
       },
       detail: {
-        title: 'Git Repo',
+        title: 'Git Repo Detail',
         tabs: {
           overview: 'Overview',
           files: 'Files',
@@ -196,10 +184,10 @@ const layouts: LLayouts = {
     },
     databases: {
       list: {
-        title: 'Data Sources',
+        title: 'Data Source List',
       },
       detail: {
-        title: 'Data Source',
+        title: 'Data Source Detail',
         tabs: {
           overview: 'Overview',
           databases: 'Databases',
@@ -214,7 +202,7 @@ const layouts: LLayouts = {
     },
     environments: {
       list: {
-        title: 'Environments',
+        title: 'Environment List',
       },
     },
     system: {

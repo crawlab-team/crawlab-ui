@@ -162,8 +162,6 @@ export declare global {
     | 'project'
     | 'spider'
     | 'task'
-    | 'tag'
-    | 'dataCollection'
     | 'schedule'
     | 'user'
     | 'role'

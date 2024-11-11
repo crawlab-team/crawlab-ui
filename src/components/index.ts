@@ -165,6 +165,7 @@ import ResultCell from './core/result/ResultCell.vue';
 import ResultCellDialog from './core/result/ResultCellDialog.vue';
 import ResultDedupFieldsDialog from './core/result/ResultDedupFieldsDialog.vue';
 import RoleForm from './core/role/RoleForm.vue';
+import RoutesForm from './core/role/RoutesForm.vue';
 import RunSpiderDialog from './core/spider/RunSpiderDialog.vue';
 import ScheduleCron from './core/schedule/ScheduleCron.vue';
 import ScheduleForm from './core/schedule/ScheduleForm.vue';
@@ -391,6 +392,7 @@ export {
   ResultCellDialog as ClResultCellDialog,
   ResultDedupFieldsDialog as ClResultDedupFieldsDialog,
   RoleForm as ClRoleForm,
+  RoutesForm as ClRoutesForm,
   RunSpiderDialog as ClRunSpiderDialog,
   ScheduleCron as ClScheduleCron,
   ScheduleForm as ClScheduleForm,

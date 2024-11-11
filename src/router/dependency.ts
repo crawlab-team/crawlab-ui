@@ -7,10 +7,10 @@ const endpoint = 'dependencies';
 
 export default [
   {
+    routeConcept: 'dependency',
     name: 'DependencyList',
     path: endpoint,
-    title: t('layouts.routes.dependencies.title'),
-    icon: ['fa', 'cubes'],
+    title: t('layouts.routes.dependencies.list.title'),
     component: async () => ClDependencyList,
   },
 ] as Array<ExtendedRouterRecord>;

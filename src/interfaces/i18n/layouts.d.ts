@@ -65,12 +65,8 @@ export declare global {
       }>;
       roles: LListLayoutPage<{
         overview: string;
-        permissions: string;
+        pages: string;
         users: string;
-      }>;
-      permissions: LListLayoutPage<{
-        overview: string;
-        roles: string;
       }>;
       tokens: LListLayoutPage;
       dependencies: LListLayoutPage;

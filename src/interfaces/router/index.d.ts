@@ -7,14 +7,23 @@ export declare global {
   }
 
   interface ExtendedRouterRecord extends _RouteRecordBase {
-    name: string;
+    name?: string;
     title?: string;
     icon?: Icon;
     children?: Array<ExtendedRouterRecord>;
     redirect?: string | ((to: RouteLocation) => RouteLocation);
     path?: string;
     component?: RouteComponent;
+    routeConcept?: RouteConcept;
   }
+
+  type RouteConcept =
+    | ListStoreNamespace
+    | 'home'
+    | 'notification'
+    | 'system'
+    | 'disclaimer'
+    | 'mySettings';
 }
 
 export * from './auth';

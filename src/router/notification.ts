@@ -28,23 +28,25 @@ const endpoint = 'notifications';
 
 export default [
   {
+    routeConcept: 'notification',
     path: endpoint,
     title: t('layouts.routes.notifications.title'),
-    icon: ['fa', 'envelope'],
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/settings' };
     },
   },
   {
+    routeConcept: 'notificationSetting',
     name: 'NotificationSettingList',
     path: `${endpoint}/settings`,
     title: t('layouts.routes.notifications.settings.list.title'),
-    icon: ['fa', 'cog'],
     component: async () => ClNotificationSettingList,
   },
   {
+    routeConcept: 'notificationSetting',
     name: 'NotificationSettingDetail',
     path: `${endpoint}/settings/:id`,
+    title: t('layouts.routes.notifications.settings.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
@@ -77,13 +79,14 @@ export default [
     ],
   },
   {
+    routeConcept: 'notificationChannel',
     name: 'NotificationChannelList',
     path: `${endpoint}/channels`,
     title: t('layouts.routes.notifications.channels.list.title'),
-    icon: ['fa', 'broadcast-tower'],
     component: async () => ClNotificationChannelList,
   },
   {
+    routeConcept: 'notificationChannel',
     name: 'NotificationChannelDetail',
     path: `${endpoint}/channels/:id`,
     title: t('layouts.routes.notifications.channels.detail.title'),
@@ -101,20 +104,21 @@ export default [
     ],
   },
   {
+    routeConcept: 'notificationRequest',
     name: 'NotificationRequestList',
     path: `${endpoint}/requests`,
     title: t('layouts.routes.notifications.requests.list.title'),
-    icon: ['fa', 'paper-plane'],
     component: async () => ClNotificationRequestList,
   },
   {
+    routeConcept: 'notificationAlert',
     name: 'NotificationAlertList',
     path: `${endpoint}/alerts`,
     title: t('layouts.routes.notifications.alerts.list.title'),
-    icon: ['fa', 'bell'],
     component: async () => ClNotificationAlertList,
   },
   {
+    routeConcept: 'notificationAlert',
     name: 'NotificationAlertDetail',
     path: `${endpoint}/alerts/:id`,
     title: t('layouts.routes.notifications.alerts.detail.title'),

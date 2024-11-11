@@ -19,13 +19,14 @@ const endpoint = 'nodes';
 
 export default [
   {
+    routeConcept: 'node',
     name: 'NodeList',
     path: endpoint,
     title: t('layouts.routes.nodes.list.title'),
-    icon: ['fa', 'server'],
     component: async () => ClNodeList,
   },
   {
+    routeConcept: 'node',
     name: 'NodeDetail',
     path: `${endpoint}/:id`,
     title: t('layouts.routes.nodes.detail.title'),

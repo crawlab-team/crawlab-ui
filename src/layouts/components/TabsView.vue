@@ -4,7 +4,11 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { Plus } from '@element-plus/icons-vue';
 import { plainClone } from '@/utils/object';
-import { getNavMenuItems, getRouteMenuItemsMap } from '@/utils';
+import {
+  getIconByRouteConcept,
+  getNavMenuItems,
+  getRouteMenuItemsMap,
+} from '@/utils';
 
 // store
 const storeNameSpace = 'layout';
@@ -72,6 +76,11 @@ const getLastNavItem = (path: string): MenuItem | undefined => {
   return menuItemsMap.get(normalizedPath);
 };
 
+const getLastNavItemIcon = (path: string): Icon => {
+  const navItem = getLastNavItem(path);
+  return navItem?.icon || getIconByRouteConcept(navItem?.routeConcept!);
+};
+
 const getNavItemLabel = (path: string): string => {
   const items = getNavMenuItems(path);
   return items.map(item => item.title).join(' / ');
@@ -125,8 +134,10 @@ defineOptions({ name: 'ClTabsView' });
     </template>
     <el-tab-pane v-for="tab in tabs" :key="JSON.stringify(tab)" :name="tab.id">
       <template #label>
-        <cl-icon :icon="getLastNavItem(tab.path)?.icon" />
-        <span style="margin-left: 3px">{{ getNavItemLabel(tab.path) }}</span>
+        <span class="icon-wrapper">
+          <cl-icon :icon="getLastNavItemIcon(tab.path)" />
+        </span>
+        <span class="label">{{ getNavItemLabel(tab.path) }}</span>
       </template>
     </el-tab-pane>
   </el-tabs>
@@ -137,6 +148,10 @@ defineOptions({ name: 'ClTabsView' });
   background-color: var(--cl-tabs-view-bg);
   height: var(--cl-tabs-view-height);
   border: none;
+
+  &:deep(.icon-wrapper) {
+    margin-right: 5px;
+  }
 
   &:deep(.el-tabs__item.is-active) {
     border-bottom: 1px solid #ffffff;

@@ -4,7 +4,12 @@ import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ArrowDown, ArrowRight } from '@element-plus/icons-vue';
-import { setGlobalLang, getNavMenuItems, isPro } from '@/utils';
+import {
+  setGlobalLang,
+  getNavMenuItems,
+  isPro,
+  getIconByRouteConcept,
+} from '@/utils';
 
 // i18n
 const { t, locale } = useI18n();
@@ -87,14 +92,14 @@ defineOptions({ name: 'ClHeader' });
           <template v-for="item in navMenuItems" :key="item.path">
             <el-breadcrumb-item v-if="item?.path !== '/home'">
               <router-link :to="item.path!">
-                <cl-icon :icon="item.icon" />
+                <cl-icon
+                  :icon="item.icon || getIconByRouteConcept(item.routeConcept!)"
+                />
                 {{ item.title }}
               </router-link>
             </el-breadcrumb-item>
           </template>
         </el-breadcrumb>
-
-        <cl-tabs-view v-if="false" />
       </div>
       <div class="right">
         <template v-if="!isPro()">

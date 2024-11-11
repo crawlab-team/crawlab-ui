@@ -1,15 +1,12 @@
-type HandleNodeFn<T> = (
-  parentNode: TreeNode<T>,
-  node: TreeNode<T>
-) => TreeNode<T>;
+type HandleNodeFn<T extends TreeNode> = (parentNode: T, node: T) => T;
 
-const getNormalizedNodes = <T = any>(
-  node: TreeNode<T>,
+const getNormalizedNodes = <T extends TreeNode>(
+  node: T,
   handleNodeFn?: HandleNodeFn<T>
 ): T[] => {
   let nodes = [] as T[];
-  nodes.push(node as T);
-  node.children?.forEach((subNode: TreeNode<T>) => {
+  nodes.push(node);
+  node.children?.forEach((subNode: T) => {
     if (handleNodeFn) {
       subNode = handleNodeFn(node, subNode);
     }
@@ -18,8 +15,8 @@ const getNormalizedNodes = <T = any>(
   return nodes;
 };
 
-export const normalizeTree = <T = any>(
-  nodes: TreeNode<T>[],
+export const normalizeTree = <T extends TreeNode>(
+  nodes: T[],
   handleNodeFn?: HandleNodeFn<T>
 ): T[] => {
   let results = [] as T[];

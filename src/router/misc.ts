@@ -7,17 +7,17 @@ const endpoint = 'misc';
 
 export default [
   {
+    routeConcept: 'disclaimer',
     name: 'Disclaimer',
     path: `${endpoint}/disclaimer`,
     title: t('layouts.routes.misc.disclaimer'),
-    icon: ['fa', 'file-signature'],
     component: async () => ClDisclaimer,
   },
   {
+    routeConcept: 'mySettings',
     name: 'MySettings',
     path: `${endpoint}/my-settings`,
     title: t('layouts.routes.misc.mySettings'),
-    icon: ['fa', 'user-cog'],
     component: async () => ClMySettings,
   },
 ] as Array<ExtendedRouterRecord>;

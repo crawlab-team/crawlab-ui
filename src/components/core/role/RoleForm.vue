@@ -10,16 +10,8 @@ const t = translate;
 // store
 const store = useStore();
 
-const { activeId } = useRoleDetail();
-
-const {
-  form,
-  formRef,
-  formRules,
-  isSelectiveForm,
-  isFormItemDisabled,
-  routesOptions,
-} = useRole(store);
+const { form, formRef, isSelectiveForm, isFormItemDisabled, routesOptions } =
+  useRole(store);
 
 defineOptions({ name: 'ClRoleForm' });
 </script>
@@ -63,17 +55,5 @@ defineOptions({ name: 'ClRoleForm' });
       />
     </cl-form-item>
     <!-- ./Row -->
-
-    <cl-form-item
-      :span="4"
-      :label="t('components.role.form.pages')"
-      prop="routes"
-    >
-      <cl-tag
-        v-for="(op, $index) in routesOptions"
-        :key="$index"
-        :label="op.label"
-      />
-    </cl-form-item>
   </cl-form>
 </template>

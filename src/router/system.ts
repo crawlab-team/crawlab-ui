@@ -7,10 +7,10 @@ const endpoint = 'system';
 
 export default [
   {
+    routeConcept: 'system',
     name: 'SystemDetail',
     path: endpoint,
     title: t('layouts.routes.system.title'),
-    icon: ['fa', 'cogs'],
     component: async () => ClSystemDetail,
   },
 ] as Array<ExtendedRouterRecord>;

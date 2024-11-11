@@ -49,6 +49,7 @@ import {
   TAB_NAME_MONITORING,
   TAB_NAME_OUTPUT,
   TAB_NAME_OVERVIEW,
+  TAB_NAME_PAGES,
   TAB_NAME_PERMISSIONS,
   TAB_NAME_RESULTS,
   TAB_NAME_ROLES,
@@ -116,6 +117,8 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'user-lock'];
     case TAB_NAME_PERMISSIONS:
       return ['fa', 'user-check'];
+    case TAB_NAME_PAGES:
+      return ['fa', 'file-alt'];
     default:
       return ['fa', 'circle'];
   }
@@ -212,5 +215,54 @@ export const getIconByAction = (action: string): Icon | undefined => {
     // Default
     default:
       return;
+  }
+};
+
+export const getIconByRouteConcept = (concept: RouteConcept): Icon => {
+  switch (concept) {
+    case 'node':
+      return ['fa', 'server'];
+    case 'project':
+      return ['fa', 'project-diagram'];
+    case 'spider':
+      return ['fa', 'spider'];
+    case 'task':
+      return ['fa', 'tasks'];
+    case 'schedule':
+      return ['fa', 'clock'];
+    case 'user':
+      return ['fa', 'users'];
+    case 'role':
+      return ['fa', 'user-tag'];
+    case 'token':
+      return ['fa', 'key'];
+    case 'git':
+      return ['fab', 'git'];
+    case 'notification':
+      return ['fa', 'envelope'];
+    case 'notificationSetting':
+      return ['fa', 'cog'];
+    case 'notificationChannel':
+      return ['fa', 'broadcast-tower'];
+    case 'notificationRequest':
+      return ['fa', 'paper-plane'];
+    case 'notificationAlert':
+      return ['fa', 'bell'];
+    case 'database':
+      return ['fa', 'database'];
+    case 'dependency':
+      return ['fa', 'cubes'];
+    case 'environment':
+      return ['fa', 'code'];
+    case 'home':
+      return ['fa', 'home'];
+    case 'system':
+      return ['fa', 'cogs'];
+    case 'disclaimer':
+      return ['fa', 'file-signature'];
+    case 'mySettings':
+      return ['fa', 'user-cog'];
+    default:
+      return ['fa', 'circle'];
   }
 };

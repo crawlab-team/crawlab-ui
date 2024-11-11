@@ -62,6 +62,8 @@ import ProjectList from './project/list/ProjectList.vue';
 import ResultList from './data/list/ResultList.vue';
 import RoleDetail from './role/detail/RoleDetail.vue';
 import RoleDetailTabOverview from './role/detail/tabs/RoleDetailTabOverview.vue';
+import RoleDetailTabPages from './role/detail/tabs/RoleDetailTabPages.vue';
+import RoleDetailTabUsers from './role/detail/tabs/RoleDetailTabUsers.vue';
 import RoleList from './role/list/RoleList.vue';
 import ScheduleDetail from './schedule/detail/ScheduleDetail.vue';
 import ScheduleDetailTabOverview from './schedule/detail/tabs/ScheduleDetailTabOverview.vue';
@@ -186,6 +188,8 @@ export {
   ResultList as ClResultList,
   RoleDetail as ClRoleDetail,
   RoleDetailTabOverview as ClRoleDetailTabOverview,
+  RoleDetailTabPages as ClRoleDetailTabPages,
+  RoleDetailTabUsers as ClRoleDetailTabUsers,
   RoleList as ClRoleList,
   ScheduleDetail as ClScheduleDetail,
   ScheduleDetailTabOverview as ClScheduleDetailTabOverview,

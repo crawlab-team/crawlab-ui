@@ -7,10 +7,10 @@ const endpoint = 'tokens';
 
 export default [
   {
+    routeConcept: 'token',
     name: 'TokenList',
     path: endpoint,
     title: t('layouts.routes.tokens.list.title'),
-    icon: ['fa', 'key'],
     component: async () => ClTokenList,
   },
 ] as Array<ExtendedRouterRecord>;

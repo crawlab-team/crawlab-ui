@@ -14,6 +14,7 @@ const endpoint = 'schedules';
 
 export default [
   {
+    routeConcept: 'schedule',
     name: 'ScheduleList',
     path: endpoint,
     title: t('layouts.routes.schedules.list.title'),
@@ -21,6 +22,7 @@ export default [
     component: async () => ClScheduleList,
   },
   {
+    routeConcept: 'schedule',
     name: 'ScheduleDetail',
     path: `${endpoint}/:id`,
     title: t('layouts.routes.schedules.detail.title'),

@@ -14,13 +14,14 @@ const endpoint = 'projects';
 
 export default [
   {
+    routeConcept: 'project',
     name: 'ProjectList',
     path: endpoint,
     title: t('layouts.routes.projects.list.title'),
-    icon: ['fa', 'project-diagram'],
     component: async () => ClProjectList,
   },
   {
+    routeConcept: 'project',
     name: 'ProjectDetail',
     path: `${endpoint}/:id`,
     title: t('layouts.routes.projects.detail.title'),

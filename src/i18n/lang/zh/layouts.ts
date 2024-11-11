@@ -24,10 +24,10 @@ const layouts: LLayouts = {
     home: '首页',
     nodes: {
       list: {
-        title: '节点',
+        title: '节点列表',
       },
       detail: {
-        title: '节点',
+        title: '节点详情',
         tabs: {
           overview: '概览',
           tasks: '任务',
@@ -37,10 +37,10 @@ const layouts: LLayouts = {
     },
     projects: {
       list: {
-        title: '项目',
+        title: '项目列表',
       },
       detail: {
-        title: '项目',
+        title: '项目详情',
         tabs: {
           overview: '概览',
           spiders: '爬虫',
@@ -49,10 +49,10 @@ const layouts: LLayouts = {
     },
     spiders: {
       list: {
-        title: '爬虫',
+        title: '爬虫列表',
       },
       detail: {
-        title: '爬虫',
+        title: '爬虫详情',
         tabs: {
           overview: '概览',
           files: '文件',
@@ -66,10 +66,10 @@ const layouts: LLayouts = {
     },
     tasks: {
       list: {
-        title: '任务',
+        title: '任务列表',
       },
       detail: {
-        title: '任务',
+        title: '任务详情',
         tabs: {
           overview: '概览',
           logs: '日志',
@@ -79,10 +79,10 @@ const layouts: LLayouts = {
     },
     schedules: {
       list: {
-        title: '定时任务',
+        title: '定时任务列表',
       },
       detail: {
-        title: '定时任务',
+        title: '定时任务详情',
         tabs: {
           overview: '概览',
           tasks: '任务',
@@ -91,10 +91,10 @@ const layouts: LLayouts = {
     },
     users: {
       list: {
-        title: '用户',
+        title: '用户列表',
       },
       detail: {
-        title: '用户',
+        title: '用户详情',
         tabs: {
           overview: '概览',
         },
@@ -102,47 +102,35 @@ const layouts: LLayouts = {
     },
     roles: {
       list: {
-        title: '角色',
+        title: '角色列表',
       },
       detail: {
-        title: '角色',
+        title: '角色详情',
         tabs: {
           overview: '概览',
-          permissions: '权限',
+          pages: '页面',
           users: '用户',
-        },
-      },
-    },
-    permissions: {
-      list: {
-        title: '权限',
-      },
-      detail: {
-        title: '权限',
-        tabs: {
-          overview: '概览',
-          roles: '角色',
         },
       },
     },
     tokens: {
       list: {
-        title: '令牌',
+        title: '令牌列表',
       },
     },
     dependencies: {
       list: {
-        title: '环境依赖',
+        title: '依赖列表',
       },
     },
     notifications: {
       title: '消息通知',
       settings: {
         list: {
-          title: '通知配置',
+          title: '配置列表',
         },
         detail: {
-          title: '通知配置',
+          title: '通知配置详情',
           tabs: {
             overview: '概览',
             mail: '邮件配置',
@@ -153,10 +141,10 @@ const layouts: LLayouts = {
       },
       channels: {
         list: {
-          title: '通知渠道',
+          title: '渠道列表',
         },
         detail: {
-          title: '通知渠道',
+          title: '通知渠道详情',
           tabs: {
             overview: '概览',
           },
@@ -164,15 +152,15 @@ const layouts: LLayouts = {
       },
       requests: {
         list: {
-          title: '通知请求',
+          title: '请求列表',
         },
       },
       alerts: {
         list: {
-          title: '警报配置',
+          title: '警报列表',
         },
         detail: {
-          title: '警报配置',
+          title: '警报配置详情',
           tabs: {
             overview: '概览',
           },
@@ -181,10 +169,10 @@ const layouts: LLayouts = {
     },
     gits: {
       list: {
-        title: 'Git 仓库',
+        title: 'Git 仓库列表',
       },
       detail: {
-        title: 'Git 仓库',
+        title: 'Git 仓库详情',
         tabs: {
           overview: '概览',
           files: '文件',
@@ -196,10 +184,10 @@ const layouts: LLayouts = {
     },
     databases: {
       list: {
-        title: '数据库',
+        title: '数据库列表',
       },
       detail: {
-        title: '数据库',
+        title: '数据库详情',
         tabs: {
           overview: '概览',
           databases: '数据库',
@@ -214,7 +202,7 @@ const layouts: LLayouts = {
     },
     environments: {
       list: {
-        title: '环境变量',
+        title: '环境列表',
       },
     },
     system: {

@@ -45,8 +45,8 @@ const useNotificationAlert = (store: Store<RootStoreState>) => {
     getAllMetricGroups().forEach(group => {
       group.metrics.forEach(metric => {
         options.push({
-          label: t(`components.node.metric.metrics.${metric}`),
-          value: metric,
+          label: t(`components.metric.metrics.${metric}`),
+          value: metric as string,
         });
       });
     });

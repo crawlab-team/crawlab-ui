@@ -18,7 +18,7 @@ import {
   ClSpiderDetailTabTasks,
   ClSpiderList,
 } from '@/views';
-import { getIconByTabName, translate } from '@/utils';
+import { getIconByRouteConcept, getIconByTabName, translate } from '@/utils';
 import { RouteLocation } from 'vue-router';
 
 const t = translate;
@@ -27,16 +27,19 @@ const endpoint = 'spiders';
 
 export default [
   {
+    routeConcept: 'spider',
     name: 'SpiderList',
     path: endpoint,
     title: t('layouts.routes.spiders.list.title'),
-    icon: ['fa', 'spider'],
+    icon: getIconByRouteConcept('spider'),
     component: async () => ClSpiderList,
   },
   {
+    routeConcept: 'spider',
     name: 'SpiderDetail',
     path: `${endpoint}/:id`,
     title: t('layouts.routes.spiders.detail.title'),
+    icon: getIconByRouteConcept('spider'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },

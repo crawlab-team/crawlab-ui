@@ -21,15 +21,17 @@ const endpoint = 'databases';
 
 export default [
   {
+    routeConcept: 'database',
     name: 'DatabaseList',
     path: endpoint,
-    title: t('layouts.routes.databases.title'),
-    icon: ['fa', 'database'],
+    title: t('layouts.routes.databases.list.title'),
     component: async () => ClDatabaseList,
   },
   {
+    routeConcept: 'database',
     name: 'DatabaseDetail',
     path: `${endpoint}/:id`,
+    title: t('layouts.routes.databases.detail.title'),
     redirect: (to: RouteLocation) => {
       return { path: to.path + '/' + TAB_NAME_OVERVIEW };
     },
@@ -37,25 +39,25 @@ export default [
     children: [
       {
         path: TAB_NAME_OVERVIEW,
-        title: t('layouts.routes.databases.tabs.overview'),
+        title: t('layouts.routes.databases.detail.tabs.overview'),
         icon: getIconByTabName(TAB_NAME_OVERVIEW),
         component: async () => ClDatabaseDetailTabOverview,
       },
       {
         path: TAB_NAME_DATABASES,
-        title: t('layouts.routes.databases.tabs.databases'),
+        title: t('layouts.routes.databases.detail.tabs.databases'),
         icon: getIconByTabName(TAB_NAME_DATABASES),
         component: async () => ClDatabaseDetailTabDatabases,
       },
       {
         path: TAB_NAME_CONSOLE,
-        title: t('layouts.routes.databases.tabs.console'),
+        title: t('layouts.routes.databases.detail.tabs.console'),
         icon: getIconByTabName(TAB_NAME_CONSOLE),
         component: async () => ClDatabaseDetailTabConsole,
       },
       {
         path: TAB_NAME_MONITORING,
-        title: t('layouts.routes.databases.tabs.monitoring'),
+        title: t('layouts.routes.databases.detail.tabs.monitoring'),
         icon: getIconByTabName(TAB_NAME_MONITORING),
         component: async () => ClDatabaseDetailTabMonitoring,
       },

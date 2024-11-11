@@ -24,6 +24,7 @@ import misc from '@/router/misc';
 import { initRouterAuth } from '@/router/hooks/auth';
 import { ROUTER_ROOT_NAME_ROOT } from '@/constants/router';
 import { ClNormalLayout } from '@/layouts';
+import { getIconByRouteConcept } from '@/utils';
 
 export function getDefaultRoutes(): Array<ExtendedRouterRecord> {
   return [
@@ -57,39 +58,55 @@ export function getDefaultRoutes(): Array<ExtendedRouterRecord> {
 
 export function getDefaultSidebarMenuItems(): MenuItem[] {
   return [
-    { path: '/home', title: 'router.menuItems.home', icon: ['fa', 'home'] },
-    { path: '/nodes', title: 'router.menuItems.nodes', icon: ['fa', 'server'] },
+    {
+      path: '/home',
+      title: 'router.menuItems.home',
+      icon: getIconByRouteConcept('home'),
+    },
+    {
+      path: '/nodes',
+      title: 'router.menuItems.nodes',
+      icon: getIconByRouteConcept('node'),
+    },
     {
       path: '/projects',
       title: 'router.menuItems.projects',
-      icon: ['fa', 'project-diagram'],
+      icon: getIconByRouteConcept('project'),
     },
     {
       path: '/spiders',
       title: 'router.menuItems.spiders',
-      icon: ['fa', 'spider'],
+      icon: getIconByRouteConcept('spider'),
     },
     {
       path: '/schedules',
       title: 'router.menuItems.schedules',
-      icon: ['fa', 'clock'],
+      icon: getIconByRouteConcept('schedule'),
     },
-    { path: '/tasks', title: 'router.menuItems.tasks', icon: ['fa', 'tasks'] },
-    { path: '/gits', title: 'router.menuItems.git', icon: ['fab', 'git'] },
+    { 
+      path: '/tasks', 
+      title: 'router.menuItems.tasks', 
+      icon: getIconByRouteConcept('task'),
+    },
+    { 
+      path: '/gits', 
+      title: 'router.menuItems.git', 
+      icon: getIconByRouteConcept('git'),
+    },
     {
       path: '/databases',
       title: 'router.menuItems.databases',
-      icon: ['fa', 'database'],
+      icon: getIconByRouteConcept('database'),
     },
     {
       path: '/dependencies',
       title: 'router.menuItems.dependencies',
-      icon: ['fa', 'cubes'],
+      icon: getIconByRouteConcept('dependency'),
     },
     {
       path: '/notifications',
       title: 'router.menuItems.notification.title',
-      icon: ['fa', 'envelope'],
+      icon: getIconByRouteConcept('notification'),
       children: [
         {
           path: '/notifications/settings',
@@ -99,46 +116,52 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
         {
           path: '/notifications/channels',
           title: 'router.menuItems.notification.channels',
-          icon: ['fa', 'broadcast-tower'],
+          icon: getIconByRouteConcept('notificationChannel'),
         },
         {
           path: '/notifications/alerts',
           title: 'router.menuItems.notification.alerts',
-          icon: ['fa', 'bell'],
+          icon: getIconByRouteConcept('notificationAlert'),
         },
         {
           path: '/notifications/requests',
           title: 'router.menuItems.notification.requests',
-          icon: ['fa', 'paper-plane'],
+          icon: getIconByRouteConcept('notificationRequest'),
         },
       ],
     },
-    { path: '/users', title: 'router.menuItems.users', icon: ['fa', 'users'] },
     {
       path: '/users',
       title: 'router.menuItems.usersManagement.title',
-      icon: ['fa', 'users'],
+      icon: getIconByRouteConcept('user'),
       children: [
         {
           path: '/users',
           title: 'router.menuItems.usersManagement.children.users',
-          icon: ['fa', 'user'],
+          icon: getIconByRouteConcept('user'),
         },
         {
           path: '/roles',
           title: 'router.menuItems.usersManagement.children.roles',
-          icon: ['fa', 'user-tag'],
+          icon: getIconByRouteConcept('role'),
         },
       ],
     },
-    { path: '/auth', title: 'router.menuItems.users', icon: ['fa', 'users'] },
     {
       path: '/environments',
       title: 'router.menuItems.environment',
-      icon: ['fa', 'percent'],
+      icon: getIconByRouteConcept('environment'),
     },
-    { path: '/tokens', title: 'router.menuItems.tokens', icon: ['fa', 'key'] },
-    { path: '/system', title: 'router.menuItems.system', icon: ['fa', 'cogs'] },
+    { 
+      path: '/tokens', 
+      title: 'router.menuItems.tokens', 
+      icon: getIconByRouteConcept('token'),
+    },
+    { 
+      path: '/system', 
+      title: 'router.menuItems.system', 
+      icon: getIconByRouteConcept('system'),
+    },
   ];
 }
 
@@ -147,12 +170,12 @@ export function getDefaultHiddenMenuItems(): MenuItem[] {
     {
       path: '/misc/disclaimer',
       title: 'router.menuItems.misc.disclaimer',
-      icon: ['fa', 'file-signature'],
+      icon: getIconByRouteConcept('disclaimer'),
     },
     {
       path: '/misc/my-settings',
       title: 'router.menuItems.misc.mySettings',
-      icon: ['fa', 'user-cog'],
+      icon: getIconByRouteConcept('mySettings'),
     },
   ] as MenuItem[];
   return items.map(d => {

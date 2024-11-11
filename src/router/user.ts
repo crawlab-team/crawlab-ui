@@ -9,13 +9,14 @@ const endpoint = 'users';
 
 export default [
   {
+    routeConcept: 'user',
     name: 'UserList',
     path: endpoint,
     title: t('layouts.routes.users.list.title'),
-    icon: ['fa', 'users'],
     component: async () => ClUserList,
   },
   {
+    routeConcept: 'user',
     name: 'UserDetail',
     path: `${endpoint}/:id`,
     title: t('layouts.routes.users.detail.title'),
