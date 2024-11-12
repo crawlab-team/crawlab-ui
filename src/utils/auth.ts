@@ -1,6 +1,10 @@
 import { LOCAL_STORAGE_KEY_TOKEN } from '@/constants/localStorage';
 import { getStore } from '@/store';
 
+const store = getStore();
+const rootState = store.state as RootStoreState;
+const commonState = rootState.common;
+
 export const getToken = () => {
   return localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN);
 };
@@ -20,4 +24,12 @@ export const isAllowedAction = (target: string, action: string): boolean => {
 export const isPro = (): boolean => {
   const store = getStore();
   return !!store.getters['common/isPro'];
+};
+
+export const isAllowedRoutePath = (path: string): boolean => {
+  if (!isPro()) return true;
+  if (!commonState.me) return false;
+  if (commonState.me.root_admin) return true;
+  console.debug(path);
+  return commonState.me.routes?.includes(path);
 };

@@ -10,6 +10,8 @@ import {
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
   ACTION_VIEW,
+  ACTION_VIEW_PAGES,
+  ACTION_VIEW_USERS,
   FILTER_OP_CONTAINS,
 } from '@/constants';
 import { getIconByAction, onListFilterChangeByKey } from '@/utils';
@@ -114,6 +116,22 @@ const useRoleList = () => {
                 await router.push(`/roles/${row._id}`);
               },
               action: ACTION_VIEW,
+            },
+            {
+              tooltip: t('common.actions.viewPages'),
+              onClick: async (row: Role) => {
+                await router.push(`/roles/${row._id}/pages`);
+              },
+              action: ACTION_VIEW_PAGES,
+              contextMenu: true,
+            },
+            {
+              tooltip: t('common.actions.viewUsers'),
+              onClick: async (row: Role) => {
+                await router.push(`/roles/${row._id}/users`);
+              },
+              action: ACTION_VIEW_USERS,
+              contextMenu: true,
             },
             {
               tooltip: t('common.actions.delete'),

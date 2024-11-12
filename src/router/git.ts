@@ -19,7 +19,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'gits';
+const endpoint = '/gits';
 
 export default [
   {

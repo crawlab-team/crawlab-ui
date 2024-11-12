@@ -17,7 +17,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'databases';
+const endpoint = '/databases';
 
 export default [
   {

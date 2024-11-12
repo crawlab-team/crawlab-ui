@@ -3,7 +3,7 @@ import { translate } from '@/utils';
 
 const t = translate;
 
-const endpoint = 'misc';
+const endpoint = '/misc';
 
 export default [
   {

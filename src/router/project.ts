@@ -10,7 +10,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'projects';
+const endpoint = '/projects';
 
 export default [
   {

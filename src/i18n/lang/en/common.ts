@@ -36,6 +36,8 @@ const common: LCommon = {
     viewCommits: 'View Commits',
     viewDatabases: 'View Databases',
     viewConsole: 'View Console',
+    viewPages: 'View Pages',
+    viewUsers: 'View Users',
     export: 'Export',
     configure: 'Configure',
     update: 'Update',
@@ -55,6 +57,8 @@ const common: LCommon = {
     insertAfter: 'Insert After',
     rename: 'Rename',
     drop: 'Drop',
+    checkAll: 'Check All',
+    uncheckAll: 'Uncheck All',
   },
   messageBox: {
     confirm: {

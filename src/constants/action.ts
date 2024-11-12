@@ -32,6 +32,8 @@ export const ACTION_VIEW_CHANGES = 'view-changes';
 export const ACTION_VIEW_COMMITS = 'view-commits';
 export const ACTION_VIEW_DATABASES = 'view-databases';
 export const ACTION_VIEW_CONSOLE = 'view-console';
+export const ACTION_VIEW_PAGES = 'view-pages';
+export const ACTION_VIEW_USERS = 'view-users';
 
 // Filter Actions
 export const ACTION_FILTER = 'filter';

@@ -88,13 +88,12 @@ export declare global {
     afterSave: (() => Promise)[];
   }
 
-  interface BaseStoreGetters<S = BaseStoreState, R = RootStoreState>
+  interface BaseStoreGetters<S = BaseStoreState, R = RootStoreState, T = any>
     extends GetterTree<S, R> {
     dialogVisible: StoreGetter<BaseStoreState, boolean>;
     formListIds: StoreGetter<BaseStoreState, string[]>;
     allListSelectOptions: StoreGetter<BaseStoreState, SelectOption[]>;
     allDict: StoreGetter<BaseStoreState, Map<string, T>>;
-    tabs: StoreGetter<BaseStoreState, NavItem[]>;
   }
 
   interface BaseStoreMutations<T = any>

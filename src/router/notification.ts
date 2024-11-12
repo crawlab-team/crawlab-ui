@@ -24,7 +24,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'notifications';
+const endpoint = '/notifications';
 
 export default [
   {

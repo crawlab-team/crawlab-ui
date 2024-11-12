@@ -23,7 +23,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'spiders';
+const endpoint = '/spiders';
 
 export default [
   {
@@ -74,12 +74,6 @@ export default [
         title: t('layouts.routes.spiders.detail.tabs.data'),
         icon: getIconByTabName(TAB_NAME_DATA),
         component: async () => ClSpiderDetailTabData,
-      },
-      {
-        path: TAB_NAME_SETTINGS,
-        title: t('layouts.routes.spiders.detail.tabs.settings'),
-        icon: getIconByTabName(TAB_NAME_SETTINGS),
-        component: async () => ClSpiderDetailTabSettings,
       },
       {
         path: TAB_NAME_DEPENDENCIES,

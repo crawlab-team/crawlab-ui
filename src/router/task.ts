@@ -15,7 +15,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'tasks';
+const endpoint = '/tasks';
 
 export default [
   {

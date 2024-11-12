@@ -36,6 +36,8 @@ const common: LCommon = {
     viewCommits: '查看提交历史',
     viewDatabases: '查看数据库',
     viewConsole: '查看控制台',
+    viewPages: '查看页面',
+    viewUsers: '查看用户',
     export: '导出',
     configure: '配置',
     update: '更新',
@@ -55,6 +57,8 @@ const common: LCommon = {
     insertAfter: '在后插入',
     rename: '重命名',
     drop: '删除',
+    checkAll: '全选',
+    uncheckAll: '取消全选',
   },
   messageBox: {
     confirm: {

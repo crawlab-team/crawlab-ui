@@ -19,6 +19,7 @@ import {
 } from '@/constants';
 import { getIconByAction, onListFilterChangeByKey } from '@/utils';
 import useUser from '@/components/core/user/useUser';
+import { ClNavLink } from '@/components';
 
 // i18n
 const t = translate;
@@ -110,11 +111,13 @@ const useUserList = () => {
         label: t('views.users.table.columns.username'),
         icon: ['fa', 'font'],
         width: '180',
-        value: (row: User) =>
-          h(NavLink, {
-            path: `/users/${row._id}`,
-            label: row.username,
-          }),
+        value: (row: User) => (
+          <ClNavLink
+            path={`/users/${row._id}`}
+            label={row.username}
+            icon={row.admin ? ['fa', 'shield-alt'] : ['fa', 'user']}
+          />
+        ),
         hasSort: true,
         hasFilter: true,
         allowFilterSearch: true,
@@ -133,7 +136,13 @@ const useUserList = () => {
         label: t('views.users.table.columns.role'),
         icon: ['fa', 'font'],
         width: '150',
-        value: (row: User) => h(UserRole, { role: row.role } as UserRoleProps),
+        value: (row: User) => (
+          <ClNavLink
+            path={`/roles/${row.role_id}`}
+            label={row.role}
+            icon={row.admin ? ['fa', 'shield-alt'] : ['fa', 'user']}
+          />
+        ),
         hasFilter: true,
         allowFilterItems: true,
         filterItems: rolesOptions,
@@ -153,7 +162,7 @@ const useUserList = () => {
           },
           {
             tooltip: t('common.actions.delete'),
-            disabled: (row: User) => row.admin,
+            disabled: (row: User) => row.root_admin,
             onClick: deleteByIdConfirm,
             action: ACTION_DELETE,
             contextMenu: true,

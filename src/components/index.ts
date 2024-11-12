@@ -24,6 +24,8 @@ import Box from './ui/box/Box.vue';
 import Button from './ui/button/Button.vue';
 import ButtonGroup from './ui/button/ButtonGroup.vue';
 import Chart from './ui/chart/Chart.vue';
+import CheckboxTree from './ui/checkbox/CheckboxTree.vue';
+import CheckboxTreeGroup from './ui/checkbox/CheckboxTreeGroup.vue';
 import CheckTag from './ui/tag/CheckTag.vue';
 import CheckTagGroup from './ui/tag/CheckTagGroup.vue';
 import ConfirmDialog from './ui/dialog/ConfirmDialog.vue';
@@ -165,7 +167,6 @@ import ResultCell from './core/result/ResultCell.vue';
 import ResultCellDialog from './core/result/ResultCellDialog.vue';
 import ResultDedupFieldsDialog from './core/result/ResultDedupFieldsDialog.vue';
 import RoleForm from './core/role/RoleForm.vue';
-import RoutesForm from './core/role/RoutesForm.vue';
 import RunSpiderDialog from './core/spider/RunSpiderDialog.vue';
 import ScheduleCron from './core/schedule/ScheduleCron.vue';
 import ScheduleForm from './core/schedule/ScheduleForm.vue';
@@ -251,6 +252,8 @@ export {
   Button as ClButton,
   ButtonGroup as ClButtonGroup,
   Chart as ClChart,
+  CheckboxTree as ClCheckboxTree,
+  CheckboxTreeGroup as ClCheckboxTreeGroup,
   CheckTag as ClCheckTag,
   CheckTagGroup as ClCheckTagGroup,
   ConfirmDialog as ClConfirmDialog,
@@ -392,7 +395,6 @@ export {
   ResultCellDialog as ClResultCellDialog,
   ResultDedupFieldsDialog as ClResultDedupFieldsDialog,
   RoleForm as ClRoleForm,
-  RoutesForm as ClRoutesForm,
   RunSpiderDialog as ClRunSpiderDialog,
   ScheduleCron as ClScheduleCron,
   ScheduleForm as ClScheduleForm,

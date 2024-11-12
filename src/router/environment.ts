@@ -3,7 +3,7 @@ import { getIconByRouteConcept, translate } from '@/utils';
 
 const t = translate;
 
-const endpoint = 'environments';
+const endpoint = '/environments';
 
 export default [
   {

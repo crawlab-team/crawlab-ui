@@ -5,7 +5,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'users';
+const endpoint = '/users';
 
 export default [
   {

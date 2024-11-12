@@ -5,6 +5,8 @@ import {
   getDefaultStoreState,
 } from '@/utils/store';
 import { TAB_NAME_OVERVIEW, TAB_NAME_PAGES, TAB_NAME_USERS } from '@/constants';
+import { ref } from 'vue';
+import { ClCheckboxTree } from '@/components';
 
 const state = {
   ...getDefaultStoreState<Role>('role'),
@@ -22,6 +24,7 @@ const state = {
       title: 'layouts.routes.roles.detail.tabs.users',
     },
   ],
+  pagesCheckAllStatus: 'unchecked',
 } as RoleStoreState;
 
 const getters = {
@@ -30,6 +33,9 @@ const getters = {
 
 const mutations = {
   ...getDefaultStoreMutations<Role>(),
+  setPagesCheckAllStatus: (state: RoleStoreState, status) => {
+    state.pagesCheckAllStatus = status;
+  },
 } as RoleStoreMutations;
 
 const actions = {

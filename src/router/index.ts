@@ -43,12 +43,12 @@ export function getDefaultRoutes(): Array<ExtendedRouterRecord> {
         ...schedule,
         ...user,
         ...role,
-        ...token,
         ...notification,
         ...git,
         ...database,
         ...dependency,
         ...environment,
+        ...token,
         ...system,
         ...misc,
       ],
@@ -83,14 +83,14 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
       title: 'router.menuItems.schedules',
       icon: getIconByRouteConcept('schedule'),
     },
-    { 
-      path: '/tasks', 
-      title: 'router.menuItems.tasks', 
+    {
+      path: '/tasks',
+      title: 'router.menuItems.tasks',
       icon: getIconByRouteConcept('task'),
     },
-    { 
-      path: '/gits', 
-      title: 'router.menuItems.git', 
+    {
+      path: '/gits',
+      title: 'router.menuItems.git',
       icon: getIconByRouteConcept('git'),
     },
     {
@@ -152,14 +152,14 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
       title: 'router.menuItems.environment',
       icon: getIconByRouteConcept('environment'),
     },
-    { 
-      path: '/tokens', 
-      title: 'router.menuItems.tokens', 
+    {
+      path: '/tokens',
+      title: 'router.menuItems.tokens',
       icon: getIconByRouteConcept('token'),
     },
-    { 
-      path: '/system', 
-      title: 'router.menuItems.system', 
+    {
+      path: '/system',
+      title: 'router.menuItems.system',
       icon: getIconByRouteConcept('system'),
     },
   ];

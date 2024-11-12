@@ -15,7 +15,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'nodes';
+const endpoint = '/nodes';
 
 export default [
   {

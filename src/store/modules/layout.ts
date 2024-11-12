@@ -1,7 +1,7 @@
 import { plainClone } from '@/utils/object';
 import { normalizeTree } from '@/utils/tree';
 import { getDefaultMenuItems } from '@/router';
-import { isPro } from '@/utils';
+import { isAllowedRoutePath, isPro } from '@/utils';
 import { saveLocalStorage } from '@/utils/storage';
 
 // persistent sidebar collapsed
@@ -82,34 +82,51 @@ export default {
       return tabs.find(d => d.id === activeTabId);
     },
     sidebarMenuItems: (state: LayoutStoreState) => {
-      return state.menuItems
-        .filter(d => !d.hidden)
-        .filter(d => {
-          // skip if no path
-          if (!d.path) return false;
+      return (
+        state.menuItems
+          // filter hidden items
+          .filter(d => !d.hidden)
+          // filter items by pro
+          .filter(d => {
+            // skip if no path
+            if (!d.path) return false;
 
-          // skip some items if pro
-          if (isPro()) {
-            return !['router.menuItems.users'].includes(d.title);
-          }
+            // skip some items if pro
+            if (isPro()) {
+              return !['router.menuItems.users'].includes(d.title);
+            }
 
-          // skip some items if not pro
-          return (
-            ![
-              '/notifications',
-              '/environments',
-              '/system',
-              '/deps',
-              '/gits',
-              '/databases',
-            ].includes(d.path) || !['userManagement'].includes(d.title)
-          );
-        })
-        .filter(d => {
-          if (!state.navVisibleFn) return true;
-          if (!d.path) return true;
-          return state.navVisibleFn(d.path);
-        });
+            // skip some items if not pro
+            return (
+              ![
+                '/notifications',
+                '/environments',
+                '/system',
+                '/deps',
+                '/gits',
+                '/databases',
+              ].includes(d.path) || !['userManagement'].includes(d.title)
+            );
+          })
+          // filter items by navVisibleFn
+          .filter(d => {
+            if (!state.navVisibleFn) return true;
+            if (!d.path) return true;
+            return state.navVisibleFn(d.path);
+          })
+          // filter items by allowed routes
+          .filter(d => {
+            if (isAllowedRoutePath(d.path)) return true;
+            return d.children?.some(c => isAllowedRoutePath(c.path));
+          })
+          // filter children by allowed routes
+          .map(d => {
+            return {
+              ...d,
+              children: d.children?.filter(c => isAllowedRoutePath(c.path)),
+            };
+          })
+      );
     },
     normalizedMenuItems: (state: LayoutStoreState) =>
       normalizeTree<MenuItem>(state.menuItems),

@@ -61,6 +61,7 @@ import ProjectDetailTabSpiders from './project/detail/tabs/ProjectDetailTabSpide
 import ProjectList from './project/list/ProjectList.vue';
 import ResultList from './data/list/ResultList.vue';
 import RoleDetail from './role/detail/RoleDetail.vue';
+import RoleDetailActionsPages from './role/detail/actions/RoleDetailActionsPages.vue';
 import RoleDetailTabOverview from './role/detail/tabs/RoleDetailTabOverview.vue';
 import RoleDetailTabPages from './role/detail/tabs/RoleDetailTabPages.vue';
 import RoleDetailTabUsers from './role/detail/tabs/RoleDetailTabUsers.vue';
@@ -187,6 +188,7 @@ export {
   ProjectList as ClProjectList,
   ResultList as ClResultList,
   RoleDetail as ClRoleDetail,
+  RoleDetailActionsPages as ClRoleDetailActionsPages,
   RoleDetailTabOverview as ClRoleDetailTabOverview,
   RoleDetailTabPages as ClRoleDetailTabPages,
   RoleDetailTabUsers as ClRoleDetailTabUsers,

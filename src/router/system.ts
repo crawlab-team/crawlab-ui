@@ -3,7 +3,7 @@ import { translate } from '@/utils';
 
 const t = translate;
 
-const endpoint = 'system';
+const endpoint = '/system';
 
 export default [
   {

@@ -10,6 +10,7 @@ declare global {
   interface CommonStoreState {
     lang?: Lang;
     systemInfo?: SystemInfo;
+    me?: User;
   }
 
   interface CommonStoreGetters
@@ -20,10 +21,14 @@ declare global {
   interface CommonStoreMutations extends MutationTree<CommonStoreState> {
     setLang: StoreMutation<CommonStoreState, Lang>;
     setSystemInfo: StoreMutation<CommonStoreState, SystemInfo>;
+    setMe: StoreMutation<CommonStoreState, User>;
+    resetMe: StoreMutation<CommonStoreState>;
   }
 
   interface CommonStoreActions
     extends ActionTree<CommonStoreState, RootStoreState> {
     getSystemInfo: StoreAction<CommonStoreState>;
+    getMe: StoreAction<CommonStoreState>;
+    putMe: StoreAction<CommonStoreState, User>;
   }
 }

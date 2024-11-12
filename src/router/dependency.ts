@@ -3,7 +3,7 @@ import { ClDependencyList } from '@/views';
 
 const t = translate;
 
-const endpoint = 'dependencies';
+const endpoint = '/dependencies';
 
 export default [
   {

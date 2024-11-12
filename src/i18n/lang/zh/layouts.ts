@@ -5,6 +5,9 @@ const layouts: LLayouts = {
       mySettings: '我的设置',
       disclaimer: '免责声明',
     },
+    tabsView: {
+      add: '添加标签页',
+    },
     sidebar: {
       collapse: '折叠导航栏',
       expand: '展开导航栏',

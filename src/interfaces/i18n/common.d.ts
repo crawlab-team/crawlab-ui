@@ -49,6 +49,8 @@ export declare global {
       viewCommits: string;
       viewDatabases: string;
       viewConsole: string;
+      viewPages: string;
+      viewUsers: string;
       export: string;
       configure: string;
       update: string;
@@ -68,6 +70,8 @@ export declare global {
       insertAfter: string;
       rename: string;
       drop: string;
+      checkAll: string;
+      uncheckAll: string;
     };
     messageBox: {
       confirm: {

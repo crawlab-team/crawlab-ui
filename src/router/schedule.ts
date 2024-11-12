@@ -10,7 +10,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'schedules';
+const endpoint = '/schedules';
 
 export default [
   {

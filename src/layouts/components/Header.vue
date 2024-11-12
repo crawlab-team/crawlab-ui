@@ -9,6 +9,7 @@ import {
   getNavMenuItems,
   isPro,
   getIconByRouteConcept,
+  isAllowedRoutePath,
 } from '@/utils';
 
 // i18n
@@ -23,7 +24,8 @@ const route = useRoute();
 const store = useStore();
 
 // store states
-const { layout: layoutState } = store.state as RootStoreState;
+const { layout: layoutState, common: commonState } =
+  store.state as RootStoreState;
 
 // whether side is collapsed
 const sidebarCollapsed = computed(() => {
@@ -47,9 +49,7 @@ const setLang = (lang: Lang) => {
 
 // current user's username
 const username = computed<string | undefined>(() => {
-  const me = store.getters['user/me'] as User | undefined;
-  if (!me) return;
-  return me.username;
+  return commonState.me?.username;
 });
 
 // on logout hook
@@ -161,10 +161,16 @@ defineOptions({ name: 'ClHeader' });
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="onClickDisclaimer">
+              <el-dropdown-item
+                v-if="isAllowedRoutePath('/misc/disclaimer')"
+                @click="onClickDisclaimer"
+              >
                 {{ t('layouts.components.header.disclaimer') }}
               </el-dropdown-item>
-              <el-dropdown-item @click="onClickMySettings">
+              <el-dropdown-item
+                v-if="isAllowedRoutePath('/misc/my-settings')"
+                @click="onClickMySettings"
+              >
                 {{ t('layouts.components.header.mySettings') }}
               </el-dropdown-item>
               <el-dropdown-item @click="onLogout">

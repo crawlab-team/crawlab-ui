@@ -77,8 +77,6 @@ const loginRules: LoginRules = {
 
 const isShowMobileWarning = ref<boolean>(false);
 
-const allowRegister = ref<boolean>(false);
-
 const internalLang = ref<string>(localStorage.getItem('lang') || 'en');
 
 const lang = computed<string | null>(
@@ -120,13 +118,13 @@ const login = async () => {
     // set token to local storage
     localStorage.setItem(LOCAL_STORAGE_KEY_TOKEN, res.data);
 
-    // initialize plugins
-    // initPlugins(router, store)
-    //   .then(() => console.info('[Crawlab] plugins initialized'))
-    //   .catch(e => console.warn('[Crawlab] initializing plugins with error', e));
-
-    // redirect to home page
-    await router.push('/');
+    // redirect to active tab if exists, otherwise redirect to home
+    const activeTab = store.getters['layout/activeTab'] as Tab;
+    if (activeTab) {
+      await router.push(activeTab.path);
+    } else {
+      await router.push('/');
+    }
   } catch (e: any) {
     // error
     if (e.toString().includes('401')) {
@@ -149,7 +147,7 @@ const onLogin = async () => {
   await login();
 
   // get current user (me)
-  await store.dispatch('user/getMe');
+  await store.dispatch('common/getMe');
 };
 
 const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});

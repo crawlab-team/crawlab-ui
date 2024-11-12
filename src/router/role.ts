@@ -15,7 +15,7 @@ import { RouteLocation } from 'vue-router';
 
 const t = translate;
 
-const endpoint = 'roles';
+const endpoint = '/roles';
 
 export default [
   {

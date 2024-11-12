@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const { layout: state } = store.state as RootStoreState;
 
 const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
+
+onBeforeMount(() => {
+  store.dispatch('common/getMe');
+});
+
 defineOptions({ name: 'ClNormalLayout' });
 </script>
 

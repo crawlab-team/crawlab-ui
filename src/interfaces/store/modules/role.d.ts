@@ -6,11 +6,18 @@ export declare global {
     RoleStoreActions
   >;
 
-  interface RoleStoreState extends BaseStoreState<Role> {}
+  interface RoleStoreState extends BaseStoreState<Role> {
+    pagesCheckAllStatus: CheckboxStatus;
+  }
 
-  type RoleStoreGetters = BaseStoreGetters<Role>;
+  interface RoleStoreGetters extends BaseStoreGetters<Role> {}
 
-  interface RoleStoreMutations extends BaseStoreMutations<Role> {}
+  interface RoleStoreMutations extends BaseStoreMutations<Role> {
+    setPagesCheckAllStatus: (
+      state: RoleStoreState,
+      status: CheckboxStatus
+    ) => void;
+  }
 
   interface RoleStoreActions extends BaseStoreActions<Role> {}
 }

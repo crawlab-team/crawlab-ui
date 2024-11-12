@@ -31,9 +31,11 @@ import {
   ACTION_VIEW_FILES,
   ACTION_VIEW_LOGS,
   ACTION_VIEW_MONITORING,
+  ACTION_VIEW_PAGES,
   ACTION_VIEW_SCHEDULES,
   ACTION_VIEW_SPIDERS,
   ACTION_VIEW_TASKS,
+  ACTION_VIEW_USERS,
   TAB_NAME_CHANGES,
   TAB_NAME_CHANNELS,
   TAB_NAME_COLUMNS,
@@ -189,6 +191,10 @@ export const getIconByAction = (action: string): Icon | undefined => {
       return ['fa', 'database'];
     case ACTION_VIEW_CONSOLE:
       return ['fa', 'terminal'];
+    case ACTION_VIEW_PAGES:
+      return ['fa', 'file-alt'];
+    case ACTION_VIEW_USERS:
+      return ['fa', 'users'];
 
     // Filter Actions
     case ACTION_FILTER:

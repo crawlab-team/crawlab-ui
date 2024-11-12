@@ -5,6 +5,9 @@ const layouts: LLayouts = {
       mySettings: 'My Settings',
       disclaimer: 'Disclaimer',
     },
+    tabsView: {
+      add: 'Add Tab',
+    },
     sidebar: {
       collapse: 'Collapse Sidebar',
       expand: 'Expand Sidebar',

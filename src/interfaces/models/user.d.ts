@@ -7,5 +7,7 @@ export declare global {
     role_id?: string;
     email?: string;
     admin?: boolean;
+    root_admin?: boolean;
+    routes?: string[];
   }
 }

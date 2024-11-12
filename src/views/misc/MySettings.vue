@@ -10,15 +10,16 @@ import useUser from '@/components/core/user/useUser';
 const t = translate;
 
 // store
-const ns = 'user';
+const ns: StoreNamespace = 'common';
 const store = useStore();
+const { common: state } = store.state as RootStoreState;
 
 const { formRef, formRules, onChangePasswordFunc } = useUser(store);
 
 const form = ref<User>({});
 
 onBeforeMount(() => {
-  form.value = plainClone(store.getters['user/me']) as User;
+  form.value = plainClone<User>(state.me);
 });
 
 const onChangePassword = () => onChangePasswordFunc(form.value._id);

@@ -122,18 +122,26 @@ export const getAllMenuItemPathMap = () => {
   return paths;
 };
 
-export const getRouteSelectOptions = (): SelectOption[] => {
+export const getRouteSelectOptions = (): CheckboxTreeSelectOption[] => {
   const routes: Array<ExtendedRouterRecord> =
     getDefaultRoutes().find(r => r.path === '/')?.children || [];
 
   // Group routes by routeConcept
   const conceptGroups = new Map<RouteConcept, ExtendedRouterRecord[]>();
   routes.forEach(route => {
+    // Get concept
     let concept = route.routeConcept;
+
+    // Skip if no concept
     if (!concept) return;
+
+    // Special case for notifications
+    if (concept === 'notification') return;
     if (concept.startsWith('notification')) {
       concept = 'notification';
     }
+
+    // Add to concept group
     if (!conceptGroups.has(concept)) {
       conceptGroups.set(concept, []);
     }
@@ -141,27 +149,64 @@ export const getRouteSelectOptions = (): SelectOption[] => {
   });
 
   return Array.from(conceptGroups.entries()).map(([concept, conceptRoutes]) => {
+    // Initialize variables
+    let value: string | undefined = undefined;
+    let children: CheckboxTreeSelectOption[] | undefined = conceptRoutes.map(
+      r => {
+        let value: string | undefined = r.path;
+        let children: CheckboxTreeSelectOption[] | undefined;
+        children = r.children?.map(c => {
+          return {
+            id: JSON.stringify([concept, r.path, c.path]),
+            icon:
+              c.icon ||
+              getIconByRouteConcept(c.routeConcept!) ||
+              r.icon ||
+              getIconByRouteConcept(r.routeConcept!),
+            label: c.title || '',
+            value: r.path + '/' + c.path,
+            labelWidth: 'auto',
+          } as CheckboxTreeSelectOption;
+        });
+        if (children && children.length === 1) {
+          value = children[0].value;
+          children = undefined;
+        }
+        return {
+          id: JSON.stringify([concept, r.path]),
+          icon: r.icon || getIconByRouteConcept(r.routeConcept!),
+          label: r.title || '',
+          value,
+          horizontal: true,
+          children,
+        };
+      }
+    );
+
+    // Special cases
+    if (
+      [
+        'home',
+        'disclaimer',
+        'mySettings',
+        'token',
+        'environment',
+        'dependency',
+        'system',
+      ].includes(concept)
+    ) {
+      children = undefined;
+      value = conceptRoutes[0].path;
+    } else if (concept === 'notification') {
+      children = children.filter(c => c.value !== '/notifications');
+    }
+
     return {
+      id: JSON.stringify([concept]),
       icon: getIconByRouteConcept(concept),
       label: getLabelByRouteConcept(concept),
-      children: conceptRoutes.map(r => {
-        return {
-          icon: r.icon || getIconByRouteConcept(r.routeConcept!),
-          value: r.path || '',
-          label: r.title || '',
-          children: r.children?.map(c => {
-            return {
-              icon:
-                c.icon ||
-                getIconByRouteConcept(c.routeConcept!) ||
-                r.icon ||
-                getIconByRouteConcept(r.routeConcept!),
-              value: c.path || '',
-              label: c.title || '',
-            };
-          }),
-        };
-      }),
+      value,
+      children,
     };
   });
 };

@@ -2,13 +2,17 @@
 import { computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import { Plus } from '@element-plus/icons-vue';
 import { plainClone } from '@/utils/object';
 import {
+  getIconByAction,
   getIconByRouteConcept,
   getNavMenuItems,
   getRouteMenuItemsMap,
+  translate,
 } from '@/utils';
+import { ACTION_ADD } from '@/constants';
+
+const t = translate;
 
 // store
 const storeNameSpace = 'layout';
@@ -117,66 +121,135 @@ defineOptions({ name: 'ClTabsView' });
 </script>
 
 <template>
-  <el-tabs
-    :model-value="state.activeTabId"
-    class="tabs-view"
-    type="border-card"
-    editable
-    addable
-    @tab-change="onTabChange"
-    @tab-remove="onTabRemove"
-    @tab-add="onTabAdd"
-  >
-    <template #add-icon>
-      <el-icon>
-        <plus />
-      </el-icon>
-    </template>
-    <el-tab-pane v-for="tab in tabs" :key="JSON.stringify(tab)" :name="tab.id">
-      <template #label>
-        <span class="icon-wrapper">
-          <cl-icon :icon="getLastNavItemIcon(tab.path)" />
-        </span>
-        <span class="label">{{ getNavItemLabel(tab.path) }}</span>
+  <div class="tabs-view-wrapper">
+    <div class="bottom-line" />
+    <el-tabs
+      :model-value="state.activeTabId"
+      class="tabs-view"
+      type="card"
+      editable
+      addable
+      @tab-change="onTabChange"
+      @tab-remove="onTabRemove"
+      @tab-add="onTabAdd"
+    >
+      <template #add-icon>
+        <el-tooltip :content="t('layouts.components.tabsView.add')">
+          <div class="add-icon-wrapper">
+            <cl-icon :icon="getIconByAction(ACTION_ADD)" />
+          </div>
+        </el-tooltip>
       </template>
-    </el-tab-pane>
-  </el-tabs>
+      <el-tab-pane
+        v-for="tab in tabs"
+        :key="JSON.stringify(tab)"
+        :name="tab.id"
+      >
+        <template #label>
+          <span class="icon-wrapper">
+            <cl-icon :icon="getLastNavItemIcon(tab.path)" />
+          </span>
+          <span class="label">{{ getNavItemLabel(tab.path) }}</span>
+        </template>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 
 <style scoped>
-.tabs-view {
-  background-color: var(--cl-tabs-view-bg);
+.tabs-view-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--el-fill-color-light);
   height: var(--cl-tabs-view-height);
-  border: none;
 
-  &:deep(.icon-wrapper) {
-    margin-right: 5px;
+  .bottom-line {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background-color: var(--el-border-color-light);
+    z-index: 2;
   }
 
-  &:deep(.el-tabs__item.is-active) {
-    border-bottom: 1px solid #ffffff;
-  }
+  .tabs-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    background-color: var(--cl-tabs-view-bg);
+    height: var(--cl-tabs-view-height);
+    border: none;
+    border-bottom: 1px solid var(--cl-tabs-view-bg);
+    z-index: 1;
 
-  &:deep(.el-tabs__item .is-icon-close) {
-    width: 0;
-  }
+    &:deep(.icon-wrapper) {
+      margin-right: 5px;
+    }
 
-  &:deep(.el-tabs__item:hover .is-icon-close) {
-    width: 14px;
-    transform-origin: 100% 50%;
-  }
+    &:deep(.el-tabs__header.is-top) {
+      border-bottom: none;
+    }
 
-  &:deep(.el-tabs__item > .icon) {
-    margin-right: 3px;
-  }
+    &:deep(.el-tabs__new-tab) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 40px;
+      border: none;
+      background-color: var(--el-fill-color-light);
+    }
 
-  &:deep(.el-tabs__new-tab) {
-    margin-right: 10px;
-    background-color: #ffffff;
-  }
+    &:deep(.el-tabs__new-tab .add-icon-wrapper) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      width: 24px;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      border: 1px solid var(--el-border-color-light);
+      border-radius: 50%;
+    }
 
-  &:deep(.el-tabs__content) {
-    display: none;
+    &:deep(.el-tabs__nav) {
+      border: none;
+      border-radius: 0;
+    }
+
+    &:deep(.el-tabs__item:not(.is-active)) {
+      color: var(--el-text-color-secondary);
+      background-color: var(--el-fill-color-light);
+    }
+
+    &:deep(.el-tabs__item.is-active) {
+      border-bottom: none;
+    }
+
+    &:deep(.el-tabs__item:last-child) {
+      border-right: 1px solid var(--el-border-color-light);
+    }
+
+    &:deep(.el-tabs__item .is-icon-close) {
+      width: 0;
+    }
+
+    &:deep(.el-tabs__item:hover .is-icon-close) {
+      width: 14px;
+      transform-origin: 100% 50%;
+    }
+
+    &:deep(.el-tabs__content) {
+      display: none;
+    }
   }
 }
 </style>

@@ -16,6 +16,9 @@ export declare global {
         mySettings: string;
         logout: string;
       };
+      tabsView: {
+        add: string;
+      };
       sidebar: {
         expand: string;
         collapse: string;

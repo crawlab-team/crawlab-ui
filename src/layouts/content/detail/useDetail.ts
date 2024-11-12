@@ -4,7 +4,7 @@ import { computed, watch, provide, ref } from 'vue';
 import { getRoutePath, getTabName } from '@/utils/route';
 import { ElMessage } from 'element-plus';
 import { translate } from '@/utils/i18n';
-import { debounce } from '@/utils';
+import { debounce, isPro } from '@/utils';
 
 // i18n
 const t = translate;
@@ -15,7 +15,10 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
 
   // store state
   const store = useStore();
-  const state = store.state[ns] as BaseStoreState;
+  const rootState = store.state as RootStoreState;
+  const state = rootState[ns] as BaseStoreState;
+  const commonState = rootState.common;
+
   const { form } = state;
 
   const showActionsToggleTooltip = ref<boolean>(false);
@@ -37,13 +40,24 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
   const activeTabName = computed<string>(() => getTabName(router));
 
   const tabs = computed(() => {
-    return state.tabs.map(tab => {
-      return {
-        ...tab,
-        title: t(tab.title || ''),
-        disabled: state.disabledTabKeys.includes(tab.id),
-      };
-    });
+    return (
+      state.tabs
+        // filter tabs by allowed routes
+        .filter(tab => {
+          if (!isPro()) return true;
+          if (!commonState.me) return false;
+          if (commonState.me.root_admin) return true;
+          const tabRoute = `${primaryRoutePath.value}/:id/${tab.id}`;
+          return commonState.me.routes?.includes(tabRoute);
+        })
+        .map(tab => {
+          return {
+            ...tab,
+            title: t(tab.title || ''),
+            disabled: state.disabledTabKeys.includes(tab.id),
+          };
+        })
+    );
   });
 
   const navLoading = ref(false);

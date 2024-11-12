@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { useStore } from 'vuex';
-import { useRole } from '@/components';
-
-const store = useStore();
-
-const { routesOptions } = useRole(store);
 defineOptions({ name: 'ClRoleDetailTabUsers' });
 </script>
 
-<template></template>
-
-<style scoped></style>
+<template>
+  <cl-detail-tab-list filter-key="role_id" ns="user">
+    <cl-user-list no-actions embedded />
+  </cl-detail-tab-list>
+</template>
