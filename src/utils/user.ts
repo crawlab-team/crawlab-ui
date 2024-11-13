@@ -10,7 +10,7 @@ export const getUserFullName = (user: User) => {
   if (isChineseName(user)) {
     return lastName + firstName;
   } else {
-    return firstName + ' ' + lastName;
+    return (firstName + ' ' + lastName).trim();
   }
 };
 
