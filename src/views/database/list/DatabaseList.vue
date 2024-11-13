@@ -8,6 +8,7 @@ const {
   tableData,
   tablePagination,
   tableTotal,
+  selectableFunction,
 } = useDatabaseList();
 
 defineOptions({ name: 'ClDatabaseList' });
@@ -23,6 +24,7 @@ defineOptions({ name: 'ClDatabaseList' });
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
+    :selectable-function="selectableFunction"
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->

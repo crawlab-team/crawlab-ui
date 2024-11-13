@@ -255,8 +255,15 @@ const useDatabaseList = () => {
 
   setupListComponent(ns, store, [], true);
 
+  const selectableFunction: TableSelectableFunction<Database> = (
+    row: Database
+  ) => {
+    return !row.is_default;
+  };
+
   return {
     ...useList<Database>(ns, store, opts),
+    selectableFunction,
   };
 };
 

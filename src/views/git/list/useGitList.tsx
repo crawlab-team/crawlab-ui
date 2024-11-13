@@ -239,8 +239,13 @@ const useGitList = () => {
   // init
   setupListComponent(ns, store, []);
 
+  const selectableFunction: TableSelectableFunction<Git> = (row: Git) => {
+    return !row.spiders?.length;
+  };
+
   return {
     ...useList<Git>(ns, store, opts),
+    selectableFunction,
   };
 };
 

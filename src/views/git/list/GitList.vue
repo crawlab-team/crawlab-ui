@@ -8,7 +8,9 @@ const {
   tableColumns,
   tableData,
   tableTotal,
+  selectableFunction,
 } = useGitList();
+
 defineOptions({ name: 'ClGitList' });
 </script>
 
@@ -31,6 +33,7 @@ defineOptions({ name: 'ClGitList' });
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
+    :selectable-function="selectableFunction"
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
