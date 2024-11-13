@@ -409,16 +409,13 @@ const useNodeList = () => {
     setupAutoUpdate(() => store.dispatch(`${ns}/getNodeMetrics`));
   }
 
-  // visible table actions buttons
-  const visibleButtons: BuiltInTableActionButtonName[] = [
-    TABLE_ACTION_EDIT,
-    TABLE_ACTION_EXPORT,
-    TABLE_ACTION_CUSTOMIZE_COLUMNS,
-  ];
+  const selectableFunction: TableSelectableFunction<Node> = (row: Node) => {
+    return !row.active;
+  };
 
   return {
     ...useList<Node>(ns, store, opts),
-    visibleButtons,
+    selectableFunction,
   };
 };
 

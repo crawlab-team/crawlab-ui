@@ -172,7 +172,7 @@ const useRoleList = () => {
   );
 
   const selectableFunction = (row: Role) => {
-    return row.key !== ROLE_KEY_ADMIN;
+    return !row.admin;
   };
 
   // options

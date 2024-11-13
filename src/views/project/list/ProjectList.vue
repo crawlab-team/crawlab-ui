@@ -1,29 +1,17 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useProjectList from './useProjectList';
+<script setup lang="ts">
+import { useProjectList } from '@/views';
 
-export default defineComponent({
-  name: 'ProjectList',
-  setup() {
-    const {
-      navActions,
-      tableColumns,
-      tableData,
-      tableTotal,
-      tablePagination,
-      actionFunctions,
-    } = useProjectList();
+const {
+  navActions,
+  tableColumns,
+  tableData,
+  tableTotal,
+  tablePagination,
+  actionFunctions,
+  selectableFunction,
+} = useProjectList();
 
-    return {
-      navActions,
-      tableColumns,
-      tableData,
-      tableTotal,
-      tablePagination,
-      actionFunctions,
-    };
-  },
-});
+defineOptions({ name: 'ClProjectList' });
 </script>
 
 <template>
@@ -35,6 +23,7 @@ export default defineComponent({
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
+    :selectable-function="selectableFunction"
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->
@@ -43,5 +32,3 @@ export default defineComponent({
     </template>
   </cl-list-layout>
 </template>
-
-

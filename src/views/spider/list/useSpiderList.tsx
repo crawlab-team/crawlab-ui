@@ -323,38 +323,6 @@ const useSpiderList = () => {
     })
   );
 
-  // table actions prefix
-  const tableActionsPrefix = computed<ListActionButton[]>(() => {
-    return [
-      // {
-      //   buttonType: 'fa-icon',
-      //   tooltip: 'Run',
-      //   size: 'small',
-      //   icon: ['fa', 'play'],
-      //   type: 'success',
-      //   disabled: (table: typeof Table) => {
-      //     return !table?.internalSelection?.length;
-      //   },
-      // }
-    ];
-  });
-
-  // const onClickCreate = () => {
-  //   commit(`${ns}/showDialog`, 'create');
-  // };
-  //
-  // const onClickEdit = () => {
-  //   commit(`${ns}/showDialog`, 'edit');
-  // };
-  //
-  // const onClickClone = () => {
-  //   commit(`${ns}/showDialog`, 'clone');
-  // };
-
-  // const onClickRun = () => {
-  //   commit(`${ns}/showDialog`, 'run');
-  // };
-
   // options
   const opts = {
     navActions,
@@ -366,7 +334,6 @@ const useSpiderList = () => {
 
   return {
     ...useList<Spider>(ns, store, opts),
-    tableActionsPrefix,
   };
 };
 

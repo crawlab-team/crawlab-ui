@@ -146,6 +146,10 @@ const useProjectList = () => {
       ] as TableColumns<Project>
   );
 
+  const selectableFunction = (row: Project) => {
+    return row.spiders === 0;
+  };
+
   // options
   const opts = {
     navActions,
@@ -154,6 +158,7 @@ const useProjectList = () => {
 
   return {
     ...useList<Project>(ns, store, opts),
+    selectableFunction,
   };
 };
 

@@ -12,7 +12,7 @@ const {
   tableColumns,
   tableData,
   tableTotal,
-  visibleButtons,
+  selectableFunction,
 } = useNodeList();
 
 const getCurrentMetrics = (row: CNode) => {
@@ -36,7 +36,7 @@ defineOptions({ name: 'ClNodeList' });
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
-    :visible-buttons="visibleButtons"
+    :selectable-function="selectableFunction"
   >
     <template #extra>
       <!-- Dialogs (handled by store) -->

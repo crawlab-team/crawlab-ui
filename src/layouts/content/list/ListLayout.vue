@@ -27,6 +27,7 @@ const props = withDefaults(
     tableFilter?: any;
     actionFunctions?: ListLayoutActionFunctions;
     noActions?: boolean;
+    selectable?: boolean;
     selectableFunction?: TableSelectableFunction;
     visibleButtons?: BuiltInTableActionButtonName[];
     tablePaginationLayout?: string;
@@ -50,7 +51,8 @@ const props = withDefaults(
     tableActionsSuffix: emptyArrayFunc,
     tableFilter: emptyObjectFunc,
     noActions: false,
-    selectableFunction: () => true,
+    selectable: true,
+    selectableFunction: () => () => true,
     visibleButtons: emptyArrayFunc,
   }
 );
@@ -201,7 +203,7 @@ defineOptions({ name: 'ClListLayout' });
         :page="tablePagination.page"
         :page-size="tablePagination.size"
         :page-sizes="tablePageSizes"
-        selectable
+        :selectable="selectable"
         :selectable-function="selectableFunction"
         :visible-buttons="visibleButtons"
         :pagination-layout="tablePaginationLayout"
