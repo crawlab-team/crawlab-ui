@@ -3,6 +3,8 @@ const roles: LViewsRoles = {
     columns: {
       name: '名称',
       description: '描述',
+      pages: '可访问页面',
+      users: '用户数',
     },
   },
   navActions: {

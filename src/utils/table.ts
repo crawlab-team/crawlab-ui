@@ -19,3 +19,11 @@ export const getColumnWidth = (column: TableColumn): number | undefined => {
     return column.width;
   }
 };
+
+export const getPlaceholderColumn = (): TableColumn => {
+  return {
+    key: 'placeholder',
+    width: 'auto',
+    label: '',
+  };
+};

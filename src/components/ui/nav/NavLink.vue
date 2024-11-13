@@ -6,6 +6,7 @@ const props = defineProps<{
   label?: string | number | boolean;
   icon?: Icon;
   external?: boolean;
+  tooltip?: string;
 }>();
 
 const slots = defineSlots<{
@@ -36,11 +37,11 @@ defineOptions({ name: 'ClNavLink' });
   <div class="nav-link" @click="onClick">
     <cl-icon :icon="icon" class="icon" />
     <slot v-if="slots.default" />
-    <span class="title" v-else>{{ label }}</span>
+    <span class="title" v-else-if="label">{{ label }}</span>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .nav-link {
   cursor: pointer;
   color: var(--cl-blue);

@@ -1,5 +1,6 @@
 export declare global {
   interface LGlobal {
+    locale: string;
     lang: string;
     edition: {
       community: string;

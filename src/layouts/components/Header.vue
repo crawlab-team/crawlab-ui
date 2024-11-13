@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { ArrowDown, ArrowRight } from '@element-plus/icons-vue';
+import { ArrowRight } from '@element-plus/icons-vue';
 import {
   setGlobalLang,
   getNavMenuItems,
@@ -11,6 +11,7 @@ import {
   getIconByRouteConcept,
   isAllowedRoutePath,
 } from '@/utils';
+import { getUserFullName } from '@/utils/user';
 
 // i18n
 const { t, locale } = useI18n();
@@ -47,10 +48,8 @@ const setLang = (lang: Lang) => {
   store.commit('common/setLang', lang);
 };
 
-// current user's username
-const username = computed<string | undefined>(() => {
-  return commonState.me?.username;
-});
+// current user
+const me = computed(() => commonState.me);
 
 // on logout hook
 const onLogout = () => {
@@ -77,6 +76,8 @@ const onClickMySettings = () => {
 };
 
 const navMenuItems = computed<MenuItem[]>(() => getNavMenuItems(route.path));
+
+const meDropdownVisible = ref<boolean>(false);
 
 defineOptions({ name: 'ClHeader' });
 </script>
@@ -118,69 +119,90 @@ defineOptions({ name: 'ClHeader' });
             <cl-git-hub-star-badge />
           </div>
         </template>
-        <el-link
-          class="item"
-          :href="`https://docs.crawlab.cn/${locale}/`"
-          target="_blank"
-        >
-          <font-awesome-icon class="icon" :icon="['fa', 'book']" />
-          {{ t('global.docs') }}
-        </el-link>
-        <el-dropdown class="lang">
-          <span class="el-dropdown-link item action">
-            <font-awesome-icon class="icon" :icon="['fa', 'globe']" />
-            {{ langName }}
-            <el-icon class="el-icon--right">
-              <arrow-down />
-            </el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item
-                :class="locale === 'en' ? 'active' : ''"
-                @click="() => setLang('en')"
-              >
-                {{ t('global.lang', [], { locale: 'en' }) }}
-              </el-dropdown-item>
-              <el-dropdown-item
-                :class="locale === 'zh' ? 'active' : ''"
-                @click="() => setLang('zh')"
-              >
-                {{ t('global.lang', [], { locale: 'zh' }) }}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <el-dropdown class="me">
-          <span class="el-dropdown-link item action">
-            <font-awesome-icon class="icon" :icon="['far', 'user']" />
-            {{ username }}
-            <el-icon class="el-icon--right">
-              <arrow-down />
-            </el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item
-                v-if="isAllowedRoutePath('/misc/disclaimer')"
-                @click="onClickDisclaimer"
-              >
-                {{ t('layouts.components.header.disclaimer') }}
-              </el-dropdown-item>
-              <el-dropdown-item
-                v-if="isAllowedRoutePath('/misc/my-settings')"
-                @click="onClickMySettings"
-              >
-                {{ t('layouts.components.header.mySettings') }}
-              </el-dropdown-item>
-              <el-dropdown-item @click="onLogout">
-                <span class="logout">{{
-                  t('layouts.components.header.logout')
-                }}</span>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <div class="item">
+          <el-tooltip :content="t('global.docs')">
+            <el-link
+              :href="`https://docs.crawlab.cn/${locale}/`"
+              target="_blank"
+            >
+              <cl-icon :icon="['fa', 'file-alt']" size="normal" />
+            </el-link>
+          </el-tooltip>
+        </div>
+        <div class="item action">
+          <el-dropdown trigger="click">
+            <div class="lang">
+              <el-tooltip :content="t('global.locale')">
+                <div class="label">
+                  <cl-icon :icon="['fa', 'language']" size="normal" />
+                  <span v-if="locale === 'zh'"> 中文 </span>
+                  <span v-else> EN </span>
+                </div>
+              </el-tooltip>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  :class="locale === 'en' ? 'active' : ''"
+                  @click="() => setLang('en')"
+                >
+                  {{ t('global.lang', [], { locale: 'en' }) }}
+                </el-dropdown-item>
+                <el-dropdown-item
+                  :class="locale === 'zh' ? 'active' : ''"
+                  @click="() => setLang('zh')"
+                >
+                  {{ t('global.lang', [], { locale: 'zh' }) }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+        <div v-if="me" class="item action">
+          <el-dropdown trigger="click" popper-class="me-dropdown">
+            <div class="me">
+              <el-tooltip>
+                <cl-user-avatar :user="me" />
+                <template #content>
+                  <div>
+                    <label>{{ t('components.user.form.username') }}: </label>
+                    <span>{{ me.username }}</span>
+                  </div>
+                  <div v-if="getUserFullName(me)">
+                    <label>{{ t('components.user.form.fullName') }}: </label>
+                    <span>{{ getUserFullName(me) }}</span>
+                  </div>
+                  <div v-if="me.email">
+                    <label>{{ t('components.user.form.email') }}: </label>
+                    <span>{{ me.email }}</span>
+                  </div>
+                </template>
+              </el-tooltip>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-if="isAllowedRoutePath('/misc/disclaimer')"
+                  @click="onClickDisclaimer"
+                >
+                  <cl-icon :icon="['fa', 'info-circle']" />
+                  {{ t('layouts.components.header.disclaimer') }}
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-if="isAllowedRoutePath('/misc/my-settings')"
+                  @click="onClickMySettings"
+                >
+                  <cl-icon :icon="['fa', 'user-cog']" />
+                  {{ t('layouts.components.header.mySettings') }}
+                </el-dropdown-item>
+                <el-dropdown-item @click="onLogout">
+                  <cl-icon :icon="['fa', 'sign-out-alt']" />
+                  {{ t('layouts.components.header.logout') }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </el-header>
   </div>
@@ -233,11 +255,28 @@ defineOptions({ name: 'ClHeader' });
           outline: none;
         }
 
-        .icon {
-          margin-right: 6px;
+        .lang {
+          display: flex;
+          align-items: center;
+
+          &:hover {
+            color: var(--cl-primary-color);
+          }
+
+          &:deep(.icon) {
+            margin-right: 5px;
+          }
         }
       }
     }
+  }
+}
+</style>
+<style>
+.me-dropdown {
+  .icon {
+    width: 20px;
+    margin-right: 5px;
   }
 }
 </style>

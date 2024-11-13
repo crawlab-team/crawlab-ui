@@ -1,7 +1,7 @@
 import { plainClone } from '@/utils/object';
 import useRequest from '@/services/request';
 
-const { get, put } = useRequest();
+const { get, put, post } = useRequest();
 
 export default {
   namespaced: true,
@@ -41,6 +41,12 @@ export default {
     },
     putMe: async (_: StoreActionContext, me: User) => {
       await put(`/users/me`, me);
+    },
+    changeMyPassword: async (
+      _: StoreActionContext,
+      { password }: { password: string }
+    ) => {
+      await post(`/users/me/change-password`, { password });
     },
   } as CommonStoreActions,
 } as CommonStoreModule;

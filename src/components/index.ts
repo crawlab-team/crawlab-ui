@@ -215,6 +215,7 @@ import useNotificationAlert from './core/notification/alert/useNotificationAlert
 import useNotificationChannel from './core/notification/channel/useNotificationChannel';
 import useNotificationSetting from './core/notification/setting/useNotificationSetting';
 import useProject from './core/project/useProject';
+import UserAvatar from './ui/avatar/UserAvatar.vue';
 import UserForm from './core/user/UserForm.vue';
 import useRichTextSetup from './ui/lexical/composables/useRichTextSetup';
 import useRole from './core/role/useRole';
@@ -443,6 +444,7 @@ export {
   useNotificationChannel as useNotificationChannel,
   useNotificationSetting as useNotificationSetting,
   useProject as useProject,
+  UserAvatar as ClUserAvatar,
   UserForm as ClUserForm,
   useRichTextSetup as useRichTextSetup,
   useRole as useRole,

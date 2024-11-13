@@ -15,51 +15,44 @@ defineOptions({ name: 'ClNavActionItem' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .nav-action-item {
   margin: 10px 0;
-  //height: fit-content;
   display: flex;
   flex: 0 0 auto;
   align-items: center;
   color: var(--cl-nav-actions-item-color);
 
-  & + .nav-action-item {
-    //margin-left: 10px;
-  }
-
   &.is-label {
     margin-right: 10px;
   }
-}
-</style>
-<style scoped>
-.nav-action-item:deep(.title) {
-  color: inherit;
-}
 
-.nav-action-item:deep(.label) {
-  color: inherit;
-  font-size: 14px;
-  margin-right: 5px;
-  margin-left: 5px;
-}
+  &:deep(.title) {
+    color: inherit;
+  }
 
-.nav-action-item:deep(.el-button.el-button--small) {
-  height: 32px;
-}
+  &:deep(.label) {
+    color: inherit;
+    font-size: 14px;
+    margin-right: 5px;
+  }
 
-.nav-action-item:deep(.el-button:not(.is-circle) .fa) {
-  margin-right: 0;
-}
+  &:deep(.el-button.el-button--small) {
+    height: 32px;
+  }
 
-.nav-action-item:deep(.el-button .icon + span) {
-  margin-left: 5px;
-}
+  &:deep(.el-button:not(.is-circle) .fa) {
+    margin-right: 0;
+  }
 
-.nav-action-item:deep(.nav-action-item-label) {
-  color: inherit;
-  font-size: 12px;
-  margin-right: 5px;
+  &:deep(.el-button .icon + span) {
+    margin-left: 5px;
+  }
+
+  &:deep(.nav-action-item-label) {
+    color: inherit;
+    font-size: 12px;
+    margin-right: 5px;
+  }
 }
 </style>

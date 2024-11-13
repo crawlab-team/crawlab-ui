@@ -30,5 +30,6 @@ declare global {
     getSystemInfo: StoreAction<CommonStoreState>;
     getMe: StoreAction<CommonStoreState>;
     putMe: StoreAction<CommonStoreState, User>;
+    changeMyPassword: StoreAction<UserStoreState, { password: string }>;
   }
 }

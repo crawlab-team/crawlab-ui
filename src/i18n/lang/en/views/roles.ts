@@ -3,6 +3,8 @@ const roles: LViewsRoles = {
     columns: {
       name: 'Name',
       description: 'Description',
+      pages: 'Accessible Pages',
+      users: 'Users',
     },
   },
   navActions: {

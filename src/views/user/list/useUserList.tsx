@@ -20,6 +20,7 @@ import {
 import { getIconByAction, onListFilterChangeByKey } from '@/utils';
 import useUser from '@/components/core/user/useUser';
 import { ClNavLink } from '@/components';
+import { getUserFullName } from '@/utils/user';
 
 // i18n
 const t = translate;
@@ -123,18 +124,27 @@ const useUserList = () => {
         allowFilterSearch: true,
       },
       {
+        key: 'full_name',
+        label: t('views.users.table.columns.fullName'),
+        icon: ['fa', 'font'],
+        width: '180',
+        value: (row: User) => (
+          <ClNavLink path={`/users/${row._id}`} label={getUserFullName(row)} />
+        ),
+      },
+      {
         key: 'email',
         label: t('views.users.table.columns.email'),
         icon: ['fa', 'at'],
         width: '180',
-        hasSort: true,
-        hasFilter: true,
-        allowFilterSearch: true,
+        value: (row: User) => (
+          <ClNavLink path={`/users/${row._id}`} label={row.email} />
+        ),
       },
       {
         key: 'role',
         label: t('views.users.table.columns.role'),
-        icon: ['fa', 'font'],
+        icon: ['fa', 'user-tag'],
         width: '150',
         value: (row: User) => (
           <ClNavLink
@@ -146,6 +156,10 @@ const useUserList = () => {
         hasFilter: true,
         allowFilterItems: true,
         filterItems: rolesOptions,
+      },
+      {
+        key: 'placeholder',
+        width: 'auto',
       },
       {
         key: TABLE_COLUMN_NAME_ACTIONS,
@@ -174,7 +188,7 @@ const useUserList = () => {
   );
 
   const selectableFunction = (row: User) => {
-    return row.username !== USERNAME_ADMIN;
+    return !row.root_admin;
   };
 
   // options

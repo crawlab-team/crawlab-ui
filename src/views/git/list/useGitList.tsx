@@ -10,22 +10,18 @@ import {
   ACTION_VIEW_CHANGES,
   ACTION_VIEW_COMMITS,
   ACTION_VIEW_FILES,
-  ACTION_VIEW_LOGS,
   ACTION_VIEW_SPIDERS,
   FILTER_OP_CONTAINS,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import { useList } from '@/layouts/content';
 import {
+  getPlaceholderColumn,
   onListFilterChangeByKey,
   setupListComponent,
   translate,
 } from '@/utils';
 import useGit from '@/components/core/git/useGit';
-// import NavLink from '@/components/ui/nav/NavLink.vue';
-// import GitStatus from '@/components/core/git/GitStatus.vue';
-// import ClTag from '@/components/ui/tag/Tag.vue';
-// import ClIcon from '@/components/ui/icon/Icon.vue';
 import { ClNavLink, ClGitStatus, ClTag, ClIcon } from '@/components';
 
 const useGitList = () => {
@@ -171,11 +167,12 @@ const useGitList = () => {
           value: (row: Git) => (
             <ClNavLink
               path={`/gits/${row._id}/spiders`}
-              label={row.spiders?.length || 0}
+              label={row.spiders?.length || '0'}
             />
           ),
           hasSort: false,
         },
+        getPlaceholderColumn(),
         {
           key: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
@@ -221,10 +218,7 @@ const useGitList = () => {
               contextMenu: true,
             },
             {
-              tooltip: row =>
-                !row.spiders?.length
-                  ? t('common.actions.delete')
-                  : t('views.gits.table.actions.tooltip.deleteNotAllowed'),
+              tooltip: t('common.actions.delete'),
               disabled: row => row.spiders?.length > 0,
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,

@@ -3,6 +3,9 @@ interface LComponentsUser {
     username: string;
     password: string;
     changePassword: string;
+    firstName: string;
+    lastName: string;
+    fullName: string;
     email: string;
     role: string;
     newPassword: string;

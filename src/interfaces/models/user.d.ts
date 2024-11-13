@@ -5,6 +5,8 @@ export declare global {
     password?: string;
     role?: string;
     role_id?: string;
+    first_name?: string;
+    last_name?: string;
     email?: string;
     admin?: boolean;
     root_admin?: boolean;

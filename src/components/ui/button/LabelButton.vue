@@ -34,6 +34,6 @@ defineOptions({ name: 'ClLabelButton' });
 
 <style scoped>
 .icon-wrapper {
-  margin-right: 3px;
+  margin-right: 5px;
 }
 </style>

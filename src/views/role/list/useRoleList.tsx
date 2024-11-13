@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { computed, h } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { TABLE_COLUMN_NAME_ACTIONS } from '@/constants/table';
@@ -95,6 +95,31 @@ const useRoleList = () => {
           hasSort: true,
           hasFilter: true,
           allowFilterSearch: true,
+        },
+        {
+          className: 'pages',
+          key: 'routes',
+          label: t('views.roles.table.columns.pages'),
+          icon: ['fa', 'file-alt'],
+          value: (row: Role) => (
+            <ClNavLink
+              path={`/roles/${row._id}/pages`}
+              label={
+                row.admin ? t('common.mode.all') : row.routes?.length || '0'
+              }
+            />
+          ),
+          width: '120',
+        },
+        {
+          className: 'users',
+          key: 'users',
+          label: t('views.roles.table.columns.users'),
+          icon: ['fa', 'users'],
+          value: (row: Role) => (
+            <ClNavLink path={`/roles/${row._id}/users`} label={row.users} />
+          ),
+          width: '120',
         },
         {
           key: 'description',

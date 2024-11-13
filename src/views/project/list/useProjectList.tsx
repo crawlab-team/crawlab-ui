@@ -99,7 +99,7 @@ const useProjectList = () => {
           value: (row: Project) => (
             <ClNavLink
               path={`/projects/${row._id}/spiders`}
-              label={row.spiders}
+              label={row.spiders || '0'}
             />
           ),
           width: '120',
@@ -135,6 +135,7 @@ const useProjectList = () => {
             },
             {
               tooltip: t('common.actions.delete'),
+              disabled: row => row.spiders > 0,
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,
               contextMenu: true,

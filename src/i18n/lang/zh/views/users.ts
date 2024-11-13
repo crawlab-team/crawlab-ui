@@ -2,6 +2,7 @@ const users: LViewsUsers = {
   table: {
     columns: {
       username: '用户名',
+      fullName: '姓名',
       email: '邮箱',
       role: '角色',
     },

@@ -4,5 +4,6 @@ export declare global {
     description?: string;
     routes?: string[];
     admin?: boolean;
+    users?: number;
   }
 }

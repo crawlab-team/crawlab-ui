@@ -265,7 +265,7 @@ export const getIconByRouteConcept = (concept: RouteConcept): Icon => {
     case 'system':
       return ['fa', 'cogs'];
     case 'disclaimer':
-      return ['fa', 'file-signature'];
+      return ['fa', 'info-circle'];
     case 'mySettings':
       return ['fa', 'user-cog'];
     default:

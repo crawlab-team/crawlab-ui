@@ -1,33 +1,58 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import { translate, plainClone } from '@/utils';
 import useUser from '@/components/core/user/useUser';
+import { debounce } from 'lodash';
+import useRequest from '@/services/request';
 
 // i18n
 const t = translate;
+
+const { post } = useRequest();
 
 // store
 const ns: StoreNamespace = 'common';
 const store = useStore();
 const { common: state } = store.state as RootStoreState;
 
-const { formRef, formRules, onChangePasswordFunc } = useUser(store);
-
 const form = ref<User>({});
 
-onBeforeMount(() => {
-  form.value = plainClone<User>(state.me);
+const initializeForm = debounce(() => {
+  if (state.me) {
+    form.value = plainClone<User>(state.me);
+  }
 });
 
-const onChangePassword = () => onChangePasswordFunc(form.value._id);
+onBeforeMount(initializeForm);
+watch(() => state.me, initializeForm);
 
 const onSave = async () => {
   await store.dispatch(`${ns}/putMe`, form.value);
   ElMessage.success(t('common.message.success.save'));
   await store.dispatch(`${ns}/getMe`);
+};
+
+const onChangePassword = async () => {
+  const { value } = await ElMessageBox.prompt(
+    t('components.user.messageBox.prompt.changePassword'),
+    t('components.user.form.changePassword'),
+    {
+      inputType: 'password',
+      inputPlaceholder: t('components.user.form.newPassword'),
+      inputValidator: (value: string) => {
+        return value?.length < 5
+          ? t('components.user.rules.invalidPassword')
+          : true;
+      },
+      confirmButtonClass: 'edit-user-password-confirm-btn',
+      cancelButtonClass: 'edit-user-password-cancel-btn',
+    }
+  );
+  await store.dispatch(`${ns}/changeMyPassword`, { password: value });
+  ElMessage.success(t('common.message.success.save'));
 };
 defineOptions({ name: 'ClMySettings' });
 </script>
@@ -48,65 +73,11 @@ defineOptions({ name: 'ClMySettings' });
           </cl-nav-action-item>
         </cl-nav-action-group>
       </cl-nav-actions>
-      <cl-form ref="formRef" :model="form" :rules="formRules" class="user-form">
-        <!-- Row -->
-        <cl-form-item
-          :span="2"
-          :label="t('components.user.form.username')"
-          prop="username"
-          required
-        >
-          <el-input
-            v-model="form.username"
-            :placeholder="t('components.user.form.username')"
-          />
-        </cl-form-item>
-        <cl-form-item
-          :span="2"
-          :label="t('components.user.form.password')"
-          prop="password"
-          required
-        >
-          <cl-label-button
-            :icon="['fa', 'lock']"
-            :label="t('components.user.form.changePassword')"
-            type="danger"
-            @click="onChangePassword"
-          />
-        </cl-form-item>
-        <!-- ./Row -->
-
-        <!-- Row -->
-        <cl-form-item
-          :span="2"
-          :label="t('components.user.form.email')"
-          prop="email"
-        >
-          <el-input
-            v-model="form.email"
-            :placeholder="t('components.user.form.email')"
-            type="email"
-          />
-        </cl-form-item>
-        <cl-form-item
-          :span="2"
-          :label="t('components.user.form.role')"
-          prop="role"
-          required
-        >
-          <el-select v-model="form.role">
-            <el-option
-              :value="ROLE_ADMIN"
-              :label="t('components.user.role.admin')"
-            />
-            <el-option
-              :value="ROLE_NORMAL"
-              :label="t('components.user.role.normal')"
-            />
-          </el-select>
-        </cl-form-item>
-        <!-- ./Row -->
-      </cl-form>
+      <cl-user-form
+        :form="form"
+        is-edit
+        :on-change-password="onChangePassword"
+      />
     </cl-simple-layout>
   </div>
 </template>

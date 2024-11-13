@@ -3,7 +3,8 @@ interface LViewsRoles {
     columns: {
       name: string;
       description: string;
-      routes: string;
+      pages: string;
+      users: string;
     };
   };
   navActions: LNavActions;

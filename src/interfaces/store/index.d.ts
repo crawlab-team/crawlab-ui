@@ -173,7 +173,7 @@ export declare global {
     | 'database'
     | 'dependency'
     | 'environment';
-  type StoreNamespace = ListStoreNamespace | 'layout';
+  type StoreNamespace = ListStoreNamespace | 'layout' | 'common';
 
   interface StoreContext<T, R = RootStoreState> {
     namespace: StoreNamespace;

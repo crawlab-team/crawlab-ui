@@ -6,9 +6,18 @@ import useUser from '@/components/core/user/useUser';
 import useUserDetail from '@/views/user/detail/useUserDetail';
 import { isPro, translate } from '@/utils';
 import { useRole } from '@/components';
+import { useI18n } from 'vue-i18n';
+
+const props = defineProps<{
+  form?: User;
+  isEdit?: boolean;
+  onChangePassword?: () => Promise<void>;
+}>();
 
 // i18n
 const t = translate;
+
+const { locale } = useI18n();
 
 // store
 const store = useStore();
@@ -17,12 +26,24 @@ const { activeId } = useUserDetail();
 
 const { onChangePasswordFunc } = useUser(store);
 
-const onChangePassword = () => onChangePasswordFunc(activeId.value);
+const onChangePassword =
+  props.onChangePassword ||
+  (() => onChangePasswordFunc(props.form?._id || activeId.value));
 
 const isDetail = computed<boolean>(() => !!activeId.value);
 
-const { form, formRef, formRules, isSelectiveForm, isFormItemDisabled } =
-  useUser(store);
+const {
+  form: userForm,
+  formRef,
+  formRules,
+  isSelectiveForm,
+  isFormItemDisabled,
+} = useUser(store);
+
+const form = computed<User>(() => {
+  if (props.form) return props.form;
+  return userForm.value;
+});
 
 const { allListSelectOptions: allRolesSelectOptions } = useRole(store);
 
@@ -62,7 +83,7 @@ defineOptions({ name: 'ClUserForm' });
       required
     >
       <el-input
-        v-if="isSelectiveForm || !isDetail"
+        v-if="!isEdit && (isSelectiveForm || !isDetail)"
         v-model="form.password"
         :disabled="isFormItemDisabled('password')"
         :placeholder="t('components.user.form.password')"
@@ -74,10 +95,61 @@ defineOptions({ name: 'ClUserForm' });
         class-name="password"
         :icon="['fa', 'lock']"
         :label="t('components.user.form.changePassword')"
-        type="danger"
+        type="primary"
         @click="onChangePassword"
       />
     </cl-form-item>
+    <!-- ./Row -->
+
+    <!-- Row -->
+    <template v-if="locale === 'zh'">
+      <cl-form-item
+        :span="2"
+        :label="t('components.user.form.lastName')"
+        prop="last_name"
+      >
+        <el-input
+          v-model="form.last_name"
+          :disabled="isFormItemDisabled('last_name')"
+          :placeholder="t('components.user.form.lastName')"
+        />
+      </cl-form-item>
+      <cl-form-item
+        :span="2"
+        :label="t('components.user.form.firstName')"
+        prop="first_name"
+      >
+        <el-input
+          v-model="form.first_name"
+          :disabled="isFormItemDisabled('first_name')"
+          :placeholder="t('components.user.form.firstName')"
+        />
+      </cl-form-item>
+    </template>
+    <template v-else>
+      <cl-form-item
+        :span="2"
+        :label="t('components.user.form.firstName')"
+        prop="first_name"
+      >
+        <el-input
+          v-model="form.first_name"
+          :disabled="isFormItemDisabled('first_name')"
+          :placeholder="t('components.user.form.firstName')"
+        />
+      </cl-form-item>
+      <cl-form-item
+        :span="2"
+        :label="t('components.user.form.lastName')"
+        prop="last_name"
+      >
+        <el-input
+          v-model="form.last_name"
+          :disabled="isFormItemDisabled('last_name')"
+          :placeholder="t('components.user.form.lastName')"
+        />
+      </cl-form-item>
+    </template>
     <!-- ./Row -->
 
     <!-- Row -->
