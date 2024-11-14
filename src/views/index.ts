@@ -104,6 +104,7 @@ import useGitList from './git/list/useGitList';
 import useNodeList from './node/list/useNodeList';
 import useNotificationAlertDetail from './notification/alert/detail/useNotificationAlertDetail';
 import useNotificationAlertList from './notification/alert/list/useNotificationAlertList';
+import useNotificationChannelDetail from './notification/channel/detail/useNotificationChannelDetail';
 import useNotificationChannelList from './notification/channel/list/useNotificationChannelList';
 import useNotificationRequestList from './notification/request/list/useNotificationRequestList';
 import useNotificationSettingDetail from './notification/setting/detail/useNotificationSettingDetail';
@@ -231,6 +232,7 @@ export {
   useNodeList as useNodeList,
   useNotificationAlertDetail as useNotificationAlertDetail,
   useNotificationAlertList as useNotificationAlertList,
+  useNotificationChannelDetail as useNotificationChannelDetail,
   useNotificationChannelList as useNotificationChannelList,
   useNotificationRequestList as useNotificationRequestList,
   useNotificationSettingDetail as useNotificationSettingDetail,

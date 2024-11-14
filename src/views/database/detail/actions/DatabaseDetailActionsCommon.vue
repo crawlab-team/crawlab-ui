@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
-import { isPro } from '@/utils';
 import useRequest from '@/services/request';
-import useDetail from '../../../../layouts/content/detail/useDetail';
 import { useDatabaseDetail } from '@/views';
 
 const { get } = useRequest();

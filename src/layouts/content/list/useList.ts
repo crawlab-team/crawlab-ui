@@ -51,11 +51,11 @@ export const getFilterConditions = (
   return conditions;
 };
 
-const useList = <T = any>(
+const useList = <T extends BaseModel>(
   ns: ListStoreNamespace,
   store: Store<RootStoreState>,
   opts?: UseListOptions<T>
-): ListLayoutComponentData => {
+): ListLayoutComponentData<T> => {
   // store state
   const state = store.state[ns as keyof RootStoreState] as BaseStoreState;
 

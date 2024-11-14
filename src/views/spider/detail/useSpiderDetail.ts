@@ -1,15 +1,10 @@
-import { watch, computed, onBeforeMount } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
-import useSpiderService from '@/services/spider/spiderService';
 import { useRoute } from 'vue-router';
-import { translate } from '@/utils/i18n';
-import useDetail from '@/layouts/content/detail/useDetail';
-
-// i18n
-const t = translate;
+import useSpiderService from '@/services/spider/spiderService';
+import { useDetail } from '@/layouts';
 
 const useSpiderDetail = () => {
-  const nsDc = 'dataCollection';
   const store = useStore();
   const { spider: state } = store.state as RootStoreState;
 
@@ -33,7 +28,7 @@ const useSpiderDetail = () => {
   onBeforeMount(() => store.dispatch(`node/getAllList`));
 
   return {
-    ...useDetail('spider'),
+    ...useDetail<Spider>('spider'),
     saveFile,
   };
 };

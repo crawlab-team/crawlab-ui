@@ -2,7 +2,7 @@ import { ComputedRef, Ref } from 'vue';
 import Table from '@/components/ui/table/Table.vue';
 
 export declare global {
-  interface ListLayoutComponentData<T = any> {
+  interface ListLayoutComponentData<T extends BaseModel> {
     navActions?: Ref<ListActionGroup[]>;
     tableLoading: Ref<boolean>;
     tableColumns?: Ref<TableColumns<T>>;
@@ -15,7 +15,7 @@ export declare global {
     activeDialogKey: ComputedRef<DialogKey | undefined>;
   }
 
-  interface UseListOptions<T> {
+  interface UseListOptions<T extends BaseModel> {
     navActions: Ref<ListActionGroup[]>;
     tableColumns: Ref<TableColumns<T>>;
   }

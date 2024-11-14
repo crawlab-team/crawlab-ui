@@ -1,5 +1,5 @@
 import { useStore } from 'vuex';
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 import { setupGetAllList } from '@/utils/list';
 
 const useScheduleDetail = () => {
@@ -9,7 +9,7 @@ const useScheduleDetail = () => {
   setupGetAllList(store, ['node', 'spider']);
 
   return {
-    ...useDetail('schedule'),
+    ...useDetail<Schedule>('schedule'),
   };
 };
 

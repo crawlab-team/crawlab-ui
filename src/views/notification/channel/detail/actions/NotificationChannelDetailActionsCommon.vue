@@ -1,17 +1,17 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { getIconByAction, getIconByRouteConcept, translate } from '@/utils';
-import useDetail from '@/layouts/content/detail/useDetail';
 import { ACTION_SEND_TEST_MESSAGE } from '@/constants';
-import { ref } from 'vue';
+import { useNotificationChannelDetail } from '@/views';
 
 const t = translate;
 
 const ns: ListStoreNamespace = 'notificationChannel';
 const store = useStore();
 
-const { activeId } = useDetail<NotificationChannel>(ns);
+const { activeId } = useNotificationChannelDetail();
 
 const sendTestMessageLoading = ref(false);
 const onClickSendTestMessage = async () => {

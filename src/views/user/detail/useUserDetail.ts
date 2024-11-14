@@ -1,8 +1,8 @@
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 
 const useUserDetail = () => {
   return {
-    ...useDetail('user'),
+    ...useDetail<User>('user'),
   };
 };
 

@@ -1,15 +1,12 @@
-import { useStore } from 'vuex';
-import useDetail from '@/layouts/content/detail/useDetail';
-import { setupGetAllList } from '@/utils/list';
-import useTask from '@/components/core/task/useTask';
 import { onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
+import { useDetail } from '@/layouts';
+import { setupGetAllList } from '@/utils/list';
 
 const useTaskDetail = () => {
   // store
   const ns = 'task';
   const store = useStore();
-
-  const { form } = useTask(store);
 
   // dispose
   onBeforeUnmount(() => {
@@ -23,7 +20,6 @@ const useTaskDetail = () => {
 
   return {
     ...useDetail<Task>('task'),
-    form,
   };
 };
 

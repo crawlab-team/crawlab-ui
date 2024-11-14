@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { isPro, translate } from '@/utils';
+import { translate } from '@/utils';
 import useRequest from '@/services/request';
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useNotificationAlertDetail } from '@/views';
 
 const { get } = useRequest();
 
@@ -9,7 +9,7 @@ const t = translate;
 
 const ns = 'notificationAlert';
 
-const { activeId } = useDetail<NotificationAlert>(ns);
+const { activeId } = useNotificationAlertDetail();
 
 defineOptions({ name: 'ClNotificationAlertDetailActionsCommon' });
 </script>

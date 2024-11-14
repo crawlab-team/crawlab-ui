@@ -24,7 +24,7 @@ const useDetail = <T extends BaseModel>(ns: ListStoreNamespace) => {
   const showActionsToggleTooltip = ref<boolean>(false);
 
   const navItems = computed<NavItem<T>[]>(() =>
-    state.allList.map((d: BaseModel) => {
+    state.allList.map((d: T) => {
       return {
         id: d._id,
         title: d.name,
@@ -78,7 +78,6 @@ const useDetail = <T extends BaseModel>(ns: ListStoreNamespace) => {
   const afterSave = computed<Function[]>(() => state.afterSave);
 
   const getForm = debounce(async () => {
-    console.debug('getForm');
     if (!activeId.value) return;
     return await store.dispatch(`${ns}/getById`, activeId.value);
   });

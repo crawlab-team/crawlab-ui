@@ -10,16 +10,19 @@ import {
 } from 'vue';
 import { useStore } from 'vuex';
 import * as monaco from 'monaco-editor';
-import useTaskDetail from '@/views/task/detail/useTaskDetail';
+import { useTaskDetail } from '@/views';
 import { isCancellable } from '@/utils';
+import { useTask } from '@/components';
 
 // store
 const ns = 'task';
 const store = useStore();
 const { task: state, file: fileState } = store.state as RootStoreState;
 
+const { form } = useTask(store);
+
 // use task detail
-const { form, activeId, getForm } = useTaskDetail();
+const { activeId, getForm } = useTaskDetail();
 
 // log div element
 const editorRef = ref<HTMLDivElement>();

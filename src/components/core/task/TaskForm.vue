@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import useSpider from '@/components/core/spider/useSpider';
-import useNode from '@/components/core/node/useNode';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useRequest from '@/services/request';
-import useTask from '@/components/core/task/useTask';
 import { isCancellable, priorityOptions } from '@/utils/task';
-import { ElMessage, ElMessageBox } from 'element-plus';
 import { isZeroObjectId } from '@/utils/mongo';
-import useTaskDetail from '@/views/task/detail/useTaskDetail';
 import { translate } from '@/utils';
+import { useTaskDetail } from '@/views';
+import { useSpider, useNode, useTask } from '@/components';
 
 defineProps<{
   readonly?: boolean;

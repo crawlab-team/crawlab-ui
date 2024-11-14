@@ -7,7 +7,7 @@ import { translate } from '@/utils';
 import { getTimeUnitParts } from '@/utils/time';
 import { getMetricFormatValue } from '@/utils/metric';
 import { colorPalette } from '@/utils/chart';
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 
 const props = defineProps<{
   ns: ListStoreNamespace;

@@ -8,7 +8,7 @@ import { TASK_STATUS_PENDING, TASK_STATUS_RUNNING } from '@/constants';
 import useRequest from '@/services/request';
 import { translate, isCancellable, isPro } from '@/utils';
 import useTask from '@/components/core/task/useTask';
-import useTaskDetail from '@/views/task/detail/useTaskDetail';
+import { useTaskDetail } from '@/views';
 
 const { post } = useRequest();
 

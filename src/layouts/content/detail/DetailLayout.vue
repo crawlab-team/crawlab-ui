@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 
 const props = withDefaults(
   defineProps<{

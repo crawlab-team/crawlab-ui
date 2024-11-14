@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import useTask from '@/components/core/task/useTask';
-import useTaskDetail from '@/views/task/detail/useTaskDetail';
+import { useTaskDetail } from '@/views';
 import { FILTER_OP_EQUAL } from '@/constants';
 import { isPro } from '@/utils';
 

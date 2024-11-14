@@ -5,7 +5,7 @@ import { getTabName } from '@/utils/route';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { translate } from '@/utils/i18n';
 import { GIT_STATUS_READY } from '@/constants/git';
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 import {
   TAB_NAME_CHANGES,
   TAB_NAME_FILES,
@@ -181,7 +181,7 @@ const useGitDetail = () => {
   };
 
   return {
-    ...useDetail('git'),
+    ...useDetail<Git>('git'),
     currentBranch,
     gitLocalBranches,
     gitLocalBranchesDict,

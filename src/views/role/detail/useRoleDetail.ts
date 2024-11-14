@@ -1,8 +1,8 @@
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 
 const useRoleDetail = () => {
   return {
-    ...useDetail('role'),
+    ...useDetail<Role>('role'),
   };
 };
 

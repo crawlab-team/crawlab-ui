@@ -2,7 +2,7 @@
 import { onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
 import { isPro, translate } from '@/utils';
 import useRequest from '@/services/request';
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 
 const { get } = useRequest();
 

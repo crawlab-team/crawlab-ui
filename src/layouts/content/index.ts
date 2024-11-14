@@ -1,4 +1,4 @@
 import useList from '@/layouts/content/list/useList';
-import useDetail from '@/layouts/content/detail/useDetail';
+import { useDetail } from '@/layouts';
 
 export { useList, useDetail };
