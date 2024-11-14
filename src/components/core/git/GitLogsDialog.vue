@@ -2,7 +2,7 @@
 import { ref, watch, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
-import { GIT_STATUS_CLONING } from '@/constants';
+import { GIT_STATUS_CLONING, GIT_STATUS_ERROR } from '@/constants';
 import useGit from '@/components/core/git/useGit';
 import ClLogsView from '@/views/deps/task/LogsView.vue';
 
@@ -49,6 +49,14 @@ defineOptions({ name: 'ClGitLogsDialog' });
   <cl-dialog
     :visible="dialogVisible"
     :title="t('components.git.form.cloneLogs')"
+    :confirm-type="
+      state.form?.status === GIT_STATUS_ERROR ? 'warning' : 'primary'
+    "
+    :confirm-text="
+      state.form?.status === GIT_STATUS_ERROR
+        ? t('common.actions.retry')
+        : t('common.actions.confirm')
+    "
     @close="store.commit(`${ns}/hideDialog`)"
     @confirm="store.commit(`${ns}/hideDialog`)"
   >

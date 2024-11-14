@@ -13,6 +13,7 @@ withDefaults(
     confirmDisabled?: boolean;
     confirmLoading?: boolean;
     confirmType?: BasicType;
+    confirmText?: string;
     className?: string;
     appendToBody?: boolean;
   }>(),
@@ -81,14 +82,14 @@ defineOptions({ name: 'ClDialog' });
         :type="confirmType"
         @click="onConfirm"
       >
-        {{ t('common.actions.confirm') }}
+        {{ confirmText || t('common.actions.confirm') }}
       </cl-button>
       <slot name="suffix" />
     </template>
   </el-dialog>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .el-dialog {
   .title {
     margin-left: 10px;

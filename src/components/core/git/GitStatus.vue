@@ -1,6 +1,5 @@
 <script setup lang="tsx">
-import { computed } from 'vue';
-import { useStore } from 'vuex';
+import { computed, VNode } from 'vue';
 import {
   GIT_STATUS_PENDING,
   GIT_STATUS_READY,
@@ -20,15 +19,11 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'click'): void;
-  (e: 'retry'): void;
 }>();
 
 const t = translate;
 
-const ns = 'git';
-const store = useStore();
-
-const data = computed<TagProps>(() => {
+const data = computed<TagProps & { tooltip: VNode }>(() => {
   const { status, error } = props;
   switch (status) {
     case GIT_STATUS_PENDING:
@@ -57,14 +52,19 @@ const data = computed<TagProps>(() => {
     case GIT_STATUS_ERROR:
       return {
         label: t('components.git.status.label.error'),
-        tooltip: `${t('components.git.status.tooltip.error')}<br><span style="color: 'var(--cl-red)">${error}</span>`,
+        tooltip: (
+          <>
+            <div>{t('components.git.status.tooltip.error')}:</div>
+            <div style={{ color: 'var(--cl-danger-color)' }}>{error}</div>
+          </>
+        ),
         type: 'danger',
         icon: ['fa', 'times'],
       };
     case GIT_STATUS_PULLING:
       return {
         label: t('components.git.status.label.pulling'),
-        tooltip: `${t('components.git.status.tooltip.pulling')}`,
+        tooltip: t('components.git.status.tooltip.pulling'),
         type: 'warning',
         icon: ['fa', 'spinner'],
         spinning: true,
@@ -72,7 +72,7 @@ const data = computed<TagProps>(() => {
     case GIT_STATUS_PUSHING:
       return {
         label: t('components.git.status.label.pushing'),
-        tooltip: `${t('components.git.status.tooltip.pushing')}`,
+        tooltip: t('components.git.status.tooltip.pushing'),
         type: 'warning',
         icon: ['fa', 'spinner'],
         spinning: true,
@@ -87,15 +87,15 @@ const data = computed<TagProps>(() => {
   }
 });
 
-const onClick = async () => {
-  const { id, status } = props;
-  if (status === GIT_STATUS_ERROR) {
-    emit('retry');
-    await store.dispatch(`${ns}/cloneGit`, { id });
-  } else {
-    emit('click');
-  }
-};
+// const onClick = async () => {
+//   const { status } = props;
+//   if (status === GIT_STATUS_ERROR) {
+//     emit('retry');
+//     // await store.dispatch(`${ns}/cloneGit`, { id });
+//   } else {
+//     emit('click');
+//   }
+// };
 
 defineOptions({ name: 'ClGitStatus' });
 </script>
@@ -111,10 +111,13 @@ defineOptions({ name: 'ClGitStatus' });
       :tooltip="data.tooltip"
       :type="data.type"
       clickable
-      @click.prevent="onClick"
+      @click="emit('click')"
     >
-      <template #tooltip>
-        <div v-html="data.tooltip" />
+      <template
+        v-if="data.tooltip && typeof data.tooltip !== 'string'"
+        #tooltip
+      >
+        <component :is="data.tooltip" />
       </template>
     </cl-tag>
   </div>

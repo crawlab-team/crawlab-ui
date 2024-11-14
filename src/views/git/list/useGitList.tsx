@@ -12,6 +12,7 @@ import {
   ACTION_VIEW_FILES,
   ACTION_VIEW_SPIDERS,
   FILTER_OP_CONTAINS,
+  GIT_STATUS_ERROR,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import { useList } from '@/layouts';
@@ -135,7 +136,7 @@ const useGitList = () => {
                   status={status}
                   error={error}
                   onClick={async () => {
-                    if (clone_logs?.length) {
+                    if (row.status === GIT_STATUS_ERROR || clone_logs?.length) {
                       store.commit(`${ns}/showDialog`, 'logs');
                       store.commit(`${ns}/setForm`, row);
                       return;

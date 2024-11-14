@@ -61,6 +61,7 @@ const common: LCommon = {
     checkAll: '全选',
     uncheckAll: '取消全选',
     sendTestMessage: '发送测试消息',
+    retry: '重试',
   },
   messageBox: {
     confirm: {
