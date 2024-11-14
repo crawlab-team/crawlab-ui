@@ -56,7 +56,15 @@ defineOptions({ name: 'ClNotificationRequestList' });
           <cl-icon :icon="['fa', 'cog']" />
           {{ t('views.notification.requests.form.setting') }}
         </template>
+        <cl-tag
+          v-if="state.form?.test"
+          :icon="['fa', 'bell']"
+          :label="t('components.notification.request.test.label')"
+          :tooltip="t('components.notification.request.test.tooltip')"
+          type="warning"
+        />
         <cl-nav-link
+          v-else
           :path="`/notifications/settings/${state.form?.setting?._id}`"
           :label="state.form?.setting?.name"
         />

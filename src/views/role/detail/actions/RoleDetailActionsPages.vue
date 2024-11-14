@@ -7,7 +7,7 @@ const t = translate;
 
 const ns: ListStoreNamespace = 'role';
 const store = useStore();
-const { role: state } = store.state;
+const { role: state } = store.state as RootStoreState;
 
 const onClickCheckAll = () => {
   const status =
@@ -29,7 +29,7 @@ defineOptions({ name: 'ClRoleDetailActionsPages' });
         :model-value="state.pagesCheckAllStatus === 'checked'"
         :indeterminate="state.pagesCheckAllStatus === 'indeterminate'"
         :label="t('common.actions.checkAll')"
-        :disabled="state.form.admin"
+        :disabled="state.form.root_admin"
         @click="onClickCheckAll"
       />
     </cl-nav-action-item>

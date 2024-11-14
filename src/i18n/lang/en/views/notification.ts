@@ -211,6 +211,12 @@ const notification: LViewsNotification = {
     confirm: {
       sendTestMessage: 'Are you sure to send a test message?',
     },
+    prompt: {
+      sendTestMessage: {
+        title: 'Please enter the email address to send the test message to',
+        placeholder: 'Email Address',
+      },
+    },
   },
 };
 

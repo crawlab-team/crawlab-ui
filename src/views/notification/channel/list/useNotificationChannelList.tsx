@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -34,7 +34,7 @@ const useNotificationChannelList = () => {
 
   const { getProviderIcon } = useNotificationChannel(store);
 
-  const btnLoadingMap = new Map<string, boolean>();
+  const btnLoadingMap = ref(new Map<string, boolean>());
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -162,25 +162,47 @@ const useNotificationChannelList = () => {
             {
               tooltip: t('common.actions.sendTestMessage'),
               loading: (row: NotificationChannel) =>
-                btnLoadingMap.get(`${row._id}:${ACTION_SEND_TEST_MESSAGE}`) ||
-                false,
+                btnLoadingMap.value.get(
+                  `${row._id}:${ACTION_SEND_TEST_MESSAGE}`
+                ) || false,
               onClick: async (row: NotificationChannel) => {
-                await ElMessageBox.confirm(
-                  t('views.notification.messageBox.confirm.sendTestMessage'),
-                  t('common.actions.sendTestMessage'),
-                  {
-                    confirmButtonText: t('common.actions.confirm'),
-                    cancelButtonText: t('common.actions.cancel'),
-                    type: 'warning',
-                  }
-                );
-                btnLoadingMap.set(
+                let toMail: string | undefined = undefined;
+                if (row.type === 'mail') {
+                  const res = await ElMessageBox.prompt(
+                    t(
+                      'views.notification.messageBox.prompt.sendTestMessage.title'
+                    ),
+                    t('common.actions.sendTestMessage'),
+                    {
+                      inputPlaceholder: t(
+                        'views.notification.messageBox.prompt.sendTestMessage.placeholder'
+                      ),
+                      inputPattern: /\S+@\S+\.\S+/,
+                      confirmButtonText: t('common.actions.confirm'),
+                      cancelButtonText: t('common.actions.cancel'),
+                      type: 'warning',
+                    }
+                  );
+                  toMail = res.value;
+                } else {
+                  await ElMessageBox.confirm(
+                    t('views.notification.messageBox.confirm.sendTestMessage'),
+                    t('common.actions.sendTestMessage'),
+                    {
+                      confirmButtonText: t('common.actions.confirm'),
+                      cancelButtonText: t('common.actions.cancel'),
+                      type: 'warning',
+                    }
+                  );
+                }
+                btnLoadingMap.value.set(
                   `${row._id}:${ACTION_SEND_TEST_MESSAGE}`,
                   true
                 );
                 try {
                   await store.dispatch(`${ns}/sendTestMessage`, {
                     id: row._id,
+                    toMail,
                   });
                   ElMessage.success(
                     t('views.notification.message.success.sendTestMessage')
@@ -188,7 +210,7 @@ const useNotificationChannelList = () => {
                 } catch (e: any) {
                   ElMessage.error(e.message);
                 } finally {
-                  btnLoadingMap.set(
+                  btnLoadingMap.value.set(
                     `${row._id}:${ACTION_SEND_TEST_MESSAGE}`,
                     false
                   );
@@ -218,7 +240,7 @@ const useNotificationChannelList = () => {
   const rowKeyFunction = (row: NotificationChannel) =>
     JSON.stringify([
       row._id,
-      btnLoadingMap.get(`${row._id}:${ACTION_SEND_TEST_MESSAGE}`),
+      btnLoadingMap.value.get(`${row._id}:${ACTION_SEND_TEST_MESSAGE}`),
     ]);
 
   return {

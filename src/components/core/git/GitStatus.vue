@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import {
@@ -28,7 +28,7 @@ const t = translate;
 const ns = 'git';
 const store = useStore();
 
-const data = computed(() => {
+const data = computed<TagProps>(() => {
   const { status, error } = props;
   switch (status) {
     case GIT_STATUS_PENDING:
@@ -87,11 +87,16 @@ const data = computed(() => {
   }
 });
 
-const onRetry = async () => {
-  const { id } = props;
-  await store.dispatch(`${ns}/cloneGit`, { id });
-  emit('retry');
+const onClick = async () => {
+  const { id, status } = props;
+  if (status === GIT_STATUS_ERROR) {
+    emit('retry');
+    await store.dispatch(`${ns}/cloneGit`, { id });
+  } else {
+    emit('click');
+  }
 };
+
 defineOptions({ name: 'ClGitStatus' });
 </script>
 
@@ -106,31 +111,21 @@ defineOptions({ name: 'ClGitStatus' });
       :tooltip="data.tooltip"
       :type="data.type"
       clickable
-      @click="emit('click')"
+      @click.prevent="onClick"
     >
       <template #tooltip>
         <div v-html="data.tooltip" />
       </template>
     </cl-tag>
-    <cl-tag
-      v-if="status === GIT_STATUS_ERROR"
-      type="warning"
-      :icon="['fa', 'redo']"
-      :size="size"
-      :tooltip="t('components.git.actions.tooltip.retry')"
-      clickable
-      @click="onRetry"
-    />
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .git-status {
   margin-right: 10px;
-}
-</style>
-<style scoped>
-.git-status:deep(.el-tag:not(:last-child)) {
-  margin-right: 5px;
+
+  &:deep(.el-tag:not(:last-child)) {
+    margin-right: 5px;
+  }
 }
 </style>

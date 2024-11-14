@@ -21,7 +21,6 @@ const isOutdated = (version: string) => {
   // Validate both versions first
   const validCurrent = valid(coerce(version));
   const validLatest = repo.latest_version && valid(coerce(repo.latest_version));
-  console.debug(validCurrent, validLatest, repo.latest_version);
 
   if (!validCurrent || !validLatest) return false;
   return compare(validCurrent, validLatest) < 0;

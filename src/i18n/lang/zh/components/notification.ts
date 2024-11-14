@@ -260,6 +260,10 @@ const notification: LComponentsNotification = {
         unknown: '未知消息通知请求状态',
       },
     },
+    test: {
+      label: '测试通知',
+      tooltip: '这是一个测试通知',
+    },
   },
 };
 

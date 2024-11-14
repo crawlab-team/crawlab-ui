@@ -261,6 +261,10 @@ const notification: LComponentsNotification = {
         unknown: 'Unknown notification request status',
       },
     },
+    test: {
+      label: 'Test Notification',
+      tooltip: 'This is a test notification',
+    },
   },
 };
 

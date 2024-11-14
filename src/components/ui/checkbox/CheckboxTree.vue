@@ -94,7 +94,6 @@ const updateModelValue = () => {
   collectValues(props.options);
   modelValue.value = values;
   emit('change', values);
-  console.debug('values', values);
 };
 
 // Update children states recursively

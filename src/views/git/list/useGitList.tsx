@@ -14,14 +14,14 @@ import {
   FILTER_OP_CONTAINS,
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
-import { useList } from '@/layouts/content';
+import { useList } from '@/layouts';
 import {
   getPlaceholderColumn,
   onListFilterChangeByKey,
   setupListComponent,
   translate,
 } from '@/utils';
-import useGit from '@/components/core/git/useGit';
+import { useGit } from '@/components';
 import { ClNavLink, ClGitStatus, ClTag, ClIcon } from '@/components';
 
 const useGitList = () => {
@@ -134,23 +134,17 @@ const useGitList = () => {
                   id={_id}
                   status={status}
                   error={error}
-                  onClick={() => {
-                    router.push(`/gits/${_id}`);
+                  onClick={async () => {
+                    if (clone_logs?.length) {
+                      store.commit(`${ns}/showDialog`, 'logs');
+                      store.commit(`${ns}/setForm`, row);
+                      return;
+                    }
+
+                    await router.push(`/gits/${_id}`);
                   }}
                   onRetry={() => store.dispatch(`${ns}/getList`)}
                 />
-                {clone_logs?.length ? (
-                  <ClTag
-                    type="info"
-                    icon={['fa', 'file-alt']}
-                    tooltip={t('components.git.form.cloneLogs')}
-                    clickable
-                    onClick={() => {
-                      store.commit(`${ns}/showDialog`, 'logs');
-                      store.commit(`${ns}/setForm`, row);
-                    }}
-                  />
-                ) : null}
               </div>
             );
           },

@@ -167,5 +167,9 @@ interface LComponentsNotification {
         unknown: string;
       };
     };
+    test: {
+      label: string;
+      tooltip: string;
+    };
   };
 }

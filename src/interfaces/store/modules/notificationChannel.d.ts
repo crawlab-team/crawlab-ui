@@ -14,5 +14,8 @@ type NotificationChannelStoreMutations =
 
 interface NotificationChannelStoreActions
   extends BaseStoreActions<NotificationChannel> {
-  sendTestMessage: StoreAction<NotificationChannelStoreState, { id: string }>;
+  sendTestMessage: StoreAction<
+    NotificationChannelStoreState,
+    { id: string; toMail?: string }
+  >;
 }

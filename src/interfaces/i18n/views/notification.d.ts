@@ -179,5 +179,11 @@ interface LViewsNotification {
     confirm: {
       sendTestMessage: string;
     };
+    prompt: {
+      sendTestMessage: {
+        title: string;
+        placeholder: string;
+      };
+    };
   };
 }

@@ -13,9 +13,13 @@ import {
   setupListComponent,
   translate,
 } from '@/utils';
-import useList from '@/layouts/content/list/useList';
-import NavLink from '@/components/ui/nav/NavLink.vue';
-import { ClNotificationRequestStatus, ClTime } from '@/components';
+import { useList } from '@/layouts';
+import {
+  ClNotificationRequestStatus,
+  ClTime,
+  ClNavLink,
+  ClTag,
+} from '@/components';
 
 const t = translate;
 
@@ -77,12 +81,25 @@ const useNotificationRequestList = () => {
           label: t('views.notification.requests.form.setting'),
           icon: ['fa', 'cog'],
           width: '150',
-          value: (row: NotificationRequest) => (
-            <NavLink
-              path={`/notifications/settings/${row.setting_id}`}
-              label={row.setting?.name}
-            />
-          ),
+          value: (row: NotificationRequest) => {
+            if (row.test) {
+              return (
+                <ClTag
+                  icon={['fa', 'bell']}
+                  type="warning"
+                  label={t('components.notification.request.test.label')}
+                  tooltip={t('components.notification.request.test.tooltip')}
+                />
+              );
+            }
+
+            return (
+              <ClNavLink
+                path={`/notifications/settings/${row.setting_id}`}
+                label={row.setting?.name}
+              />
+            );
+          },
         },
         {
           key: 'channel',
@@ -90,7 +107,7 @@ const useNotificationRequestList = () => {
           icon: ['fa', 'broadcast-tower'],
           width: '150',
           value: (row: NotificationRequest) => (
-            <NavLink
+            <ClNavLink
               path={`/notifications/channels/${row.channel_id}`}
               label={row.channel?.name}
             />
@@ -145,7 +162,7 @@ const useNotificationRequestList = () => {
     tableColumns,
   } as UseListOptions<NotificationRequest>;
 
-  setupListComponent(ns, store);
+  setupListComponent(ns, store, ['notificationChannel', 'notificationSetting']);
 
   return {
     ...useList<NotificationRequest>(ns, store, opts),

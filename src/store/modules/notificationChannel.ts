@@ -28,10 +28,14 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<NotificationChannel>('/notifications/channels'),
-  sendTestMessage: async (_: StoreActionContext, { id }: { id: string }) => {
+  sendTestMessage: async (
+    _: StoreActionContext,
+    { id, toMail }: { id: string; toMail?: string }
+  ) => {
     const locale = getI18n().global.locale.value;
     return await post(`/notifications/channels/${id}/test`, {
       locale,
+      to_mail: toMail ? toMail.split(',').map(item => item.trim()) : undefined,
     });
   },
 } as NotificationChannelStoreActions;

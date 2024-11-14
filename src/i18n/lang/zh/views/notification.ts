@@ -211,6 +211,12 @@ const notification: LViewsNotification = {
     confirm: {
       sendTestMessage: '您是否确定发送测试消息?',
     },
+    prompt: {
+      sendTestMessage: {
+        title: '请填写需要发送测试消息的邮箱地址',
+        placeholder: '邮箱地址',
+      },
+    },
   },
 };
 

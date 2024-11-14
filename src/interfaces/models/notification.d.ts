@@ -111,6 +111,7 @@ export declare global {
     channel_id?: string;
     setting?: NotificationSetting;
     channel?: NotificationChannel;
+    test?: boolean;
   }
 
   type NotificationAlertOperator = 'gt' | 'ge' | 'lt' | 'le';

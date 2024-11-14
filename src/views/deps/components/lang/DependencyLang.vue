@@ -31,15 +31,6 @@ const allNodes = computed<CNode[]>(() => store.state.node.allList);
 
 const { allDict: allNodeDict } = useNode(store);
 
-// const allNodeDict = computed<Map<string, CNode>>(() => {
-//   const dict = new Map<string, CNode>();
-//   allNodes.value.forEach(node => {
-//     dict.set(node._id!, node);
-//   });
-//   console.debug(dict);
-//   return dict;
-// });
-
 const runningTaskList = ref<TableData<DependencyTask>>([]);
 const runningTaskTotal = ref(0);
 

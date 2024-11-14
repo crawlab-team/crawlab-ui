@@ -57,8 +57,8 @@ defineOptions({ name: 'ClRoleDetailTabPages' });
       ref="checkboxTreeRef"
       :model-value="form.routes"
       :options="routesOptions"
-      :disabled="form.admin"
-      :checked-all="form.admin || state.pagesCheckAllStatus === 'checked'"
+      :disabled="form.root_admin"
+      :checked-all="form.root_admin || state.pagesCheckAllStatus === 'checked'"
       @change="onRoutesChange"
     />
   </el-scrollbar>
