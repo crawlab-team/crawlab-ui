@@ -26,7 +26,7 @@ const getGitIcon = (row: Git): { icon: Icon; color?: string; name: string } => {
 
 const useGit = (store: Store<RootStoreState>) => {
   return {
-    ...useForm('git', store, useGitService(store), formComponentData),
+    ...useForm<Git>('git', store, useGitService(store), formComponentData),
     getGitIcon,
   };
 };

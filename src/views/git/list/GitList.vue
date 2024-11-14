@@ -9,6 +9,7 @@ const {
   tableData,
   tableTotal,
   selectableFunction,
+  rowKeyFunction,
 } = useGitList();
 
 defineOptions({ name: 'ClGitList' });
@@ -17,16 +18,7 @@ defineOptions({ name: 'ClGitList' });
 <template>
   <cl-list-layout
     class="git-list"
-    :row-key="
-      ({ _id, name, status, spiders, clone_logs }: Git) =>
-        [
-          _id,
-          name,
-          status,
-          JSON.stringify(spiders),
-          JSON.stringify(clone_logs),
-        ].join('_')
-    "
+    :row-key="rowKeyFunction"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

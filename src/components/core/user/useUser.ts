@@ -75,7 +75,7 @@ const useUser = (store: Store<RootStoreState>) => {
   ];
 
   return {
-    ...useForm('user', store, useUserService(store), formComponentData),
+    ...useForm<User>('user', store, useUserService(store), formComponentData),
     modeOptions,
     formRules,
     allUserSelectOptions,

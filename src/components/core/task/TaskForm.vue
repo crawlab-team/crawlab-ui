@@ -43,7 +43,7 @@ const {
 } = useTask(store);
 
 // use task detail
-const { activeId } = useTaskDetail();
+const { activeId, getForm } = useTaskDetail();
 
 // use request
 const { get } = useRequest();
@@ -90,7 +90,7 @@ const onCancel = async () => {
   try {
     await post(`/tasks/${activeId.value}/cancel`);
   } finally {
-    await store.dispatch(`${ns}/getById`, activeId.value);
+    await getForm();
   }
 };
 

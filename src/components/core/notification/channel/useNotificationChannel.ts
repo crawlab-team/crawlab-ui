@@ -252,7 +252,7 @@ const useNotificationChannel = (store: Store<RootStoreState>) => {
   };
 
   return {
-    ...useForm(
+    ...useForm<NotificationChannel>(
       'notificationChannel',
       store,
       useNotificationChannelService(store),

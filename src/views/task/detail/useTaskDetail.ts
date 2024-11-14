@@ -22,7 +22,7 @@ const useTaskDetail = () => {
   setupGetAllList(store, ['node', 'spider']);
 
   return {
-    ...useDetail('task'),
+    ...useDetail<Task>('task'),
     form,
   };
 };

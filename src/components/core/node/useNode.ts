@@ -16,7 +16,7 @@ const useNode = (store: Store<RootStoreState>) => {
   const formRules: FormRules = {};
 
   return {
-    ...useForm(ns, store, useNodeService(store), formComponentData),
+    ...useForm<Node>(ns, store, useNodeService(store), formComponentData),
     formRules,
   };
 };

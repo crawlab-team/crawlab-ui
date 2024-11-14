@@ -243,9 +243,17 @@ const useGitList = () => {
     return !row.spiders?.length;
   };
 
+  const rowKeyFunction: TableRowKeyFunction<Git> = ({
+    _id,
+    name,
+    status,
+    spiders,
+  }: Git) => [_id, name, status, JSON.stringify(spiders)].join('_');
+
   return {
     ...useList<Git>(ns, store, opts),
     selectableFunction,
+    rowKeyFunction,
   };
 };
 

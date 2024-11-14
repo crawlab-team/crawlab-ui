@@ -12,7 +12,7 @@ const useRole = (store: Store<RootStoreState>) => {
   const routesOptions = computed(() => getRouteSelectOptions());
 
   return {
-    ...useForm('role', store, useRoleService(store), formComponentData),
+    ...useForm<Role>('role', store, useRoleService(store), formComponentData),
     routesOptions,
   };
 };

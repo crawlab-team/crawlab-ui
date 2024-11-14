@@ -196,6 +196,7 @@ export declare global {
     row: T,
     rowIndex?: number
   ) => boolean;
+  type TableRowKeyFunction<T = any> = (row: T) => string | undefined;
 
   interface TableStore extends Store {
     mutations: TableStoreMutations;

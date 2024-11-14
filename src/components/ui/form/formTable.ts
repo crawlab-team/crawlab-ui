@@ -2,11 +2,10 @@ import { Store } from 'vuex';
 import { plainClone } from '@/utils/object';
 import { computed, Ref } from 'vue';
 
-export const useFormTable = (
+export const useFormTable = <T extends BaseModel>(
   ns: ListStoreNamespace,
   store: Store<RootStoreState>,
-  services: Services<BaseModel>,
-  data: FormComponentData<BaseModel>
+  data: FormComponentData<T>
 ) => {
   const { formTableFieldRefsMap } = data;
 

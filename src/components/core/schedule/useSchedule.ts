@@ -79,7 +79,12 @@ const useSchedule = (store: Store<RootStoreState>) => {
   );
 
   return {
-    ...useForm('schedule', store, useScheduleService(store), formComponentData),
+    ...useForm<Schedule>(
+      'schedule',
+      store,
+      useScheduleService(store),
+      formComponentData
+    ),
     modeOptions,
     formRules,
     allScheduleSelectOptions,

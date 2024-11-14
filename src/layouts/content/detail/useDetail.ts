@@ -9,7 +9,7 @@ import { debounce, isPro } from '@/utils';
 // i18n
 const t = translate;
 
-const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
+const useDetail = <T extends BaseModel>(ns: ListStoreNamespace) => {
   const router = useRouter();
   const route = useRoute();
 
@@ -78,6 +78,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
   const afterSave = computed<Function[]>(() => state.afterSave);
 
   const getForm = debounce(async () => {
+    console.debug('getForm');
     if (!activeId.value) return;
     return await store.dispatch(`${ns}/getById`, activeId.value);
   });
@@ -100,10 +101,7 @@ const useDetail = <T = BaseModel>(ns: ListStoreNamespace) => {
       form: state.form,
     });
     ElMessage.success(t('common.message.success.save'));
-    await Promise.all([
-      store.dispatch(`${ns}/getAllList`),
-      store.dispatch(`${ns}/getById`, activeId.value),
-    ]);
+    await Promise.all([store.dispatch(`${ns}/getAllList`), getForm()]);
 
     // after save
     afterSave.value.map(fn => fn());

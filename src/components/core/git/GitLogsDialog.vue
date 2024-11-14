@@ -20,20 +20,22 @@ const logsViewRef = ref<typeof ClLogsView>();
 
 let handle: any;
 const update = () => {
-  if (dialogVisible) {
-    handle = setInterval(async () => {
-      if (!state.form?._id) return;
-      await store.dispatch(`${ns}/getById`, state.form?._id);
-      if (state.form?.status !== GIT_STATUS_CLONING) {
-        clearInterval(handle);
-      }
-    }, 5000);
-    setTimeout(() => {
-      logsViewRef.value?.scrollToBottom();
-    }, 0);
-  } else {
+  if (!dialogVisible.value) {
     clearInterval(handle);
+    return;
   }
+
+  handle = setInterval(async () => {
+    if (!state.form?._id) return;
+    await store.dispatch(`${ns}/getById`, state.form?._id);
+    if (state.form?.status !== GIT_STATUS_CLONING) {
+      clearInterval(handle);
+    }
+  }, 5000);
+
+  setTimeout(() => {
+    logsViewRef.value?.scrollToBottom();
+  }, 0);
 };
 watch(dialogVisible, update);
 onMounted(update);

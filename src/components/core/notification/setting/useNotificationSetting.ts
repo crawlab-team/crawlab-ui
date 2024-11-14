@@ -23,7 +23,7 @@ const useNotificationSetting = (store: Store<RootStoreState>) => {
   setupGetAllList(store, ['notificationAlert']);
 
   return {
-    ...useForm(
+    ...useForm<NotificationSetting>(
       'notificationSetting',
       store,
       useNotificationSettingService(store),

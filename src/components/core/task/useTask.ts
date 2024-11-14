@@ -43,7 +43,7 @@ const useTask = (store: Store<RootStoreState>) => {
   );
 
   return {
-    ...useForm('task', store, useTaskService(store), formComponentData),
+    ...useForm<Task>('task', store, useTaskService(store), formComponentData),
     allSpiderDict,
     id,
     modeOptions,

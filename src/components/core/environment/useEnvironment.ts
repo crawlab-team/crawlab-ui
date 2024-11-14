@@ -14,7 +14,12 @@ export const useEnvironment: any = (store: Store<RootStoreState>) => {
   const ns = 'environment' as ListStoreNamespace;
 
   return {
-    ...useForm(ns, store, useEnvironmentService(store), formComponentData),
+    ...useForm<Environment>(
+      ns,
+      store,
+      useEnvironmentService(store),
+      formComponentData
+    ),
   };
 };
 

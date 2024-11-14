@@ -7,11 +7,11 @@ import { translate } from '@/utils/i18n';
 // i18n
 const t = translate;
 
-export const useForm = (
+export const useForm = <T extends BaseModel>(
   ns: ListStoreNamespace,
   store: Store<RootStoreState>,
-  services: Services<BaseModel>,
-  data: FormComponentData<BaseModel>
+  services: Services<T>,
+  data: FormComponentData<T>
 ) => {
   const { formRef, formTableFieldRefsMap } = data;
 
@@ -31,10 +31,10 @@ export const useForm = (
   };
 
   // form
-  const form = computed<BaseModel>(() => state.form);
+  const form = computed<T>(() => state.form);
 
   // form list
-  const formList = computed<BaseModel[]>(() => state.formList);
+  const formList = computed<T[]>(() => state.formList);
 
   // active dialog key
   const activeDialogKey = computed<DialogKey | undefined>(
@@ -101,7 +101,7 @@ export const useForm = (
   );
 
   // all dict
-  const allDict = computed<Map<string, BaseModel>>(
+  const allDict = computed<Map<string, T>>(
     () => store.getters[`${ns}/allDict`]
   );
 
@@ -191,7 +191,7 @@ export const useForm = (
   };
 
   // use form table
-  const formTable = useFormTable(ns, store, services, data);
+  const formTable = useFormTable(ns, store, data);
   const { onAdd, onClone, onDelete, onFieldChange, onFieldRegister } =
     formTable;
 

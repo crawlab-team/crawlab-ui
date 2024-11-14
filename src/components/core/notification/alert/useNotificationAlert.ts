@@ -80,7 +80,7 @@ const useNotificationAlert = (store: Store<RootStoreState>) => {
   ]);
 
   return {
-    ...useForm(
+    ...useForm<NotificationAlert>(
       'notificationAlert',
       store,
       useNotificationAlertService(store),

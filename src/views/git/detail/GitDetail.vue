@@ -24,14 +24,14 @@ const router = useRouter();
 const ns = 'git';
 const store = useStore<RootStoreState>();
 
-const { activeId, activeTabName, tabs, pullLoading, pushLoading } =
-  useGitDetail();
+const { activeId, activeTabName, tabs } = useGitDetail();
 
 // update tab disabled keys
 const { form } = useGit(store);
 
 // get local and remote branches
 const getBranches = debounce(() => {
+  console.debug('getBranches');
   reset();
   if (form.value?.status !== GIT_STATUS_READY) return;
   store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value });

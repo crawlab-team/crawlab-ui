@@ -23,7 +23,12 @@ const useSpider = (store: Store<RootStoreState>) => {
   const id = computed(() => route.params.id);
 
   return {
-    ...useForm('spider', store, useSpiderService(store), formComponentData),
+    ...useForm<Spider>(
+      'spider',
+      store,
+      useSpiderService(store),
+      formComponentData
+    ),
     id,
     modeOptions,
   };

@@ -32,7 +32,12 @@ const useProject = (store: Store<RootStoreState>) => {
   );
 
   return {
-    ...useForm('project', store, useProjectService(store), formComponentData),
+    ...useForm<Project>(
+      'project',
+      store,
+      useProjectService(store),
+      formComponentData
+    ),
     formRules,
     allProjectSelectOptions,
   };

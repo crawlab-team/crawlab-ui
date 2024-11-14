@@ -99,7 +99,12 @@ export const useDatabase = (store: Store<RootStoreState>) => {
   );
 
   return {
-    ...useForm(ns, store, useDatabaseService(store), formComponentData),
+    ...useForm<Database>(
+      ns,
+      store,
+      useDatabaseService(store),
+      formComponentData
+    ),
     formRules,
     dataSourceOptions,
     allListSelectOptions,

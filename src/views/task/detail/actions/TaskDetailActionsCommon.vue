@@ -26,7 +26,7 @@ const store = useStore();
 const { form } = useTask(store);
 
 // use task detail
-const { activeId } = useTaskDetail();
+const { activeId, getForm } = useTaskDetail();
 
 // restart
 const onRestart = async () => {
@@ -37,7 +37,7 @@ const onRestart = async () => {
   );
   await post(`/tasks/${activeId.value}/restart`);
   ElMessage.success(t('common.message.success.restart'));
-  await store.dispatch(`${ns}/getById`, activeId.value);
+  await getForm();
 };
 
 // cancel
@@ -49,7 +49,7 @@ const onCancel = async () => {
   );
   ElMessage.info('Attempt to cancel');
   await post(`/tasks/${activeId.value}/cancel`);
-  await store.dispatch(`${ns}/getById`, activeId.value);
+  await getForm();
 };
 
 // delete
