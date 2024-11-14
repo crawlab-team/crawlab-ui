@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useNotificationChannelList from '@/views/notification/channel/list/useNotificationChannelList.tsx';
+import { useNotificationChannelList } from '@/views';
 
 const {
   navActions,
@@ -8,13 +8,16 @@ const {
   tableTotal,
   tablePagination,
   actionFunctions,
+  rowKeyFunction,
 } = useNotificationChannelList();
+
 defineOptions({ name: 'ClNotificationChannelList' });
 </script>
 
 <template>
   <cl-list-layout
     class="notification-channel-list"
+    :row-key="rowKeyFunction"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

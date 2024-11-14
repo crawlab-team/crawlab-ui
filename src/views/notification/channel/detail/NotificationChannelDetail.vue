@@ -3,5 +3,9 @@ defineOptions({ name: 'ClNotificationChannelDetail' });
 </script>
 
 <template>
-  <cl-detail-layout store-namespace="notificationChannel" />
+  <cl-detail-layout store-namespace="notificationChannel">
+    <template #actions>
+      <cl-notification-channel-detail-actions-common />
+    </template>
+  </cl-detail-layout>
 </template>

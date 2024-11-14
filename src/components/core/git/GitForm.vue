@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useGit from '@/components/core/git/useGit';
@@ -74,6 +74,24 @@ watch(
     }
   }
 );
+
+const privateKeyVisible = ref(false);
+const privateKey = ref('');
+watch(privateKeyVisible, () => {
+  if (privateKeyVisible.value) {
+    privateKey.value = state.form.password;
+  } else {
+    privateKey.value = '';
+  }
+});
+const onPrivateKeyConfirm = () => {
+  store.commit(`${ns}/setForm`, {
+    ...state.form,
+    password: privateKey.value,
+  });
+  privateKeyVisible.value = false;
+};
+
 defineOptions({ name: 'ClGitForm' });
 </script>
 
@@ -167,17 +185,43 @@ defineOptions({ name: 'ClGitForm' });
         :label="t('components.git.form.privateKey')"
         prop="password"
       >
-        <el-input
-          v-model="form.password"
-          :placeholder="t('components.git.form.privateKey')"
-          type="textarea"
-          rows="20"
-          id="password"
-          class="password"
-          @change="onPasswordChange"
-        />
+        <div class="private-key-wrapper">
+          <div>
+            <cl-label-button
+              :label="
+                privateKeyVisible
+                  ? t('common.actions.hide')
+                  : t('common.actions.view')
+              "
+              :icon="privateKeyVisible ? ['fa', 'eye-slash'] : ['fa', 'eye']"
+              :type="privateKeyVisible ? 'info' : 'primary'"
+              @click="privateKeyVisible = !privateKeyVisible"
+            />
+          </div>
+          <el-input
+            v-if="privateKeyVisible"
+            v-model="privateKey"
+            :placeholder="t('components.git.form.privateKey')"
+            type="textarea"
+            rows="20"
+            id="password"
+            class="password"
+            @change="(value: string) => (privateKey = value)"
+          />
+        </div>
       </cl-form-item>
       <!--./Row-->
     </template>
   </cl-form>
 </template>
+
+<style scoped>
+.form {
+  .private-key-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+</style>

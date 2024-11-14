@@ -149,6 +149,7 @@ export declare global {
     tooltip?: string | TableButtonTooltipFunction;
     isHtml?: boolean;
     disabled?: TableButtonDisabledFunction;
+    loading?: TableButtonLoadingFunction;
     onClick?: TableButtonOnClickFunction;
     id?: string;
     className?: string;
@@ -178,6 +179,11 @@ export declare global {
     column?: TableColumn<T>
   ) => string;
   type TableButtonDisabledFunction<T = any> = (
+    row: T,
+    rowIndex?: number,
+    column?: TableColumn<T>
+  ) => boolean;
+  type TableButtonLoadingFunction<T = any> = (
     row: T,
     rowIndex?: number,
     column?: TableColumn<T>

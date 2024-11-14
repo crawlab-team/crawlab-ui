@@ -88,8 +88,8 @@ const useRoleList = () => {
           value: (row: Role) => (
             <ClNavLink
               path={`/roles/${row._id}`}
-              label={row.name}
-              icon={row.admin ? ['fa', 'shield-alt'] : ['fa', 'user']}
+              label={row.root_admin ? t('common.builtin.admin') : row.name}
+              icon={row.root_admin ? ['fa', 'shield-alt'] : ['fa', 'user']}
             />
           ),
           hasSort: true,
@@ -105,7 +105,9 @@ const useRoleList = () => {
             <ClNavLink
               path={`/roles/${row._id}/pages`}
               label={
-                row.admin ? t('common.mode.all') : row.routes?.length || '0'
+                row.root_admin
+                  ? t('common.mode.all')
+                  : row.routes?.length || '0'
               }
             />
           ),
@@ -160,7 +162,7 @@ const useRoleList = () => {
             },
             {
               tooltip: t('common.actions.delete'),
-              disabled: (row: Role) => row.admin,
+              disabled: (row: Role) => row.root_admin,
               onClick: deleteByIdConfirm,
               action: ACTION_DELETE,
               contextMenu: true,
@@ -172,7 +174,7 @@ const useRoleList = () => {
   );
 
   const selectableFunction = (row: Role) => {
-    return !row.admin;
+    return !row.root_admin;
   };
 
   // options

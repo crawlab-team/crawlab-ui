@@ -137,13 +137,10 @@ const useNotificationAlertList = () => {
           className: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
           icon: ['fa', 'tools'],
-          width: '240',
+          width: '120',
           fixed: 'right',
           buttons: [
             {
-              type: 'primary',
-              size: 'small',
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async (row: NotificationAlert) => {
                 await router.push(`/notifications/alerts/${row._id}`);
@@ -151,13 +148,11 @@ const useNotificationAlertList = () => {
               action: ACTION_VIEW,
             },
             {
-              type: 'danger',
-              size: 'small',
-              icon: ['fa', 'trash-alt'],
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               className: 'delete-btn',
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
         },

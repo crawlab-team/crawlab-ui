@@ -10,8 +10,7 @@ const t = translate;
 // store
 const store = useStore();
 
-const { form, formRef, isSelectiveForm, isFormItemDisabled, routesOptions } =
-  useRole(store);
+const { form, formRef, isSelectiveForm, isFormItemDisabled } = useRole(store);
 
 defineOptions({ name: 'ClRoleForm' });
 </script>

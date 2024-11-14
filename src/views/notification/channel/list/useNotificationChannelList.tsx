@@ -1,23 +1,21 @@
-import { computed, h } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import {
   ACTION_ADD,
   ACTION_DELETE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
+  ACTION_SEND_TEST_MESSAGE,
+  ACTION_VIEW,
   FILTER_OP_CONTAINS,
 } from '@/constants';
 import { onListFilterChangeByKey, translate } from '@/utils';
-import useRequest from '@/services/request';
 import useList from '@/layouts/content/list/useList';
-import NavLink from '@/components/ui/nav/NavLink.vue';
-import ClTag from '@/components/ui/tag/Tag.vue';
-import useNotificationChannel from '@/components/core/notification/channel/useNotificationChannel';
+import { ClTag, ClNavLink, useNotificationChannel } from '@/components';
 
 const t = translate;
-
-const { post } = useRequest();
 
 const useNotificationChannelList = () => {
   // router
@@ -35,6 +33,8 @@ const useNotificationChannelList = () => {
   const { deleteByIdConfirm } = actionFunctions;
 
   const { getProviderIcon } = useNotificationChannel(store);
+
+  const btnLoadingMap = new Map<string, boolean>();
 
   // nav actions
   const navActions = computed<ListActionGroup[]>(() => [
@@ -88,7 +88,7 @@ const useNotificationChannelList = () => {
           icon: ['fa', 'font'],
           width: '240',
           value: (row: NotificationChannel) => (
-            <NavLink
+            <ClNavLink
               label={row.name}
               path={`/notifications/channels/${row._id}`}
             />
@@ -150,24 +150,58 @@ const useNotificationChannelList = () => {
           key: 'actions',
           label: t('components.table.columns.actions'),
           fixed: 'right',
-          width: '200',
+          width: '150',
           buttons: [
             {
-              type: 'primary',
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async (row: NotificationChannel) => {
                 await router.push(`/notifications/channels/${row._id}`);
               },
+              action: ACTION_VIEW,
             },
             {
-              type: 'danger',
-              size: 'small',
-              icon: ['fa', 'trash-alt'],
+              tooltip: t('common.actions.sendTestMessage'),
+              loading: (row: NotificationChannel) =>
+                btnLoadingMap.get(`${row._id}:${ACTION_SEND_TEST_MESSAGE}`) ||
+                false,
+              onClick: async (row: NotificationChannel) => {
+                await ElMessageBox.confirm(
+                  t('views.notification.messageBox.confirm.sendTestMessage'),
+                  t('common.actions.sendTestMessage'),
+                  {
+                    confirmButtonText: t('common.actions.confirm'),
+                    cancelButtonText: t('common.actions.cancel'),
+                    type: 'warning',
+                  }
+                );
+                btnLoadingMap.set(
+                  `${row._id}:${ACTION_SEND_TEST_MESSAGE}`,
+                  true
+                );
+                try {
+                  await store.dispatch(`${ns}/sendTestMessage`, {
+                    id: row._id,
+                  });
+                  ElMessage.success(
+                    t('views.notification.message.success.sendTestMessage')
+                  );
+                } catch (e: any) {
+                  ElMessage.error(e.message);
+                } finally {
+                  btnLoadingMap.set(
+                    `${row._id}:${ACTION_SEND_TEST_MESSAGE}`,
+                    false
+                  );
+                }
+              },
+              action: ACTION_SEND_TEST_MESSAGE,
+            },
+            {
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               className: 'delete-btn',
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,
@@ -181,8 +215,15 @@ const useNotificationChannelList = () => {
     tableColumns,
   } as UseListOptions<NotificationChannel>;
 
+  const rowKeyFunction = (row: NotificationChannel) =>
+    JSON.stringify([
+      row._id,
+      btnLoadingMap.get(`${row._id}:${ACTION_SEND_TEST_MESSAGE}`),
+    ]);
+
   return {
     ...useList<NotificationChannel>(ns, store, opts),
+    rowKeyFunction,
   };
 };
 

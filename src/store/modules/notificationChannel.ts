@@ -6,6 +6,10 @@ import {
 } from '@/utils/store';
 import { TAB_NAME_OVERVIEW } from '@/constants';
 import { translate } from '@/utils/i18n';
+import useRequest from '@/services/request';
+import { getI18n } from '@/i18n';
+
+const { post } = useRequest();
 
 const t = translate;
 
@@ -24,6 +28,12 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<NotificationChannel>('/notifications/channels'),
+  sendTestMessage: async (_: StoreActionContext, { id }: { id: string }) => {
+    const locale = getI18n().global.locale.value;
+    return await post(`/notifications/channels/${id}/test`, {
+      locale,
+    });
+  },
 } as NotificationChannelStoreActions;
 
 export default {

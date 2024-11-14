@@ -3,7 +3,7 @@ export declare global {
     name?: string;
     description?: string;
     routes?: string[];
-    admin?: boolean;
+    root_admin?: boolean;
     users?: number;
   }
 }

@@ -8,6 +8,7 @@ import {
   TABLE_COLUMN_NAME_ACTIONS,
 } from '@/constants';
 import {
+  getPlaceholderColumn,
   onListFilterChangeByKey,
   setupListComponent,
   translate,
@@ -114,12 +115,13 @@ const useNotificationRequestList = () => {
           width: '150',
           value: (row: NotificationRequest) => <ClTime time={row.created_ts} />,
         },
+        getPlaceholderColumn(),
         {
           key: TABLE_COLUMN_NAME_ACTIONS,
           className: TABLE_COLUMN_NAME_ACTIONS,
           label: t('components.table.columns.actions'),
           icon: ['fa', 'tools'],
-          width: '240',
+          width: '120',
           fixed: 'right',
           buttons: [
             {

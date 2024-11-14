@@ -12,4 +12,7 @@ type NotificationChannelStoreGetters = BaseStoreGetters<NotificationChannel>;
 type NotificationChannelStoreMutations =
   BaseStoreMutations<NotificationChannel>;
 
-type NotificationChannelStoreActions = BaseStoreActions<NotificationChannel>;
+interface NotificationChannelStoreActions
+  extends BaseStoreActions<NotificationChannel> {
+  sendTestMessage: StoreAction<NotificationChannelStoreState, { id: string }>;
+}

@@ -27,6 +27,7 @@ const {
 } = useNotificationChannel(store);
 
 const smtpPasswordVisible = ref(false);
+const webhookUrlVisible = ref(false);
 
 const onTypeChange = () => {
   store.commit(`${ns}/setForm`, {
@@ -328,7 +329,18 @@ defineOptions({ name: 'ClNotificationChannelForm' });
           <el-input
             v-model="form.webhook_url"
             :placeholder="t('views.notification.channels.form.webhookUrl')"
-          />
+            :type="webhookUrlVisible ? 'text' : 'password'"
+          >
+            <template #suffix>
+              <span
+                style="cursor: pointer"
+                @click="webhookUrlVisible = !webhookUrlVisible"
+              >
+                <cl-icon v-if="!webhookUrlVisible" :icon="['fa', 'eye']" />
+                <cl-icon v-else :icon="['fa', 'eye-slash']" />
+              </span>
+            </template>
+          </el-input>
         </cl-form-item>
       </template>
     </template>

@@ -8,8 +8,8 @@ export declare global {
     first_name?: string;
     last_name?: string;
     email?: string;
-    admin?: boolean;
     root_admin?: boolean;
+    root_admin_role?: boolean;
     routes?: string[];
   }
 }

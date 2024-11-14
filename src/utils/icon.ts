@@ -16,6 +16,7 @@ import {
   ACTION_RESTART,
   ACTION_RUN,
   ACTION_SAVE,
+  ACTION_SEND_TEST_MESSAGE,
   ACTION_START,
   ACTION_STOP,
   ACTION_UNINSTALL,
@@ -24,17 +25,20 @@ import {
   ACTION_UPLOAD_FILES,
   ACTION_VIEW,
   ACTION_VIEW_CHANGES,
+  ACTION_VIEW_CHANNELS,
   ACTION_VIEW_COMMITS,
   ACTION_VIEW_CONSOLE,
   ACTION_VIEW_DATA,
   ACTION_VIEW_DATABASES,
   ACTION_VIEW_FILES,
   ACTION_VIEW_LOGS,
+  ACTION_VIEW_MAIL,
   ACTION_VIEW_MONITORING,
   ACTION_VIEW_PAGES,
   ACTION_VIEW_SCHEDULES,
   ACTION_VIEW_SPIDERS,
   ACTION_VIEW_TASKS,
+  ACTION_VIEW_TEMPLATE,
   ACTION_VIEW_USERS,
   TAB_NAME_CHANGES,
   TAB_NAME_CHANNELS,
@@ -195,6 +199,12 @@ export const getIconByAction = (action: string): Icon | undefined => {
       return ['fa', 'file-alt'];
     case ACTION_VIEW_USERS:
       return ['fa', 'users'];
+    case ACTION_VIEW_MAIL:
+      return ['fa', 'at'];
+    case ACTION_VIEW_TEMPLATE:
+      return ['fa', 'file-code'];
+    case ACTION_VIEW_CHANNELS:
+      return ['fa', 'broadcast-tower'];
 
     // Filter Actions
     case ACTION_FILTER:
@@ -217,6 +227,10 @@ export const getIconByAction = (action: string): Icon | undefined => {
       return ['fa', 'trash-alt'];
     case ACTION_UPGRADE:
       return ['fa', 'arrow-up'];
+
+    // Notification Actions
+    case ACTION_SEND_TEST_MESSAGE:
+      return ['fa', 'paper-plane'];
 
     // Default
     default:

@@ -62,6 +62,7 @@ export declare global {
       unlink: string;
       goto: string;
       selectAll: string;
+      viewMail: string;
       viewTemplate: string;
       viewChannels: string;
       viewMonitoring: string;
@@ -72,6 +73,7 @@ export declare global {
       drop: string;
       checkAll: string;
       uncheckAll: string;
+      sendTestMessage: string;
     };
     messageBox: {
       confirm: {
@@ -186,6 +188,10 @@ export declare global {
     boolean: {
       true: string;
       false: string;
+    };
+    builtin: {
+      admin: string;
+      rootAdmin: string;
     };
   }
 }

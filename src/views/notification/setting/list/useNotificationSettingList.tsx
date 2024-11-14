@@ -7,6 +7,10 @@ import {
   ACTION_DELETE,
   ACTION_FILTER,
   ACTION_FILTER_SEARCH,
+  ACTION_VIEW,
+  ACTION_VIEW_CHANNELS,
+  ACTION_VIEW_MAIL,
+  ACTION_VIEW_TEMPLATE,
   FILTER_OP_CONTAINS,
 } from '@/constants';
 import { onListFilterChangeByKey, translate } from '@/utils';
@@ -123,44 +127,50 @@ const useNotificationSettingList = () => {
           key: 'actions',
           label: t('components.table.columns.actions'),
           fixed: 'right',
-          width: '200',
+          width: '120',
           buttons: [
             {
               type: 'primary',
-              icon: ['fa', 'search'],
               tooltip: t('common.actions.view'),
               onClick: async (row: NotificationSetting) => {
                 await router.push(`/notifications/settings/${row._id}`);
               },
+              action: ACTION_VIEW,
             },
             {
-              type: 'info',
-              icon: ['fa', 'file-code'],
+              tooltip: t('common.actions.viewMail'),
+              onClick: async (row: NotificationSetting) => {
+                await router.push(`/notifications/settings/${row._id}/mail`);
+              },
+              action: ACTION_VIEW_MAIL,
+              contextMenu: true,
+            },
+            {
               tooltip: t('common.actions.viewTemplate'),
               onClick: async (row: NotificationSetting) => {
                 await router.push(
                   `/notifications/settings/${row._id}/template`
                 );
               },
+              action: ACTION_VIEW_TEMPLATE,
+              contextMenu: true,
             },
             {
-              type: 'info',
-              icon: ['fa', 'broadcast-tower'],
               tooltip: t('common.actions.viewChannels'),
               onClick: async (row: NotificationSetting) => {
                 await router.push(
                   `/notifications/settings/${row._id}/channels`
                 );
               },
+              action: ACTION_VIEW_CHANNELS,
+              contextMenu: true,
             },
             {
-              type: 'danger',
-              size: 'small',
-              icon: ['fa', 'trash-alt'],
               tooltip: t('common.actions.delete'),
               onClick: deleteByIdConfirm,
               className: 'delete-btn',
               action: ACTION_DELETE,
+              contextMenu: true,
             },
           ],
           disableTransfer: true,

@@ -34,6 +34,9 @@ export const ACTION_VIEW_DATABASES = 'view-databases';
 export const ACTION_VIEW_CONSOLE = 'view-console';
 export const ACTION_VIEW_PAGES = 'view-pages';
 export const ACTION_VIEW_USERS = 'view-users';
+export const ACTION_VIEW_MAIL = 'view-mail';
+export const ACTION_VIEW_TEMPLATE = 'view-template';
+export const ACTION_VIEW_CHANNELS = 'view-channels';
 
 // Filter Actions
 export const ACTION_FILTER = 'filter';
@@ -48,3 +51,6 @@ export const ACTION_UNLINK = 'unlink';
 export const ACTION_INSTALL = 'install';
 export const ACTION_UNINSTALL = 'uninstall';
 export const ACTION_UPGRADE = 'upgrade';
+
+// Notification Actions
+export const ACTION_SEND_TEST_MESSAGE = 'send-test-message';

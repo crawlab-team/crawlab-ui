@@ -89,7 +89,8 @@ const getNormalizedButtons = (
       return actionVisibleFn(currentRoutePath, btn.action);
     })
     .map(btn => {
-      const { tooltip, type, icon, disabled, onClick, id, className } = btn;
+      const { tooltip, type, icon, disabled, onClick, id, className, loading } =
+        btn;
       let _icon: Icon | undefined;
       if (typeof icon === 'function') {
         _icon = icon(row, rowIndex, column);
@@ -98,16 +99,20 @@ const getNormalizedButtons = (
       } else {
         _icon = icon;
       }
+      const _loading = loading?.(row);
       let _className = className || `${btn.action}-btn`;
       return {
+        key: JSON.stringify([row, _loading]),
         buttonType: 'fa-icon',
         id,
         type,
         tooltip: typeof tooltip === 'function' ? tooltip(row) : tooltip,
-        disabled: disabled?.(row),
-        icon: _icon,
+        disabled: _loading || disabled?.(row),
+        icon: _loading ? ['fa', 'spinner'] : _icon,
+        spin: _loading,
         className: _className,
         onClick: () => {
+          if (loading?.(row)) return;
           onClick?.(row, rowIndex, column);
         },
       } as FaIconButtonProps;

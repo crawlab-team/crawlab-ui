@@ -49,6 +49,7 @@ const common: LCommon = {
     unlink: 'Unlink',
     goto: 'Go To',
     selectAll: 'Select All',
+    viewMail: 'View Mail Settings',
     viewTemplate: 'View Template',
     viewChannels: 'View Channels',
     viewMonitoring: 'View Monitoring',
@@ -59,6 +60,7 @@ const common: LCommon = {
     drop: 'Drop',
     checkAll: 'Check All',
     uncheckAll: 'Uncheck All',
+    sendTestMessage: 'Send Test Message',
   },
   messageBox: {
     confirm: {
@@ -173,6 +175,10 @@ const common: LCommon = {
   boolean: {
     true: 'True',
     false: 'False',
+  },
+  builtin: {
+    admin: 'Admin',
+    rootAdmin: 'Root Admin',
   },
 };
 

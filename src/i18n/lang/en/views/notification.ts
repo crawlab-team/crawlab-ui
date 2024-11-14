@@ -204,6 +204,12 @@ const notification: LViewsNotification = {
       create: {
         alert: 'Notification alert created successfully',
       },
+      sendTestMessage: 'Test message sent successfully',
+    },
+  },
+  messageBox: {
+    confirm: {
+      sendTestMessage: 'Are you sure to send a test message?',
     },
   },
 };

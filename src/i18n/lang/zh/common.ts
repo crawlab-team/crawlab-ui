@@ -49,6 +49,7 @@ const common: LCommon = {
     unlink: '取消链接',
     goto: '访问',
     selectAll: '全选',
+    viewMail: '查看邮件配置',
     viewTemplate: '查看模板',
     viewChannels: '查看通知渠道',
     viewMonitoring: '查看监控',
@@ -59,6 +60,7 @@ const common: LCommon = {
     drop: '删除',
     checkAll: '全选',
     uncheckAll: '取消全选',
+    sendTestMessage: '发送测试消息',
   },
   messageBox: {
     confirm: {
@@ -173,6 +175,10 @@ const common: LCommon = {
   boolean: {
     true: '是',
     false: '否',
+  },
+  builtin: {
+    admin: '管理员',
+    rootAdmin: '超级管理员',
   },
 };
 

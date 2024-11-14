@@ -192,9 +192,7 @@ defineOptions({ name: 'ClTable' });
         align="center"
         reserve-selection
         type="selection"
-        :selectable="
-          (row: any, index: number) => selectableFunction?.(row, index)
-        "
+        :selectable="selectableFunction"
         width="40"
         fixed="left"
       />

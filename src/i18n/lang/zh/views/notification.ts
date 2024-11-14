@@ -204,6 +204,12 @@ const notification: LViewsNotification = {
       create: {
         alert: '通知警报创建成功',
       },
+      sendTestMessage: '发送测试消息成功',
+    },
+  },
+  messageBox: {
+    confirm: {
+      sendTestMessage: '您是否确定发送测试消息?',
     },
   },
 };

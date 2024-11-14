@@ -116,7 +116,7 @@ const useUserList = () => {
           <ClNavLink
             path={`/users/${row._id}`}
             label={row.username}
-            icon={row.admin ? ['fa', 'shield-alt'] : ['fa', 'user']}
+            icon={row.root_admin ? ['fa', 'shield-alt'] : ['fa', 'user']}
           />
         ),
         hasSort: true,
@@ -149,8 +149,8 @@ const useUserList = () => {
         value: (row: User) => (
           <ClNavLink
             path={`/roles/${row.role_id}`}
-            label={row.role}
-            icon={row.admin ? ['fa', 'shield-alt'] : ['fa', 'user']}
+            label={row.root_admin_role ? t('common.builtin.admin') : row.role}
+            icon={row.root_admin_role ? ['fa', 'shield-alt'] : ['fa', 'user']}
           />
         ),
         hasFilter: true,
