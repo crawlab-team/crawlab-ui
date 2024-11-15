@@ -7,7 +7,10 @@ import { computed } from 'vue';
 const t = translate;
 
 const props = defineProps<{
-  repo: DependencyRepo;
+  name: string;
+  dependencies: Dependency[];
+  latestVersion?: string;
+  requiredVersion?: string;
 }>();
 
 const emit = defineEmits<{
@@ -16,11 +19,13 @@ const emit = defineEmits<{
 
 // Helper to safely compare versions
 const isOutdated = (version: string) => {
-  const { repo } = props;
+  const { requiredVersion, latestVersion } = props;
+
+  const _requiredVersion = requiredVersion || latestVersion;
 
   // Validate both versions first
   const validCurrent = valid(coerce(version));
-  const validLatest = repo.latest_version && valid(coerce(repo.latest_version));
+  const validLatest = _requiredVersion && valid(coerce(_requiredVersion));
 
   if (!validCurrent || !validLatest) return false;
   return compare(validCurrent, validLatest) < 0;
@@ -36,22 +41,22 @@ const onClick = (version: string) => {
 };
 
 const getTagProps = (version: string) => {
-  const { repo } = props;
+  const { name, latestVersion } = props;
   if (isUninstalled(version)) {
     return {
       icon: getIconByAction(ACTION_INSTALL),
       type: 'info',
-      label: repo.latest_version,
-      tooltip: `${t('common.actions.install')} ${repo.name} (${repo.latest_version})`,
-      clickable: repo.latest_version,
+      label: latestVersion,
+      tooltip: `${t('common.actions.install')} ${name} (${latestVersion})`,
+      clickable: latestVersion,
     };
   }
   if (isOutdated(version)) {
     return {
       icon: getIconByAction(ACTION_UPGRADE),
       type: 'warning',
-      label: `${version} → ${repo.latest_version}`,
-      tooltip: `${t('common.actions.upgrade')} ${repo.name} (${version} → ${repo.latest_version})`,
+      label: `${version} → ${latestVersion}`,
+      tooltip: `${t('common.actions.upgrade')} ${name} (${version} → ${latestVersion})`,
       clickable: true,
     };
   }
@@ -65,9 +70,9 @@ const getTagProps = (version: string) => {
 };
 
 const versions = computed(() => {
-  const { repo } = props;
+  const { dependencies } = props;
   const versions = new Set<string>();
-  repo.dependencies?.forEach(dep => {
+  dependencies?.forEach(dep => {
     if (!dep.version) return;
     versions.add(dep.version);
   });

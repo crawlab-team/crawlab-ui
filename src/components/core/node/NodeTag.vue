@@ -87,7 +87,9 @@ defineOptions({ name: 'ClNodeTag' });
     </template>
     <template v-else #tooltip>
       <div class="tooltip-wrapper">
-        <div class="tooltip-title">{{ t('layouts.routes.nodes.title') }}</div>
+        <div class="tooltip-title">
+          {{ t('layouts.routes.nodes.list.title') }}
+        </div>
         <div class="tooltip-item">
           <label>{{ t('components.node.form.name') }}:</label>
           <span>{{ node.name }}</span>

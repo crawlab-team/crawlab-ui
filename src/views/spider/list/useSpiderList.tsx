@@ -12,6 +12,7 @@ import {
   ACTION_UPLOAD_FILES,
   ACTION_VIEW,
   ACTION_VIEW_DATA,
+  ACTION_VIEW_DEPENDENCIES,
   ACTION_VIEW_FILES,
   ACTION_VIEW_SCHEDULES,
   ACTION_VIEW_TASKS,
@@ -305,6 +306,15 @@ const useSpiderList = () => {
                 await router.push(`/spiders/${row._id}/data`);
               },
               action: ACTION_VIEW_DATA,
+              contextMenu: true,
+            },
+            {
+              tooltip: t('common.actions.viewDependencies'),
+              onClick: async (row: Spider) => {
+                await router.push(`/spiders/${row._id}/dependencies`);
+              },
+              action: ACTION_VIEW_DEPENDENCIES,
+              proOnly: true,
               contextMenu: true,
             },
             {

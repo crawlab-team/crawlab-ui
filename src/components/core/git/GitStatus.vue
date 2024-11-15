@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { computed, VNode } from 'vue';
+import { computed, ref } from 'vue';
 import {
   GIT_STATUS_PENDING,
   GIT_STATUS_READY,
@@ -8,7 +8,9 @@ import {
   GIT_STATUS_PULLING,
   GIT_STATUS_PUSHING,
 } from '@/constants/git';
-import { translate } from '@/utils';
+import { getIconByAction, translate } from '@/utils';
+import type { TagProps } from '@/components/ui/tag/types';
+import { ACTION_RETRY, ACTION_VIEW_LOGS } from '@/constants';
 
 const props = defineProps<{
   id?: string;
@@ -18,19 +20,20 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'click'): void;
+  (e: 'view-logs'): void;
+  (e: 'retry'): void;
 }>();
 
 const t = translate;
 
-const data = computed<TagProps & { tooltip: VNode }>(() => {
+const data = computed<TagProps>(() => {
   const { status, error } = props;
   switch (status) {
     case GIT_STATUS_PENDING:
       return {
         label: t('components.git.status.label.pending'),
         tooltip: t('components.git.status.tooltip.pending'),
-        type: '',
+        type: 'primary',
         icon: ['fa', 'hourglass-start'],
         spinning: true,
       };
@@ -87,40 +90,70 @@ const data = computed<TagProps & { tooltip: VNode }>(() => {
   }
 });
 
-// const onClick = async () => {
-//   const { status } = props;
-//   if (status === GIT_STATUS_ERROR) {
-//     emit('retry');
-//     // await store.dispatch(`${ns}/cloneGit`, { id });
-//   } else {
-//     emit('click');
-//   }
-// };
+const contextMenuVisible = ref(false);
+const contextMenuItems = computed<ContextMenuItem[]>(() => {
+  const items: ContextMenuItem[] = [];
+  items.push({
+    title: t('common.actions.viewLogs'),
+    icon: getIconByAction(ACTION_VIEW_LOGS),
+    action: () => {
+      emit('view-logs');
+      contextMenuVisible.value = false;
+    },
+  });
+  if (props.status === GIT_STATUS_ERROR) {
+    items.push({
+      title: t('common.actions.retry'),
+      icon: getIconByAction(ACTION_RETRY),
+      action: () => {
+        emit('retry');
+        contextMenuVisible.value = false;
+      },
+    });
+  }
+  return items;
+});
+
+const onClick = () => {
+  if (props.status === GIT_STATUS_ERROR) {
+    contextMenuVisible.value = !contextMenuVisible.value;
+    return;
+  }
+  emit('view-logs');
+};
 
 defineOptions({ name: 'ClGitStatus' });
 </script>
 
 <template>
-  <div class="git-status">
-    <cl-tag
-      :key="data"
-      :icon="data.icon"
-      :label="data.label"
-      :size="size"
-      :spinning="data.spinning"
-      :tooltip="data.tooltip"
-      :type="data.type"
-      clickable
-      @click="emit('click')"
-    >
-      <template
-        v-if="data.tooltip && typeof data.tooltip !== 'string'"
-        #tooltip
-      >
-        <component :is="data.tooltip" />
-      </template>
-    </cl-tag>
-  </div>
+  <cl-context-menu :visible="contextMenuVisible">
+    <template #reference>
+      <div class="git-status">
+        <cl-tag
+          :key="data"
+          :icon="data.icon"
+          :label="data.label"
+          :size="size"
+          :spinning="data.spinning"
+          :tooltip="data.tooltip"
+          :type="data.type"
+          clickable
+          @click="onClick"
+        >
+          <template
+            v-if="data.tooltip && typeof data.tooltip !== 'string'"
+            #tooltip
+          >
+            <component :is="data.tooltip" />
+          </template>
+        </cl-tag>
+      </div>
+    </template>
+    <cl-context-menu-list
+      :items="contextMenuItems"
+      @hide="contextMenuVisible = false"
+    />
+  </cl-context-menu>
 </template>
 
 <style scoped>

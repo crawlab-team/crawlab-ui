@@ -5,11 +5,13 @@ import * as monaco from 'monaco-editor';
 import { FILE_ROOT } from '@/constants/file';
 import FileEditorNavTabs from '@/components/ui/file/FileEditorNavTabs.vue';
 import { getLanguageByFileName, translate } from '@/utils';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{
   ns: ListStoreNamespace;
   content: string;
   navItems: FileNavItem[];
+  defaultTabs?: FileNavItem[];
   activeNavItem?: FileNavItem;
   defaultExpandedKeys: string[];
   navMenuLoading?: boolean;
@@ -21,6 +23,7 @@ const emit = defineEmits<{
   (e: 'node-drop', draggingItem: FileNavItem, dropItem: FileNavItem): void;
   (e: 'ctx-menu-new-file', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-new-directory', item: FileNavItem, name: string): void;
+  (e: 'ctx-menu-upload-files', item: FileNavItem): void;
   (e: 'ctx-menu-rename', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-clone', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-delete', item: FileNavItem): void;
@@ -112,37 +115,6 @@ const updateEditorContent = () => {
 };
 watch(content, updateEditorContent);
 
-const getContentCache = (tab: FileNavItem) => {
-  if (!tab.path) return;
-  const key = tab.path;
-  const content = editorTabContentCache.get(key);
-  emit('content-change', content as string);
-};
-
-const updateContentCache = (tab: FileNavItem, content: string) => {
-  if (!tab.path) return;
-  const key = tab.path as string;
-  editorTabContentCache.set(key, content as string);
-};
-
-const deleteContentCache = (tab: FileNavItem) => {
-  if (!tab.path) return;
-  const key = tab.path;
-  editorTabContentCache.delete(key);
-};
-
-const deleteOtherContentCache = (tab: FileNavItem) => {
-  if (!tab.path) return;
-  const key = tab.path;
-  const content = editorTabContentCache.get(key);
-  editorTabContentCache.clear();
-  editorTabContentCache.set(key, content as string);
-};
-
-const clearContentCache = () => {
-  editorTabContentCache.clear();
-};
-
 const getFilteredFiles = (items: FileNavItem[]): FileNavItem[] => {
   return items
     .filter(d => {
@@ -192,7 +164,6 @@ const updateTabs = (item?: FileNavItem) => {
       store.commit(`${ns}/setActiveFileNavItem`, item);
     }
     tabs.value.push(item);
-    getContentCache(item);
   }
 };
 
@@ -239,17 +210,11 @@ const onContextMenuDelete = (item: FileNavItem) => {
 const onContentChange = (content: string) => {
   if (!activeFileItem.value) return;
   emit('content-change', content);
-
-  // update in cache
-  updateContentCache(activeFileItem.value, content);
 };
 
 const onTabClick = (tab: FileNavItem) => {
   store.commit(`${ns}/setActiveFileNavItem`, tab);
   emit('tab-click', tab);
-
-  // get from cache and update content
-  getContentCache(tab);
 };
 
 const closeTab = (tab: FileNavItem) => {
@@ -265,17 +230,7 @@ const closeTab = (tab: FileNavItem) => {
         store.commit(`${ns}/setActiveFileNavItem`, tabs.value[idx - 1]);
       }
     }
-
-    // get from cache
-    setTimeout(() => {
-      if (activeFileItem.value) {
-        getContentCache(activeFileItem.value);
-      }
-    }, 0);
   }
-
-  // delete in cache
-  deleteContentCache(tab);
 };
 
 const onTabClose = (tab: FileNavItem) => {
@@ -285,17 +240,11 @@ const onTabClose = (tab: FileNavItem) => {
 const onTabCloseOthers = (tab: FileNavItem) => {
   tabs.value = [tab];
   store.commit(`${ns}/setActiveFileNavItem`, tab);
-
-  // clear cache and update current tab content
-  deleteOtherContentCache(tab);
 };
 
 const onTabCloseAll = () => {
   tabs.value = [];
   store.commit(`${ns}/resetActiveFileNavItem`);
-
-  // clear cache
-  clearContentCache();
 };
 
 const onTabDragEnd = (newTabs: FileNavItem[]) => {
@@ -385,6 +334,11 @@ onUnmounted(() => {
   editor?.dispose();
   store.commit(`${ns}/resetActiveFileNavItem`);
 });
+
+defineExpose({
+  updateTabs,
+});
+
 defineOptions({ name: 'ClFileEditor' });
 </script>
 

@@ -24,45 +24,42 @@ defineOptions({ name: 'ClGitDetailActionsChanges' });
 
 <template>
   <cl-nav-action-group>
+    <cl-nav-action-fa-icon :icon="['fab', 'git']" />
     <cl-nav-action-item>
-      <cl-label-button
+      <cl-fa-icon-button
         :loading="commitLoading"
         :icon="['fa', 'code-commit']"
         :tooltip="t('components.git.actions.tooltip.commit')"
-        :label="t('components.git.actions.label.commit')"
         type="primary"
         :disabled="isDisabled || !state.gitChangeSelection.length"
         @click="onCommit"
       />
     </cl-nav-action-item>
     <cl-nav-action-item>
-      <cl-label-button
+      <cl-fa-icon-button
         :loading="rollbackLoading"
         :icon="['fa', 'undo']"
         :tooltip="t('components.git.actions.tooltip.rollback')"
-        :label="t('components.git.actions.label.rollback')"
         type="info"
         :disabled="isDisabled || !state.gitChangeSelection.length"
         @click="onRollback"
       />
     </cl-nav-action-item>
     <cl-nav-action-item>
-      <cl-label-button
+      <cl-fa-icon-button
         :loading="pullLoading"
         :icon="['fa', 'cloud-download-alt']"
         :tooltip="t('components.git.actions.tooltip.pull')"
-        :label="t('components.git.actions.label.pull')"
         type="primary"
         :disabled="isDisabled"
         @click="onPull"
       />
     </cl-nav-action-item>
     <cl-nav-action-item>
-      <cl-label-button
+      <cl-fa-icon-button
         :loading="pushLoading"
         :icon="['fa', 'cloud-upload-alt']"
         :tooltip="t('components.git.actions.tooltip.push')"
-        :label="t('components.git.actions.label.push')"
         type="primary"
         :disabled="isDisabled"
         @click="onPush"

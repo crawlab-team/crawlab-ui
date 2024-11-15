@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { translate } from '@/utils';
+import { TagProps } from '@/components/ui/tag/types';
 
 const props = defineProps<{
   dataSource?: DatabaseDataSource;

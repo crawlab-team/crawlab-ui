@@ -99,12 +99,12 @@ import Form from './ui/form/Form.vue';
 import FormItem from './ui/form/FormItem.vue';
 import FormTableField from './ui/form/FormTableField.vue';
 import GitBranchSelect from './core/git/GitBranchSelect.vue';
+import GitCloneLogsDialog from './core/git/GitCloneLogsDialog.vue';
 import GitFileDiffDialog from './core/git/GitFileDiffDialog.vue';
 import GitFileStatus from './core/git/GitFileStatus.vue';
 import GitForm from './core/git/GitForm.vue';
 import GitHubStarBadge from './ui/badge/GitHubStarBadge.vue';
 import GitLogsBox from './core/git/GitLogsBox.vue';
-import GitLogsDialog from './core/git/GitLogsDialog.vue';
 import GitPath from './core/git/GitPath.vue';
 import GitRepo from './core/git/GitRepo.vue';
 import GitStatus from './core/git/GitStatus.vue';
@@ -132,6 +132,7 @@ import LexicalTablePlugin from './ui/lexical/plugins/LexicalTablePlugin.vue';
 import LexicalToolbarPlugin from './ui/lexical/plugins/LexicalToolbarPlugin.vue';
 import LexicalVariablePlugin from './ui/lexical/plugins/LexicalVariablePlugin.vue';
 import LinkTag from './ui/tag/LinkTag.vue';
+import LogsView from './ui/logs/LogsView.vue';
 import MarkdownEditor from './ui/markdown/MarkdownEditor.vue';
 import MarkdownEditorToolbar from './ui/markdown/MarkdownEditorToolbar.vue';
 import MenuItemIcon from './ui/icon/MenuItemIcon.vue';
@@ -328,12 +329,12 @@ export {
   FormItem as ClFormItem,
   FormTableField as ClFormTableField,
   GitBranchSelect as ClGitBranchSelect,
+  GitCloneLogsDialog as ClGitCloneLogsDialog,
   GitFileDiffDialog as ClGitFileDiffDialog,
   GitFileStatus as ClGitFileStatus,
   GitForm as ClGitForm,
   GitHubStarBadge as ClGitHubStarBadge,
   GitLogsBox as ClGitLogsBox,
-  GitLogsDialog as ClGitLogsDialog,
   GitPath as ClGitPath,
   GitRepo as ClGitRepo,
   GitStatus as ClGitStatus,
@@ -361,6 +362,7 @@ export {
   LexicalToolbarPlugin as ClLexicalToolbarPlugin,
   LexicalVariablePlugin as ClLexicalVariablePlugin,
   LinkTag as ClLinkTag,
+  LogsView as ClLogsView,
   MarkdownEditor as ClMarkdownEditor,
   MarkdownEditorToolbar as ClMarkdownEditorToolbar,
   MenuItemIcon as ClMenuItemIcon,

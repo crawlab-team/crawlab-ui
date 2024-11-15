@@ -101,9 +101,6 @@ defineOptions({ name: 'ClGitDetail' });
         v-if="activeTabName === TAB_NAME_CHANGES"
       />
       <cl-git-detail-actions-files v-if="activeTabName === TAB_NAME_FILES" />
-      <cl-git-detail-actions-spiders
-        v-if="activeTabName === TAB_NAME_SPIDERS"
-      />
     </template>
   </cl-detail-layout>
 
@@ -113,5 +110,3 @@ defineOptions({ name: 'ClGitDetail' });
   <cl-git-file-diff-dialog />
   <!-- ./Dialogs -->
 </template>
-
-<style scoped lang="scss"></style>

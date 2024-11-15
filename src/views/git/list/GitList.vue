@@ -30,7 +30,7 @@ defineOptions({ name: 'ClGitList' });
     <template #extra>
       <!-- Dialogs (handled by store) -->
       <cl-create-edit-git-dialog />
-      <cl-git-logs-dialog />
+      <cl-git-clone-logs-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>

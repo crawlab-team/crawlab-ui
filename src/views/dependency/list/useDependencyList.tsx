@@ -20,12 +20,13 @@ import {
 import {
   ClDependencyVersions,
   ClNavLink,
-  ClNodeType,
   ClNodeTag,
   useNode,
 } from '@/components';
-import { getRepoExternalPath } from '@/utils/dependency';
-import { ElRow } from 'element-plus';
+import {
+  getNormalizedDependencies,
+  getRepoExternalPath,
+} from '@/utils/dependency';
 
 const t = translate;
 
@@ -179,7 +180,9 @@ const useDependencyList = () => {
         width: '200',
         value: (row: DependencyRepo) => (
           <ClDependencyVersions
-            repo={row}
+            name={row.name}
+            dependencies={getNormalizedDependencies(row.dependencies)}
+            latestVersion={row.latest_version}
             onClick={() => onClickInstall(row)}
           />
         ),
@@ -228,7 +231,7 @@ const useDependencyList = () => {
                       <>
                         <div class="tooltip-title">
                           <label>
-                            {t('layouts.routes.dependencies.title')}
+                            {t('layouts.routes.dependencies.list.title')}
                           </label>
                         </div>
                         <div class="tooltip-item">

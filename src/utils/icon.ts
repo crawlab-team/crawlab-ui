@@ -14,6 +14,7 @@ import {
   ACTION_INSTALL,
   ACTION_LINK,
   ACTION_RESTART,
+  ACTION_RETRY,
   ACTION_RUN,
   ACTION_SAVE,
   ACTION_SEND_TEST_MESSAGE,
@@ -30,6 +31,7 @@ import {
   ACTION_VIEW_CONSOLE,
   ACTION_VIEW_DATA,
   ACTION_VIEW_DATABASES,
+  ACTION_VIEW_DEPENDENCIES,
   ACTION_VIEW_FILES,
   ACTION_VIEW_LOGS,
   ACTION_VIEW_MAIL,
@@ -205,6 +207,8 @@ export const getIconByAction = (action: string): Icon | undefined => {
       return ['fa', 'file-code'];
     case ACTION_VIEW_CHANNELS:
       return ['fa', 'broadcast-tower'];
+    case ACTION_VIEW_DEPENDENCIES:
+      return ['fa', 'cubes'];
 
     // Filter Actions
     case ACTION_FILTER:
@@ -231,6 +235,10 @@ export const getIconByAction = (action: string): Icon | undefined => {
     // Notification Actions
     case ACTION_SEND_TEST_MESSAGE:
       return ['fa', 'paper-plane'];
+
+    // Git Actions
+    case ACTION_RETRY:
+      return ['fa', 'redo'];
 
     // Default
     default:

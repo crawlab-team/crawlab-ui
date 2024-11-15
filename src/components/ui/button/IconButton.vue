@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ButtonEmits, IconButtonProps } from './types';
+import type { ButtonEmits, IconButtonProps } from './types';
 
 defineProps<IconButtonProps>();
 

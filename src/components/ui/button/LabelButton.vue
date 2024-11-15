@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ButtonEmits, LabelButtonProps } from './types';
+import type { ButtonEmits, LabelButtonProps } from './types';
 
 defineProps<LabelButtonProps>();
 

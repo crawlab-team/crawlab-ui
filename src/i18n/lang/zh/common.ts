@@ -53,6 +53,7 @@ const common: LCommon = {
     viewTemplate: '查看模板',
     viewChannels: '查看通知渠道',
     viewMonitoring: '查看监控',
+    viewDependencies: '查看依赖',
     previewData: '预览数据',
     insertBefore: '在前插入',
     insertAfter: '在后插入',
@@ -101,6 +102,7 @@ const common: LCommon = {
       cancel: '尝试取消',
       forceCancel: '尝试强制取消',
       stop: '尝试停止',
+      retry: '开始重试',
     },
     error: {
       login: '登陆失败',

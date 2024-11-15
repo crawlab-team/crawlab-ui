@@ -1,19 +1,5 @@
 <script setup lang="ts">
-interface ButtonProps {
-  tooltip?: string;
-  type?: BasicType;
-  size?: BasicSize;
-  round?: boolean;
-  circle?: boolean;
-  plain?: boolean;
-  disabled?: boolean;
-  isIcon?: boolean;
-  loading?: boolean;
-  onClick?: () => void;
-  className?: string;
-  id?: string;
-  noMargin?: boolean;
-}
+import type { ButtonType, ButtonProps } from '@/components/ui/button/types';
 
 withDefaults(
   defineProps<
@@ -59,5 +45,3 @@ defineOptions({ name: 'ClNavActionButton' });
     />
   </div>
 </template>
-
-

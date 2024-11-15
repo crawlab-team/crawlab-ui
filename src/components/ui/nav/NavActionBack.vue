@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { translate } from '@/utils';
+import type { ButtonType } from '@/components/ui/button/types';
 
 export interface NavActionBackProps {
   buttonType?: ButtonType;
@@ -42,5 +43,3 @@ defineOptions({ name: 'ClNavActionBack' });
     />
   </cl-nav-action-group>
 </template>
-
-

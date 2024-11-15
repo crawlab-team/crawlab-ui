@@ -237,10 +237,9 @@ defineOptions({ name: 'ClGitBranchSelect' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .git-branch-select {
   min-width: 150px;
-  margin-right: 10px;
 }
 </style>
 <style lang="scss">

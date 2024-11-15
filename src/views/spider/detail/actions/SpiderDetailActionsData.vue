@@ -11,8 +11,6 @@ import { DATABASE_STATUS_OFFLINE } from '@/constants/database';
 
 const t = translate;
 
-const { get } = useRequest();
-
 // store
 const ns = 'spider';
 const store = useStore();
@@ -307,14 +305,9 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
 
 <style scoped>
 .spider-detail-actions-data {
-  &:deep(.display-all-fields) {
-    margin-right: 10px;
-  }
-
   &:deep(.el-cascader),
   &:deep(.el-select) {
     width: 150px;
-    margin-right: 10px;
 
     &.database {
       width: 160px;

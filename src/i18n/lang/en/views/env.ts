@@ -61,6 +61,7 @@ const env: LViewsEnv = {
         name: 'Name',
         latestVersion: 'Latest version',
         installedVersion: 'Installed version',
+        requiredVersion: 'Required version',
         installedNodes: 'Installed nodes',
         allNodes: 'All nodes',
         selectedNodes: 'Selected nodes',

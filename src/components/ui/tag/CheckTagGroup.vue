@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, reactive, watch } from 'vue';
-
-export interface CheckTagGroupProps {
-  modelValue: string[];
-  options: SelectOption[];
-  disabled?: boolean;
-  className?: string;
-}
+import type { CheckTagGroupProps } from './types';
 
 const props = defineProps<CheckTagGroupProps>();
 

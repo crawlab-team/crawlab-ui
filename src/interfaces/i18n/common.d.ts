@@ -66,6 +66,7 @@ export declare global {
       viewTemplate: string;
       viewChannels: string;
       viewMonitoring: string;
+      viewDependencies: string;
       previewData: string;
       insertBefore: string;
       insertAfter: string;
@@ -114,6 +115,7 @@ export declare global {
         cancel: string;
         forceCancel: string;
         stop: string;
+        retry: string;
       };
       error: {
         login: string;

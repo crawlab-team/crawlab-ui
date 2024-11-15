@@ -9,16 +9,6 @@ export declare global {
     last_update_ts?: string;
   }
 
-  interface DependencyTask extends BaseModel {
-    status?: string;
-    error?: string;
-    setting_id?: string;
-    type?: string;
-    node_id?: string;
-    action?: string;
-    dep_names?: string[];
-  }
-
   type DependencyStatus =
     | 'installing'
     | 'installed'
@@ -26,6 +16,8 @@ export declare global {
     | 'uninstalled'
     | 'error'
     | 'abnormal';
+
+  type DependencyFileType = 'requirements.txt' | 'package.json';
 
   interface Dependency extends BaseModel {
     node_id?: string;
@@ -45,6 +37,14 @@ export declare global {
     latest_version?: string;
     type?: DependencyLang;
     dependencies?: Dependency[];
+  }
+
+  interface DependencyRequirement {
+    name?: string;
+    version?: string;
+    dependencies?: Dependency[];
+    latest_version?: string;
+    type?: DependencyLang;
   }
 
   type DependencyRepoTabName = 'installed' | 'search';

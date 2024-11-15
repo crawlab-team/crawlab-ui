@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ButtonEmits, FaIconButtonProps } from './types';
+import type { ButtonEmits, FaIconButtonProps } from './types';
 
 const props = defineProps<FaIconButtonProps>();
 

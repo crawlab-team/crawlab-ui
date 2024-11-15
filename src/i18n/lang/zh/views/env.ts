@@ -61,6 +61,7 @@ const env: LViewsEnv = {
         name: '名称',
         latestVersion: '最新版本',
         installedVersion: '已安装版本',
+        requiredVersion: '所需版本',
         installedNodes: '已安装节点',
         allNodes: '所有节点',
         selectedNodes: '指定节点',

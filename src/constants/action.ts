@@ -37,6 +37,7 @@ export const ACTION_VIEW_USERS = 'view-users';
 export const ACTION_VIEW_MAIL = 'view-mail';
 export const ACTION_VIEW_TEMPLATE = 'view-template';
 export const ACTION_VIEW_CHANNELS = 'view-channels';
+export const ACTION_VIEW_DEPENDENCIES = 'view-dependencies';
 
 // Filter Actions
 export const ACTION_FILTER = 'filter';
@@ -54,3 +55,6 @@ export const ACTION_UPGRADE = 'upgrade';
 
 // Notification Actions
 export const ACTION_SEND_TEST_MESSAGE = 'send-test-message';
+
+// Git Actions
+export const ACTION_RETRY = 'retry';

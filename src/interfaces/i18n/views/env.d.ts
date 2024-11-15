@@ -51,6 +51,7 @@ interface LViewsEnv {
         name: string;
         latestVersion: string;
         installedVersion: string;
+        requiredVersion: string;
         installedNodes: string;
         allNodes: string;
         selectedNodes: string;

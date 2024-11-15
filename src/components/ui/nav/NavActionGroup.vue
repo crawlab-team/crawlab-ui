@@ -1,9 +1,13 @@
 <script setup lang="ts">
+defineProps<{
+  className?: string;
+}>();
+
 defineOptions({ name: 'ClNavActionGroup' });
 </script>
 
 <template>
-  <div class="nav-action-group">
+  <div class="nav-action-group" :class="className">
     <div class="border" />
     <slot></slot>
   </div>
@@ -14,13 +18,11 @@ defineOptions({ name: 'ClNavActionGroup' });
   height: fit-content;
   display: flex;
   align-items: start;
+  gap: 10px;
   box-sizing: border-box;
   flex-wrap: wrap;
   position: relative;
-
-  & + .nav-action-group {
-    margin-left: 10px;
-  }
+  margin-right: 10px;
 
   &:first-child {
     .border {
@@ -43,5 +45,6 @@ defineOptions({ name: 'ClNavActionGroup' });
 <style scoped>
 .nav-action-group:deep(.nav-action-item:last-child) {
   margin-right: 0;
+  padding-right: 10px;
 }
 </style>

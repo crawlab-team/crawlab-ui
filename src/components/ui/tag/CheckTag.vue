@@ -1,28 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-
-interface TagProps {
-  label?: string;
-  tooltip?: string;
-  type?: BasicType;
-  color?: string;
-  backgroundColor?: string;
-  borderColor?: string;
-  icon?: Icon;
-  suffixIcon?: Icon;
-  size?: BasicSize;
-  spinning?: boolean;
-  width?: string;
-  effect?: BasicEffect;
-  clickable?: boolean;
-  closable?: boolean;
-  disabled?: boolean;
-  className?: string;
-}
-
-interface CheckTagProps extends TagProps {
-  modelValue: boolean;
-}
+import type { CheckTagProps } from './types';
 
 const props = defineProps<CheckTagProps>();
 
@@ -102,5 +80,3 @@ defineOptions({ name: 'ClCheckTag' });
     @mouseleave="onMouseLeave"
   />
 </template>
-
-

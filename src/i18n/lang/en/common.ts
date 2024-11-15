@@ -101,6 +101,7 @@ const common: LCommon = {
       cancel: 'Attempt to cancel',
       forceCancel: 'Attempt to force cancel',
       stop: 'Attempt to stop',
+      retry: 'Start to retry',
     },
     error: {
       login: 'Login failed',

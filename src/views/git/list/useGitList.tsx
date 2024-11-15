@@ -24,6 +24,7 @@ import {
 } from '@/utils';
 import { useGit } from '@/components';
 import { ClNavLink, ClGitStatus, ClTag, ClIcon } from '@/components';
+import { ElMessage } from 'element-plus';
 
 const useGitList = () => {
   // router
@@ -135,16 +136,19 @@ const useGitList = () => {
                   id={_id}
                   status={status}
                   error={error}
-                  onClick={async () => {
-                    if (row.status === GIT_STATUS_ERROR || clone_logs?.length) {
-                      store.commit(`${ns}/showDialog`, 'logs');
-                      store.commit(`${ns}/setForm`, row);
-                      return;
-                    }
-
-                    await router.push(`/gits/${_id}`);
+                  onViewLogs={async () => {
+                    store.commit(`${ns}/showDialog`, 'logs');
+                    store.commit(`${ns}/setForm`, row);
                   }}
-                  onRetry={() => store.dispatch(`${ns}/getList`)}
+                  onRetry={async () => {
+                    try {
+                      await store.dispatch(`${ns}/cloneGit`, { id: row._id });
+                      ElMessage.info(t('common.message.info.retry'));
+                      await store.dispatch(`${ns}/getList`);
+                    } catch (e: any) {
+                      ElMessage.error(e.message);
+                    }
+                  }}
                 />
               </div>
             );

@@ -48,7 +48,7 @@ export const getBaseFileStoreActions = <S extends BaseFileStoreState>(
 ): BaseFileStoreActions<S> => {
   return {
     listDir: async (
-      { commit }: StoreActionContext<BaseStoreState<Spider>>,
+      { commit }: StoreActionContext<S>,
       { id, path }: FileRequestPayload
     ) => {
       const res = await get(`${endpoint}/${id}/files/list`, { path });

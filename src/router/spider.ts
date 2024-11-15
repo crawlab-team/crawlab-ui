@@ -4,17 +4,15 @@ import {
   TAB_NAME_FILES,
   TAB_NAME_OVERVIEW,
   TAB_NAME_SCHEDULES,
-  TAB_NAME_SETTINGS,
   TAB_NAME_TASKS,
 } from '@/constants/tab';
 import {
-  ClDependencySpiderTab,
   ClSpiderDetail,
   ClSpiderDetailTabData,
+  ClSpiderDetailTabDependencies,
   ClSpiderDetailTabFiles,
   ClSpiderDetailTabOverview,
   ClSpiderDetailTabSchedules,
-  ClSpiderDetailTabSettings,
   ClSpiderDetailTabTasks,
   ClSpiderList,
 } from '@/views';
@@ -79,7 +77,7 @@ export default [
         path: TAB_NAME_DEPENDENCIES,
         title: t('layouts.routes.spiders.detail.tabs.dependencies'),
         icon: getIconByTabName(TAB_NAME_DEPENDENCIES),
-        component: async () => ClDependencySpiderTab,
+        component: async () => ClSpiderDetailTabDependencies,
       },
     ],
   },

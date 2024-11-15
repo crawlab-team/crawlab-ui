@@ -1,5 +1,6 @@
 import { ComputedRef, Ref } from 'vue';
 import Table from '@/components/ui/table/Table.vue';
+import { ButtonType } from '@/components/ui/button/types';
 
 export declare global {
   interface ListLayoutComponentData<T extends BaseModel> {

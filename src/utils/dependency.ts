@@ -8,3 +8,16 @@ export const getRepoExternalPath = (repo: DependencyRepo) => {
       return '';
   }
 };
+
+export const getEmptyDependency = (): Dependency => {
+  return {
+    version: 'N/A',
+  };
+};
+
+export const getNormalizedDependencies = (
+  dependencies?: Dependency[]
+): Dependency[] => {
+  if (!dependencies?.length) return [getEmptyDependency()];
+  return dependencies;
+};

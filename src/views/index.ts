@@ -6,21 +6,13 @@ import DatabaseDetailTabDatabases from './database/detail/tabs/DatabaseDetailTab
 import DatabaseDetailTabMonitoring from './database/detail/tabs/DatabaseDetailTabMonitoring.vue';
 import DatabaseDetailTabOverview from './database/detail/tabs/DatabaseDetailTabOverview.vue';
 import DatabaseList from './database/list/DatabaseList.vue';
-import DependencyLang from './deps/components/lang/DependencyLang.vue';
 import DependencyList from './dependency/list/DependencyList.vue';
-import DependencyNode from './deps/node/DependencyNode.vue';
-import DependencyPython from './deps/python/DependencyPython.vue';
-import DependencySettingForm from './deps/setting/DependencySettingForm.vue';
-import DependencySettings from './deps/setting/DependencySettings.vue';
-import DependencySpiderTab from './deps/spider/DependencySpiderTab.vue';
-import DependencyTaskList from './deps/task/DependencyTaskList.vue';
 import Disclaimer from './misc/Disclaimer.vue';
 import EnvironmentList from './environment/list/EnvironmentList.vue';
 import GitDetail from './git/detail/GitDetail.vue';
 import GitDetailActionsChanges from './git/detail/actions/GitDetailActionsChanges.vue';
 import GitDetailActionsCommon from './git/detail/actions/GitDetailActionsCommon.vue';
 import GitDetailActionsFiles from './git/detail/actions/GitDetailActionsFiles.vue';
-import GitDetailActionsSpiders from './git/detail/actions/GitDetailActionsSpiders.vue';
 import GitDetailTabChanges from './git/detail/tabs/GitDetailTabChanges.vue';
 import GitDetailTabCommits from './git/detail/tabs/GitDetailTabCommits.vue';
 import GitDetailTabFiles from './git/detail/tabs/GitDetailTabFiles.vue';
@@ -28,9 +20,7 @@ import GitDetailTabOverview from './git/detail/tabs/GitDetailTabOverview.vue';
 import GitDetailTabSpiders from './git/detail/tabs/GitDetailTabSpiders.vue';
 import GitList from './git/list/GitList.vue';
 import Home from './home/Home.vue';
-import InstallForm from './deps/components/form/InstallForm.vue';
 import Login from './login/Login.vue';
-import LogsView from './deps/task/LogsView.vue';
 import MySettings from './misc/MySettings.vue';
 import NodeDetail from './node/detail/NodeDetail.vue';
 import NodeDetailActionsCommon from './node/detail/actions/NodeDetailActionsCommon.vue';
@@ -76,6 +66,7 @@ import SpiderDetailActionsData from './spider/detail/actions/SpiderDetailActions
 import SpiderDetailActionsDatabase from './spider/detail/actions/SpiderDetailActionsDatabase.vue';
 import SpiderDetailActionsFiles from './spider/detail/actions/SpiderDetailActionsFiles.vue';
 import SpiderDetailTabData from './spider/detail/tabs/SpiderDetailTabData.vue';
+import SpiderDetailTabDependencies from './spider/detail/tabs/SpiderDetailTabDependencies.vue';
 import SpiderDetailTabFiles from './spider/detail/tabs/SpiderDetailTabFiles.vue';
 import SpiderDetailTabOverview from './spider/detail/tabs/SpiderDetailTabOverview.vue';
 import SpiderDetailTabSchedules from './spider/detail/tabs/SpiderDetailTabSchedules.vue';
@@ -83,7 +74,6 @@ import SpiderDetailTabSettings from './spider/detail/tabs/SpiderDetailTabSetting
 import SpiderDetailTabTasks from './spider/detail/tabs/SpiderDetailTabTasks.vue';
 import SpiderList from './spider/list/SpiderList.vue';
 import SystemDetail from './system/detail/SystemDetail.vue';
-import TaskAction from './deps/task/TaskAction.vue';
 import TaskDetail from './task/detail/TaskDetail.vue';
 import TaskDetailActionGroupNav from './task/detail/actions/groups/TaskDetailActionGroupNav.vue';
 import TaskDetailActionsCommon from './task/detail/actions/TaskDetailActionsCommon.vue';
@@ -94,7 +84,6 @@ import TaskDetailTabLogs from './task/detail/tabs/TaskDetailTabLogs.vue';
 import TaskDetailTabOverview from './task/detail/tabs/TaskDetailTabOverview.vue';
 import TaskList from './task/list/TaskList.vue';
 import TokenList from './token/list/TokenList.vue';
-import UninstallForm from './deps/components/form/UninstallForm.vue';
 import useDatabaseDetail from './database/detail/useDatabaseDetail';
 import useDatabaseList from './database/list/useDatabaseList';
 import useDependencyList from './dependency/list/useDependencyList';
@@ -134,21 +123,13 @@ export {
   DatabaseDetailTabMonitoring as ClDatabaseDetailTabMonitoring,
   DatabaseDetailTabOverview as ClDatabaseDetailTabOverview,
   DatabaseList as ClDatabaseList,
-  DependencyLang as ClDependencyLang,
   DependencyList as ClDependencyList,
-  DependencyNode as ClDependencyNode,
-  DependencyPython as ClDependencyPython,
-  DependencySettingForm as ClDependencySettingForm,
-  DependencySettings as ClDependencySettings,
-  DependencySpiderTab as ClDependencySpiderTab,
-  DependencyTaskList as ClDependencyTaskList,
   Disclaimer as ClDisclaimer,
   EnvironmentList as ClEnvironmentList,
   GitDetail as ClGitDetail,
   GitDetailActionsChanges as ClGitDetailActionsChanges,
   GitDetailActionsCommon as ClGitDetailActionsCommon,
   GitDetailActionsFiles as ClGitDetailActionsFiles,
-  GitDetailActionsSpiders as ClGitDetailActionsSpiders,
   GitDetailTabChanges as ClGitDetailTabChanges,
   GitDetailTabCommits as ClGitDetailTabCommits,
   GitDetailTabFiles as ClGitDetailTabFiles,
@@ -156,9 +137,7 @@ export {
   GitDetailTabSpiders as ClGitDetailTabSpiders,
   GitList as ClGitList,
   Home as ClHome,
-  InstallForm as ClInstallForm,
   Login as ClLogin,
-  LogsView as ClLogsView,
   MySettings as ClMySettings,
   NodeDetail as ClNodeDetail,
   NodeDetailActionsCommon as ClNodeDetailActionsCommon,
@@ -204,6 +183,7 @@ export {
   SpiderDetailActionsDatabase as ClSpiderDetailActionsDatabase,
   SpiderDetailActionsFiles as ClSpiderDetailActionsFiles,
   SpiderDetailTabData as ClSpiderDetailTabData,
+  SpiderDetailTabDependencies as ClSpiderDetailTabDependencies,
   SpiderDetailTabFiles as ClSpiderDetailTabFiles,
   SpiderDetailTabOverview as ClSpiderDetailTabOverview,
   SpiderDetailTabSchedules as ClSpiderDetailTabSchedules,
@@ -211,7 +191,6 @@ export {
   SpiderDetailTabTasks as ClSpiderDetailTabTasks,
   SpiderList as ClSpiderList,
   SystemDetail as ClSystemDetail,
-  TaskAction as ClTaskAction,
   TaskDetail as ClTaskDetail,
   TaskDetailActionGroupNav as ClTaskDetailActionGroupNav,
   TaskDetailActionsCommon as ClTaskDetailActionsCommon,
@@ -222,7 +201,6 @@ export {
   TaskDetailTabOverview as ClTaskDetailTabOverview,
   TaskList as ClTaskList,
   TokenList as ClTokenList,
-  UninstallForm as ClUninstallForm,
   useDatabaseDetail as useDatabaseDetail,
   useDatabaseList as useDatabaseList,
   useDependencyList as useDependencyList,

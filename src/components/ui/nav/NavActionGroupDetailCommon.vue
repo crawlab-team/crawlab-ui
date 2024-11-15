@@ -25,7 +25,7 @@ defineOptions({ name: 'ClNavActionGroupDetailCommon' });
 </script>
 
 <template>
-  <cl-nav-action-group>
+  <cl-nav-action-group class-name="nav-action-group-detail-common">
     <cl-nav-action-item v-if="showBackButton">
       <cl-nav-action-button
         v-auth="ACTION_BACK"
@@ -54,11 +54,3 @@ defineOptions({ name: 'ClNavActionGroupDetailCommon' });
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
-
-<style scoped>
-.nav-action-group {
-  .nav-action-item:last-child {
-    margin-right: 10px;
-  }
-}
-</style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { ButtonGroupProps } from './types';
+import type { ButtonGroupProps } from './types';
 
 const props = withDefaults(defineProps<ButtonGroupProps>(), {
   size: 'small',

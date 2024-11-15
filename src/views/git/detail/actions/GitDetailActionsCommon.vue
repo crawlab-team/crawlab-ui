@@ -188,6 +188,25 @@ const loading = computed(
     commitLoading.value ||
     pushLoading.value
 );
+
+const createSpiderDialogVisible = ref(false);
+const onOpenCreateDialog = () => {
+  store.commit(`spider/resetForm`);
+  createSpiderDialogVisible.value = true;
+};
+const createSpiderLoading = ref(false);
+const onCreate = async (spider: Spider) => {
+  createSpiderLoading.value = true;
+  try {
+    await store.dispatch(`${ns}/createSpider`, { id: activeId.value, spider });
+  } catch (e) {
+    ElMessage.error((e as Error).message);
+  } finally {
+    createSpiderLoading.value = false;
+    createSpiderDialogVisible.value = false;
+  }
+};
+
 defineOptions({ name: 'ClGitDetailActionsCommon' });
 </script>
 
@@ -196,7 +215,6 @@ defineOptions({ name: 'ClGitDetailActionsCommon' });
     <cl-nav-action-fa-icon
       :icon="getGitIcon(gitForm).icon"
       :color="getGitIcon(gitForm).color"
-      :tooltip="t('components.git.actions.title')"
     />
     <cl-nav-action-item>
       <cl-git-status
@@ -237,5 +255,23 @@ defineOptions({ name: 'ClGitDetailActionsCommon' });
         />
       </div>
     </cl-nav-action-item>
+    <cl-nav-action-item>
+      <cl-fa-icon-button
+        :loading="createSpiderLoading"
+        :icon="['fa', 'spider']"
+        :tooltip="t('components.git.spiders.actions.tooltip.create')"
+        type="success"
+        :disabled="isDisabled"
+        @click="onOpenCreateDialog"
+      />
+    </cl-nav-action-item>
   </cl-nav-action-group>
+
+  <cl-create-git-spider-dialog
+    :title="t('components.git.spiders.actions.label.create')"
+    :visible="createSpiderDialogVisible"
+    :loading="createSpiderLoading"
+    @close="createSpiderDialogVisible = false"
+    @confirm="onCreate"
+  />
 </template>

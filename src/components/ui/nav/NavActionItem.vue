@@ -23,10 +23,6 @@ defineOptions({ name: 'ClNavActionItem' });
   align-items: center;
   color: var(--cl-nav-actions-item-color);
 
-  &.is-label {
-    margin-right: 10px;
-  }
-
   &:deep(.title) {
     color: inherit;
   }

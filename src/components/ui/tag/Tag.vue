@@ -1,27 +1,6 @@
 <script setup lang="ts">
-import { computed, CSSProperties, onMounted, ref, watch } from 'vue';
-import { ElTag } from 'element-plus';
-
-interface TagProps {
-  label?: string;
-  tooltip?: string;
-  type?: BasicType;
-  color?: string;
-  backgroundColor?: string;
-  borderColor?: string;
-  icon?: Icon;
-  suffixIcon?: Icon;
-  size?: BasicSize;
-  spinning?: boolean;
-  width?: string;
-  maxWidth?: string;
-  effect?: BasicEffect;
-  clickable?: boolean;
-  closable?: boolean;
-  disabled?: boolean;
-  className?: string;
-  short?: boolean;
-}
+import { computed, CSSProperties } from 'vue';
+import type { TagProps } from './types';
 
 const props = defineProps<TagProps>();
 
@@ -36,8 +15,6 @@ const slots = defineSlots<{
   default: any;
   tooltip: any;
 }>();
-
-const tagRef = ref<typeof ElTag>();
 
 const onClick = (ev?: Event) => {
   ev?.stopPropagation();
@@ -66,34 +43,6 @@ const cls = computed<string[]>(() => {
   return cls;
 });
 
-const setStyle = () => {
-  const { color, borderColor, width } = props;
-
-  // normalize colors
-  const borderColor_ = borderColor ?? color;
-
-  // set style of tag
-  const elTag = tagRef.value?.$el;
-  if (!elTag) return;
-  const styleTagList = [];
-  if (color) styleTagList.push(`color: ${color}`);
-  if (borderColor_) styleTagList.push(`border-color: ${borderColor_}`);
-  if (width) styleTagList.push(`width: ${width}`);
-  const styleTag = styleTagList.join(';');
-  elTag.setAttribute('style', styleTag);
-
-  // set style of tag close
-  const elTagClose = elTag.querySelector('.el-tag__close');
-  if (!elTagClose) return;
-  const styleTagCloseList = [];
-  if (color) {
-    styleTagCloseList.push(`color: ${color}`);
-    styleTagCloseList.push(`background-color: transparent`);
-  }
-  const styleTagClose = styleTagCloseList.join(';');
-  elTagClose.setAttribute('style', styleTagClose);
-};
-
 const style = computed<CSSProperties>(() => {
   const { color, borderColor, width, maxWidth } = props;
   return {
@@ -104,20 +53,12 @@ const style = computed<CSSProperties>(() => {
   };
 });
 
-// watch(() => props.color, setStyle);
-// watch(() => props.backgroundColor, setStyle);
-// watch(() => props.borderColor, setStyle);
-// onMounted(() => {
-//   setStyle();
-// });
-
 defineOptions({ name: 'ClTag' });
 </script>
 
 <template>
   <el-tooltip :content="tooltip" :disabled="!tooltip && !slots.tooltip">
     <el-tag
-      ref="tagRef"
       class="tag"
       :class="cls"
       :size="size"

@@ -4,6 +4,7 @@ import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import { FILE_ROOT } from '@/constants';
 import { translate } from '@/utils';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{
   ns: ListStoreNamespace;
@@ -22,6 +23,9 @@ const emit = defineEmits<{
 
 // i18n
 const t = translate;
+
+// route
+const route = useRoute();
 
 // store
 const store = useStore();
@@ -71,13 +75,12 @@ const getPath = (item: FileNavItem, name: string): string => {
 };
 
 const openFile = async (path: string) => {
-  const { activeId, content } = props;
+  const { activeId } = props;
   const res = await getFileInfo(activeId, path);
   if (!res.data) return;
   const item = res.data;
   await getFile(activeId, path);
   fileEditor.value?.updateTabs?.(item);
-  fileEditor.value?.updateContentCache?.(item, content);
 };
 
 const onSaveFile = async (item: FileNavItem) => {
@@ -89,7 +92,8 @@ const onSaveFile = async (item: FileNavItem) => {
 };
 
 const onNavItemDbClick = async (item: FileNavItem) => {
-  await openFile(item.path as string);
+  if (!item.path) return;
+  await openFile(item.path);
 };
 
 const onNavItemDrop = async (
@@ -203,8 +207,19 @@ const getData = async () => {
 
 const defaultExpandedKeys = ref<string[]>([]);
 
+const openDefaultFile = async () => {
+  const { query } = route;
+  const open = query.open as string;
+  if (open) {
+    await openFile(open);
+  }
+};
+
 // get data before mount
-onBeforeMount(getData);
+onBeforeMount(async () => {
+  await getData();
+  await openDefaultFile();
+});
 
 // get data when id changes
 watch(() => props.activeId, getData);
@@ -242,5 +257,3 @@ defineOptions({ name: 'ClFileTab' });
     @tab-click="onTabClick"
   />
 </template>
-
-

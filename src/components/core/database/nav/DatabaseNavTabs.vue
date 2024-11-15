@@ -48,3 +48,18 @@ defineOptions({ name: 'ClDatabaseNavTabs' });
     </template>
   </cl-nav-tabs>
 </template>
+
+<style scoped>
+.nav-tabs {
+  &:deep(.nav-tabs-actions) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+  }
+
+  &:deep(.nav-tabs-actions .el-button) {
+    margin: 0;
+  }
+}
+</style>
