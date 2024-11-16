@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import type { TooltipTriggerType } from 'element-plus/es/components/tooltip/src/trigger';
 import type { Placement } from '@popperjs/core';
 import { translate } from '@/utils';
+import type { ContextMenuItem } from '@/components/ui/context-menu/types';
 
 withDefaults(
   defineProps<{

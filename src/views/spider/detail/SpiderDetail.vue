@@ -9,13 +9,7 @@ const ns = 'spider';
 const store = useStore();
 const { common: commonState } = store.state as RootStoreState;
 
-const { activeTabName, saveFile } = useSpiderDetail();
-
-onBeforeMount(async () => {
-  await Promise.all([store.dispatch(`project/getAllList`)]);
-
-  store.commit(`${ns}/setAfterSave`, [saveFile]);
-});
+const { activeTabName } = useSpiderDetail();
 
 const updateDisabledTabKeys = () => {
   if (!isPro()) {

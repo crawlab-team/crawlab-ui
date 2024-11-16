@@ -11,6 +11,7 @@ import {
 import { getIconByAction, translate } from '@/utils';
 import type { TagProps } from '@/components/ui/tag/types';
 import { ACTION_RETRY, ACTION_VIEW_LOGS } from '@/constants';
+import type { ContextMenuItem } from '@/components/ui/context-menu/types';
 
 const props = defineProps<{
   id?: string;

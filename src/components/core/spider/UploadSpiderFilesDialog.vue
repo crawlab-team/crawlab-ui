@@ -19,8 +19,6 @@ defineOptions({ name: 'ClUploadSpiderFilesDialog' });
     :form="state.form"
     :services="useSpiderService(store)"
     :file-nav-items="state.fileNavItems"
-    :default-target-directory="state.activeNavItem?.path"
+    :default-target-directory="state.activeFileNavItem?.path"
   />
 </template>
-
-

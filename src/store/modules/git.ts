@@ -9,14 +9,13 @@ import {
   TAB_NAME_OVERVIEW,
   TAB_NAME_FILES,
   TAB_NAME_CHANGES,
-  TAB_NAME_LOGS,
   TAB_NAME_SPIDERS,
-  GIT_STATUS_READY,
   TAB_NAME_COMMITS,
 } from '@/constants';
 import useRequest from '@/services/request';
 import {
   getBaseFileStoreActions,
+  getBaseFileStoreGetters,
   getBaseFileStoreMutations,
   getBaseFileStoreState,
 } from '@/store/utils/file';
@@ -61,10 +60,12 @@ const state = {
   gitLogs: [],
   gitDiff: {},
   activeFilePath: undefined,
+  createSpiderLoading: false,
 } as GitStoreState;
 
 const getters = {
   ...getDefaultStoreGetters<Git>(),
+  ...getBaseFileStoreGetters(),
   gitBranchSelectOptions: (state: GitStoreState) => {
     return state.gitRemoteRefs
       .filter(r => r.type === GIT_REF_TYPE_BRANCH)
@@ -73,25 +74,25 @@ const getters = {
         value: r.name,
       }));
   },
-  tabs: (state: GitStoreState) => {
-    const { form, tabs, gitChanges } = state;
-    return tabs.map(tab => {
-      if (form.status !== GIT_STATUS_READY) {
-        return {
-          ...tab,
-          disabled: tab.id !== TAB_NAME_OVERVIEW,
-        };
-      }
-      if (tab.id === TAB_NAME_CHANGES) {
-        return {
-          ...tab,
-          badge: gitChanges.length,
-          badgeType: 'danger',
-        };
-      }
-      return tab;
-    });
-  },
+  // tabs: (state: GitStoreState) => {
+  //   const { form, tabs, gitChanges } = state;
+  //   return tabs.map(tab => {
+  //     if (form.status !== GIT_STATUS_READY) {
+  //       return {
+  //         ...tab,
+  //         disabled: tab.id !== TAB_NAME_OVERVIEW,
+  //       };
+  //     }
+  //     if (tab.id === TAB_NAME_CHANGES) {
+  //       return {
+  //         ...tab,
+  //         badge: gitChanges.length,
+  //         badgeType: 'danger',
+  //       };
+  //     }
+  //     return tab;
+  //   });
+  // },
 } as GitStoreGetters;
 
 const mutations = {
@@ -150,6 +151,9 @@ const mutations = {
   },
   resetActiveFilePath: (state: GitStoreState) => {
     state.activeFilePath = undefined;
+  },
+  setCreateSpiderLoading: (state: GitStoreState, loading: boolean) => {
+    state.createSpiderLoading = loading;
   },
 } as GitStoreMutations;
 
@@ -321,13 +325,7 @@ const actions = {
       commit_message,
     });
   },
-  createSpider: async (
-    _: StoreActionContext<GitStoreState>,
-    { id, spider }: { id: string; spider: Spider }
-  ) => {
-    return await post(`${endpoint}/${id}/spiders`, spider);
-  },
-  getFileDiff: async (
+  gitFileDiff: async (
     { state, commit }: StoreActionContext<GitStoreState>,
     { id }: { id: string }
   ) => {
@@ -336,6 +334,22 @@ const actions = {
     });
     commit('setGitDiff', res?.data);
     return res;
+  },
+  clickCreateSpider: async (
+    { state, commit }: StoreActionContext<GitStoreState>,
+    item?: FileNavItem
+  ) => {
+    if (state.createSpiderLoading) return;
+    console.debug(item);
+    commit('setActiveFileNavItem', item);
+    commit('spider/resetForm', undefined, { root: true });
+    commit(`showDialog`, 'createSpider');
+  },
+  createSpider: async (
+    _: StoreActionContext<GitStoreState>,
+    { id, spider }: { id: string; spider: Spider }
+  ) => {
+    return await post(`${endpoint}/${id}/spiders`, spider);
   },
 } as GitStoreActions;
 

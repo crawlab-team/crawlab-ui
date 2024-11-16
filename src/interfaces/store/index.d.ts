@@ -15,7 +15,6 @@ export declare global {
     project: ProjectStoreState;
     spider: SpiderStoreState;
     task: TaskStoreState;
-    file: FileStoreState;
     dataCollection: DataCollectionStoreState;
     schedule: ScheduleStoreState;
     user: UserStoreState;

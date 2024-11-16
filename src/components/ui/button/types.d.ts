@@ -1,4 +1,5 @@
-import { TooltipTriggerType } from 'element-plus/es/components/tooltip/src/trigger';
+import type { TooltipTriggerType } from 'element-plus/es/components/tooltip/src/trigger';
+import type { ContextMenuItem } from '@/components/ui/context-menu/types';
 
 export interface ButtonProps {
   tooltip?: string;

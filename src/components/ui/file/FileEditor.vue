@@ -27,6 +27,7 @@ const emit = defineEmits<{
   (e: 'ctx-menu-rename', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-clone', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-delete', item: FileNavItem): void;
+  (e: 'ctx-menu-create-spider', item: FileNavItem): void;
   (e: 'tab-click', tab: FileNavItem): void;
   (e: 'save-file', item: FileNavItem): void;
   (e: 'drop-files', files: InputFile[]): void;
@@ -45,9 +46,6 @@ const t = translate;
 const ns = props.ns;
 const store = useStore();
 const { file: fileState } = store.state as RootStoreState;
-
-// tab content cache
-const editorTabContentCache = new Map<string, string>();
 
 const fileEditor = ref<HTMLDivElement>();
 
@@ -207,6 +205,11 @@ const onContextMenuDelete = (item: FileNavItem) => {
   emit('ctx-menu-delete', item);
 };
 
+const onContextMenuCreateSpider = (item: FileNavItem) => {
+  console.debug(item);
+  emit('ctx-menu-create-spider', item);
+};
+
 const onContentChange = (content: string) => {
   if (!activeFileItem.value) return;
   emit('content-change', content);
@@ -361,6 +364,7 @@ defineOptions({ name: 'ClFileEditor' });
       @ctx-menu-rename="onContextMenuRename"
       @ctx-menu-clone="onContextMenuClone"
       @ctx-menu-delete="onContextMenuDelete"
+      @ctx-menu-create-spider="onContextMenuCreateSpider"
       @drop-files="onDropFiles"
       @search="onFileSearch"
       @toggle-nav-menu="onToggleNavMenu"

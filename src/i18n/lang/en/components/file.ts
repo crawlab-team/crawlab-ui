@@ -13,6 +13,7 @@ const file: LComponentsFile = {
       rename: 'Rename',
       duplicate: 'Duplicate',
       delete: 'Delete',
+      createSpider: 'Create Spider',
     },
     sidebar: {
       search: {

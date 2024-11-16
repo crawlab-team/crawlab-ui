@@ -1,35 +1,17 @@
-import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-import useSpiderService from '@/services/spider/spiderService';
 import { useDetail } from '@/layouts';
+import { setupGetAllList } from '@/utils';
+import useFileService from '@/services/utils/file';
 
 const useSpiderDetail = () => {
+  const ns: ListStoreNamespace = 'spider';
   const store = useStore();
-  const { spider: state } = store.state as RootStoreState;
 
-  const route = useRoute();
-
-  const id = computed(() => route.params.id as string);
-
-  const activeNavItem = computed<FileNavItem | undefined>(
-    () => state.activeNavItem
-  );
-
-  const fileContent = computed<string>(() => state.fileContent);
-
-  const { saveFile: save } = useSpiderService(store);
-
-  const saveFile = async () => {
-    if (!id.value || !activeNavItem.value?.path) return;
-    await save(id.value, activeNavItem.value?.path, fileContent.value);
-  };
-
-  onBeforeMount(() => store.dispatch(`node/getAllList`));
+  setupGetAllList(store, ['node', 'project']);
 
   return {
     ...useDetail<Spider>('spider'),
-    saveFile,
+    ...useFileService(ns, store),
   };
 };
 

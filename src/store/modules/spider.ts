@@ -17,6 +17,7 @@ import { TASK_MODE_RANDOM } from '@/constants/task';
 import { translate } from '@/utils/i18n';
 import {
   getBaseFileStoreActions,
+  getBaseFileStoreGetters,
   getBaseFileStoreMutations,
   getBaseFileStoreState,
 } from '@/store/utils/file';
@@ -45,7 +46,6 @@ const state = {
     { id: TAB_NAME_SCHEDULES, title: t('common.tabs.schedules') },
     { id: TAB_NAME_DATA, title: t('common.tabs.data') },
     { id: TAB_NAME_DEPENDENCIES, title: t('common.tabs.dependencies') },
-    // {id: TAB_NAME_SETTINGS, title: t('common.tabs.settings')},
   ],
   dataDisplayAllFields: false,
   databaseMetadata: undefined,
@@ -53,6 +53,7 @@ const state = {
 
 const getters = {
   ...getDefaultStoreGetters<Spider>(),
+  ...getBaseFileStoreGetters(),
   databaseTableSelectOptions: (state: SpiderStoreState) => {
     const { databaseMetadata } = state;
     if (!databaseMetadata) return [];

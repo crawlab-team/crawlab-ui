@@ -19,6 +19,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'file-change', value: string): void;
+  (e: 'create-spider', item: FileNavItem): void;
 }>();
 
 // i18n
@@ -87,8 +88,14 @@ const onSaveFile = async (item: FileNavItem) => {
   const { activeId, content } = props;
   if (!item.path) return;
   await saveFile(activeId, item.path, content);
-  emit('file-change', item.path as string);
+  emit('file-change', item.path!);
   ElMessage.success(t('common.message.success.save'));
+  setEditorContentCache(item.path!, content);
+};
+
+const setEditorContentCache = (path: string, content: string) => {
+  const { ns } = props;
+  store.commit(`${ns}/setEditorFileContentCache`, { path, content });
 };
 
 const onNavItemDbClick = async (item: FileNavItem) => {
@@ -158,6 +165,11 @@ const onContextMenuDelete = async (item: FileNavItem) => {
   await deleteFile(activeId, item.path);
   emit('file-change', item.path);
   await listRootDir(activeId);
+};
+
+const onContextMenuCreateSpider = async (item: FileNavItem) => {
+  console.debug(item);
+  emit('create-spider', item);
 };
 
 const onContentChange = (value: string) => {
@@ -252,6 +264,7 @@ defineOptions({ name: 'ClFileTab' });
     @ctx-menu-rename="onContextMenuRename"
     @ctx-menu-clone="onContextMenuClone"
     @ctx-menu-delete="onContextMenuDelete"
+    @ctx-menu-create-spider="onContextMenuCreateSpider"
     @drop-files="onDropFiles"
     @create-with-ai="onCreateWithAi"
     @tab-click="onTabClick"

@@ -26,9 +26,7 @@ defineOptions({ name: 'ClContextMenu' });
       <slot name="default"></slot>
     </template>
     <template #reference>
-      <!--      <div :style="style">-->
       <slot name="reference"></slot>
-      <!--      </div>-->
     </template>
   </el-popover>
 </template>

@@ -13,6 +13,7 @@ const file: LComponentsFile = {
       rename: '重命名',
       duplicate: '复制',
       delete: '删除',
+      createSpider: '新建爬虫',
     },
     sidebar: {
       search: {

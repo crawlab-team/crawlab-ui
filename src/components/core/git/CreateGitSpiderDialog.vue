@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
 import { FILE_ROOT } from '@/constants';
 import { translate } from '@/utils';
 import { getRootDirectoryOptions } from '@/utils/file';
@@ -8,32 +9,37 @@ import useGitDetail from '@/views/git/detail/useGitDetail';
 
 const t = translate;
 
-const props = withDefaults(
-  defineProps<{
-    visible?: boolean;
-    loading?: boolean;
-    width: string;
-  }>(),
-  {
-    width: '80vw',
-  }
-);
-
-const emit = defineEmits<{
-  (e: 'confirm', spider: Spider): void;
-  (e: 'close'): void;
-}>();
-
 // store
+const nsGit: ListStoreNamespace = 'git';
+const nsSpider: ListStoreNamespace = 'spider';
 const store = useStore<RootStoreState>();
 const { git: gitState, spider: spiderState } = store.state as RootStoreState;
 const { activeId } = useGitDetail();
 
 const formRef = ref();
 
+const visible = computed(() => gitState.activeDialogKey === 'createSpider');
+const loading = computed(() => gitState.createSpiderLoading);
+
+const onClose = () => {
+  store.commit(`${nsGit}/hideDialog`);
+};
+
 const onConfirm = async () => {
   await formRef.value?.validate();
-  emit('confirm', spiderState.form);
+  store.commit(`${nsGit}/setCreateSpiderLoading`, true);
+  try {
+    const res = await store.dispatch(`${nsGit}/createSpider`, {
+      id: activeId.value,
+      spider: spiderState.form,
+    });
+    console.debug(res);
+  } catch (e) {
+    ElMessage.error((e as Error).message);
+  } finally {
+    store.commit(`${nsGit}/setCreateSpiderLoading`, false);
+    store.commit(`${nsGit}/hideDialog`);
+  }
 };
 
 const gitRootPath = ref<string>(FILE_ROOT);
@@ -46,20 +52,24 @@ watch(gitRootPath, () => {
     git_root_path: gitRootPath.value,
   });
 });
-watch(
-  () => props.visible,
-  () => {
-    if (props.visible) {
-      store.commit(`spider/setForm`, {
-        ...spiderState.form,
-        git_id: activeId.value,
-      });
-      store.dispatch(`git/listDir`, { id: activeId.value });
-    } else {
-      store.commit(`spider/resetForm`);
-    }
+watch(visible, () => {
+  if (visible.value) {
+    store.dispatch(`${nsGit}/listDir`, { id: activeId.value });
+    gitRootPath.value = gitState.activeFileNavItem?.path || FILE_ROOT;
+    const name = gitState.form.name + '/' + gitRootPath.value;
+    const colName = 'results_' + name?.replace(/[\/-]/g, '_');
+    store.commit(`${nsSpider}/setForm`, {
+      ...spiderState.newFormFn(),
+      name,
+      col_name: colName,
+      git_id: activeId.value,
+    });
+  } else {
+    store.commit(`${nsSpider}/resetForm`);
+    gitRootPath.value = FILE_ROOT;
   }
-);
+});
+
 defineOptions({ name: 'ClCreateGitSpiderDialog' });
 </script>
 
@@ -68,8 +78,8 @@ defineOptions({ name: 'ClCreateGitSpiderDialog' });
     type="create"
     :visible="visible"
     :confirm-loading="loading"
-    :width="width"
-    @close="emit('close')"
+    width="80vw"
+    @close="onClose"
     @confirm="onConfirm"
   >
     <template #default>

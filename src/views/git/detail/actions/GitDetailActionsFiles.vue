@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useGitDetail from '@/views/git/detail/useGitDetail';
+import { useGitDetail } from '@/views';
 
 const ns = 'git';
 const { activeId } = useGitDetail();

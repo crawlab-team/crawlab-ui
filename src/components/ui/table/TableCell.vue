@@ -4,10 +4,8 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { ClButtonGroup, ClFaIconButton } from '@/components';
 import { getIconByAction } from '@/utils';
-import {
-  FaIconButtonProps,
-  GenericButtonProps,
-} from '@/components/ui/button/types';
+import type { FaIconButtonProps } from '@/components/ui/button/types';
+import type { ContextMenuItem } from '@/components/ui/context-menu/types';
 
 const props = withDefaults(
   defineProps<{

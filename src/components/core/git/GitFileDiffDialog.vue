@@ -20,7 +20,7 @@ const loading = ref(false);
 const getData = async () => {
   loading.value = true;
   try {
-    await store.dispatch(`${ns}/getFileDiff`, { id: activeId.value });
+    await store.dispatch(`${ns}/gitFileDiff`, { id: activeId.value });
   } catch (e) {
     ElMessage.error((e as Error).message);
   } finally {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ComputedRef, inject, ref } from 'vue';
-import { ContextMenuListProps } from './types';
+import type { ContextMenuItem, ContextMenuListProps } from './types';
 
 defineProps<ContextMenuListProps>();
 

@@ -1,11 +1,17 @@
 import { Store } from 'vuex';
 import { getDefaultService } from '@/utils/service';
+import { computed, onBeforeMount } from 'vue';
+import { useRoute } from 'vue-router';
+import { useDetail } from '@/layouts';
 
 const useFileService = <T>(
   ns: ListStoreNamespace,
   store: Store<RootStoreState>
 ): FileServices<T> => {
   const { dispatch } = store;
+  const state = store.state[ns] as Partial<BaseFileStoreState>;
+
+  const { activeId } = useDetail(ns);
 
   const listDir = (id: string, path: string) => {
     return dispatch(`${ns}/listDir`, { id, path });
@@ -55,6 +61,23 @@ const useFileService = <T>(
     return dispatch(`${ns}/copyFile`, { id, path, new_path });
   };
 
+  const saveActiveFile = async () => {
+    if (!activeId.value || !state.activeFileNavItem?.path) return;
+    await saveFile(
+      activeId.value,
+      state.activeFileNavItem?.path,
+      fileContent.value
+    );
+  };
+
+  onBeforeMount(async () => {
+    store.commit(`${ns}/setAfterSave`, [saveActiveFile]);
+  });
+
+  const fileContent = computed<string>(
+    () => store.getters[`${ns}/fileContent`]
+  );
+
   return {
     ...getDefaultService<T>(ns, store),
     listDir,
@@ -68,6 +91,7 @@ const useFileService = <T>(
     renameFile,
     deleteFile,
     copyFile,
+    fileContent,
   };
 };
 

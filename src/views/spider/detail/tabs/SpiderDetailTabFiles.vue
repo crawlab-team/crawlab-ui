@@ -18,10 +18,8 @@ defineOptions({ name: 'ClSpiderDetailTabFiles' });
     :active-id="activeId"
     :content="state.fileContent"
     :nav-items="state.fileNavItems"
-    :active-nav-item="state.activeNavItem"
+    :active-nav-item="state.activeFileNavItem"
     :services="useSpiderService(store)"
     :default-file-paths="state.defaultFilePaths"
   />
 </template>
-
-

@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import ClGitFileDiffDialog from '@/components/core/git/GitFileDiffDialog.vue';
-
 import { computed, watch, onBeforeUnmount, onBeforeMount, provide } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import {
   FILE_ROOT,
-  GIT_STATUS_ERROR,
   GIT_STATUS_READY,
   TAB_NAME_CHANGES,
   TAB_NAME_FILES,
-  TAB_NAME_OVERVIEW,
-  TAB_NAME_SPIDERS,
 } from '@/constants';
 import { debounce, translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import useGit from '@/components/core/git/useGit';
+import type { TagProps } from '@/components/ui/tag/types';
 
 const t = translate;
 
@@ -108,5 +104,6 @@ defineOptions({ name: 'ClGitDetail' });
   <cl-upload-git-files-dialog />
   <cl-create-git-branch-dialog />
   <cl-git-file-diff-dialog />
+  <cl-create-git-spider-dialog />
   <!-- ./Dialogs -->
 </template>

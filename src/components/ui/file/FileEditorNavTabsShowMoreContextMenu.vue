@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
-interface ContextMenuProps {
-  visible?: boolean;
-  placement?: string;
-  clicking?: boolean;
-}
-
-interface ContextMenuItem {
-  title: string;
-  icon?: Icon;
-  action?: () => void;
-  className?: string;
-}
+import type {
+  ContextMenuItem,
+  ContextMenuProps,
+} from '@/components/ui/context-menu/types';
 
 const props = defineProps<
   ContextMenuProps & {
@@ -54,5 +45,3 @@ defineOptions({ name: 'ClFileEditorNavTabsShowMoreContextMenu' });
     </template>
   </cl-context-menu>
 </template>
-
-

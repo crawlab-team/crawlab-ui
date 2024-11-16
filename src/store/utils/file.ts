@@ -6,9 +6,23 @@ const { get, post, del } = useRequest();
 export const getBaseFileStoreState = (): BaseFileStoreState => {
   return {
     fileNavItems: [],
-    activeNavItem: undefined,
+    activeFileNavItem: undefined,
     fileContent: '',
     defaultFilePaths: [],
+    editorFileContentCache: {},
+  };
+};
+
+export const getBaseFileStoreGetters = (): BaseFileStoreGetters => {
+  return {
+    fileContent: (state: BaseFileStoreState) => {
+      const cacheContent =
+        state.editorFileContentCache[state.activeFileNavItem?.path!];
+      if (typeof cacheContent !== 'undefined') {
+        return cacheContent;
+      }
+      return state.fileContent;
+    },
   };
 };
 
@@ -23,10 +37,10 @@ export const getBaseFileStoreMutations = <
       state.fileNavItems = [];
     },
     setActiveFileNavItem: (state: S, navItem: FileNavItem) => {
-      state.activeNavItem = navItem;
+      state.activeFileNavItem = navItem;
     },
     resetActiveFileNavItem: (state: S) => {
-      state.activeNavItem = undefined;
+      state.activeFileNavItem = undefined;
     },
     setFileContent: (state: S, content: string) => {
       state.fileContent = content;
@@ -39,6 +53,15 @@ export const getBaseFileStoreMutations = <
     },
     resetDefaultFilePaths: (state: S) => {
       state.defaultFilePaths = [];
+    },
+    setEditorFileContentCache: (
+      state: S,
+      { path, content }: { path: string; content: string }
+    ) => {
+      state.editorFileContentCache[path] = content;
+    },
+    resetEditorFileContentCache: (state: S) => {
+      state.editorFileContentCache = {};
     },
   };
 };

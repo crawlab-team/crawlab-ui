@@ -1,19 +1,10 @@
 <script setup lang="ts">
 import { readonly } from 'vue';
 import { translate } from '@/utils';
-
-interface ContextMenuProps {
-  visible?: boolean;
-  placement: string;
-  clicking?: boolean;
-}
-
-interface ContextMenuItem {
-  title: string;
-  icon?: Icon;
-  action?: () => void;
-  className?: string;
-}
+import type {
+  ContextMenuItem,
+  ContextMenuProps,
+} from '@/components/ui/context-menu/types';
 
 withDefaults(defineProps<ContextMenuProps>(), {
   placement: 'right-start',
@@ -61,5 +52,3 @@ defineOptions({ name: 'ClFileEditorNavTabsContextMenu' });
     </template>
   </cl-context-menu>
 </template>
-
-

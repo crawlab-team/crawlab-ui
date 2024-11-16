@@ -1,18 +1,13 @@
 import { computed, ref, watch } from 'vue';
-import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
-import { getTabName } from '@/utils/route';
+import { useStore } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { getTabName } from '@/utils/route';
 import { translate } from '@/utils/i18n';
 import { GIT_STATUS_READY } from '@/constants/git';
 import { useDetail } from '@/layouts';
-import {
-  TAB_NAME_CHANGES,
-  TAB_NAME_FILES,
-  TAB_NAME_LOGS,
-  TAB_NAME_OVERVIEW,
-} from '@/constants';
-import { getRequestBaseUrlWs } from '@/utils';
+import { TAB_NAME_FILES, TAB_NAME_LOGS, TAB_NAME_OVERVIEW } from '@/constants';
+import useFileService from '@/services/utils/file';
 
 // i18n
 const t = translate;
@@ -60,9 +55,9 @@ const useGitDetail = () => {
   // redirect to overview tab if the current tab is disabled
   watch(
     () => state.disabledTabKeys,
-    () => {
+    async () => {
       if (state.disabledTabKeys.includes(activeTabName.value)) {
-        router.push(`/gits/${id.value}/${TAB_NAME_OVERVIEW}`);
+        await router.push(`/gits/${id.value}/${TAB_NAME_OVERVIEW}`);
       }
     }
   );
@@ -182,6 +177,7 @@ const useGitDetail = () => {
 
   return {
     ...useDetail<Git>('git'),
+    ...useFileService(ns, store),
     currentBranch,
     gitLocalBranches,
     gitLocalBranchesDict,

@@ -36,6 +36,7 @@ const emit = defineEmits<{
   (e: 'ctx-menu-rename', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-clone', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-delete', item: FileNavItem): void;
+  (e: 'ctx-menu-create-spider', item: FileNavItem): void;
   (e: 'node-drop', draggingItem: FileNavItem, dropItem: FileNavItem): void;
   (e: 'drop-files', files: InputFile[]): void;
   (e: 'search', value: string): void;
@@ -221,6 +222,11 @@ const onNodeContextMenuDelete = async (item: FileNavItem) => {
   emit('ctx-menu-delete', item);
 };
 
+const onNodeContextMenuCreateSpider = async (item: FileNavItem) => {
+  console.debug(item);
+  emit('ctx-menu-create-spider', item);
+};
+
 const onNodeDragEnter = (_: Node, dropNode: Node) => {
   const item = dropNode.data as FileNavItem;
   if (!item.path) return;
@@ -356,6 +362,7 @@ onBeforeUnmount(() => {
 
 const showSettings = ref<boolean>(false);
 const fileSearchString = ref<string>('');
+
 defineOptions({ name: 'ClFileEditorNavMenu' });
 </script>
 
@@ -444,6 +451,7 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
             @rename="onNodeContextMenuRename(data)"
             @clone="onNodeContextMenuClone(data)"
             @delete="onNodeContextMenuDelete(data)"
+            @create-spider="onNodeContextMenuCreateSpider(data)"
           >
             <div
               v-bind="getBindDir(data)"

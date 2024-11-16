@@ -1,11 +1,11 @@
-<script setup lang="ts">
-import { ElMessage, ElMessageBox, ElMessageBoxOptions } from 'element-plus';
+<script setup lang="tsx">
+import { ElMessage, ElMessageBox } from 'element-plus';
 import {
   GIT_STATUS_PULLING,
   GIT_STATUS_PUSHING,
   TAB_NAME_CHANGES,
 } from '@/constants';
-import { h, ref, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { translate } from '@/utils';
@@ -16,7 +16,8 @@ const t = translate;
 
 const router = useRouter();
 
-const ns = 'git';
+const nsGit: ListStoreNamespace = 'git';
+const nsSpider: ListStoreNamespace = 'spider';
 const store = useStore();
 const { git: state } = store.state as RootStoreState;
 
@@ -50,12 +51,12 @@ const branchSelectLoading = ref(false);
 const onLocalBranchChange = async (branch: string) => {
   branchSelectLoading.value = true;
   try {
-    await store.dispatch(`${ns}/checkoutBranch`, {
+    await store.dispatch(`${nsGit}/checkoutBranch`, {
       id: activeId.value,
       branch,
     });
   } finally {
-    await store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value });
+    await store.dispatch(`${nsGit}/getCurrentBranch`, { id: activeId.value });
     branchSelectLoading.value = false;
   }
 };
@@ -63,15 +64,15 @@ const onLocalBranchChange = async (branch: string) => {
 const onRemoteBranchChange = async (branch: string) => {
   branchSelectLoading.value = true;
   try {
-    await store.dispatch(`${ns}/checkoutRemoteBranch`, {
+    await store.dispatch(`${nsGit}/checkoutRemoteBranch`, {
       id: activeId.value,
       branch,
     });
   } catch (e: any) {
     ElMessage.error(e.message);
   } finally {
-    await store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value });
-    await store.dispatch(`${ns}/getBranches`, { id: activeId.value });
+    await store.dispatch(`${nsGit}/getCurrentBranch`, { id: activeId.value });
+    await store.dispatch(`${nsGit}/getBranches`, { id: activeId.value });
     branchSelectLoading.value = false;
   }
 };
@@ -100,14 +101,14 @@ const onNewBranch = async () => {
   const sourceBranch = currentBranch.value?.name;
   branchSelectLoading.value = true;
   try {
-    await store.dispatch(`${ns}/newBranch`, {
+    await store.dispatch(`${nsGit}/newBranch`, {
       id: activeId.value,
       sourceBranch,
       targetBranch,
     });
     await Promise.all([
-      store.dispatch(`${ns}/getCurrentBranch`, { id: activeId.value }),
-      store.dispatch(`${ns}/getBranches`, { id: activeId.value }),
+      store.dispatch(`${nsGit}/getCurrentBranch`, { id: activeId.value }),
+      store.dispatch(`${nsGit}/getBranches`, { id: activeId.value }),
     ]);
   } catch (e: any) {
     ElMessage.error(e.message);
@@ -117,16 +118,14 @@ const onNewBranch = async () => {
 };
 
 const onDeleteBranch = async (branch: string) => {
-  const message: ElMessageBoxOptions['message'] = () =>
-    h('div', [
-      t('components.git.common.messageBox.confirm.branch.delete'),
-      h(
-        'label',
-        // { style: 'margin-left: 5px;color: var(--cl-danger-color)' },
-        { style: { marginLeft: '5px', color: 'var(--cl-danger-color)' } },
-        [branch]
-      ),
-    ]) as any;
+  const message = (
+    <div>
+      {t('components.git.common.messageBox.confirm.branch.delete')}
+      <label style="margin-left: 5px;color: var(--cl-danger-color)">
+        {branch}
+      </label>
+    </div>
+  );
   const confirm = await ElMessageBox.confirm(message, {
     type: 'warning',
     confirmButtonClass: 'el-button--danger',
@@ -135,11 +134,11 @@ const onDeleteBranch = async (branch: string) => {
   if (!confirm) return;
   branchSelectLoading.value = true;
   try {
-    await store.dispatch(`${ns}/deleteBranch`, {
+    await store.dispatch(`${nsGit}/deleteBranch`, {
       id: activeId.value,
       branch,
     });
-    await store.dispatch(`${ns}/getBranches`, { id: activeId.value });
+    await store.dispatch(`${nsGit}/getBranches`, { id: activeId.value });
   } catch (e: any) {
     ElMessage.error(e.message);
   } finally {
@@ -189,22 +188,10 @@ const loading = computed(
     pushLoading.value
 );
 
-const createSpiderDialogVisible = ref(false);
+const createSpiderLoading = computed(() => state.createSpiderLoading);
 const onOpenCreateDialog = () => {
-  store.commit(`spider/resetForm`);
-  createSpiderDialogVisible.value = true;
-};
-const createSpiderLoading = ref(false);
-const onCreate = async (spider: Spider) => {
-  createSpiderLoading.value = true;
-  try {
-    await store.dispatch(`${ns}/createSpider`, { id: activeId.value, spider });
-  } catch (e) {
-    ElMessage.error((e as Error).message);
-  } finally {
-    createSpiderLoading.value = false;
-    createSpiderDialogVisible.value = false;
-  }
+  store.commit(`${nsSpider}/resetForm`);
+  store.dispatch(`${nsGit}/clickCreateSpider`);
 };
 
 defineOptions({ name: 'ClGitDetailActionsCommon' });
@@ -235,7 +222,7 @@ defineOptions({ name: 'ClGitDetailActionsCommon' });
         size="large"
         :status="gitForm.status"
         :error="gitForm.error"
-        @retry="() => store.dispatch(`${ns}/getById`, activeId)"
+        @retry="() => store.dispatch(`${nsGit}/getById`, activeId)"
       />
       <div class="branch">
         <cl-git-branch-select
@@ -266,12 +253,4 @@ defineOptions({ name: 'ClGitDetailActionsCommon' });
       />
     </cl-nav-action-item>
   </cl-nav-action-group>
-
-  <cl-create-git-spider-dialog
-    :title="t('components.git.spiders.actions.label.create')"
-    :visible="createSpiderDialogVisible"
-    :loading="createSpiderLoading"
-    @close="createSpiderDialogVisible = false"
-    @confirm="onCreate"
-  />
 </template>

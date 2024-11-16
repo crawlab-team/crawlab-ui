@@ -34,6 +34,7 @@ import { useDatabaseDetail } from '@/views';
 import useRequest from '@/services/request';
 import { getTableManipulationStatementsByDataSource } from '@/utils/database';
 import { useRouter } from 'vue-router';
+import type { ContextMenuItem } from '@/components/ui/context-menu/types';
 
 const props = defineProps<{
   tabName: string;
