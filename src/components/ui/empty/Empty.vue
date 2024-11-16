@@ -23,7 +23,7 @@ defineOptions({ name: 'ClEmpty' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .empty {
   max-height: 240px;
   display: flex;

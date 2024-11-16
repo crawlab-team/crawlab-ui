@@ -30,5 +30,5 @@ export const isAllowedRoutePath = (path: string): boolean => {
   if (!isPro()) return true;
   if (!commonState.me) return false;
   if (commonState.me.root_admin) return true;
-  return commonState.me.routes?.includes(path);
+  return commonState.me.routes?.includes(path) || false;
 };

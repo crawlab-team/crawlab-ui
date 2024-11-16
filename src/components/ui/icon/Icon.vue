@@ -89,9 +89,9 @@ defineOptions({ name: 'ClIcon' });
   </template>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 img {
-  display: var(--fa-display, inline-block);
+  display: inline-block;
   height: 1em;
   vertical-align: -0.125em;
 }

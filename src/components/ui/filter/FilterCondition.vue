@@ -74,7 +74,7 @@ defineOptions({ name: 'ClFilterCondition' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .filter-condition {
   display: flex;
   align-items: center;

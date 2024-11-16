@@ -17,7 +17,7 @@ defineOptions({ name: 'ClSimpleLayout' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .simple-layout {
   padding: 20px;
   min-height: 100%;

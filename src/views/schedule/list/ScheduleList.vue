@@ -1,39 +1,20 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useScheduleList from './useScheduleList';
+<script setup lang="ts">
+import { useScheduleList } from '@/views';
 
-export default defineComponent({
-  name: 'ScheduleList',
-  props: {
-    noActions: {
-      type: Boolean,
-      default: false,
-    },
-    embedded: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup() {
-    const {
-      navActions,
-      tableColumns,
-      tableData,
-      tableTotal,
-      tablePagination,
-      actionFunctions,
-    } = useScheduleList();
+defineProps<{
+  noActions?: boolean;
+  embedded?: boolean;
+}>();
 
-    return {
-      navActions,
-      tableColumns,
-      tableData,
-      tableTotal,
-      tablePagination,
-      actionFunctions,
-    };
-  },
-});
+const {
+  navActions,
+  tableColumns,
+  tableData,
+  tableTotal,
+  tablePagination,
+  actionFunctions,
+} = useScheduleList();
+defineOptions({ name: 'ClScheduleList' });
 </script>
 
 <template>
@@ -55,5 +36,3 @@ export default defineComponent({
     </template>
   </cl-list-layout>
 </template>
-
-

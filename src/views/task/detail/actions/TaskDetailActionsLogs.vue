@@ -45,5 +45,3 @@ defineOptions({ name: 'ClTaskDetailActionsLogs' });
     </cl-nav-action-item>
   </cl-nav-action-group>
 </template>
-
-<style scoped lang="scss"></style>

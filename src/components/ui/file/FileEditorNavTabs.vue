@@ -155,7 +155,7 @@ defineOptions({ name: 'ClFileEditorNavTabs' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .file-editor-nav-tabs {
   position: relative;
   display: flex;

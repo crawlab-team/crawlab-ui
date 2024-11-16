@@ -136,7 +136,7 @@ defineOptions({ name: 'ClTransfer' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .transfer {
   width: 100%;
   min-height: 480px;
@@ -154,10 +154,9 @@ defineOptions({ name: 'ClTransfer' });
       }
     }
   }
-}
-</style>
-<style scoped>
-.transfer:deep(.button-wrapper) {
-  margin: 0 10px;
+
+  &:deep(.button-wrapper) {
+    margin: 0 10px;
+  }
 }
 </style>

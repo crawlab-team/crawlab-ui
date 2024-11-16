@@ -127,7 +127,7 @@ defineOptions({ name: 'ClNavSidebar' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .nav-sidebar {
   height: 100%;
   position: relative;
@@ -199,17 +199,16 @@ defineOptions({ name: 'ClNavSidebar' });
       justify-content: center;
     }
   }
-}
-</style>
-<style scoped>
-.nav-sidebar > .search:deep(.el-input__wrapper) {
-  border: none;
-  box-shadow: none;
-  height: 100%;
-}
 
-.nav-sidebar.collapsed > .search:deep(.el-input__wrapper) {
-  padding: 0;
-  width: 0;
+  & > .search:deep(.el-input__wrapper) {
+    border: none;
+    box-shadow: none;
+    height: 100%;
+  }
+
+  &.collapsed > .search:deep(.el-input__wrapper) {
+    padding: 0;
+    width: 0;
+  }
 }
 </style>

@@ -8,4 +8,15 @@ export declare global {
 
     [key: string]: any;
   }
+
+  interface CheckboxTreeSelectOption<T = any> extends SelectOption<T> {
+    id?: string;
+    checked?: boolean;
+    intermediate?: boolean;
+    horizontal?: boolean;
+    labelWidth?: string;
+    children?: CheckboxTreeSelectOption[];
+  }
+
+  type CheckboxStatus = 'checked' | 'unchecked' | 'indeterminate';
 }

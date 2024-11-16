@@ -8,11 +8,11 @@ export declare global {
     schedules: LViewsSchedules;
     tasks: LViewsTasks;
     users: LViewsUsers;
+    roles: LViewsRoles;
     tags: LViewsTags;
     tokens: LViewsTokens;
     env: LViewsEnv;
     notification: LViewsNotification;
-    plugins: LViewsPlugins;
     misc: LViewsMisc;
     gits: LViewGits;
     database: LViewsDatabase;

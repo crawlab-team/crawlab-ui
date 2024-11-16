@@ -68,7 +68,7 @@ defineOptions({ name: 'ClForm' });
   </el-form>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .form {
   display: flex;
   flex-wrap: wrap;

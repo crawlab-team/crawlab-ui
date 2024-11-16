@@ -171,7 +171,7 @@ defineOptions({ name: 'ClFormTableField' });
   </el-form>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .el-form {
   margin: 0;
 

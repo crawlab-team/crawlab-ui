@@ -80,7 +80,7 @@ defineOptions({ name: 'ClTableColumnsTransfer' });
   </el-dialog>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .table-columns-transfer-content {
   display: flex;
   justify-content: center;

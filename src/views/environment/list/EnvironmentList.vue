@@ -1,15 +1,15 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useEnvironmentList from '@/views/environment/list/useEnvironmentList';
+<script setup lang="ts">
+import { useEnvironmentList } from '@/views';
 
-export default defineComponent({
-  name: 'EnvironmentList',
-  setup() {
-    return {
-      ...useEnvironmentList(),
-    };
-  },
-});
+const {
+  actionFunctions,
+  navActions,
+  tableColumns,
+  tableData,
+  tablePagination,
+  tableTotal,
+} = useEnvironmentList();
+defineOptions({ name: 'ClEnvironmentList' });
 </script>
 
 <template>
@@ -29,5 +29,3 @@ export default defineComponent({
     </template>
   </cl-list-layout>
 </template>
-
-

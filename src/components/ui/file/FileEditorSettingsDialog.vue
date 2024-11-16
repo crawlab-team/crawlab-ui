@@ -85,7 +85,7 @@ defineOptions({ name: 'ClFileEditorSettingsDialog' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .file-editor-settings-dialog {
   .nav-menu {
     .el-menu-item {
@@ -97,33 +97,22 @@ defineOptions({ name: 'ClFileEditorSettingsDialog' });
   .form {
     margin: 20px;
   }
-}
-</style>
 
-<style scoped>
-.file-editor-settings-dialog:deep(.el-dialog .el-dialog__body) {
-  padding: 10px 20px;
-}
+  &:deep(.el-dialog .el-dialog__body) {
+    padding: 10px 20px;
+  }
 
-.file-editor-settings-dialog:deep(.el-form-item > .el-form-item__label .icon) {
-  cursor: pointer;
-}
+  &:deep(.el-form-item > .el-form-item__label .icon) {
+    cursor: pointer;
+  }
 
-.file-editor-settings-dialog:deep(.el-form-item > .el-form-item__content) {
-  width: 240px;
-}
+  &:deep(.el-form-item > .el-form-item__content) {
+    width: 240px;
+  }
 
-.file-editor-settings-dialog:deep(
-    .el-form-item > .el-form-item__content .el-input
-  ),
-.file-editor-settings-dialog:deep(
-    .el-form-item > .el-form-item__content .el-select
-  ) {
-  width: 100%;
-}
-</style>
-<style>
-.help-tooltip {
-  max-width: 240px;
+  &:deep(.el-form-item > .el-form-item__content .el-input),
+  &:deep(.el-form-item > .el-form-item__content .el-select) {
+    width: 100%;
+  }
 }
 </style>

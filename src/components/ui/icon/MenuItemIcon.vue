@@ -45,7 +45,7 @@ defineOptions({ name: 'ClMenuItemIcon' });
   </template>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .menu-item-icon {
   width: 20px;
 }

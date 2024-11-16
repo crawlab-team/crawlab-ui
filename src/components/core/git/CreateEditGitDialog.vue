@@ -30,5 +30,3 @@ defineOptions({ name: 'ClCreateEditGitDialog' });
     </template>
   </cl-create-edit-dialog>
 </template>
-
-<style scoped lang="scss"></style>

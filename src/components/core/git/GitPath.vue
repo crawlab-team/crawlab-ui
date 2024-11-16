@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { translate } from '@/utils';
 import { FILE_ROOT } from '@/constants';
 
@@ -16,5 +15,3 @@ defineOptions({ name: 'ClGitPath' });
     {{ FILE_ROOT }} ({{ t('components.file.rootDirectory') }})
   </template>
 </template>
-
-<style scoped lang="scss"></style>

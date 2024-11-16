@@ -147,7 +147,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabChannels' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .notification-setting-detail-tab-channels {
   margin: 20px;
 

@@ -6,8 +6,10 @@ type DialogKey =
   | 'logs'
   | 'diff'
   | 'createDatabase'
-  | 'createTable';
+  | 'createTable'
+  | 'install'
+  | 'uninstall';
 
 interface DialogVisible {
-  createEdit: boolean;
+  createEdit?: boolean;
 }

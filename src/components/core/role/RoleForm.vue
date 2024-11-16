@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import { getRouteSelectOptions, translate } from '@/utils';
-import { useRoleDetail } from '@/views';
+import { translate } from '@/utils';
 import useRole from '@/components/core/role/useRole';
 
 // i18n

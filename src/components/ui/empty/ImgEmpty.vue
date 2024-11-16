@@ -123,7 +123,7 @@ defineOptions({ name: 'ClImgEmpty' });
   </svg>
 </template>
 
-<style lang="scss" scoped>
+<style ped>
 .img-empty {
   max-width: 100%;
   max-height: 100%;

@@ -5,21 +5,12 @@ type UserStoreModule = BaseModule<
   UserStoreActions
 >;
 
-interface UserStoreState extends BaseStoreState<User> {
-  me?: User;
-}
+interface UserStoreState extends BaseStoreState<User> {}
 
-interface UserStoreGetters extends BaseStoreGetters<User> {
-  me: StoreGetter<UserStoreState, User | undefined>;
-}
+interface UserStoreGetters extends BaseStoreGetters<User> {}
 
-interface UserStoreMutations extends BaseStoreMutations<User> {
-  setMe: StoreMutation<UserStoreState, User>;
-  resetMe: StoreMutation<UserStoreState>;
-}
+interface UserStoreMutations extends BaseStoreMutations<User> {}
 
 interface UserStoreActions extends BaseStoreActions<User> {
   changePassword: StoreAction<UserStoreState, { id: string; password: string }>;
-  getMe: StoreAction<UserStoreState>;
-  putMe: StoreAction<UserStoreState, User>;
 }

@@ -33,7 +33,7 @@ defineOptions({ name: 'ClContextMenu' });
   </el-popover>
 </template>
 
-<style lang="scss">
+<style>
 .context-menu {
   padding: 0 !important;
 }

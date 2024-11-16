@@ -23,7 +23,7 @@ defineOptions({ name: 'ClGitHubStarBadge' });
   </el-tooltip>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .github-star-badge {
   height: 24px;
 

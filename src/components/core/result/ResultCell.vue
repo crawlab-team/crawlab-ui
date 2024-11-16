@@ -11,8 +11,6 @@ import {
 import { formatTimeAgo, translate } from '@/utils';
 import { useStore } from 'vuex';
 import dayjs from 'dayjs';
-import { getI18n } from '@/i18n';
-import TimeAgo from 'javascript-time-ago';
 
 const props = withDefaults(
   defineProps<{
@@ -44,7 +42,10 @@ const tooltipValue = computed<string>(() => {
       return value.substring(0, 200) + '...';
     case DATA_FIELD_TYPE_TIME:
       if (typeof value !== 'string' && typeof value !== 'number') return '';
-      const ago = formatTimeAgo(value);
+      const ago = formatTimeAgo(
+        typeof value === 'string' ? value : value.toString()
+      );
+      const time = dayjs(value);
       return `${time.format('YYYY-MM-DD HH:mm:ssZ')} (${ago})`;
     default:
       return typeof value === 'string' ? value : JSON.stringify(value);
@@ -71,8 +72,10 @@ const onClick = async () => {
 
 const cls = computed<string>(() => {
   const { type } = props;
-  const cls = ['result-cell'];
-  cls.push(type);
+  const cls = [];
+  if (type) {
+    cls.push(type);
+  }
   return cls.join(' ');
 });
 defineOptions({ name: 'ClResultCell' });
@@ -87,10 +90,10 @@ defineOptions({ name: 'ClResultCell' });
     <!--./tooltip-->
 
     <!--content-->
-    <div :class="cls" @click="onClick">
+    <div class="result-cell" :class="cls" @click="onClick">
       <template v-if="type === DATA_FIELD_TYPE_IMAGE">
         <a class="result-cell-image" :href="value?.toString()" target="_blank">
-          <img :src="value?.toString()" />
+          <img :src="value?.toString()" :alt="value?.toString()" />
         </a>
       </template>
 
@@ -121,7 +124,7 @@ defineOptions({ name: 'ClResultCell' });
   </el-tooltip>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .result-cell {
   cursor: pointer;
   width: 100%;

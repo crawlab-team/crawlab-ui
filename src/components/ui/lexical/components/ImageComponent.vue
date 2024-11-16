@@ -113,7 +113,7 @@ const imageRef = ref<HTMLImageElement | null>(null);
 const buttonRef = ref<HTMLButtonElement | null>(null);
 const isSelected = ref(false);
 const isResizing = ref(false);
-const selection = ref<BaseSelection>(null);
+const selection = ref<BaseSelection | null>(null);
 const activeEditorRef = ref<LexicalEditor | null>(null);
 const isLoadError = ref(false);
 
@@ -321,5 +321,3 @@ const isFocused = isSelected || isResizing;
     </div>
   </Suspense>
 </template>
-
-<style scoped lang="scss"></style>

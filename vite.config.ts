@@ -89,7 +89,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': resolve(__dirname, 'src'),
       },
-      extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss'],
+      extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     },
     // @ts-ignore
     plugins: [vue(), dynamicImport(), vueJsx(), svgLoader()],

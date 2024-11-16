@@ -10,7 +10,7 @@ defineOptions({ name: 'ClSpiderDetailTabOverview' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .spider-detail-tab-overview {
   margin: 20px;
 }

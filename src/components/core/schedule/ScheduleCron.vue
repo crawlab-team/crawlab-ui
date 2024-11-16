@@ -7,6 +7,7 @@ import zh from 'dayjs/locale/zh.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { getI18n } from '@/i18n';
 import { translate } from '@/utils';
+import { TagProps } from '@/components/ui/tag/types';
 
 dayjs.extend(localizedFormat);
 
@@ -138,7 +139,7 @@ defineOptions({ name: 'ClScheduleCron' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .schedule-cron {
   .row {
     min-height: 20px;

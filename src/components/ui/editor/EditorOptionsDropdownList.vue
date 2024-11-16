@@ -34,10 +34,9 @@ defineOptions({ name: 'ClEditorOptionsDropdownList' });
 <template>
   <div v-click-outside="onClickOutside" ref="dropDownRef" class="dropdown">
     <button
-      v-for="option in options"
-      :key="option.type"
+      v-for="(option, $index) in options"
+      :key="$index"
       class="item"
-      :class="{ active: blockType === option.type }"
       @click="option.onClick"
     >
       <span class="icon">
@@ -47,5 +46,3 @@ defineOptions({ name: 'ClEditorOptionsDropdownList' });
     </button>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

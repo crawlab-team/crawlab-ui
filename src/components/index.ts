@@ -17,7 +17,6 @@ import * as pagination from './ui/table/pagination';
 import * as store from './ui/table/store';
 import * as theme from './ui/lexical/utils/theme';
 import * as VariableNode from './ui/lexical/nodes/VariableNode';
-import ActionTab from './ui/tab/ActionTab.vue';
 import AtomMaterialIcon from './ui/icon/AtomMaterialIcon.vue';
 import BlockOptionsDropdownList from './ui/lexical/components/BlockOptionsDropdownList.vue';
 import Box from './ui/box/Box.vue';
@@ -175,7 +174,6 @@ import Select from './ui/select/Select.vue';
 import SpiderForm from './core/spider/SpiderForm.vue';
 import SpiderResultDataWithDatabase from './core/spider/SpiderResultDataWithDatabase.vue';
 import SpiderStat from './core/spider/SpiderStat.vue';
-import SpiderTag from './core/spider/SpiderTag.vue';
 import Switch from './ui/switch/Switch.vue';
 import Table from './ui/table/Table.vue';
 import TableActions from './ui/table/TableActions.vue';
@@ -247,7 +245,6 @@ export {
   store as store,
   theme as theme,
   VariableNode as VariableNode,
-  ActionTab as ClActionTab,
   AtomMaterialIcon as ClAtomMaterialIcon,
   BlockOptionsDropdownList as ClBlockOptionsDropdownList,
   Box as ClBox,
@@ -405,7 +402,6 @@ export {
   SpiderForm as ClSpiderForm,
   SpiderResultDataWithDatabase as ClSpiderResultDataWithDatabase,
   SpiderStat as ClSpiderStat,
-  SpiderTag as ClSpiderTag,
   Switch as ClSwitch,
   Table as ClTable,
   TableActions as ClTableActions,

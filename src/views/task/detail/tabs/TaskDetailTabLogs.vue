@@ -181,7 +181,7 @@ defineOptions({ name: 'ClTaskDetailTabLogs' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .task-detail-tab-logs {
   height: 100%;
 

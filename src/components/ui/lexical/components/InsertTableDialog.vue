@@ -26,5 +26,3 @@ defineOptions({ name: 'ClInsertTableDialog' });
     </cl-form>
   </cl-dialog>
 </template>
-
-<style scoped lang="scss"></style>

@@ -54,7 +54,7 @@ defineOptions({ name: 'ClGitFileStatus' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .git-file-status {
   .file-path {
     margin-left: 10px;

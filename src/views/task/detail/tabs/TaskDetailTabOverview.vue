@@ -1,12 +1,5 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'TaskDetailTabOverview',
-  setup() {
-    return {};
-  },
-});
+<script setup lang="ts">
+defineOptions({ name: 'ClTaskDetailTabOverview' });
 </script>
 
 <template>
@@ -15,7 +8,7 @@ export default defineComponent({
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .task-detail-tab-overview {
   margin: 20px;
 }

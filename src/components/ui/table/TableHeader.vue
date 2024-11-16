@@ -229,7 +229,7 @@ defineOptions({ name: 'ClTableHeader' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .table-header {
   display: flex;
   position: relative;
@@ -257,15 +257,14 @@ defineOptions({ name: 'ClTableHeader' });
     height: 100%;
     align-items: center;
     cursor: pointer;
-  }
-}
-</style>
-<style scoped>
-.table-header:hover .actions:deep(.action) {
-  display: inline;
-}
 
-.table-header .actions:deep(.action) {
-  display: none;
+    &:deep(.action) {
+      display: none;
+    }
+  }
+
+  &:hover .actions:deep(.action) {
+    display: inline;
+  }
 }
 </style>

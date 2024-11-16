@@ -156,7 +156,7 @@ defineOptions({ name: 'ClTableHeaderDialogFilter' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .table-header-dialog-filter {
   flex: 1;
   display: flex;

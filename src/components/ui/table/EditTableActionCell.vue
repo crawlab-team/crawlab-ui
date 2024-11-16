@@ -70,5 +70,3 @@ defineOptions({ name: 'ClEditTableActionCell' });
     </cl-context-menu>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

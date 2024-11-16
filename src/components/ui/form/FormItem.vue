@@ -156,7 +156,7 @@ defineOptions({ name: 'ClFormItem' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .form-item {
   .el-form-item {
     width: 100%;
@@ -178,23 +178,20 @@ defineOptions({ name: 'ClFormItem' });
       }
     }
   }
-}
-</style>
-<style scoped>
-.form-item {
-  &:deep(.form-item-content),
-  &:deep(.form-item-content > .el-select),
-  &:deep(.form-item-content > .el-autocomplete),
-  &:deep(.form-item-content > .el-input) {
+
+  .form-item-content,
+  .form-item-content > .el-select,
+  .form-item-content > .el-autocomplete,
+  .form-item-content > .el-input {
     width: 100%;
   }
 
-  &:deep(.el-radio-group) {
+  .el-radio-group {
     display: flex;
     flex-wrap: wrap;
   }
 
-  &:deep(.form-item-content) {
+  .form-item-content {
     display: flex;
     align-items: center;
     gap: 10px;

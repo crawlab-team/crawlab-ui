@@ -307,12 +307,11 @@ defineOptions({ name: 'ClLogin' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
-  //background-color: var(--cl-white);
 
   .login-form {
     background: transparent;
@@ -484,24 +483,23 @@ defineOptions({ name: 'ClLogin' });
 
   .mobile-warning {
     margin-top: 20px;
+
+    &:deep(.el-alert .el-alert__description) {
+      font-size: 1.2rem;
+    }
   }
-}
-</style>
-<style scoped>
-.login-container:deep(.el-input .el-input__wrapper) {
-  background: rgba(255, 255, 255, 0.1);
-}
 
-.login-container:deep(.el-input .el-input__wrapper .el-input__prefix),
-.login-container:deep(.el-input .el-input__wrapper .el-input__inner) {
-  color: #ffffff;
-}
+  &:deep(.el-input .el-input__wrapper) {
+    background: rgba(255, 255, 255, 0.1);
+  }
 
-.login-container:deep(.el-button) {
-  background: rgba(64, 158, 255, 0.1);
-}
+  &:deep(.el-input .el-input__wrapper .el-input__prefix),
+  &:deep(.el-input .el-input__wrapper .el-input__inner) {
+    color: #ffffff;
+  }
 
-.mobile-warning:deep(.el-alert .el-alert__description) {
-  font-size: 1.2rem;
+  &:deep(.el-button) {
+    background: rgba(64, 158, 255, 0.1);
+  }
 }
 </style>

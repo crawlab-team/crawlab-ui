@@ -53,7 +53,7 @@ defineOptions({ name: 'ClMetric' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .metric {
   padding: 10px;
   margin: 20px;
@@ -77,7 +77,6 @@ defineOptions({ name: 'ClMetric' });
     width: calc(100% - 64px - 10px);
     height: 100%;
     background-color: var(--cl-white);
-    //filter: alpha(0.3);
     opacity: 0.3;
     z-index: 1;
   }
@@ -103,14 +102,12 @@ defineOptions({ name: 'ClMetric' });
       height: 24px;
       line-height: 24px;
       font-weight: bolder;
-      //padding: 5px;
     }
 
     .value {
       height: 24px;
       line-height: 24px;
       font-weight: bold;
-      //padding: 5px;
     }
   }
 }

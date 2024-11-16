@@ -37,7 +37,6 @@ app
 Below is an example of using globally installed Crawlab-UI in a Vue 3 component.
 
 ```vue
-
 <template>
   <cl-form :model="form">
     <cl-form-item :span="2" label="Key" prop="key" required>
@@ -49,19 +48,12 @@ Below is an example of using globally installed Crawlab-UI in a Vue 3 component.
   </cl-form>
 </template>
 
-<script lang="ts">
-import {defineComponent, ref} from 'vue';
+<script setup lang="ts">
+import {ref} from 'vue';
 
-export default defineComponent({
-  setup() {
-    const form = ref({
-      key: 'test-key',
-      value: 'test-value',
-    });
-    return {
-      form,
-    };
-  },
+const form = ref({
+  key: 'test-key',
+  value: 'test-value',
 });
 </script>
 ```

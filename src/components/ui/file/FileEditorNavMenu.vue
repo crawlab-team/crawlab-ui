@@ -15,6 +15,7 @@ import { KEY_CONTROL, KEY_META } from '@/constants/keyboard';
 import { ElMessageBox, ElTree } from 'element-plus';
 import { FILE_ROOT } from '@/constants';
 import { translate } from '@/utils';
+import { TagProps } from '@/components/ui/tag/types';
 
 const props = defineProps<{
   loading?: boolean;

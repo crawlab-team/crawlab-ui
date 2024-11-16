@@ -8,7 +8,7 @@ defineOptions({ name: 'ClGitDetailTabOverview' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .git-detail-tab-overview {
   margin: 20px;
 }

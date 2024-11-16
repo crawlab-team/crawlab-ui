@@ -20,5 +20,3 @@ defineOptions({ name: 'ClInsertImageDialog' });
     </cl-form>
   </cl-dialog>
 </template>
-
-<style scoped lang="scss"></style>

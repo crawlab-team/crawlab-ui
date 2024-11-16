@@ -204,24 +204,22 @@ defineOptions({ name: 'ClGitDetailTabChanges' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .git-changes {
   height: 100%;
 
   .table {
     height: 100%;
   }
-}
-</style>
 
-<style scoped>
-.git-changes:deep(.el-table) {
-  border-top: none;
-  border-left: none;
-  border-right: none;
-}
+  &:deep(.el-table) {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
 
-.git-changes:deep(.file-name.deleted) {
-  text-decoration: line-through;
+  &:deep(.file-name.deleted) {
+    text-decoration: line-through;
+  }
 }
 </style>

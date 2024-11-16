@@ -35,7 +35,7 @@ defineOptions({ name: 'ClResultCellDialog' });
   </cl-dialog>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .result-dialog-content {
   font-size: 14px;
   line-height: 1.6;

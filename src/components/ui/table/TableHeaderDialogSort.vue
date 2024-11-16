@@ -53,7 +53,7 @@ defineOptions({ name: 'ClTableHeaderDialogSort' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .table-header-dialog-sort {
   .title {
     font-size: 14px;

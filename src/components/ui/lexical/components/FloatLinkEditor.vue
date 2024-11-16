@@ -281,7 +281,7 @@ defineOptions({ name: 'ClFloatLinkEditor' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .link-editor {
   padding: 20px;
   min-width: 560px;
@@ -292,18 +292,18 @@ defineOptions({ name: 'ClFloatLinkEditor' });
     display: flex;
     justify-content: space-between;
   }
+
+  &:deep(.form-item:last-child .el-form-item) {
+    margin-bottom: 0;
+  }
+
+  &:deep(.button-wrapper:not(:first-child)) {
+    margin-left: 10px;
+  }
+
+  &:deep(.button-wrapper) {
+    margin-right: 0;
+  }
 }
 </style>
-<style scoped>
-.link-editor:deep(.form-item:last-child .el-form-item) {
-  margin-bottom: 0;
-}
-
-.link-editor:deep(.button-wrapper:not(:first-child)) {
-  margin-left: 10px;
-}
-
-.link-editor:deep(.button-wrapper) {
-  margin-right: 0;
-}
-</style>
+<style scoped></style>

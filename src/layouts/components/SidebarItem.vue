@@ -46,7 +46,7 @@ defineOptions({ name: 'ClSidebarItem' });
   </el-sub-menu>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .el-menu-item * {
   vertical-align: middle;
 }

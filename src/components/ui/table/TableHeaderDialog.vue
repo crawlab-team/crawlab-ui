@@ -199,7 +199,7 @@ defineOptions({ name: 'ClTableHeaderDialog' });
   </el-popover>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .content {
   position: relative;
   min-width: 100%;

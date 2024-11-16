@@ -32,16 +32,13 @@ defineOptions({ name: 'ClDisclaimer' });
   </cl-simple-layout>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .disclaimer {
   min-height: 100%;
   padding: 0 calc((100% - 800px) / 2);
   color: var(--cl-info-color);
 
   .container {
-    .title {
-    }
-
     .content {
       font-size: 18px;
       line-height: 1.6;

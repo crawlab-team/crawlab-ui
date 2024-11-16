@@ -1,9 +1,11 @@
 import { ComputedRef, Ref } from 'vue';
 import Table from '@/components/ui/table/Table.vue';
+import { ButtonType } from '@/components/ui/button/types';
 
 export declare global {
-  interface ListLayoutComponentData<T = any> {
+  interface ListLayoutComponentData<T extends BaseModel> {
     navActions?: Ref<ListActionGroup[]>;
+    tableLoading: Ref<boolean>;
     tableColumns?: Ref<TableColumns<T>>;
     tableData: Ref<TableData<T>>;
     tableTotal: Ref<number>;
@@ -14,7 +16,7 @@ export declare global {
     activeDialogKey: ComputedRef<DialogKey | undefined>;
   }
 
-  interface UseListOptions<T> {
+  interface UseListOptions<T extends BaseModel> {
     navActions: Ref<ListActionGroup[]>;
     tableColumns: Ref<TableColumns<T>>;
   }
@@ -27,7 +29,7 @@ export declare global {
   interface ListAction {
     id?: string;
     label?: string;
-    action?: GenericAction;
+    action?: string;
     className?: string;
     size?: BasicSize;
   }
@@ -45,7 +47,10 @@ export declare global {
     placeholder?: string;
     options?: SelectOption[];
     optionsRemote?: FilterSelectOptionsRemote;
+    clearable?: boolean;
     onChange?: (value: any) => void;
+    onEnter?: (value: any) => void;
+    noAllOption?: boolean;
   }
 
   interface ListLayoutActionFunctions {

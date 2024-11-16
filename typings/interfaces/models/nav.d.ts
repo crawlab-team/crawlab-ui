@@ -5,6 +5,7 @@ export declare global {
     subtitle?: string;
     data?: T;
     icon?: Icon;
+    iconSpinning?: boolean;
     tooltip?: string;
     emphasis?: boolean;
     style?: any;

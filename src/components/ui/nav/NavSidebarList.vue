@@ -30,7 +30,7 @@ defineOptions({ name: 'ClNavSidebarList' });
   </el-menu>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .nav-menu {
   list-style: none;
   padding: 0;

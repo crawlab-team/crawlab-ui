@@ -125,24 +125,22 @@ defineOptions({ name: 'ClGitDetailTabCommits' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .git-logs {
   height: 100%;
 
   .table {
     height: 100%;
   }
-}
-</style>
 
-<style scoped>
-.git-logs:deep(.el-table) {
-  border-top: none;
-  border-left: none;
-  border-right: none;
-}
+  &:deep(.el-table) {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
 
-.git-logs:deep(.el-tag) {
-  transition: none;
+  &:deep(.el-tag) {
+    transition: none;
+  }
 }
 </style>

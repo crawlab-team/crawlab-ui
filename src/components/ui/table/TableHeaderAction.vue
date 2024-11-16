@@ -46,7 +46,7 @@ defineOptions({ name: 'ClTableHeaderAction' });
   </span>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .action {
   margin-left: 3px;
   font-size: 10px;

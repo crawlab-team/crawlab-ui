@@ -2,7 +2,6 @@ interface LComponentsNode {
   form: {
     key: string;
     name: string;
-    tags: string;
     type: string;
     ip: string;
     mac: string;
@@ -10,6 +9,7 @@ interface LComponentsNode {
     enabled: string;
     max_runners: string;
     description: string;
+    status: string;
   };
   nodeType: {
     label: {
@@ -19,8 +19,6 @@ interface LComponentsNode {
   };
   nodeStatus: {
     label: {
-      unregistered: string;
-      registered: string;
       online: string;
       offline: string;
       unknown: string;

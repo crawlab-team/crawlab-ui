@@ -1,10 +1,23 @@
 export declare global {
+  interface LListLayoutPage<T = any> {
+    list: {
+      title: string;
+    };
+    detail?: {
+      title: string;
+      tabs: T;
+    };
+  }
+
   interface LLayouts {
     components: {
       header: {
         disclaimer: string;
         mySettings: string;
         logout: string;
+      };
+      tabsView: {
+        add: string;
       };
       sidebar: {
         expand: string;
@@ -23,133 +36,77 @@ export declare global {
     };
     routes: {
       home: string;
-      nodes: {
-        title: string;
-        tabs: {
-          overview: string;
-          tasks: string;
-          monitoring: string;
-        };
-      };
-      projects: {
-        title: string;
-        tabs: {
-          overview: string;
-          spiders: string;
-        };
-      };
-      spiders: {
-        title: string;
-        tabs: {
-          overview: string;
-          files: string;
-          tasks: string;
-          schedules: string;
-          data: string;
-          settings: string;
-          dependencies: string;
-        };
-      };
-      tasks: {
-        title: string;
-        tabs: {
-          overview: string;
-          logs: string;
-          data: string;
-        };
-      };
-      schedules: {
-        title: string;
-        tabs: {
-          overview: string;
-          tasks: string;
-        };
-      };
-      users: {
-        title: string;
-        tabs: {
-          overview: string;
-        };
-      };
-      roles: {
-        title: string;
-        tabs: {
-          overview: string;
-          permissions: string;
-          users: string;
-        };
-      };
-      permissions: {
-        title: string;
-        tabs: {
-          overview: string;
-          roles: string;
-        };
-      };
-      tokens: {
-        title: string;
-      };
-      dependencies: {
-        title: string;
+      nodes: LListLayoutPage<{
+        overview: string;
+        tasks: string;
+        monitoring: string;
+      }>;
+      projects: LListLayoutPage<{
+        overview: string;
+        spiders: string;
+      }>;
+      spiders: LListLayoutPage<{
+        overview: string;
+        files: string;
+        tasks: string;
+        schedules: string;
+        data: string;
         settings: string;
-        lang: {
-          python: string;
-          node: string;
-        };
-      };
+        dependencies: string;
+      }>;
+      tasks: LListLayoutPage<{
+        overview: string;
+        logs: string;
+        data: string;
+      }>;
+      schedules: LListLayoutPage<{
+        overview: string;
+        tasks: string;
+      }>;
+      users: LListLayoutPage<{
+        overview: string;
+      }>;
+      roles: LListLayoutPage<{
+        overview: string;
+        pages: string;
+        users: string;
+      }>;
+      tokens: LListLayoutPage;
+      dependencies: LListLayoutPage;
       notifications: {
         title: string;
-        settings: {
-          title: string;
-          tabs: {
-            overview: string;
-            mail: string;
-            template: string;
-            channels: string;
-          };
-        };
-        channels: {
-          title: string;
-          tabs: {
-            overview: string;
-          };
-        };
-        requests: {
-          title: string;
-        };
-        alerts: {
-          title: string;
-          tabs: {
-            overview: string;
-          };
-        };
-      };
-      gits: {
-        title: string;
-        tabs: {
+        settings: LListLayoutPage<{
           overview: string;
-          files: string;
-          logs: string;
-          changes: string;
-          spiders: string;
-        };
-      };
-      databases: {
-        title: string;
-        tabs: {
+          mail: string;
+          template: string;
+          channels: string;
+        }>;
+        channels: LListLayoutPage<{
           overview: string;
-          databases: string;
-          console: string;
-          monitoring: string;
-          table: string;
-          data: string;
-          columns: string;
-          indexes: string;
-        };
+        }>;
+        requests: LListLayoutPage;
+        alerts: LListLayoutPage<{
+          overview: string;
+        }>;
       };
-      environments: {
-        title: string;
-      };
+      gits: LListLayoutPage<{
+        overview: string;
+        files: string;
+        changes: string;
+        commits: string;
+        spiders: string;
+      }>;
+      databases: LListLayoutPage<{
+        overview: string;
+        databases: string;
+        console: string;
+        monitoring: string;
+        table: string;
+        data: string;
+        columns: string;
+        indexes: string;
+      }>;
+      environments: LListLayoutPage;
       system: {
         title: string;
       };

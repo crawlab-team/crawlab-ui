@@ -1,12 +1,5 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'DataSourceDetailTabOverview',
-  setup() {
-    return {};
-  },
-});
+<script setup lang="ts">
+defineOptions({ name: 'ClDatabaseDetailTabOverview' });
 </script>
 
 <template>
@@ -15,7 +8,7 @@ export default defineComponent({
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .database-detail-tab-overview {
   margin: 20px;
 }

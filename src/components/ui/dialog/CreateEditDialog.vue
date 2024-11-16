@@ -73,7 +73,7 @@ defineOptions({ name: 'ClCreateEditDialog' });
   </cl-dialog>
 </template>
 
-<style lang="scss">
+<style>
 .create-edit-dialog-tabs {
   &.edit,
   &:not(.visible) {

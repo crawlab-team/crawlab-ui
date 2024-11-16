@@ -1,5 +1,33 @@
 interface LViewsEnv {
   deps: {
+    navActions: LNavActions;
+    navActionsExtra: {
+      filter: {
+        select: {
+          lang: {
+            label: string;
+          };
+          nodes: {
+            label: string;
+          };
+        };
+      };
+    };
+    repos: {
+      actions: {
+        search: {
+          label: string;
+          tooltip: string;
+        };
+      };
+      tabs: {
+        installed: string;
+        search: {
+          pypi: string;
+          npm: string;
+        };
+      };
+    };
     settings: {
       form: {
         key: string;
@@ -23,12 +51,25 @@ interface LViewsEnv {
         name: string;
         latestVersion: string;
         installedVersion: string;
+        requiredVersion: string;
         installedNodes: string;
         allNodes: string;
         selectedNodes: string;
         upgrade: string;
         mode: string;
         version: string;
+        toInstallNodes: string;
+        toUninstallNodes: string;
+        status: string;
+        error: string;
+      };
+      status: {
+        installing: string;
+        installed: string;
+        uninstalled: string;
+        uninstalling: string;
+        error: string;
+        abnormal: string;
       };
     };
     task: {

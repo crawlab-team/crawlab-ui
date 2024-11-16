@@ -42,7 +42,7 @@ watch(
 watch(
   () => internalModelValue.value,
   value => {
-    emit('update:modelValue', value);
+    emit('update:modelValue', value!);
   }
 );
 
@@ -242,7 +242,7 @@ defineOptions({ name: 'ClGitBranchSelect' });
   min-width: 150px;
 }
 </style>
-<style lang="scss">
+<style>
 .git-branch-select-dropdown {
   .branch-wrapper {
     position: relative;

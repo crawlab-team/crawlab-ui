@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { isCancellable } from '@/utils/task';
 import { TASK_STATUS_PENDING } from '@/constants/task';
 import { translate } from '@/utils';
+import { TagProps } from '@/components/ui/tag/types';
 
 const props = defineProps<{
   results?: number;
@@ -63,7 +64,7 @@ defineOptions({ name: 'ClTaskResults' });
     :size="size"
     :spinning="data.spinning"
     :type="data.type"
-    class-name="task-results"
+    clas-name="task-results"
     :clickable="clickable"
     @click="onClick"
   >
@@ -73,7 +74,7 @@ defineOptions({ name: 'ClTaskResults' });
   </cl-tag>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .task-results {
   &.clickable {
     cursor: pointer;

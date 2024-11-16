@@ -1,4 +1,5 @@
-<script setup lang="ts">defineOptions({ name: 'ClNotificationChannelDetailTabOverview' });
+<script setup lang="ts">
+defineOptions({ name: 'ClNotificationChannelDetailTabOverview' });
 </script>
 
 <template>
@@ -7,7 +8,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .notification-channel-detail-tab-overview {
   margin: 20px;
 }

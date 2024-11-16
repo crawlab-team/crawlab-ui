@@ -58,7 +58,7 @@ defineOptions({ name: 'ClBox' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .box {
   position: fixed;
   z-index: 999;

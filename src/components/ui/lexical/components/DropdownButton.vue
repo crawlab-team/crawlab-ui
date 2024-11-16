@@ -13,7 +13,7 @@ const emit = defineEmits<{
 
 const visible = ref(false);
 
-const icon = computed<Icon>(() => {
+const icon = computed<Icon | undefined>(() => {
   const { options } = props;
   return options.find(option => option.value === modelValue.value)?.icon;
 });
@@ -49,5 +49,3 @@ defineOptions({ name: 'ClDropdownButton' });
     </template>
   </el-dropdown>
 </template>
-
-<style scoped lang="scss"></style>

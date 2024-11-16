@@ -172,6 +172,18 @@ interface LViewsNotification {
       create: {
         alert: string;
       };
+      sendTestMessage: string;
+    };
+  };
+  messageBox: {
+    confirm: {
+      sendTestMessage: string;
+    };
+    prompt: {
+      sendTestMessage: {
+        title: string;
+        placeholder: string;
+      };
     };
   };
 }

@@ -37,7 +37,7 @@ defineOptions({ name: 'ClExportForm' });
   </el-form>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .el-form {
   .el-form-item {
     width: 100%;

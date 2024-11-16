@@ -83,7 +83,7 @@ defineOptions({ name: 'ClRangePicker' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .range-picker {
   display: flex;
   align-items: center;

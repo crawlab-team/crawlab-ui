@@ -107,7 +107,7 @@ defineOptions({ name: 'ClNotificationSettingDetailTabMailConfig' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .notification-setting-detail-tab-mail-config {
   margin: 20px;
 

@@ -19,14 +19,15 @@ export declare global {
     dataCollection: DataCollectionStoreState;
     schedule: ScheduleStoreState;
     user: UserStoreState;
+    role: RoleStoreState;
     token: TokenStoreState;
-    plugin: PluginStoreState;
     git: GitStoreState;
     notificationSetting: NotificationSettingStoreState;
     notificationChannel: NotificationChannelStoreState;
     notificationRequest: NotificationRequestStoreState;
     notificationAlert: NotificationAlertStoreState;
     database: DatabaseStoreState;
+    dependency: DependencyStoreState;
     environment: EnvironmentStoreState;
     system: SystemStoreState;
   }
@@ -73,6 +74,7 @@ export declare global {
     formList: T[];
     newFormFn: DefaultFormFunc<T | {}>;
     confirmLoading: boolean;
+    tableLoading: boolean;
     tableData: TableData<T>;
     tableTotal: number;
     tablePagination: TablePagination;
@@ -86,13 +88,12 @@ export declare global {
     afterSave: (() => Promise)[];
   }
 
-  interface BaseStoreGetters<S = BaseStoreState, R = RootStoreState>
+  interface BaseStoreGetters<S = BaseStoreState, R = RootStoreState, T = any>
     extends GetterTree<S, R> {
     dialogVisible: StoreGetter<BaseStoreState, boolean>;
     formListIds: StoreGetter<BaseStoreState, string[]>;
     allListSelectOptions: StoreGetter<BaseStoreState, SelectOption[]>;
     allDict: StoreGetter<BaseStoreState, Map<string, T>>;
-    tabs: StoreGetter<BaseStoreState, NavItem[]>;
   }
 
   interface BaseStoreMutations<T = any>
@@ -109,6 +110,7 @@ export declare global {
     setFormList: StoreMutation<BaseStoreState<T>, T[]>;
     resetFormList: StoreMutation<BaseStoreState<T>>;
     setConfirmLoading: StoreMutation<BaseStoreState<T>, boolean>;
+    setTableLoading: StoreMutation<BaseStoreState<T>, boolean>;
     setTableData: StoreMutation<BaseStoreState<T>, TableDataWithTotal<T>>;
     resetTableData: StoreMutation<BaseStoreState<T>>;
     setTablePagination: StoreMutation<BaseStoreState<T>, TablePagination>;
@@ -159,20 +161,19 @@ export declare global {
     | 'project'
     | 'spider'
     | 'task'
-    | 'tag'
-    | 'dataCollection'
     | 'schedule'
     | 'user'
+    | 'role'
     | 'token'
-    | 'plugin'
     | 'git'
     | 'notificationSetting'
     | 'notificationChannel'
     | 'notificationRequest'
     | 'notificationAlert'
     | 'database'
+    | 'dependency'
     | 'environment';
-  type StoreNamespace = ListStoreNamespace | 'layout';
+  type StoreNamespace = ListStoreNamespace | 'layout' | 'common';
 
   interface StoreContext<T, R = RootStoreState> {
     namespace: StoreNamespace;

@@ -84,7 +84,7 @@ defineOptions({ name: 'ClGitFileDiffDialog' });
   </cl-dialog>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .git-file-diff {
   width: 100%;
   height: max(calc(80vh), 480px);

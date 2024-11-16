@@ -8,7 +8,7 @@ defineOptions({ name: 'ClNotificationAlertDetailTabOverview' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .notification-alert-detail-tab-overview {
   margin: 20px;
 }

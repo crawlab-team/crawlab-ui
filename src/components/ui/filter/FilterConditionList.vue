@@ -42,7 +42,7 @@ defineOptions({ name: 'ClFilterConditionList' });
   </ul>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .filter-condition-list {
   list-style: none;
   padding: 0;

@@ -127,7 +127,7 @@ defineOptions({ name: 'ClTransferPanel' });
   </el-card>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .transfer-panel {
   flex: 1;
   min-width: 240px;
@@ -169,12 +169,11 @@ defineOptions({ name: 'ClTransferPanel' });
       height: 360px;
     }
   }
-}
-</style>
-<style scoped>
-.transfer-panel:deep(.draggable-list) {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+
+  &:deep(.draggable-list) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>

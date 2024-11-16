@@ -29,5 +29,3 @@ defineOptions({ name: 'ClGitRepo' });
     </template>
   </cl-tag>
 </template>
-
-<style scoped lang="scss"></style>

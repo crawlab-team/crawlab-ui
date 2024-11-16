@@ -96,7 +96,7 @@ defineOptions({ name: 'ClDraggableList' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .draggable-list {
   list-style: none;
   display: flex;

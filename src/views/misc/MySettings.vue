@@ -82,7 +82,7 @@ defineOptions({ name: 'ClMySettings' });
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .my-settings {
   height: 100%;
 

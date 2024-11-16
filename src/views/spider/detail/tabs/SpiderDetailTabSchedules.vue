@@ -1,55 +1,44 @@
-<script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeMount,
-  onBeforeUnmount,
-  watch,
-} from 'vue';
+<script setup lang="ts">
+import { computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { FILTER_OP_EQUAL } from '@/constants/filter';
 
-export default defineComponent({
-  name: 'SpiderDetailTabSchedules',
-  setup() {
-    // route
-    const route = useRoute();
+// route
+const route = useRoute();
 
-    // store
-    const store = useStore();
+// store
+const store = useStore();
 
-    // id
-    const id = computed<string>(() => route.params.id as string);
+// id
+const id = computed<string>(() => route.params.id as string);
 
-    const setTableListFilter = () => {
-      // set filter
-      store.commit(`schedule/setTableListFilter`, [
-        {
-          key: 'spider_id',
-          op: FILTER_OP_EQUAL,
-          value: id.value,
-        },
-      ]);
-    };
+const setTableListFilter = () => {
+  // set filter
+  store.commit(`schedule/setTableListFilter`, [
+    {
+      key: 'spider_id',
+      op: FILTER_OP_EQUAL,
+      value: id.value,
+    },
+  ]);
+};
 
-    const getData = async () => {
-      setTableListFilter();
-      await store.dispatch('schedule/getList');
-    };
+const getData = async () => {
+  setTableListFilter();
+  await store.dispatch('schedule/getList');
+};
 
-    onBeforeMount(getData);
+onBeforeMount(getData);
 
-    watch(() => id.value, getData);
+watch(() => id.value, getData);
 
-    onBeforeUnmount(() => {
-      store.commit(`schedule/resetTableListFilter`);
-      store.commit(`schedule/resetTableData`);
-    });
-
-    return {};
-  },
+onBeforeUnmount(() => {
+  store.commit(`schedule/resetTableListFilter`);
+  store.commit(`schedule/resetTableData`);
 });
+
+defineOptions({ name: 'ClSpiderDetailTabSchedules' });
 </script>
 
 <template>

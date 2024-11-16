@@ -56,5 +56,3 @@ defineOptions({ name: 'ClInputSelect' });
     />
   </el-select>
 </template>
-
-<style scoped lang="scss"></style>

@@ -29,7 +29,7 @@ defineOptions({ name: 'ClNodeActive' });
   </el-tag>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .node-active {
   .icon {
     margin-right: 5px;

@@ -425,7 +425,7 @@ defineOptions({ name: 'ClFileEditor' });
   <cl-file-editor-create-with-ai-dialog @create="onCreateWithAi" />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .file-editor {
   height: 100%;
   display: flex;

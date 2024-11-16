@@ -101,7 +101,7 @@ defineOptions({ name: 'ClInputList' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .input-list {
   display: flex;
   flex-direction: column;

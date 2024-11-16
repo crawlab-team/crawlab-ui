@@ -190,7 +190,7 @@ defineOptions({ name: 'ClFileEditorCreateWithAiDialog' });
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .file-editor-create-with-ai-dialog {
   .nav-menu {
     .el-menu-item {

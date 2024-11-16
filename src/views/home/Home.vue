@@ -370,7 +370,7 @@ defineOptions({ name: 'ClHome' });
   </el-scrollbar>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .home {
   background: white;
   min-height: calc(

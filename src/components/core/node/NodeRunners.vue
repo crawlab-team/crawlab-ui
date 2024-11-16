@@ -81,7 +81,7 @@ defineOptions({ name: 'ClNodeRunners' });
   />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .node-runners {
   cursor: pointer;
 

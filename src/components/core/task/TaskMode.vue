@@ -73,10 +73,16 @@ defineOptions({ name: 'ClTaskMode' });
 </script>
 
 <template>
-  <cl-tag :type="type" :icon="icon" :label="label" :tooltip="tooltip" />
+  <cl-tag
+    class-name="task-mode"
+    :type="type"
+    :icon="icon"
+    :label="label"
+    :tooltip="tooltip"
+  />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .task-mode {
   min-width: 80px;
   cursor: default;

@@ -34,7 +34,7 @@ defineOptions({ name: 'ClUserRole' });
   </el-tag>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .user-role {
   .icon {
     margin-right: 5px;

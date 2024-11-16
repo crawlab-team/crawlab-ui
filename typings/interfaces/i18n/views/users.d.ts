@@ -2,6 +2,7 @@ interface LViewsUsers {
   table: {
     columns: {
       username: string;
+      fullName: string;
       email: string;
       role: string;
     };

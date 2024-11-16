@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { defineComponent, onBeforeMount, onBeforeUnmount, watch } from 'vue';
+import { onBeforeMount, watch } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 import { isPro } from '@/utils';
-import { TAB_NAME_DEPENDENCIES, TAB_NAME_MONITORING } from '@/constants';
+import { TAB_NAME_DEPENDENCIES } from '@/constants';
 
 const ns = 'spider';
 const store = useStore();
@@ -47,5 +47,3 @@ defineOptions({ name: 'ClSpiderDetail' });
   <cl-result-dedup-fields-dialog />
   <!-- ./Dialogs -->
 </template>
-
-<style scoped lang="scss"></style>

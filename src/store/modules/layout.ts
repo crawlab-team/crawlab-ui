@@ -116,14 +116,14 @@ export default {
           })
           // filter items by allowed routes
           .filter(d => {
-            if (isAllowedRoutePath(d.path)) return true;
-            return d.children?.some(c => isAllowedRoutePath(c.path));
+            if (isAllowedRoutePath(d.path!)) return true;
+            return d.children?.some(c => isAllowedRoutePath(c.path!));
           })
           // filter children by allowed routes
           .map(d => {
             return {
               ...d,
-              children: d.children?.filter(c => isAllowedRoutePath(c.path)),
+              children: d.children?.filter(c => isAllowedRoutePath(c.path!)),
             };
           })
       );

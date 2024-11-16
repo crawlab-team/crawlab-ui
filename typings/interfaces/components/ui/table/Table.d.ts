@@ -141,18 +141,20 @@ export declare global {
     [key: string]: TableColumnCtx;
   }
 
-  interface TableColumnButton {
+  interface TableColumnButton<T = any> {
     key?: 'filter' | 'sort';
     type?: string;
     size?: string;
-    icon?: Icon | TableValueFunction;
+    icon?: Icon | TableValueFunction<T, Icon>;
     tooltip?: string | TableButtonTooltipFunction;
     isHtml?: boolean;
     disabled?: TableButtonDisabledFunction;
+    loading?: TableButtonLoadingFunction;
     onClick?: TableButtonOnClickFunction;
     id?: string;
     className?: string;
-    action?: GenericAction;
+    action: string;
+    contextMenu?: boolean;
   }
 
   type TableColumnButtonsFunction<T = any> = (row?: T) => TableColumnButton[];
@@ -161,11 +163,11 @@ export declare global {
     | TableColumnButton[]
     | TableColumnButtonsFunction<T>;
 
-  type TableValueFunction<T = any> = (
+  type TableValueFunction<T = any, R = VNode> = (
     row: T,
     rowIndex?: number,
     column?: TableColumn<T>
-  ) => VNode;
+  ) => R;
   type TableButtonOnClickFunction<T = any> = (
     row: T,
     rowIndex?: number,
@@ -181,6 +183,11 @@ export declare global {
     rowIndex?: number,
     column?: TableColumn<T>
   ) => boolean;
+  type TableButtonLoadingFunction<T = any> = (
+    row: T,
+    rowIndex?: number,
+    column?: TableColumn<T>
+  ) => boolean;
   type TableFilterItemsFunction<T = any> = (
     filter?: TableHeaderDialogFilterData,
     column?: TableColumn<T>
@@ -189,6 +196,7 @@ export declare global {
     row: T,
     rowIndex?: number
   ) => boolean;
+  type TableRowKeyFunction<T = any> = (row: T) => string | undefined;
 
   interface TableStore extends Store {
     mutations: TableStoreMutations;
@@ -209,11 +217,6 @@ export declare global {
     page: number;
     size: number;
   }
-
-  type TableActionName =
-    | ActionName
-    | TABLE_ACTION_EXPORT
-    | TABLE_ACTION_CUSTOMIZE_COLUMNS;
 
   type TablePaginationPosition =
     | TABLE_PAGINATION_POSITION_TOP

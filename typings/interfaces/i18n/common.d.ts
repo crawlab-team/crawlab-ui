@@ -26,6 +26,7 @@ export declare global {
       bookmark: string;
       restart: string;
       cancel: string;
+      forceCancel: string;
       confirm: string;
       copy: string;
       create: string;
@@ -38,12 +39,22 @@ export declare global {
       install: string;
       uninstall: string;
       viewLogs: string;
+      viewSpiders: string;
       viewData: string;
       viewFiles: string;
       uploadFiles: string;
+      viewTasks: string;
+      viewSchedules: string;
+      viewChanges: string;
+      viewCommits: string;
+      viewDatabases: string;
+      viewConsole: string;
+      viewPages: string;
+      viewUsers: string;
       export: string;
       configure: string;
       update: string;
+      upgrade: string;
       save: string;
       change: string;
       manage: string;
@@ -51,20 +62,27 @@ export declare global {
       unlink: string;
       goto: string;
       selectAll: string;
+      viewMail: string;
       viewTemplate: string;
       viewChannels: string;
       viewMonitoring: string;
+      viewDependencies: string;
       previewData: string;
       insertBefore: string;
       insertAfter: string;
       rename: string;
       drop: string;
+      checkAll: string;
+      uncheckAll: string;
+      sendTestMessage: string;
+      retry: string;
     };
     messageBox: {
       confirm: {
         delete: string;
         restart: string;
         cancel: string;
+        forceCancel: string;
         run: string;
         stop: string;
         install: string;
@@ -95,7 +113,9 @@ export declare global {
       };
       info: {
         cancel: string;
+        forceCancel: string;
         stop: string;
+        retry: string;
       };
       error: {
         login: string;
@@ -123,6 +143,7 @@ export declare global {
       tags: string;
       references: string;
       changes: string;
+      commits: string;
       ignore: string;
       monitoring: string;
       channels: string;
@@ -142,6 +163,7 @@ export declare global {
       unauthorized: string;
       loading: string;
       upgradePro: string;
+      alreadyUpToDate: string;
     };
     mode: {
       default: string;
@@ -169,6 +191,10 @@ export declare global {
     boolean: {
       true: string;
       false: string;
+    };
+    builtin: {
+      admin: string;
+      rootAdmin: string;
     };
   }
 }

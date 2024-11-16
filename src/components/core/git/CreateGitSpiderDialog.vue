@@ -104,5 +104,3 @@ defineOptions({ name: 'ClCreateGitSpiderDialog' });
     </template>
   </cl-dialog>
 </template>
-
-<style scoped lang="scss"></style>
