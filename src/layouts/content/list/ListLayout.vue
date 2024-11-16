@@ -283,8 +283,6 @@ defineOptions({ name: 'ClListLayout' });
 
     .nav-action-group {
       .nav-action-item {
-        margin-right: 10px;
-
         #filter-search {
           width: 200px;
         }
