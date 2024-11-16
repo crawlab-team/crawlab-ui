@@ -207,8 +207,9 @@ export const useForm = <T extends BaseModel>(
     onFieldRegister,
   };
 
-  watch(activeDialogKey, () => {
-    if (!activeDialogKey.value) {
+  watch(activeDialogKey, (value, prev) => {
+    // reset form when dialog hides and the current dialog key is create or edit
+    if (!value && ['create', 'edit'].includes(prev!)) {
       resetForm();
     }
   });

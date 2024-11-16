@@ -340,7 +340,6 @@ const actions = {
     item?: FileNavItem
   ) => {
     if (state.createSpiderLoading) return;
-    console.debug(item);
     commit('setActiveFileNavItem', item);
     commit('spider/resetForm', undefined, { root: true });
     commit(`showDialog`, 'createSpider');

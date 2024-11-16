@@ -223,7 +223,6 @@ const onNodeContextMenuDelete = async (item: FileNavItem) => {
 };
 
 const onNodeContextMenuCreateSpider = async (item: FileNavItem) => {
-  console.debug(item);
   emit('ctx-menu-create-spider', item);
 };
 

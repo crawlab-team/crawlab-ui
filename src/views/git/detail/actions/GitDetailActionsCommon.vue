@@ -190,7 +190,6 @@ const loading = computed(
 
 const createSpiderLoading = computed(() => state.createSpiderLoading);
 const onOpenCreateDialog = () => {
-  store.commit(`${nsSpider}/resetForm`);
   store.dispatch(`${nsGit}/clickCreateSpider`);
 };
 

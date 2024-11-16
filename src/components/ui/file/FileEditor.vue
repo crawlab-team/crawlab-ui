@@ -206,7 +206,6 @@ const onContextMenuDelete = (item: FileNavItem) => {
 };
 
 const onContextMenuCreateSpider = (item: FileNavItem) => {
-  console.debug(item);
   emit('ctx-menu-create-spider', item);
 };
 

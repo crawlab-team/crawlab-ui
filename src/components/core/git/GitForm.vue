@@ -79,18 +79,11 @@ const privateKeyVisible = ref(false);
 const privateKey = ref('');
 watch(privateKeyVisible, () => {
   if (privateKeyVisible.value) {
-    privateKey.value = state.form.password;
+    privateKey.value = state.form.password || '';
   } else {
     privateKey.value = '';
   }
 });
-const onPrivateKeyConfirm = () => {
-  store.commit(`${ns}/setForm`, {
-    ...state.form,
-    password: privateKey.value,
-  });
-  privateKeyVisible.value = false;
-};
 
 defineOptions({ name: 'ClGitForm' });
 </script>

@@ -168,7 +168,6 @@ const onContextMenuDelete = async (item: FileNavItem) => {
 };
 
 const onContextMenuCreateSpider = async (item: FileNavItem) => {
-  console.debug(item);
   emit('create-spider', item);
 };
 

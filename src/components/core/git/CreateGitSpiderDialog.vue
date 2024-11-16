@@ -33,7 +33,6 @@ const onConfirm = async () => {
       id: activeId.value,
       spider: spiderState.form,
     });
-    console.debug(res);
   } catch (e) {
     ElMessage.error((e as Error).message);
   } finally {
@@ -47,7 +46,7 @@ const directoryOptions = computed(() =>
   getRootDirectoryOptions(gitState.fileNavItems)
 );
 watch(gitRootPath, () => {
-  store.commit(`spider/setForm`, {
+  store.commit(`${nsSpider}/setForm`, {
     ...spiderState.form,
     git_root_path: gitRootPath.value,
   });
@@ -56,8 +55,10 @@ watch(visible, () => {
   if (visible.value) {
     store.dispatch(`${nsGit}/listDir`, { id: activeId.value });
     gitRootPath.value = gitState.activeFileNavItem?.path || FILE_ROOT;
-    const name = gitState.form.name + '/' + gitRootPath.value;
-    const colName = 'results_' + name?.replace(/[\/-]/g, '_');
+    const name = [gitState.form.name, gitRootPath.value]
+      .filter(f => f !== FILE_ROOT)
+      .join('/');
+    const colName = 'results_' + name?.replace(/[\/\-~]/g, '_');
     store.commit(`${nsSpider}/setForm`, {
       ...spiderState.newFormFn(),
       name,
@@ -65,7 +66,6 @@ watch(visible, () => {
       git_id: activeId.value,
     });
   } else {
-    store.commit(`${nsSpider}/resetForm`);
     gitRootPath.value = FILE_ROOT;
   }
 });

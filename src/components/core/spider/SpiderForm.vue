@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import useSpider from '@/components/core/spider/useSpider';
-import useNode from '@/components/core/node/useNode';
-import useProject from '@/components/core/project/useProject';
+import { useSpider, useProject, useNode } from '@/components';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import pinyin, { STYLE_NORMAL } from 'pinyin';
 import { isZeroObjectId } from '@/utils/mongo';
-import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
-import useTask from '@/components/core/task/useTask';
+import { useSpiderDetail } from '@/views';
 import { priorityOptions, translate } from '@/utils';
 
 // i18n
