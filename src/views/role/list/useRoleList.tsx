@@ -119,7 +119,10 @@ const useRoleList = () => {
           label: t('views.roles.table.columns.users'),
           icon: ['fa', 'users'],
           value: (row: Role) => (
-            <ClNavLink path={`/roles/${row._id}/users`} label={row.users} />
+            <ClNavLink
+              path={`/roles/${row._id}/users`}
+              label={row.users || '0'}
+            />
           ),
           width: '120',
         },
@@ -128,8 +131,6 @@ const useRoleList = () => {
           label: t('views.roles.table.columns.description'),
           icon: ['fa', 'font'],
           width: 'auto',
-          hasFilter: true,
-          allowFilterItems: true,
         },
         {
           key: TABLE_COLUMN_NAME_ACTIONS,
