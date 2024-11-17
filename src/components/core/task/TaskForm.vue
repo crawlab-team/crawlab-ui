@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
@@ -15,6 +16,8 @@ defineProps<{
 }>();
 
 const { post } = useRequest();
+
+const router = useRouter();
 
 // i18n
 const t = translate;
@@ -64,11 +67,6 @@ watch(
 const getSpiderName = (id: string) => {
   const spider = allSpiderDict.value.get(id) as Spider;
   return spider?.name;
-};
-
-const getNodeName = (id: string) => {
-  const node = allNodeDict.value.get(id) as CNode;
-  return node?.name;
 };
 
 const getModeName = (id: string) => {
@@ -123,7 +121,7 @@ defineOptions({ name: 'ClTaskForm' });
       </el-select>
       <cl-nav-link
         v-else
-        :label="form.spider?.name || getSpiderName(form.spider_id)"
+        :label="form.spider?.name || getSpiderName(form.spider_id!)"
         :path="`/spiders/${form.spider_id}`"
       />
     </cl-form-item>
@@ -131,21 +129,17 @@ defineOptions({ name: 'ClTaskForm' });
 
     <!-- Row -->
     <cl-form-item
-      v-if="readonly"
+      v-if="readonly && !isZeroObjectId(form.node_id)"
       :offset="2"
       :span="2"
       :label="t('components.task.form.node')"
       prop="node_id"
     >
-      <el-input
-        v-if="noNodeId"
-        disabled
-        :placeholder="t('common.status.unassigned')"
-      />
-      <cl-nav-link
-        v-else
-        :label="form.node?.name || getNodeName(form.node_id)"
-        :path="`/nodes/${form.node_id}`"
+      <cl-node-tag
+        :node="allNodeDict.get(form.node_id!)"
+        size="large"
+        clickable
+        @click="router.push(`/nodes/${form.node_id}`)"
       />
     </cl-form-item>
     <!-- ./Row -->
@@ -172,10 +166,11 @@ defineOptions({ name: 'ClTaskForm' });
       :label="t('components.task.form.status')"
       prop="status"
     >
-      <cl-task-status :status="form.status" :error="form.error" />
+      <cl-task-status :status="form.status" :error="form.error" size="large" />
       <cl-tag
         v-if="form.status === 'error'"
         :icon="['fa', 'exclamation']"
+        size="large"
         :label="form.error"
         class-name="error-message"
         :tooltip="t('components.task.form.tooltip.taskErrorMessage')"
@@ -184,6 +179,7 @@ defineOptions({ name: 'ClTaskForm' });
       <cl-tag
         v-else-if="cancellable"
         :icon="['fa', 'pause']"
+        size="large"
         class-name="cancel-btn"
         clickable
         :label="t('common.actions.cancel')"
@@ -282,11 +278,6 @@ defineOptions({ name: 'ClTaskForm' });
 .task-form:deep(.nav-btn) {
   position: absolute;
   padding-left: 10px;
-}
-
-.task-form:deep(.error-message),
-.task-form:deep(.cancel-btn) {
-  margin-left: 10px;
 }
 
 .task-form:deep(.cancel-btn:hover) {

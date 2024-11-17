@@ -8,6 +8,7 @@ const t = translate;
 const props = defineProps<{
   node: CNode;
   icon?: Icon;
+  size?: BasicSize;
   type?: BasicType;
   tooltip?: string;
   clickable?: boolean;
@@ -15,6 +16,7 @@ const props = defineProps<{
   effect?: BasicEffect;
   hit?: boolean;
   iconOnly?: boolean;
+  noLabel?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -60,6 +62,7 @@ defineOptions({ name: 'ClNodeTag' });
   <cl-icon
     v-if="iconOnly"
     :icon="icon"
+    :size="size"
     :color="
       type === 'primary' ? 'var(--cl-primary-color)' : 'var(--cl-warning-color)'
     "
@@ -69,9 +72,10 @@ defineOptions({ name: 'ClNodeTag' });
     v-else
     class-name="node-tag"
     :icon="icon"
+    :size="size"
     :spinning="loading"
     :type="type"
-    :label="node.name"
+    :label="!noLabel && node.name"
     :tooltip="tooltip"
     :clickable="clickable"
     :effect="effect"
@@ -88,7 +92,7 @@ defineOptions({ name: 'ClNodeTag' });
     <template v-else #tooltip>
       <div class="tooltip-wrapper">
         <div class="tooltip-title">
-          {{ t('layouts.routes.nodes.list.title') }}
+          {{ t('layouts.routes.nodes.detail.title') }}
         </div>
         <div class="tooltip-item">
           <label>{{ t('components.node.form.name') }}:</label>

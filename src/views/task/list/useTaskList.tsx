@@ -20,22 +20,21 @@ import {
   TASK_STATUS_PENDING,
   TASK_STATUS_RUNNING,
 } from '@/constants';
-import useList from '@/layouts/content/list/useList';
+import { useList } from '@/layouts';
 import { onListFilterChangeByKey, setupListComponent } from '@/utils/list';
 import { translate } from '@/utils/i18n';
 import { getStatusOptions, priorityOptions } from '@/utils/task';
 import useRequest from '@/services/request';
-import NavLink from '@/components/ui/nav/NavLink.vue';
-import Time from '@/components/ui/time/Time.vue';
-import Duration from '@/components/ui/time/Duration.vue';
-import TaskStatusComp from '@/components/core/task/TaskStatus.vue';
-import TaskPriority from '@/components/core/task/TaskPriority.vue';
-import TaskResults from '@/components/core/task/TaskResults.vue';
-import TaskCommand from '@/components/core/task/TaskCommand.vue';
-import useSchedule from '@/components/core/schedule/useSchedule';
-import useNode from '@/components/core/node/useNode';
-import useSpider from '@/components/core/spider/useSpider';
-import { ClNodeTag } from '@/components';
+import {
+  ClNodeTag,
+  ClNavLink,
+  ClTime,
+  ClDuration,
+  ClTaskStatus,
+  ClTaskPriority,
+  ClTaskResults,
+  ClTaskCommand,
+} from '@/components';
 import { getIconByAction } from '@/utils/icon';
 
 const { post } = useRequest();
@@ -214,13 +213,6 @@ const useTaskList = () => {
     },
   ]);
 
-  const { allListSelectOptions: allNodeListSelectOptions } = useNode(store);
-
-  const { allListSelectOptions: allSpiderListSelectOptions } = useSpider(store);
-
-  const { allListSelectOptions: allScheduleListSelectOptions } =
-    useSchedule(store);
-
   // table columns
   const tableColumns = computed<TableColumns<Task>>(
     () =>
@@ -244,10 +236,6 @@ const useTaskList = () => {
               />
             );
           },
-          hasFilter: true,
-          allowFilterSearch: true,
-          allowFilterItems: true,
-          filterItems: allNodeListSelectOptions.value,
         },
         {
           key: 'spider_id',
@@ -258,13 +246,12 @@ const useTaskList = () => {
             if (!row.spider_id) return;
             const spider = row.spider || allSpiderDict.value.get(row.spider_id);
             return (
-              <NavLink label={spider?.name} path={`/spiders/${spider?._id}`} />
+              <ClNavLink
+                label={spider?.name}
+                path={`/spiders/${spider?._id}`}
+              />
             );
           },
-          hasFilter: true,
-          allowFilterSearch: true,
-          allowFilterItems: true,
-          filterItems: allSpiderListSelectOptions.value,
         },
         {
           key: 'schedule_id',
@@ -275,16 +262,12 @@ const useTaskList = () => {
             if (!row.schedule_id) return;
             const schedule = allScheduleDict.value.get(row.schedule_id);
             return (
-              <NavLink
+              <ClNavLink
                 label={schedule?.name}
                 path={`/schedules/${schedule?._id}`}
               />
             );
           },
-          hasFilter: true,
-          allowFilterSearch: true,
-          allowFilterItems: true,
-          filterItems: allScheduleListSelectOptions.value,
         },
         {
           key: 'priority',
@@ -292,12 +275,8 @@ const useTaskList = () => {
           icon: ['fa', 'sort-numeric-down'],
           width: '120',
           value: (row: Task) => {
-            return <TaskPriority priority={row.priority} />;
+            return <ClTaskPriority priority={row.priority} />;
           },
-          hasSort: true,
-          hasFilter: true,
-          allowFilterItems: true,
-          filterItems: priorityOptions,
         },
         {
           key: 'config',
@@ -306,7 +285,7 @@ const useTaskList = () => {
           width: '160',
           value: (row: Task) => {
             return (
-              <TaskCommand
+              <ClTaskCommand
                 task={row}
                 spider={allSpiderDict.value?.get(row.spider_id as string)}
                 size="small"
@@ -320,11 +299,17 @@ const useTaskList = () => {
           icon: ['fa', 'check-square'],
           width: '120',
           value: (row: Task) => {
-            return <TaskStatusComp status={row.status} error={row.error} />;
+            return (
+              <ClTaskStatus
+                status={row.status}
+                error={row.error}
+                clickable
+                onClick={async () => {
+                  await router.push(`/tasks/${row._id}/logs`);
+                }}
+              />
+            );
           },
-          hasFilter: true,
-          allowFilterItems: true,
-          filterItems: getStatusOptions(),
         },
         {
           key: 'stat_create_ts',
@@ -335,7 +320,7 @@ const useTaskList = () => {
             if (!row.stat?.create_ts || row.stat?.create_ts.startsWith('000')) {
               return;
             }
-            return <Time time={row.stat?.create_ts} />;
+            return <ClTime time={row.stat?.create_ts} />;
           },
           defaultHidden: true,
         },
@@ -348,7 +333,7 @@ const useTaskList = () => {
             if (!row.stat?.start_ts || row.stat?.start_ts.startsWith('000')) {
               return;
             }
-            return <Time time={row.stat?.start_ts} />;
+            return <ClTime time={row.stat?.start_ts} />;
           },
         },
         {
@@ -360,7 +345,7 @@ const useTaskList = () => {
             if (!row.stat?.end_ts || row.stat?.end_ts.startsWith('000')) {
               return;
             }
-            return <Time time={row.stat?.end_ts} />;
+            return <ClTime time={row.stat?.end_ts} />;
           },
         },
         {
@@ -370,7 +355,7 @@ const useTaskList = () => {
           width: '160',
           value: (row: Task) => {
             if (!row.stat?.wait_duration) return;
-            return <Duration duration={row.stat?.wait_duration} />;
+            return <ClDuration duration={row.stat?.wait_duration} />;
           },
           defaultHidden: true,
         },
@@ -381,7 +366,7 @@ const useTaskList = () => {
           width: '160',
           value: (row: Task) => {
             if (!row.stat?.runtime_duration) return;
-            return <Duration duration={row.stat?.runtime_duration} />;
+            return <ClDuration duration={row.stat?.runtime_duration} />;
           },
           defaultHidden: true,
         },
@@ -392,7 +377,7 @@ const useTaskList = () => {
           width: '160',
           value: (row: Task) => {
             if (!row.stat?.total_duration) return;
-            return <Duration duration={row.stat?.total_duration} />;
+            return <ClDuration duration={row.stat?.total_duration} />;
           },
         },
         {
@@ -403,10 +388,10 @@ const useTaskList = () => {
           value: (row: Task) => {
             if (row.stat?.result_count === undefined) return;
             return (
-              <TaskResults
+              <ClTaskResults
                 results={row.stat.result_count}
                 status={row.status}
-                clickable={true}
+                clickable
                 onClick={async () => {
                   await router.push(`/tasks/${row._id}/data`);
                 }}

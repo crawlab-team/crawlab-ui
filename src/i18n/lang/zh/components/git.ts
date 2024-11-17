@@ -22,6 +22,10 @@ const git: LComponentsGit = {
         pull: '成功拉取代码',
         commit: '成功提交 {fileCount} 个文件',
         push: '成功推送代码',
+        createSpider: {
+          title: '成功创建爬虫.',
+          action: '查看爬虫',
+        },
       },
     },
     messageBox: {

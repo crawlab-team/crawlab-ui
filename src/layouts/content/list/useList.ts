@@ -79,7 +79,9 @@ const useList = <T extends BaseModel>(
       store.commit(`${ns}/setTablePagination`, pagination),
     getList: () => store.dispatch(`${ns}/getList`),
     getAll: () => store.dispatch(`${ns}/getAllList`),
-    deleteList: (ids: string[]) => store.dispatch(`${ns}/deleteList`, ids),
+    deleteList: async (ids: string[]) => {
+      await store.dispatch(`${ns}/deleteList`, ids);
+    },
     deleteByIdConfirm: async (row: BaseModel) => {
       await ElMessageBox.confirm(
         t('common.messageBox.confirm.delete'),

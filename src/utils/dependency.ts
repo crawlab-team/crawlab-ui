@@ -18,6 +18,8 @@ export const getEmptyDependency = (): Dependency => {
 export const getNormalizedDependencies = (
   dependencies?: Dependency[]
 ): Dependency[] => {
-  if (!dependencies?.length) return [getEmptyDependency()];
+  if (!dependencies?.filter(dep => !!dep.version)?.length) {
+    return [getEmptyDependency()];
+  }
   return dependencies;
 };

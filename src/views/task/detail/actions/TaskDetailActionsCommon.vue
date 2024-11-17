@@ -7,8 +7,8 @@ import dayjs from 'dayjs';
 import { TASK_STATUS_PENDING, TASK_STATUS_RUNNING } from '@/constants';
 import useRequest from '@/services/request';
 import { translate, isCancellable, isPro } from '@/utils';
-import useTask from '@/components/core/task/useTask';
 import { useTaskDetail } from '@/views';
+import { useTask } from '@/components';
 
 const { post } = useRequest();
 
@@ -22,7 +22,7 @@ const router = useRouter();
 const ns = 'task';
 const store = useStore();
 
-// use task
+// form
 const { form } = useTask(store);
 
 // use task detail
@@ -79,7 +79,8 @@ const getTotalDuration = () => {
       return form.value?.stat?.total_duration;
   }
 };
-const totalDuration = computed<number>(() => getTotalDuration());
+const totalDuration = computed<number | undefined>(() => getTotalDuration());
+
 defineOptions({ name: 'ClTaskDetailActionsCommon' });
 </script>
 
@@ -88,7 +89,13 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
   <cl-nav-action-group class="task-detail-actions-common">
     <cl-nav-action-fa-icon :icon="['fa', 'tools']" />
     <cl-nav-action-item>
-      <cl-task-status :status="form.status" size="large" />
+      <cl-task-status
+        :status="form.status"
+        :error="form.error"
+        size="large"
+        clickable
+        @click="router.push(`/tasks/${activeId}/logs`)"
+      />
     </cl-nav-action-item>
     <cl-nav-action-item>
       <cl-fa-icon-button
@@ -122,6 +129,8 @@ defineOptions({ name: 'ClTaskDetailActionsCommon' });
         :results="form?.stat?.result_count"
         :status="form?.status"
         size="large"
+        clickable
+        @click="router.push(`/tasks/${activeId}/data`)"
       />
     </cl-nav-action-item>
     <cl-nav-action-item>

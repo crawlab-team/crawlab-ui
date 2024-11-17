@@ -1,5 +1,5 @@
 import { inject, Ref, ref } from 'vue';
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { voidAsyncFunc } from '@/utils/func';
 import { translate } from '@/utils/i18n';
 
@@ -52,6 +52,7 @@ const useAction = (
     if (!res) return;
     const ids = selection.value.map(d => d._id as string);
     await deleteList(ids);
+    ElMessage.success(t('common.message.success.delete'));
     table.value?.store?.clearSelection();
     await getList();
     emit('delete', selection.value);

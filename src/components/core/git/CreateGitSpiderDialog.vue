@@ -1,11 +1,12 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import { FILE_ROOT } from '@/constants';
 import { translate } from '@/utils';
 import { getRootDirectoryOptions } from '@/utils/file';
-import useGitDetail from '@/views/git/detail/useGitDetail';
+import { useGitDetail } from '@/views';
+import { ClNavLink } from '@/components';
 
 const t = translate;
 
@@ -33,6 +34,22 @@ const onConfirm = async () => {
       id: activeId.value,
       spider: spiderState.form,
     });
+    const spiderId = res.data._id;
+    ElMessage.success(
+      <>
+        <span class="el-message__content">
+          {t('components.git.common.message.success.createSpider.title')}
+        </span>
+        <span class="el-message__content">
+          <ClNavLink
+            path={`/spiders/${spiderId}`}
+            label={t(
+              'components.git.common.message.success.createSpider.action'
+            )}
+          />
+        </span>
+      </>
+    );
   } catch (e) {
     ElMessage.error((e as Error).message);
   } finally {

@@ -22,6 +22,10 @@ const git: LComponentsGit = {
         pull: 'Pulled successfully',
         commit: '1 file committed | {fileCount} files committed',
         push: 'Pushed successfully',
+        createSpider: {
+          title: 'Spider created successfully.',
+          action: 'View spider',
+        },
       },
     },
     messageBox: {

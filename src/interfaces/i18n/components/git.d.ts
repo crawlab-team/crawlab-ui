@@ -22,6 +22,10 @@ interface LComponentsGit {
         pull: string;
         commit: string;
         push: string;
+        createSpider: {
+          title: string;
+          action: string;
+        };
       };
     };
     messageBox: {
