@@ -113,15 +113,16 @@ const useTaskList = () => {
       name: 'filter',
       children: [
         {
-          action: ACTION_FILTER_SEARCH,
-          id: 'filter-search',
-          className: 'search',
-          placeholder: t('views.tasks.navActions.filter.search.placeholder'),
+          action: ACTION_FILTER_SELECT,
+          id: 'filter-select-status',
+          className: 'filter-select-status',
+          label: t('views.tasks.navActionsExtra.filter.select.status.label'),
+          options: getStatusOptions(),
           onChange: onListFilterChangeByKey(
             store,
             ns,
-            'name',
-            FILTER_OP_CONTAINS
+            'status',
+            FILTER_OP_EQUAL
           ),
         },
         {
@@ -166,46 +167,6 @@ const useTaskList = () => {
             store,
             ns,
             'schedule_id',
-            FILTER_OP_EQUAL
-          ),
-        },
-        {
-          action: ACTION_FILTER_SELECT,
-          id: 'filter-select-priority',
-          className: 'filter-select-priority',
-          label: t('views.tasks.navActionsExtra.filter.select.priority.label'),
-          options: priorityOptions,
-          onChange: onListFilterChangeByKey(
-            store,
-            ns,
-            'priority',
-            FILTER_OP_EQUAL
-          ),
-        },
-        {
-          action: ACTION_FILTER_SEARCH,
-          id: 'filter-search-cmd',
-          className: 'search-cmd',
-          placeholder: t(
-            'views.tasks.navActionsExtra.filter.search.cmd.placeholder'
-          ),
-          onChange: onListFilterChangeByKey(
-            store,
-            ns,
-            'cmd',
-            FILTER_OP_CONTAINS
-          ),
-        },
-        {
-          action: ACTION_FILTER_SELECT,
-          id: 'filter-select-status',
-          className: 'filter-select-status',
-          label: t('views.tasks.navActionsExtra.filter.select.status.label'),
-          options: getStatusOptions(),
-          onChange: onListFilterChangeByKey(
-            store,
-            ns,
-            'status',
             FILTER_OP_EQUAL
           ),
         },

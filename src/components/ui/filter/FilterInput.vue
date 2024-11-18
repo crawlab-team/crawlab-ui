@@ -4,6 +4,7 @@ import { debounce } from '@/utils';
 
 defineProps<{
   id?: string;
+  prefixIcon?: Icon;
   label?: string;
   placeholder?: string;
 }>();
@@ -45,6 +46,10 @@ defineOptions({ name: 'ClFilterInput' });
       @clear="onClear"
       @input="onChange"
       @keyup.enter="onEnter"
-    />
+    >
+      <template v-if="prefixIcon" #prefix>
+        <cl-icon :icon="prefixIcon" />
+      </template>
+    </el-input>
   </div>
 </template>

@@ -143,8 +143,10 @@ defineOptions({ name: 'ClListLayout' });
           >
             <template v-if="item.action === ACTION_FILTER_SEARCH">
               <cl-filter-input
-                :id="(item as ListActionFilter).id"
+                :id="item.id"
+                :label="item.label"
                 :placeholder="(item as ListActionFilter).placeholder"
+                :prefix-icon="(item as ListActionFilter).prefixIcon"
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)
                 "
@@ -156,8 +158,8 @@ defineOptions({ name: 'ClListLayout' });
             </template>
             <template v-else-if="item.action === ACTION_FILTER_SELECT">
               <cl-filter-select
-                :id="(item as ListActionFilter).id"
-                :label="(item as ListActionFilter).label"
+                :id="item.id"
+                :label="item.label"
                 :placeholder="(item as ListActionFilter).placeholder"
                 :options="(item as ListActionFilter).options"
                 :options-remote="(item as ListActionFilter).optionsRemote"
@@ -170,13 +172,13 @@ defineOptions({ name: 'ClListLayout' });
             </template>
             <template v-else>
               <cl-nav-action-button
-                :id="(item as ListActionButton).id"
-                :class-name="(item as ListActionButton).className"
+                :id="item.id"
+                :class-name="item.className"
+                :label="item.label"
+                :size="item.size"
                 :button-type="(item as ListActionButton).buttonType"
                 :disabled="(item as ListActionButton).disabled"
                 :icon="(item as ListActionButton).icon"
-                :label="(item as ListActionButton).label"
-                :size="(item as ListActionButton).size"
                 :tooltip="(item as ListActionButton).tooltip"
                 :type="(item as ListActionButton).type"
                 @click="(item as ListActionButton).onClick"
@@ -285,6 +287,11 @@ defineOptions({ name: 'ClListLayout' });
       .nav-action-item {
         #filter-search {
           width: 200px;
+        }
+
+        &:deep(.label) {
+          margin-right: 5px;
+          font-size: 14px;
         }
       }
     }
