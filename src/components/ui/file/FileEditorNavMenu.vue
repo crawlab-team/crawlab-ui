@@ -37,6 +37,7 @@ const emit = defineEmits<{
   (e: 'ctx-menu-clone', item: FileNavItem, name: string): void;
   (e: 'ctx-menu-delete', item: FileNavItem): void;
   (e: 'ctx-menu-create-spider', item: FileNavItem): void;
+  (e: 'ctx-menu-delete-spider', item: FileNavItem): void;
   (e: 'node-drop', draggingItem: FileNavItem, dropItem: FileNavItem): void;
   (e: 'drop-files', files: InputFile[]): void;
   (e: 'search', value: string): void;
@@ -224,6 +225,10 @@ const onNodeContextMenuDelete = async (item: FileNavItem) => {
 
 const onNodeContextMenuCreateSpider = async (item: FileNavItem) => {
   emit('ctx-menu-create-spider', item);
+};
+
+const onNodeContextMenuDeleteSpider = async (item: FileNavItem) => {
+  emit('ctx-menu-delete-spider', item);
 };
 
 const onNodeDragEnter = (_: Node, dropNode: Node) => {
@@ -451,6 +456,7 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
             @clone="onNodeContextMenuClone(data)"
             @delete="onNodeContextMenuDelete(data)"
             @create-spider="onNodeContextMenuCreateSpider(data)"
+            @delete-spider="onNodeContextMenuDeleteSpider(data)"
           >
             <div
               v-bind="getBindDir(data)"
@@ -481,12 +487,7 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
                   {{ data.name }}
                 </span>
               </div>
-            </div>
-            <template v-if="highlightTagFn?.(data)">
-              <el-tooltip
-                :content="highlightTagFn?.(data)?.tooltip"
-                :disabled="!highlightTagFn?.(data)?.tooltip"
-              >
+              <template v-if="highlightTagFn?.(data)">
                 <div
                   class="nav-item-suffix"
                   @click="
@@ -496,13 +497,20 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
                     }
                   "
                 >
-                  <cl-icon
-                    :icon="highlightTagFn?.(data)?.icon"
-                    :color="highlightTagFn?.(data)?.color"
-                  />
+                  <el-tooltip
+                    :content="highlightTagFn?.(data)?.tooltip"
+                    :disabled="!highlightTagFn?.(data)?.tooltip"
+                  >
+                    <span class="icon-wrapper">
+                      <cl-icon
+                        :icon="highlightTagFn?.(data)?.icon"
+                        :color="highlightTagFn?.(data)?.color"
+                      />
+                    </span>
+                  </el-tooltip>
                 </div>
-              </el-tooltip>
-            </template>
+              </template>
+            </div>
           </cl-file-editor-nav-menu-context-menu>
         </template>
       </el-tree-v2>
@@ -598,16 +606,21 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
               margin-right: 5px;
             }
           }
-        }
 
-        .nav-item-suffix {
-          position: absolute;
-          height: 100%;
-          top: 0;
-          right: 10px;
-          display: flex;
-          align-items: center;
-          z-index: 100;
+          .nav-item-suffix {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            pointer-events: auto;
+
+            & * {
+              pointer-events: auto;
+            }
+          }
         }
       }
     }
@@ -643,5 +656,10 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
 
 .file-editor-nav-menu:deep(.el-tree .el-tree-node *) {
   transition: none;
+}
+
+.file-editor-nav-menu:deep(.el-tree .el-tree-node .icon .atom-material-icon) {
+  display: flex;
+  align-items: center;
 }
 </style>

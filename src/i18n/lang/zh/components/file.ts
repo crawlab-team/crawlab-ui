@@ -14,6 +14,7 @@ const file: LComponentsFile = {
       duplicate: '复制',
       delete: '删除',
       createSpider: '新建爬虫',
+      deleteSpider: '删除爬虫',
     },
     sidebar: {
       search: {

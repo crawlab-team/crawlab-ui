@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { computed, watch, onBeforeUnmount, onBeforeMount, provide } from 'vue';
+import {
+  computed,
+  watch,
+  onBeforeUnmount,
+  onBeforeMount,
+  provide,
+  ComputedRef,
+} from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import {
@@ -12,6 +19,10 @@ import { debounce, translate } from '@/utils';
 import useGitDetail from '@/views/git/detail/useGitDetail';
 import useGit from '@/components/core/git/useGit';
 import type { TagProps } from '@/components/ui/tag/types';
+import type {
+  ContextMenuItem,
+  FileEditorContextMenuItemVisibleFn,
+} from '@/components/ui/context-menu/types';
 
 const t = translate;
 
@@ -63,6 +74,8 @@ const spidersDict = computed<{ [key: string]: Spider }>(() => {
   return dict;
 });
 
+provide<ComputedRef<{ [key: string]: Spider }>>('spiders-dict', spidersDict);
+
 provide<{ (item: FileNavItem): TagProps | undefined }>(
   'highlight-tag-fn',
   (item: FileNavItem) => {
@@ -77,6 +90,7 @@ provide<{ (item: FileNavItem): TagProps | undefined }>(
     } as TagProps;
   }
 );
+
 provide<{ (item: FileNavItem): void }>(
   'highlight-click-fn',
   (item: FileNavItem) => {
@@ -86,6 +100,27 @@ provide<{ (item: FileNavItem): void }>(
     router.push(`/spiders/${spider._id}`);
   }
 );
+
+provide<FileEditorContextMenuItemVisibleFn>(
+  'context-menu-item-visible-fn',
+  (
+    contextMenuItem: ContextMenuItem,
+    activeFileNavItem?: FileNavItem
+  ): boolean => {
+    if (!activeFileNavItem) return false;
+    const spider = spidersDict.value[activeFileNavItem.path!];
+    switch (contextMenuItem.className) {
+      case 'create-spider':
+        if (spider) return false;
+        return !!activeFileNavItem.is_dir;
+      case 'delete-spider':
+        return !!spider;
+      default:
+        return true;
+    }
+  }
+);
+
 defineOptions({ name: 'ClGitDetail' });
 </script>
 

@@ -15,6 +15,7 @@ const nsGit: ListStoreNamespace = 'git';
 const nsSpider: ListStoreNamespace = 'spider';
 const store = useStore<RootStoreState>();
 const { git: gitState, spider: spiderState } = store.state as RootStoreState;
+
 const { activeId } = useGitDetail();
 
 const formRef = ref();
@@ -50,6 +51,7 @@ const onConfirm = async () => {
         </span>
       </>
     );
+    await store.dispatch(`${nsSpider}/getAllList`, { id: activeId.value });
   } catch (e) {
     ElMessage.error((e as Error).message);
   } finally {

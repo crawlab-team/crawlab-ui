@@ -20,6 +20,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'file-change', value: string): void;
   (e: 'create-spider', item: FileNavItem): void;
+  (e: 'delete-spider', item: FileNavItem): void;
 }>();
 
 // i18n
@@ -171,6 +172,10 @@ const onContextMenuCreateSpider = async (item: FileNavItem) => {
   emit('create-spider', item);
 };
 
+const onContextMenuDeleteSpider = async (item: FileNavItem) => {
+  emit('delete-spider', item);
+};
+
 const onContentChange = (value: string) => {
   const { ns } = props;
   store.commit(`${ns}/setFileContent`, value);
@@ -241,6 +246,7 @@ onBeforeUnmount(() => {
   store.commit(`${ns}/resetDefaultFilePaths`);
   store.commit(`${ns}/resetFileNavItems`);
 });
+
 defineOptions({ name: 'ClFileTab' });
 </script>
 
@@ -264,6 +270,7 @@ defineOptions({ name: 'ClFileTab' });
     @ctx-menu-clone="onContextMenuClone"
     @ctx-menu-delete="onContextMenuDelete"
     @ctx-menu-create-spider="onContextMenuCreateSpider"
+    @ctx-menu-delete-spider="onContextMenuDeleteSpider"
     @drop-files="onDropFiles"
     @create-with-ai="onCreateWithAi"
     @tab-click="onTabClick"

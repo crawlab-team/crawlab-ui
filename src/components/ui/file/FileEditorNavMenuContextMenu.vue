@@ -20,6 +20,7 @@ const emit = defineEmits<{
   (e: 'clone'): void;
   (e: 'delete'): void;
   (e: 'create-spider'): void;
+  (e: 'delete-spider'): void;
 }>();
 
 const t = translate;
@@ -75,6 +76,12 @@ const items = computed<ContextMenuItem[]>(() => {
         icon: ['fa', 'trash'],
         className: 'delete',
         action: () => emit('delete'),
+      },
+      {
+        title: t('components.file.editor.navMenu.deleteSpider'),
+        icon: ['fa', 'trash'],
+        className: 'delete-spider',
+        action: () => emit('delete-spider'),
       },
     ] as ContextMenuItem[]
   ).filter(item =>

@@ -11,6 +11,7 @@ export declare global {
   interface RootStoreState {
     common: CommonStoreState;
     layout: LayoutStoreState;
+    file: FileStoreState;
     node: NodeStoreState;
     project: ProjectStoreState;
     spider: SpiderStoreState;

@@ -14,6 +14,7 @@ interface LComponentsFile {
       duplicate: string;
       delete: string;
       createSpider: string;
+      deleteSpider: string;
     };
     sidebar: {
       search: {

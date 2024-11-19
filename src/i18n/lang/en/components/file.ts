@@ -14,6 +14,7 @@ const file: LComponentsFile = {
       duplicate: 'Duplicate',
       delete: 'Delete',
       createSpider: 'Create Spider',
+      deleteSpider: 'Delete Spider',
     },
     sidebar: {
       search: {
