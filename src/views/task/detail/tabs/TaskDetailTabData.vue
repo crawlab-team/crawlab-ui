@@ -24,6 +24,7 @@ const filter = computed<FilterConditionData[]>(() => {
 });
 
 const displayAllFields = computed<boolean>(() => state.dataDisplayAllFields);
+
 defineOptions({ name: 'ClTaskDetailTabData' });
 </script>
 

@@ -41,7 +41,7 @@ export const initRequest = (router?: Router) => {
       } else {
         // other errors
         console.error(err);
-        const { message, error } = err.response?.data;
+        const { message, error } = err.response?.data || {};
         if (message === 'error' && error) {
           throw new Error(error);
         }

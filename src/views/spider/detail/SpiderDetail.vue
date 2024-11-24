@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { onBeforeMount, watch } from 'vue';
+import { onBeforeMount, provide, watch } from 'vue';
 import { useStore } from 'vuex';
 import useSpiderDetail from '@/views/spider/detail/useSpiderDetail';
 import { isPro } from '@/utils';
 import { TAB_NAME_DEPENDENCIES } from '@/constants';
+import type {
+  ContextMenuItem,
+  FileEditorContextMenuItemVisibleFn,
+} from '@/components/ui/context-menu/types';
 
 const ns = 'spider';
 const store = useStore();
@@ -20,6 +24,23 @@ const updateDisabledTabKeys = () => {
 };
 onBeforeMount(updateDisabledTabKeys);
 watch(() => commonState.systemInfo, updateDisabledTabKeys);
+
+provide<FileEditorContextMenuItemVisibleFn>(
+  'context-menu-item-visible-fn',
+  (
+    contextMenuItem: ContextMenuItem,
+    activeFileNavItem?: FileNavItem
+  ): boolean => {
+    if (!activeFileNavItem) return false;
+    switch (contextMenuItem.className) {
+      case 'create-spider':
+      case 'delete-spider':
+        return false;
+      default:
+        return true;
+    }
+  }
+);
 
 defineOptions({ name: 'ClSpiderDetail' });
 </script>

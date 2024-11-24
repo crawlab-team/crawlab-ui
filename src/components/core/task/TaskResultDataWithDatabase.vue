@@ -43,6 +43,7 @@ const getActiveTable = debounce(async () => {
   activeTable.value = res.data;
 });
 
+watch(() => spider.value?.col_name, getActiveTable);
 onBeforeMount(getActiveTable);
 
 const activeTabName = ref<string>(TAB_NAME_DATA);

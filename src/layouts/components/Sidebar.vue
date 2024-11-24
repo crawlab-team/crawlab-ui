@@ -89,7 +89,6 @@ onBeforeMount(async () => {
   if (isPro()) {
     await store.dispatch('system/getCustomize');
   }
-  console.debug(menuItems.value);
 });
 
 defineOptions({ name: 'ClSidebar' });
