@@ -89,6 +89,7 @@ onBeforeMount(async () => {
   if (isPro()) {
     await store.dispatch('system/getCustomize');
   }
+  console.debug(menuItems.value);
 });
 
 defineOptions({ name: 'ClSidebar' });
@@ -146,7 +147,7 @@ defineOptions({ name: 'ClSidebar' });
         :default-openeds="openedIndexes"
         @select="onMenuItemClick"
       >
-        <template v-for="(item, index) in menuItems" :key="index">
+        <template v-for="item in menuItems">
           <cl-sidebar-item :item="item" />
         </template>
       </el-menu>

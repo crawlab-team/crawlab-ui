@@ -132,6 +132,11 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
     },
     {
       path: '/users',
+      title: 'router.menuItems.users',
+      icon: getIconByRouteConcept('user'),
+    },
+    {
+      path: '/users',
       title: 'router.menuItems.usersManagement.title',
       icon: getIconByRouteConcept('user'),
       children: [
@@ -182,10 +187,6 @@ export function getDefaultHiddenMenuItems(): MenuItem[] {
     d.hidden = true;
     return d;
   });
-}
-
-export function getDefaultMenuItems(): MenuItem[] {
-  return [...getDefaultSidebarMenuItems(), ...getDefaultHiddenMenuItems()];
 }
 
 export function getRootRoute(

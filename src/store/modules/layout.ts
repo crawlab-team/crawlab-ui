@@ -1,6 +1,6 @@
 import { plainClone } from '@/utils/object';
 import { normalizeTree } from '@/utils/tree';
-import { getDefaultMenuItems } from '@/router';
+import { getDefaultSidebarMenuItems } from '@/router';
 import { isAllowedRoutePath, isPro } from '@/utils';
 import { saveLocalStorage } from '@/utils/storage';
 
@@ -45,7 +45,7 @@ export default {
   state: {
     // sidebar
     sidebarCollapsed: getDefaultSidebarCollapsed(),
-    menuItems: getDefaultMenuItems(),
+    menuItems: getDefaultSidebarMenuItems(),
 
     // tabs view
     activeTabId: getDefaultActiveTabId(),
@@ -91,22 +91,26 @@ export default {
             // skip if no path
             if (!d.path) return false;
 
-            // skip some items if pro
             if (isPro()) {
+              // skip some items if pro
               return !['router.menuItems.users'].includes(d.title);
+            } else {
+              // skip some items if not pro
+              switch (d.path) {
+                case '/notifications':
+                case '/environments':
+                case '/system':
+                case '/deps':
+                case '/gits':
+                case '/databases':
+                case '/dependencies':
+                  return false;
+                default:
+                  return ['usersManagement'].every(
+                    key => !d.title.includes(key)
+                  );
+              }
             }
-
-            // skip some items if not pro
-            return (
-              ![
-                '/notifications',
-                '/environments',
-                '/system',
-                '/deps',
-                '/gits',
-                '/databases',
-              ].includes(d.path) || !['userManagement'].includes(d.title)
-            );
           })
           // filter items by navVisibleFn
           .filter(d => {

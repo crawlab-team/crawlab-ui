@@ -193,6 +193,7 @@ defineOptions({ name: 'ClTabsView' });
 
     &:deep(.el-tabs__header.is-top) {
       border-bottom: none;
+      margin: 0;
     }
 
     &:deep(.el-tabs__new-tab) {
