@@ -98,6 +98,7 @@ const onTabChange = (tabId: number) => {
 const onTabRemove = (tabId: number) => {
   if (tabs.value.length === 1) {
     updateTabs('/home');
+    router.push('/home');
     return;
   }
   if (state.activeTabId === tabId) {
