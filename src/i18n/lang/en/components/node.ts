@@ -7,7 +7,7 @@ const node: LComponentsNode = {
     mac: 'MAC Address',
     hostname: 'Hostname',
     enabled: 'Enabled',
-    max_runners: 'Max Runners',
+    maxRunners: 'Max Runners',
     description: 'Description',
     status: 'Status',
   },

@@ -53,6 +53,7 @@ const common: LCommon = {
     viewTemplate: 'View Template',
     viewChannels: 'View Channels',
     viewMonitoring: 'View Monitoring',
+    viewDependencies: 'View Dependencies',
     previewData: 'Preview Data',
     insertBefore: 'Insert Before',
     insertAfter: 'Insert After',
@@ -155,6 +156,7 @@ const common: LCommon = {
     default: 'Default',
     other: 'Other',
     all: 'All',
+    unlimited: 'Unlimited',
   },
   placeholder: {
     empty: 'Empty',

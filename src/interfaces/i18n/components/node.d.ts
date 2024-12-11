@@ -7,7 +7,7 @@ interface LComponentsNode {
     mac: string;
     hostname: string;
     enabled: string;
-    max_runners: string;
+    maxRunners: string;
     description: string;
     status: string;
   };

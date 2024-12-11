@@ -2,6 +2,7 @@
 import { useStore } from 'vuex';
 import useNode from '@/components/core/node/useNode';
 import { translate } from '@/utils';
+import { ref, watch } from 'vue';
 
 defineProps<{
   readonly?: boolean;
@@ -14,6 +15,25 @@ const t = translate;
 const store = useStore();
 
 const { form, formRef, isSelectiveForm, isFormItemDisabled } = useNode(store);
+
+const originalMaxRunners = ref(0);
+const isUnlimitedMaxRunners = ref(false);
+watch(isUnlimitedMaxRunners, () => {
+  if (isUnlimitedMaxRunners.value) {
+    form.value.max_runners = 0;
+  } else {
+    form.value.max_runners = originalMaxRunners.value || 16;
+  }
+});
+watch(
+  () => form.value.max_runners,
+  val => {
+    isUnlimitedMaxRunners.value = val! <= 0;
+    originalMaxRunners.value = val!;
+  },
+  { immediate: true }
+);
+
 defineOptions({ name: 'ClNodeForm' });
 </script>
 
@@ -96,15 +116,21 @@ defineOptions({ name: 'ClNodeForm' });
     </cl-form-item>
     <cl-form-item
       :span="2"
-      :label="t('components.node.form.max_runners')"
+      :label="t('components.node.form.maxRunners')"
       prop="max_runners"
     >
       <el-input-number
         v-model="form.max_runners"
-        :disabled="isFormItemDisabled('max_runners')"
+        :disabled="isUnlimitedMaxRunners || isFormItemDisabled('max_runners')"
         :min="0"
-        :placeholder="t('components.node.form.max_runners')"
+        :placeholder="t('components.node.form.maxRunners')"
       />
+      <el-checkbox
+        v-model="isUnlimitedMaxRunners"
+        :disabled="isFormItemDisabled('max_runners')"
+      >
+        {{ t('common.mode.unlimited') }}
+      </el-checkbox>
     </cl-form-item>
     <!--./Row-->
 
@@ -124,5 +150,3 @@ defineOptions({ name: 'ClNodeForm' });
   </cl-form>
   <!--./Row-->
 </template>
-
-

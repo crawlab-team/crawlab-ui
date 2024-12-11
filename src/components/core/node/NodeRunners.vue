@@ -24,25 +24,25 @@ const t = translate;
 
 const label = computed<string>(() => {
   const { current, max } = props;
+  if (max === 0) {
+    return `${current} / ∞`;
+  }
   return `${current} / ${max}`;
 });
 
 const data = computed<TagProps>(() => {
   const { current, max } = props;
-  if (current === max) {
+  if (max > 0 && current >= max) {
     return {
       label: label.value,
       tooltip: t('components.node.nodeRunners.tooltip.unavailable'),
       type: 'danger',
       icon: ['fa', 'ban'],
     };
-  } else if (current > 0) {
+  } else if (0 < current) {
     return {
       label: label.value,
-      tooltip: t('components.node.nodeRunners.tooltip.running', undefined, {
-        running: current,
-        max,
-      }),
+      tooltip: t('components.node.nodeRunners.tooltip.running'),
       type: 'warning',
       icon: ['far', 'check-square'],
     };

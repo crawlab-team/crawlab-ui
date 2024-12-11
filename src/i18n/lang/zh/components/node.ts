@@ -7,7 +7,7 @@ const node: LComponentsNode = {
     mac: 'MAC 地址',
     hostname: '主机名',
     enabled: '是否启用',
-    max_runners: '最大执行器数',
+    maxRunners: '最大执行器数',
     description: '描述',
     status: '状态',
   },

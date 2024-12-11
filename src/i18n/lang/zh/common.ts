@@ -156,6 +156,7 @@ const common: LCommon = {
     default: '默认',
     other: '其他',
     all: '全部',
+    unlimited: '无限制',
   },
   placeholder: {
     empty: '空',
