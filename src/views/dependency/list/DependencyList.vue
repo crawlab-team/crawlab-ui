@@ -21,7 +21,6 @@ const {
   repoTabName,
   repoTabItems,
   onClickTableEmptySearch,
-  rowKey,
 } = useDependencyList();
 
 const onTabSelect = (key: string) => {
@@ -34,7 +33,6 @@ defineOptions({ name: 'ClDependencyList' });
 <template>
   <cl-list-layout
     class="dependency-list"
-    :row-key="rowKey"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-loading="tableLoading"

@@ -237,15 +237,8 @@ const useNotificationChannelList = () => {
     tableColumns,
   } as UseListOptions<NotificationChannel>;
 
-  const rowKeyFunction = (row: NotificationChannel) =>
-    JSON.stringify([
-      row._id,
-      btnLoadingMap.value.get(`${row._id}:${ACTION_SEND_TEST_MESSAGE}`),
-    ]);
-
   return {
     ...useList<NotificationChannel>(ns, store, opts),
-    rowKeyFunction,
   };
 };
 

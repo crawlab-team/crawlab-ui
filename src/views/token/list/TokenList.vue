@@ -20,7 +20,6 @@ defineOptions({ name: 'ClTokenList' });
 <template>
   <cl-list-layout
     class="token-list"
-    :row-key="(row: Token) => [row._id, row._visible].join('_')"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
@@ -36,5 +35,3 @@ defineOptions({ name: 'ClTokenList' });
     </template>
   </cl-list-layout>
 </template>
-
-

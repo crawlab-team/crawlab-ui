@@ -8,7 +8,6 @@ const {
   tableTotal,
   tablePagination,
   actionFunctions,
-  rowKeyFunction,
 } = useNotificationChannelList();
 
 defineOptions({ name: 'ClNotificationChannelList' });
@@ -17,7 +16,6 @@ defineOptions({ name: 'ClNotificationChannelList' });
 <template>
   <cl-list-layout
     class="notification-channel-list"
-    :row-key="rowKeyFunction"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

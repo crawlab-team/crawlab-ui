@@ -15,21 +15,12 @@ const {
   selectableFunction,
 } = useNodeList();
 
-const getCurrentMetrics = (row: CNode) => {
-  if (!row._id) return;
-  return state.nodeMetricsMap[row._id];
-};
-
 defineOptions({ name: 'ClNodeList' });
 </script>
 
 <template>
   <cl-list-layout
     class="node-list"
-    :row-key="
-      (row: CNode) =>
-        [row._id, row.status, JSON.stringify(getCurrentMetrics(row))].join('_')
-    "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

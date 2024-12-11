@@ -193,7 +193,7 @@ const notification: LComponentsNotification = {
 - 节点是否启用: \${node:enabled}
 - 节点是否活跃: \${node:active}
 - 节点活跃时间: \${node:active_at}
-- 节点可用运行器数: \${node:available_runners}
+- 节点可用运行器数: \${node:current_runners}
 - 节点最大运行器数: \${node:max_runners}`,
       },
       node_offline: {
@@ -212,7 +212,7 @@ const notification: LComponentsNotification = {
 - 节点是否启用: \${node:enabled}
 - 节点是否活跃: \${node:active}
 - 节点活跃时间: \${node:active_at}
-- 节点可用运行器数: \${node:available_runners}
+- 节点可用运行器数: \${node:current_runners}
 - 节点最大运行器数: \${node:max_runners}`,
       },
       alert_cpu_critical: {

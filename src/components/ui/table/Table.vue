@@ -198,7 +198,7 @@ defineOptions({ name: 'ClTable' });
       />
       <el-table-column
         v-for="c in selectedColumns"
-        :key="c.key"
+        :prop="c.key"
         :column-key="c.key"
         :align="c.align"
         :fixed="c.fixed ? c.fixed : false"
@@ -222,6 +222,7 @@ defineOptions({ name: 'ClTable' });
         </template>
         <template #default="scope">
           <cl-table-cell
+            :key="scope.row[c.key]"
             :column="c"
             :row="scope.row"
             :row-index="scope.$index"

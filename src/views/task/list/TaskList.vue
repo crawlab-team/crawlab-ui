@@ -21,10 +21,6 @@ defineOptions({ name: 'ClTaskList' });
 <template>
   <cl-list-layout
     class="task-list"
-    :row-key="
-      ({ _id, status, stat }: Task) =>
-        [_id, status, JSON.stringify(stat)].join('_')
-    "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

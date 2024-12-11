@@ -15,7 +15,6 @@ const {
   tableListFilter,
   tableListSort,
   actionFunctions,
-  tableActionsPrefix,
 } = useSpiderList();
 
 defineOptions({ name: 'ClSpiderList' });
@@ -24,10 +23,6 @@ defineOptions({ name: 'ClSpiderList' });
 <template>
   <cl-list-layout
     class="spider-list"
-    :row-key="
-      ({ _id, last_task, stat }: Spider) =>
-        [_id, last_task?.status, JSON.stringify(stat)].join('_')
-    "
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
@@ -36,7 +31,6 @@ defineOptions({ name: 'ClSpiderList' });
     :table-total="tableTotal"
     :table-filter="tableListFilter"
     :table-sort="tableListSort"
-    :table-actions-prefix="tableActionsPrefix"
     :no-actions="noActions"
     :embedded="embedded"
   >

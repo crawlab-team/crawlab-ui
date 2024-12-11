@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { translate } from '@/utils';
+import { TagProps } from '@/components/ui/tag/types';
 
 const props = withDefaults(
   defineProps<{
-    available?: number;
+    current?: number;
     max?: number;
     size?: BasicSize;
   }>(),
   {
+    current: 0,
+    max: 0,
     size: 'default',
   }
 );
@@ -19,38 +22,25 @@ const emit = defineEmits<{
 
 const t = translate;
 
-const running = computed<number>(() => {
-  const { available, max } = props;
-  if (
-    available === undefined ||
-    max === undefined ||
-    isNaN(available) ||
-    isNaN(max)
-  ) {
-    return 0;
-  }
-  return (max - available) as number;
-});
-
 const label = computed<string>(() => {
-  const { max } = props;
-  return `${running.value} / ${max}`;
+  const { current, max } = props;
+  return `${current} / ${max}`;
 });
 
 const data = computed<TagProps>(() => {
-  const max = props.max as number;
-  if (running.value === max) {
+  const { current, max } = props;
+  if (current === max) {
     return {
       label: label.value,
       tooltip: t('components.node.nodeRunners.tooltip.unavailable'),
       type: 'danger',
       icon: ['fa', 'ban'],
     };
-  } else if (running.value > 0) {
+  } else if (current > 0) {
     return {
       label: label.value,
-      tooltip: t('components.node.nodeRunners.tooltip.running', {
-        running: running.value,
+      tooltip: t('components.node.nodeRunners.tooltip.running', undefined, {
+        running: current,
         max,
       }),
       type: 'warning',

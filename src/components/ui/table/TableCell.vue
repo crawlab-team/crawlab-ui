@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { h } from 'vue';
+import { computed, h } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { ClButtonGroup, ClFaIconButton } from '@/components';
@@ -10,7 +10,7 @@ import type { ContextMenuItem } from '@/components/ui/context-menu/types';
 const props = withDefaults(
   defineProps<{
     column: TableColumn;
-    row: TableData;
+    row: Record;
     rowIndex: number;
   }>(),
   {
@@ -24,7 +24,7 @@ const route = useRoute();
 // store
 const store = useStore();
 
-const getChildren = () => {
+const rootComponent = () => {
   const { row, column, rowIndex } = props;
   const { value, buttons, buttonsType, buttonGroupType, buttonGroupSize } =
     column;
@@ -158,11 +158,14 @@ const getButtonsGroup = (
   );
 };
 
-const root = <div>{getChildren()}</div>;
+const componentKey = computed(() => {
+  const { row, column } = props;
+  return row[column.key!];
+});
 
 defineOptions({ name: 'ClTableCell' });
 </script>
 
 <template>
-  <root />
+  <root-component :key="componentKey" />
 </template>

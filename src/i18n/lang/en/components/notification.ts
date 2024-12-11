@@ -193,7 +193,7 @@ const notification: LComponentsNotification = {
 - Node Enabled: \${node:enabled}
 - Node Active: \${node:active}
 - Node Active At: \${node:active_at}
-- Node Available Runners: \${node:available_runners}
+- Node Current Runners: \${node:current_runners}
 - Node Max Runners: \${node:max_runners}`,
       },
       node_offline: {
@@ -212,7 +212,7 @@ const notification: LComponentsNotification = {
 - Node Enabled: \${node:enabled}
 - Node Active: \${node:active}
 - Node Active At: \${node:active_at}
-- Node Available Runners: \${node:available_runners}
+- Node Current Runners: \${node:current_runners}
 - Node Max Runners: \${node:max_runners}`,
       },
       alert_cpu_critical: {

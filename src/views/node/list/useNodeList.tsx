@@ -218,7 +218,7 @@ const useNodeList = () => {
           ],
         },
         {
-          key: 'status', // status
+          key: 'status',
           className: 'status',
           label: t('views.nodes.table.columns.status'),
           icon: ['fa', 'heartbeat'],
@@ -254,7 +254,7 @@ const useNodeList = () => {
               return;
             return (
               <ClNodeRunners
-                available={row.available_runners}
+                current={row.current_runners}
                 max={row.max_runners}
               />
             );

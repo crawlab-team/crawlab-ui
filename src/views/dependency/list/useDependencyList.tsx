@@ -487,9 +487,6 @@ const useDependencyList = () => {
     elVNodeCtx?.exposed?.focus?.();
   };
 
-  // row key
-  const rowKey = (repo: DependencyRepo) => JSON.stringify(repo);
-
   // options
   const opts = {
     navActions,
@@ -513,7 +510,6 @@ const useDependencyList = () => {
     repoTabName,
     repoTabItems,
     onClickTableEmptySearch,
-    rowKey,
   };
 };
 

@@ -17,7 +17,6 @@ defineOptions({ name: 'ClDatabaseList' });
 <template>
   <cl-list-layout
     class="database-list"
-    :row-key="({ _id, status }: Database) => [_id, status].join('_')"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :pagination="tablePagination"

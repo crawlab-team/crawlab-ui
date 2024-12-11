@@ -30,7 +30,6 @@ defineOptions({ name: 'ClNotificationRequestList' });
 <template>
   <cl-list-layout
     class="notification-request-list"
-    :row-key="(row: NotificationRequest) => [row._id, row.status].join('_')"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"
