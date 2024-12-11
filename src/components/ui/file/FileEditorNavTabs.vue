@@ -94,6 +94,21 @@ const isActive = (item: FileNavItem) => {
   return props.activeTab && props.activeTab.path === item.path;
 };
 
+const getItemStyle = (item: FileNavItem) => {
+  const { styles } = props;
+  if (isActive(item)) {
+    return {
+      backgroundColor: styles?.active.backgroundColor,
+      color: styles?.active.color,
+    };
+  } else {
+    return {
+      backgroundColor: styles?.default.backgroundColor,
+      color: styles?.default.color,
+    };
+  }
+};
+
 watch(tabs.value, () => {
   setTimeout(updateWidths, 100);
 });
@@ -108,7 +123,11 @@ defineOptions({ name: 'ClFileEditorNavTabs' });
 <template>
   <div
     ref="navTabs"
-    :style="{ ...styles?.default }"
+    :style="{
+      backgroundColor: styles?.default.backgroundColor,
+      color: styles?.default.color,
+      borderBottom: `1px solid ${styles?.default.borderColor}`,
+    }"
     class="file-editor-nav-tabs"
   >
     <slot name="prefix" />
@@ -124,7 +143,7 @@ defineOptions({ name: 'ClFileEditorNavTabs' });
         >
           <div
             :class="isActive(item) ? 'active' : ''"
-            :style="{ ...(isActive(item) ? styles?.active : styles?.default) }"
+            :style="getItemStyle(item)"
             class="file-editor-nav-tab"
             @click="onClick(item)"
             @contextmenu.prevent="onContextMenuShow(item)"

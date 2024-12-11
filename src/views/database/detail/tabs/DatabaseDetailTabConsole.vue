@@ -263,73 +263,12 @@ onBeforeUnmount(() => {
 
 // Dragging resize handle
 const heightKey = 'database.console.resultsContainerHeight';
-const isDragging = ref(false);
-const handleDragStart = (event: DragEvent) => {
-  isDragging.value = true;
-  event.dataTransfer?.setData('text/plain', ''); // Required for Firefox
-};
-const handleDragEnd = () => {
-  isDragging.value = false;
-};
-const isResizing = ref(false);
-const initialHeight = ref(0);
-const startY = ref(0);
 const resultsContainerRef = ref<HTMLElement | null>(null);
-const initResize = (event: MouseEvent) => {
-  event.preventDefault();
-  isResizing.value = true;
-  initialHeight.value = resultsContainerRef.value?.clientHeight || 0;
-  startY.value = event.clientY;
-  document.addEventListener('mousemove', resize);
-  document.addEventListener('mouseup', stopResize);
+const onSizeChange = (size: number) => {
+  if (!editorRef.value) return;
+  editorRef.value.style.flex = `0 0 calc(100% - ${size}px)`;
+  editorRef.value.style.height = `calc(100% - ${size}px)`;
 };
-const updateHeights = (newHeight: number) => {
-  if (resultsContainerRef.value && editorRef.value) {
-    if (newHeight < 240) newHeight = 240;
-    resultsContainerRef.value.style.flex = `0 0 ${newHeight}px`;
-    resultsContainerRef.value.style.height = `${newHeight}px`;
-    editorRef.value.style.flex = `0 0 calc(100% - ${newHeight}px)`;
-    editorRef.value.style.height = `calc(100% - ${newHeight}px)`;
-  }
-};
-const loadHeights = () => {
-  // If results are not visible, set the height to 0
-  if (!resultsVisible.value) {
-    updateHeights(0);
-    return;
-  }
-
-  // Load the saved height from local storage
-  const savedHeight = localStorage.getItem(heightKey);
-  if (savedHeight && resultsContainerRef.value && editorRef.value) {
-    const newHeight = parseInt(savedHeight, 10);
-    updateHeights(newHeight);
-  }
-};
-const saveHeights = () => {
-  if (resultsContainerRef.value) {
-    localStorage.setItem(
-      heightKey,
-      resultsContainerRef.value.clientHeight.toString()
-    );
-  }
-};
-const resize = (event: MouseEvent) => {
-  event.preventDefault();
-  if (isResizing.value && resultsContainerRef.value && editorRef.value) {
-    const deltaY = event.clientY - startY.value;
-    const newHeight = initialHeight.value - deltaY;
-    updateHeights(newHeight);
-  }
-};
-const stopResize = () => {
-  isResizing.value = false;
-  saveHeights();
-  document.removeEventListener('mousemove', resize);
-  document.removeEventListener('mouseup', stopResize);
-};
-onMounted(loadHeights);
-watch(resultsVisible, loadHeights);
 
 defineOptions({ name: 'ClDatabaseDetailTabConsole' });
 </script>
@@ -337,27 +276,20 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
 <template>
   <div
     class="database-detail-tab-console"
-    :class="
-      [resultsVisible ? 'results-visible' : '', isResizing ? 'resizing' : '']
-        .filter(Boolean)
-        .join(' ')
-    "
+    :class="[resultsVisible ? 'results-visible' : ''].filter(Boolean).join(' ')"
   >
     <cl-database-sidebar :tab-name="TAB_NAME_CONSOLE" />
 
     <div class="content">
       <div ref="editorRef" class="editor" />
-      <div
-        ref="resultsContainerRef"
-        class="results-container"
-        @dragover.prevent
-        @dragstart="handleDragStart"
-        @dragend="handleDragEnd"
-      >
-        <div
+      <div ref="resultsContainerRef" class="results-container">
+        <cl-resize-handle
           v-if="resultsVisible"
-          class="resize-handle"
-          @mousedown="initResize"
+          :target-ref="resultsContainerRef"
+          :size-key="heightKey"
+          direction="horizontal"
+          position="start"
+          @size-change="onSizeChange"
         />
         <cl-nav-tabs
           :active-key="activeResultsTabName"
@@ -407,7 +339,7 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
   &.results-visible {
     .content {
       .editor {
-        flex: 0 0 50%;
+        flex: 0 1 auto;
         height: 50%;
       }
 
@@ -432,18 +364,6 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
     }
   }
 
-  &.resizing {
-    .content {
-      & > * {
-        transition: none;
-      }
-
-      .results-container {
-        border-top: 1px solid var(--cl-primary-color);
-      }
-    }
-  }
-
   .content {
     display: flex;
     height: 100%;
@@ -452,14 +372,12 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
     flex-direction: column;
 
     .editor {
-      transition: flex 0.3s;
     }
 
     .results-container {
       position: relative;
       border-top: 1px solid var(--el-border-color);
       overflow: hidden;
-      transition: flex 0.3s;
 
       .resize-handle {
         position: absolute;

@@ -367,6 +367,9 @@ onBeforeUnmount(() => {
 const showSettings = ref<boolean>(false);
 const fileSearchString = ref<string>('');
 
+const navMenuRef = ref<HTMLElement | null>(null);
+const widthKey = 'fileEditor.navMenu.width';
+
 defineOptions({ name: 'ClFileEditorNavMenu' });
 </script>
 
@@ -375,7 +378,13 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
     v-loading="loading && { background: 'var(--cl-loading-background-color)' }"
     :class="navMenuCollapsed ? 'collapsed' : ''"
     class="nav-menu"
+    ref="navMenuRef"
+    :style="{
+      borderRight: `1px solid ${styles?.default.borderColor}`,
+    }"
   >
+    <cl-resize-handle :target-ref="navMenuRef" :size-key="widthKey" />
+
     <!-- file editor search -->
     <div :style="{ ...styles?.default }" class="nav-menu-top-bar">
       <div class="left">
@@ -521,14 +530,13 @@ defineOptions({ name: 'ClFileEditorNavMenu' });
 <style lang="scss" scoped>
 .nav-menu {
   flex-basis: var(--cl-file-editor-nav-menu-width);
-  min-width: var(--cl-file-editor-nav-menu-width);
   display: flex;
   flex-direction: column;
-  transition: all var(--cl-file-editor-nav-menu-collapse-transition-duration);
+  position: relative;
 
   &.collapsed {
-    min-width: 0;
-    flex-basis: 0;
+    min-width: 0 !important;
+    flex-basis: 0 !important;
     overflow: hidden;
   }
 

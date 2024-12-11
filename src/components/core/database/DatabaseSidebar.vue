@@ -661,69 +661,13 @@ const validateAndSave = async (data: DatabaseNavItem) => {
   }
 };
 
-const widthKey = 'database.sidebar.width';
-const isResizing = ref(false);
-const initialWidth = ref(0);
-const startX = ref(0);
+const widthKey = ref('database.sidebar.width');
 const sidebarRef = ref<HTMLElement | null>(null);
-const minWidth = 180;
-const initResize = (event: MouseEvent) => {
-  event.preventDefault();
-  isResizing.value = true;
-  initialWidth.value = sidebarRef.value?.clientWidth || 0;
-  startX.value = event.clientX;
-  document.addEventListener('mousemove', resize);
-  document.addEventListener('mouseup', stopResize);
-};
-const onDragStart = () => {};
-const onDragEnd = () => {};
-const resize = (event: MouseEvent) => {
-  event.preventDefault();
-  if (isResizing.value && sidebarRef.value) {
-    const deltaY = event.clientX - startX.value;
-    const newWidth = initialWidth.value + deltaY;
-    updateWidth(newWidth);
-  }
-};
-const stopResize = () => {
-  isResizing.value = false;
-  saveWidth();
-  document.removeEventListener('mousemove', resize);
-  document.removeEventListener('mouseup', stopResize);
-};
-const updateWidth = (newWidth: number) => {
-  if (sidebarRef.value) {
-    if (newWidth < minWidth) newWidth = minWidth;
-    sidebarRef.value.style.flex = `0 0 ${newWidth}px`;
-    sidebarRef.value.style.width = `${newWidth}px`;
-  }
-};
-const loadWidth = () => {
-  // Load the saved height from local storage
-  const savedWidth = localStorage.getItem(widthKey);
-  if (savedWidth && sidebarRef.value) {
-    const newHeight = parseInt(savedWidth, 10);
-    updateWidth(newHeight);
-  }
-};
-const saveWidth = () => {
-  if (sidebarRef.value) {
-    localStorage.setItem(widthKey, sidebarRef.value.clientWidth.toString());
-  }
-};
-onMounted(loadWidth);
 </script>
 
 <template>
-  <div
-    ref="sidebarRef"
-    class="sidebar"
-    :class="isResizing ? 'resizing' : ''"
-    @dragover.prevent
-    @dragstart="onDragStart"
-    @dragend="onDragEnd"
-  >
-    <div class="resize-handle" @mousedown="initResize" />
+  <div ref="sidebarRef" class="sidebar" @dragover.prevent>
+    <cl-resize-handle :target-ref="sidebarRef" :size-key="widthKey" />
     <div class="sidebar-actions">
       <cl-context-menu :visible="showCreateContextMenu">
         <template #reference>
@@ -867,16 +811,6 @@ onMounted(loadWidth);
   display: flex;
   flex-direction: column;
   position: relative;
-
-  .resize-handle {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 5px;
-    height: 100%;
-    cursor: col-resize;
-    z-index: 999;
-  }
 
   .sidebar-actions {
     height: 41px;

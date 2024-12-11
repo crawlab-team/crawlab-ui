@@ -66,14 +66,17 @@ const activeFileItem = computed<FileNavItem | undefined>(
 const themeColors = ref<monaco.editor.IColors>({});
 
 const styles = computed<FileEditorStyles>(() => {
+  console.debug(themeColors.value);
   return {
     default: {
       backgroundColor: themeColors.value['editor.background'],
       color: themeColors.value['editor.foreground'],
+      borderColor: themeColors.value['editor.inactiveSelectionBackground'],
     },
     active: {
       backgroundColor: themeColors.value['editor.selectionHighlightBackground'],
       color: themeColors.value['editor.foreground'],
+      borderColor: themeColors.value['editor.selectionHighlightBackground'],
     },
   };
 });

@@ -163,6 +163,7 @@ import NotificationSettingTriggerSelect from './core/notification/setting/Notifi
 import Option from './ui/select/Option.vue';
 import ProjectForm from './core/project/ProjectForm.vue';
 import RangePicker from './ui/date/RangePicker.vue';
+import ResizeHandle from './ui/resize/ResizeHandle.vue';
 import ResultCell from './core/result/ResultCell.vue';
 import ResultCellDialog from './core/result/ResultCellDialog.vue';
 import ResultDedupFieldsDialog from './core/result/ResultDedupFieldsDialog.vue';
@@ -391,6 +392,7 @@ export {
   Option as ClOption,
   ProjectForm as ClProjectForm,
   RangePicker as ClRangePicker,
+  ResizeHandle as ClResizeHandle,
   ResultCell as ClResultCell,
   ResultCellDialog as ClResultCellDialog,
   ResultDedupFieldsDialog as ClResultDedupFieldsDialog,
