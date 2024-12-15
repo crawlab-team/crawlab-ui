@@ -16,7 +16,6 @@ const {
   tableColumns,
   tableData,
   tablePagination,
-  tablePageSizes,
   tableTotal,
   repoTabName,
   repoTabItems,
@@ -33,11 +32,11 @@ defineOptions({ name: 'ClDependencyList' });
 <template>
   <cl-list-layout
     class="dependency-list"
+    :row-key="(row: DependencyRepo) => row.name"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-loading="tableLoading"
     :table-pagination="tablePagination"
-    :table-page-sizes="tablePageSizes"
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
@@ -63,6 +62,8 @@ defineOptions({ name: 'ClDependencyList' });
       <cl-dependency-install-dialog />
       <cl-dependency-uninstall-dialog />
       <cl-dependency-logs-dialog />
+      <cl-dependency-config-dialog />
+      <cl-dependency-setup-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>

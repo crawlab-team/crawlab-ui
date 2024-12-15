@@ -73,7 +73,8 @@ defineOptions({ name: 'ClIcon' });
     </template>
     <template v-else-if="isSvg">
       <img
-        :class="[icon, ...cls].join(' ')"
+        :class="[icon, ...cls]"
+        class="icon"
         :src="iconSvgSrc"
         :alt="alt"
         @click="event => emit('click', event)"
@@ -81,7 +82,8 @@ defineOptions({ name: 'ClIcon' });
     </template>
     <template v-else>
       <i
-        :class="[spinning ? 'fa-spin' : '', icon, 'icon', ...cls].join(' ')"
+        :class="[spinning ? 'fa-spin' : '', icon, ...cls].join(' ')"
+        class="icon"
         :style="{ fontSize, color }"
         @click="event => emit('click', event)"
       />

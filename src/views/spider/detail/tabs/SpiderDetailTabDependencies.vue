@@ -123,7 +123,7 @@ const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
               node={node}
               clickable
               onClick={() => {
-                store.commit(`${nsDependency}/setActiveDependency`, dep);
+                store.commit(`${nsDependency}/setActiveTargetId`, dep._id);
                 store.commit(`${nsDependency}/showDialog`, 'logs');
               }}
             >

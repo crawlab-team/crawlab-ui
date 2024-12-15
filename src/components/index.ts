@@ -60,8 +60,10 @@ import DatabaseTableDetailData from './core/database/tables/DatabaseTableDetailD
 import DatabaseTableDetailIndexes from './core/database/tables/DatabaseTableDetailIndexes.vue';
 import DateRangePicker from './ui/date/DateRangePicker.vue';
 import DateTimeRangePicker from './ui/date/DateTimeRangePicker.vue';
+import DependencyConfigDialog from './core/dependency/DependencyConfigDialog.vue';
 import DependencyInstallDialog from './core/dependency/DependencyInstallDialog.vue';
 import DependencyLogsDialog from './core/dependency/DependencyLogsDialog.vue';
+import DependencySetupDialog from './core/dependency/DependencySetupDialog.vue';
 import DependencyUninstallDialog from './core/dependency/DependencyUninstallDialog.vue';
 import DependencyVersions from './core/dependency/DependencyVersions.vue';
 import DetailTabList from './ui/list/DetailTabList.vue';
@@ -289,8 +291,10 @@ export {
   DatabaseTableDetailIndexes as ClDatabaseTableDetailIndexes,
   DateRangePicker as ClDateRangePicker,
   DateTimeRangePicker as ClDateTimeRangePicker,
+  DependencyConfigDialog as ClDependencyConfigDialog,
   DependencyInstallDialog as ClDependencyInstallDialog,
   DependencyLogsDialog as ClDependencyLogsDialog,
+  DependencySetupDialog as ClDependencySetupDialog,
   DependencyUninstallDialog as ClDependencyUninstallDialog,
   DependencyVersions as ClDependencyVersions,
   DetailTabList as ClDetailTabList,

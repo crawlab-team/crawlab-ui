@@ -23,6 +23,7 @@ const env: LViewsEnv = {
         },
       },
     },
+    label: '依赖',
     repos: {
       actions: {
         search: {
@@ -80,6 +81,13 @@ const env: LViewsEnv = {
         uninstalled: '已卸载',
         error: '错误',
         abnormal: '异常',
+      },
+    },
+    config: {
+      form: {
+        name: '名称',
+        cmd: '命令',
+        proxy: '代理',
       },
     },
     task: {

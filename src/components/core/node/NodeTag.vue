@@ -131,24 +131,24 @@ defineOptions({ name: 'ClNodeTag' });
   flex-direction: column;
   align-items: flex-start;
 
-  .tooltip-title {
+  &:deep(.tooltip-title) {
     font-weight: bold;
     font-style: italic;
     text-decoration: underline;
     margin-bottom: 3px;
   }
 
-  .tooltip-item {
+  &:deep(.tooltip-item) {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
     margin-left: 10px;
     line-height: 1;
+  }
 
-    label {
-      font-weight: normal;
-      margin-right: 5px;
-    }
+  &:deep(.tooltip-item label) {
+    font-weight: normal;
+    margin-right: 5px;
   }
 }
 </style>

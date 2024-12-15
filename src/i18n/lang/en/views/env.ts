@@ -23,6 +23,7 @@ const env: LViewsEnv = {
         },
       },
     },
+    label: 'Dependency',
     repos: {
       actions: {
         search: {
@@ -80,6 +81,13 @@ const env: LViewsEnv = {
         uninstalled: 'Uninstalled',
         error: 'Error',
         abnormal: 'Abnormal',
+      },
+    },
+    config: {
+      form: {
+        name: 'Name',
+        cmd: 'Command',
+        proxy: 'Proxy',
       },
     },
     task: {

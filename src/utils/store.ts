@@ -7,6 +7,7 @@ import {
   loadNamespaceLocalStorage,
   saveNamespaceLocalStorage,
 } from '@/utils/storage';
+import { getMd5 } from '@/utils/hash';
 
 // i18n
 const t = translate;
@@ -324,7 +325,17 @@ export const getDefaultStoreActions = <T = any>(
           conditions: JSON.stringify(state.tableListFilter),
           sort: JSON.stringify(state.tableListSort),
         } as ListRequestParams);
-        commit('setTableData', { data: res.data || [], total: res.total });
+
+        // table data
+        const tableData = { data: res.data || [], total: res.total };
+
+        // check if the data has changes against the current data
+        if (
+          getMd5(JSON.stringify(tableData.data)) !==
+          getMd5(JSON.stringify(state.tableData))
+        ) {
+          commit('setTableData', tableData);
+        }
         return res;
       } catch (e) {
         throw e;

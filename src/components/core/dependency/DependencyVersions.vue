@@ -83,7 +83,7 @@ defineOptions({ name: 'ClDependencyVersions' });
 </script>
 
 <template>
-  <div class="dependency-versions">
+  <div v-memo="[name]" class="dependency-versions">
     <cl-tag
       v-for="(version, $index) in versions"
       :key="$index"

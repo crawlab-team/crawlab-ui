@@ -1,4 +1,4 @@
-import { computed, watch } from 'vue';
+import { computed, onBeforeMount, watch } from 'vue';
 import { getStore } from '@/store';
 import { useList } from '@/layouts/content';
 import {
@@ -17,12 +17,7 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
-import {
-  ClDependencyVersions,
-  ClNavLink,
-  ClNodeTag,
-  useNode,
-} from '@/components';
+import { ClDependencyVersions, ClNavLink, ClNodeTag } from '@/components';
 import {
   getNormalizedDependencies,
   getRepoExternalPath,
@@ -46,12 +41,16 @@ const useDependencyList = () => {
           id: 'filter-select-lang',
           className: 'select-lang',
           onChange: value => {
-            onListFilterChangeByKey(store, ns, 'type', FILTER_OP_EQUAL)(value);
+            onListFilterChangeByKey(store, ns, 'type', FILTER_OP_EQUAL, {
+              update: false,
+            })(value);
             store.commit(`${ns}/setLang`, value);
           },
           options: [
             { label: 'Python', value: 'python', icon: ['fab', 'python'] },
             { label: 'Node.js', value: 'node', icon: ['fab', 'node-js'] },
+            { label: 'Go', value: 'go', icon: ['svg', 'go'] },
+            { label: 'Java', value: 'java', icon: ['fab', 'java'] },
           ],
           clearable: false,
           noAllOption: true,
@@ -114,6 +113,15 @@ const useDependencyList = () => {
               store.dispatch(`${ns}/getList`),
               store.dispatch(`${ns}/searchRepoList`),
             ]);
+          },
+        },
+        {
+          className: 'configure-btn',
+          buttonType: 'label',
+          label: t('common.actions.configure'),
+          icon: ['fa', 'cog'],
+          onClick: async () => {
+            store.commit(`${ns}/showDialog`, 'config');
           },
         },
       ],
@@ -210,7 +218,7 @@ const useDependencyList = () => {
                   type={getTypeByDep(dep)}
                   clickable
                   onClick={() => {
-                    store.commit(`${ns}/setActiveDependency`, dep);
+                    store.commit(`${ns}/setActiveTargetId`, dep._id);
                     store.commit(`${ns}/showDialog`, 'logs');
                   }}
                 >
@@ -234,11 +242,9 @@ const useDependencyList = () => {
                           color = 'inherit';
                       }
                       return (
-                        <>
+                        <div class="tooltip-wrapper">
                           <div class="tooltip-title">
-                            <label>
-                              {t('layouts.routes.dependencies.list.title')}
-                            </label>
+                            <label>{t('views.env.deps.label')}</label>
                           </div>
                           <div class="tooltip-item">
                             <label>
@@ -276,7 +282,7 @@ const useDependencyList = () => {
                               <span>{dep.version}</span>
                             </div>
                           )}
-                        </>
+                        </div>
                       );
                     },
                   }}
@@ -339,13 +345,20 @@ const useDependencyList = () => {
     })
   );
 
-  // programming language
-  const lang = computed<DependencyLang>(() => state.lang);
-  watch(lang, async () => {
+  // get data
+  const getData = async () => {
     await Promise.all([
+      store.dispatch(`${ns}/getDependencyConfig`),
       store.dispatch(`${ns}/getList`),
       store.dispatch(`${ns}/searchRepoList`),
     ]);
+  };
+
+  // programming language
+  const lang = computed<DependencyLang>(() => state.lang);
+  watch(lang, async () => {
+    console.debug(lang.value);
+    await getData();
   });
 
   // table data
@@ -387,23 +400,6 @@ const useDependencyList = () => {
         return state.searchRepoTablePagination;
       default:
         return getDefaultPagination();
-    }
-  });
-  const tablePageSizes = computed(() => {
-    if (state.lang === 'python' && state.repoTabName === 'search') {
-      return [20];
-    }
-  });
-  watch(tablePageSizes, () => {
-    // set default page size if not in the list
-    if (
-      tablePageSizes.value &&
-      !tablePageSizes.value.some(size => size === tablePagination.value.size)
-    ) {
-      store.commit(`${ns}/setSearchRepoTablePagination`, {
-        ...tablePagination.value,
-        size: tablePageSizes.value[0],
-      });
     }
   });
 
@@ -495,7 +491,10 @@ const useDependencyList = () => {
 
   setupListComponent(ns, store, ['node'], false);
 
-  setupAutoUpdate(() => store.dispatch(`${ns}/getList`), 10000);
+  setupAutoUpdate(getData, 10000);
+  onBeforeMount(async () => {
+    await store.dispatch(`${ns}/getDependencyConfig`);
+  });
 
   return {
     ...useList<Dependency>(ns, store, opts),
@@ -505,7 +504,6 @@ const useDependencyList = () => {
     tableData,
     tableTotal,
     tablePagination,
-    tablePageSizes,
     actionFunctions,
     repoTabName,
     repoTabItems,

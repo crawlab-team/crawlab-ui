@@ -8,7 +8,9 @@ type DialogKey =
   | 'createDatabase'
   | 'createTable'
   | 'install'
-  | 'uninstall';
+  | 'uninstall'
+  | 'config'
+  | 'setup';
 
 interface DialogVisible {
   createEdit?: boolean;

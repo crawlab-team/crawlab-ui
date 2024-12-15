@@ -8,10 +8,11 @@ import {
 } from '@/utils';
 import useRequest from '@/services/request';
 import { ElMessage } from 'element-plus';
+import { getMd5 } from '@/utils/hash';
 
 const t = translate;
 
-const { getList, post } = useRequest();
+const { get, getList, post, put } = useRequest();
 
 const endpoint = '/dependencies';
 
@@ -33,10 +34,15 @@ const state = {
     mode: 'all',
   },
   uninstallLoading: false,
+  setupForm: {
+    mode: 'all',
+  },
+  setupLoading: false,
   getVersionsLoading: false,
   versions: [],
-  activeDependency: undefined,
-  activeDependencyLogs: [],
+  activeTargetId: undefined,
+  activeTargetLogs: [],
+  config: undefined,
 } as DependencyStoreState;
 
 const getters = {
@@ -126,23 +132,26 @@ const mutations = {
   ): void => {
     state.getVersionsLoading = loading;
   },
-  setActiveDependency: (
+  setActiveTargetId: (state: DependencyStoreState, id: string): void => {
+    state.activeTargetId = id;
+  },
+  resetActiveTargetId: (state: DependencyStoreState): void => {
+    state.activeTargetId = undefined;
+  },
+  setActiveTargetLogs: (
     state: DependencyStoreState,
-    activeDependency: DependencyRepo
+    logs: DependencyLog[]
   ): void => {
-    state.activeDependency = activeDependency;
+    state.activeTargetLogs = logs;
   },
-  resetActiveDependency: (state: DependencyStoreState): void => {
-    state.activeDependency = undefined;
+  resetActiveTargetLogs: (state: DependencyStoreState): void => {
+    state.activeTargetLogs = [];
   },
-  setActiveDependencyLogs: (
-    state: DependencyStoreState,
-    activeDependencyLogs: DependencyLog[]
-  ): void => {
-    state.activeDependencyLogs = activeDependencyLogs;
+  setConfig: (state: DependencyStoreState, config: DependencyConfig): void => {
+    state.config = config;
   },
-  resetActiveDependencyLogs: (state: DependencyStoreState): void => {
-    state.activeDependencyLogs = [];
+  resetConfig: (state: DependencyStoreState): void => {
+    state.config = undefined;
   },
 } as DependencyStoreMutations;
 
@@ -163,10 +172,17 @@ const actions = {
         sort: JSON.stringify(tableListSort),
         lang,
       });
-      commit('setTableData', {
+      const tableData = {
         data: res.data || [],
         total: res.total,
-      });
+      };
+      if (
+        getMd5(JSON.stringify(tableData.data)) !==
+        getMd5(JSON.stringify(state.tableData))
+      ) {
+        console.debug('setTableData', tableData.data);
+        commit('setTableData', tableData);
+      }
       return res;
     } catch (e) {
       throw e;
@@ -188,10 +204,16 @@ const actions = {
         lang,
         query: searchQuery,
       });
-      commit('setSearchRepoTableData', {
+      const tableData = {
         data: res.data || [],
         total: res.total,
-      });
+      };
+      if (
+        getMd5(JSON.stringify(state.searchRepoTableData)) !==
+        getMd5(JSON.stringify(tableData.data))
+      ) {
+        commit('setSearchRepoTableData', tableData);
+      }
       return res;
     } catch (e) {
       throw e;
@@ -258,20 +280,65 @@ const actions = {
       commit('setUninstallLoading', false);
     }
   },
-  getActiveDependencyLogs: async ({
+  setupConfig: async ({
+    state,
+    commit,
+    dispatch,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang, setupForm } = state;
+    commit('setSetupLoading', true);
+    try {
+      await post(`${endpoint}/configs/setup`, {
+        ...setupForm,
+        lang,
+      });
+      ElMessage.success(t('common.message.success.startUninstall'));
+      await dispatch('getList');
+    } catch (e: any) {
+      ElMessage.error(e.message);
+      throw e;
+    } finally {
+      commit('setSetupLoading', false);
+    }
+  },
+  getActiveTargetLogs: async ({
     state,
     commit,
   }: StoreActionContext<DependencyStoreState>) => {
-    const { lang, activeDependency } = state;
-    if (!activeDependency) return;
+    const { activeTargetId } = state;
+    if (!activeTargetId) return;
     try {
-      const res = await getList(`${endpoint}/${activeDependency._id}/logs`, {
-        lang,
-        repo: activeDependency?.name,
-      });
-      commit('setActiveDependencyLogs', res.data || []);
+      const res = await getList(`${endpoint}/${activeTargetId}/logs`);
+      commit('setActiveTargetLogs', res.data || []);
       return res;
     } catch (e) {
+      throw e;
+    }
+  },
+  getDependencyConfig: async ({
+    state,
+    commit,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang } = state;
+    try {
+      const res = await get(`${endpoint}/configs/${lang}`);
+      commit('setConfig', res.data);
+      return res;
+    } catch (e) {
+      throw e;
+    }
+  },
+  saveDependencyConfig: async ({
+    state,
+    dispatch,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang, config } = state;
+    try {
+      await put(`${endpoint}/configs/${lang}`, config);
+      ElMessage.success(t('common.message.success.save'));
+      await dispatch('getDependencyConfig');
+    } catch (e: any) {
+      ElMessage.error(e.message);
       throw e;
     }
   },

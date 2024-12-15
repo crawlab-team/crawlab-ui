@@ -13,6 +13,7 @@ interface LViewsEnv {
         };
       };
     };
+    label: string;
     repos: {
       actions: {
         search: {
@@ -70,6 +71,13 @@ interface LViewsEnv {
         uninstalling: string;
         error: string;
         abnormal: string;
+      };
+    };
+    config: {
+      form: {
+        name: string;
+        cmd: string;
+        proxy: string;
       };
     };
     task: {

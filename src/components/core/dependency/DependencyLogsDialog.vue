@@ -13,7 +13,7 @@ const visible = computed(() => state.activeDialogKey === 'logs');
 
 const content = computed(() => {
   const data: string[] = [];
-  state.activeDependencyLogs?.forEach(l => {
+  state.activeTargetLogs?.forEach(l => {
     l.content
       ?.trim()
       .split(/[\n\r]/)
@@ -34,15 +34,15 @@ const onClose = () => {
   store.commit(`${ns}/hideDialog`);
 };
 
-let handle: number | null = null;
+let handle: any = null;
 watch(visible, () => {
   if (visible.value) {
-    store.dispatch(`${ns}/getActiveDependencyLogs`);
+    store.dispatch(`${ns}/getActiveTargetLogs`);
     handle = setInterval(() => {
-      store.dispatch(`${ns}/getActiveDependencyLogs`);
+      store.dispatch(`${ns}/getActiveTargetLogs`);
     }, 5000);
   } else {
-    store.commit(`${ns}/resetActiveDependencyLogs`);
+    store.commit(`${ns}/resetActiveTargetLogs`);
     if (handle) {
       clearInterval(handle);
     }

@@ -7,7 +7,7 @@ import { FILTER_OP_EQUAL } from '@/constants';
 
 const t = translate;
 
-export const getDefaultUseListOptions = <T = any>(
+export const getDefaultUseListOptions = <T extends BaseModel>(
   navActions: Ref<ListActionGroup[]>,
   tableColumns: Ref<TableColumns<T>>
 ): UseListOptions<T> => {

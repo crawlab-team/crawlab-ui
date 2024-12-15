@@ -1,12 +1,12 @@
 export declare global {
-  interface DependencySetting extends BaseModel {
+  interface DependencyConfig extends BaseModel {
     key?: string;
     name?: string;
-    description?: string;
     enabled?: boolean;
     cmd?: string;
     proxy?: string;
     last_update_ts?: string;
+    status?: 'uninstalled' | 'installing' | 'installed' | 'error';
   }
 
   type DependencyStatus =
@@ -63,11 +63,17 @@ export declare global {
   }
 
   interface DependencyUninstallForm {
-    mode?: string;
+    mode?: 'all' | 'selected-nodes';
     names?: string[];
     node_ids?: string[];
     nodes?: CNode[];
   }
 
-  type DependencyLang = 'python' | 'node';
+  interface DependencySetupForm {
+    mode?: 'all' | 'selected-nodes';
+    node_ids?: string[];
+    nodes?: CNode[];
+  }
+
+  type DependencyLang = 'python' | 'node' | 'go' | 'java' | 'browser';
 }
