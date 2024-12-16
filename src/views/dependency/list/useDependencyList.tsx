@@ -261,7 +261,7 @@ const useDependencyList = () => {
                 case 'error':
                 case 'abnormal':
                   tagProps = {
-                    icon: ['fa', 'exclamation-circle'],
+                    icon: ['fa', 'times'],
                     type: 'danger',
                     clickable: true,
                   };
