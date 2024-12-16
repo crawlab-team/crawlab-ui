@@ -3,10 +3,19 @@ export declare global {
     key?: string;
     name?: string;
     enabled?: boolean;
-    cmd?: string;
+    exec_cmd?: string;
+    pkg_cmd?: string;
     proxy?: string;
-    last_update_ts?: string;
-    status?: 'uninstalled' | 'installing' | 'installed' | 'error';
+    setup?: boolean;
+  }
+
+  interface DependencyConfigSetup extends BaseModel {
+    dependency_config_id?: string;
+    node_id?: string;
+    version?: string;
+    status?: DependencyStatus;
+    error?: string;
+    node?: CNode;
   }
 
   type DependencyStatus =
@@ -47,7 +56,7 @@ export declare global {
     type?: DependencyLang;
   }
 
-  type DependencyRepoTabName = 'installed' | 'search';
+  type DependencyRepoTabName = 'installed' | 'search' | 'nodes';
 
   interface DependencyLog extends BaseModel {
     dependency_id?: string;

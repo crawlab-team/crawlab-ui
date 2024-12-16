@@ -14,6 +14,10 @@ export declare global {
     searchRepoTableData: TableData<DependencyRepo>;
     searchRepoTableTotal: number;
     searchRepoTablePagination: TablePagination;
+    configSetupTableLoading: boolean;
+    configSetupTableData: TableData<DependencyConfigSetup>;
+    configSetupTableTotal: number;
+    configSetupTablePagination: TablePagination;
     installForm: DependencyInstallForm;
     installLoading: boolean;
     uninstallForm: DependencyUninstallForm;
@@ -25,6 +29,7 @@ export declare global {
     activeTargetId?: string;
     activeTargetLogs: DependencyLog[];
     config?: DependencyConfig;
+    activeConfigSetup?: DependencyConfigSetup;
   }
 
   interface DependencyStoreGetters
@@ -52,6 +57,20 @@ export declare global {
       pagination: TablePagination
     ) => void;
     resetSearchRepoTablePagination: (state: DependencyStoreState) => void;
+    setConfigSetupTableLoading: (
+      state: DependencyStoreState,
+      loading: boolean
+    ) => void;
+    setConfigSetupTableData: (
+      state: DependencyStoreState,
+      data: TableDataWithTotal<DependencyRepo>
+    ) => void;
+    resetConfigSetupTableData: (state: DependencyStoreState) => void;
+    setConfigSetupTablePagination: (
+      state: DependencyStoreState,
+      pagination: TablePagination
+    ) => void;
+    resetConfigSetupTablePagination: (state: DependencyStoreState) => void;
     setInstallForm: (
       state: DependencyStoreState,
       form: DependencyInstallForm
@@ -88,6 +107,11 @@ export declare global {
     resetActiveTargetLogs: (state: DependencyStoreState) => void;
     setConfig: (state: DependencyStoreState, config: DependencyConfig) => void;
     resetConfig: (state: DependencyStoreState) => void;
+    setActiveConfigSetup: (
+      state: DependencyStoreState,
+      configSetup: DependencyConfigSetup
+    ) => void;
+    resetActiveConfigSetup: (state: DependencyStoreState) => void;
   }
 
   interface DependencyStoreActions extends BaseStoreActions<DependencyRepo> {
@@ -99,5 +123,7 @@ export declare global {
     getActiveTargetLogs: StoreAction<DependencyStoreState>;
     getDependencyConfig: StoreAction<DependencyStoreState>;
     saveDependencyConfig: StoreAction<DependencyStoreState>;
+    getConfigSetupList: StoreAction<DependencyStoreState>;
+    installConfigSetup: StoreAction<DependencyStoreState, { id: string }>;
   }
 }

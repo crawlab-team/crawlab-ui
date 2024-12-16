@@ -36,26 +36,19 @@ const env: LViewsEnv = {
         search: {
           pypi: 'PyPI',
           npm: 'NPM',
+          go: 'pkg.go.dev',
+          maven: 'Maven',
+          chromium: 'Chromium',
         },
+        nodes: 'Nodes',
       },
     },
-    settings: {
-      form: {
-        key: 'Key',
-        name: 'Name',
-        description: 'Description',
-        enabled: 'Enabled',
-        cmd: 'Command',
-        proxy: 'Proxy',
-      },
-      lang: {
-        python: {
-          description: 'Python dependencies',
-        },
-        node: {
-          description: 'Node.js dependencies',
-        },
-      },
+    lang: {
+      python: 'Python',
+      node: 'Node.js',
+      go: 'Go',
+      java: 'Java',
+      browser: 'Browser',
     },
     dependency: {
       form: {
@@ -86,8 +79,16 @@ const env: LViewsEnv = {
     config: {
       form: {
         name: 'Name',
-        cmd: 'Command',
+        execCmd: 'Execute Command',
+        pkgCmd: 'Package Command',
         proxy: 'Proxy',
+      },
+    },
+    configSetup: {
+      form: {
+        status: 'Status',
+        version: 'Version',
+        error: 'Error',
       },
     },
     task: {

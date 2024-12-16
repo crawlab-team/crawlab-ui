@@ -1,8 +1,11 @@
 import { computed, onBeforeMount, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { getStore } from '@/store';
 import { useList } from '@/layouts/content';
 import {
   getDefaultPagination,
+  getIconByAction,
+  getPlaceholderColumn,
   onListFilterChangeByKey,
   setupAutoUpdate,
   setupListComponent,
@@ -17,15 +20,24 @@ import {
   FILTER_OP_CONTAINS,
   FILTER_OP_EQUAL,
 } from '@/constants';
-import { ClDependencyVersions, ClNavLink, ClNodeTag } from '@/components';
+import {
+  ClDependencyVersions,
+  ClNavLink,
+  ClNodeTag,
+  ClTag,
+} from '@/components';
 import {
   getNormalizedDependencies,
   getRepoExternalPath,
 } from '@/utils/dependency';
+import { TagProps } from '@/components/ui/tag/types';
 
 const t = translate;
 
 const useDependencyList = () => {
+  // router
+  const router = useRouter();
+
   // store
   const ns = 'dependency';
   const store = getStore();
@@ -47,10 +59,31 @@ const useDependencyList = () => {
             store.commit(`${ns}/setLang`, value);
           },
           options: [
-            { label: 'Python', value: 'python', icon: ['fab', 'python'] },
-            { label: 'Node.js', value: 'node', icon: ['fab', 'node-js'] },
-            { label: 'Go', value: 'go', icon: ['svg', 'go'] },
-            { label: 'Java', value: 'java', icon: ['fab', 'java'] },
+            {
+              label: t('views.env.deps.lang.python'),
+              value: 'python',
+              icon: ['fab', 'python'],
+            },
+            {
+              label: t('views.env.deps.lang.node'),
+              value: 'node',
+              icon: ['fab', 'node-js'],
+            },
+            {
+              label: t('views.env.deps.lang.go'),
+              value: 'go',
+              icon: ['svg', 'go'],
+            },
+            {
+              label: t('views.env.deps.lang.java'),
+              value: 'java',
+              icon: ['fab', 'java'],
+            },
+            {
+              label: t('views.env.deps.lang.browser'),
+              value: 'browser',
+              icon: ['svg', 'chromium'],
+            },
           ],
           clearable: false,
           noAllOption: true,
@@ -151,6 +184,16 @@ const useDependencyList = () => {
     store.commit(`${ns}/showDialog`, 'uninstall');
   };
 
+  const onClickConfigSetup = async (row: DependencyConfigSetup) => {
+    store.commit(`${ns}/setActiveConfigSetup`, row._id);
+    store.commit(`${ns}/showDialog`, 'setup');
+  };
+
+  const onViewConfigSetupLogs = async (row: DependencyConfigSetup) => {
+    store.commit(`${ns}/setActiveTargetId`, row._id);
+    store.commit(`${ns}/showDialog`, 'logs');
+  };
+
   const isLoading = (dep: Dependency) => {
     return dep.status === 'installing' || dep.status === 'uninstalling';
   };
@@ -168,157 +211,265 @@ const useDependencyList = () => {
 
   // table columns
   const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
-    return [
-      {
-        key: 'name',
-        label: t('views.env.deps.dependency.form.name'),
-        icon: ['fa', 'font'],
-        width: '200',
-        value: (row: DependencyRepo) => {
-          const path = getRepoExternalPath(row);
-          if (!path) return row.name;
-          return <ClNavLink label={row.name} path={path} external />;
-        },
-      },
-      {
-        key: 'versions',
-        label: t('views.env.deps.dependency.form.installedVersion'),
-        icon: ['fa', 'tag'],
-        width: '200',
-        value: (row: DependencyRepo) => (
-          <ClDependencyVersions
-            name={row.name}
-            dependencies={getNormalizedDependencies(row.dependencies)}
-            latestVersion={row.latest_version}
-            onClick={() => onClickInstall(row)}
-          />
-        ),
-      },
-      {
-        key: 'node_ids',
-        label: t('views.env.deps.dependency.form.installedNodes'),
-        icon: ['fa', 'server'],
-        width: '580',
-        value: (row: DependencyRepo) => {
-          return nodeState.allList
-            .sort((a, b) =>
-              a.is_master ? -1 : (a.name || '').localeCompare(b.name || '')
-            )
-            .filter(n => n.active)
-            .map(node => {
-              const dep = row.dependencies?.find(
-                dep => dep.node_id === node._id
-              );
-              if (!dep) return;
-              return (
-                <ClNodeTag
-                  node={node}
-                  loading={isLoading(dep)}
-                  hit={isLoading(dep)}
-                  type={getTypeByDep(dep)}
-                  clickable
-                  onClick={() => {
-                    store.commit(`${ns}/setActiveTargetId`, dep._id);
-                    store.commit(`${ns}/showDialog`, 'logs');
-                  }}
-                >
-                  {{
-                    'extra-items': () => {
-                      let color: string;
-                      switch (dep.status) {
-                        case 'installing':
-                        case 'uninstalling':
-                          color = 'var(--cl-warning-color)';
-                          break;
-                        case 'installed':
-                        case 'uninstalled':
-                          color = 'var(--cl-success-color)';
-                          break;
-                        case 'error':
-                        case 'abnormal':
-                          color = 'var(--cl-danger-color)';
-                          break;
-                        default:
-                          color = 'inherit';
-                      }
-                      return (
-                        <div class="tooltip-wrapper">
-                          <div class="tooltip-title">
-                            <label>{t('views.env.deps.label')}</label>
-                          </div>
-                          <div class="tooltip-item">
-                            <label>
-                              {t('views.env.deps.dependency.form.status')}:
-                            </label>
-                            <span
-                              style={{
-                                color,
-                              }}
-                            >
-                              {t(
-                                `views.env.deps.dependency.status.${dep.status}`
-                              )}
-                            </span>
-                          </div>
-                          {dep.error && (
-                            <div class="tooltip-item">
-                              <label>
-                                {t('views.env.deps.dependency.form.error')}:
-                              </label>
-                              <span
-                                style={{
-                                  color,
-                                }}
-                              >
-                                {dep.error}
-                              </span>
-                            </div>
-                          )}
-                          {dep.version && (
-                            <div class="tooltip-item">
-                              <label>
-                                {t('views.env.deps.dependency.form.version')}:
-                              </label>
-                              <span>{dep.version}</span>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    },
-                  }}
-                </ClNodeTag>
-              );
-            });
-        },
-      },
-      {
-        key: 'actions',
-        label: t('components.table.columns.actions'),
-        fixed: 'right',
-        width: '200',
-        buttons: (_: DependencyRepo) => [
+    switch (repoTabName.value) {
+      case 'nodes':
+        return [
           {
-            tooltip: t('common.actions.install'),
-            onClick: onClickInstall,
-            action: ACTION_INSTALL,
+            key: 'name', // name
+            className: 'name',
+            label: t('views.nodes.table.columns.name'),
+            icon: ['fa', 'font'],
+            width: '150',
+            value: (row: DependencyConfigSetup) => (
+              <ClNodeTag
+                node={row.node}
+                clickable
+                onClick={async () => {
+                  await router.push(`/nodes/${row.node!._id!}`);
+                }}
+              />
+            ),
+            hasSort: true,
+            hasFilter: true,
+            allowFilterSearch: true,
           },
           {
-            tooltip: t('common.actions.uninstall'),
-            disabled: (row: DependencyRepo) => {
+            key: 'status',
+            className: 'status',
+            label: t('views.env.deps.configSetup.form.status'),
+            icon: ['fa', 'info-circle'],
+            width: '150',
+            value: (row: DependencyConfigSetup) => {
+              let tagProps: TagProps;
+              switch (row.status) {
+                case 'installed':
+                  tagProps = {
+                    icon: ['fa', 'check'],
+                    type: 'success',
+                    clickable: true,
+                  };
+                  break;
+                case 'installing':
+                case 'uninstalling':
+                  tagProps = {
+                    icon: ['fa', 'spinner'],
+                    type: 'warning',
+                    spinning: true,
+                    clickable: true,
+                  };
+                  break;
+                case 'error':
+                case 'abnormal':
+                  tagProps = {
+                    icon: ['fa', 'exclamation-circle'],
+                    type: 'danger',
+                    clickable: true,
+                  };
+                  break;
+                default:
+                  tagProps = {
+                    icon: getIconByAction(ACTION_INSTALL),
+                    type: 'info',
+                    clickable: true,
+                  };
+              }
               return (
-                !row.node_ids?.length ||
-                !row.dependencies?.some(dep => {
-                  return dep.status === 'installed';
-                })
+                <ClTag
+                  {...tagProps}
+                  label={t(`views.env.deps.dependency.status.${row.status}`)}
+                  onClick={async () => {
+                    switch (row.status) {
+                      case 'uninstalled':
+                        await onClickConfigSetup(row);
+                        break;
+                      default:
+                        await onViewConfigSetupLogs(row);
+                    }
+                  }}
+                />
               );
             },
-            onClick: onClickUninstall,
-            action: ACTION_UNINSTALL,
           },
-        ],
-        disableTransfer: true,
-      },
-    ] as TableColumns<DependencyRepo>;
+          {
+            key: 'version',
+            className: 'version',
+            label: t('views.env.deps.configSetup.form.version'),
+            icon: ['fa', 'tag'],
+            width: '150',
+          },
+          getPlaceholderColumn(),
+          {
+            key: 'actions',
+            label: t('components.table.columns.actions'),
+            fixed: 'right',
+            width: '200',
+            buttons: (_: DependencyConfigSetup) => [
+              {
+                tooltip: t('common.actions.install'),
+                disabled: row => row.status === 'installing',
+                onClick: onClickConfigSetup,
+                action: ACTION_INSTALL,
+              },
+            ],
+            disableTransfer: true,
+          },
+        ] as TableColumns<DependencyConfigSetup>;
+      default:
+        return [
+          {
+            key: 'name',
+            label: t('views.env.deps.dependency.form.name'),
+            icon: ['fa', 'font'],
+            width: '200',
+            value: (row: DependencyRepo) => {
+              const path = getRepoExternalPath(row);
+              if (!path) return row.name;
+              return <ClNavLink label={row.name} path={path} external />;
+            },
+          },
+          {
+            key: 'versions',
+            label: t('views.env.deps.dependency.form.installedVersion'),
+            icon: ['fa', 'tag'],
+            width: '200',
+            value: (row: DependencyRepo) => (
+              <ClDependencyVersions
+                name={row.name}
+                dependencies={getNormalizedDependencies(row.dependencies)}
+                latestVersion={row.latest_version}
+                onClick={() => onClickInstall(row)}
+              />
+            ),
+          },
+          {
+            key: 'node_ids',
+            label: t('views.env.deps.dependency.form.installedNodes'),
+            icon: ['fa', 'server'],
+            width: '580',
+            value: (row: DependencyRepo) => {
+              return nodeState.allList
+                .sort((a, b) =>
+                  a.is_master ? -1 : (a.name || '').localeCompare(b.name || '')
+                )
+                .filter(n => n.active)
+                .map(node => {
+                  const dep = row.dependencies?.find(
+                    dep => dep.node_id === node._id
+                  );
+                  if (!dep) return;
+                  return (
+                    <ClNodeTag
+                      node={node}
+                      loading={isLoading(dep)}
+                      hit={isLoading(dep)}
+                      type={getTypeByDep(dep)}
+                      clickable
+                      onClick={() => {
+                        store.commit(`${ns}/setActiveTargetId`, dep._id);
+                        store.commit(`${ns}/showDialog`, 'logs');
+                      }}
+                    >
+                      {{
+                        'extra-items': () => {
+                          let color: string;
+                          switch (dep.status) {
+                            case 'installing':
+                            case 'uninstalling':
+                              color = 'var(--cl-warning-color)';
+                              break;
+                            case 'installed':
+                            case 'uninstalled':
+                              color = 'var(--cl-success-color)';
+                              break;
+                            case 'error':
+                            case 'abnormal':
+                              color = 'var(--cl-danger-color)';
+                              break;
+                            default:
+                              color = 'inherit';
+                          }
+                          return (
+                            <div class="tooltip-wrapper">
+                              <div class="tooltip-title">
+                                <label>{t('views.env.deps.label')}</label>
+                              </div>
+                              <div class="tooltip-item">
+                                <label>
+                                  {t('views.env.deps.dependency.form.status')}:
+                                </label>
+                                <span
+                                  style={{
+                                    color,
+                                  }}
+                                >
+                                  {t(
+                                    `views.env.deps.dependency.status.${dep.status}`
+                                  )}
+                                </span>
+                              </div>
+                              {dep.error && (
+                                <div class="tooltip-item">
+                                  <label>
+                                    {t('views.env.deps.dependency.form.error')}:
+                                  </label>
+                                  <span
+                                    style={{
+                                      color,
+                                    }}
+                                  >
+                                    {dep.error}
+                                  </span>
+                                </div>
+                              )}
+                              {dep.version && (
+                                <div class="tooltip-item">
+                                  <label>
+                                    {t(
+                                      'views.env.deps.dependency.form.version'
+                                    )}
+                                    :
+                                  </label>
+                                  <span>{dep.version}</span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        },
+                      }}
+                    </ClNodeTag>
+                  );
+                });
+            },
+          },
+          {
+            key: 'actions',
+            label: t('components.table.columns.actions'),
+            fixed: 'right',
+            width: '200',
+            buttons: (_: DependencyRepo) => [
+              {
+                tooltip: t('common.actions.install'),
+                onClick: onClickInstall,
+                action: ACTION_INSTALL,
+              },
+              {
+                tooltip: t('common.actions.uninstall'),
+                disabled: (row: DependencyRepo) => {
+                  return (
+                    !row.node_ids?.length ||
+                    !row.dependencies?.some(dep => {
+                      return dep.status === 'installed';
+                    })
+                  );
+                },
+                onClick: onClickUninstall,
+                action: ACTION_UNINSTALL,
+              },
+            ],
+            disableTransfer: true,
+          },
+        ] as TableColumns<DependencyRepo>;
+    }
   });
 
   const tableDataDict = computed(() => {
@@ -345,20 +496,25 @@ const useDependencyList = () => {
     })
   );
 
+  const configSetupTableData = computed(() => state.configSetupTableData);
+
   // get data
   const getData = async () => {
     await Promise.all([
       store.dispatch(`${ns}/getDependencyConfig`),
       store.dispatch(`${ns}/getList`),
       store.dispatch(`${ns}/searchRepoList`),
+      store.dispatch(`${ns}/getConfigSetupList`),
     ]);
   };
 
   // programming language
   const lang = computed<DependencyLang>(() => state.lang);
   watch(lang, async () => {
-    console.debug(lang.value);
     await getData();
+    if (!state.config?.setup) {
+      store.commit(`${ns}/setRepoTabName`, 'nodes');
+    }
   });
 
   // table data
@@ -378,6 +534,8 @@ const useDependencyList = () => {
         return state.tableData;
       case 'search':
         return searchRepoTableData.value;
+      case 'nodes':
+        return configSetupTableData.value;
       default:
         return [];
     }
@@ -388,6 +546,8 @@ const useDependencyList = () => {
         return state.tableTotal;
       case 'search':
         return state.searchRepoTableTotal;
+      case 'nodes':
+        return state.configSetupTableTotal;
       default:
         return 0;
     }
@@ -398,6 +558,8 @@ const useDependencyList = () => {
         return state.tablePagination;
       case 'search':
         return state.searchRepoTablePagination;
+      case 'nodes':
+        return state.configSetupTablePagination;
       default:
         return getDefaultPagination();
     }
@@ -414,6 +576,7 @@ const useDependencyList = () => {
       await Promise.all([
         store.dispatch(`${ns}/getList`),
         store.dispatch(`${ns}/searchRepoList`),
+        store.dispatch(`${ns}/getConfigSetupList`),
       ]);
     },
     setPagination: (pagination: TablePagination) => {
@@ -424,6 +587,9 @@ const useDependencyList = () => {
         case 'search':
           store.commit(`${ns}/setSearchRepoTablePagination`, pagination);
           break;
+        case 'nodes':
+          store.commit(`${ns}/setConfigSetupTablePagination`, pagination);
+          break;
       }
     },
   } as ListLayoutActionFunctions;
@@ -433,12 +599,17 @@ const useDependencyList = () => {
     const installedItem = {
       id: 'installed',
       title: `${t('views.env.deps.repos.tabs.installed')} (${state.tableTotal})`,
-      icon: state.tableLoading ? ['fa', 'spinner'] : ['fas', 'server'],
-      iconSpinning: state.tableLoading,
+      icon: ['fas', 'cubes'],
       disabled: state.tableLoading,
     };
     let searchItem: NavItem = {
       id: 'search',
+    };
+    const nodesItem: NavItem = {
+      id: 'nodes',
+      title: t('views.env.deps.repos.tabs.nodes'),
+      icon: ['fas', 'server'],
+      disabled: state.configSetupTableLoading,
     };
     switch (lang.value) {
       case 'python':
@@ -453,6 +624,27 @@ const useDependencyList = () => {
           ...searchItem,
           title: t('views.env.deps.repos.tabs.search.npm'),
           icon: ['fab', 'node-js'],
+        };
+        break;
+      case 'go':
+        searchItem = {
+          ...searchItem,
+          title: t('views.env.deps.repos.tabs.search.go'),
+          icon: ['svg', 'go'],
+        };
+        break;
+      case 'java':
+        searchItem = {
+          ...searchItem,
+          title: t('views.env.deps.repos.tabs.search.maven'),
+          icon: ['svg', 'maven'],
+        };
+        break;
+      case 'browser':
+        searchItem = {
+          ...searchItem,
+          title: t('views.env.deps.repos.tabs.search.chromium'),
+          icon: ['svg', 'chromium'],
         };
         break;
       default:
@@ -472,7 +664,7 @@ const useDependencyList = () => {
     if (state.searchQuery) {
       searchItem.title = `${searchItem.title} (${state.searchRepoTableTotal})`;
     }
-    return [installedItem, searchItem] as NavItem[];
+    return [installedItem, searchItem, nodesItem] as NavItem[];
   });
   const repoTabName = computed(() => state.repoTabName);
 
@@ -493,7 +685,10 @@ const useDependencyList = () => {
 
   setupAutoUpdate(getData, 10000);
   onBeforeMount(async () => {
-    await store.dispatch(`${ns}/getDependencyConfig`);
+    await Promise.all([
+      store.dispatch(`${ns}/getDependencyConfig`),
+      store.dispatch(`${ns}/getConfigSetupList`),
+    ]);
   });
 
   return {

@@ -26,6 +26,10 @@ const state = {
   searchRepoTableData: [],
   searchRepoTablePagination: getDefaultPagination(),
   searchRepoTableTotal: 0,
+  configSetupTableLoading: false,
+  configSetupTableData: [],
+  configSetupTablePagination: getDefaultPagination(),
+  configSetupTableTotal: 0,
   installForm: {
     mode: 'all',
   },
@@ -43,6 +47,7 @@ const state = {
   activeTargetId: undefined,
   activeTargetLogs: [],
   config: undefined,
+  activeConfigSetup: undefined,
 } as DependencyStoreState;
 
 const getters = {
@@ -89,6 +94,32 @@ const mutations = {
   resetSearchRepoTablePagination: (state: DependencyStoreState): void => {
     state.searchRepoTablePagination = getDefaultPagination();
   },
+  setConfigSetupTableLoading: (
+    state: DependencyStoreState,
+    loading: boolean
+  ): void => {
+    state.configSetupTableLoading = loading;
+  },
+  setConfigSetupTableData: (
+    state: DependencyStoreState,
+    data: TableDataWithTotal<DependencyConfigSetup>
+  ): void => {
+    state.configSetupTableData = data.data;
+    state.configSetupTableTotal = data.total;
+  },
+  resetConfigSetupTableData: (state: DependencyStoreState): void => {
+    state.configSetupTableData = [];
+    state.configSetupTableTotal = 0;
+  },
+  setConfigSetupTablePagination: (
+    state: DependencyStoreState,
+    pagination: TablePagination
+  ): void => {
+    state.configSetupTablePagination = pagination;
+  },
+  resetConfigSetupTablePagination: (state: DependencyStoreState): void => {
+    state.configSetupTablePagination = getDefaultPagination();
+  },
   setInstallForm: (
     state: DependencyStoreState,
     form: DependencyInstallForm
@@ -119,6 +150,20 @@ const mutations = {
     loading: boolean
   ): void => {
     state.uninstallLoading = loading;
+  },
+  setSetupForm: (
+    state: DependencyStoreState,
+    form: DependencySetupForm
+  ): void => {
+    state.setupForm = form;
+  },
+  resetSetupForm: (state: DependencyStoreState): void => {
+    state.setupForm = {
+      mode: 'all',
+    };
+  },
+  setSetupLoading: (state: DependencyStoreState, loading: boolean): void => {
+    state.setupLoading = loading;
   },
   setVersions: (state: DependencyStoreState, versions: string[]): void => {
     state.versions = versions;
@@ -152,6 +197,15 @@ const mutations = {
   },
   resetConfig: (state: DependencyStoreState): void => {
     state.config = undefined;
+  },
+  setActiveConfigSetup: (
+    state: DependencyStoreState,
+    setup: DependencyConfigSetup
+  ): void => {
+    state.activeConfigSetup = setup;
+  },
+  resetActiveConfigSetup: (state: DependencyStoreState): void => {
+    state.activeConfigSetup = undefined;
   },
 } as DependencyStoreMutations;
 
@@ -340,6 +394,51 @@ const actions = {
     } catch (e: any) {
       ElMessage.error(e.message);
       throw e;
+    }
+  },
+  getConfigSetupList: async ({
+    state,
+    commit,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang, configSetupTablePagination } = state;
+    const { page, size } = configSetupTablePagination;
+    try {
+      commit('setConfigSetupTableLoading', true);
+      const res = await getList(`${endpoint}/configs/${lang}/setups`, {
+        page,
+        size,
+      });
+      const tableData = {
+        data: res.data || [],
+        total: res.total,
+      };
+      if (
+        getMd5(JSON.stringify(state.configSetupTableData)) !==
+        getMd5(JSON.stringify(tableData.data))
+      ) {
+        commit('setConfigSetupTableData', tableData);
+      }
+      return res;
+    } catch (e) {
+      throw e;
+    } finally {
+      commit('setConfigSetupTableLoading', false);
+    }
+  },
+  installConfigSetup: async (
+    { state, commit }: StoreActionContext<DependencyStoreState>,
+    { id }: { id: string }
+  ) => {
+    const { lang, setupForm } = state;
+    commit('setSetupLoading', true);
+    try {
+      await post(`${endpoint}/configs/${lang}/setups/${id}/install`, setupForm);
+      ElMessage.success(t('common.message.success.startInstall'));
+    } catch (e: any) {
+      ElMessage.error(e.message);
+      throw e;
+    } finally {
+      commit('setSetupLoading', false);
     }
   },
 } as DependencyStoreActions;

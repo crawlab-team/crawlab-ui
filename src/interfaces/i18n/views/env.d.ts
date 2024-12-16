@@ -26,26 +26,19 @@ interface LViewsEnv {
         search: {
           pypi: string;
           npm: string;
+          go: string;
+          maven: string;
+          chromium: string;
         };
+        nodes: string;
       };
     };
-    settings: {
-      form: {
-        key: string;
-        name: string;
-        description: string;
-        enabled: string;
-        cmd: string;
-        proxy: string;
-      };
-      lang: {
-        python: {
-          description: string;
-        };
-        node: {
-          description: string;
-        };
-      };
+    lang: {
+      python: string;
+      node: string;
+      go: string;
+      java: string;
+      browser: string;
     };
     dependency: {
       form: {
@@ -76,8 +69,16 @@ interface LViewsEnv {
     config: {
       form: {
         name: string;
-        cmd: string;
+        execCmd: string;
+        pkgCmd: string;
         proxy: string;
+      };
+    };
+    configSetup: {
+      form: {
+        status: string;
+        version: string;
+        error: string;
       };
     };
     task: {

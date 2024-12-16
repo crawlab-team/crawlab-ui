@@ -36,26 +36,19 @@ const env: LViewsEnv = {
         search: {
           pypi: 'PyPI',
           npm: 'NPM',
+          go: 'pkg.go.dev',
+          maven: 'Maven',
+          chromium: 'Chromium',
         },
+        nodes: '节点',
       },
     },
-    settings: {
-      form: {
-        key: '键',
-        name: '名称',
-        description: '描述',
-        enabled: '启用',
-        cmd: '命令',
-        proxy: '代理',
-      },
-      lang: {
-        python: {
-          description: 'Python 环境依赖',
-        },
-        node: {
-          description: 'Node.js 环境依赖',
-        },
-      },
+    lang: {
+      python: 'Python',
+      node: 'Node.js',
+      go: 'Go',
+      java: 'Java',
+      browser: '浏览器',
     },
     dependency: {
       form: {
@@ -78,7 +71,7 @@ const env: LViewsEnv = {
         installing: '安装中',
         installed: '已安装',
         uninstalling: '卸载中',
-        uninstalled: '已卸载',
+        uninstalled: '未安装',
         error: '错误',
         abnormal: '异常',
       },
@@ -86,8 +79,16 @@ const env: LViewsEnv = {
     config: {
       form: {
         name: '名称',
-        cmd: '命令',
+        execCmd: '执行命令',
+        pkgCmd: '依赖管理命令',
         proxy: '代理',
+      },
+    },
+    configSetup: {
+      form: {
+        status: '状态',
+        version: '版本',
+        error: '错误',
       },
     },
     task: {

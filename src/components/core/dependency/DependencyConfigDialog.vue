@@ -66,13 +66,24 @@ defineOptions({ name: 'ClDependencyConfigDialog' });
       </cl-form-item>
       <cl-form-item
         :span="4"
-        :label="t('views.env.deps.config.form.cmd')"
-        prop="cmd"
+        :label="t('views.env.deps.config.form.execCmd')"
+        prop="exec_cmd"
         required
       >
         <el-input
-          v-model="form.cmd"
-          :placeholder="t('views.env.deps.config.form.cmd')"
+          v-model="form.exec_cmd"
+          :placeholder="t('views.env.deps.config.form.execCmd')"
+        />
+      </cl-form-item>
+      <cl-form-item
+        :span="4"
+        :label="t('views.env.deps.config.form.pkgCmd')"
+        prop="pkg_cmd"
+        required
+      >
+        <el-input
+          v-model="form.pkg_cmd"
+          :placeholder="t('views.env.deps.config.form.pkgCmd')"
         />
       </cl-form-item>
       <cl-form-item
