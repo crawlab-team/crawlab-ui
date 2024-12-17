@@ -79,6 +79,8 @@ export declare global {
   }
 
   interface DependencySetupForm {
+    node_id?: string;
+    version?: string;
     mode?: 'all' | 'selected-nodes';
     node_ids?: string[];
     nodes?: CNode[];

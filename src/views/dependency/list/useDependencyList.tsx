@@ -185,7 +185,11 @@ const useDependencyList = () => {
   };
 
   const onClickConfigSetup = async (row: DependencyConfigSetup) => {
-    store.commit(`${ns}/setActiveConfigSetup`, row._id);
+    store.commit(`${ns}/setActiveConfigSetup`, row);
+    store.commit(`${ns}/setSetupForm`, {
+      node_id: row.node_id,
+      version: state.config?.default_version,
+    });
     store.commit(`${ns}/showDialog`, 'setup');
   };
 
@@ -600,7 +604,6 @@ const useDependencyList = () => {
       id: 'installed',
       title: `${t('views.env.deps.repos.tabs.installed')} (${state.tableTotal})`,
       icon: ['fas', 'cubes'],
-      disabled: state.tableLoading,
     };
     let searchItem: NavItem = {
       id: 'search',
@@ -609,7 +612,6 @@ const useDependencyList = () => {
       id: 'nodes',
       title: t('views.env.deps.repos.tabs.nodes'),
       icon: ['fas', 'server'],
-      disabled: state.configSetupTableLoading,
     };
     switch (lang.value) {
       case 'python':
@@ -653,13 +655,6 @@ const useDependencyList = () => {
           title: '',
           icon: ['fas', 'search'],
         };
-    }
-    if (state.searchRepoTableLoading) {
-      searchItem = {
-        ...searchItem,
-        icon: ['fa', 'spinner'],
-        iconSpinning: true,
-      };
     }
     if (state.searchQuery) {
       searchItem.title = `${searchItem.title} (${state.searchRepoTableTotal})`;

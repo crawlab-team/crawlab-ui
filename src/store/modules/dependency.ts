@@ -158,9 +158,7 @@ const mutations = {
     state.setupForm = form;
   },
   resetSetupForm: (state: DependencyStoreState): void => {
-    state.setupForm = {
-      mode: 'all',
-    };
+    state.setupForm = {};
   },
   setSetupLoading: (state: DependencyStoreState, loading: boolean): void => {
     state.setupLoading = loading;
@@ -430,9 +428,19 @@ const actions = {
     { id }: { id: string }
   ) => {
     const { lang, setupForm } = state;
+    const { node_id, version, mode, node_ids } = setupForm;
+    let payload: Record<string, any> = {
+      mode,
+      version,
+    };
+    if (node_id) {
+      payload.node_ids = [node_id];
+    } else {
+      payload.node_ids = node_ids;
+    }
     commit('setSetupLoading', true);
     try {
-      await post(`${endpoint}/configs/${lang}/setups/${id}/install`, setupForm);
+      await post(`${endpoint}/configs/${lang}/setups/${id}/install`, payload);
       ElMessage.success(t('common.message.success.startInstall'));
     } catch (e: any) {
       ElMessage.error(e.message);

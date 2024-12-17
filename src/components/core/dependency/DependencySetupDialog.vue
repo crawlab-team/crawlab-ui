@@ -16,9 +16,13 @@ const activeConfigSetup = computed(() => state.activeConfigSetup);
 const activeNodes = computed(() => nodeState.allList.filter(n => n.active));
 
 const toInstallNodes = computed(() => {
-  const { mode, node_ids } = state.setupForm;
-  if (mode === 'all') return activeNodes.value;
-  return activeNodes.value.filter(n => node_ids?.includes(n._id!));
+  const { mode, node_ids, node_id } = state.setupForm;
+  if (node_id) {
+    return activeNodes.value.filter(n => n._id === node_id);
+  } else {
+    if (mode === 'all') return activeNodes.value;
+    return activeNodes.value.filter(n => node_ids?.includes(n._id!));
+  }
 });
 
 const visible = computed(() => state.activeDialogKey === 'setup');
@@ -29,12 +33,13 @@ const loading = computed(() => state.setupLoading);
 
 const confirmButtonDisabled = computed(() => {
   if (loading.value) return true;
+  if (!activeConfigSetup.value?._id) return true;
   return toInstallNodes.value.length === 0;
 });
 const onConfirm = async () => {
   if (confirmButtonDisabled.value) return;
   await store.dispatch(`${ns}/installConfigSetup`, {
-    id: activeConfigSetup.value,
+    id: activeConfigSetup.value?._id,
   });
   store.commit(`${ns}/hideDialog`);
   await store.dispatch(`${ns}/getConfigSetupList`);
@@ -74,42 +79,56 @@ defineOptions({ name: 'ClDependencySetupDialog' });
           size="small"
         />
       </cl-form-item>
-      <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.mode')">
-        <el-select v-model="form.mode">
-          <el-option
-            value="all"
-            :label="t('views.env.deps.dependency.form.allNodes')"
-          />
-          <el-option
-            value="selected-nodes"
-            :label="t('views.env.deps.dependency.form.selectedNodes')"
-          />
-        </el-select>
-      </cl-form-item>
       <cl-form-item
-        v-if="form.mode === 'selected-nodes'"
         :span="4"
-        :label="t('views.env.deps.dependency.form.selectedNodes')"
-        required
+        :label="t('views.env.deps.configSetup.form.version')"
       >
-        <el-select
-          v-model="form.node_ids"
-          multiple
-          :placeholder="t('views.env.deps.dependency.form.selectedNodes')"
-        >
-          <el-option
-            v-for="n in activeNodes"
-            :key="n.key"
-            :value="n._id"
-            :label="n.name"
-          >
-            <span style="margin-right: 5px">
-              <cl-node-tag :node="n" icon-only />
-            </span>
-            <span>{{ n.name }}</span>
-          </el-option>
-        </el-select>
+        <el-input
+          v-model="form.version"
+          :placeholder="t('views.env.deps.configSetup.form.version')"
+        />
       </cl-form-item>
+      <template v-if="!form.node_id">
+        <cl-form-item
+          :span="4"
+          :label="t('views.env.deps.dependency.form.mode')"
+        >
+          <el-select v-model="form.mode">
+            <el-option
+              value="all"
+              :label="t('views.env.deps.dependency.form.allNodes')"
+            />
+            <el-option
+              value="selected-nodes"
+              :label="t('views.env.deps.dependency.form.selectedNodes')"
+            />
+          </el-select>
+        </cl-form-item>
+        <cl-form-item
+          v-if="form.mode === 'selected-nodes'"
+          :span="4"
+          :label="t('views.env.deps.dependency.form.selectedNodes')"
+          required
+        >
+          <el-select
+            v-model="form.node_ids"
+            multiple
+            :placeholder="t('views.env.deps.dependency.form.selectedNodes')"
+          >
+            <el-option
+              v-for="n in activeNodes"
+              :key="n.key"
+              :value="n._id"
+              :label="n.name"
+            >
+              <span style="margin-right: 5px">
+                <cl-node-tag :node="n" icon-only />
+              </span>
+              <span>{{ n.name }}</span>
+            </el-option>
+          </el-select>
+        </cl-form-item>
+      </template>
       <cl-form-item :label="t('views.env.deps.dependency.form.toInstallNodes')">
         <template v-if="toInstallNodes.length > 0">
           <cl-node-tag v-for="n in toInstallNodes" :key="n.key" :node="n" />

@@ -72,6 +72,7 @@ interface LViewsEnv {
         execCmd: string;
         pkgCmd: string;
         proxy: string;
+        defaultVersion: string;
       };
     };
     configSetup: {
