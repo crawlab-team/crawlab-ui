@@ -76,7 +76,6 @@ defineOptions({ name: 'ClDependencySetupDialog' });
           class="dep-name"
           type="primary"
           :label="config?.name"
-          size="small"
         />
       </cl-form-item>
       <cl-form-item

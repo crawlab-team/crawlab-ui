@@ -42,6 +42,27 @@ const env: LViewsEnv = {
         },
         nodes: 'Nodes',
       },
+      empty: {
+        configNotSetup: {
+          title: 'Dependency environment not installed',
+          content:
+            'Please install the dependency environment (or programming language) first',
+          action: {
+            label: 'Install now',
+            tooltip:
+              'Install the dependency environment (or programming language)',
+          },
+        },
+        java: {
+          title: 'Global dependency not supported',
+          content:
+            'Java (Maven) does not support installation/uninstallation of global dependencies. Please manage within spiders.',
+          action: {
+            label: 'Manage within spiders',
+            tooltip: 'Manage in the dependencies tab within spiders',
+          },
+        },
+      },
     },
     lang: {
       python: 'Python',
@@ -82,6 +103,7 @@ const env: LViewsEnv = {
         execCmd: 'Execute Command',
         pkgCmd: 'Package Command',
         proxy: 'Proxy',
+        defaultVersion: 'Default Version',
       },
     },
     configSetup: {

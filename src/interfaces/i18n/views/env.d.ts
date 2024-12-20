@@ -32,6 +32,24 @@ interface LViewsEnv {
         };
         nodes: string;
       };
+      empty: {
+        configNotSetup: {
+          title: string;
+          content: string;
+          action: {
+            label: string;
+            tooltip: string;
+          };
+        };
+        java: {
+          title: string;
+          content: string;
+          action: {
+            label: string;
+            tooltip: string;
+          };
+        };
+      };
     };
     lang: {
       python: string;

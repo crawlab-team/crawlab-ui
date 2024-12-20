@@ -73,7 +73,6 @@ defineOptions({ name: 'ClDependencyInstallDialog' });
           class="dep-name"
           type="primary"
           :label="form.name"
-          size="small"
         />
       </cl-form-item>
       <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.mode')">

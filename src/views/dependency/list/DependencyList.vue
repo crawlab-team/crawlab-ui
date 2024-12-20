@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { useDependencyList } from '@/views';
-import { getIconByAction, translate } from '@/utils';
+import { getIconByAction, getIconByRouteConcept, translate } from '@/utils';
 import { ACTION_FILTER_SEARCH } from '@/constants';
 
 const t = translate;
@@ -10,6 +10,8 @@ const ns: ListStoreNamespace = 'dependency';
 const store = useStore();
 
 const {
+  config,
+  lang,
   actionFunctions,
   navActions,
   tableLoading,
@@ -20,6 +22,8 @@ const {
   repoTabName,
   repoTabItems,
   onClickTableEmptySearch,
+  onClickTableEmptyConfigNotSetup,
+  onClickTableEmptyJava,
 } = useDependencyList();
 
 const onTabSelect = (key: string) => {
@@ -49,13 +53,41 @@ defineOptions({ name: 'ClDependencyList' });
       />
     </template>
     <template #table-empty>
-      <cl-label-button
-        size="large"
-        :icon="getIconByAction(ACTION_FILTER_SEARCH)"
-        :label="t('views.env.deps.repos.actions.search.label')"
-        :tooltip="t('views.env.deps.repos.actions.search.tooltip')"
-        @click="onClickTableEmptySearch"
-      />
+      <template v-if="['installed', 'search'].includes(repoTabName!)">
+        <template v-if="!config?.setup">
+          <h3>{{ t('views.env.deps.repos.empty.configNotSetup.title') }}</h3>
+          <p>{{ t('views.env.deps.repos.empty.configNotSetup.content') }}</p>
+          <cl-label-button
+            size="large"
+            :icon="getIconByRouteConcept('node')"
+            :label="t('views.env.deps.repos.empty.configNotSetup.action.label')"
+            :tooltip="
+              t('views.env.deps.repos.empty.configNotSetup.action.tooltip')
+            "
+            @click="onClickTableEmptyConfigNotSetup"
+          />
+        </template>
+        <template v-else-if="repoTabName === 'installed' && lang === 'java'">
+          <h3>{{ t('views.env.deps.repos.empty.java.title') }}</h3>
+          <p>{{ t('views.env.deps.repos.empty.java.content') }}</p>
+          <cl-label-button
+            size="large"
+            :icon="getIconByRouteConcept('spider')"
+            :label="t('views.env.deps.repos.empty.java.action.label')"
+            :tooltip="t('views.env.deps.repos.empty.java.action.tooltip')"
+            @click="onClickTableEmptyJava"
+          />
+        </template>
+        <template v-else>
+          <cl-label-button
+            size="large"
+            :icon="getIconByAction(ACTION_FILTER_SEARCH)"
+            :label="t('views.env.deps.repos.actions.search.label')"
+            :tooltip="t('views.env.deps.repos.actions.search.tooltip')"
+            @click="onClickTableEmptySearch"
+          />
+        </template>
+      </template>
     </template>
     <template #extra>
       <!-- Dialogs (handled by store) -->
@@ -68,3 +100,11 @@ defineOptions({ name: 'ClDependencyList' });
     </template>
   </cl-list-layout>
 </template>
+
+<style scoped>
+.dependency-list {
+  &:deep(.el-table__empty-text) {
+    line-height: 1.2;
+  }
+}
+</style>

@@ -1,4 +1,4 @@
-import { computed, onBeforeMount, watch } from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { getStore } from '@/store';
 import { useList } from '@/layouts/content';
@@ -29,6 +29,7 @@ import {
 import {
   getNormalizedDependencies,
   getRepoExternalPath,
+  getRepoName,
 } from '@/utils/dependency';
 import { TagProps } from '@/components/ui/tag/types';
 
@@ -245,42 +246,52 @@ const useDependencyList = () => {
             width: '150',
             value: (row: DependencyConfigSetup) => {
               let tagProps: TagProps;
-              switch (row.status) {
-                case 'installed':
-                  tagProps = {
-                    icon: ['fa', 'check'],
-                    type: 'success',
-                    clickable: true,
-                  };
-                  break;
-                case 'installing':
-                case 'uninstalling':
-                  tagProps = {
-                    icon: ['fa', 'spinner'],
-                    type: 'warning',
-                    spinning: true,
-                    clickable: true,
-                  };
-                  break;
-                case 'error':
-                case 'abnormal':
-                  tagProps = {
-                    icon: ['fa', 'times'],
-                    type: 'danger',
-                    clickable: true,
-                  };
-                  break;
-                default:
-                  tagProps = {
-                    icon: getIconByAction(ACTION_INSTALL),
-                    type: 'info',
-                    clickable: true,
-                  };
+              let label: string;
+              if (!row.node?.active) {
+                label = t('common.status.unknown');
+                tagProps = {
+                  icon: ['fa', 'question'],
+                  type: 'info',
+                };
+              } else {
+                switch (row.status) {
+                  case 'installed':
+                    tagProps = {
+                      icon: ['fa', 'check'],
+                      type: 'success',
+                      clickable: true,
+                    };
+                    break;
+                  case 'installing':
+                  case 'uninstalling':
+                    tagProps = {
+                      icon: ['fa', 'spinner'],
+                      type: 'warning',
+                      spinning: true,
+                      clickable: true,
+                    };
+                    break;
+                  case 'error':
+                  case 'abnormal':
+                    tagProps = {
+                      icon: ['fa', 'times'],
+                      type: 'danger',
+                      clickable: true,
+                    };
+                    break;
+                  default:
+                    tagProps = {
+                      icon: getIconByAction(ACTION_INSTALL),
+                      type: 'info',
+                      clickable: true,
+                    };
+                }
+                label = t(`views.env.deps.dependency.status.${row.status}`);
               }
               return (
                 <ClTag
                   {...tagProps}
-                  label={t(`views.env.deps.dependency.status.${row.status}`)}
+                  label={label}
                   onClick={async () => {
                     switch (row.status) {
                       case 'uninstalled':
@@ -310,7 +321,8 @@ const useDependencyList = () => {
             buttons: (_: DependencyConfigSetup) => [
               {
                 tooltip: t('common.actions.install'),
-                disabled: row => row.status === 'installing',
+                disabled: row =>
+                  !row.node?.active || row.status === 'installing',
                 onClick: onClickConfigSetup,
                 action: ACTION_INSTALL,
               },
@@ -327,8 +339,9 @@ const useDependencyList = () => {
             width: '200',
             value: (row: DependencyRepo) => {
               const path = getRepoExternalPath(row);
-              if (!path) return row.name;
-              return <ClNavLink label={row.name} path={path} external />;
+              const name = getRepoName(row);
+              if (!path) return name || row.name;
+              return <ClNavLink label={name} path={path} external />;
             },
           },
           {
@@ -512,14 +525,12 @@ const useDependencyList = () => {
     ]);
   };
 
+  // config
+  const config = computed<DependencyConfig | undefined>(() => state.config);
+
   // programming language
   const lang = computed<DependencyLang>(() => state.lang);
-  watch(lang, async () => {
-    await getData();
-    if (!state.config?.setup) {
-      store.commit(`${ns}/setRepoTabName`, 'nodes');
-    }
-  });
+  watch(lang, getData);
 
   // table data
   const tableLoading = computed(() => {
@@ -670,6 +681,19 @@ const useDependencyList = () => {
     elVNodeCtx?.exposed?.focus?.();
   };
 
+  const onClickTableEmptyConfigNotSetup = () => {
+    store.commit(`${ns}/setRepoTabName`, 'nodes');
+  };
+
+  const onClickTableEmptyJava = async () => {
+    await router.push('/spiders');
+  };
+
+  onBeforeUnmount(() => {
+    store.commit(`${ns}/setLang`, 'python');
+    store.commit(`${ns}/setRepoTabName`, 'installed');
+  });
+
   // options
   const opts = {
     navActions,
@@ -688,6 +712,7 @@ const useDependencyList = () => {
 
   return {
     ...useList<Dependency>(ns, store, opts),
+    config,
     lang,
     tableLoading,
     tableColumns,
@@ -698,6 +723,8 @@ const useDependencyList = () => {
     repoTabName,
     repoTabItems,
     onClickTableEmptySearch,
+    onClickTableEmptyConfigNotSetup,
+    onClickTableEmptyJava,
   };
 };
 

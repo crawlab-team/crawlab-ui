@@ -42,6 +42,24 @@ const env: LViewsEnv = {
         },
         nodes: '节点',
       },
+      empty: {
+        configNotSetup: {
+          title: '依赖环境未安装',
+          content: '请先安装依赖环境（或编程语言）',
+          action: {
+            label: '立即安装',
+            tooltip: '安装依赖环境（或编程语言）',
+          },
+        },
+        java: {
+          title: '不支持全局依赖',
+          content: 'Java（Maven）不支持全局依赖的安装/卸载。请在爬虫内管理。',
+          action: {
+            label: '在爬虫内管理',
+            tooltip: '在爬虫内的依赖选项卡中管理',
+          },
+        },
+      },
     },
     lang: {
       python: 'Python',
@@ -82,6 +100,7 @@ const env: LViewsEnv = {
         execCmd: '执行命令',
         pkgCmd: '依赖管理命令',
         proxy: '代理',
+        defaultVersion: '默认版本',
       },
     },
     configSetup: {

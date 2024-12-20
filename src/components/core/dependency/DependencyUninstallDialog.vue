@@ -73,7 +73,6 @@ defineOptions({ name: 'ClDependencyUninstallDialog' });
           class="dep-name"
           type="primary"
           :label="name"
-          size="small"
         />
       </cl-form-item>
       <cl-form-item :span="4" :label="t('views.env.deps.dependency.form.mode')">

@@ -4,8 +4,26 @@ export const getRepoExternalPath = (repo: DependencyRepo) => {
       return `https://pypi.org/project/${repo.name}`;
     case 'node':
       return `https://www.npmjs.com/package/${repo.name}`;
+    case 'go':
+      return `https://pkg.go.dev/${repo.name}`;
+    case 'java':
+      return `https://mvnrepository.com/artifact/${getRepoName(repo)}`;
     default:
       return '';
+  }
+};
+
+export const getRepoName = (repo: DependencyRepo) => {
+  switch (repo.type) {
+    case 'go':
+      if (repo.name!.startsWith('github.com/')) {
+        return repo.name!.split('github.com/')[1];
+      }
+      return repo.name;
+    case 'java':
+      return repo.name!.replaceAll(':', '/');
+    default:
+      return repo.name;
   }
 };
 
