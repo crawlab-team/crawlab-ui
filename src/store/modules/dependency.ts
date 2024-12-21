@@ -423,10 +423,10 @@ const actions = {
       commit('setConfigSetupTableLoading', false);
     }
   },
-  installConfigSetup: async (
-    { state, commit }: StoreActionContext<DependencyStoreState>,
-    { id }: { id: string }
-  ) => {
+  installConfigSetup: async ({
+    state,
+    commit,
+  }: StoreActionContext<DependencyStoreState>) => {
     const { lang, setupForm } = state;
     const { node_id, version, mode, node_ids } = setupForm;
     let payload: Record<string, any> = {
@@ -440,7 +440,7 @@ const actions = {
     }
     commit('setSetupLoading', true);
     try {
-      await post(`${endpoint}/configs/${lang}/setups/${id}/install`, payload);
+      await post(`${endpoint}/configs/${lang}/setups/install`, payload);
       ElMessage.success(t('common.message.success.startInstall'));
     } catch (e: any) {
       ElMessage.error(e.message);

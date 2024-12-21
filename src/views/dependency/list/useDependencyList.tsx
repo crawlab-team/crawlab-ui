@@ -698,7 +698,7 @@ const useDependencyList = () => {
   };
 
   const onClickTableEmptyConfigNotSetup = () => {
-    store.commit(`${ns}/setRepoTabName`, 'nodes');
+    store.commit(`${ns}/showDialog`, 'setup');
   };
 
   const onClickTableEmptyJava = async () => {

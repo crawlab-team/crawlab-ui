@@ -124,6 +124,6 @@ export declare global {
     getDependencyConfig: StoreAction<DependencyStoreState>;
     saveDependencyConfig: StoreAction<DependencyStoreState>;
     getConfigSetupList: StoreAction<DependencyStoreState>;
-    installConfigSetup: StoreAction<DependencyStoreState, { id: string }>;
+    installConfigSetup: StoreAction<DependencyStoreState>;
   }
 }
