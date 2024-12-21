@@ -30,6 +30,10 @@ const env: LViewsEnv = {
           label: '搜索依赖',
           tooltip: '搜索并安装依赖',
         },
+        installEnvironments: {
+          label: '安装环境',
+          tooltip: '安装依赖环境（或编程语言）',
+        },
       },
       tabs: {
         installed: '已安装',

@@ -20,7 +20,6 @@ defineOptions({ name: 'ClNavActionGroup' });
   align-items: start;
   gap: 10px;
   box-sizing: border-box;
-  flex-wrap: wrap;
   position: relative;
   margin-right: 10px;
 

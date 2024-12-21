@@ -30,6 +30,10 @@ const env: LViewsEnv = {
           label: 'Search Dependencies',
           tooltip: 'Search and install dependencies',
         },
+        installEnvironments: {
+          label: 'Install Envs',
+          tooltip: 'Install dependency environments (or programming languages)',
+        },
       },
       tabs: {
         installed: 'Installed',

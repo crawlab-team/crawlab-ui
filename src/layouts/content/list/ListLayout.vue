@@ -289,7 +289,7 @@ defineOptions({ name: 'ClListLayout' });
           width: 200px;
         }
 
-        &:deep(.label) {
+        &:deep(label.label) {
           margin-right: 5px;
           font-size: 14px;
         }

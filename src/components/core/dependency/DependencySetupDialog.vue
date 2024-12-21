@@ -33,7 +33,6 @@ const loading = computed(() => state.setupLoading);
 
 const confirmButtonDisabled = computed(() => {
   if (loading.value) return true;
-  if (!activeConfigSetup.value?._id) return true;
   return toInstallNodes.value.length === 0;
 });
 const onConfirm = async () => {

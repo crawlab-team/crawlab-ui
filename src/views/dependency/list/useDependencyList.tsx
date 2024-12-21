@@ -158,6 +158,22 @@ const useDependencyList = () => {
             store.commit(`${ns}/showDialog`, 'config');
           },
         },
+        {
+          className: 'setup-btn',
+          buttonType: 'label',
+          label: t('views.env.deps.repos.actions.installEnvironments.label'),
+          tooltip: t(
+            'views.env.deps.repos.actions.installEnvironments.tooltip'
+          ),
+          icon: ['fa', 'server'],
+          onClick: async () => {
+            store.commit(`${ns}/setSetupForm`, {
+              mode: 'all',
+              version: state.config?.default_version,
+            });
+            store.commit(`${ns}/showDialog`, 'setup');
+          },
+        },
       ],
     },
   ]);

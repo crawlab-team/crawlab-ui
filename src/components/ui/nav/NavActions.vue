@@ -45,5 +45,29 @@ defineOptions({ name: 'ClNavActions' });
   &.unmounted {
     position: absolute;
   }
+
+  &:hover {
+    &::-webkit-scrollbar {
+      display: block;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    height: 4px;
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: var(
+      --el-scrollbar-bg-color,
+      var(--el-text-color-secondary)
+    );
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 2px;
+    background-color: var(--el-fill-color-light);
+  }
 }
 </style>

@@ -20,6 +20,10 @@ interface LViewsEnv {
           label: string;
           tooltip: string;
         };
+        installEnvironments: {
+          label: string;
+          tooltip: string;
+        };
       };
       tabs: {
         installed: string;
