@@ -1,12 +1,21 @@
 export declare global {
-  interface DependencySetting extends BaseModel {
+  interface DependencyConfig extends BaseModel {
     key?: string;
     name?: string;
-    description?: string;
     enabled?: boolean;
-    cmd?: string;
+    exec_cmd?: string;
+    pkg_cmd?: string;
     proxy?: string;
-    last_update_ts?: string;
+    setup?: boolean;
+  }
+
+  interface DependencyConfigSetup extends BaseModel {
+    dependency_config_id?: string;
+    node_id?: string;
+    version?: string;
+    status?: DependencyStatus;
+    error?: string;
+    node?: CNode;
   }
 
   type DependencyStatus =
@@ -47,7 +56,7 @@ export declare global {
     type?: DependencyLang;
   }
 
-  type DependencyRepoTabName = 'installed' | 'search';
+  type DependencyRepoTabName = 'installed' | 'search' | 'nodes';
 
   interface DependencyLog extends BaseModel {
     dependency_id?: string;
@@ -63,11 +72,19 @@ export declare global {
   }
 
   interface DependencyUninstallForm {
-    mode?: string;
+    mode?: 'all' | 'selected-nodes';
     names?: string[];
     node_ids?: string[];
     nodes?: CNode[];
   }
 
-  type DependencyLang = 'python' | 'node';
+  interface DependencySetupForm {
+    node_id?: string;
+    version?: string;
+    mode?: 'all' | 'selected-nodes';
+    node_ids?: string[];
+    nodes?: CNode[];
+  }
+
+  type DependencyLang = 'python' | 'node' | 'go' | 'java' | 'browser';
 }

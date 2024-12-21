@@ -6,7 +6,7 @@ type GitStoreModule = BaseModule<
 >;
 
 interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
-  activeDialogKey?: DialogKey | 'createBranch';
+  activeDialogKey?: DialogKey | 'createBranch' | 'createSpider';
   gitChangeSelection: TableData<GitChange>;
   gitRemoteRefs: GitRef[];
   currentBranch?: GitRef;
@@ -16,9 +16,10 @@ interface GitStoreState extends BaseStoreState<Git>, BaseFileStoreState {
   gitLogs: GitLog[];
   gitDiff: GitDiff;
   activeFilePath?: string;
+  createSpiderLoading?: boolean;
 }
 
-interface GitStoreGetters extends BaseStoreGetters<Git> {
+interface GitStoreGetters extends BaseStoreGetters<Git>, BaseFileStoreGetters {
   gitBranchSelectOptions: StoreGetter<GitStoreState, SelectOption[]>;
 }
 
@@ -43,6 +44,7 @@ interface GitStoreMutations
   resetGitDiff: StoreMutation<GitStoreState>;
   setActiveFilePath: StoreMutation<GitStoreState, string>;
   resetActiveFilePath: StoreMutation<GitStoreState>;
+  setCreateSpiderLoading: StoreMutation<GitStoreState, boolean>;
 }
 
 interface GitStoreActions
@@ -76,6 +78,7 @@ interface GitStoreActions
   gitCheckoutTag: StoreAction<GitStoreState, { id: string; tag: string }>;
   gitPull: StoreAction<GitStoreState, { id: string }>;
   gitCommit: StoreAction<GitStoreState, { id: string; commit_message: string }>;
+  gitFileDiff: StoreAction<GitStoreState, { id: string }>;
+  clickCreateSpider: StoreAction<GitStoreState, FileNavItem | undefined>;
   createSpider: StoreAction<GitStoreState, { id: string; spider: Spider }>;
-  getFileDiff: StoreAction<GitStoreState, { id: string; path: string }>;
 }

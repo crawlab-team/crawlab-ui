@@ -11,5 +11,6 @@ export declare global {
   interface FileEditorStyle {
     backgroundColor?: string;
     color?: string;
+    borderColor?: string;
   }
 }

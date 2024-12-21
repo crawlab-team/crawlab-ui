@@ -10,7 +10,7 @@ export declare global {
     status?: string;
     enabled?: boolean;
     active?: boolean;
-    available_runners?: number;
+    current_runners?: number;
     max_runners?: number;
   }
 }

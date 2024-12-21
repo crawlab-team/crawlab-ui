@@ -11,11 +11,11 @@ export declare global {
   interface RootStoreState {
     common: CommonStoreState;
     layout: LayoutStoreState;
+    file: FileStoreState;
     node: NodeStoreState;
     project: ProjectStoreState;
     spider: SpiderStoreState;
     task: TaskStoreState;
-    file: FileStoreState;
     dataCollection: DataCollectionStoreState;
     schedule: ScheduleStoreState;
     user: UserStoreState;

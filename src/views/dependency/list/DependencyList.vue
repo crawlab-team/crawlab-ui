@@ -106,5 +106,9 @@ defineOptions({ name: 'ClDependencyList' });
   &:deep(.el-table__empty-text) {
     line-height: 1.2;
   }
+
+  &:deep(.form .tag) {
+    margin-right: 0;
+  }
 }
 </style>

@@ -29,6 +29,7 @@ export declare global {
   interface ListAction {
     id?: string;
     label?: string;
+    prefixIcon?: Icon;
     action?: string;
     className?: string;
     size?: BasicSize;

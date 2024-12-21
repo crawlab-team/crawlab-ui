@@ -169,6 +169,7 @@ export declare global {
       default: string;
       other: string;
       all: string;
+      unlimited: string;
     };
     placeholder: {
       empty: string;

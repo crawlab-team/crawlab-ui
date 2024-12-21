@@ -13,6 +13,8 @@ interface LComponentsFile {
       rename: string;
       duplicate: string;
       delete: string;
+      createSpider: string;
+      deleteSpider: string;
     };
     sidebar: {
       search: {
