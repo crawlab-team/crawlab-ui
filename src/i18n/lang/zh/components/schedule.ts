@@ -32,6 +32,11 @@ const schedule: LComponentsSchedule = {
       next: '下一时刻',
     },
   },
+  dialog: {
+    run: {
+      title: '运行定时任务',
+    },
+  },
 };
 
 export default schedule;

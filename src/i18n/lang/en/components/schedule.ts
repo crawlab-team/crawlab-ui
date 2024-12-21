@@ -33,6 +33,11 @@ const schedule: LComponentsSchedule = {
       next: 'Next',
     },
   },
+  dialog: {
+    run: {
+      title: 'Run Schedule',
+    },
+  },
 };
 
 export default schedule;

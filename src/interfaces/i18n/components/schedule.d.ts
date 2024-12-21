@@ -32,4 +32,9 @@ interface LComponentsSchedule {
       next: string;
     };
   };
+  dialog: {
+    run: {
+      title: string;
+    };
+  };
 }

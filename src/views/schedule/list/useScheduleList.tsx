@@ -41,6 +41,7 @@ const useScheduleList = () => {
   const ns = 'schedule';
   const store = useStore<RootStoreState>();
   const { commit } = store;
+  const { schedule: state } = store.state;
 
   // use list
   const { actionFunctions } = useList<Schedule>(ns, store);
@@ -293,24 +294,9 @@ const useScheduleList = () => {
             },
             {
               tooltip: t('common.actions.run'),
-              onClick: async row => {
-                await ElMessageBox.confirm(
-                  t('common.messageBox.confirm.run'),
-                  t('common.actions.run'),
-                  {
-                    type: 'warning',
-                    confirmButtonText: t('common.actions.confirm'),
-                    cancelButtonText: t('common.actions.cancel'),
-                  }
-                );
-                await store.dispatch('task/create', {
-                  mode: row.mode,
-                  priority: row.priority,
-                  spider_id: row.spider_id,
-                  cmd: row.cmd,
-                  param: row.param,
-                });
-                ElMessage.success(t('common.message.success.run'));
+              onClick: row => {
+                store.commit(`${ns}/setForm`, row);
+                store.commit(`${ns}/showDialog`, 'run');
               },
               action: ACTION_RUN,
             },

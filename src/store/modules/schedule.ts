@@ -45,6 +45,12 @@ const actions = {
   disable: async (ctx: StoreActionContext, id: string) => {
     return await post(`/schedules/${id}/disable`);
   },
+  runById: async (
+    ctx: StoreActionContext,
+    { id, options }: { id: string; options: SpiderRunOptions }
+  ) => {
+    return await post(`/schedules/${id}/run`, options);
+  },
 } as ScheduleStoreActions;
 
 export default {

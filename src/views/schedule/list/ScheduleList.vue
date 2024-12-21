@@ -14,6 +14,7 @@ const {
   tablePagination,
   actionFunctions,
 } = useScheduleList();
+
 defineOptions({ name: 'ClScheduleList' });
 </script>
 
@@ -32,6 +33,7 @@ defineOptions({ name: 'ClScheduleList' });
     <template #extra>
       <!-- Dialogs (handled by store) -->
       <cl-create-edit-schedule-dialog />
+      <cl-run-schedule-dialog />
       <!-- ./Dialogs -->
     </template>
   </cl-list-layout>

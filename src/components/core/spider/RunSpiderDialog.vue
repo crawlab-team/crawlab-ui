@@ -4,24 +4,33 @@ import { useStore } from 'vuex';
 import useSpider from '@/components/core/spider/useSpider';
 import useNode from '@/components/core/node/useNode';
 import { TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODES } from '@/constants/task';
-import useTask from '@/components/core/task/useTask';
 import { ElMessage } from 'element-plus';
 import { priorityOptions, translate } from '@/utils';
+
+const props = withDefaults(
+  defineProps<{
+    ns?: ListStoreNamespace;
+  }>(),
+  {
+    ns: 'spider',
+  }
+);
 
 // i18n
 const t = translate;
 
 // store
-const ns = 'spider';
 const store = useStore();
-const { spider: state } = store.state as RootStoreState;
 
 const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
 
-const { modeOptions, form } = useSpider(store);
+const { modeOptions } = useSpider(store);
 
-// spider
-const spider = computed<Spider>(() => form.value);
+// form
+const form = computed(() => {
+  const { ns } = props;
+  return store.state[ns].form;
+});
 
 // form ref
 const formRef = ref();
@@ -29,10 +38,10 @@ const formRef = ref();
 // get run options
 const getOptions = (): SpiderRunOptions => {
   return {
-    mode: spider.value.mode || TASK_MODE_RANDOM,
-    cmd: spider.value.cmd,
-    param: spider.value.param,
-    priority: spider.value.priority || 5,
+    mode: form.value.mode || TASK_MODE_RANDOM,
+    cmd: form.value.cmd,
+    param: form.value.param,
+    priority: form.value.priority || 5,
   };
 };
 
@@ -40,22 +49,29 @@ const getOptions = (): SpiderRunOptions => {
 const options = ref<SpiderRunOptions>(getOptions());
 
 // dialog visible
-const visible = computed<boolean>(() => state.activeDialogKey === 'run');
+const visible = computed<boolean>(() => {
+  const { ns } = props;
+  return store.state[ns].activeDialogKey === 'run';
+});
 
 // title
 const title = computed<string>(() => {
-  if (!spider.value) return t('components.spider.dialog.run.title');
-  return `${t('components.spider.dialog.run.title')} - ${spider.value.name}`;
+  const { ns } = props;
+  if (!form.value) return t(`components.${ns}.dialog.run.title`);
+  return `${t(`components.${ns}.dialog.run.title`)} - ${form.value.name}`;
 });
 
 const onClose = () => {
+  const { ns } = props;
   store.commit(`${ns}/hideDialog`);
+  store.commit(`${ns}/resetForm`);
 };
 
 const onConfirm = async () => {
+  const { ns } = props;
   await formRef.value?.validate();
   await store.dispatch(`${ns}/runById`, {
-    id: spider.value?._id,
+    id: form.value?._id,
     options: options.value,
   });
   store.commit(`${ns}/hideDialog`);
@@ -67,7 +83,7 @@ const updateOptions = () => {
   options.value = getOptions();
 };
 
-watch(() => spider.value, updateOptions);
+watch(() => form.value, updateOptions);
 onBeforeMount(updateOptions);
 defineOptions({ name: 'ClRunSpiderDialog' });
 </script>

@@ -23,7 +23,6 @@ const router = useRouter();
 const t = translate;
 
 // store
-const ns = 'task';
 const store = useStore();
 
 // use node
@@ -90,7 +89,6 @@ const onCancel = async () => {
   }
 };
 
-const noNodeId = computed<boolean>(() => isZeroObjectId(form.value?.node_id));
 const noScheduleId = computed<boolean>(() =>
   isZeroObjectId(form.value?.schedule_id)
 );
