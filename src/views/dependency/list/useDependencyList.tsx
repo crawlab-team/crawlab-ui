@@ -698,6 +698,10 @@ const useDependencyList = () => {
   };
 
   const onClickTableEmptyConfigNotSetup = () => {
+    store.commit(`${ns}/setSetupForm`, {
+      mode: 'all',
+      version: state.config?.default_version,
+    });
     store.commit(`${ns}/showDialog`, 'setup');
   };
 
