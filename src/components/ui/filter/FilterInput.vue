@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { debounce } from '@/utils';
 
-defineProps<{
+const props = defineProps<{
   id?: string;
   prefixIcon?: Icon;
   label?: string;
   placeholder?: string;
+  defaultValue?: any;
 }>();
 
 const emit = defineEmits<{
@@ -16,6 +17,9 @@ const emit = defineEmits<{
 }>();
 
 const internalModelValue = ref();
+onBeforeMount(() => {
+  internalModelValue.value = props.defaultValue;
+});
 
 const onChange = debounce((value: any) => {
   emit('change', value);

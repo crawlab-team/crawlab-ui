@@ -14,6 +14,7 @@ const props = withDefaults(
     options?: SelectOption[];
     optionsRemote?: FilterSelectOptionsRemote;
     noAllOption?: boolean;
+    defaultValue?: any;
   }>(),
   {
     clearable: true,
@@ -62,7 +63,11 @@ const getOptions = async () => {
 onBeforeMount(getOptions);
 
 const initializeModelValue = () => {
-  const { options, noAllOption } = props;
+  const { options, noAllOption, defaultValue } = props;
+  if (typeof defaultValue !== 'undefined') {
+    internalModelValue.value = defaultValue;
+    return;
+  }
   if (noAllOption) {
     internalModelValue.value = options ? options[0]?.value : undefined;
   }

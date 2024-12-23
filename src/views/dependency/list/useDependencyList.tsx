@@ -53,6 +53,7 @@ const useDependencyList = () => {
           action: ACTION_FILTER_SELECT,
           id: 'filter-select-lang',
           className: 'select-lang',
+          defaultValue: state.lang,
           onChange: value => {
             onListFilterChangeByKey(store, ns, 'type', FILTER_OP_EQUAL, {
               update: false,
@@ -710,8 +711,7 @@ const useDependencyList = () => {
   };
 
   onBeforeUnmount(() => {
-    store.commit(`${ns}/setLang`, 'python');
-    store.commit(`${ns}/setRepoTabName`, 'installed');
+    store.commit(`${ns}/setSearchQuery`, '');
   });
 
   // options

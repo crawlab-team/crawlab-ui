@@ -147,6 +147,7 @@ defineOptions({ name: 'ClListLayout' });
                 :label="item.label"
                 :placeholder="(item as ListActionFilter).placeholder"
                 :prefix-icon="(item as ListActionFilter).prefixIcon"
+                :default-value="(item as ListActionFilter).defaultValue"
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)
                 "
@@ -165,6 +166,7 @@ defineOptions({ name: 'ClListLayout' });
                 :options-remote="(item as ListActionFilter).optionsRemote"
                 :clearable="(item as ListActionFilter).clearable"
                 :no-all-option="(item as ListActionFilter).noAllOption"
+                :default-value="(item as ListActionFilter).defaultValue"
                 @change="
                   (value: any) => (item as ListActionFilter).onChange?.(value)
                 "
