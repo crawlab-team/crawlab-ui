@@ -36,7 +36,6 @@ defineOptions({ name: 'ClDependencyList' });
 <template>
   <cl-list-layout
     class="dependency-list"
-    :row-key="(row: DependencyRepo) => row.name"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-loading="tableLoading"
