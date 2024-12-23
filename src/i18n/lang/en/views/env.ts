@@ -30,6 +30,16 @@ const env: LViewsEnv = {
           label: 'Search Dependencies',
           tooltip: 'Search and install dependencies',
         },
+        searchNotReady: {
+          label: 'Search Dependencies (not ready yet)',
+          tooltip:
+            'Search dependencies is not ready because sync is in progress',
+          python: {
+            title: 'PyPI sync in progress',
+            content:
+              'Python dependency search requires all packages from pypi.org to be synced. Please wait a moment until the sync process is complete.',
+          },
+        },
         installEnvironments: {
           label: 'Install Envs',
           tooltip: 'Install dependency environments (or programming languages)',

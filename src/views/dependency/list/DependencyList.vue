@@ -53,8 +53,10 @@ defineOptions({ name: 'ClDependencyList' });
       />
     </template>
     <template #table-empty>
+      <!-- Empty table for installed and search tabs -->
       <template v-if="['installed', 'search'].includes(repoTabName!)">
         <template v-if="!config?.setup">
+          <!-- Config not setup -->
           <h3>{{ t('views.env.deps.repos.empty.configNotSetup.title') }}</h3>
           <p>{{ t('views.env.deps.repos.empty.configNotSetup.content') }}</p>
           <cl-label-button
@@ -67,6 +69,9 @@ defineOptions({ name: 'ClDependencyList' });
             @click="onClickTableEmptyConfigNotSetup"
           />
         </template>
+        <!-- ./Config not setup -->
+
+        <!-- Java -->
         <template v-else-if="repoTabName === 'installed' && lang === 'java'">
           <h3>{{ t('views.env.deps.repos.empty.java.title') }}</h3>
           <p>{{ t('views.env.deps.repos.empty.java.content') }}</p>
@@ -78,16 +83,53 @@ defineOptions({ name: 'ClDependencyList' });
             @click="onClickTableEmptyJava"
           />
         </template>
+        <!-- ./Java -->
+
+        <!-- Search -->
         <template v-else>
-          <cl-label-button
-            size="large"
-            :icon="getIconByAction(ACTION_FILTER_SEARCH)"
-            :label="t('views.env.deps.repos.actions.search.label')"
-            :tooltip="t('views.env.deps.repos.actions.search.tooltip')"
-            @click="onClickTableEmptySearch"
-          />
+          <template v-if="!config.search_ready">
+            <template v-if="lang === 'python'">
+              <h3>
+                {{
+                  t('views.env.deps.repos.actions.searchNotReady.python.title')
+                }}
+              </h3>
+              <p>
+                {{
+                  t(
+                    'views.env.deps.repos.actions.searchNotReady.python.content'
+                  )
+                }}
+              </p>
+            </template>
+            <cl-label-button
+              disabled
+              size="large"
+              :icon="getIconByAction(ACTION_FILTER_SEARCH)"
+              :label="t('views.env.deps.repos.actions.searchNotReady.label')"
+              :tooltip="
+                t('views.env.deps.repos.actions.searchNotReady.tooltip')
+              "
+            />
+          </template>
+          <template v-else>
+            <cl-label-button
+              size="large"
+              :icon="getIconByAction(ACTION_FILTER_SEARCH)"
+              :label="
+                t('views.env.deps.repos.actions.search.label') +
+                (config.total_dependencies
+                  ? ` (${config.total_dependencies.toLocaleString()})`
+                  : '')
+              "
+              :tooltip="t('views.env.deps.repos.actions.search.tooltip')"
+              @click="onClickTableEmptySearch"
+            />
+          </template>
         </template>
+        <!-- ./Search -->
       </template>
+      <!-- ./Empty table for installed and search tabs -->
     </template>
     <template #extra>
       <!-- Dialogs (handled by store) -->

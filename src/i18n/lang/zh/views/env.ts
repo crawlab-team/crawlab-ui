@@ -30,6 +30,15 @@ const env: LViewsEnv = {
           label: '搜索依赖',
           tooltip: '搜索并安装依赖',
         },
+        searchNotReady: {
+          label: '搜索依赖 (暂不可用)',
+          tooltip: '搜索依赖未准备好，因为同步正在进行中',
+          python: {
+            title: 'PyPI 同步进行中',
+            content:
+              'Python 依赖搜索需要从 pypi.org 同步所有包。请稍等片刻，直到同步过程完成。',
+          },
+        },
         installEnvironments: {
           label: '安装环境',
           tooltip: '安装依赖环境（或编程语言）',
