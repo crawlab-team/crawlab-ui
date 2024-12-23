@@ -9,7 +9,6 @@ const {
   tableData,
   tableTotal,
   selectableFunction,
-  rowKeyFunction,
 } = useGitList();
 
 defineOptions({ name: 'ClGitList' });
@@ -18,7 +17,6 @@ defineOptions({ name: 'ClGitList' });
 <template>
   <cl-list-layout
     class="git-list"
-    :row-key="rowKeyFunction"
     :action-functions="actionFunctions"
     :nav-actions="navActions"
     :table-pagination="tablePagination"

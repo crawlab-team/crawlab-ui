@@ -331,7 +331,6 @@ defineOptions({ name: 'ClDatabaseTableDetailData' });
   <cl-edit-table
     ref="tableRef"
     :key="JSON.stringify(tableData)"
-    :row-key="(row: DatabaseTableRow) => JSON.stringify(row)"
     :columns="tableColumns"
     :data="tableData"
     :page="tablePagination.page"

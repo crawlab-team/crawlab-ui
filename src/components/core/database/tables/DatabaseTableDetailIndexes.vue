@@ -399,7 +399,6 @@ defineOptions({ name: 'ClDatabaseTableDetailIndexes' });
   <cl-edit-table
     :loading="loading"
     :key="JSON.stringify(internalTable)"
-    :row-key="(row: DatabaseIndex) => JSON.stringify(row)"
     :columns="indexesTableColumns"
     :data="indexesTableData"
     :row-style="indexRowStyle"
@@ -418,7 +417,6 @@ defineOptions({ name: 'ClDatabaseTableDetailIndexes' });
   >
     <cl-edit-table
       :key="JSON.stringify([activeIndexColumnsRowIndex, activeIndexColumns])"
-      :row-key="(row: DatabaseIndexColumn) => JSON.stringify(row)"
       :columns="activeIndexColumnsColumns"
       :data="activeIndexColumnsData"
       fit

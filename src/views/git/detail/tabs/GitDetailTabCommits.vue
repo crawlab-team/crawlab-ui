@@ -112,9 +112,6 @@ defineOptions({ name: 'ClGitDetailTabCommits' });
         <el-table-v2
           :data="tableData"
           :columns="tableColumns"
-          :row-key="
-            ({ hash, timestamp }: GitRef) => [hash, timestamp].join('_')
-          "
           :total="allTableData.length"
           :border="false"
           :width="width"

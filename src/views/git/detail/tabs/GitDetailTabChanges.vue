@@ -189,10 +189,6 @@ defineOptions({ name: 'ClGitDetailTabChanges' });
       ref="tableRef"
       :data="tableData"
       :columns="tableColumns"
-      :row-key="
-        ({ path, worktree, staging }: GitChange) =>
-          [path, worktree, staging].join('_')
-      "
       height="100%"
       hide-footer
       :border="false"

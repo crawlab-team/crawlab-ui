@@ -345,7 +345,6 @@ defineOptions({ name: 'ClDatabaseTableDetailColumns' });
   <cl-edit-table
     :loading="loading"
     :key="JSON.stringify(internalTable)"
-    :row-key="(row: DatabaseColumn) => JSON.stringify(row)"
     :columns="columnsTableColumns"
     :data="columnsTableData"
     :row-style="columnRowStyle"

@@ -310,7 +310,6 @@ defineOptions({ name: 'ClDatabaseDetailTabConsole' });
         <div class="results" v-if="activeResultsTabName === TAB_NAME_RESULTS">
           <cl-table
             :key="JSON.stringify(state.consoleQueryResults)"
-            :row-key="(row: DatabaseTableRow) => JSON.stringify(row)"
             :columns="resultsColumns"
             :data="resultsData"
             embedded
