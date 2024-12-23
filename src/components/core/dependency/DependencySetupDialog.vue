@@ -17,10 +17,17 @@ const activeNodes = computed(() => nodeState.allList.filter(n => n.active));
 
 const toInstallNodes = computed(() => {
   const { mode, node_ids, node_id } = state.setupForm;
+
   if (node_id) {
+    // Single node
     return activeNodes.value.filter(n => n._id === node_id);
   } else {
-    if (mode === 'all') return activeNodes.value;
+    // Multiple nodes
+    if (mode === 'all') {
+      // All nodes
+      return activeNodes.value;
+    }
+    // Selected nodes
     return activeNodes.value.filter(n => node_ids?.includes(n._id!));
   }
 });
@@ -36,11 +43,23 @@ const confirmButtonDisabled = computed(() => {
   return toInstallNodes.value.length === 0;
 });
 const onConfirm = async () => {
+  // Skip if the confirm button is disabled
   if (confirmButtonDisabled.value) return;
+
+  // Install config setup
   await store.dispatch(`${ns}/installConfigSetup`, {
     id: activeConfigSetup.value?._id,
   });
+
+  // Hide dialog
   store.commit(`${ns}/hideDialog`);
+
+  // Switch to nodes tab
+  if (state.repoTabName !== 'nodes') {
+    store.commit(`${ns}/setRepoTabName`, 'nodes');
+  }
+
+  // Refresh config setup list
   await store.dispatch(`${ns}/getConfigSetupList`);
 };
 

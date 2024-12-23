@@ -8,8 +8,19 @@ export const getRepoExternalPath = (repo: DependencyRepo) => {
       return `https://pkg.go.dev/${repo.name}`;
     case 'java':
       return `https://mvnrepository.com/artifact/${getRepoName(repo)}`;
+    case 'browser':
+      return getBrowserRepoExternalPath(repo);
     default:
       return '';
+  }
+
+  function getBrowserRepoExternalPath(repo: DependencyRepo) {
+    switch (repo.name) {
+      case 'google-chrome':
+        return 'https://www.chromium.org/getting-involved/download-chromium/';
+      case 'chromedriver':
+        return 'https://developer.chrome.com/docs/chromedriver/';
+    }
   }
 };
 

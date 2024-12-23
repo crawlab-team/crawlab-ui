@@ -628,18 +628,19 @@ const useDependencyList = () => {
 
   // repo tabs
   const repoTabItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [];
+
+    // installed tab
     const installedItem = {
       id: 'installed',
       title: `${t('views.env.deps.repos.tabs.installed')} (${state.tableTotal})`,
       icon: ['fas', 'cubes'],
     };
-    let searchItem: NavItem = {
+    items.push(installedItem);
+
+    // search tab
+    let searchItem: NavItem | undefined = {
       id: 'search',
-    };
-    const nodesItem: NavItem = {
-      id: 'nodes',
-      title: t('views.env.deps.repos.tabs.nodes'),
-      icon: ['fas', 'server'],
     };
     switch (lang.value) {
       case 'python':
@@ -671,11 +672,7 @@ const useDependencyList = () => {
         };
         break;
       case 'browser':
-        searchItem = {
-          ...searchItem,
-          title: t('views.env.deps.repos.tabs.search.chromium'),
-          icon: ['svg', 'chromium'],
-        };
+        searchItem = undefined;
         break;
       default:
         searchItem = {
@@ -684,10 +681,22 @@ const useDependencyList = () => {
           icon: ['fas', 'search'],
         };
     }
-    if (state.searchQuery) {
-      searchItem.title = `${searchItem.title} (${state.searchRepoTableTotal})`;
+    if (searchItem) {
+      if (state.searchQuery) {
+        searchItem.title = `${searchItem.title} (${state.searchRepoTableTotal})`;
+      }
+      items.push(searchItem);
     }
-    return [installedItem, searchItem, nodesItem] as NavItem[];
+
+    // nodes tab
+    const nodesItem: NavItem = {
+      id: 'nodes',
+      title: t('views.env.deps.repos.tabs.nodes'),
+      icon: ['fas', 'server'],
+    };
+    items.push(nodesItem);
+
+    return items;
   });
   const repoTabName = computed(() => state.repoTabName);
 
