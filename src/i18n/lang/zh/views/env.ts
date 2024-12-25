@@ -115,6 +115,14 @@ const env: LViewsEnv = {
         proxy: '代理',
         defaultVersion: '默认版本',
       },
+      alert: {
+        browser: {
+          nodeSetupRequired: {
+            content: '浏览器依赖管理需要 Node.js，但尚未设置。请先点击安装 Node.js。',
+            action: '安装 Node.js',
+          },
+        },
+      },
     },
     configSetup: {
       form: {

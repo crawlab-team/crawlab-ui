@@ -119,6 +119,15 @@ const env: LViewsEnv = {
         proxy: 'Proxy',
         defaultVersion: 'Default Version',
       },
+      alert: {
+        browser: {
+          nodeSetupRequired: {
+            content:
+              'Browser dependency management requires Node.js, which is not set up yet. Please click to install Node.js first.',
+            action: 'Install Node.js',
+          },
+        },
+      },
     },
     configSetup: {
       form: {

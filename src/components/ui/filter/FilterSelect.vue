@@ -74,6 +74,7 @@ const initializeModelValue = () => {
 };
 onBeforeMount(initializeModelValue);
 watch(internalOptions, initializeModelValue);
+watch(() => props.defaultValue, initializeModelValue);
 
 const hasIcon = computed(() => {
   return computedOptions.value.some(option => option.icon);

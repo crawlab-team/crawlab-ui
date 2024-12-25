@@ -104,6 +104,14 @@ interface LViewsEnv {
         proxy: string;
         defaultVersion: string;
       };
+      alert: {
+        browser: {
+          nodeSetupRequired: {
+            content: string;
+            action: string;
+          };
+        };
+      };
     };
     configSetup: {
       form: {

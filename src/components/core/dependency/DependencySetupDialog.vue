@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
+import useRequest from '@/services/request';
+import { browser } from 'globals';
 
 const t = translate;
+
+const { get } = useRequest();
 
 const ns: ListStoreNamespace = 'dependency';
 const store = useStore();
 const { dependency: state, node: nodeState } = store.state as RootStoreState;
 
 const config = computed(() => state.config);
+const lang = computed(() => state.lang);
 
 const activeConfigSetup = computed(() => state.activeConfigSetup);
 
@@ -40,7 +45,11 @@ const loading = computed(() => state.setupLoading);
 
 const confirmButtonDisabled = computed(() => {
   if (loading.value) return true;
-  return toInstallNodes.value.length === 0;
+  if (toInstallNodes.value.length === 0) return true;
+  if (needsNodeSetupForBrowser.value) {
+    return true;
+  }
+  return false;
 });
 const onConfirm = async () => {
   // Skip if the confirm button is disabled
@@ -71,8 +80,28 @@ watch(visible, async () => {
   if (!visible.value) {
     store.commit(`${ns}/resetSetupForm`);
     store.commit(`${ns}/resetActiveConfigSetup`);
+
+    // special handling for browser
+    if (lang.value === 'browser') {
+      await getNodeConfig();
+    }
   }
 });
+
+const nodeConfig = ref<DependencyConfig>();
+const getNodeConfig = async () => {
+  if (!config.value) return;
+  const res = await get(`/dependencies/configs/node`);
+  nodeConfig.value = res.data;
+};
+watch(lang, async () => {
+  if (lang.value === 'browser') {
+    await getNodeConfig();
+  }
+});
+const needsNodeSetupForBrowser = computed(
+  () => lang.value === 'browser' && !nodeConfig.value?.setup
+);
 
 defineOptions({ name: 'ClDependencySetupDialog' });
 </script>
@@ -146,13 +175,42 @@ defineOptions({ name: 'ClDependencySetupDialog' });
           </el-select>
         </cl-form-item>
       </template>
-      <cl-form-item :label="t('views.env.deps.dependency.form.toInstallNodes')">
+      <cl-form-item
+        :label="t('views.env.deps.dependency.form.toInstallNodes')"
+        :span="4"
+      >
         <template v-if="toInstallNodes.length > 0">
           <cl-node-tag v-for="n in toInstallNodes" :key="n.key" :node="n" />
         </template>
         <template v-else>
           <cl-tag type="info" :label="t('common.placeholder.empty')" />
         </template>
+      </cl-form-item>
+      <cl-form-item v-if="needsNodeSetupForBrowser" :span="4">
+        <el-alert type="warning" :closable="false">
+          <div>
+            {{
+              t('views.env.deps.config.alert.browser.nodeSetupRequired.content')
+            }}
+          </div>
+          <div>
+            <cl-label-button
+              :icon="['fab', 'node-js']"
+              :label="
+                t(
+                  'views.env.deps.config.alert.browser.nodeSetupRequired.action'
+                )
+              "
+              @click="
+                () => {
+                  store.commit(`${ns}/setLang`, 'node');
+                  store.commit(`${ns}/setRepoTabName`, 'nodes');
+                  store.commit(`${ns}/hideDialog`);
+                }
+              "
+            />
+          </div>
+        </el-alert>
       </cl-form-item>
     </cl-form>
   </cl-dialog>
