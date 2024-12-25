@@ -47,6 +47,7 @@ const state = {
   activeTargetId: undefined,
   activeTargetLogs: [],
   config: undefined,
+  configVersions: [],
   activeConfigSetup: undefined,
 } as DependencyStoreState;
 
@@ -195,6 +196,21 @@ const mutations = {
   },
   resetConfig: (state: DependencyStoreState): void => {
     state.config = undefined;
+  },
+  setConfigVersions: (
+    state: DependencyStoreState,
+    versions: string[]
+  ): void => {
+    state.configVersions = versions;
+  },
+  resetConfigVersions: (state: DependencyStoreState): void => {
+    state.configVersions = [];
+  },
+  setGetConfigVersionsLoading: (
+    state: DependencyStoreState,
+    loading: boolean
+  ): void => {
+    state.getConfigVersionsLoading = loading;
   },
   setActiveConfigSetup: (
     state: DependencyStoreState,
@@ -391,6 +407,20 @@ const actions = {
     } catch (e: any) {
       ElMessage.error(e.message);
       throw e;
+    }
+  },
+  getDependencyConfigVersions: async ({
+    state,
+    commit,
+  }: StoreActionContext<DependencyStoreState>) => {
+    const { lang } = state;
+    commit('setGetConfigVersionsLoading', true);
+    try {
+      const res = await getList(`${endpoint}/configs/${lang}/versions`);
+      commit('setConfigVersions', res.data || []);
+      return res;
+    } finally {
+      commit('setGetConfigVersionsLoading', false);
     }
   },
   getConfigSetupList: async ({

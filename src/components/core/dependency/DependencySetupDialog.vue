@@ -43,12 +43,14 @@ const form = computed(() => state.setupForm);
 
 const loading = computed(() => state.setupLoading);
 
+const versions = computed(() => state.configVersions);
+const getVersionsLoading = computed(() => state.getConfigVersionsLoading);
+
 const confirmButtonDisabled = computed(() => {
   if (loading.value) return true;
   if (toInstallNodes.value.length === 0) return true;
-  if (needsNodeSetupForBrowser.value) {
-    return true;
-  }
+  if (getVersionsLoading.value) return true;
+  if (needsNodeSetupForBrowser.value) return true;
   return false;
 });
 const onConfirm = async () => {
@@ -77,7 +79,13 @@ const onClose = () => {
 };
 
 watch(visible, async () => {
-  if (!visible.value) {
+  if (visible.value) {
+    await store.dispatch(`${ns}/getDependencyConfigVersions`);
+    store.commit(`${ns}/setSetupForm`, {
+      ...form.value,
+      version: state.configVersions[0],
+    });
+  } else {
     store.commit(`${ns}/resetSetupForm`);
     store.commit(`${ns}/resetActiveConfigSetup`);
 
@@ -129,10 +137,19 @@ defineOptions({ name: 'ClDependencySetupDialog' });
         :span="4"
         :label="t('views.env.deps.configSetup.form.version')"
       >
-        <el-input
+        <el-select
           v-model="form.version"
-          :placeholder="t('views.env.deps.configSetup.form.version')"
-        />
+          :disabled="getVersionsLoading"
+          :placeholder="t('common.status.loading')"
+          filterable
+        >
+          <el-option
+            v-for="(v, $index) in versions"
+            :key="$index"
+            :label="v"
+            :value="v"
+          />
+        </el-select>
       </cl-form-item>
       <template v-if="!form.node_id">
         <cl-form-item

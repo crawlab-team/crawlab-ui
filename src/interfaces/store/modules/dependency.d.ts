@@ -29,6 +29,8 @@ export declare global {
     activeTargetId?: string;
     activeTargetLogs: DependencyLog[];
     config?: DependencyConfig;
+    configVersions: string[];
+    getConfigVersionsLoading?: boolean;
     activeConfigSetup?: DependencyConfigSetup;
   }
 
@@ -107,6 +109,12 @@ export declare global {
     resetActiveTargetLogs: (state: DependencyStoreState) => void;
     setConfig: (state: DependencyStoreState, config: DependencyConfig) => void;
     resetConfig: (state: DependencyStoreState) => void;
+    setConfigVersions: (state: DependencyStoreState, versions: string[]) => void;
+    resetConfigVersions: (state: DependencyStoreState) => void;
+    setGetConfigVersionsLoading: (
+      state: DependencyStoreState,
+      loading: boolean
+    ) => void;
     setActiveConfigSetup: (
       state: DependencyStoreState,
       configSetup: DependencyConfigSetup
@@ -123,6 +131,7 @@ export declare global {
     getActiveTargetLogs: StoreAction<DependencyStoreState>;
     getDependencyConfig: StoreAction<DependencyStoreState>;
     saveDependencyConfig: StoreAction<DependencyStoreState>;
+    getDependencyConfigVersions: StoreAction<DependencyStoreActions>;
     getConfigSetupList: StoreAction<DependencyStoreState>;
     installConfigSetup: StoreAction<DependencyStoreState>;
   }
