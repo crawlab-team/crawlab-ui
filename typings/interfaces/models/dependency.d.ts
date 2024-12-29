@@ -7,6 +7,8 @@ export declare global {
     pkg_cmd?: string;
     proxy?: string;
     setup?: boolean;
+    search_ready?: boolean;
+    total_dependencies?: number;
   }
 
   interface DependencyConfigSetup extends BaseModel {

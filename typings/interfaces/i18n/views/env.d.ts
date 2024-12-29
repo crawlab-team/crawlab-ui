@@ -20,6 +20,18 @@ interface LViewsEnv {
           label: string;
           tooltip: string;
         };
+        searchNotReady: {
+          label: string;
+          tooltip: string;
+          python: {
+            title: string;
+            content: string;
+          };
+        };
+        installEnvironments: {
+          label: string;
+          tooltip: string;
+        };
       };
       tabs: {
         installed: string;
@@ -91,6 +103,14 @@ interface LViewsEnv {
         pkgCmd: string;
         proxy: string;
         defaultVersion: string;
+      };
+      alert: {
+        browser: {
+          nodeSetupRequired: {
+            content: string;
+            action: string;
+          };
+        };
       };
     };
     configSetup: {

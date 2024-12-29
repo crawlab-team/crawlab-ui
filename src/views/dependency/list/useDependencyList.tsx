@@ -1,4 +1,11 @@
-import { computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
+import {
+  computed,
+  onBeforeMount,
+  onBeforeUnmount,
+  ref,
+  watch,
+  watchEffect,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { getStore } from '@/store';
 import { useList } from '@/layouts/content';
@@ -108,7 +115,7 @@ const useDependencyList = () => {
           onEnter: async value => {
             await updateSearchQuery(value);
             await Promise.all([
-              store.dispatch(`${ns}/getList`),
+              store.dispatch(`${ns}/getInstalledDependencyList`),
               store.dispatch(`${ns}/searchRepoList`),
             ]);
           },
@@ -145,7 +152,7 @@ const useDependencyList = () => {
           icon: ['fa', 'search'],
           onClick: async () => {
             await Promise.all([
-              store.dispatch(`${ns}/getList`),
+              store.dispatch(`${ns}/getInstalledDependencyList`),
               store.dispatch(`${ns}/searchRepoList`),
             ]);
           },
@@ -233,7 +240,7 @@ const useDependencyList = () => {
 
   // table columns
   const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
-    switch (repoTabName.value) {
+    switch (state.repoTabName) {
       case 'nodes':
         return [
           {
@@ -506,9 +513,9 @@ const useDependencyList = () => {
     }
   });
 
-  const tableDataDict = computed(() => {
+  const installedDependenciesTableDataDict = computed(() => {
     const dict = new Map<string, DependencyRepo>();
-    state.tableData.forEach(d => {
+    state.installedDependenciesTableData.forEach(d => {
       const key = d.name!;
       dict.set(key, d);
     });
@@ -518,7 +525,8 @@ const useDependencyList = () => {
   const searchRepoTableData = computed(() =>
     state.searchRepoTableData.map(d => {
       const key = d.name!;
-      const installedItem = tableDataDict.value.get(key);
+      const installedItem =
+        installedDependenciesTableDataDict.value.get(key) || {};
       return {
         ...installedItem,
         ...d,
@@ -536,7 +544,7 @@ const useDependencyList = () => {
   const getData = async () => {
     await Promise.all([
       store.dispatch(`${ns}/getDependencyConfig`),
-      store.dispatch(`${ns}/getList`),
+      store.dispatch(`${ns}/getInstalledDependencyList`),
       store.dispatch(`${ns}/searchRepoList`),
       store.dispatch(`${ns}/getConfigSetupList`),
     ]);
@@ -563,11 +571,14 @@ const useDependencyList = () => {
   const tableData = computed(() => {
     switch (state.repoTabName) {
       case 'installed':
-        return state.tableData;
+        console.debug('installed', state.installedDependenciesTableData);
+        return state.installedDependenciesTableData || [];
       case 'search':
-        return searchRepoTableData.value;
+        console.debug('search');
+        return searchRepoTableData.value || [];
       case 'nodes':
-        return configSetupTableData.value;
+        console.debug('nodes');
+        return configSetupTableData.value || [];
       default:
         return [];
     }
@@ -575,7 +586,7 @@ const useDependencyList = () => {
   const tableTotal = computed(() => {
     switch (state.repoTabName) {
       case 'installed':
-        return state.tableTotal;
+        return state.installedDependenciesTableTotal;
       case 'search':
         return state.searchRepoTableTotal;
       case 'nodes':
@@ -587,7 +598,7 @@ const useDependencyList = () => {
   const tablePagination = computed(() => {
     switch (state.repoTabName) {
       case 'installed':
-        return state.tablePagination;
+        return state.installedDependenciesTablePagination;
       case 'search':
         return state.searchRepoTablePagination;
       case 'nodes':
@@ -606,7 +617,7 @@ const useDependencyList = () => {
     ...originalActionFunctions,
     getList: async () => {
       await Promise.all([
-        store.dispatch(`${ns}/getList`),
+        store.dispatch(`${ns}/getInstalledDependencyList`),
         store.dispatch(`${ns}/searchRepoList`),
         store.dispatch(`${ns}/getConfigSetupList`),
       ]);
@@ -614,7 +625,10 @@ const useDependencyList = () => {
     setPagination: (pagination: TablePagination) => {
       switch (state.repoTabName) {
         case 'installed':
-          store.commit(`${ns}/setTablePagination`, pagination);
+          store.commit(
+            `${ns}/setInstalledDependenciesTablePagination`,
+            pagination
+          );
           break;
         case 'search':
           store.commit(`${ns}/setSearchRepoTablePagination`, pagination);
@@ -633,7 +647,7 @@ const useDependencyList = () => {
     // installed tab
     const installedItem = {
       id: 'installed',
-      title: `${t('views.env.deps.repos.tabs.installed')} (${state.tableTotal})`,
+      title: `${t('views.env.deps.repos.tabs.installed')} (${state.installedDependenciesTableTotal})`,
       icon: ['fas', 'cubes'],
     };
     items.push(installedItem);
@@ -698,7 +712,9 @@ const useDependencyList = () => {
 
     return items;
   });
-  const repoTabName = computed(() => state.repoTabName);
+  const repoTabName = computed(() => {
+    return state.repoTabName;
+  });
 
   const onClickTableEmptySearch = () => {
     const elVNodeCtx = (

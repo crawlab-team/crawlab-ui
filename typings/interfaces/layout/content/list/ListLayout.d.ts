@@ -45,6 +45,7 @@ export declare global {
   }
 
   interface ListActionFilter extends ListAction {
+    defaultValue?: any;
     placeholder?: string;
     options?: SelectOption[];
     optionsRemote?: FilterSelectOptionsRemote;

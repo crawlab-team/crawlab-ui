@@ -22,6 +22,10 @@ const state = {
   searchQuery: '',
   repoTabName: 'installed',
   tableListFilter: [{ key: 'type', op: 'eq', value: 'python' }],
+  installedDependenciesTableLoading: false,
+  installedDependenciesTableData: [],
+  installedDependenciesTablePagination: getDefaultPagination(),
+  installedDependenciesTableTotal: 0,
   searchRepoTableLoading: false,
   searchRepoTableData: [],
   searchRepoTablePagination: getDefaultPagination(),
@@ -68,6 +72,34 @@ const mutations = {
     name: DependencyRepoTabName
   ): void => {
     state.repoTabName = name;
+  },
+  setInstalledDependenciesTableLoading: (
+    state: DependencyStoreState,
+    loading: boolean
+  ): void => {
+    state.installedDependenciesTableLoading = loading;
+  },
+  setInstalledDependenciesTableData: (
+    state: DependencyStoreState,
+    data: TableDataWithTotal<DependencyRepo>
+  ): void => {
+    state.installedDependenciesTableData = data.data;
+    state.installedDependenciesTableTotal = data.total;
+  },
+  resetInstalledDependenciesTableData: (state: DependencyStoreState): void => {
+    state.installedDependenciesTableData = [];
+    state.installedDependenciesTableTotal = 0;
+  },
+  setInstalledDependenciesTablePagination: (
+    state: DependencyStoreState,
+    pagination: TablePagination
+  ): void => {
+    state.installedDependenciesTablePagination = pagination;
+  },
+  resetInstalledDependenciesTablePagination: (
+    state: DependencyStoreState
+  ): void => {
+    state.installedDependenciesTablePagination = getDefaultPagination();
   },
   setSearchRepoTableLoading: (
     state: DependencyStoreState,
@@ -225,14 +257,14 @@ const mutations = {
 
 const actions = {
   ...getDefaultStoreActions<Dependency>('/dependencies/repos'),
-  getList: async ({
+  getInstalledDependencyList: async ({
     state,
     commit,
   }: StoreActionContext<DependencyStoreState>) => {
     const { lang, tablePagination, tableListFilter, tableListSort } = state;
     const { page, size } = tablePagination;
     try {
-      commit('setTableLoading', true);
+      commit('setInstalledDependenciesTableLoading', true);
       const res = await getList(`${endpoint}/repos`, {
         page,
         size,
@@ -246,15 +278,15 @@ const actions = {
       };
       if (
         getMd5(JSON.stringify(tableData.data)) !==
-        getMd5(JSON.stringify(state.tableData))
+        getMd5(JSON.stringify(state.installedDependenciesTableData))
       ) {
-        commit('setTableData', tableData);
+        commit('setInstalledDependenciesTableData', tableData);
       }
       return res;
     } catch (e) {
       throw e;
     } finally {
-      commit('setTableLoading', false);
+      commit('setInstalledDependenciesTableLoading', false);
     }
   },
   searchRepoList: async ({
