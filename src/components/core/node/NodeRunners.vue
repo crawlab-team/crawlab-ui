@@ -2,12 +2,14 @@
 import { computed } from 'vue';
 import { translate } from '@/utils';
 import { TagProps } from '@/components/ui/tag/types';
+import { NODE_STATUS_OFFLINE } from '@/constants';
 
 const props = withDefaults(
   defineProps<{
     current?: number;
     max?: number;
     size?: BasicSize;
+    status?: NodeStatus;
   }>(),
   {
     current: 0,
@@ -31,7 +33,15 @@ const label = computed<string>(() => {
 });
 
 const data = computed<TagProps>(() => {
-  const { current, max } = props;
+  const { current, max, status } = props;
+  if (status === NODE_STATUS_OFFLINE) {
+    return {
+      label: t('components.metric.noData.label'),
+      tooltip: t('components.node.nodeStatus.tooltip.offline'),
+      type: 'info',
+      icon: ['fa', 'times-circle'],
+    };
+  }
   if (max > 0 && current >= max) {
     return {
       label: label.value,

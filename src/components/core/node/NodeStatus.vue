@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { NODE_STATUS_OFFLINE, NODE_STATUS_ONLINE } from '@/constants/node';
 import { translate } from '@/utils';
+import { TagProps } from '@/components/ui/tag/types';
 
 const props = defineProps<{
   status: NodeStatus;

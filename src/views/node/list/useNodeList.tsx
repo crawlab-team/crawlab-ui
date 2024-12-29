@@ -250,12 +250,14 @@ const useNodeList = () => {
               row.max_runners === undefined ||
               !row.status ||
               ![NODE_STATUS_ONLINE, NODE_STATUS_OFFLINE].includes(row.status)
-            )
+            ) {
               return;
+            }
             return (
               <ClNodeRunners
                 current={row.current_runners}
                 max={row.max_runners}
+                status={row.status}
               />
             );
           },
