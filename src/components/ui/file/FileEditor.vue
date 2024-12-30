@@ -442,6 +442,7 @@ defineOptions({ name: 'ClFileEditor' });
 .file-editor {
   height: 100%;
   display: flex;
+  overflow: hidden;
 
   .file-editor-content {
     position: relative;

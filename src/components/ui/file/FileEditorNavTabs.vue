@@ -179,7 +179,8 @@ defineOptions({ name: 'ClFileEditorNavTabs' });
   position: relative;
   display: flex;
   align-items: center;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   height: var(--cl-file-editor-nav-tabs-height);
   flex: var(--cl-file-editor-nav-tabs-height) 0 0;
 
