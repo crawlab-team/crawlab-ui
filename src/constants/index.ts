@@ -9,7 +9,6 @@ export * from './node';
 export * from './os';
 export * from './plugin';
 export * from './router';
-export * from './setting';
 export * from './sort';
 export * from './spider';
 export * from './tab';

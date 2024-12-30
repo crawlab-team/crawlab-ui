@@ -116,7 +116,7 @@ const env: LViewsEnv = {
         name: 'Name',
         execCmd: 'Execute Command',
         pkgCmd: 'Package Command',
-        proxy: 'Proxy',
+        pkgSrcURL: 'Package Source URL',
         defaultVersion: 'Default Version',
       },
       alert: {

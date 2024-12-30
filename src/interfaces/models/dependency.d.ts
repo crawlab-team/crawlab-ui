@@ -5,7 +5,7 @@ export declare global {
     enabled?: boolean;
     exec_cmd?: string;
     pkg_cmd?: string;
-    proxy?: string;
+    pkg_src_url?: string;
     setup?: boolean;
     search_ready?: boolean;
     total_dependencies?: number;

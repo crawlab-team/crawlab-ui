@@ -88,12 +88,12 @@ defineOptions({ name: 'ClDependencyConfigDialog' });
       </cl-form-item>
       <cl-form-item
         :span="4"
-        :label="t('views.env.deps.config.form.proxy')"
-        prop="proxy"
+        :label="t('views.env.deps.config.form.pkgSrcURL')"
+        prop="pkg_src_url"
       >
         <el-input
-          v-model="form.proxy"
-          :placeholder="t('views.env.deps.config.form.proxy')"
+          v-model="form.pkg_src_url"
+          :placeholder="t('views.env.deps.config.form.pkgSrcURL')"
         />
       </cl-form-item>
     </cl-form>

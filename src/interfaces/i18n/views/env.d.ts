@@ -101,7 +101,7 @@ interface LViewsEnv {
         name: string;
         execCmd: string;
         pkgCmd: string;
-        proxy: string;
+        pkgSrcURL: string;
         defaultVersion: string;
       };
       alert: {

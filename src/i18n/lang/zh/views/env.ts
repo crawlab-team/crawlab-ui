@@ -112,7 +112,7 @@ const env: LViewsEnv = {
         name: '名称',
         execCmd: '执行命令',
         pkgCmd: '依赖管理命令',
-        proxy: '代理',
+        pkgSrcURL: '依赖源 URL',
         defaultVersion: '默认版本',
       },
       alert: {
