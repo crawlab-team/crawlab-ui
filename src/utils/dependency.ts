@@ -16,7 +16,7 @@ export const getRepoExternalPath = (repo: DependencyRepo) => {
 
   function getBrowserRepoExternalPath(repo: DependencyRepo) {
     switch (repo.name) {
-      case 'google-chrome':
+      case 'chrome':
         return 'https://www.chromium.org/getting-involved/download-chromium/';
       case 'chromedriver':
         return 'https://developer.chrome.com/docs/chromedriver/';
