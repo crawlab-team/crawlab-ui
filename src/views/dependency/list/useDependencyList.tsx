@@ -32,13 +32,14 @@ import {
   ClNavLink,
   ClNodeTag,
   ClTag,
+  useNode,
 } from '@/components';
 import {
   getNormalizedDependencies,
   getRepoExternalPath,
   getRepoName,
 } from '@/utils/dependency';
-import { TagProps } from '@/components/ui/tag/types';
+import type { TagProps } from '@/components/ui/tag/types';
 
 const t = translate;
 
@@ -50,6 +51,8 @@ const useDependencyList = () => {
   const ns = 'dependency';
   const store = getStore();
   const { dependency: state, node: nodeState } = store.state as RootStoreState;
+
+  const { activeNodesSorted } = useNode(store);
 
   const navActions = computed<ListActionGroup[]>(() => [
     {
@@ -388,98 +391,91 @@ const useDependencyList = () => {
             icon: ['fa', 'server'],
             width: '580',
             value: (row: DependencyRepo) => {
-              return nodeState.allList
-                .sort((a, b) =>
-                  a.is_master ? -1 : (a.name || '').localeCompare(b.name || '')
-                )
-                .filter(n => n.active)
-                .map(node => {
-                  const dep = row.dependencies?.find(
-                    dep => dep.node_id === node._id
-                  );
-                  if (!dep) return;
-                  return (
-                    <ClNodeTag
-                      node={node}
-                      loading={isLoading(dep)}
-                      hit={isLoading(dep)}
-                      type={getTypeByDep(dep)}
-                      clickable
-                      onClick={() => {
-                        store.commit(`${ns}/setActiveTargetId`, dep._id);
-                        store.commit(`${ns}/showDialog`, 'logs');
-                      }}
-                    >
-                      {{
-                        'extra-items': () => {
-                          let color: string;
-                          switch (dep.status) {
-                            case 'installing':
-                            case 'uninstalling':
-                              color = 'var(--cl-warning-color)';
-                              break;
-                            case 'installed':
-                            case 'uninstalled':
-                              color = 'var(--cl-success-color)';
-                              break;
-                            case 'error':
-                            case 'abnormal':
-                              color = 'var(--cl-danger-color)';
-                              break;
-                            default:
-                              color = 'inherit';
-                          }
-                          return (
-                            <div class="tooltip-wrapper">
-                              <div class="tooltip-title">
-                                <label>{t('views.env.deps.label')}</label>
-                              </div>
+              return activeNodesSorted.value.map(node => {
+                const dep = row.dependencies?.find(
+                  dep => dep.node_id === node._id
+                );
+                if (!dep) return;
+                return (
+                  <ClNodeTag
+                    key={node._id}
+                    node={node}
+                    loading={isLoading(dep)}
+                    hit={isLoading(dep)}
+                    type={getTypeByDep(dep)}
+                    clickable
+                    onClick={() => {
+                      store.commit(`${ns}/setActiveTargetId`, dep._id);
+                      store.commit(`${ns}/showDialog`, 'logs');
+                    }}
+                  >
+                    {{
+                      'extra-items': () => {
+                        let color: string;
+                        switch (dep.status) {
+                          case 'installing':
+                          case 'uninstalling':
+                            color = 'var(--cl-warning-color)';
+                            break;
+                          case 'installed':
+                          case 'uninstalled':
+                            color = 'var(--cl-success-color)';
+                            break;
+                          case 'error':
+                          case 'abnormal':
+                            color = 'var(--cl-danger-color)';
+                            break;
+                          default:
+                            color = 'inherit';
+                        }
+                        return (
+                          <div class="tooltip-wrapper">
+                            <div class="tooltip-title">
+                              <label>{t('views.env.deps.label')}</label>
+                            </div>
+                            <div class="tooltip-item">
+                              <label>
+                                {t('views.env.deps.dependency.form.status')}:
+                              </label>
+                              <span
+                                style={{
+                                  color,
+                                }}
+                              >
+                                {t(
+                                  `views.env.deps.dependency.status.${dep.status}`
+                                )}
+                              </span>
+                            </div>
+                            {dep.error && (
                               <div class="tooltip-item">
                                 <label>
-                                  {t('views.env.deps.dependency.form.status')}:
+                                  {t('views.env.deps.dependency.form.error')}:
                                 </label>
                                 <span
                                   style={{
                                     color,
                                   }}
                                 >
-                                  {t(
-                                    `views.env.deps.dependency.status.${dep.status}`
-                                  )}
+                                  {dep.error}
                                 </span>
                               </div>
-                              {dep.error && (
-                                <div class="tooltip-item">
-                                  <label>
-                                    {t('views.env.deps.dependency.form.error')}:
-                                  </label>
-                                  <span
-                                    style={{
-                                      color,
-                                    }}
-                                  >
-                                    {dep.error}
-                                  </span>
-                                </div>
-                              )}
-                              {dep.version && (
-                                <div class="tooltip-item">
-                                  <label>
-                                    {t(
-                                      'views.env.deps.dependency.form.version'
-                                    )}
-                                    :
-                                  </label>
-                                  <span>{dep.version}</span>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        },
-                      }}
-                    </ClNodeTag>
-                  );
-                });
+                            )}
+                            {dep.version && (
+                              <div class="tooltip-item">
+                                <label>
+                                  {t('views.env.deps.dependency.form.version')}:
+                                </label>
+                                <span>{dep.version}</span>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      },
+                    }}
+                  </ClNodeTag>
+                );
+              });
             },
           },
           {
