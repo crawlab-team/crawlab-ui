@@ -64,6 +64,7 @@ import DependencyConfigDialog from './core/dependency/DependencyConfigDialog.vue
 import DependencyInstallDialog from './core/dependency/DependencyInstallDialog.vue';
 import DependencyLogsDialog from './core/dependency/DependencyLogsDialog.vue';
 import DependencySetupDialog from './core/dependency/DependencySetupDialog.vue';
+import DependencyStatusTag from './core/dependency/DependencyStatusTag.vue';
 import DependencyUninstallDialog from './core/dependency/DependencyUninstallDialog.vue';
 import DependencyVersions from './core/dependency/DependencyVersions.vue';
 import DetailTabList from './ui/list/DetailTabList.vue';
@@ -296,6 +297,7 @@ export {
   DependencyInstallDialog as ClDependencyInstallDialog,
   DependencyLogsDialog as ClDependencyLogsDialog,
   DependencySetupDialog as ClDependencySetupDialog,
+  DependencyStatusTag as ClDependencyStatusTag,
   DependencyUninstallDialog as ClDependencyUninstallDialog,
   DependencyVersions as ClDependencyVersions,
   DetailTabList as ClDetailTabList,

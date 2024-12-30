@@ -31,6 +31,8 @@ export declare global {
     versions: string[];
     getVersionsLoading: boolean;
     activeTargetId?: string;
+    activeTargetName?: string;
+    activeTargetStatus?: DependencyStatus;
     activeTargetLogs: DependencyLog[];
     config?: DependencyConfig;
     configVersions: string[];
@@ -122,6 +124,13 @@ export declare global {
     ) => void;
     setActiveTargetId: (state: DependencyStoreState, id: string) => void;
     resetActiveTargetId: (state: DependencyStoreState) => void;
+    setActiveTargetName: (state: DependencyStoreState, name: string) => void;
+    resetActiveTargetName: (state: DependencyStoreState) => void;
+    setActiveTargetStatus: (
+      state: DependencyStoreState,
+      status: DependencyStatus
+    ) => void;
+    resetActiveTargetStatus: (state: DependencyStoreState) => void;
     setActiveTargetLogs: (
       state: DependencyStoreState,
       logs: DependencyLog[]

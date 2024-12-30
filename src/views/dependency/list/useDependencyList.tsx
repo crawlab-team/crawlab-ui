@@ -1,11 +1,4 @@
-import {
-  computed,
-  onBeforeMount,
-  onBeforeUnmount,
-  ref,
-  watch,
-  watchEffect,
-} from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { getStore } from '@/store';
 import { useList } from '@/layouts/content';
@@ -29,6 +22,7 @@ import {
 } from '@/constants';
 import {
   ClDependencyVersions,
+  ClDependencyStatusTag,
   ClNavLink,
   ClNodeTag,
   ClTag,
@@ -139,14 +133,12 @@ const useDependencyList = () => {
               { update: false }
             )(value);
           },
-          options: nodeState.allList
-            .filter(n => n.active)
-            .map(node => {
-              return {
-                label: node.name,
-                value: node._id,
-              };
-            }),
+          options: activeNodesSorted.value.map(node => {
+            return {
+              label: node.name,
+              value: node._id,
+            };
+          }),
         },
         {
           className: 'search-btn',
@@ -223,6 +215,8 @@ const useDependencyList = () => {
 
   const onViewConfigSetupLogs = async (row: DependencyConfigSetup) => {
     store.commit(`${ns}/setActiveTargetId`, row._id);
+    store.commit(`${ns}/setActiveTargetName`, row.node!.name);
+    store.commit(`${ns}/setActiveTargetStatus`, row.status);
     store.commit(`${ns}/showDialog`, 'logs');
   };
 
@@ -272,53 +266,15 @@ const useDependencyList = () => {
             icon: ['fa', 'info-circle'],
             width: '150',
             value: (row: DependencyConfigSetup) => {
-              let tagProps: TagProps;
-              let label: string;
+              let status: DependencyStatus | undefined;
               if (!row.node?.active) {
-                label = t('common.status.unknown');
-                tagProps = {
-                  icon: ['fa', 'question'],
-                  type: 'info',
-                };
+                status = undefined;
               } else {
-                switch (row.status) {
-                  case 'installed':
-                    tagProps = {
-                      icon: ['fa', 'check'],
-                      type: 'success',
-                      clickable: true,
-                    };
-                    break;
-                  case 'installing':
-                  case 'uninstalling':
-                    tagProps = {
-                      icon: ['fa', 'spinner'],
-                      type: 'warning',
-                      spinning: true,
-                      clickable: true,
-                    };
-                    break;
-                  case 'error':
-                  case 'abnormal':
-                    tagProps = {
-                      icon: ['fa', 'times'],
-                      type: 'danger',
-                      clickable: true,
-                    };
-                    break;
-                  default:
-                    tagProps = {
-                      icon: getIconByAction(ACTION_INSTALL),
-                      type: 'info',
-                      clickable: true,
-                    };
-                }
-                label = t(`views.env.deps.dependency.status.${row.status}`);
+                status = row.status;
               }
               return (
-                <ClTag
-                  {...tagProps}
-                  label={label}
+                <ClDependencyStatusTag
+                  status={status}
                   onClick={async () => {
                     switch (row.status) {
                       case 'uninstalled':
@@ -357,6 +313,7 @@ const useDependencyList = () => {
             disableTransfer: true,
           },
         ] as TableColumns<DependencyConfigSetup>;
+
       default:
         return [
           {
@@ -392,7 +349,7 @@ const useDependencyList = () => {
             width: '580',
             value: (row: DependencyRepo) => {
               return activeNodesSorted.value.map(node => {
-                const dep = row.dependencies?.find(
+                const dep: Dependency | undefined = row.dependencies?.find(
                   dep => dep.node_id === node._id
                 );
                 if (!dep) return;
@@ -405,14 +362,16 @@ const useDependencyList = () => {
                     type={getTypeByDep(dep)}
                     clickable
                     onClick={() => {
-                      store.commit(`${ns}/setActiveTargetId`, dep._id);
+                      store.commit(`${ns}/setActiveTargetId`, dep!._id);
+                      store.commit(`${ns}/setActiveTargetName`, `${node.name} - ${dep!.name}`);
+                      store.commit(`${ns}/setActiveTargetStatus`, dep!.status);
                       store.commit(`${ns}/showDialog`, 'logs');
                     }}
                   >
                     {{
                       'extra-items': () => {
                         let color: string;
-                        switch (dep.status) {
+                        switch (dep!.status) {
                           case 'installing':
                           case 'uninstalling':
                             color = 'var(--cl-warning-color)';
@@ -443,11 +402,11 @@ const useDependencyList = () => {
                                 }}
                               >
                                 {t(
-                                  `views.env.deps.dependency.status.${dep.status}`
+                                  `views.env.deps.dependency.status.${dep!.status}`
                                 )}
                               </span>
                             </div>
-                            {dep.error && (
+                            {dep!.error && (
                               <div class="tooltip-item">
                                 <label>
                                   {t('views.env.deps.dependency.form.error')}:
@@ -457,16 +416,16 @@ const useDependencyList = () => {
                                     color,
                                   }}
                                 >
-                                  {dep.error}
+                                  {dep!.error}
                                 </span>
                               </div>
                             )}
-                            {dep.version && (
+                            {dep!.version && (
                               <div class="tooltip-item">
                                 <label>
                                   {t('views.env.deps.dependency.form.version')}:
                                 </label>
-                                <span>{dep.version}</span>
+                                <span>{dep!.version}</span>
                               </div>
                             )}
                           </div>

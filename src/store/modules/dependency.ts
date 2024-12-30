@@ -49,6 +49,8 @@ const state = {
   getVersionsLoading: false,
   versions: [],
   activeTargetId: undefined,
+  activeTargetName: undefined,
+  activeTargetStatus: undefined,
   activeTargetLogs: [],
   config: undefined,
   configVersions: [],
@@ -213,6 +215,21 @@ const mutations = {
   },
   resetActiveTargetId: (state: DependencyStoreState): void => {
     state.activeTargetId = undefined;
+  },
+  setActiveTargetName: (state: DependencyStoreState, name: string): void => {
+    state.activeTargetName = name;
+  },
+  resetActiveTargetName: (state: DependencyStoreState): void => {
+    state.activeTargetName = undefined;
+  },
+  setActiveTargetStatus: (
+    state: DependencyStoreState,
+    status: DependencyStatus
+  ): void => {
+    state.activeTargetStatus = status;
+  },
+  resetActiveTargetStatus: (state: DependencyStoreState): void => {
+    state.activeTargetStatus = undefined;
   },
   setActiveTargetLogs: (
     state: DependencyStoreState,

@@ -30,10 +30,9 @@ const { get } = useRequest();
 
 const router = useRouter();
 
-const nsSpider: ListStoreNamespace = 'spider';
 const nsDependency: ListStoreNamespace = 'dependency';
 const store = useStore();
-const { dependency: dependencyState, spider: spiderState } =
+const { dependency: dependencyState } =
   store.state as RootStoreState;
 
 const { activeId } = useSpiderDetail();
@@ -124,6 +123,8 @@ const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
               clickable
               onClick={() => {
                 store.commit(`${nsDependency}/setActiveTargetId`, dep._id);
+                store.commit(`${nsDependency}/setActiveTargetName`, dep.name);
+                store.commit(`${nsDependency}/setActiveTargetStatus`, dep.status);
                 store.commit(`${nsDependency}/showDialog`, 'logs');
               }}
             >
