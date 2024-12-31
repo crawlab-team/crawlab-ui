@@ -10,7 +10,7 @@ import type { ContextMenuItem } from '@/components/ui/context-menu/types';
 const props = withDefaults(
   defineProps<{
     column: TableColumn;
-    row: Record;
+    row: Record<any, any>;
     rowIndex: number;
   }>(),
   {

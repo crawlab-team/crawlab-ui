@@ -340,6 +340,7 @@ defineOptions({ name: 'ClTable' });
 
   &:deep(td > .cell) {
     overflow: inherit;
+    text-overflow: inherit;
   }
 
   &:deep(td.no-padding),

@@ -1,4 +1,10 @@
-import { computed, onBeforeMount, onBeforeUnmount, watch } from 'vue';
+import {
+  computed,
+  CSSProperties,
+  onBeforeMount,
+  onBeforeUnmount,
+  watch,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { getStore } from '@/store';
 import { useList } from '@/layouts/content';
@@ -34,6 +40,7 @@ import {
   getRepoName,
 } from '@/utils/dependency';
 import type { TagProps } from '@/components/ui/tag/types';
+import { CellStyle } from 'element-plus';
 
 const t = translate;
 
@@ -235,6 +242,38 @@ const useDependencyList = () => {
     }
   };
 
+  // table cell style
+  const tableCellStyle = computed<CellStyle<any>>(() => {
+    const cellStyle: CellStyle<any> = ({ column }): CSSProperties => {
+      switch (state.repoTabName) {
+        case 'nodes':
+          switch (column.columnKey) {
+            case 'name':
+            case 'status':
+              return {
+                textOverflow: 'unset',
+              };
+          }
+          return {};
+        default:
+          switch (column.columnKey) {
+            case 'name':
+            case 'versions':
+              return {
+                textOverflow: 'unset',
+              };
+            case 'node_ids':
+              return {
+                textOverflow: 'unset',
+                flexWrap: 'wrap',
+              };
+          }
+          return {};
+      }
+    };
+    return cellStyle;
+  });
+
   // table columns
   const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
     switch (state.repoTabName) {
@@ -363,7 +402,10 @@ const useDependencyList = () => {
                     clickable
                     onClick={() => {
                       store.commit(`${ns}/setActiveTargetId`, dep!._id);
-                      store.commit(`${ns}/setActiveTargetName`, `${node.name} - ${dep!.name}`);
+                      store.commit(
+                        `${ns}/setActiveTargetName`,
+                        `${node.name} - ${dep!.name}`
+                      );
                       store.commit(`${ns}/setActiveTargetStatus`, dep!.status);
                       store.commit(`${ns}/showDialog`, 'logs');
                     }}
@@ -719,6 +761,7 @@ const useDependencyList = () => {
     tableData,
     tableTotal,
     tablePagination,
+    tableCellStyle,
     actionFunctions,
     repoTabName,
     repoTabItems,

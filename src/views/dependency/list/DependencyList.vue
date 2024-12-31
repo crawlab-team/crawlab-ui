@@ -19,6 +19,7 @@ const {
   tableData,
   tablePagination,
   tableTotal,
+  tableCellStyle,
   repoTabName,
   repoTabItems,
   onClickTableEmptySearch,
@@ -43,6 +44,7 @@ defineOptions({ name: 'ClDependencyList' });
     :table-columns="tableColumns"
     :table-data="tableData"
     :table-total="tableTotal"
+    :table-cell-style="tableCellStyle"
   >
     <template #tabs>
       <cl-nav-tabs

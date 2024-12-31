@@ -43,6 +43,13 @@ const tagProps = computed<TagProps>(() => {
         clickable: true,
       };
       break;
+    case 'uninstalled':
+      tagProps = {
+        icon: ['fa', 'download'],
+        type: 'info',
+        clickable: true,
+      };
+      break;
     default:
       tagProps = {
         icon: ['fa', 'question'],

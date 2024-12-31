@@ -3,6 +3,8 @@ import { computed, onMounted, provide, ref, watch } from 'vue';
 import { emptyArrayFunc, emptyObjectFunc } from '@/utils/func';
 import { getMd5 } from '@/utils/hash';
 import { ACTION_FILTER_SEARCH, ACTION_FILTER_SELECT } from '@/constants/action';
+import { ColumnCls } from 'element-plus/es/components/table/src/table/defaults';
+import { CellCls, CellStyle, ColumnStyle } from 'element-plus';
 
 const slots = defineSlots<{
   tabs?: any;
@@ -25,14 +27,21 @@ const props = withDefaults(
     tableActionsPrefix?: ListActionButton[];
     tableActionsSuffix?: ListActionButton[];
     tableFilter?: any;
+    tablePaginationLayout?: string;
+    tableLoading?: boolean;
+    tableRowClassName?: ColumnCls<any>;
+    tableRowStyle?: ColumnStyle<any>;
+    tableCellClassName?: CellCls<any>;
+    tableCellStyle?: CellStyle<any>;
+    tableHeaderRowClassName?: ColumnCls<any>;
+    tableHeaderRowStyle?: ColumnStyle<any>;
+    tableHeaderCellClassName?: CellCls<any>;
+    tableHeaderCellStyle?: CellStyle<any>;
     actionFunctions?: ListLayoutActionFunctions;
     noActions?: boolean;
     selectable?: boolean;
     selectableFunction?: TableSelectableFunction;
     visibleButtons?: BuiltInTableActionButtonName[];
-    tablePaginationLayout?: string;
-    tableLoading?: boolean;
-    tablePaginationPosition?: TablePaginationPosition;
     embedded?: boolean;
   }>(),
   {
@@ -213,6 +222,14 @@ defineOptions({ name: 'ClListLayout' });
         :pagination-layout="tablePaginationLayout"
         :loading="tableLoading"
         :embedded="embedded"
+        :header-cell-class-name="tableHeaderCellClassName"
+        :header-cell-style="tableHeaderCellStyle"
+        :cell-class-name="tableCellClassName"
+        :cell-style="tableCellStyle"
+        :header-row-class-name="tableHeaderRowClassName"
+        :header-row-style="tableHeaderRowStyle"
+        :row-class-name="tableRowClassName"
+        :row-style="tableRowStyle"
         @selection-change="onSelect"
         @delete="onDelete"
         @edit="onEdit"
