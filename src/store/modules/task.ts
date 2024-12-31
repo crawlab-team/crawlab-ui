@@ -12,6 +12,7 @@ import {
 } from '@/constants/tab';
 import { TASK_MODE_RANDOM } from '@/constants/task';
 import { translate } from '@/utils/i18n';
+import { getMd5 } from '@/utils';
 
 // i18n
 const t = translate;
@@ -101,7 +102,9 @@ const actions = {
   ) => {
     const { page, size } = state.logPagination;
     const res = await getList(`/tasks/${id}/logs`, { page, size });
-    commit('setLogContent', res.data?.join('\n'));
+    if (getMd5(state.logContent) !== getMd5(res.data?.join('\n') || '')) {
+      commit('setLogContent', res.data?.join('\n'));
+    }
     commit('setLogTotal', res.total);
     return res;
   },

@@ -48,11 +48,8 @@
     "postbuild": "pnpm run postbuild:gen",
     "postbuild:gen": "pnpm run gen:interfaces",
     "build": "pnpm run prebuild && pnpm run build:lib && pnpm run postbuild",
-    "build:docker": "vite build --mode docker",
     "build:local": "vite build --mode local",
     "build:lib": "vite build",
-    "build:lib:analyze": "vite build --mode analyze",
-    "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit",
     "lint": "vite lint",
     "test": "jest"
   },

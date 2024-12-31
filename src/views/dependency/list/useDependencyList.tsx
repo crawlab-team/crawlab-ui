@@ -38,6 +38,8 @@ import {
   getNormalizedDependencies,
   getRepoExternalPath,
   getRepoName,
+  getTypeByDep,
+  isDependencyLoading,
 } from '@/utils/dependency';
 import type { TagProps } from '@/components/ui/tag/types';
 import { CellStyle } from 'element-plus';
@@ -227,21 +229,6 @@ const useDependencyList = () => {
     store.commit(`${ns}/showDialog`, 'logs');
   };
 
-  const isLoading = (dep: Dependency) => {
-    return dep.status === 'installing' || dep.status === 'uninstalling';
-  };
-
-  const getTypeByDep = (dep: Dependency): BasicType | undefined => {
-    switch (dep.status) {
-      case 'installing':
-      case 'uninstalling':
-        return 'warning';
-      case 'error':
-      case 'abnormal':
-        return 'danger';
-    }
-  };
-
   // table cell style
   const tableCellStyle = computed<CellStyle<any>>(() => {
     const cellStyle: CellStyle<any> = ({ column }): CSSProperties => {
@@ -396,8 +383,8 @@ const useDependencyList = () => {
                   <ClNodeTag
                     key={node._id}
                     node={node}
-                    loading={isLoading(dep)}
-                    hit={isLoading(dep)}
+                    loading={isDependencyLoading(dep)}
+                    hit={isDependencyLoading(dep)}
                     type={getTypeByDep(dep)}
                     clickable
                     onClick={() => {
@@ -702,7 +689,7 @@ const useDependencyList = () => {
     // nodes tab
     const nodesItem: NavItem = {
       id: 'nodes',
-      title: t('views.env.deps.repos.tabs.nodes'),
+      title: `${t('views.env.deps.repos.tabs.nodes')} (${activeNodesSorted.value.length})`,
       icon: ['fas', 'server'],
     };
     items.push(nodesItem);

@@ -160,6 +160,7 @@ const common: LCommon = {
   },
   placeholder: {
     empty: 'Empty',
+    unrestricted: 'Unrestricted',
   },
   select: {
     input: {

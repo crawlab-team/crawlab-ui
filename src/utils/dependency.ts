@@ -52,3 +52,18 @@ export const getNormalizedDependencies = (
   }
   return dependencies;
 };
+
+export const isDependencyLoading = (dep: Dependency) => {
+  return dep.status === 'installing' || dep.status === 'uninstalling';
+};
+
+export const getTypeByDep = (dep: Dependency): BasicType | undefined => {
+  switch (dep.status) {
+    case 'installing':
+    case 'uninstalling':
+      return 'warning';
+    case 'error':
+    case 'abnormal':
+      return 'danger';
+  }
+};

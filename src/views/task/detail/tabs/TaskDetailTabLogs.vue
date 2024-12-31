@@ -97,20 +97,25 @@ const updateLogs = async () => {
 };
 
 // auto update
-let autoUpdateHandle: number;
-const setupDetail = () => {
+let autoUpdateHandle: any;
+const setupDetail = async () => {
+  // Get form data if status is empty
+  if (!form.value?.status) {
+    await getForm();
+  }
+
+  // Set up auto update if status is cancellable
   if (isCancellable(form.value?.status)) {
-    // @ts-ignore
     autoUpdateHandle = setInterval(async () => {
-      // form data
+      // Get form data
       const res = await getForm();
 
-      // logs
+      // Update logs if auto update is enabled
       if (state.logAutoUpdate) {
         await updateLogs();
       }
 
-      // dispose
+      // Dispose auto update if status is not cancellable
       if (!isCancellable(res.data.status)) {
         clearInterval(autoUpdateHandle);
       }

@@ -47,7 +47,7 @@ const onCancel = async () => {
     t('common.actions.cancel'),
     { type: 'warning' }
   );
-  ElMessage.info('Attempt to cancel');
+  ElMessage.info(t('common.message.info.cancel'));
   await post(`/tasks/${activeId.value}/cancel`);
   await getForm();
 };

@@ -16,10 +16,17 @@ import {
   ClNodeTag,
   useNode,
 } from '@/components';
-import { setupAutoUpdate, translate } from '@/utils';
+import {
+  setupAutoUpdate,
+  translate,
+  isDependencyLoading,
+  getTypeByDep,
+  getMd5,
+} from '@/utils';
 import { ACTION_INSTALL, ACTION_UNINSTALL } from '@/constants';
 
 type SpiderDependenciesResponse = ResponseWithData<{
+  lang: DependencyLang;
   file_type: DependencyFileType;
   requirements: DependencyRequirement[];
 }>;
@@ -32,13 +39,13 @@ const router = useRouter();
 
 const nsDependency: ListStoreNamespace = 'dependency';
 const store = useStore();
-const { dependency: dependencyState } =
-  store.state as RootStoreState;
+const { dependency: dependencyState } = store.state as RootStoreState;
 
 const { activeId } = useSpiderDetail();
 
-const { allDict: allNodeDict } = useNode(store);
+const { activeNodesSorted } = useNode(store);
 
+const lang = ref<DependencyLang>();
 const fileType = ref<DependencyFileType>();
 const requirements = ref<DependencyRequirement[]>([]);
 
@@ -87,14 +94,14 @@ const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
       width: '150',
       value: (row: DependencyRequirement) => (
         <ClTag
-          label={row.version || t('common.placeholder.empty')}
+          label={row.version || t('common.placeholder.unrestricted')}
           clickable
           onClick={onClickRequiredVersion}
         />
       ),
     },
     {
-      key: 'versions',
+      key: 'dependencies',
       label: t('views.env.deps.dependency.form.installedVersion'),
       icon: ['fa', 'tag'],
       width: '150',
@@ -113,25 +120,37 @@ const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
       label: t('views.env.deps.dependency.form.installedNodes'),
       icon: ['fa', 'server'],
       width: '580',
-      value: (row: DependencyRequirement) =>
-        row.dependencies?.map(dep => {
-          const node = allNodeDict.value.get(dep.node_id!);
-          if (!node?.active) return;
+      value: (row: DependencyRequirement) => {
+        return activeNodesSorted.value.map(node => {
+          const dep: Dependency | undefined = row.dependencies?.find(
+            dep => dep.node_id === node._id
+          );
+          if (!dep) return;
           return (
             <ClNodeTag
+              key={node._id}
               node={node}
+              loading={isDependencyLoading(dep)}
+              hit={isDependencyLoading(dep)}
+              type={getTypeByDep(dep)}
               clickable
               onClick={() => {
-                store.commit(`${nsDependency}/setActiveTargetId`, dep._id);
-                store.commit(`${nsDependency}/setActiveTargetName`, dep.name);
-                store.commit(`${nsDependency}/setActiveTargetStatus`, dep.status);
+                store.commit(`${nsDependency}/setActiveTargetId`, dep!._id);
+                store.commit(
+                  `${nsDependency}/setActiveTargetName`,
+                  `${node.name} - ${dep!.name}`
+                );
+                store.commit(
+                  `${nsDependency}/setActiveTargetStatus`,
+                  dep!.status
+                );
                 store.commit(`${nsDependency}/showDialog`, 'logs');
               }}
             >
               {{
                 'extra-items': () => {
                   let color: string;
-                  switch (dep.status) {
+                  switch (dep!.status) {
                     case 'installing':
                     case 'uninstalling':
                       color = 'var(--cl-warning-color)';
@@ -148,11 +167,9 @@ const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
                       color = 'inherit';
                   }
                   return (
-                    <>
+                    <div class="tooltip-wrapper">
                       <div class="tooltip-title">
-                        <label>
-                          {t('layouts.routes.dependencies.list.title')}
-                        </label>
+                        <label>{t('views.env.deps.label')}</label>
                       </div>
                       <div class="tooltip-item">
                         <label>
@@ -163,10 +180,10 @@ const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
                             color,
                           }}
                         >
-                          {t(`views.env.deps.dependency.status.${dep.status}`)}
+                          {t(`views.env.deps.dependency.status.${dep!.status}`)}
                         </span>
                       </div>
-                      {dep.error && (
+                      {dep!.error && (
                         <div class="tooltip-item">
                           <label>
                             {t('views.env.deps.dependency.form.error')}:
@@ -176,25 +193,26 @@ const tableColumns = computed<TableColumns<DependencyRepo>>(() => {
                               color,
                             }}
                           >
-                            {dep.error}
+                            {dep!.error}
                           </span>
                         </div>
                       )}
-                      {dep.version && (
+                      {dep!.version && (
                         <div class="tooltip-item">
                           <label>
                             {t('views.env.deps.dependency.form.version')}:
                           </label>
-                          <span>{dep.version}</span>
+                          <span>{dep!.version}</span>
                         </div>
                       )}
-                    </>
+                    </div>
                   );
                 },
               }}
             </ClNodeTag>
           );
-        }),
+        });
+      },
     },
     {
       key: 'actions',
@@ -232,8 +250,17 @@ const getData = async () => {
     const res = await get<any, SpiderDependenciesResponse>(
       `/dependencies/spiders/${activeId.value}`
     );
+    lang.value = res.data?.lang;
+    store.commit(`${nsDependency}/setLang`, lang.value);
     fileType.value = res.data?.file_type;
-    requirements.value = res.data?.requirements || [];
+
+    // Only update requirements if the md5 hash is different
+    if (
+      getMd5(JSON.stringify(requirements.value)) !==
+      getMd5(JSON.stringify(res.data?.requirements))
+    ) {
+      requirements.value = res.data?.requirements || [];
+    }
   } catch (e: any) {
     ElMessage.error(e.message);
   } finally {
@@ -260,6 +287,7 @@ defineOptions({ name: 'ClSpiderDetailTabDependencies' });
     <template #extra>
       <cl-dependency-install-dialog />
       <cl-dependency-uninstall-dialog />
+      <cl-dependency-logs-dialog />
     </template>
   </cl-list-layout>
 </template>

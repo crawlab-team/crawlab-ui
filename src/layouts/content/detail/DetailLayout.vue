@@ -122,6 +122,7 @@ defineOptions({ name: 'ClDetailLayout' });
     background-color: var(--cl-container-white-bg);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     .nav-actions {
       height: fit-content;

@@ -54,6 +54,7 @@ export const priorityOptions: SelectOption[] = [
 export const isCancellable = (status?: TaskStatus): boolean => {
   switch (status) {
     case TASK_STATUS_PENDING:
+    case TASK_STATUS_ASSIGNED:
     case TASK_STATUS_RUNNING:
       return true;
     default:

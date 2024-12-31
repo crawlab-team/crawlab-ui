@@ -173,6 +173,7 @@ export declare global {
     };
     placeholder: {
       empty: string;
+      unrestricted: string;
     };
     select: {
       input: {
