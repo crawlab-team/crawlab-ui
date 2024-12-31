@@ -42,7 +42,7 @@ const getActiveTargetLogs = async () => {
 };
 
 const scrollToBottom = () => {
-  logsViewRef.value?.scrollTo(0, logsViewRef.value?.clientHeight);
+  logsViewRef.value?.scrollTo(0, logsViewRef.value?.scrollHeight);
 };
 
 const onClose = () => {
