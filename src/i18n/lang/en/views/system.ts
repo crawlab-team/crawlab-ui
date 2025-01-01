@@ -1,7 +1,7 @@
 const system: LViewsSystem = {
   menuItems: {
-    customize: 'Customize',
-    registration: 'User Registration',
+    customize: 'Customization',
+    dependency: 'Dependency Management',
   },
   customize: {
     customTitle: 'Custom Site Title',
@@ -15,6 +15,9 @@ const system: LViewsSystem = {
       invalidFileType: 'Invalid file type',
       fileSizeExceeded: 'File size exceeded',
     },
+  },
+  dependency: {
+    autoInstall: 'Auto Install',
   },
 };
 

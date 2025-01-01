@@ -63,7 +63,6 @@ const initResize = (event: MouseEvent) => {
     direction === 'horizontal'
       ? targetRef?.clientHeight || 0
       : targetRef?.clientWidth || 0;
-  console.debug(initialSize.value);
   startX.value = event.clientX;
   startY.value = event.clientY;
   document.addEventListener('mousemove', resize);

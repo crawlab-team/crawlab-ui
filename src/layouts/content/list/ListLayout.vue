@@ -117,7 +117,7 @@ const getNavActionButtonDisabled = (btn: ListActionButton) => {
 
 const tableColumnsHash = computed<string>(() => {
   const { tableColumns } = props;
-  return getMd5(JSON.stringify(tableColumns));
+  return getMd5(tableColumns);
 });
 
 const className = computed(() => {

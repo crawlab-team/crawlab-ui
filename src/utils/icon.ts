@@ -131,9 +131,11 @@ export const getIconByTabName = (tabName: string): Icon => {
       return ['fa', 'circle'];
   }
 };
+
 export const getIconByNavItem = (item: NavItem): Icon => {
   return getIconByTabName(item.id);
 };
+
 export const getIconByAction = (action: string): Icon | undefined => {
   switch (action) {
     // Basic Actions
@@ -290,6 +292,15 @@ export const getIconByRouteConcept = (concept: RouteConcept): Icon => {
       return ['fa', 'info-circle'];
     case 'mySettings':
       return ['fa', 'user-cog'];
+    default:
+      return ['fa', 'circle'];
+  }
+};
+
+export const getIconByGeneralConcept = (concept: GeneralConcept): Icon => {
+  switch (concept) {
+    case 'customize':
+      return ['fa', 'palette'];
     default:
       return ['fa', 'circle'];
   }

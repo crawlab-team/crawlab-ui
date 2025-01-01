@@ -255,10 +255,7 @@ const getData = async () => {
     fileType.value = res.data?.file_type;
 
     // Only update requirements if the md5 hash is different
-    if (
-      getMd5(JSON.stringify(requirements.value)) !==
-      getMd5(JSON.stringify(res.data?.requirements))
-    ) {
+    if (getMd5(requirements.value) !== getMd5(res.data?.requirements)) {
       requirements.value = res.data?.requirements || [];
     }
   } catch (e: any) {

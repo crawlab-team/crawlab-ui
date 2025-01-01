@@ -555,13 +555,10 @@ const useDependencyList = () => {
   const tableData = computed(() => {
     switch (state.repoTabName) {
       case 'installed':
-        console.debug('installed', state.installedDependenciesTableData);
         return state.installedDependenciesTableData || [];
       case 'search':
-        console.debug('search');
         return searchRepoTableData.value || [];
       case 'nodes':
-        console.debug('nodes');
         return configSetupTableData.value || [];
       default:
         return [];

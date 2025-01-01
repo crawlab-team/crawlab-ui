@@ -1,7 +1,7 @@
 const system: LViewsSystem = {
   menuItems: {
-    customize: '自定义',
-    registration: '用户注册',
+    customize: '自定义管理',
+    dependency: '依赖管理',
   },
   customize: {
     customTitle: '自定义网站标题',
@@ -14,6 +14,9 @@ const system: LViewsSystem = {
       invalidFileType: '文件类型无效',
       fileSizeExceeded: '文件大小超过限制',
     },
+  },
+  dependency: {
+    autoInstall: '自动安装',
   },
 };
 

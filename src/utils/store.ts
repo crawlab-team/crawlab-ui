@@ -330,10 +330,7 @@ export const getDefaultStoreActions = <T = any>(
         const tableData = { data: res.data || [], total: res.total };
 
         // check if the data has changes against the current data
-        if (
-          getMd5(JSON.stringify(tableData.data)) !==
-          getMd5(JSON.stringify(state.tableData))
-        ) {
+        if (getMd5(tableData.data) !== getMd5(state.tableData)) {
           commit('setTableData', tableData);
         }
         return res;

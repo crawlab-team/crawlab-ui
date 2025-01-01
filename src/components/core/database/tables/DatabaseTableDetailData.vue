@@ -30,9 +30,9 @@ const getRowHash = (row: DatabaseTableRow) => {
     return row.__hash__;
   }
   if (primaryColumnName.value) {
-    return getMd5(JSON.stringify(row[primaryColumnName.value]));
+    return getMd5(row[primaryColumnName.value]);
   }
-  return getMd5(JSON.stringify(row));
+  return getMd5(row);
 };
 
 const getHeaderIcon = (column: DatabaseColumn) => {

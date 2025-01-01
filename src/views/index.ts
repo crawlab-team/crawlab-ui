@@ -73,6 +73,8 @@ import SpiderDetailTabSchedules from './spider/detail/tabs/SpiderDetailTabSchedu
 import SpiderDetailTabTasks from './spider/detail/tabs/SpiderDetailTabTasks.vue';
 import SpiderList from './spider/list/SpiderList.vue';
 import SystemDetail from './system/detail/SystemDetail.vue';
+import SystemDetailTabCustomize from './system/detail/tabs/SystemDetailTabCustomize.vue';
+import SystemDetailTabDependency from './system/detail/tabs/SystemDetailTabDependency.vue';
 import TaskDetail from './task/detail/TaskDetail.vue';
 import TaskDetailActionGroupNav from './task/detail/actions/groups/TaskDetailActionGroupNav.vue';
 import TaskDetailActionsCommon from './task/detail/actions/TaskDetailActionsCommon.vue';
@@ -189,6 +191,8 @@ export {
   SpiderDetailTabTasks as ClSpiderDetailTabTasks,
   SpiderList as ClSpiderList,
   SystemDetail as ClSystemDetail,
+  SystemDetailTabCustomize as ClSystemDetailTabCustomize,
+  SystemDetailTabDependency as ClSystemDetailTabDependency,
   TaskDetail as ClTaskDetail,
   TaskDetailActionGroupNav as ClTaskDetailActionGroupNav,
   TaskDetailActionsCommon as ClTaskDetailActionsCommon,

@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useRequest from '@/services/request';
-import { browser } from 'globals';
+import { ClForm } from '@/components';
 
 const t = translate;
 
@@ -12,6 +12,8 @@ const { get } = useRequest();
 const ns: ListStoreNamespace = 'dependency';
 const store = useStore();
 const { dependency: state, node: nodeState } = store.state as RootStoreState;
+
+const formRef = ref<typeof ClForm>();
 
 const config = computed(() => state.config);
 const lang = computed(() => state.lang);
@@ -56,6 +58,9 @@ const confirmButtonDisabled = computed(() => {
 const onConfirm = async () => {
   // Skip if the confirm button is disabled
   if (confirmButtonDisabled.value) return;
+
+  // Validate form
+  await formRef.value?.validate();
 
   // Install config setup
   await store.dispatch(`${ns}/installConfigSetup`, {
@@ -124,7 +129,7 @@ defineOptions({ name: 'ClDependencySetupDialog' });
     @confirm="onConfirm"
     @close="onClose"
   >
-    <cl-form>
+    <cl-form ref="formRef" :model="form">
       <cl-form-item :span="4" :label="t('views.env.deps.config.form.name')">
         <cl-tag
           :key="config?.name"
@@ -136,11 +141,14 @@ defineOptions({ name: 'ClDependencySetupDialog' });
       <cl-form-item
         :span="4"
         :label="t('views.env.deps.configSetup.form.version')"
+        required
+        prop="version"
       >
         <el-select
           v-model="form.version"
           :disabled="getVersionsLoading"
           :placeholder="t('common.status.loading')"
+          default-first-option
           filterable
         >
           <el-option

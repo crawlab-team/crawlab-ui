@@ -294,8 +294,7 @@ const actions = {
         total: res.total,
       };
       if (
-        getMd5(JSON.stringify(tableData.data)) !==
-        getMd5(JSON.stringify(state.installedDependenciesTableData))
+        getMd5(tableData.data) !== getMd5(state.installedDependenciesTableData)
       ) {
         commit('setInstalledDependenciesTableData', tableData);
       }
@@ -324,10 +323,7 @@ const actions = {
         data: res.data || [],
         total: res.total,
       };
-      if (
-        getMd5(JSON.stringify(state.searchRepoTableData)) !==
-        getMd5(JSON.stringify(tableData.data))
-      ) {
+      if (getMd5(state.searchRepoTableData) !== getMd5(tableData.data)) {
         commit('setSearchRepoTableData', tableData);
       }
       return res;
@@ -488,10 +484,7 @@ const actions = {
         data: res.data || [],
         total: res.total,
       };
-      if (
-        getMd5(JSON.stringify(state.configSetupTableData)) !==
-        getMd5(JSON.stringify(tableData.data))
-      ) {
+      if (getMd5(state.configSetupTableData) !== getMd5(tableData.data)) {
         commit('setConfigSetupTableData', tableData);
       }
       return res;

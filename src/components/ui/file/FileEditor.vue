@@ -66,7 +66,6 @@ const activeFileItem = computed<FileNavItem | undefined>(
 const themeColors = ref<monaco.editor.IColors>({});
 
 const styles = computed<FileEditorStyles>(() => {
-  console.debug(themeColors.value);
   return {
     default: {
       backgroundColor: themeColors.value['editor.background'],

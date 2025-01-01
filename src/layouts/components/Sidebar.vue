@@ -63,7 +63,7 @@ const toggleSidebar = () => {
 
 const systemInfo = computed<SystemInfo>(() => commonState.systemInfo || {});
 
-const customize = computed<Setting>(() => systemState.customize);
+const customize = computed<Setting>(() => systemState.settings.customize);
 const showCustomTitle = computed<boolean>(
   () => customize.value?.value?.show_custom_title
 );
@@ -87,7 +87,7 @@ const customizedLogo = computed<string>(() => {
 
 onBeforeMount(async () => {
   if (isPro()) {
-    await store.dispatch('system/getCustomize');
+    await store.dispatch('system/getSetting', { key: 'customize' });
   }
 });
 
@@ -131,7 +131,11 @@ defineOptions({ name: 'ClSidebar' });
         </div>
       </div>
       <div v-else class="logo">
-        <img class="logo-img" alt="logo-img" :src="logoIcon" />
+        <img
+          class="logo-img"
+          alt="logo-img"
+          :src="showCustomLogo ? customizedLogo : logoIcon"
+        />
       </div>
     </div>
 
