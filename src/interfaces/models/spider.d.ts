@@ -25,6 +25,8 @@ export declare global {
     git_id?: string;
     git_root_path?: string;
     git?: Git;
+    template?: SpiderTemplateName;
+    template_params?: SpiderTemplateParams;
   }
 
   interface SpiderStat {
@@ -48,5 +50,30 @@ export declare global {
     param?: string;
     schedule_id?: string;
     priority?: number;
+  }
+
+  type SpiderTemplateName =
+    | 'scrapy'
+    | 'bs4'
+    | 'selenium'
+    | 'puppeteer'
+    | 'playwright'
+    | 'colly'
+    | 'python'
+    | 'node'
+    | 'go'
+    | 'java';
+
+  interface SpiderTemplateParams {
+    spider_name?: string;
+    start_urls?: string;
+    domains?: string;
+  }
+
+  interface SpiderTemplate {
+    name: SpiderTemplateName;
+    label: string;
+    cmd: string;
+    params?: SpiderTemplateParams;
   }
 }

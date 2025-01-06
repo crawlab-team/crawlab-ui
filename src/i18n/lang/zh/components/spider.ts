@@ -15,6 +15,12 @@ const spider: LComponentsSpider = {
     autoInstallDisabled: '自动安装依赖 (仅限 Crawlab Pro)',
     git: 'Git 仓库',
     gitRootPath: 'Git 仓库路径',
+    template: '模板',
+    templateParams: {
+      spiderName: '爬虫名称',
+      startUrls: '起始 URL',
+      domains: '域名',
+    },
   },
   actions: {
     files: {

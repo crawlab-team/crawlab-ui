@@ -15,6 +15,12 @@ const spider: LComponentsSpider = {
     autoInstallDisabled: 'Auto Install (available in Crawlab Pro)',
     git: 'Git Repo',
     gitRootPath: 'Git Path',
+    template: 'Template',
+    templateParams: {
+      spiderName: 'Spider Name',
+      startUrls: 'Start URLs',
+      domains: 'Domains',
+    },
   },
   actions: {
     files: {

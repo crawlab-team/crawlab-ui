@@ -15,6 +15,12 @@ interface LComponentsSpider {
     autoInstallDisabled: string;
     git: string;
     gitRootPath: string;
+    template: string;
+    templateParams: {
+      spiderName: string;
+      startUrls: string;
+      domains: string;
+    };
   };
   actions: {
     files: {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useSpider, useProject, useNode } from '@/components';
 import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
@@ -7,6 +7,7 @@ import pinyin, { STYLE_NORMAL } from 'pinyin';
 import { isZeroObjectId } from '@/utils/mongo';
 import { useSpiderDetail } from '@/views';
 import { priorityOptions, translate } from '@/utils';
+import { getSpiderTemplates } from '@/utils/spider';
 
 // i18n
 const t = translate;
@@ -65,6 +66,21 @@ const validate = async () => {
   await formRef.value?.validate();
 };
 
+const spiderTemplateOptions = computed<SelectOption[]>(() => {
+  return getSpiderTemplates().map(({ name, label }) => ({
+    label,
+    value: name,
+  }));
+});
+const onTemplateChange = (value: string) => {
+  const template = getSpiderTemplates().find(d => d.name === value);
+  if (!template) return;
+  if (!form.value.name) {
+    form.value.name = `${template.name}_spider`;
+  }
+  form.value.cmd = template.cmd;
+};
+
 defineExpose({
   validate,
 });
@@ -74,6 +90,22 @@ defineOptions({ name: 'ClSpiderForm' });
 <template>
   <cl-form v-if="form" ref="formRef" :model="form">
     <slot name="header" />
+
+    <cl-form-item
+      :span="2"
+      :offset="2"
+      :label="t('components.spider.form.template')"
+      prop="template"
+    >
+      <el-select v-model="form.template" @change="onTemplateChange">
+        <el-option
+          v-for="op in spiderTemplateOptions"
+          :key="op.name"
+          :label="op.label"
+          :value="op.value"
+        />
+      </el-select>
+    </cl-form-item>
 
     <!-- Row -->
     <cl-form-item
