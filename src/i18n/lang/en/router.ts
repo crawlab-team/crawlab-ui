@@ -16,7 +16,7 @@ const router: LRouter = {
         roles: 'Roles',
       },
     },
-    tokens: 'Tokens',
+    tokens: 'API Tokens',
     dependencies: 'Dependencies',
     env: {
       deps: {

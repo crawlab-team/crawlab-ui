@@ -13,8 +13,7 @@ const props = defineProps<{
 const t = translate;
 
 const type = computed<BasicType>(() => {
-  const { isMaster } = props;
-  return isMaster ? 'primary' : 'warning';
+  return 'primary';
 });
 
 const computedLabel = computed<string>(() => {

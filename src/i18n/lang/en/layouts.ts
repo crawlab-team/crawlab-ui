@@ -118,7 +118,7 @@ const layouts: LLayouts = {
     },
     tokens: {
       list: {
-        title: 'Token List',
+        title: 'API Token List',
       },
     },
     dependencies: {

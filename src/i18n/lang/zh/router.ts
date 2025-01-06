@@ -16,7 +16,7 @@ const router: LRouter = {
         roles: '角色',
       },
     },
-    tokens: '令牌',
+    tokens: 'API 令牌',
     dependencies: '环境依赖',
     env: {
       deps: {

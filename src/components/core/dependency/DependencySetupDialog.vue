@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { translate } from '@/utils';
 import useRequest from '@/services/request';
-import { ClForm } from '@/components';
+import { ClForm, useNode } from '@/components';
 
 const t = translate;
 
@@ -11,7 +11,7 @@ const { get } = useRequest();
 
 const ns: ListStoreNamespace = 'dependency';
 const store = useStore();
-const { dependency: state, node: nodeState } = store.state as RootStoreState;
+const { dependency: state } = store.state as RootStoreState;
 
 const formRef = ref<typeof ClForm>();
 
@@ -20,7 +20,7 @@ const lang = computed(() => state.lang);
 
 const activeConfigSetup = computed(() => state.activeConfigSetup);
 
-const activeNodes = computed(() => nodeState.allList.filter(n => n.active));
+const { activeNodesSorted: activeNodes } = useNode(store);
 
 const toInstallNodes = computed(() => {
   const { mode, node_ids, node_id } = state.setupForm;

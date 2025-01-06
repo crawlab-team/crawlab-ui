@@ -5,7 +5,7 @@ import useSpider from '@/components/core/spider/useSpider';
 import useNode from '@/components/core/node/useNode';
 import { TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import { ElMessage } from 'element-plus';
-import { priorityOptions, translate } from '@/utils';
+import { getToRunNodes, priorityOptions, translate } from '@/utils';
 
 const props = withDefaults(
   defineProps<{
@@ -22,7 +22,12 @@ const t = translate;
 // store
 const store = useStore();
 
-const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
+const { activeNodesSorted: activeNodes } = useNode(store);
+
+const toRunNodes = computed(() => {
+  const { mode, node_ids } = form.value;
+  return getToRunNodes(mode, node_ids, activeNodes.value);
+});
 
 const { modeOptions } = useSpider(store);
 
@@ -121,9 +126,9 @@ defineOptions({ name: 'ClRunSpiderDialog' });
       </cl-form-item>
       <!-- ./Row -->
 
-      <!-- Row -->
       <cl-form-item
         :span="2"
+        :offset="options.mode === TASK_MODE_SELECTED_NODES ? 0 : 2"
         :label="t('components.task.form.mode')"
         prop="mode"
         required
@@ -138,7 +143,41 @@ defineOptions({ name: 'ClRunSpiderDialog' });
         </el-select>
       </cl-form-item>
       <cl-form-item
+        v-if="options.mode === TASK_MODE_SELECTED_NODES"
         :span="2"
+        :label="t('components.task.form.selectedNodes')"
+        prop="node_ids"
+        required
+      >
+        <el-select
+          v-model="options.node_ids"
+          multiple
+          :placeholder="t('components.task.form.selectedNodes')"
+        >
+          <el-option
+            v-for="n in activeNodes"
+            :key="n.key"
+            :value="n._id"
+            :label="n.name"
+          >
+            <span style="margin-right: 5px">
+              <cl-node-tag :node="n" icon-only />
+            </span>
+            <span>{{ n.name }}</span>
+          </el-option>
+        </el-select>
+      </cl-form-item>
+      <cl-form-item
+        v-if="options.mode !== TASK_MODE_RANDOM"
+        :label="t('components.task.form.toRunNodes')"
+        :span="4"
+      >
+        <cl-node-tag v-for="n in toRunNodes" :key="n.key" :node="n" />
+      </cl-form-item>
+
+      <cl-form-item
+        :span="2"
+        :offset="2"
         :label="t('components.task.form.priority')"
         prop="priority"
         required
@@ -151,19 +190,6 @@ defineOptions({ name: 'ClRunSpiderDialog' });
             :value="op.value"
           />
         </el-select>
-      </cl-form-item>
-      <!-- ./Row -->
-
-      <cl-form-item
-        v-if="TASK_MODE_SELECTED_NODES === options.mode"
-        :span="4"
-        :label="t('components.task.form.selectedNodes')"
-        required
-      >
-        <cl-check-tag-group
-          v-model="options.node_ids"
-          :options="allNodeSelectOptions"
-        />
       </cl-form-item>
     </cl-form>
   </cl-dialog>

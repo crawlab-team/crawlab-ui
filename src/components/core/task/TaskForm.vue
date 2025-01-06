@@ -3,13 +3,13 @@ import { computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import useRequest from '@/services/request';
-import { isCancellable, priorityOptions } from '@/utils/task';
+import { getToRunNodes, isCancellable, priorityOptions } from '@/utils/task';
 import { isZeroObjectId } from '@/utils/mongo';
 import { translate } from '@/utils';
 import { useTaskDetail } from '@/views';
 import { useSpider, useNode, useTask } from '@/components';
+import { TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODES } from '@/constants';
 
 defineProps<{
   readonly?: boolean;
@@ -26,8 +26,12 @@ const t = translate;
 const store = useStore();
 
 // use node
-const { allListSelectOptions: allNodeSelectOptions, allDict: allNodeDict } =
-  useNode(store);
+const { activeNodesSorted: activeNodes, allDict: allNodeDict } = useNode(store);
+
+const toRunNodes = computed(() => {
+  const { mode, node_ids } = form.value;
+  return getToRunNodes(mode, node_ids, activeNodes.value);
+});
 
 // use spider
 const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
@@ -92,6 +96,15 @@ const onCancel = async () => {
 const noScheduleId = computed<boolean>(() =>
   isZeroObjectId(form.value?.schedule_id)
 );
+
+const validate = async () => {
+  await formRef.value?.validate();
+}
+
+defineExpose({
+  validate,
+})
+
 defineOptions({ name: 'ClTaskForm' });
 </script>
 
@@ -216,9 +229,9 @@ defineOptions({ name: 'ClTaskForm' });
     </cl-form-item>
     <!-- ./Row -->
 
-    <!-- Row -->
     <cl-form-item
       :span="2"
+      :offset="form.mode === TASK_MODE_SELECTED_NODES ? 0 : 2"
       :label="t('components.task.form.mode')"
       prop="mode"
       :required="!readonly"
@@ -237,7 +250,46 @@ defineOptions({ name: 'ClTaskForm' });
       <cl-tag v-else size="large" :label="getModeName(form.mode) || '-'" />
     </cl-form-item>
     <cl-form-item
+      v-if="form.mode === TASK_MODE_SELECTED_NODES"
       :span="2"
+      :label="t('components.task.form.selectedNodes')"
+      prop="node_ids"
+      required
+    >
+      <el-select
+        v-model="form.node_ids"
+        multiple
+        :placeholder="t('components.task.form.selectedNodes')"
+      >
+        <el-option
+          v-for="n in activeNodes"
+          :key="n.key"
+          :value="n._id"
+          :label="n.name"
+        >
+          <span style="margin-right: 5px">
+            <cl-node-tag :node="n" icon-only />
+          </span>
+          <span>{{ n.name }}</span>
+        </el-option>
+      </el-select>
+    </cl-form-item>
+    <cl-form-item
+      v-if="form.mode !== TASK_MODE_RANDOM"
+      :label="t('components.task.form.toRunNodes')"
+      :span="4"
+    >
+      <template v-if="toRunNodes.length > 0">
+        <cl-node-tag v-for="n in toRunNodes" :key="n.key" :node="n" />
+      </template>
+      <template v-else>
+        <cl-tag type="info" :label="t('common.placeholder.empty')" />
+      </template>
+    </cl-form-item>
+
+    <cl-form-item
+      :span="2"
+      :offset="2"
       :label="t('components.task.form.priority')"
       prop="priority"
       :required="!readonly"
@@ -256,19 +308,6 @@ defineOptions({ name: 'ClTaskForm' });
       <cl-task-priority v-else :priority="form.priority" size="large" />
     </cl-form-item>
     <!-- ./Row -->
-
-    <cl-form-item
-      v-if="TASK_MODE_SELECTED_NODES === form.mode"
-      :span="4"
-      :label="t('components.task.form.selectedNodes')"
-      required
-    >
-      <cl-check-tag-group
-        v-model="form.node_ids"
-        :disabled="isFormItemDisabled('node_ids') || readonly"
-        :options="allNodeSelectOptions"
-      />
-    </cl-form-item>
   </cl-form>
 </template>
 

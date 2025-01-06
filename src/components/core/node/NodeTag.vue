@@ -42,7 +42,7 @@ const type = computed<BasicType>(() => {
   if (type) return type;
   switch (node.status) {
     case NODE_STATUS_ONLINE:
-      return node.is_master ? 'primary' : 'warning';
+      return 'primary';
     case NODE_STATUS_OFFLINE:
       return 'info';
   }

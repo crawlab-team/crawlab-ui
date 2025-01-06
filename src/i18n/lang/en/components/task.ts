@@ -10,6 +10,7 @@ const task: LComponentsTask = {
     priority: 'Priority',
     selectedTags: 'Selected Tags',
     selectedNodes: 'Selected Nodes',
+    toRunNodes: 'To Run Nodes',
     tooltip: {
       goToSpider: 'Go to Spider',
       goToNode: 'Go to Node',
@@ -80,6 +81,11 @@ const task: LComponentsTask = {
   logs: {
     actions: {
       autoUpdateLogs: 'Auto update logs',
+    },
+  },
+  dialog: {
+    create: {
+      title: 'Create Task',
     },
   },
 };

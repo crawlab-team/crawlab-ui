@@ -342,5 +342,9 @@ defineOptions({ name: 'ClListLayout' });
       margin-right: inherit;
     }
   }
+
+  &:deep(.form .tag) {
+    margin-right: 0;
+  }
 }
 </style>

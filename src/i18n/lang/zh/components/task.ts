@@ -10,6 +10,7 @@ const task: LComponentsTask = {
     priority: '优先级',
     selectedTags: '指定标签',
     selectedNodes: '指定节点',
+    toRunNodes: '待运行节点',
     tooltip: {
       goToSpider: '导航至爬虫',
       goToNode: '导航至节点',
@@ -80,6 +81,11 @@ const task: LComponentsTask = {
   logs: {
     actions: {
       autoUpdateLogs: '自动更新日志',
+    },
+  },
+  dialog: {
+    create: {
+      title: '创建任务',
     },
   },
 };

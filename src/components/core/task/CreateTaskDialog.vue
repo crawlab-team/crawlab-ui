@@ -1,39 +1,53 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
+import { translate } from '@/utils';
 import useTask from '@/components/core/task/useTask';
 
-defineProps<{
-  title?: string;
-}>();
+const t = translate;
 
 // store
+const ns = 'task';
 const store = useStore();
 
-const {
-  actionFunctions,
-  formList,
-  confirmDisabled,
-  confirmLoading,
-  activeDialogKey,
-  createEditDialogVisible,
-} = useTask(store);
+const { form, createEditDialogVisible } = useTask(store);
+
+const visible = computed(() => createEditDialogVisible.value);
+
+const title = computed<string>(() => {
+  if (!form.value) return t(`components.${ns}.dialog.run.title`);
+  return `${t(`components.${ns}.dialog.run.title`)} - ${form.value.name}`;
+});
+
+const formRef = ref();
+
+const onClose = () => {
+  store.commit(`${ns}/hideDialog`);
+  store.commit(`${ns}/resetForm`);
+};
+
+const onConfirm = async () => {
+  await formRef.value?.validate();
+  await store.dispatch(`${ns}/create`, form.value);
+  store.commit(`${ns}/hideDialog`);
+  ElMessage.success(t('common.message.success.create'));
+  await store.dispatch(`${ns}/getList`);
+};
+
 defineOptions({ name: 'ClCreateTaskDialog' });
 </script>
 
 <template>
-  <cl-create-edit-dialog
-    :action-functions="actionFunctions"
-    :batch-form-data="formList"
-    :confirm-disabled="confirmDisabled"
-    :confirm-loading="confirmLoading"
-    :type="activeDialogKey"
-    :visible="createEditDialogVisible"
-    :title="title"
+  <cl-dialog
+    :title="t('components.task.dialog.create.title')"
+    :visible="visible"
+    class-name="run-spider-dialog"
+    @close="onClose"
+    @confirm="onConfirm"
   >
     <template #default>
-      <cl-task-form />
+      <cl-task-form ref="formRef" />
     </template>
-  </cl-create-edit-dialog>
+  </cl-dialog>
 </template>
-
-

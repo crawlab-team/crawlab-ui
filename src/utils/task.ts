@@ -11,6 +11,7 @@ import {
   TASK_STATUS_RUNNING,
 } from '@/constants/task';
 import { translate } from '@/utils/i18n';
+import { computed } from 'vue';
 
 const t = translate;
 
@@ -119,9 +120,18 @@ export const getStatusOptions = (): SelectOption[] => {
   ];
 };
 
-export const getStatusOptionsDict = (): Map<string, SelectOption> => {
-  const statusOptions = getStatusOptions();
-  const dict = new Map<string, SelectOption>();
-  statusOptions.forEach(op => dict.set(op.value, op));
-  return dict;
+export const getToRunNodes = (
+  mode: TaskMode,
+  nodeIds?: string[],
+  activeNodes?: CNode[]
+): CNode[] => {
+  if (mode === TASK_MODE_ALL_NODES) {
+    // All nodes
+    return activeNodes || [];
+  } else if (mode === TASK_MODE_RANDOM) {
+    return [];
+  }
+
+  // Selected nodes
+  return activeNodes?.filter(n => nodeIds?.includes(n._id!)) || [];
 };

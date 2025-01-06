@@ -118,7 +118,7 @@ const layouts: LLayouts = {
     },
     tokens: {
       list: {
-        title: '令牌列表',
+        title: 'API 令牌列表',
       },
     },
     dependencies: {
