@@ -150,4 +150,10 @@ defineOptions({ name: 'ClDependencyList' });
     line-height: 1.2;
   }
 }
+
+.icon-wrapper {
+  &:deep(img) {
+    filter: grayscale(100);
+  }
+}
 </style>

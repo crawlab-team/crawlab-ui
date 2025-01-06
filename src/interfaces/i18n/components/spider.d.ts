@@ -21,6 +21,7 @@ interface LComponentsSpider {
       startUrls: string;
       domains: string;
     };
+    templateDoc: string;
   };
   actions: {
     files: {

@@ -70,10 +70,20 @@ export declare global {
     domains?: string;
   }
 
+  interface SpiderTemplateGroup {
+    lang: DependencyLang;
+    label: string;
+    icon?: Icon;
+    templates: SpiderTemplate[];
+  }
+
   interface SpiderTemplate {
     name: SpiderTemplateName;
     label: string;
+    icon?: Icon;
     cmd: string;
     params?: SpiderTemplateParams;
+    doc_url?: string;
+    doc_label?: string;
   }
 }

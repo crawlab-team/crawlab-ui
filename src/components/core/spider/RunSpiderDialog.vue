@@ -25,7 +25,7 @@ const store = useStore();
 const { activeNodesSorted: activeNodes } = useNode(store);
 
 const toRunNodes = computed(() => {
-  const { mode, node_ids } = form.value;
+  const { mode, node_ids } = options.value;
   return getToRunNodes(mode, node_ids, activeNodes.value);
 });
 
@@ -47,6 +47,7 @@ const getOptions = (): SpiderRunOptions => {
     cmd: form.value.cmd,
     param: form.value.param,
     priority: form.value.priority || 5,
+    node_ids: form.value.node_ids || [],
   };
 };
 
@@ -69,7 +70,6 @@ const title = computed<string>(() => {
 const onClose = () => {
   const { ns } = props;
   store.commit(`${ns}/hideDialog`);
-  store.commit(`${ns}/resetForm`);
 };
 
 const onConfirm = async () => {
@@ -98,6 +98,7 @@ defineOptions({ name: 'ClRunSpiderDialog' });
     :title="title"
     :visible="visible"
     class-name="run-spider-dialog"
+    width="1024px"
     @close="onClose"
     @confirm="onConfirm"
   >

@@ -2,12 +2,12 @@
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useSpider, useProject, useNode } from '@/components';
-import { TASK_MODE_SELECTED_NODES } from '@/constants/task';
+import { TASK_MODE_RANDOM, TASK_MODE_SELECTED_NODES } from '@/constants/task';
 import pinyin, { STYLE_NORMAL } from 'pinyin';
 import { isZeroObjectId } from '@/utils/mongo';
 import { useSpiderDetail } from '@/views';
-import { priorityOptions, translate } from '@/utils';
-import { getSpiderTemplates } from '@/utils/spider';
+import { getToRunNodes, priorityOptions, translate } from '@/utils';
+import { getSpiderTemplateGroups, getSpiderTemplates } from '@/utils/spider';
 
 // i18n
 const t = translate;
@@ -16,7 +16,12 @@ const t = translate;
 const store = useStore();
 
 // use node
-const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
+const { activeNodesSorted: activeNodes } = useNode(store);
+
+const toRunNodes = computed(() => {
+  const { mode, node_ids } = form.value;
+  return getToRunNodes(mode, node_ids, activeNodes.value);
+});
 
 // use project
 const { allListSelectOptionsWithEmpty: allProjectSelectOptions } =
@@ -27,6 +32,8 @@ const { form, formRef, isFormItemDisabled, modeOptions } = useSpider(store);
 
 // use spider detail
 const { activeId } = useSpiderDetail();
+
+const isDetail = computed(() => !!activeId.value);
 
 // whether col field of form has been changed
 const isFormColChanged = ref<boolean>(false);
@@ -66,20 +73,26 @@ const validate = async () => {
   await formRef.value?.validate();
 };
 
-const spiderTemplateOptions = computed<SelectOption[]>(() => {
-  return getSpiderTemplates().map(({ name, label }) => ({
-    label,
-    value: name,
+const spiderTemplateGroupOptions = computed<SelectOption[]>(() => {
+  return getSpiderTemplateGroups().map(group => ({
+    label: group.label,
+    icon: group.icon || ['fa', 'box'],
+    children: group.templates.map(({ name, label, icon }) => ({
+      label,
+      value: name,
+      icon: icon || ['fa', 'box'],
+    })),
   }));
 });
 const onTemplateChange = (value: string) => {
   const template = getSpiderTemplates().find(d => d.name === value);
   if (!template) return;
-  if (!form.value.name) {
-    form.value.name = `${template.name}_spider`;
-  }
+  form.value.name = `${template.name}_spider`;
   form.value.cmd = template.cmd;
 };
+const activeTemplateOption = computed<SpiderTemplate | undefined>(() => {
+  return getSpiderTemplates().find(d => d.name === form.value.template);
+});
 
 defineExpose({
   validate,
@@ -91,21 +104,53 @@ defineOptions({ name: 'ClSpiderForm' });
   <cl-form v-if="form" ref="formRef" :model="form">
     <slot name="header" />
 
-    <cl-form-item
-      :span="2"
-      :offset="2"
-      :label="t('components.spider.form.template')"
-      prop="template"
-    >
-      <el-select v-model="form.template" @change="onTemplateChange">
-        <el-option
-          v-for="op in spiderTemplateOptions"
-          :key="op.name"
-          :label="op.label"
-          :value="op.value"
-        />
-      </el-select>
-    </cl-form-item>
+    <template v-if="!isDetail">
+      <cl-form-item
+        :span="2"
+        :offset="activeTemplateOption?.doc_url ? 0 : 2"
+        :label="t('components.spider.form.template')"
+        prop="template"
+      >
+        <el-select
+          v-model="form.template"
+          filterable
+          clearable
+          @change="onTemplateChange"
+        >
+          <el-option-group
+            v-for="g in spiderTemplateGroupOptions"
+            :key="g.value"
+            :label="g.label"
+          >
+            <el-option
+              v-for="op in g.children"
+              :key="op.value"
+              :value="op.value"
+            >
+              <span class="icon-wrapper">
+                <cl-icon :icon="op.icon" />
+              </span>
+              {{ op.label }}
+            </el-option>
+          </el-option-group>
+          <template #label>
+            <span class="icon-wrapper">
+              <cl-icon :icon="activeTemplateOption?.icon" />
+            </span>
+            {{ activeTemplateOption?.label }}
+          </template>
+        </el-select>
+      </cl-form-item>
+      <cl-form-item
+        v-if="activeTemplateOption?.doc_url && activeTemplateOption?.doc_label"
+        :span="2"
+        :label="t('components.spider.form.templateDoc')"
+      >
+        <cl-nav-link :path="activeTemplateOption?.doc_url" external>
+          {{ activeTemplateOption?.doc_label }}
+        </cl-nav-link>
+      </cl-form-item>
+    </template>
 
     <!-- Row -->
     <cl-form-item
@@ -178,30 +223,7 @@ defineOptions({ name: 'ClSpiderForm' });
     <!-- Row -->
     <cl-form-item
       :span="2"
-      :offset="2"
-      :label="t('components.spider.form.priority')"
-      prop="priority"
-    >
-      <el-select
-        v-model="form.priority"
-        :placeholder="t('components.spider.form.priority')"
-        :disabled="isFormItemDisabled('priority')"
-        id="priority"
-        class-name="priority"
-      >
-        <el-option
-          v-for="op in priorityOptions"
-          :key="op.value"
-          :label="op.label"
-          :value="op.value"
-        />
-      </el-select>
-    </cl-form-item>
-    <!-- ./Row -->
-
-    <!-- Row -->
-    <cl-form-item
-      :span="2"
+      :offset="form.mode === TASK_MODE_SELECTED_NODES ? 0 : 2"
       :label="t('components.spider.form.defaultMode')"
       prop="mode"
       required
@@ -214,6 +236,62 @@ defineOptions({ name: 'ClSpiderForm' });
       >
         <el-option
           v-for="op in modeOptions"
+          :key="op.value"
+          :label="op.label"
+          :value="op.value"
+        />
+      </el-select>
+    </cl-form-item>
+    <cl-form-item
+      v-if="form.mode === TASK_MODE_SELECTED_NODES"
+      :span="2"
+      :label="t('components.spider.form.selectedNodes')"
+      prop="node_ids"
+      required
+    >
+      <el-select
+        v-model="form.node_ids"
+        multiple
+        :placeholder="t('components.spider.form.selectedNodes')"
+      >
+        <el-option
+          v-for="n in activeNodes"
+          :key="n.key"
+          :value="n._id"
+          :label="n.name"
+        >
+          <span style="margin-right: 5px">
+            <cl-node-tag :node="n" icon-only />
+          </span>
+          <span>{{ n.name }}</span>
+        </el-option>
+      </el-select>
+    </cl-form-item>
+    <!--./Row-->
+
+    <cl-form-item
+      v-if="form.mode !== TASK_MODE_RANDOM"
+      :label="t('components.task.form.toRunNodes')"
+      :span="4"
+    >
+      <cl-node-tag v-for="n in toRunNodes" :key="n.key" :node="n" />
+    </cl-form-item>
+
+    <!-- Row -->
+    <cl-form-item
+      :span="2"
+      :label="t('components.spider.form.priority')"
+      prop="priority"
+    >
+      <el-select
+        v-model="form.priority"
+        :placeholder="t('components.spider.form.priority')"
+        :disabled="isFormItemDisabled('priority')"
+        id="priority"
+        class-name="priority"
+      >
+        <el-option
+          v-for="op in priorityOptions"
           :key="op.value"
           :label="op.label"
           :value="op.value"
@@ -240,24 +318,6 @@ defineOptions({ name: 'ClSpiderForm' });
 
     <!--Row-->
     <cl-form-item
-      v-if="form.mode === TASK_MODE_SELECTED_NODES"
-      :span="4"
-      :label="t('components.spider.form.selectedNodes')"
-      prop="node_ids"
-      required
-    >
-      <cl-check-tag-group
-        v-model="form.node_ids"
-        :options="allNodeSelectOptions"
-        :disabled="isFormItemDisabled('node_ids')"
-        id="node"
-        class-name="nodes"
-      />
-    </cl-form-item>
-    <!--./Row-->
-
-    <!--Row-->
-    <cl-form-item
       :span="4"
       :label="t('components.spider.form.description')"
       prop="description"
@@ -276,3 +336,12 @@ defineOptions({ name: 'ClSpiderForm' });
     <slot name="footer" />
   </cl-form>
 </template>
+
+<style scoped>
+.icon-wrapper {
+  display: inline-block;
+  text-align: center;
+  width: 18px;
+  margin-right: 2px;
+}
+</style>

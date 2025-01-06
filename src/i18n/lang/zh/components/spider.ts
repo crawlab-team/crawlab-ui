@@ -21,6 +21,7 @@ const spider: LComponentsSpider = {
       startUrls: '起始 URL',
       domains: '域名',
     },
+    templateDoc: '模版相关文档',
   },
   actions: {
     files: {

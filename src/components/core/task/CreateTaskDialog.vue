@@ -15,11 +15,6 @@ const { form, createEditDialogVisible } = useTask(store);
 
 const visible = computed(() => createEditDialogVisible.value);
 
-const title = computed<string>(() => {
-  if (!form.value) return t(`components.${ns}.dialog.run.title`);
-  return `${t(`components.${ns}.dialog.run.title`)} - ${form.value.name}`;
-});
-
 const formRef = ref();
 
 const onClose = () => {
@@ -43,6 +38,7 @@ defineOptions({ name: 'ClCreateTaskDialog' });
     :title="t('components.task.dialog.create.title')"
     :visible="visible"
     class-name="run-spider-dialog"
+    width="1024px"
     @close="onClose"
     @confirm="onConfirm"
   >

@@ -24,7 +24,7 @@ const {
 } = useSchedule(store);
 
 // use node
-const { allListSelectOptions: allNodeSelectOptions } = useNode(store);
+const { activeNodesSorted: activeNodes } = useNode(store);
 
 // use spider
 const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
@@ -190,11 +190,23 @@ defineOptions({ name: 'ClScheduleForm' });
       :label="t('components.schedule.form.selectedNodes')"
       required
     >
-      <cl-check-tag-group
+      <el-select
         v-model="form.node_ids"
-        :disabled="isFormItemDisabled('node_ids')"
-        :options="allNodeSelectOptions"
-      />
+        multiple
+        :placeholder="t('components.schedule.form.selectedNodes')"
+      >
+        <el-option
+          v-for="n in activeNodes"
+          :key="n.key"
+          :value="n._id"
+          :label="n.name"
+        >
+          <span style="margin-right: 5px">
+            <cl-node-tag :node="n" icon-only />
+          </span>
+          <span>{{ n.name }}</span>
+        </el-option>
+      </el-select>
     </cl-form-item>
 
     <!-- Row -->
