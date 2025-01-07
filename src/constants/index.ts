@@ -10,7 +10,6 @@ export * from './os';
 export * from './plugin';
 export * from './router';
 export * from './sort';
-export * from './spider';
 export * from './tab';
 export * from './table';
 export * from './task';

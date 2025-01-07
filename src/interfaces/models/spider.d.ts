@@ -54,15 +54,21 @@ export declare global {
 
   type SpiderTemplateName =
     | 'scrapy'
+    | 'scrapy-redis'
     | 'bs4'
     | 'selenium'
+    | 'drission-page'
+    | 'pyppeteer'
+    | 'crawlee-python'
     | 'puppeteer'
     | 'playwright'
+    | 'cheerio'
+    | 'crawlee'
     | 'colly'
-    | 'python'
-    | 'node'
-    | 'go'
-    | 'java';
+    | 'goquery'
+    | 'jsoup'
+    | 'webmagic'
+    | 'xxl-crawler';
 
   interface SpiderTemplateParams {
     spider_name?: string;
