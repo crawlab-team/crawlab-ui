@@ -45,20 +45,6 @@ const onCurrentBranchChange = (currentBranch: string) => {
   });
 };
 
-const onUsernameChange = (username: string) => {
-  store.commit(`${ns}/setForm`, {
-    ...state.form,
-    username,
-  });
-};
-
-const onPasswordChange = (password: string) => {
-  store.commit(`${ns}/setForm`, {
-    ...state.form,
-    password,
-  });
-};
-
 const gitBranchSelectOptions = computed<SelectOption[]>(
   () => store.getters['spider/gitBranchSelectOptions']
 );
@@ -80,8 +66,6 @@ const privateKey = ref('');
 watch(privateKeyVisible, () => {
   if (privateKeyVisible.value) {
     privateKey.value = state.form.password || '';
-  } else {
-    privateKey.value = '';
   }
 });
 
@@ -150,7 +134,6 @@ defineOptions({ name: 'ClGitForm' });
           id="username"
           class="username"
           autocomplete="off"
-          @change="onUsernameChange"
         />
       </cl-form-item>
       <cl-form-item
@@ -165,7 +148,6 @@ defineOptions({ name: 'ClGitForm' });
           id="password"
           class="password"
           autocomplete="off"
-          @change="onPasswordChange"
         />
       </cl-form-item>
       <!--./Row-->
@@ -193,13 +175,12 @@ defineOptions({ name: 'ClGitForm' });
           </div>
           <el-input
             v-if="privateKeyVisible"
-            v-model="privateKey"
+            v-model="form.password"
             :placeholder="t('components.git.form.privateKey')"
             type="textarea"
             rows="20"
             id="password"
             class="password"
-            @change="(value: string) => (privateKey = value)"
           />
         </div>
       </cl-form-item>
