@@ -56,14 +56,15 @@ export const getSpiderTemplateGroups = (): SpiderTemplateGroup[] => {
           doc_url: 'https://miyakogi.github.io/pyppeteer/',
           doc_label: 'Pyppeteer Documentation',
         },
-        {
-          name: 'crawlee-python',
-          label: 'Crawlee Python',
-          icon: ['svg', 'crawlee'],
-          cmd: 'python main.py',
-          doc_url: 'https://crawlee.dev/docs/quick-start/python',
-          doc_label: 'Crawlee Python Documentation',
-        },
+        // Disabled crawlee-python for now
+        // {
+        //   name: 'crawlee-python',
+        //   label: 'Crawlee Python',
+        //   icon: ['svg', 'crawlee'],
+        //   cmd: 'python main.py',
+        //   doc_url: 'https://crawlee.dev/docs/quick-start/python',
+        //   doc_label: 'Crawlee Python Documentation',
+        // },
       ],
     },
     {
