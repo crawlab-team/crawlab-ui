@@ -93,6 +93,7 @@ watch(visible, async () => {
   } else {
     store.commit(`${ns}/resetSetupForm`);
     store.commit(`${ns}/resetActiveConfigSetup`);
+    store.commit(`${ns}/resetConfigVersions`);
 
     // special handling for browser
     if (lang.value === 'browser') {
