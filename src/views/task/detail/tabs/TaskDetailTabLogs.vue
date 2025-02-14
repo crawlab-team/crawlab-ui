@@ -53,21 +53,6 @@ const resizeObserver = new ResizeObserver(() => {
 watch(content, () => {
   logEditor?.setValue(content.value);
 });
-
-// pagination change
-const onPageChange = (page: number) => {
-  store.commit(`${ns}/setLogPagination`, { ...state.logPagination, page });
-};
-const onSizeChange = (size: number) => {
-  store.commit(`${ns}/setLogPagination`, { ...state.logPagination, size });
-};
-watch(
-  () => state.logPagination,
-  async () => {
-    await store.dispatch(`${ns}/getLogs`, id.value);
-  }
-);
-
 // page sizes
 const pageSizes = ref<number[]>([1000, 2000, 5000, 10000, 20000, 50000]);
 
@@ -95,6 +80,18 @@ const updateLogs = async () => {
     logEditor?.revealLine(model?.getLineCount() || 0);
   }, 100);
 };
+
+// pagination change
+const onPageChange = (page: number) => {
+  store.commit(`${ns}/setLogPagination`, { ...state.logPagination, page });
+};
+const onSizeChange = (size: number) => {
+  store.commit(`${ns}/setLogPagination`, { ...state.logPagination, size });
+};
+watch(() => state.logPagination, updateLogs);
+
+// active id change
+watch(activeId, updateLogs);
 
 // auto update
 let autoUpdateHandle: any;
