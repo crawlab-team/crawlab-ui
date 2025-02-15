@@ -33,6 +33,11 @@ const toRunNodes = computed(() => {
   return getToRunNodes(mode, node_ids, activeNodes.value);
 });
 
+const runNode = computed(() => {
+  const { node_id } = form.value;
+  return activeNodes.value.find(n => n._id === node_id);
+});
+
 // use spider
 const { allListSelectOptions: allSpiderSelectOptions } = useSpider(store);
 
@@ -99,11 +104,11 @@ const noScheduleId = computed<boolean>(() =>
 
 const validate = async () => {
   await formRef.value?.validate();
-}
+};
 
 defineExpose({
   validate,
-})
+});
 
 defineOptions({ name: 'ClTaskForm' });
 </script>
@@ -231,7 +236,7 @@ defineOptions({ name: 'ClTaskForm' });
 
     <cl-form-item
       :span="2"
-      :offset="form.mode === TASK_MODE_SELECTED_NODES ? 0 : 2"
+      :offset="form.mode === TASK_MODE_SELECTED_NODES && !readonly ? 0 : 2"
       :label="t('components.task.form.mode')"
       prop="mode"
       :required="!readonly"
@@ -250,7 +255,7 @@ defineOptions({ name: 'ClTaskForm' });
       <cl-tag v-else size="large" :label="getModeName(form.mode) || '-'" />
     </cl-form-item>
     <cl-form-item
-      v-if="form.mode === TASK_MODE_SELECTED_NODES"
+      v-if="form.mode === TASK_MODE_SELECTED_NODES && !readonly"
       :span="2"
       :label="t('components.task.form.selectedNodes')"
       prop="node_ids"
@@ -276,14 +281,23 @@ defineOptions({ name: 'ClTaskForm' });
     </cl-form-item>
     <cl-form-item
       v-if="form.mode !== TASK_MODE_RANDOM"
-      :label="t('components.task.form.toRunNodes')"
+      :label="
+        !readonly
+          ? t('components.task.form.toRunNodes')
+          : t('components.task.form.node')
+      "
       :span="4"
     >
-      <template v-if="toRunNodes.length > 0">
-        <cl-node-tag v-for="n in toRunNodes" :key="n.key" :node="n" />
+      <template v-if="!readonly">
+        <template v-if="toRunNodes.length > 0">
+          <cl-node-tag v-for="n in toRunNodes" :key="n.key" :node="n" />
+        </template>
+        <template v-else>
+          <cl-tag type="info" :label="t('common.placeholder.empty')" />
+        </template>
       </template>
       <template v-else>
-        <cl-tag type="info" :label="t('common.placeholder.empty')" />
+        <cl-node-tag v-if="runNode" :node="runNode" />
       </template>
     </cl-form-item>
 
