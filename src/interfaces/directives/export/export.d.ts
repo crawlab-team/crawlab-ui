@@ -10,6 +10,7 @@ export declare global {
   interface ExportDirectivePayload {
     target: ExportDirectiveTarget;
     conditions?: ExportDirectiveConditions;
+    dbId?: string;
   }
 
   type ExportDirective = ExportDirectiveTarget | ExportDirectivePayload;

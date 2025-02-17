@@ -52,6 +52,7 @@ export declare global {
       viewPages: string;
       viewUsers: string;
       export: string;
+      exportData: string;
       configure: string;
       update: string;
       upgrade: string;

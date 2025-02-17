@@ -39,6 +39,7 @@ const common: LCommon = {
     viewPages: 'View Pages',
     viewUsers: 'View Users',
     export: 'Export',
+    exportData: 'Export Data',
     configure: 'Configure',
     update: 'Update',
     upgrade: 'Upgrade',

@@ -27,18 +27,23 @@ defineOptions({ name: 'ClExportForm' });
 </script>
 
 <template>
-  <el-form inline label-width="100px">
-    <el-form-item :label="t('components.export.type')">
+  <cl-form label-width="100px">
+    <cl-form-item :label="t('components.export.target')" :span="4">
+      <cl-tag :label="target" size="large" />
+    </cl-form-item>
+    <cl-form-item :label="t('components.export.type')" :span="4">
       <el-select v-model="exportType" @change="onExportTypeChange">
         <el-option value="csv" :label="t('components.export.types.csv')" />
         <el-option value="json" :label="t('components.export.types.json')" />
       </el-select>
-    </el-form-item>
-  </el-form>
+    </cl-form-item>
+  </cl-form>
 </template>
 
 <style scoped>
 .el-form {
+  width: 100%;
+
   .el-form-item {
     width: 100%;
 

@@ -1,5 +1,6 @@
 interface LComponentsExport {
   type: string;
+  target: string;
   types: {
     csv: string;
     json: string;

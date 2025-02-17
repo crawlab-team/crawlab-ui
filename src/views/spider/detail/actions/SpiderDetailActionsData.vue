@@ -291,13 +291,11 @@ defineOptions({ name: 'ClSpiderDetailActionsData' });
         </div>
       </el-tooltip>
     </cl-nav-action-item>
-    <cl-nav-action-item v-export="form.col_name">
-      <cl-fa-icon-button
-        :icon="['fa', 'download']"
-        :tooltip="t('components.spider.actions.data.tooltip.export')"
-        type="primary"
-        id="export-btn"
-        class-name="export-btn"
+    <cl-nav-action-item>
+      <cl-export-button
+        :target="form.col_name"
+        :db-id="currentDatabase?._id"
+        :tooltip="t('common.actions.exportData')"
       />
     </cl-nav-action-item>
   </cl-nav-action-group>

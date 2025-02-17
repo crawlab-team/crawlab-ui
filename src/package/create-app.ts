@@ -86,7 +86,6 @@ const _createApp = async (options?: CreateAppOptions): Promise<App> => {
   setGlobalLang((window.localStorage.getItem('lang') as Lang) || 'en');
   app.component('font-awesome-icon', FontAwesomeIcon);
   app.directive('auth', auth as any);
-  app.directive('export', export_ as any);
   app.directive('click-outside', clickOutsideDirective);
 
   // mount

@@ -69,7 +69,6 @@ const tableColumns = computed<TableColumns<DatabaseTableRow>>(() => {
         : !defaultFields.includes(col.name!)
     )
     .map(c => {
-      console.debug(c.name)
       const value = (row: DatabaseTableRow) => (
         <ClTableEditCell
           modelValue={row[c.name!]}

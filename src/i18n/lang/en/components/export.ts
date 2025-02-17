@@ -1,5 +1,6 @@
 const export_: LComponentsExport = {
   type: 'Export Type',
+  target: 'Export Target',
   types: {
     csv: 'CSV',
     json: 'JSON',

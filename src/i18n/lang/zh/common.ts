@@ -39,6 +39,7 @@ const common: LCommon = {
     viewPages: '查看页面',
     viewUsers: '查看用户',
     export: '导出',
+    exportData: '导出数据',
     configure: '配置',
     update: '更新',
     upgrade: '升级',

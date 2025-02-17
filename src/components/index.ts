@@ -78,6 +78,7 @@ import EditTable from './ui/table/EditTable.vue';
 import EditTableActionCell from './ui/table/EditTableActionCell.vue';
 import Empty from './ui/empty/Empty.vue';
 import EnvironmentForm from './core/environment/EnvironmentForm.vue';
+import ExportButton from './ui/button/ExportButton.vue';
 import ExportForm from './ui/export/ExportForm.vue';
 import FaIconButton from './ui/button/FaIconButton.vue';
 import FileActions from './ui/file/FileActions.vue';
@@ -311,6 +312,7 @@ export {
   EditTableActionCell as ClEditTableActionCell,
   Empty as ClEmpty,
   EnvironmentForm as ClEnvironmentForm,
+  ExportButton as ClExportButton,
   ExportForm as ClExportForm,
   FaIconButton as ClFaIconButton,
   FileActions as ClFileActions,
