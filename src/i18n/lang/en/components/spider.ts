@@ -3,7 +3,7 @@ const spider: LComponentsSpider = {
     name: 'Name',
     project: 'Project',
     command: 'Execute Command',
-    param: 'Param',
+    param: 'Parameters',
     defaultMode: 'Default Mode',
     resultsCollection: 'Results Collection',
     selectedTags: 'Selected Tags',
