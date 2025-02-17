@@ -31,7 +31,9 @@ defineOptions({ name: 'ClTaskDetailTabData' });
 <template>
   <div class="task-detail-tab-data">
     <template v-if="isPro()">
-      <cl-task-result-data-with-database />
+      <cl-task-result-data-with-database
+        :display-all-fields="displayAllFields"
+      />
     </template>
     <template v-else>
       <cl-result-list

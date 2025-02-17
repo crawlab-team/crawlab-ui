@@ -38,7 +38,7 @@ const spider: LComponentsSpider = {
       tooltip: {
         dataActions: 'Data Actions',
         export: 'Export',
-        displayAllFields: 'Display All Fields',
+        displayAllFields: 'Display All Fields (including hidden fields)',
         inferDataFieldsTypes: 'Infer Data Fields Types',
         dedup: {
           enabled: 'Deduplication is enabled',

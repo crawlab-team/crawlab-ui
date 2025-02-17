@@ -4,6 +4,7 @@ import { useStore } from 'vuex';
 import { TABLE_ACTION_CUSTOMIZE_COLUMNS } from '@/constants';
 import { getDataFieldIconByType } from '@/utils/dataFields';
 import { ClResultCell } from '@/components';
+import { defaultFields } from '@/utils';
 
 interface FilterConditionData {
   key?: string;
@@ -40,9 +41,6 @@ const tableTotal = computed<number>(() => state.resultTableTotal);
 const tablePagination = computed<TablePagination>(
   () => state.resultTablePagination
 );
-
-// default fields
-const defaultFields = ['_id', '_tid', '_sid', '_h'];
 
 // data fields
 const dataFields = computed<DataField[]>(() => state.form?.fields || []);

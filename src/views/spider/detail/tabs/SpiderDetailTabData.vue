@@ -18,7 +18,9 @@ defineOptions({ name: 'ClSpiderDetailTabData' });
 <template>
   <div class="spider-detail-tab-data">
     <template v-if="isPro()">
-      <cl-spider-result-data-with-database />
+      <cl-spider-result-data-with-database
+        :display-all-fields="displayAllFields"
+      />
     </template>
     <template v-else>
       <cl-result-list

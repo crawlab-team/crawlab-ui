@@ -4,7 +4,7 @@ import type { CellCls, CellStyle, ColumnStyle } from 'element-plus';
 import type { TableColumnCtx } from 'element-plus/es/components/table/src/table/defaults';
 import useRequest from '@/services/request';
 import { ClIcon, ClEditTable, ClTableEditCell } from '@/components';
-import { getMd5, plainClone, translate } from '@/utils';
+import { defaultFields, getMd5, plainClone, translate } from '@/utils';
 import { getDataType, normalizeDataType } from '@/utils/database';
 
 const props = defineProps<{
@@ -13,6 +13,7 @@ const props = defineProps<{
   activeId?: string;
   databaseName?: string;
   filter?: { [key: string]: any };
+  displayAllFields?: boolean;
 }>();
 
 const t = translate;
@@ -61,41 +62,49 @@ const getHeaderIcon = (column: DatabaseColumn) => {
 const tableColumns = computed<TableColumns<DatabaseTableRow>>(() => {
   const { columns } = props.activeTable || {};
   if (!columns) return [];
-  return columns.map(c => {
-    const value = (row: DatabaseTableRow) => (
-      <ClTableEditCell
-        modelValue={row[c.name as string]}
-        isEdit={row.__edit__?.[c.name as string]}
-        dataType={getDataType(c.type as string)}
-        onChange={(val: any) => {
-          const colName = c.name as string;
-          row[colName] = val;
-        }}
-        onEdit={(val: boolean) => {
-          const colName = c.name as string;
-          row =
-            tableData.value.find(r => getRowHash(r) === getRowHash(row)) || row;
-          if (!row.__edit__) row.__edit__ = { [colName]: val };
-          row.__edit__[colName] = val;
-        }}
-      />
-    );
-    const header = () => (
-      <div>
-        <span style={{ marginRight: '5px' }}>
-          <ClIcon size="small" icon={getHeaderIcon(c)} />
-        </span>
-        <span>{c.name}</span>
-      </div>
-    );
-    return {
-      label: c.name,
-      key: c.name,
-      width: 200,
-      value,
-      header,
-    };
-  }) as TableColumns<DatabaseTableRow>;
+  return columns
+    .filter(col =>
+      props.displayAllFields
+        ? true
+        : !defaultFields.includes(col.name!)
+    )
+    .map(c => {
+      console.debug(c.name)
+      const value = (row: DatabaseTableRow) => (
+        <ClTableEditCell
+          modelValue={row[c.name!]}
+          isEdit={row.__edit__?.[c.name!]}
+          dataType={getDataType(c.type!)}
+          onChange={(val: any) => {
+            const colName = c.name!;
+            row[colName] = val;
+          }}
+          onEdit={(val: boolean) => {
+            const colName = c.name!;
+            row =
+              tableData.value.find(r => getRowHash(r) === getRowHash(row)) ||
+              row;
+            if (!row.__edit__) row.__edit__ = { [colName]: val };
+            row.__edit__[colName] = val;
+          }}
+        />
+      );
+      const header = () => (
+        <div>
+          <span style={{ marginRight: '5px' }}>
+            <ClIcon size="small" icon={getHeaderIcon(c)} />
+          </span>
+          <span>{c.name}</span>
+        </div>
+      );
+      return {
+        label: c.name,
+        key: c.name,
+        width: 200,
+        value,
+        header,
+      };
+    }) as TableColumns<DatabaseTableRow>;
 });
 const tableData = ref<TableData<DatabaseTableRow>>([]);
 const tablePagination = ref<TablePagination>({
@@ -330,7 +339,7 @@ defineOptions({ name: 'ClDatabaseTableDetailData' });
 <template>
   <cl-edit-table
     ref="tableRef"
-    :key="JSON.stringify(tableData)"
+    :key="JSON.stringify([tableData, tableColumns])"
     :columns="tableColumns"
     :data="tableData"
     :page="tablePagination.page"

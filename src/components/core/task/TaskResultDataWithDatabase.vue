@@ -9,6 +9,10 @@ import useRequest from '@/services/request';
 import { ClDatabaseTableDetailData, useTask } from '@/components';
 import { useSpider } from '@/components';
 
+defineProps<{
+  displayAllFields?: boolean;
+}>();
+
 const t = translate;
 
 const { post } = useRequest();
@@ -106,6 +110,7 @@ defineOptions({ name: 'ClTaskResultDataWithDatabase' });
         :active-id="spider?.data_source_id || EMPTY_OBJECT_ID"
         :database-name="spider?.db_name"
         :filter="dataFilter"
+        :display-all-fields="displayAllFields"
       />
     </template>
   </div>

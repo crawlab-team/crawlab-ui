@@ -13,3 +13,5 @@ export const getFieldsFromData = (data: TableData<Result>) => {
     return { key };
   });
 };
+// default fields
+export const defaultFields = ['_id', '_tid', '_sid', '_h'];
