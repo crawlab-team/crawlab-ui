@@ -21,7 +21,7 @@ const spider: LComponentsSpider = {
       startUrls: 'Start URLs',
       domains: 'Domains',
     },
-    templateDoc: 'Template Documentation',
+    templateDoc: 'Template Docs',
   },
   actions: {
     files: {
