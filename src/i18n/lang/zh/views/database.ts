@@ -14,13 +14,13 @@ const database: LViewsDatabase = {
     filter: {
       select: {
         dataSource: {
-          label: '数据源',
+          label: '数据库类型',
         },
         status: {
           label: '状态',
         },
         database: {
-          label: '数据库',
+          label: '数据库名称',
         },
         username: {
           label: '用户名',

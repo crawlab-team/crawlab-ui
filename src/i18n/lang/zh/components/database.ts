@@ -6,7 +6,7 @@ const database: LComponentsDatabase = {
   form: {
     name: '名称',
     description: '描述',
-    dataSource: '数据源',
+    dataSource: '数据库类型',
     status: '状态',
     host: '主机 (Host)',
     port: '端口 (Port)',
@@ -16,7 +16,7 @@ const database: LComponentsDatabase = {
     username: '用户名',
     password: '密码',
     changePassword: '更改密码',
-    database: '数据库',
+    database: '数据库名称',
     mongo: {
       authSource: '验证源',
       authMechanism: '验证机制',

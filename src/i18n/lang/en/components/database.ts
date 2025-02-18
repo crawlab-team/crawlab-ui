@@ -6,7 +6,7 @@ const database: LComponentsDatabase = {
   form: {
     name: 'Name',
     description: 'Description',
-    dataSource: 'Data Source',
+    dataSource: 'Database Type',
     status: 'Status',
     host: 'Host',
     port: 'Port',
@@ -16,7 +16,7 @@ const database: LComponentsDatabase = {
     password: 'Password',
     address: 'Address',
     changePassword: 'Change Password',
-    database: 'Database',
+    database: 'Database Name',
     mongo: {
       authSource: 'Auth Source',
       authMechanism: 'Auth Mechanism',

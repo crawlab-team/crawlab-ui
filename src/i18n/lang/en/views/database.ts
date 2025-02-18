@@ -14,13 +14,13 @@ const database: LViewsDatabase = {
     filter: {
       select: {
         dataSource: {
-          label: 'Data Source',
+          label: 'Database Type',
         },
         status: {
           label: 'Status',
         },
         database: {
-          label: 'Database',
+          label: 'Database Name',
         },
         username: {
           label: 'Username',
