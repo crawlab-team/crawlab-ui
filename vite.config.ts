@@ -91,14 +91,21 @@ export default defineConfig(({ mode }) => {
       },
       extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     },
-    // @ts-ignore
-    plugins: [vue(), dynamicImport(), vueJsx(), svgLoader()],
+    plugins: [
+      vue(),
+      // @ts-ignore
+      dynamicImport(),
+      vueJsx(),
+      // @ts-ignore
+      svgLoader(),
+    ],
     server: {
       cors: true,
     },
   };
 
   if (mode === 'analyze') {
+    // @ts-ignore
     config.plugins.push(visualizer({ open: true, gzipSize: true }));
   } else if (mode === 'development') {
     config.build.watch = {
