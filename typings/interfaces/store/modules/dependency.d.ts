@@ -10,6 +10,10 @@ export declare global {
     lang: DependencyLang;
     searchQuery: string;
     repoTabName: DependencyRepoTabName;
+    installedDependenciesTableLoading: boolean;
+    installedDependenciesTableData: TableData<DependencyRepo>;
+    installedDependenciesTableTotal: number;
+    installedDependenciesTablePagination: TablePagination;
     searchRepoTableLoading: boolean;
     searchRepoTableData: TableData<DependencyRepo>;
     searchRepoTableTotal: number;
@@ -27,6 +31,8 @@ export declare global {
     versions: string[];
     getVersionsLoading: boolean;
     activeTargetId?: string;
+    activeTargetName?: string;
+    activeTargetStatus?: DependencyStatus;
     activeTargetLogs: DependencyLog[];
     config?: DependencyConfig;
     configVersions: string[];
@@ -44,6 +50,22 @@ export declare global {
     setRepoTabName: (
       state: DependencyStoreState,
       name: DependencyRepoTabName
+    ) => void;
+    setInstalledDependenciesTableLoading: (
+      state: DependencyStoreState,
+      loading: boolean
+    ) => void;
+    setInstalledDependenciesTableData: (
+      state: DependencyStoreState,
+      data: TableDataWithTotal<DependencyRepo>
+    ) => void;
+    resetInstalledDependenciesTableData: (state: DependencyStoreState) => void;
+    setInstalledDependenciesTablePagination: (
+      state: DependencyStoreState,
+      pagination: TablePagination
+    ) => void;
+    resetInstalledDependenciesTablePagination: (
+      state: DependencyStoreState
     ) => void;
     setSearchRepoTableLoading: (
       state: DependencyStoreState,
@@ -102,6 +124,13 @@ export declare global {
     ) => void;
     setActiveTargetId: (state: DependencyStoreState, id: string) => void;
     resetActiveTargetId: (state: DependencyStoreState) => void;
+    setActiveTargetName: (state: DependencyStoreState, name: string) => void;
+    resetActiveTargetName: (state: DependencyStoreState) => void;
+    setActiveTargetStatus: (
+      state: DependencyStoreState,
+      status: DependencyStatus
+    ) => void;
+    resetActiveTargetStatus: (state: DependencyStoreState) => void;
     setActiveTargetLogs: (
       state: DependencyStoreState,
       logs: DependencyLog[]
@@ -109,7 +138,10 @@ export declare global {
     resetActiveTargetLogs: (state: DependencyStoreState) => void;
     setConfig: (state: DependencyStoreState, config: DependencyConfig) => void;
     resetConfig: (state: DependencyStoreState) => void;
-    setConfigVersions: (state: DependencyStoreState, versions: string[]) => void;
+    setConfigVersions: (
+      state: DependencyStoreState,
+      versions: string[]
+    ) => void;
     resetConfigVersions: (state: DependencyStoreState) => void;
     setGetConfigVersionsLoading: (
       state: DependencyStoreState,
@@ -123,6 +155,7 @@ export declare global {
   }
 
   interface DependencyStoreActions extends BaseStoreActions<DependencyRepo> {
+    getInstalledDependencyList: StoreAction<DependencyStoreState>;
     searchRepoList: StoreAction<DependencyStoreState>;
     getRepoVersions: StoreAction<DependencyStoreState>;
     installDependency: StoreAction<DependencyStoreState>;

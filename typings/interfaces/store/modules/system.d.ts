@@ -8,18 +8,27 @@ declare global {
   }
 
   interface SystemStoreState {
-    customize: Setting;
+    settings: Record<string, Setting>;
   }
 
   interface SystemStoreGetters
     extends GetterTree<SystemStoreState, RootStoreState> {}
 
   interface SystemStoreMutations extends MutationTree<SystemStoreState> {
-    setCustomize: StoreMutation<SystemStoreState, Setting>;
+    setSetting: StoreMutation<
+      SystemStoreState,
+      { key: string; value: Setting }
+    >;
+    resetSetting: StoreMutation<SystemStoreState, { key: string }>;
+    setSettings: StoreMutation<
+      SystemStoreState,
+      { settings: Record<string, Setting> }
+    >;
+    resetSettings: StoreMutation<SystemStoreState>;
   }
 
   interface SystemStoreActions extends BaseStoreActions {
-    getCustomize: StoreAction<SystemStoreState>;
-    saveCustomize: StoreAction<SystemStoreState>;
+    getSetting: StoreAction<SystemStoreState, { key: string }>;
+    saveSetting: StoreAction<SystemStoreState, { key: string; value: Setting }>;
   }
 }

@@ -10,6 +10,7 @@ interface LComponentsTask {
     priority: string;
     selectedTags: string;
     selectedNodes: string;
+    toRunNodes: string;
     tooltip: {
       goToSpider: string;
       goToNode: string;
@@ -80,6 +81,11 @@ interface LComponentsTask {
   logs: {
     actions: {
       autoUpdateLogs: string;
+    };
+  };
+  dialog: {
+    create: {
+      title: string;
     };
   };
 }

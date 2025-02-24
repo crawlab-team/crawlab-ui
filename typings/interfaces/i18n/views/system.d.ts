@@ -1,7 +1,7 @@
 interface LViewsSystem {
   menuItems: {
     customize: string;
-    registration: string;
+    dependency: string;
   };
   customize: {
     customTitle: string;
@@ -14,5 +14,8 @@ interface LViewsSystem {
       invalidFileType: string;
       fileSizeExceeded: string;
     };
+  };
+  dependency: {
+    autoInstall: string;
   };
 }
