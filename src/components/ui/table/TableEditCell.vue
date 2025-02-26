@@ -286,7 +286,7 @@ defineOptions({ name: 'ClTableEditCell' });
     <div v-if="!readonly" class="cell-actions">
       <cl-icon v-if="!isEdit" :icon="['fa', 'edit']" @click.stop="onEdit" />
       <cell-actions
-        v-else-if="dataType && !['date', 'datetime'].includes(dataType)"
+        v-else-if="!['date', 'datetime'].includes(dataType || '')"
       />
     </div>
   </div>

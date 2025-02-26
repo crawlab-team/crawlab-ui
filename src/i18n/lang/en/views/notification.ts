@@ -182,11 +182,11 @@ const notification: LViewsNotification = {
       alertRule: 'Alert Rule',
       metricName: 'Metric Name',
       operator: 'Operator',
-      lastingSeconds: 'Lasting Seconds',
+      lastingDuration: 'Lasting Duration',
       targetValue: 'Target Value',
       level: 'Level',
     },
-    lastingSeconds: {
+    lastingDuration: {
       '1m': '1 Min (Instant)',
       '5m': '5 Min',
       '10m': '10 Min',

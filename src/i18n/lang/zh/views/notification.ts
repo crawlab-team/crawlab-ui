@@ -182,11 +182,11 @@ const notification: LViewsNotification = {
       alertRule: '警报规则',
       metricName: '指标名称',
       operator: '操作符',
-      lastingSeconds: '持续时间 (秒)',
+      lastingDuration: '持续时间',
       targetValue: '目标值',
       level: '级别',
     },
-    lastingSeconds: {
+    lastingDuration: {
       '1m': '1 分钟 (即时)',
       '5m': '5 分钟',
       '10m': '10 分钟',

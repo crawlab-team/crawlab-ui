@@ -382,7 +382,7 @@ export const allVariables: NotificationVariable[] = [
   {
     category: 'alert',
     name: 'lasting_seconds',
-    label: t('components.notification.variables.alert.lastingSeconds'),
+    label: t('components.notification.variables.alert.lastingDuration'),
     icon: ['fa', 'hourglass'],
   },
   {

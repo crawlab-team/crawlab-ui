@@ -147,7 +147,7 @@ defineOptions({ name: 'ClNotificationAlertForm' });
     <cl-form-item
       :span="4"
       :offset="4"
-      :label="t('views.notification.alerts.form.lastingSeconds')"
+      :label="t('views.notification.alerts.form.lastingDuration')"
     >
       <el-select v-model="form.lasting_seconds">
         <el-option

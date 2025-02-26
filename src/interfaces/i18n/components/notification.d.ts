@@ -129,7 +129,7 @@ interface LComponentsNotification {
       enabled: string;
       metricName: string;
       operator: string;
-      lastingSeconds: string;
+      lastingDuration: string;
       targetValue: string;
       level: string;
     };

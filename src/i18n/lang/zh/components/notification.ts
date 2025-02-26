@@ -120,7 +120,7 @@ const notification: LComponentsNotification = {
       enabled: '是否启用',
       metricName: '指标名称',
       operator: '操作符',
-      lastingSeconds: '持续时间 (秒)',
+      lastingDuration: '持续时间',
       targetValue: '目标值',
       level: '级别',
     },

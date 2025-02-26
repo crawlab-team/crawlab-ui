@@ -150,11 +150,11 @@ interface LViewsNotification {
       alertRule: string;
       metricName: string;
       operator: string;
-      lastingSeconds: string;
+      lastingDuration: string;
       targetValue: string;
       level: string;
     };
-    lastingSeconds: {
+    lastingDuration: {
       '1m': string;
       '5m': string;
       '10m': string;

@@ -63,11 +63,11 @@ const useNotificationAlert = (store: Store<RootStoreState>) => {
   );
 
   const lastingSecondsOptions = computed<SelectOption<number>[]>(() => [
-    { value: 60, label: t('views.notification.alerts.lastingSeconds.1m') },
-    { value: 300, label: t('views.notification.alerts.lastingSeconds.5m') },
-    { value: 600, label: t('views.notification.alerts.lastingSeconds.10m') },
-    { value: 1800, label: t('views.notification.alerts.lastingSeconds.30m') },
-    { value: 3600, label: t('views.notification.alerts.lastingSeconds.1h') },
+    { value: 60, label: t('views.notification.alerts.lastingDuration.1m') },
+    { value: 300, label: t('views.notification.alerts.lastingDuration.5m') },
+    { value: 600, label: t('views.notification.alerts.lastingDuration.10m') },
+    { value: 1800, label: t('views.notification.alerts.lastingDuration.30m') },
+    { value: 3600, label: t('views.notification.alerts.lastingDuration.1h') },
   ]);
 
   const levelOptions = computed<SelectOption<NotificationAlertLevel>[]>(() => [

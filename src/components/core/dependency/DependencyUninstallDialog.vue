@@ -57,7 +57,7 @@ defineOptions({ name: 'ClDependencyUninstallDialog' });
 
 <template>
   <cl-dialog
-    :title="t('common.actions.install')"
+    :title="t('common.actions.uninstall')"
     :visible="visible"
     width="640px"
     :confirm-loading="loading"

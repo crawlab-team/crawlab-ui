@@ -121,6 +121,7 @@ defineOptions({ name: 'ClEditTable' });
   &:deep(.actions) {
     display: flex;
     align-items: center;
+    height: 40px;
   }
 
   &:deep(.actions > div) {
@@ -140,6 +141,10 @@ defineOptions({ name: 'ClEditTable' });
     border-radius: 50%;
     color: var(--cl-primary-color);
     background-color: var(--cl-primary-plain-color);
+  }
+
+  &:deep(.el-table__row .el-table__cell) {
+    box-sizing: content-box;
   }
 
   &:deep(.el-table__row:hover),

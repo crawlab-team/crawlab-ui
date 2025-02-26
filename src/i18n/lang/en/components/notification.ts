@@ -120,7 +120,7 @@ const notification: LComponentsNotification = {
       enabled: 'Enabled',
       metricName: 'Metric Name',
       operator: 'Operator',
-      lastingSeconds: 'Lasting Seconds',
+      lastingDuration: 'Lasting Duration',
       targetValue: 'Target Value',
       level: 'Level',
     },
