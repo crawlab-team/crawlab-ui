@@ -1,5 +1,5 @@
 const global: LGlobal = {
-  locale: '语言',
+  locale: 'Language',
   lang: 'English',
   edition: {
     community: 'Community',
