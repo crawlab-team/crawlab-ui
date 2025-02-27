@@ -6,12 +6,17 @@ import {
   getIconByRouteConcept,
   translate,
 } from '@/utils';
+import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
 
 const t = translate;
 
 const router = useRouter();
 
 const route = useRoute();
+
+const ns = 'system';
+const store = useStore();
 
 const activeItemKey = computed(() => {
   return route.path.split('/').pop() || '';
@@ -20,6 +25,9 @@ const activeItemKey = computed(() => {
 const formRef = ref();
 
 const onSave = async () => {
+  await formRef.value?.validate();
+  await store.dispatch(`${ns}/saveCustomize`);
+  ElMessage.success(t('common.message.success.save'));
   await formRef.value?.save?.();
 };
 
