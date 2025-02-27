@@ -35,5 +35,7 @@ defineOptions({ name: 'ClSystemDetailTabEnvironment' });
 <style scoped>
 .environment-list {
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 </style>
