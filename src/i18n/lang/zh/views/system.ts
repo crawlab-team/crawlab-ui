@@ -2,6 +2,7 @@ const system: LViewsSystem = {
   menuItems: {
     customize: '自定义管理',
     dependency: '依赖管理',
+    environment: '环境变量',
   },
   customize: {
     customTitle: '自定义网站标题',

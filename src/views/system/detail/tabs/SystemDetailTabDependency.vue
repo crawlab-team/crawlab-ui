@@ -54,4 +54,8 @@ defineOptions({ name: 'ClSystemDetailTabDependency' });
   </cl-form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.form {
+  padding: 20px;
+}
+</style>

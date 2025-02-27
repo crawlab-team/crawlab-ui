@@ -136,31 +136,21 @@ export function getDefaultSidebarMenuItems(): MenuItem[] {
       icon: getIconByRouteConcept('user'),
     },
     {
-      path: '/users',
-      title: 'router.menuItems.usersManagement.title',
-      icon: getIconByRouteConcept('user'),
+      path: '/permissions',
+      title: 'router.menuItems.permissions.title',
+      icon: getIconByRouteConcept('permission'),
       children: [
         {
           path: '/users',
-          title: 'router.menuItems.usersManagement.children.users',
+          title: 'router.menuItems.permissions.children.users',
           icon: getIconByRouteConcept('user'),
         },
         {
           path: '/roles',
-          title: 'router.menuItems.usersManagement.children.roles',
+          title: 'router.menuItems.permissions.children.roles',
           icon: getIconByRouteConcept('role'),
         },
       ],
-    },
-    {
-      path: '/environments',
-      title: 'router.menuItems.environment',
-      icon: getIconByRouteConcept('environment'),
-    },
-    {
-      path: '/tokens',
-      title: 'router.menuItems.tokens',
-      icon: getIconByRouteConcept('token'),
     },
     {
       path: '/system',

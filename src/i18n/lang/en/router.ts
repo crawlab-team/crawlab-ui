@@ -9,8 +9,8 @@ const router: LRouter = {
     git: 'Git Repo',
     databases: 'Databases',
     users: 'Users',
-    usersManagement: {
-      title: 'User Management',
+    permissions: {
+      title: 'Permissions',
       children: {
         users: 'Users',
         roles: 'Roles',

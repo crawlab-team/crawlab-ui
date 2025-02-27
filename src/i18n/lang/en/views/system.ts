@@ -1,7 +1,8 @@
 const system: LViewsSystem = {
   menuItems: {
     customize: 'Customization',
-    dependency: 'Dependency Management',
+    dependency: 'Dependencies',
+    environment: 'Environment',
   },
   customize: {
     customTitle: 'Custom Site Title',

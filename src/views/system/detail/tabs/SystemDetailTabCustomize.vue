@@ -171,6 +171,8 @@ defineOptions({ name: 'ClSystemDetailTabCustomize' });
 
 <style scoped>
 .form {
+  padding: 20px;
+
   &:deep(.site-logo) {
     &.disabled {
       opacity: 0.7;

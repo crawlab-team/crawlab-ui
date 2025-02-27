@@ -9,8 +9,8 @@ const router: LRouter = {
     git: 'Git 仓库',
     databases: '数据库',
     users: '用户',
-    usersManagement: {
-      title: '用户管理',
+    permissions: {
+      title: '权限管理',
       children: {
         users: '用户',
         roles: '角色',

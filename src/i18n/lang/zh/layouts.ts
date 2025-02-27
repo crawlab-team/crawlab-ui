@@ -210,6 +210,11 @@ const layouts: LLayouts = {
     },
     system: {
       title: '系统设置',
+      tabs: {
+        customize: '自定义',
+        dependency: '依赖设置',
+        environment: '环境变量',
+      },
     },
     misc: {
       disclaimer: '免责声明',

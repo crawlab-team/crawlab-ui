@@ -1,12 +1,14 @@
 export declare global {
+  interface LDetailLayoutPage<T = any> {
+    title: string;
+    tabs: T;
+  }
+
   interface LListLayoutPage<T = any> {
     list: {
       title: string;
     };
-    detail?: {
-      title: string;
-      tabs: T;
-    };
+    detail?: LDetailLayoutPage<T>;
   }
 
   interface LLayouts {
@@ -107,9 +109,11 @@ export declare global {
         indexes: string;
       }>;
       environments: LListLayoutPage;
-      system: {
-        title: string;
-      };
+      system: LDetailLayoutPage<{
+        customize: string;
+        dependency: string;
+        environment: string;
+      }>;
       misc: {
         disclaimer: string;
         mySettings: string;

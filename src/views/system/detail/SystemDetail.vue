@@ -1,25 +1,45 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
-import { useStore } from 'vuex';
-import { ElMessage, UploadFile, UploadInstance } from 'element-plus';
-import { Delete, Plus } from '@element-plus/icons-vue';
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import {
   getIconByGeneralConcept,
   getIconByRouteConcept,
   translate,
 } from '@/utils';
-import { arrayBufferToBase64 } from '@/utils/base64';
-import { ClForm } from '@/components';
 
 const t = translate;
 
-const activeItemKey = ref('customize');
+const router = useRouter();
+
+const route = useRoute();
+
+const activeItemKey = computed(() => {
+  return route.path.split('/').pop() || '';
+});
 
 const formRef = ref();
 
 const onSave = async () => {
   await formRef.value?.save?.();
 };
+
+const menuItems = computed<NavItem[]>(() => [
+  {
+    id: 'customize',
+    icon: getIconByGeneralConcept('customize'),
+    label: t('views.system.menuItems.customize'),
+  },
+  {
+    id: 'dependency',
+    icon: getIconByRouteConcept('dependency'),
+    label: t('views.system.menuItems.dependency'),
+  },
+  {
+    id: 'environment',
+    icon: getIconByRouteConcept('environment'),
+    label: t('views.system.menuItems.environment'),
+  },
+]);
 
 defineOptions({ name: 'ClSystemDetail' });
 </script>
@@ -36,25 +56,14 @@ defineOptions({ name: 'ClSystemDetail' });
     <div class="system-detail-content-wrapper">
       <el-menu
         :default-active="activeItemKey"
-        @select="(value: string) => (activeItemKey = value)"
+        @select="(value: string) => router.push(`/system/${value}`)"
       >
-        <el-menu-item index="customize">
-          <cl-icon :icon="getIconByGeneralConcept('customize')" />
-          {{ t('views.system.menuItems.customize') }}
-        </el-menu-item>
-        <el-menu-item index="dependency">
-          <cl-icon :icon="getIconByRouteConcept('dependency')" />
-          {{ t('views.system.menuItems.dependency') }}
+        <el-menu-item v-for="item in menuItems" :key="item.id" :index="item.id">
+          <cl-icon :icon="item.icon" />
+          {{ item.label }}
         </el-menu-item>
       </el-menu>
-      <div class="system-detail-content">
-        <template v-if="activeItemKey === 'customize'">
-          <cl-system-detail-tab-customize ref="formRef" />
-        </template>
-        <template v-else-if="activeItemKey === 'dependency'">
-          <cl-system-detail-tab-dependency ref="formRef" />
-        </template>
-      </div>
+      <router-view />
     </div>
   </div>
 </template>

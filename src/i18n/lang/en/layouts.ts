@@ -210,6 +210,11 @@ const layouts: LLayouts = {
     },
     system: {
       title: 'System',
+      tabs: {
+        customize: 'Customize',
+        dependency: 'Dependency',
+        environment: 'Environment',
+      },
     },
     misc: {
       disclaimer: 'Disclaimer',

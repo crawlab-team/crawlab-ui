@@ -21,6 +21,7 @@ export declare global {
     | ListStoreNamespace
     | 'home'
     | 'notification'
+    | 'permission'
     | 'system'
     | 'disclaimer'
     | 'mySettings';
