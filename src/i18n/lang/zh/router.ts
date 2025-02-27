@@ -36,8 +36,12 @@ const router: LRouter = {
     environment: '环境变量',
     system: '系统设置',
     misc: {
-      disclaimer: '免责声明',
-      myAccount: '我的账户',
+      title: '其他',
+      children: {
+        myAccount: '我的账户',
+        pat: '个人访问令牌',
+        disclaimer: '免责声明',
+      },
     },
   },
 };

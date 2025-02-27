@@ -14,8 +14,9 @@ export declare global {
   interface LLayouts {
     components: {
       header: {
-        disclaimer: string;
         myAccount: string;
+        pat: string;
+        disclaimer: string;
         logout: string;
       };
       tabsView: {
@@ -114,10 +115,11 @@ export declare global {
         dependency: string;
         environment: string;
       }>;
-      misc: {
-        disclaimer: string;
+      misc: LDetailLayoutPage<{
         myAccount: string;
-      };
+        pat: string;
+        disclaimer: string;
+      }>;
     };
   }
 }

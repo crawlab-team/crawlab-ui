@@ -37,8 +37,12 @@ export declare global {
       environment: string;
       system: string;
       misc: {
-        disclaimer: string;
-        myAccount: string;
+        title: string;
+        children: {
+          myAccount: string;
+          pat: string;
+          disclaimer: string;
+        };
       };
     };
   }

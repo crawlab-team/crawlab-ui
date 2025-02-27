@@ -109,7 +109,7 @@ defineOptions({ name: 'ClCheckboxTreeGroup' });
 
     .label {
       display: inline-block;
-      width: 100px;
+      min-width: 100px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

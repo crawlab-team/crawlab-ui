@@ -48,10 +48,15 @@ const useTokenList = () => {
           type: 'success',
           onClick: async () => {
             const res = await ElMessageBox.prompt(
-              t('views.tokens.messageBox.prompt.create'),
-              t('common.actions.create')
+              t('views.tokens.messageBox.prompt.create.title'),
+              t('common.actions.create'),
+              {
+                inputPlaceholder: t(
+                  'views.tokens.messageBox.prompt.create.placeholder'
+                ),
+              }
             );
-            const name = res.value;
+            const name = res.value || `PAT-${new Date().toISOString()}`;
             const token = {
               name,
             } as Token;

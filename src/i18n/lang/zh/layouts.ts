@@ -1,9 +1,10 @@
 const layouts: LLayouts = {
   components: {
     header: {
-      logout: '注销',
       myAccount: '我的账户',
+      pat: '个人访问令牌',
       disclaimer: '免责声明',
+      logout: '注销',
     },
     tabsView: {
       add: '添加标签页',
@@ -217,8 +218,12 @@ const layouts: LLayouts = {
       },
     },
     misc: {
-      disclaimer: '免责声明',
-      myAccount: '我的账户',
+      title: '其他',
+      tabs: {
+        myAccount: '我的账户',
+        pat: '个人访问令牌',
+        disclaimer: '免责声明',
+      },
     },
   },
 };

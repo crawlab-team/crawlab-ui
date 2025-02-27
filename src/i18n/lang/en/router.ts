@@ -36,8 +36,12 @@ const router: LRouter = {
     environment: 'Environment',
     system: 'System Settings',
     misc: {
-      disclaimer: 'Disclaimer',
-      myAccount: 'My Account',
+      title: 'Miscellaneous',
+      children: {
+        myAccount: 'My Account',
+        pat: 'Personal Access Tokens',
+        disclaimer: 'Disclaimer',
+      },
     },
   },
 };

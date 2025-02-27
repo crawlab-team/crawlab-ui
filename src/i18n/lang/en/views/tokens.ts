@@ -2,23 +2,27 @@ const tokens: LViewsTokens = {
   table: {
     columns: {
       name: 'Name',
-      token: 'Token',
+      token: 'Access Token',
     },
   },
   navActions: {
     new: {
-      label: 'New Token',
-      tooltip: 'Create a new token',
+      label: 'New PAT',
+      tooltip: 'Create a new personal access token',
     },
     filter: {
       search: {
-        placeholder: 'Search tokens',
+        placeholder: 'Search PAT',
       },
     },
   },
   messageBox: {
     prompt: {
-      create: 'Please enter the name of token',
+      create: {
+        title: 'Please enter the name of personal access token',
+        placeholder:
+          'By default, the name will be in format of "PAT <timestamp>"',
+      },
     },
   },
 };

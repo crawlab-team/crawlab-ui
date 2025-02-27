@@ -187,12 +187,11 @@ export const getRouteSelectOptions = (): CheckboxTreeSelectOption[] => {
     if (
       [
         'home',
-        'disclaimer',
-        'myAccount',
-        'token',
-        'environment',
         'dependency',
         'system',
+        'myAccount',
+        'pat',
+        'disclaimer',
       ].includes(concept)
     ) {
       children = undefined;
@@ -232,7 +231,7 @@ export const getLabelByRouteConcept = (concept: RouteConcept): string => {
     case 'user':
       return t('router.menuItems.users');
     case 'role':
-      return t('router.menuItems.usersManagement.children.roles');
+      return t('router.menuItems.permissions.children.roles');
     case 'token':
       return t('router.menuItems.tokens');
     case 'dependency':
@@ -251,10 +250,14 @@ export const getLabelByRouteConcept = (concept: RouteConcept): string => {
       return t('router.menuItems.notification.alerts');
     case 'system':
       return t('router.menuItems.system');
-    case 'disclaimer':
-      return t('router.menuItems.misc.disclaimer');
+    case 'misc':
+      return t('router.menuItems.misc.title');
     case 'myAccount':
-      return t('router.menuItems.misc.myAccount');
+      return t('router.menuItems.misc.children.myAccount');
+    case 'pat':
+      return t('router.menuItems.misc.children.pat');
+    case 'disclaimer':
+      return t('router.menuItems.misc.children.disclaimer');
     default:
       return '';
   }

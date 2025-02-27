@@ -23,8 +23,10 @@ export declare global {
     | 'notification'
     | 'permission'
     | 'system'
-    | 'disclaimer'
-    | 'myAccount';
+    | 'misc'
+    | 'myAccount'
+    | 'pat'
+    | 'disclaimer';
 }
 
 export * from './auth';

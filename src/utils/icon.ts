@@ -290,10 +290,12 @@ export const getIconByRouteConcept = (concept: RouteConcept): Icon => {
       return ['fa', 'user-check'];
     case 'system':
       return ['fa', 'cogs'];
-    case 'disclaimer':
-      return ['fa', 'info-circle'];
     case 'myAccount':
       return ['fa', 'user-cog'];
+    case 'pat':
+      return ['fa', 'key'];
+    case 'disclaimer':
+      return ['fa', 'info-circle'];
     default:
       return ['fa', 'circle'];
   }

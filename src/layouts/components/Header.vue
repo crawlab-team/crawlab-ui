@@ -65,19 +65,7 @@ const onLogout = () => {
   }, 10);
 };
 
-// on click disclaimer
-const onClickDisclaimer = () => {
-  router.push('/misc/disclaimer');
-};
-
-// on click my settings
-const onClickMySettings = () => {
-  router.push('/misc/my-account');
-};
-
 const navMenuItems = computed<MenuItem[]>(() => getNavMenuItems(route.path));
-
-const meDropdownVisible = ref<boolean>(false);
 
 defineOptions({ name: 'ClHeader' });
 </script>
@@ -182,18 +170,25 @@ defineOptions({ name: 'ClHeader' });
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item
-                  v-if="isAllowedRoutePath('/misc/disclaimer')"
-                  @click="onClickDisclaimer"
-                >
-                  <cl-icon :icon="['fa', 'info-circle']" />
-                  {{ t('layouts.components.header.disclaimer') }}
-                </el-dropdown-item>
-                <el-dropdown-item
                   v-if="isAllowedRoutePath('/misc/my-account')"
-                  @click="onClickMySettings"
+                  @click="() => router.push('/misc/my-account')"
                 >
                   <cl-icon :icon="['fa', 'user-cog']" />
                   {{ t('layouts.components.header.myAccount') }}
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-if="isAllowedRoutePath('/misc/pat')"
+                  @click="() => router.push('/misc/pat')"
+                >
+                  <cl-icon :icon="['fa', 'key']" />
+                  {{ t('layouts.components.header.pat') }}
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-if="isAllowedRoutePath('/misc/disclaimer')"
+                  @click="() => router.push('/misc/disclaimer')"
+                >
+                  <cl-icon :icon="['fa', 'info-circle']" />
+                  {{ t('layouts.components.header.disclaimer') }}
                 </el-dropdown-item>
                 <el-dropdown-item @click="onLogout">
                   <cl-icon :icon="['fa', 'sign-out-alt']" />

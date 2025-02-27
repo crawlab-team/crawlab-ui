@@ -1,9 +1,10 @@
 const layouts: LLayouts = {
   components: {
     header: {
-      logout: 'Logout',
       myAccount: 'My Account',
+      pat: 'Personal Access Tokens',
       disclaimer: 'Disclaimer',
+      logout: 'Logout',
     },
     tabsView: {
       add: 'Add Tab',
@@ -187,10 +188,10 @@ const layouts: LLayouts = {
     },
     databases: {
       list: {
-        title: 'Data Source List',
+        title: 'Database List',
       },
       detail: {
-        title: 'Data Source Detail',
+        title: 'Database Detail',
         tabs: {
           overview: 'Overview',
           databases: 'Databases',
@@ -217,8 +218,12 @@ const layouts: LLayouts = {
       },
     },
     misc: {
-      disclaimer: 'Disclaimer',
-      myAccount: 'My Account',
+      title: 'Miscellaneous',
+      tabs: {
+        myAccount: 'My Account',
+        pat: 'Personal Access Tokens',
+        disclaimer: 'Disclaimer',
+      },
     },
   },
 };
