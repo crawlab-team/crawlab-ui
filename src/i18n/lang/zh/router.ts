@@ -37,7 +37,7 @@ const router: LRouter = {
     system: '系统设置',
     misc: {
       disclaimer: '免责声明',
-      mySettings: '我的设置',
+      myAccount: '我的账户',
     },
   },
 };

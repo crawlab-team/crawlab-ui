@@ -188,7 +188,7 @@ export const getRouteSelectOptions = (): CheckboxTreeSelectOption[] => {
       [
         'home',
         'disclaimer',
-        'mySettings',
+        'myAccount',
         'token',
         'environment',
         'dependency',
@@ -253,8 +253,8 @@ export const getLabelByRouteConcept = (concept: RouteConcept): string => {
       return t('router.menuItems.system');
     case 'disclaimer':
       return t('router.menuItems.misc.disclaimer');
-    case 'mySettings':
-      return t('router.menuItems.misc.mySettings');
+    case 'myAccount':
+      return t('router.menuItems.misc.myAccount');
     default:
       return '';
   }

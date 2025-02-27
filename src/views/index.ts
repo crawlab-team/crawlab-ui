@@ -21,7 +21,7 @@ import GitDetailTabSpiders from './git/detail/tabs/GitDetailTabSpiders.vue';
 import GitList from './git/list/GitList.vue';
 import Home from './home/Home.vue';
 import Login from './login/Login.vue';
-import MySettings from './misc/MySettings.vue';
+import MyAccount from './misc/MyAccount.vue';
 import NodeDetail from './node/detail/NodeDetail.vue';
 import NodeDetailActionsCommon from './node/detail/actions/NodeDetailActionsCommon.vue';
 import NodeDetailTabMonitoring from './node/detail/tabs/NodeDetailTabMonitoring.vue';
@@ -140,7 +140,7 @@ export {
   GitList as ClGitList,
   Home as ClHome,
   Login as ClLogin,
-  MySettings as ClMySettings,
+  MyAccount as ClMyAccount,
   NodeDetail as ClNodeDetail,
   NodeDetailActionsCommon as ClNodeDetailActionsCommon,
   NodeDetailTabMonitoring as ClNodeDetailTabMonitoring,

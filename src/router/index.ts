@@ -168,9 +168,9 @@ export function getDefaultHiddenMenuItems(): MenuItem[] {
       icon: getIconByRouteConcept('disclaimer'),
     },
     {
-      path: '/misc/my-settings',
-      title: 'router.menuItems.misc.mySettings',
-      icon: getIconByRouteConcept('mySettings'),
+      path: '/misc/my-account',
+      title: 'router.menuItems.misc.myAccount',
+      icon: getIconByRouteConcept('myAccount'),
     },
   ] as MenuItem[];
   return items.map(d => {

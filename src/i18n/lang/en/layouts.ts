@@ -2,7 +2,7 @@ const layouts: LLayouts = {
   components: {
     header: {
       logout: 'Logout',
-      mySettings: 'My Settings',
+      myAccount: 'My Account',
       disclaimer: 'Disclaimer',
     },
     tabsView: {
@@ -218,7 +218,7 @@ const layouts: LLayouts = {
     },
     misc: {
       disclaimer: 'Disclaimer',
-      mySettings: 'My Settings',
+      myAccount: 'My Account',
     },
   },
 };

@@ -37,7 +37,7 @@ const router: LRouter = {
     system: 'System Settings',
     misc: {
       disclaimer: 'Disclaimer',
-      mySettings: 'My Settings',
+      myAccount: 'My Account',
     },
   },
 };

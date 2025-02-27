@@ -15,7 +15,7 @@ export declare global {
     components: {
       header: {
         disclaimer: string;
-        mySettings: string;
+        myAccount: string;
         logout: string;
       };
       tabsView: {
@@ -116,7 +116,7 @@ export declare global {
       }>;
       misc: {
         disclaimer: string;
-        mySettings: string;
+        myAccount: string;
       };
     };
   }

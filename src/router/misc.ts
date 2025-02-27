@@ -1,4 +1,4 @@
-import { ClDisclaimer, ClMySettings } from '@/views';
+import { ClDisclaimer, ClMyAccount } from '@/views';
 import { translate } from '@/utils';
 
 const t = translate;
@@ -14,10 +14,10 @@ export default [
     component: async () => ClDisclaimer,
   },
   {
-    routeConcept: 'mySettings',
+    routeConcept: 'myAccount',
     name: 'MySettings',
-    path: `${endpoint}/my-settings`,
-    title: t('layouts.routes.misc.mySettings'),
-    component: async () => ClMySettings,
+    path: `${endpoint}/my-account`,
+    title: t('layouts.routes.misc.myAccount'),
+    component: async () => ClMyAccount,
   },
 ] as Array<ExtendedRouterRecord>;

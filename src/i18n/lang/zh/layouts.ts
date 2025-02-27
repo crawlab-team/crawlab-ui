@@ -2,7 +2,7 @@ const layouts: LLayouts = {
   components: {
     header: {
       logout: '注销',
-      mySettings: '我的设置',
+      myAccount: '我的账户',
       disclaimer: '免责声明',
     },
     tabsView: {
@@ -218,7 +218,7 @@ const layouts: LLayouts = {
     },
     misc: {
       disclaimer: '免责声明',
-      mySettings: '我的设置',
+      myAccount: '我的账户',
     },
   },
 };

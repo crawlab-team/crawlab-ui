@@ -72,7 +72,7 @@ const onClickDisclaimer = () => {
 
 // on click my settings
 const onClickMySettings = () => {
-  router.push('/misc/my-settings');
+  router.push('/misc/my-account');
 };
 
 const navMenuItems = computed<MenuItem[]>(() => getNavMenuItems(route.path));
@@ -189,11 +189,11 @@ defineOptions({ name: 'ClHeader' });
                   {{ t('layouts.components.header.disclaimer') }}
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-if="isAllowedRoutePath('/misc/my-settings')"
+                  v-if="isAllowedRoutePath('/misc/my-account')"
                   @click="onClickMySettings"
                 >
                   <cl-icon :icon="['fa', 'user-cog']" />
-                  {{ t('layouts.components.header.mySettings') }}
+                  {{ t('layouts.components.header.myAccount') }}
                 </el-dropdown-item>
                 <el-dropdown-item @click="onLogout">
                   <cl-icon :icon="['fa', 'sign-out-alt']" />

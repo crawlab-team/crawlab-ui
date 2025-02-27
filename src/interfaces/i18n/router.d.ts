@@ -38,7 +38,7 @@ export declare global {
       system: string;
       misc: {
         disclaimer: string;
-        mySettings: string;
+        myAccount: string;
       };
     };
   }

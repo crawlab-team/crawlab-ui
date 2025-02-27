@@ -24,7 +24,7 @@ export declare global {
     | 'permission'
     | 'system'
     | 'disclaimer'
-    | 'mySettings';
+    | 'myAccount';
 }
 
 export * from './auth';

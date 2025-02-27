@@ -2,16 +2,11 @@
 import { onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { ROLE_ADMIN, ROLE_NORMAL } from '@/constants/user';
 import { translate, plainClone } from '@/utils';
-import useUser from '@/components/core/user/useUser';
 import { debounce } from 'lodash';
-import useRequest from '@/services/request';
 
 // i18n
 const t = translate;
-
-const { post } = useRequest();
 
 // store
 const ns: StoreNamespace = 'common';
@@ -54,11 +49,11 @@ const onChangePassword = async () => {
   await store.dispatch(`${ns}/changeMyPassword`, { password: value });
   ElMessage.success(t('common.message.success.save'));
 };
-defineOptions({ name: 'ClMySettings' });
+defineOptions({ name: 'ClMyAccount' });
 </script>
 
 <template>
-  <div class="my-settings">
+  <div class="my-account">
     <cl-simple-layout padding="0">
       <cl-nav-actions ref="navActions" class="nav-actions">
         <cl-nav-action-group>
@@ -83,7 +78,7 @@ defineOptions({ name: 'ClMySettings' });
 </template>
 
 <style scoped>
-.my-settings {
+.my-account {
   height: 100%;
 
   .user-form {
