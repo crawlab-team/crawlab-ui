@@ -64,6 +64,7 @@ const common: LCommon = {
     uncheckAll: 'Uncheck All',
     sendTestMessage: 'Send Test Message',
     retry: 'Retry',
+    send: 'Send',
   },
   messageBox: {
     confirm: {

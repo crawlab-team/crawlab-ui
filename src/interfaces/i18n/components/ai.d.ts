@@ -9,9 +9,19 @@ export declare global {
         title: string;
         llmProvider: string;
         systemPrompt: string;
+        selectProvider: string;
+        enterSystemPrompt: string;
+        model: string;
+        selectModel: string;
+        apiKey: string;
+        enterApiKey: string;
+        temperature: string;
+        maxTokens: string;
       };
       history: string;
       add: string;
+      enterHint: string;
+      poweredBy: string;
     };
   }
 } 

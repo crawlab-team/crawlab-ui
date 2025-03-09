@@ -5,6 +5,7 @@ import { useStore } from 'vuex';
 import ChatMessage from './ChatMessage.vue';
 import ChatInput from './ChatInput.vue';
 import ChatbotConfigDialog from './ChatbotConfigDialog.vue';
+import { llmService } from '@/services';
 
 const { t } = useI18n();
 const store = useStore();
@@ -68,6 +69,8 @@ onMounted(() => {
   
   // Load chatbot configuration if available
   loadChatbotConfig();
+  // Load available LLM providers
+  loadLLMProviders();
 });
 
 // Watch for store changes to sync with local state
@@ -93,13 +96,27 @@ type ChatMessageType = {
 // Chatbot configuration
 interface ChatbotConfig {
   llmProvider: string;
+  model: string;
   systemPrompt: string;
+  temperature: number;
+  maxTokens: number;
+  apiKey?: string;
 }
 
 const chatbotConfig = ref<ChatbotConfig>({
   llmProvider: 'openai',
-  systemPrompt: 'You are a helpful AI assistant for Crawlab, a web crawling and data extraction platform.'
+  model: 'gpt-3.5-turbo',
+  systemPrompt: 'You are a helpful AI assistant for Crawlab, a web crawling and data extraction platform.',
+  temperature: 0.7,
+  maxTokens: 1000,
 });
+
+// Available LLM providers
+const availableProviders = ref<llmService.LLMProvider[]>([]);
+
+// Loading state for chat
+const isLoading = ref(false);
+const streamError = ref('');
 
 // Load configuration from localStorage
 const loadChatbotConfig = () => {
@@ -114,7 +131,16 @@ const loadChatbotConfig = () => {
   }
 };
 
-// Mock chat history
+// Load available LLM providers
+const loadLLMProviders = async () => {
+  try {
+    availableProviders.value = await llmService.getLLMProviders();
+  } catch (error) {
+    console.error('Failed to load LLM providers:', error);
+  }
+};
+
+// Initialize chat history with welcome message
 const chatHistory = reactive<ChatMessageType[]>([
   {
     role: 'system',
@@ -124,7 +150,12 @@ const chatHistory = reactive<ChatMessageType[]>([
 ]);
 
 // Function to handle sending a message
-const sendMessage = (message: string) => {
+const sendMessage = async (message: string) => {
+  if (!message.trim()) return;
+  
+  // Reset any previous errors
+  streamError.value = '';
+  
   // Add user message to chat history
   chatHistory.push({
     role: 'user',
@@ -132,34 +163,123 @@ const sendMessage = (message: string) => {
     timestamp: new Date(),
   });
 
-  // Mock AI response with a slight delay to simulate processing
-  setTimeout(() => {
-    // Add AI response to chat history
-    chatHistory.push({
-      role: 'system',
-      content: getMockResponse(message),
-      timestamp: new Date(),
-    });
-  }, 1000);
+  // Add a placeholder for the AI response
+  const responseIndex = chatHistory.length;
+  chatHistory.push({
+    role: 'system',
+    content: "",
+    timestamp: new Date(),
+  });
+
+  // Set loading state
+  isLoading.value = true;
+
+  try {
+    // Check if streaming is supported
+    const supportsStreaming = await checkStreamingSupport();
+    
+    if (supportsStreaming) {
+      // Use streaming API
+      await sendStreamingRequest(message, responseIndex);
+    } else {
+      // Use regular API
+      await sendRegularRequest(message, responseIndex);
+    }
+  } catch (error) {
+    console.error('Error sending message:', error);
+    streamError.value = error instanceof Error ? error.message : 'An error occurred while sending your message';
+    
+    // Update response with error
+    if (chatHistory[responseIndex]) {
+      chatHistory[responseIndex].content = "I'm sorry, I encountered an error while processing your request. Please try again later.";
+    }
+  } finally {
+    isLoading.value = false;
+  }
 };
 
-// Mock responses based on user query
-const getMockResponse = (query: string): string => {
-  const lowerQuery = query.toLowerCase();
-
-  if (lowerQuery.includes('spider') || lowerQuery.includes('crawler')) {
-    return 'Spiders are web crawlers in Crawlab that gather data from websites. You can create and manage them in the Spider section of the sidebar.';
-  } else if (lowerQuery.includes('task') || lowerQuery.includes('schedule')) {
-    return 'Tasks are individual crawler runs. You can schedule tasks to run at specific times using the Schedules feature.';
-  } else if (lowerQuery.includes('node') || lowerQuery.includes('worker')) {
-    return 'Nodes are the servers running Crawlab. A node can be a master or worker. Workers execute the tasks distributed by the master.';
-  } else if (lowerQuery.includes('data') || lowerQuery.includes('result')) {
-    return 'Crawled data is stored in the database and can be viewed in the Results section of each spider.';
-  } else if (lowerQuery.includes('hello') || lowerQuery.includes('hi')) {
-    return "Hello! I'm the Crawlab AI assistant. I can help you with questions about using Crawlab.";
-  } else {
-    return "I don't have specific information about that yet. As a prototype, my knowledge is limited. Please try asking about spiders, tasks, nodes, or data in Crawlab.";
+// Check if the selected provider supports streaming
+const checkStreamingSupport = async (): Promise<boolean> => {
+  try {
+    const { llmProvider, apiKey } = chatbotConfig.value;
+    const config = apiKey ? { api_key: apiKey } : undefined;
+    return await llmService.checkProviderFeatureSupport(llmProvider, 'streaming', config);
+  } catch (error) {
+    console.error('Error checking streaming support:', error);
+    return false; // Default to non-streaming if check fails
   }
+};
+
+// Send a request using streaming
+const sendStreamingRequest = async (message: string, responseIndex: number): Promise<void> => {
+  return new Promise<void>((resolve, reject) => {
+    const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } = chatbotConfig.value;
+    
+    const config: Record<string, string> = {};
+    if (apiKey) {
+      config.api_key = apiKey;
+    }
+
+    // Create prompt with system message and user query
+    const prompt = `${systemPrompt}\n\nUser: ${message}\nAssistant:`;
+    
+    const chatRequest: llmService.ChatRequest = {
+      provider: llmProvider,
+      config,
+      model,
+      prompt,
+      temperature,
+      max_tokens: maxTokens,
+    };
+
+    let fullResponse = "";
+    
+    llmService.sendStreamingChatRequest(
+      chatRequest,
+      (chunk) => {
+        // Update the response text with each chunk
+        fullResponse += chunk.text;
+        chatHistory[responseIndex].content = fullResponse;
+      },
+      (error) => {
+        // Handle streaming error
+        streamError.value = error instanceof Error ? error.message : 'Streaming error';
+        reject(error);
+      },
+      () => {
+        // Streaming complete
+        resolve();
+      }
+    );
+  });
+};
+
+// Send a request using non-streaming API
+const sendRegularRequest = async (message: string, responseIndex: number): Promise<void> => {
+  const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } = chatbotConfig.value;
+  
+  const config: Record<string, string> = {};
+  if (apiKey) {
+    config.api_key = apiKey;
+  }
+
+  // Create prompt with system message and user query
+  const prompt = `${systemPrompt}\n\nUser: ${message}\nAssistant:`;
+  
+  const chatRequest: llmService.ChatRequest = {
+    provider: llmProvider,
+    config,
+    model,
+    prompt,
+    temperature,
+    max_tokens: maxTokens,
+  };
+
+  // Send the chat request
+  const response = await llmService.sendChatRequest(chatRequest);
+  
+  // Update the chat history with the response
+  chatHistory[responseIndex].content = response.text;
 };
 
 // Configuration dialog
@@ -174,13 +294,13 @@ const handleConfigUpdate = (config: ChatbotConfig) => {
   chatbotConfig.value = config;
   configDialogVisible.value = false;
   
-  // In a real implementation, this would update the AI behavior based on the new config
-  console.log('Updated chatbot configuration:', config);
+  // Save configuration to localStorage
+  localStorage.setItem('chatbotConfig', JSON.stringify(config));
   
-  // Optionally, you could show a confirmation message to the user
+  // Add a message to inform the user of the update
   chatHistory.push({
     role: 'system',
-    content: `AI assistant configuration updated. Using ${config.llmProvider} provider.`,
+    content: `AI assistant configuration updated. Using ${config.llmProvider} with model ${config.model}.`,
     timestamp: new Date(),
   });
 };
@@ -233,13 +353,18 @@ defineOptions({ name: 'ClChatSidebar' });
 
     <div class="chat-messages">
       <chat-message v-for="(message, index) in chatHistory" :key="index" :message="message" />
+      <div v-if="streamError" class="stream-error">
+        <el-alert type="error" :title="streamError" show-icon />
+      </div>
     </div>
 
-    <chat-input @send="sendMessage" />
+    <chat-input @send="sendMessage" :is-loading="isLoading" />
     
     <!-- Config Dialog -->
     <chatbot-config-dialog 
       :visible="configDialogVisible"
+      :providers="availableProviders"
+      :current-config="chatbotConfig"
       @close="configDialogVisible = false"
       @confirm="handleConfigUpdate"
     />
@@ -312,6 +437,10 @@ defineOptions({ name: 'ClChatSidebar' });
   display: flex;
   flex-direction: column;
   background-color: var(--el-bg-color);
+}
+
+.stream-error {
+  margin: 10px;
 }
 
 .chat-toggle-btn {

@@ -1,5 +1,9 @@
 import useRequest from '@/services/request';
 import { debounce } from '@/utils';
+import * as llmService from './llm';
+
+// Export the LLM service
+export { llmService };
 
 const { get, put, post, del, getList, getAll, putList, postList, delList } =
   useRequest();
