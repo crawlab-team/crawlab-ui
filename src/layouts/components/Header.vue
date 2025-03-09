@@ -67,11 +67,20 @@ const onLogout = () => {
 
 const navMenuItems = computed<MenuItem[]>(() => getNavMenuItems(route.path));
 
+// Get sidebar visibility from store
+const sidebarVisible = computed<boolean>(
+  () => layoutState.chatbotSidebarVisible
+);
+
+const toggleChatbotSidebar = () => {
+  store.commit('layout/setChatbotSidebarVisible', !sidebarVisible.value);
+};
+
 defineOptions({ name: 'ClHeader' });
 </script>
 
 <template>
-  <div :class="sidebarCollapsed ? 'collapsed' : ''" class="header-container">
+  <div class="header-container">
     <el-header height="var(--cl-header-height)" class="header">
       <div class="left">
         <el-breadcrumb :separator-icon="ArrowRight">
@@ -115,6 +124,18 @@ defineOptions({ name: 'ClHeader' });
             >
               <cl-icon :icon="['fa', 'file-alt']" size="normal" />
             </el-link>
+          </el-tooltip>
+        </div>
+        <div class="item">
+          <el-tooltip :content="t('components.ai.chatbot.tooltip')">
+            <el-button
+              type="primary"
+              circle
+              @click="toggleChatbotSidebar"
+              class="chat-toggle-btn"
+            >
+              <cl-icon :icon="['fa', 'robot']" />
+            </el-button>
           </el-tooltip>
         </div>
         <div class="item action">
@@ -206,18 +227,14 @@ defineOptions({ name: 'ClHeader' });
 <style scoped>
 .header-container {
   height: var(--cl-header-height);
-  width: calc(100vw - var(--cl-sidebar-width));
+  width: 100%;
   background-color: var(--cl-header-bg);
-  transition: width var(--cl-sidebar-collapse-transition-duration);
+  transition: all 0.3s ease;
   border-bottom: 1px solid var(--el-border-color-light);
   z-index: 1;
 
   &:deep(.button-wrapper) {
     margin-right: 0;
-  }
-
-  &.collapsed {
-    width: calc(100vw - var(--cl-sidebar-width-collapsed));
   }
 
   .header {

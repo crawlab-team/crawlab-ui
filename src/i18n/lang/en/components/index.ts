@@ -26,6 +26,7 @@ import user from './user';
 import role from './role';
 import tag from './tag';
 import environment from './environment';
+import ai from './ai';
 
 const components: LComponents = {
   chart,
@@ -56,6 +57,7 @@ const components: LComponents = {
   role,
   tag,
   environment,
+  ai,
 };
 
 export default components;

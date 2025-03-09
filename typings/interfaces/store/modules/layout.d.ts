@@ -27,6 +27,9 @@ declare global {
 
     // action
     actionVisibleFn: (target: string, action: string) => boolean;
+    
+    // chatbot
+    chatbotSidebarVisible: boolean;
   }
 
   interface LayoutStoreGetters
@@ -60,5 +63,6 @@ declare global {
       LayoutStoreState,
       (target: string, action: string) => boolean
     >;
+    setChatbotSidebarVisible: StoreMutation<LayoutStoreState, boolean>;
   }
 }

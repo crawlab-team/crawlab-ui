@@ -40,6 +40,15 @@ const getDefaultMaxTabId = (): number => {
   return 0;
 };
 
+// persistent chatbot sidebar visible
+const getDefaultChatbotSidebarVisible = (): boolean => {
+  const visible = localStorage.getItem('chatbotSidebarVisible');
+  if (visible) {
+    return visible === 'true';
+  }
+  return false;
+};
+
 export default {
   namespaced: true,
   state: {
@@ -63,6 +72,9 @@ export default {
 
     // action
     actionVisibleFn: (target: string, action: string) => true,
+    
+    // chatbot
+    chatbotSidebarVisible: getDefaultChatbotSidebarVisible(),
   },
   getters: {
     tabs: state => {
@@ -205,6 +217,10 @@ export default {
       fn: (target: string, action: string) => boolean
     ) {
       state.actionVisibleFn = fn;
+    },
+    setChatbotSidebarVisible(state: LayoutStoreState, value: boolean) {
+      state.chatbotSidebarVisible = value;
+      saveLocalStorage('chatbotSidebarVisible', value);
     },
   },
   actions: {},

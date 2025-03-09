@@ -23,6 +23,9 @@ import Box from './ui/box/Box.vue';
 import Button from './ui/button/Button.vue';
 import ButtonGroup from './ui/button/ButtonGroup.vue';
 import Chart from './ui/chart/Chart.vue';
+import ChatInput from './ui/chatbot/ChatInput.vue';
+import ChatMessage from './ui/chatbot/ChatMessage.vue';
+import ChatSidebar from './ui/chatbot/ChatSidebar.vue';
 import CheckboxTree from './ui/checkbox/CheckboxTree.vue';
 import CheckboxTreeGroup from './ui/checkbox/CheckboxTreeGroup.vue';
 import CheckTag from './ui/tag/CheckTag.vue';
@@ -257,6 +260,9 @@ export {
   Button as ClButton,
   ButtonGroup as ClButtonGroup,
   Chart as ClChart,
+  ChatInput as ClChatInput,
+  ChatMessage as ClChatMessage,
+  ChatSidebar as ClChatSidebar,
   CheckboxTree as ClCheckboxTree,
   CheckboxTreeGroup as ClCheckboxTreeGroup,
   CheckTag as ClCheckTag,

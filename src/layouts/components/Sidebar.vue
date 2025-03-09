@@ -194,13 +194,20 @@ defineOptions({ name: 'ClSidebar' });
 
 <style scoped>
 .sidebar {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: var(--cl-sidebar-width);
+  height: 100vh;
   overflow: hidden;
   user-select: none;
   background-color: var(--cl-menu-bg);
+  z-index: 20; /* Higher than other components to ensure it's always visible */
+  transition: width var(--cl-sidebar-collapse-transition-duration);
 
   &.collapsed {
+    width: var(--cl-sidebar-width-collapsed);
+    
     .sidebar-header,
     .sidebar-menu,
     .sidebar-footer {
