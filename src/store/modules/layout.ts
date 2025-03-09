@@ -229,12 +229,18 @@ export default {
       state.actionVisibleFn = fn;
     },
     setChatbotSidebarVisible(state: LayoutStoreState, value: boolean) {
+      // This controls both sidebar visibility and toggle button placement:
+      // - When true: button appears in ChatSidebar header
+      // - When false: button appears in main Header
       state.chatbotSidebarVisible = value;
-      saveLocalStorage('chatbotSidebarVisible', value);
+      
+      // Ensure we're saving the correct boolean string representation to localStorage
+      localStorage.setItem('chatbotSidebarVisible', value ? 'true' : 'false');
     },
     setChatbotSidebarWidth(state: LayoutStoreState, value: number) {
       state.chatbotSidebarWidth = value;
-      saveLocalStorage('chatbotSidebarWidth', value);
+      // Use localStorage directly for consistency with how we read the value
+      localStorage.setItem('chatbotSidebarWidth', value.toString());
     },
   },
   actions: {},

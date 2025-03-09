@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount } from 'vue';
+import { computed, onBeforeMount, watch } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -9,8 +9,24 @@ const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
 const chatSidebarVisible = computed<boolean>(() => state.chatbotSidebarVisible);
 const chatSidebarWidth = computed<number>(() => state.chatbotSidebarWidth);
 
+const closeChatSidebar = () => {
+  store.commit('layout/setChatbotSidebarVisible', false);
+};
+
+const toggleChatSidebar = () => {
+  store.commit('layout/setChatbotSidebarVisible', !chatSidebarVisible.value);
+};
+
+// Make sure the chatbotSidebarWidth is initialized from localStorage
 onBeforeMount(() => {
   store.dispatch('common/getMe');
+  
+  // Ensure sidebar width is initialized from localStorage
+  const storedWidth = localStorage.getItem('chatbotSidebarWidth');
+  if (storedWidth) {
+    const width = parseInt(storedWidth);
+    store.commit('layout/setChatbotSidebarWidth', width);
+  }
 });
 
 defineOptions({ name: 'ClNormalLayout' });
@@ -30,7 +46,11 @@ defineOptions({ name: 'ClNormalLayout' });
         <router-view />
       </div>
     </div>
-    <cl-chat-sidebar />
+    <cl-chat-sidebar 
+      :visible="chatSidebarVisible"
+      @close="closeChatSidebar"
+      @toggle="toggleChatSidebar"
+    />
   </div>
 </template>
 

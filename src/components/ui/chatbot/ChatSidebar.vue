@@ -1,38 +1,27 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import { Close } from '@element-plus/icons-vue';
 import ChatMessage from './ChatMessage.vue';
 import ChatInput from './ChatInput.vue';
 
 const { t } = useI18n();
-
 const store = useStore();
-const { layout: layoutState } = store.state as RootStoreState;
 
-type ChatMessageType = {
-  role: 'system' | 'user';
-  content: string;
-  timestamp: Date;
-};
+const props = defineProps<{
+  visible: boolean;
+}>();
 
-const visible = computed(() => layoutState.chatbotSidebarVisible);
-const sidebarWidth = computed({
-  get: () => layoutState.chatbotSidebarWidth,
-  set: (value: number) => {
-    store.commit('layout/setChatbotSidebarWidth', value);
-  }
-});
-
-const onClose = () => {
-  store.commit('layout/setChatbotSidebarVisible', false);
-};
+const emit = defineEmits<{
+  (e: 'close'): void;
+  (e: 'toggle'): void;
+}>();
 
 // Resize functionality
 const isResizing = ref(false);
 const startX = ref(0);
-const startWidth = ref(0);
+const startWidth = ref(350); // Default width
+const sidebarWidth = ref(350);
 
 const onResizeStart = (e: MouseEvent) => {
   isResizing.value = true;
@@ -49,6 +38,12 @@ const onResizeMove = (e: MouseEvent) => {
   const deltaX = startX.value - e.clientX;
   const newWidth = Math.min(Math.max(startWidth.value + deltaX, 250), 600); // Limit width between 250px and 600px
   sidebarWidth.value = newWidth;
+
+  // Update the store state to ensure main container adjusts
+  store.commit('layout/setChatbotSidebarWidth', newWidth);
+
+  // Store the width in localStorage for persistence
+  localStorage.setItem('chatbotSidebarWidth', newWidth.toString());
 };
 
 const onResizeEnd = () => {
@@ -57,6 +52,38 @@ const onResizeEnd = () => {
   document.removeEventListener('mouseup', onResizeEnd);
   document.body.style.cursor = '';
   document.body.style.userSelect = '';
+};
+
+// Initialize width from localStorage
+onMounted(() => {
+  const storedWidth = localStorage.getItem('chatbotSidebarWidth');
+  if (storedWidth) {
+    const width = parseInt(storedWidth);
+    sidebarWidth.value = width;
+
+    // Also update the store to ensure consistency
+    store.commit('layout/setChatbotSidebarWidth', width);
+  }
+});
+
+// Watch for store changes to sync with local state
+watch(
+  () => store.state.layout.chatbotSidebarWidth,
+  newWidth => {
+    if (newWidth !== sidebarWidth.value) {
+      sidebarWidth.value = newWidth;
+    }
+  }
+);
+
+const toggleSidebar = () => {
+  emit('toggle');
+};
+
+type ChatMessageType = {
+  role: 'system' | 'user';
+  content: string;
+  timestamp: Date;
 };
 
 // Mock chat history
@@ -111,12 +138,30 @@ defineOptions({ name: 'ClChatSidebar' });
 </script>
 
 <template>
-  <div class="chat-sidebar" :class="{ visible }" :style="{ width: visible ? `${sidebarWidth}px` : '0' }">
+  <div
+    class="chat-sidebar"
+    :class="{ visible: visible }"
+    :style="visible ? { width: `${sidebarWidth}px`, right: 0 } : {}"
+  >
     <div class="resize-handle" @mousedown="onResizeStart"></div>
     <div class="sidebar-header">
-      <h3>{{ t('components.ai.chatbot.title') }}</h3>
-      <el-button type="text" @click="onClose" class="close-btn">
-        <el-icon><Close /></el-icon>
+      <div class="left-content">
+        <el-button
+          v-if="visible"
+          type="primary"
+          @click="toggleSidebar"
+          class="chat-toggle-btn is-active"
+        >
+          <cl-icon :icon="['fa', 'comment-dots']" />
+          <span class="button-text">{{
+            t('components.ai.chatbot.button')
+          }}</span>
+          <cl-icon :icon="['fa', 'angles-right']" class="toggle-indicator" />
+        </el-button>
+        <h3 v-else>{{ t('components.ai.chatbot.title') }}</h3>
+      </div>
+      <el-button type="text" @click="emit('close')" class="close-btn">
+        <cl-icon :icon="['fas', 'times']" />
       </el-button>
     </div>
 
@@ -136,20 +181,21 @@ defineOptions({ name: 'ClChatSidebar' });
 .chat-sidebar {
   position: fixed;
   top: 0;
-  right: 0;
+  right: -350px;
+  width: 350px;
   height: 100vh;
-  width: 0;
   background-color: var(--el-bg-color);
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
-  overflow: hidden;
-  z-index: 10; /* Higher than other components */
+  transition:
+    right 0.3s ease,
+    width 0.3s ease;
+  z-index: 2000;
 }
 
 .chat-sidebar.visible {
-  width: 350px; /* This is now overridden by the inline style */
+  right: 0;
 }
 
 .resize-handle {
@@ -160,7 +206,7 @@ defineOptions({ name: 'ClChatSidebar' });
   height: 100%;
   cursor: ew-resize;
   background-color: transparent;
-  z-index: 11;
+  z-index: 2001;
 }
 
 .resize-handle:hover {
@@ -173,8 +219,11 @@ defineOptions({ name: 'ClChatSidebar' });
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid var(--el-border-color-light);
-  min-height: var(--cl-header-height);
-  box-sizing: border-box;
+}
+
+.left-content {
+  display: flex;
+  align-items: center;
 }
 
 .sidebar-header h3 {
@@ -193,6 +242,42 @@ defineOptions({ name: 'ClChatSidebar' });
   flex-direction: column;
   gap: 12px;
   background-color: var(--el-bg-color-page);
-  height: calc(100vh - var(--cl-header-height) - 56px); /* Adjust for input height */
+}
+
+.chat-toggle-btn {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 8px 16px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.chat-toggle-btn .button-text {
+  margin: 0 8px;
+  display: inline-block;
+}
+
+.chat-toggle-btn .toggle-indicator {
+  margin-left: 4px;
+  transition: transform 0.3s;
+}
+
+.chat-toggle-btn.is-active {
+  background-color: var(--el-color-primary-dark-2);
+}
+
+.chat-toggle-btn.is-active .toggle-indicator {
+  transform: rotate(180deg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 </style>

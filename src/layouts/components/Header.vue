@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -28,19 +28,9 @@ const store = useStore();
 const { layout: layoutState, common: commonState } =
   store.state as RootStoreState;
 
-// whether side is collapsed
-const sidebarCollapsed = computed(() => {
-  return layoutState.sidebarCollapsed;
-});
-
 const onClickGitHubStar = () => {
   window.open(`https://www.crawlab.cn/${locale.value}/#pricing`);
 };
-
-// language name
-const langName = computed<string>(() => {
-  return t('global.lang', [], { locale: locale.value });
-});
 
 // set language
 const setLang = (lang: Lang) => {
@@ -71,6 +61,14 @@ const navMenuItems = computed<MenuItem[]>(() => getNavMenuItems(route.path));
 const sidebarVisible = computed<boolean>(
   () => layoutState.chatbotSidebarVisible
 );
+
+// Ensure the store state is in sync with localStorage
+onBeforeMount(() => {
+  const storedVisible = localStorage.getItem('chatbotSidebarVisible');
+  if (storedVisible === 'true' && !sidebarVisible.value) {
+    store.commit('layout/setChatbotSidebarVisible', true);
+  }
+});
 
 const toggleChatbotSidebar = () => {
   store.commit('layout/setChatbotSidebarVisible', !sidebarVisible.value);
@@ -208,26 +206,18 @@ defineOptions({ name: 'ClHeader' });
           </el-dropdown>
         </div>
         <div class="item action">
-          <el-tooltip :content="t('components.ai.chatbot.tooltip')">
-            <el-button
-              type="primary"
-              @click="toggleChatbotSidebar"
-              class="chat-toggle-btn"
-              :class="{ 'is-active': sidebarVisible }"
-            >
-              <cl-icon :icon="['fa', 'comment-dots']" />
-              <span class="button-text">{{
-                t('components.ai.chatbot.button')
-              }}</span>
-              <cl-icon
-                :icon="[
-                  'fa',
-                  sidebarVisible ? 'angles-right' : 'angles-left',
-                ]"
-                class="toggle-indicator"
-              />
-            </el-button>
-          </el-tooltip>
+          <el-button
+            v-if="!sidebarVisible"
+            type="primary"
+            @click="toggleChatbotSidebar"
+            class="chat-toggle-btn"
+          >
+            <cl-icon :icon="['fa', 'comment-dots']" />
+            <span class="button-text">{{
+              t('components.ai.chatbot.button')
+            }}</span>
+            <cl-icon :icon="['fa', 'angles-left']" class="toggle-indicator" />
+          </el-button>
         </div>
       </div>
     </el-header>
@@ -295,6 +285,8 @@ defineOptions({ name: 'ClHeader' });
           align-items: center;
           border-radius: 20px;
           padding: 8px 16px;
+          animation: fadeIn 0.3s ease-in-out;
+          background-color: var(--el-color-primary-dark-2);
 
           .button-text {
             margin: 0 8px;
@@ -306,14 +298,6 @@ defineOptions({ name: 'ClHeader' });
             transition: transform 0.3s;
           }
 
-          &.is-active {
-            background-color: var(--el-color-primary-dark-2);
-
-            .toggle-indicator {
-              transform: rotate(180deg);
-            }
-          }
-
           .robot-icon-badge {
             display: flex;
             align-items: center;
@@ -321,6 +305,17 @@ defineOptions({ name: 'ClHeader' });
         }
       }
     }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 </style>
