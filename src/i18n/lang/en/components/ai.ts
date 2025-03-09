@@ -4,7 +4,13 @@ const ai: LangAi = {
     tooltip: 'Chat with AI Assistant',
     inputPlaceholder: 'Type your question here...',
     button: 'AI Assistant',
-    config: 'AI Assistant Config',
+    config: {
+      title: 'AI Assistant Config',
+      llmProvider: 'LLM Provider',
+      systemPrompt: 'System Prompt',
+    },
+    history: 'Chat History',
+    add: 'New Chat',
   },
 };
 

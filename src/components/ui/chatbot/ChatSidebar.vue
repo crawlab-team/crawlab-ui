@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import ChatMessage from './ChatMessage.vue';
 import ChatInput from './ChatInput.vue';
+import ChatbotConfigDialog from './ChatbotConfigDialog.vue';
 
 const { t } = useI18n();
 const store = useStore();
@@ -64,6 +65,9 @@ onMounted(() => {
     // Also update the store to ensure consistency
     store.commit('layout/setChatbotSidebarWidth', width);
   }
+  
+  // Load chatbot configuration if available
+  loadChatbotConfig();
 });
 
 // Watch for store changes to sync with local state
@@ -84,6 +88,30 @@ type ChatMessageType = {
   role: 'system' | 'user';
   content: string;
   timestamp: Date;
+};
+
+// Chatbot configuration
+interface ChatbotConfig {
+  llmProvider: string;
+  systemPrompt: string;
+}
+
+const chatbotConfig = ref<ChatbotConfig>({
+  llmProvider: 'openai',
+  systemPrompt: 'You are a helpful AI assistant for Crawlab, a web crawling and data extraction platform.'
+});
+
+// Load configuration from localStorage
+const loadChatbotConfig = () => {
+  const storedConfig = localStorage.getItem('chatbotConfig');
+  if (storedConfig) {
+    try {
+      const parsedConfig = JSON.parse(storedConfig);
+      chatbotConfig.value = { ...chatbotConfig.value, ...parsedConfig };
+    } catch (e) {
+      console.error('Failed to parse stored chatbot config', e);
+    }
+  }
 };
 
 // Mock chat history
@@ -134,8 +162,35 @@ const getMockResponse = (query: string): string => {
   }
 };
 
+// Configuration dialog
+const configDialogVisible = ref(false);
+
 const openConfig = () => {
-  console.log('open config');
+  configDialogVisible.value = true;
+};
+
+// Handle configuration updates
+const handleConfigUpdate = (config: ChatbotConfig) => {
+  chatbotConfig.value = config;
+  configDialogVisible.value = false;
+  
+  // In a real implementation, this would update the AI behavior based on the new config
+  console.log('Updated chatbot configuration:', config);
+  
+  // Optionally, you could show a confirmation message to the user
+  chatHistory.push({
+    role: 'system',
+    content: `AI assistant configuration updated. Using ${config.llmProvider} provider.`,
+    timestamp: new Date(),
+  });
+};
+
+const openAdd = () => {
+  console.log('open add');
+};
+
+const openHistory = () => {
+  console.log('open history');
 };
 
 defineOptions({ name: 'ClChatSidebar' });
@@ -158,7 +213,17 @@ defineOptions({ name: 'ClChatSidebar' });
 
       </div>
       <div class="right-content">
-        <el-tooltip :content="t('components.ai.chatbot.config')">
+        <el-tooltip :content="t('components.ai.chatbot.add')">
+          <el-button type="text" @click="openAdd" class="add-btn">
+            <cl-icon :icon="['fas', 'plus']" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="t('components.ai.chatbot.history')">
+          <el-button type="text" @click="openHistory" class="history-btn">
+            <cl-icon :icon="['fas', 'history']" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="t('components.ai.chatbot.config.title')">
           <el-button type="text" @click="openConfig" class="config-btn">
             <cl-icon :icon="['fas', 'cog']" />
           </el-button>
@@ -171,6 +236,13 @@ defineOptions({ name: 'ClChatSidebar' });
     </div>
 
     <chat-input @send="sendMessage" />
+    
+    <!-- Config Dialog -->
+    <chatbot-config-dialog 
+      :visible="configDialogVisible"
+      @close="configDialogVisible = false"
+      @confirm="handleConfigUpdate"
+    />
   </div>
 </template>
 
@@ -189,6 +261,7 @@ defineOptions({ name: 'ClChatSidebar' });
     right 0.3s ease,
     width 0.3s ease;
   z-index: 2000;
+  border-left: 1px solid var(--el-border-color);
 }
 
 .chat-sidebar.visible {
@@ -216,6 +289,7 @@ defineOptions({ name: 'ClChatSidebar' });
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid var(--el-border-color-light);
+  background-color: var(--el-color-white);
 }
 
 .left-content {
@@ -234,11 +308,10 @@ defineOptions({ name: 'ClChatSidebar' });
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background-color: var(--el-bg-color-page);
+  background-color: var(--el-bg-color);
 }
 
 .chat-toggle-btn {

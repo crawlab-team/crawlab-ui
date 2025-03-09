@@ -36,7 +36,25 @@ defineOptions({ name: 'ClChatInput' });
 
 <style scoped>
 .chat-input {
-  padding: 16px;
-  border-top: 1px solid var(--el-border-color-light);
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--el-border-color);
+  background-color: var(--el-bg-color);
+}
+
+:deep(.el-input-group__append) button {
+  background-color: var(--el-color-primary);
+  color: white;
+  border-color: var(--el-color-primary);
+}
+
+:deep(.el-input__wrapper) {
+  box-shadow: 0 0 0 1px var(--el-border-color) inset;
+  transition: box-shadow 0.2s;
+  border-radius: 4px;
+}
+
+:deep(.el-input__wrapper):hover,
+:deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 1px var(--el-color-primary) inset;
 }
 </style> 

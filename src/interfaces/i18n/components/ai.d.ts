@@ -5,7 +5,13 @@ export declare global {
       tooltip: string;
       inputPlaceholder: string;
       button: string;
-      config: string;
+      config: {
+        title: string;
+        llmProvider: string;
+        systemPrompt: string;
+      };
+      history: string;
+      add: string;
     };
   }
 } 
