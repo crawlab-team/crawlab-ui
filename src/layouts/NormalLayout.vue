@@ -7,6 +7,7 @@ const { layout: state } = store.state as RootStoreState;
 
 const sidebarCollapsed = computed<boolean>(() => state.sidebarCollapsed);
 const chatSidebarVisible = computed<boolean>(() => state.chatbotSidebarVisible);
+const chatSidebarWidth = computed<number>(() => state.chatbotSidebarWidth);
 
 onBeforeMount(() => {
   store.dispatch('common/getMe');
@@ -21,6 +22,7 @@ defineOptions({ name: 'ClNormalLayout' });
     <div 
       :class="[sidebarCollapsed ? 'collapsed' : '', chatSidebarVisible ? 'chat-visible' : '']" 
       class="main-content"
+      :style="chatSidebarVisible ? { right: `${chatSidebarWidth}px` } : {}"
     >
       <cl-header />
       <cl-tabs-view />
@@ -49,10 +51,6 @@ defineOptions({ name: 'ClNormalLayout' });
 
     &.collapsed {
       left: var(--cl-sidebar-width-collapsed);
-    }
-    
-    &.chat-visible {
-      right: 350px; /* Width of the chat sidebar */
     }
 
     .container-body {

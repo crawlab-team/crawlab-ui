@@ -4,6 +4,7 @@ export declare global {
       title: string;
       tooltip: string;
       inputPlaceholder: string;
+      button: string;
     };
   }
 } 

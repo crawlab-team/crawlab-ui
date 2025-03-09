@@ -126,18 +126,6 @@ defineOptions({ name: 'ClHeader' });
             </el-link>
           </el-tooltip>
         </div>
-        <div class="item">
-          <el-tooltip :content="t('components.ai.chatbot.tooltip')">
-            <el-button
-              type="primary"
-              circle
-              @click="toggleChatbotSidebar"
-              class="chat-toggle-btn"
-            >
-              <cl-icon :icon="['fa', 'robot']" />
-            </el-button>
-          </el-tooltip>
-        </div>
         <div class="item action">
           <el-dropdown trigger="click">
             <div class="lang">
@@ -219,6 +207,28 @@ defineOptions({ name: 'ClHeader' });
             </template>
           </el-dropdown>
         </div>
+        <div class="item action">
+          <el-tooltip :content="t('components.ai.chatbot.tooltip')">
+            <el-button
+              type="primary"
+              @click="toggleChatbotSidebar"
+              class="chat-toggle-btn"
+              :class="{ 'is-active': sidebarVisible }"
+            >
+              <cl-icon :icon="['fa', 'comment-dots']" />
+              <span class="button-text">{{
+                t('components.ai.chatbot.button')
+              }}</span>
+              <cl-icon
+                :icon="[
+                  'fa',
+                  sidebarVisible ? 'angles-right' : 'angles-left',
+                ]"
+                class="toggle-indicator"
+              />
+            </el-button>
+          </el-tooltip>
+        </div>
       </div>
     </el-header>
   </div>
@@ -277,6 +287,36 @@ defineOptions({ name: 'ClHeader' });
 
           &:deep(.icon) {
             margin-right: 5px;
+          }
+        }
+
+        .chat-toggle-btn {
+          display: flex;
+          align-items: center;
+          border-radius: 20px;
+          padding: 8px 16px;
+
+          .button-text {
+            margin: 0 8px;
+            display: inline-block;
+          }
+
+          .toggle-indicator {
+            margin-left: 4px;
+            transition: transform 0.3s;
+          }
+
+          &.is-active {
+            background-color: var(--el-color-primary-dark-2);
+
+            .toggle-indicator {
+              transform: rotate(180deg);
+            }
+          }
+
+          .robot-icon-badge {
+            display: flex;
+            align-items: center;
           }
         }
       }

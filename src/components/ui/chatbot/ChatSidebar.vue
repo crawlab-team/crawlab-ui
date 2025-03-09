@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import { Close } from '@element-plus/icons-vue';
@@ -18,9 +18,45 @@ type ChatMessageType = {
 };
 
 const visible = computed(() => layoutState.chatbotSidebarVisible);
+const sidebarWidth = computed({
+  get: () => layoutState.chatbotSidebarWidth,
+  set: (value: number) => {
+    store.commit('layout/setChatbotSidebarWidth', value);
+  }
+});
 
 const onClose = () => {
   store.commit('layout/setChatbotSidebarVisible', false);
+};
+
+// Resize functionality
+const isResizing = ref(false);
+const startX = ref(0);
+const startWidth = ref(0);
+
+const onResizeStart = (e: MouseEvent) => {
+  isResizing.value = true;
+  startX.value = e.clientX;
+  startWidth.value = sidebarWidth.value;
+  document.addEventListener('mousemove', onResizeMove);
+  document.addEventListener('mouseup', onResizeEnd);
+  document.body.style.cursor = 'ew-resize';
+  document.body.style.userSelect = 'none';
+};
+
+const onResizeMove = (e: MouseEvent) => {
+  if (!isResizing.value) return;
+  const deltaX = startX.value - e.clientX;
+  const newWidth = Math.min(Math.max(startWidth.value + deltaX, 250), 600); // Limit width between 250px and 600px
+  sidebarWidth.value = newWidth;
+};
+
+const onResizeEnd = () => {
+  isResizing.value = false;
+  document.removeEventListener('mousemove', onResizeMove);
+  document.removeEventListener('mouseup', onResizeEnd);
+  document.body.style.cursor = '';
+  document.body.style.userSelect = '';
 };
 
 // Mock chat history
@@ -75,7 +111,8 @@ defineOptions({ name: 'ClChatSidebar' });
 </script>
 
 <template>
-  <div class="chat-sidebar" :class="{ visible }">
+  <div class="chat-sidebar" :class="{ visible }" :style="{ width: visible ? `${sidebarWidth}px` : '0' }">
+    <div class="resize-handle" @mousedown="onResizeStart"></div>
     <div class="sidebar-header">
       <h3>{{ t('components.ai.chatbot.title') }}</h3>
       <el-button type="text" @click="onClose" class="close-btn">
@@ -112,7 +149,22 @@ defineOptions({ name: 'ClChatSidebar' });
 }
 
 .chat-sidebar.visible {
-  width: 350px;
+  width: 350px; /* This is now overridden by the inline style */
+}
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  cursor: ew-resize;
+  background-color: transparent;
+  z-index: 11;
+}
+
+.resize-handle:hover {
+  background-color: var(--el-border-color-light);
 }
 
 .sidebar-header {

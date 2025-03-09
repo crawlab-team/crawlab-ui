@@ -49,6 +49,15 @@ const getDefaultChatbotSidebarVisible = (): boolean => {
   return false;
 };
 
+// persistent chatbot sidebar width
+const getDefaultChatbotSidebarWidth = (): number => {
+  const width = localStorage.getItem('chatbotSidebarWidth');
+  if (width) {
+    return parseInt(width);
+  }
+  return 350; // Default width
+};
+
 export default {
   namespaced: true,
   state: {
@@ -75,6 +84,7 @@ export default {
     
     // chatbot
     chatbotSidebarVisible: getDefaultChatbotSidebarVisible(),
+    chatbotSidebarWidth: getDefaultChatbotSidebarWidth(),
   },
   getters: {
     tabs: state => {
@@ -221,6 +231,10 @@ export default {
     setChatbotSidebarVisible(state: LayoutStoreState, value: boolean) {
       state.chatbotSidebarVisible = value;
       saveLocalStorage('chatbotSidebarVisible', value);
+    },
+    setChatbotSidebarWidth(state: LayoutStoreState, value: number) {
+      state.chatbotSidebarWidth = value;
+      saveLocalStorage('chatbotSidebarWidth', value);
     },
   },
   actions: {},
