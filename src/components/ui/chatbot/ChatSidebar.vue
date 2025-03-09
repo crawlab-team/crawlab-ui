@@ -134,43 +134,40 @@ const getMockResponse = (query: string): string => {
   }
 };
 
+const openConfig = () => {
+  console.log('open config');
+};
+
 defineOptions({ name: 'ClChatSidebar' });
 </script>
 
 <template>
-  <div
-    class="chat-sidebar"
-    :class="{ visible: visible }"
-    :style="visible ? { width: `${sidebarWidth}px`, right: 0 } : {}"
-  >
+  <div class="chat-sidebar" :class="{ visible: visible }"
+    :style="visible ? { width: `${sidebarWidth}px`, right: 0 } : {}">
     <div class="resize-handle" @mousedown="onResizeStart"></div>
     <div class="sidebar-header">
       <div class="left-content">
-        <el-button
-          v-if="visible"
-          type="primary"
-          @click="toggleSidebar"
-          class="chat-toggle-btn is-active"
-        >
+        <el-button v-if="visible" type="primary" @click="toggleSidebar" class="chat-toggle-btn is-active">
           <cl-icon :icon="['fa', 'comment-dots']" />
           <span class="button-text">{{
             t('components.ai.chatbot.button')
-          }}</span>
+            }}</span>
           <cl-icon :icon="['fa', 'angles-right']" class="toggle-indicator" />
         </el-button>
         <h3 v-else>{{ t('components.ai.chatbot.title') }}</h3>
+
       </div>
-      <el-button type="text" @click="emit('close')" class="close-btn">
-        <cl-icon :icon="['fas', 'times']" />
-      </el-button>
+      <div class="right-content">
+        <el-tooltip :content="t('components.ai.chatbot.config')">
+          <el-button type="text" @click="openConfig" class="config-btn">
+            <cl-icon :icon="['fas', 'cog']" />
+          </el-button>
+        </el-tooltip>
+      </div>
     </div>
 
     <div class="chat-messages">
-      <chat-message
-        v-for="(message, index) in chatHistory"
-        :key="index"
-        :message="message"
-      />
+      <chat-message v-for="(message, index) in chatHistory" :key="index" :message="message" />
     </div>
 
     <chat-input @send="sendMessage" />
