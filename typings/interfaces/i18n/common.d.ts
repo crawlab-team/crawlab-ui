@@ -77,6 +77,7 @@ export declare global {
       uncheckAll: string;
       sendTestMessage: string;
       retry: string;
+      send: string;
     };
     messageBox: {
       confirm: {

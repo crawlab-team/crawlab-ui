@@ -1,6 +1,7 @@
 import {
   ClSystemDetail,
   ClSystemDetailTabCustomize,
+  ClSystemDetailTabAi,
   ClSystemDetailTabDependency,
   ClSystemDetailTabEnvironment,
 } from '@/views';
@@ -28,6 +29,12 @@ export default [
         title: t('layouts.routes.system.tabs.customize'),
         icon: getIconByGeneralConcept('customize'),
         component: async () => ClSystemDetailTabCustomize,
+      },
+      {
+        path: 'ai',
+        title: t('layouts.routes.system.tabs.ai'),
+        icon: getIconByRouteConcept('ai'),
+        component: async () => ClSystemDetailTabAi,
       },
       {
         path: 'dependency',

@@ -29,6 +29,7 @@ export declare global {
     database: DatabaseStoreState;
     dependency: DependencyStoreState;
     environment: EnvironmentStoreState;
+    ai: AiStoreState;
     system: SystemStoreState;
   }
 
@@ -172,7 +173,8 @@ export declare global {
     | 'notificationAlert'
     | 'database'
     | 'dependency'
-    | 'environment';
+    | 'environment'
+    | 'llmProvider';
   type StoreNamespace = ListStoreNamespace | 'layout' | 'common';
 
   interface StoreContext<T, R = RootStoreState> {

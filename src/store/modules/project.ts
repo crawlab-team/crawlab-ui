@@ -12,11 +12,6 @@ const t = translate;
 
 const state = {
   ...getDefaultStoreState<Project>('project'),
-  newFormFn: () => {
-    return {
-      tags: [],
-    } as Project;
-  },
   tabs: [
     { id: TAB_NAME_OVERVIEW, title: t('common.tabs.overview') },
     { id: TAB_NAME_SPIDERS, title: t('common.tabs.spiders') },
@@ -29,25 +24,10 @@ const getters = {
 
 const mutations = {
   ...getDefaultStoreMutations<Project>(),
-  setAllProjectSelectOptions: (
-    state: ProjectStoreState,
-    options: SelectOption[]
-  ) => {
-    state.allProjectSelectOptions = options;
-  },
-  setAllProjectTags: (state: ProjectStoreState, tags: string[]) => {
-    state.allProjectTags = tags;
-  },
 } as ProjectStoreMutations;
 
 const actions = {
   ...getDefaultStoreActions<Project>('/projects'),
-  getAllProjectSelectOptions: async (state: ProjectStoreState) => {
-    // TODO: implement
-  },
-  getAllProjectTags: async (state: ProjectStoreState) => {
-    // TODO: implement
-  },
 } as ProjectStoreActions;
 
 export default {

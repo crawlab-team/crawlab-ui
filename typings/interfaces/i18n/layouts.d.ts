@@ -1,19 +1,22 @@
 export declare global {
+  interface LDetailLayoutPage<T = any> {
+    title: string;
+    tabs: T;
+  }
+
   interface LListLayoutPage<T = any> {
     list: {
       title: string;
     };
-    detail?: {
-      title: string;
-      tabs: T;
-    };
+    detail?: LDetailLayoutPage<T>;
   }
 
   interface LLayouts {
     components: {
       header: {
+        myAccount: string;
+        pat: string;
         disclaimer: string;
-        mySettings: string;
         logout: string;
       };
       tabsView: {
@@ -107,13 +110,17 @@ export declare global {
         indexes: string;
       }>;
       environments: LListLayoutPage;
-      system: {
-        title: string;
-      };
-      misc: {
+      system: LDetailLayoutPage<{
+        customize: string;
+        dependency: string;
+        environment: string;
+        ai: string;
+      }>;
+      misc: LDetailLayoutPage<{
+        myAccount: string;
+        pat: string;
         disclaimer: string;
-        mySettings: string;
-      };
+      }>;
     };
   }
 }

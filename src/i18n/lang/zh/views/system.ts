@@ -3,6 +3,16 @@ const system: LViewsSystem = {
     customize: '自定义管理',
     dependency: '依赖管理',
     environment: '环境变量',
+    ai: 'AI 助手',
+  },
+  ai: {
+    llmProvider: 'LLM 提供商',
+    apiKey: 'API 密钥',
+    apiBaseUrl: 'API Base URL',
+    model: '模型',
+    temperature: '温度',
+    maxTokens: '最大令牌数',
+    topP: 'Top P',
   },
   customize: {
     customTitle: '自定义网站标题',

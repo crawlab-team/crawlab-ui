@@ -5,19 +5,10 @@ type ProjectStoreModule = BaseModule<
   ProjectStoreActions
 >;
 
-interface ProjectStoreState extends BaseStoreState<Project> {
-  allProjectSelectOptions: SelectOption[];
-  allProjectTags: string[];
-}
+interface ProjectStoreState extends BaseStoreState<Project> {}
 
 type ProjectStoreGetters = BaseStoreGetters<Project>;
 
-interface ProjectStoreMutations extends BaseStoreMutations<Project> {
-  setAllProjectSelectOptions: StoreMutation<ProjectStoreState, SelectOption[]>;
-  setAllProjectTags: StoreMutation<ProjectStoreState, string[]>;
-}
+interface ProjectStoreMutations extends BaseStoreMutations<Project> {}
 
-interface ProjectStoreActions extends BaseStoreActions<Project> {
-  getAllProjectSelectOptions: StoreAction<ProjectStoreState>;
-  getAllProjectTags: StoreAction<ProjectStoreState>;
-}
+interface ProjectStoreActions extends BaseStoreActions<Project> {}

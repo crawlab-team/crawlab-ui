@@ -215,6 +215,7 @@ const layouts: LLayouts = {
         customize: '自定义',
         dependency: '依赖设置',
         environment: '环境变量',
+        ai: 'AI 助手',
       },
     },
     misc: {

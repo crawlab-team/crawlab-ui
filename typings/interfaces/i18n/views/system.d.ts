@@ -2,6 +2,8 @@ interface LViewsSystem {
   menuItems: {
     customize: string;
     dependency: string;
+    environment: string;
+    ai: string;
   };
   customize: {
     customTitle: string;

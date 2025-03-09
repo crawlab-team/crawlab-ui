@@ -66,7 +66,7 @@ onMounted(() => {
     // Also update the store to ensure consistency
     store.commit('layout/setChatbotSidebarWidth', width);
   }
-  
+
   // Load chatbot configuration if available
   loadChatbotConfig();
   // Load available LLM providers
@@ -106,7 +106,8 @@ interface ChatbotConfig {
 const chatbotConfig = ref<ChatbotConfig>({
   llmProvider: 'openai',
   model: 'gpt-3.5-turbo',
-  systemPrompt: 'You are a helpful AI assistant for Crawlab, a web crawling and data extraction platform.',
+  systemPrompt:
+    'You are a helpful AI assistant for Crawlab, a web crawling and data extraction platform.',
   temperature: 0.7,
   maxTokens: 1000,
 });
@@ -152,10 +153,10 @@ const chatHistory = reactive<ChatMessageType[]>([
 // Function to handle sending a message
 const sendMessage = async (message: string) => {
   if (!message.trim()) return;
-  
+
   // Reset any previous errors
   streamError.value = '';
-  
+
   // Add user message to chat history
   chatHistory.push({
     role: 'user',
@@ -167,7 +168,7 @@ const sendMessage = async (message: string) => {
   const responseIndex = chatHistory.length;
   chatHistory.push({
     role: 'system',
-    content: "",
+    content: '',
     timestamp: new Date(),
   });
 
@@ -177,7 +178,7 @@ const sendMessage = async (message: string) => {
   try {
     // Check if streaming is supported
     const supportsStreaming = await checkStreamingSupport();
-    
+
     if (supportsStreaming) {
       // Use streaming API
       await sendStreamingRequest(message, responseIndex);
@@ -187,11 +188,15 @@ const sendMessage = async (message: string) => {
     }
   } catch (error) {
     console.error('Error sending message:', error);
-    streamError.value = error instanceof Error ? error.message : 'An error occurred while sending your message';
-    
+    streamError.value =
+      error instanceof Error
+        ? error.message
+        : 'An error occurred while sending your message';
+
     // Update response with error
     if (chatHistory[responseIndex]) {
-      chatHistory[responseIndex].content = "I'm sorry, I encountered an error while processing your request. Please try again later.";
+      chatHistory[responseIndex].content =
+        "I'm sorry, I encountered an error while processing your request. Please try again later.";
     }
   } finally {
     isLoading.value = false;
@@ -203,7 +208,11 @@ const checkStreamingSupport = async (): Promise<boolean> => {
   try {
     const { llmProvider, apiKey } = chatbotConfig.value;
     const config = apiKey ? { api_key: apiKey } : undefined;
-    return await llmService.checkProviderFeatureSupport(llmProvider, 'streaming', config);
+    return await llmService.checkProviderFeatureSupport(
+      llmProvider,
+      'streaming',
+      config
+    );
   } catch (error) {
     console.error('Error checking streaming support:', error);
     return false; // Default to non-streaming if check fails
@@ -211,10 +220,14 @@ const checkStreamingSupport = async (): Promise<boolean> => {
 };
 
 // Send a request using streaming
-const sendStreamingRequest = async (message: string, responseIndex: number): Promise<void> => {
+const sendStreamingRequest = async (
+  message: string,
+  responseIndex: number
+): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
-    const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } = chatbotConfig.value;
-    
+    const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } =
+      chatbotConfig.value;
+
     const config: Record<string, string> = {};
     if (apiKey) {
       config.api_key = apiKey;
@@ -222,7 +235,7 @@ const sendStreamingRequest = async (message: string, responseIndex: number): Pro
 
     // Create prompt with system message and user query
     const prompt = `${systemPrompt}\n\nUser: ${message}\nAssistant:`;
-    
+
     const chatRequest: llmService.ChatRequest = {
       provider: llmProvider,
       config,
@@ -232,18 +245,19 @@ const sendStreamingRequest = async (message: string, responseIndex: number): Pro
       max_tokens: maxTokens,
     };
 
-    let fullResponse = "";
-    
+    let fullResponse = '';
+
     llmService.sendStreamingChatRequest(
       chatRequest,
-      (chunk) => {
+      chunk => {
         // Update the response text with each chunk
         fullResponse += chunk.text;
         chatHistory[responseIndex].content = fullResponse;
       },
-      (error) => {
+      error => {
         // Handle streaming error
-        streamError.value = error instanceof Error ? error.message : 'Streaming error';
+        streamError.value =
+          error instanceof Error ? error.message : 'Streaming error';
         reject(error);
       },
       () => {
@@ -255,9 +269,13 @@ const sendStreamingRequest = async (message: string, responseIndex: number): Pro
 };
 
 // Send a request using non-streaming API
-const sendRegularRequest = async (message: string, responseIndex: number): Promise<void> => {
-  const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } = chatbotConfig.value;
-  
+const sendRegularRequest = async (
+  message: string,
+  responseIndex: number
+): Promise<void> => {
+  const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } =
+    chatbotConfig.value;
+
   const config: Record<string, string> = {};
   if (apiKey) {
     config.api_key = apiKey;
@@ -265,7 +283,7 @@ const sendRegularRequest = async (message: string, responseIndex: number): Promi
 
   // Create prompt with system message and user query
   const prompt = `${systemPrompt}\n\nUser: ${message}\nAssistant:`;
-  
+
   const chatRequest: llmService.ChatRequest = {
     provider: llmProvider,
     config,
@@ -277,7 +295,7 @@ const sendRegularRequest = async (message: string, responseIndex: number): Promi
 
   // Send the chat request
   const response = await llmService.sendChatRequest(chatRequest);
-  
+
   // Update the chat history with the response
   chatHistory[responseIndex].content = response.text;
 };
@@ -293,10 +311,10 @@ const openConfig = () => {
 const handleConfigUpdate = (config: ChatbotConfig) => {
   chatbotConfig.value = config;
   configDialogVisible.value = false;
-  
+
   // Save configuration to localStorage
   localStorage.setItem('chatbotConfig', JSON.stringify(config));
-  
+
   // Add a message to inform the user of the update
   chatHistory.push({
     role: 'system',
@@ -317,20 +335,27 @@ defineOptions({ name: 'ClChatSidebar' });
 </script>
 
 <template>
-  <div class="chat-sidebar" :class="{ visible: visible }"
-    :style="visible ? { width: `${sidebarWidth}px`, right: 0 } : {}">
+  <div
+    class="chat-sidebar"
+    :class="{ visible: visible }"
+    :style="visible ? { width: `${sidebarWidth}px`, right: 0 } : {}"
+  >
     <div class="resize-handle" @mousedown="onResizeStart"></div>
     <div class="sidebar-header">
       <div class="left-content">
-        <el-button v-if="visible" type="primary" @click="toggleSidebar" class="chat-toggle-btn is-active">
+        <el-button
+          v-if="visible"
+          type="primary"
+          @click="toggleSidebar"
+          class="chat-toggle-btn is-active"
+        >
           <cl-icon :icon="['fa', 'comment-dots']" />
           <span class="button-text">{{
             t('components.ai.chatbot.button')
-            }}</span>
+          }}</span>
           <cl-icon :icon="['fa', 'angles-right']" class="toggle-indicator" />
         </el-button>
         <h3 v-else>{{ t('components.ai.chatbot.title') }}</h3>
-
       </div>
       <div class="right-content">
         <el-tooltip :content="t('components.ai.chatbot.add')">
@@ -352,16 +377,20 @@ defineOptions({ name: 'ClChatSidebar' });
     </div>
 
     <div class="chat-messages">
-      <chat-message v-for="(message, index) in chatHistory" :key="index" :message="message" />
+      <chat-message
+        v-for="(message, index) in chatHistory"
+        :key="index"
+        :message="message"
+      />
       <div v-if="streamError" class="stream-error">
         <el-alert type="error" :title="streamError" show-icon />
       </div>
     </div>
 
     <chat-input @send="sendMessage" :is-loading="isLoading" />
-    
+
     <!-- Config Dialog -->
-    <chatbot-config-dialog 
+    <chatbot-config-dialog
       :visible="configDialogVisible"
       :providers="availableProviders"
       :current-config="chatbotConfig"

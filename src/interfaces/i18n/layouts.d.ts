@@ -114,6 +114,7 @@ export declare global {
         customize: string;
         dependency: string;
         environment: string;
+        ai: string;
       }>;
       misc: LDetailLayoutPage<{
         myAccount: string;

@@ -215,6 +215,7 @@ const layouts: LLayouts = {
         customize: 'Customize',
         dependency: 'Dependency',
         environment: 'Environment',
+        ai: 'AI Assistant',
       },
     },
     misc: {

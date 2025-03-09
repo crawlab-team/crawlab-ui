@@ -15,4 +15,12 @@ export declare global {
   interface SettingDependency {
     auto_install?: boolean;
   }
+
+  interface SettingAi {
+    enable_ai?: boolean;
+    api_key?: string;
+    model?: string;
+    max_tokens?: number;
+    temperature?: number;
+  }
 }

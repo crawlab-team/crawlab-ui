@@ -73,6 +73,7 @@ import SpiderDetailTabSchedules from './spider/detail/tabs/SpiderDetailTabSchedu
 import SpiderDetailTabTasks from './spider/detail/tabs/SpiderDetailTabTasks.vue';
 import SpiderList from './spider/list/SpiderList.vue';
 import SystemDetail from './system/detail/SystemDetail.vue';
+import SystemDetailTabAi from './system/detail/tabs/SystemDetailTabAi.vue';
 import SystemDetailTabCustomize from './system/detail/tabs/SystemDetailTabCustomize.vue';
 import SystemDetailTabDependency from './system/detail/tabs/SystemDetailTabDependency.vue';
 import SystemDetailTabEnvironment from './system/detail/tabs/SystemDetailTabEnvironment.vue';
@@ -192,6 +193,7 @@ export {
   SpiderDetailTabTasks as ClSpiderDetailTabTasks,
   SpiderList as ClSpiderList,
   SystemDetail as ClSystemDetail,
+  SystemDetailTabAi as ClSystemDetailTabAi,
   SystemDetailTabCustomize as ClSystemDetailTabCustomize,
   SystemDetailTabDependency as ClSystemDetailTabDependency,
   SystemDetailTabEnvironment as ClSystemDetailTabEnvironment,

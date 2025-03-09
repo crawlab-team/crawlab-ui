@@ -23,6 +23,7 @@ import Box from './ui/box/Box.vue';
 import Button from './ui/button/Button.vue';
 import ButtonGroup from './ui/button/ButtonGroup.vue';
 import Chart from './ui/chart/Chart.vue';
+import ChatbotConfigDialog from './ui/chatbot/ChatbotConfigDialog.vue';
 import ChatInput from './ui/chatbot/ChatInput.vue';
 import ChatMessage from './ui/chatbot/ChatMessage.vue';
 import ChatSidebar from './ui/chatbot/ChatSidebar.vue';
@@ -260,6 +261,7 @@ export {
   Button as ClButton,
   ButtonGroup as ClButtonGroup,
   Chart as ClChart,
+  ChatbotConfigDialog as ClChatbotConfigDialog,
   ChatInput as ClChatInput,
   ChatMessage as ClChatMessage,
   ChatSidebar as ClChatSidebar,

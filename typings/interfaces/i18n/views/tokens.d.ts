@@ -8,7 +8,10 @@ interface LViewsTokens {
   navActions: LNavActions;
   messageBox: {
     prompt: {
-      create: string;
+      create: {
+        title: string;
+        placeholder: string;
+      };
     };
   };
 }

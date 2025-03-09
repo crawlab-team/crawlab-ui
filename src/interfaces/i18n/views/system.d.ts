@@ -3,6 +3,16 @@ interface LViewsSystem {
     customize: string;
     dependency: string;
     environment: string;
+    ai: string;
+  };
+  ai: {
+    llmProvider: string;
+    apiKey: string;
+    apiBaseUrl: string;
+    model: string;
+    temperature: string;
+    maxTokens: string;
+    topP: string;
   };
   customize: {
     customTitle: string;

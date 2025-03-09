@@ -3,6 +3,16 @@ const system: LViewsSystem = {
     customize: 'Customization',
     dependency: 'Dependencies',
     environment: 'Environment',
+    ai: 'AI Assistant',
+  },
+  ai: {
+    llmProvider: 'LLM Provider',
+    apiKey: 'API Key',
+    apiBaseUrl: 'API Base URL',
+    model: 'Model',
+    temperature: 'Temperature',
+    maxTokens: 'Max Tokens',
+    topP: 'Top P',
   },
   customize: {
     customTitle: 'Custom Site Title',

@@ -17,6 +17,7 @@ export declare global {
     gits: LViewGits;
     database: LViewsDatabase;
     environment: LViewsEnvironments;
+    llm: LViewsLLM;
     system: LViewsSystem;
   }
 }

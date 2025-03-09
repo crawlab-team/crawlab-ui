@@ -21,9 +21,13 @@ export declare global {
     | ListStoreNamespace
     | 'home'
     | 'notification'
+    | 'permission'
+    | 'ai'
     | 'system'
-    | 'disclaimer'
-    | 'mySettings';
+    | 'misc'
+    | 'myAccount'
+    | 'pat'
+    | 'disclaimer';
 }
 
 export * from './auth';
