@@ -21,6 +21,8 @@ const ai: LangAi = {
     add: 'New Chat',
     enterHint: 'Press Enter to send, Shift+Enter for new line',
     poweredBy: 'Powered by Crawlab AI',
+    cancel: 'Cancel',
+    generating: 'Generating...',
   },
 };
 

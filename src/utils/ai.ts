@@ -25,6 +25,7 @@ export const getLLMProviderItems = (): LLMProviderItem[] => {
         'o3-mini',
         'o3',
       ],
+      defaultApiVersions: ['2025-01-31', '2024-12-17', '2024-09-12'],
     },
     {
       key: 'anthropic',
@@ -70,12 +71,21 @@ export const getLLMProviderItems = (): LLMProviderItem[] => {
   ];
 };
 
-export const getLLMProviderOptions = (): SelectOption[] => {
-  return getLLMProviderItems().map(({ key, name, icon }) => {
-    return {
-      value: key,
-      label: name,
-      icon: icon,
-    };
-  });
+export const getLLMProviderItem = (
+  providerKey: LLMProviderKey
+): LLMProviderItem | undefined => {
+  const providerItems = getLLMProviderItems();
+  return providerItems.find(item => item.key === providerKey);
+};
+
+export const getLLMProviderName = (
+  providerKey: LLMProviderKey
+): string | undefined => {
+  return getLLMProviderItem(providerKey)?.name;
+};
+
+export const getLLMProviderIcon = (
+  providerKey: LLMProviderKey
+): Icon | undefined => {
+  return getLLMProviderItem(providerKey)?.icon;
 };

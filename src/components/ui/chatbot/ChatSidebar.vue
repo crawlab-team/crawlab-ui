@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, reactive, computed, onMounted, watch, onBeforeMount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
 import ChatMessage from './ChatMessage.vue';
 import ChatInput from './ChatInput.vue';
 import ChatbotConfigDialog from './ChatbotConfigDialog.vue';
-import { llmService } from '@/services';
+import useRequest from '@/services/request';
+import { getRequestBaseUrl } from '@/utils';
+import { debounce } from 'lodash';
 
 const { t } = useI18n();
+
 const store = useStore();
+
+const { get } = useRequest();
 
 const props = defineProps<{
   visible: boolean;
@@ -66,11 +71,6 @@ onMounted(() => {
     // Also update the store to ensure consistency
     store.commit('layout/setChatbotSidebarWidth', width);
   }
-
-  // Load chatbot configuration if available
-  loadChatbotConfig();
-  // Load available LLM providers
-  loadLLMProviders();
 });
 
 // Watch for store changes to sync with local state
@@ -87,37 +87,74 @@ const toggleSidebar = () => {
   emit('toggle');
 };
 
-type ChatMessageType = {
-  role: 'system' | 'user';
-  content: string;
-  timestamp: Date;
-};
-
-// Chatbot configuration
-interface ChatbotConfig {
-  llmProvider: string;
-  model: string;
-  systemPrompt: string;
-  temperature: number;
-  maxTokens: number;
-  apiKey?: string;
-}
-
 const chatbotConfig = ref<ChatbotConfig>({
-  llmProvider: 'openai',
-  model: 'gpt-3.5-turbo',
   systemPrompt:
     'You are a helpful AI assistant for Crawlab, a web crawling and data extraction platform.',
   temperature: 0.7,
   maxTokens: 1000,
 });
 
-// Available LLM providers
-const availableProviders = ref<llmService.LLMProvider[]>([]);
+// Available LLM providers and models
+const availableProviders = ref<LLMProvider[]>([]);
 
 // Loading state for chat
 const isLoading = ref(false);
 const streamError = ref('');
+
+// Add AbortController for cancelling requests
+const abortController = ref<AbortController | null>(null);
+
+// Add a function to extract error messages from various formats
+const extractErrorMessage = (errorData: string): string => {
+  try {
+    // Try to parse the error data as JSON
+    const parsed = JSON.parse(errorData);
+    
+    // Check if it has an error property
+    if (parsed.error) {
+      return parsed.error;
+    }
+    
+    // If it's an object but doesn't have error property, stringify it nicely
+    if (typeof parsed === 'object' && parsed !== null) {
+      return JSON.stringify(parsed, null, 2);
+    }
+    
+    // If parsing succeeded but didn't give us a useful error, return the original
+    return errorData;
+  } catch (e) {
+    // If it's not valid JSON, just return the original string
+    return errorData;
+  }
+};
+
+// Updated API call functions
+const loadLLMProviders = debounce(async () => {
+  try {
+    const res = await get('/ai/llm/providers', {
+      available: true,
+    });
+
+    availableProviders.value = res.data || [];
+    console.debug(chatbotConfig.value);
+
+    if (chatbotConfig.value.provider && chatbotConfig.value.model) {
+      return;
+    }
+
+    if (availableProviders.value.length > 0) {
+      chatbotConfig.value.provider = availableProviders.value[0].key!;
+      chatbotConfig.value.model = availableProviders.value[0].models![0];
+      localStorage.setItem(
+        'chatbotConfig',
+        JSON.stringify(chatbotConfig.value)
+      );
+    }
+  } catch (error) {
+    console.error('Failed to load LLM providers:', error);
+  }
+});
+onBeforeMount(loadLLMProviders);
 
 // Load configuration from localStorage
 const loadChatbotConfig = () => {
@@ -131,31 +168,18 @@ const loadChatbotConfig = () => {
     }
   }
 };
-
-// Load available LLM providers
-const loadLLMProviders = async () => {
-  try {
-    availableProviders.value = await llmService.getLLMProviders();
-  } catch (error) {
-    console.error('Failed to load LLM providers:', error);
-  }
-};
+onBeforeMount(loadChatbotConfig);
 
 // Initialize chat history with welcome message
-const chatHistory = reactive<ChatMessageType[]>([
-  {
-    role: 'system',
-    content: "Hello! I'm Crawlab AI assistant. How can I help you today?",
-    timestamp: new Date(Date.now() - 60000),
-  },
-]);
+const chatHistory = reactive<ChatMessageType[]>([]);
 
 // Function to handle sending a message
 const sendMessage = async (message: string) => {
   if (!message.trim()) return;
 
-  // Reset any previous errors
+  // Reset any previous errors and abort controller
   streamError.value = '';
+  abortController.value = new AbortController();
 
   // Add user message to chat history
   chatHistory.push({
@@ -170,134 +194,200 @@ const sendMessage = async (message: string) => {
     role: 'system',
     content: '',
     timestamp: new Date(),
+    isStreaming: true, // Add flag to indicate streaming is in progress
   });
 
   // Set loading state
   isLoading.value = true;
 
   try {
-    // Check if streaming is supported
-    const supportsStreaming = await checkStreamingSupport();
-
-    if (supportsStreaming) {
-      // Use streaming API
-      await sendStreamingRequest(message, responseIndex);
-    } else {
-      // Use regular API
-      await sendRegularRequest(message, responseIndex);
-    }
+    // Use streaming API for all requests
+    await sendStreamingRequest(message, responseIndex);
   } catch (error) {
     console.error('Error sending message:', error);
-    streamError.value =
-      error instanceof Error
-        ? error.message
+    
+    // Don't show error message if request was intentionally aborted
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      chatHistory.splice(responseIndex, 1); // Remove the system message placeholder
+    } else {
+      // Extract a cleaner error message
+      const errorMessage = error instanceof Error 
+        ? extractErrorMessage(error.message)
         : 'An error occurred while sending your message';
+        
+      streamError.value = errorMessage;
 
-    // Update response with error
-    if (chatHistory[responseIndex]) {
-      chatHistory[responseIndex].content =
-        "I'm sorry, I encountered an error while processing your request. Please try again later.";
+      // Update response with error
+      if (chatHistory[responseIndex]) {
+        chatHistory[responseIndex].content =
+          `I'm sorry, I encountered an error while processing your request: ${errorMessage}`;
+        chatHistory[responseIndex].isStreaming = false;
+      }
     }
   } finally {
     isLoading.value = false;
+    abortController.value = null;
   }
 };
 
-// Check if the selected provider supports streaming
-const checkStreamingSupport = async (): Promise<boolean> => {
-  try {
-    const { llmProvider, apiKey } = chatbotConfig.value;
-    const config = apiKey ? { api_key: apiKey } : undefined;
-    return await llmService.checkProviderFeatureSupport(
-      llmProvider,
-      'streaming',
-      config
-    );
-  } catch (error) {
-    console.error('Error checking streaming support:', error);
-    return false; // Default to non-streaming if check fails
+// Function to cancel an ongoing message stream
+const cancelMessage = () => {
+  if (abortController.value) {
+    abortController.value.abort();
+    abortController.value = null;
+    isLoading.value = false;
+    
+    // Find and update any streaming messages
+    const streamingMessageIndex = chatHistory.findIndex(msg => msg.isStreaming);
+    if (streamingMessageIndex >= 0) {
+      chatHistory.splice(streamingMessageIndex, 1);
+    }
   }
 };
 
-// Send a request using streaming
+// Send a request using streaming directly to the API
 const sendStreamingRequest = async (
   message: string,
   responseIndex: number
 ): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
-    const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } =
+    const { provider, model, systemPrompt, temperature, maxTokens } =
       chatbotConfig.value;
 
-    const config: Record<string, string> = {};
-    if (apiKey) {
-      config.api_key = apiKey;
+    // Make sure we have a provider and model selected
+    if (!provider || !model) {
+      reject(
+        new Error('Please select a provider and model before sending a message')
+      );
+      return;
     }
 
     // Create prompt with system message and user query
     const prompt = `${systemPrompt}\n\nUser: ${message}\nAssistant:`;
 
-    const chatRequest: llmService.ChatRequest = {
-      provider: llmProvider,
-      config,
+    const chatRequest: ChatRequest = {
+      provider,
       model,
       prompt,
       temperature,
       max_tokens: maxTokens,
     };
 
-    let fullResponse = '';
+    const baseUrl = getRequestBaseUrl();
+    const url = `${baseUrl}/ai/chat/stream`;
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: token } : {}),
+    };
 
-    llmService.sendStreamingChatRequest(
-      chatRequest,
-      chunk => {
-        // Update the response text with each chunk
-        fullResponse += chunk.text;
-        chatHistory[responseIndex].content = fullResponse;
-      },
-      error => {
-        // Handle streaming error
-        streamError.value =
-          error instanceof Error ? error.message : 'Streaming error';
+    // Create a fetch request with streaming and abort controller
+    fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(chatRequest),
+      signal: abortController.value?.signal,
+    })
+      .then(response => {
+        if (!response.ok) {
+          response.text().then(text => {
+            const errorMessage = extractErrorMessage(text);
+            reject(new Error(errorMessage));
+          });
+          return;
+        }
+
+        // Set up event source for Server-Sent Events
+        const reader = response.body!.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let fullResponse = '';
+
+        const processStream = async () => {
+          try {
+            const { value, done } = await reader.read();
+
+            if (done) {
+              // Stream is complete
+              if (chatHistory[responseIndex]) {
+                chatHistory[responseIndex].isStreaming = false;
+              }
+              resolve();
+              return;
+            }
+
+            // Decode the chunk and add to buffer
+            buffer += decoder.decode(value, { stream: true });
+
+            // Process all complete events in the buffer
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+              if (line.startsWith('data:')) {
+                try {
+                  const eventData = line.slice(5).trim();
+                  if (eventData === '') continue;
+
+                  const chunk = JSON.parse(eventData);
+
+                  // Update the response text with each chunk
+                  fullResponse += chunk.text;
+                  if (chatHistory[responseIndex]) {
+                    // Clean response to avoid duplicate newlines
+                    chatHistory[responseIndex].content = fullResponse;
+                  }
+
+                  // If we're done, resolve the promise
+                  if (chunk.is_done) {
+                    if (chatHistory[responseIndex]) {
+                      chatHistory[responseIndex].isStreaming = false;
+                    }
+                    resolve();
+                    return;
+                  }
+                } catch (e) {
+                  console.error('Error parsing event data:', e);
+                }
+              } else if (line.startsWith('event: error')) {
+                // Handle error events
+                const errorLine = lines.find(l => l.startsWith('data:'));
+                if (errorLine) {
+                  const errorData = errorLine.slice(5).trim();
+                  const errorMessage = extractErrorMessage(errorData);
+                  reject(new Error(errorMessage));
+                  return;
+                }
+              }
+            }
+
+            // Continue reading
+            processStream();
+          } catch (error) {
+            reject(error);
+          }
+        };
+
+        processStream();
+      })
+      .catch(error => {
         reject(error);
-      },
-      () => {
-        // Streaming complete
-        resolve();
-      }
-    );
+      });
   });
 };
 
-// Send a request using non-streaming API
-const sendRegularRequest = async (
-  message: string,
-  responseIndex: number
-): Promise<void> => {
-  const { llmProvider, model, systemPrompt, temperature, maxTokens, apiKey } =
-    chatbotConfig.value;
+const selectProviderModel = ({
+  provider,
+  model,
+}: {
+  provider: string;
+  model: string;
+}) => {
+  chatbotConfig.value.provider = provider as LLMProviderKey;
+  chatbotConfig.value.model = model;
 
-  const config: Record<string, string> = {};
-  if (apiKey) {
-    config.api_key = apiKey;
-  }
-
-  // Create prompt with system message and user query
-  const prompt = `${systemPrompt}\n\nUser: ${message}\nAssistant:`;
-
-  const chatRequest: llmService.ChatRequest = {
-    provider: llmProvider,
-    config,
-    model,
-    prompt,
-    temperature,
-    max_tokens: maxTokens,
-  };
-
-  // Send the chat request
-  const response = await llmService.sendChatRequest(chatRequest);
-
-  // Update the chat history with the response
-  chatHistory[responseIndex].content = response.text;
+  // Save configuration to localStorage
+  localStorage.setItem('chatbotConfig', JSON.stringify(chatbotConfig.value));
 };
 
 // Configuration dialog
@@ -307,29 +397,9 @@ const openConfig = () => {
   configDialogVisible.value = true;
 };
 
-// Handle configuration updates
-const handleConfigUpdate = (config: ChatbotConfig) => {
-  chatbotConfig.value = config;
-  configDialogVisible.value = false;
-
-  // Save configuration to localStorage
-  localStorage.setItem('chatbotConfig', JSON.stringify(config));
-
-  // Add a message to inform the user of the update
-  chatHistory.push({
-    role: 'system',
-    content: `AI assistant configuration updated. Using ${config.llmProvider} with model ${config.model}.`,
-    timestamp: new Date(),
-  });
-};
-
-const openAdd = () => {
-  console.log('open add');
-};
-
-const openHistory = () => {
-  console.log('open history');
-};
+// Empty functions for removed buttons
+const openAdd = () => {};
+const openHistory = () => {};
 
 defineOptions({ name: 'ClChatSidebar' });
 </script>
@@ -387,7 +457,15 @@ defineOptions({ name: 'ClChatSidebar' });
       </div>
     </div>
 
-    <chat-input @send="sendMessage" :is-loading="isLoading" />
+    <chat-input
+      :is-loading="isLoading"
+      :providers="availableProviders"
+      :selected-provider="chatbotConfig.provider"
+      :selected-model="chatbotConfig.model"
+      @send="sendMessage"
+      @cancel="cancelMessage"
+      @model-change="selectProviderModel"
+    />
 
     <!-- Config Dialog -->
     <chatbot-config-dialog
@@ -395,7 +473,6 @@ defineOptions({ name: 'ClChatSidebar' });
       :providers="availableProviders"
       :current-config="chatbotConfig"
       @close="configDialogVisible = false"
-      @confirm="handleConfigUpdate"
     />
   </div>
 </template>
@@ -455,8 +532,9 @@ defineOptions({ name: 'ClChatSidebar' });
   margin: 0;
 }
 
-.close-btn {
-  padding: 6px;
+.right-content {
+  display: flex;
+  align-items: center;
 }
 
 .chat-messages {

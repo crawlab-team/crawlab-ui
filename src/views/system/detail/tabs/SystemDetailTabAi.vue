@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onBeforeMount } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Delete } from '@element-plus/icons-vue';
 import { getLLMProviderItems } from '@/utils/ai';
 import useRequest from '@/services/request';
 import { translate } from '@/utils';
@@ -181,7 +180,7 @@ const toggleModel = (model: string) => {
 
 // Initialize models from default models if needed
 const initializeDefaultModels = () => {
-  if (!form.value.models && defaultModels.value.length > 0) {
+  if (!form.value.models?.length && defaultModels.value.length > 0) {
     form.value.models = [...defaultModels.value];
   }
 };
@@ -197,6 +196,7 @@ watch(
 onBeforeMount(async () => {
   await getLLMProviderList();
   await updateLLMProvider();
+  initializeDefaultModels();
 });
 
 defineOptions({ name: 'ClSystemDetailTabAi' });

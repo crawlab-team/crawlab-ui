@@ -1,6 +1,14 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted, watch } from 'vue';
+import { ref, nextTick, onMounted, watch, computed, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { getLLMProviderIcon, getLLMProviderName } from '@/utils/ai';
+
+// Add TypeScript interface for tree node
+interface TreeNode {
+  label: string;
+  value: string;
+  children?: TreeNode[];
+}
 
 const { t } = useI18n();
 const userInput = ref('');
@@ -9,21 +17,52 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null);
 // Accept loading state from parent
 const props = defineProps<{
   isLoading?: boolean;
+  providers?: LLMProvider[];
+  selectedProvider?: LLMProviderKey;
+  selectedModel?: string;
 }>();
 
 const emit = defineEmits<{
-  (e: 'send', message: string): void
+  (e: 'send', message: string): void;
+  (e: 'model-change', value: { provider: string; model: string }): void;
+  (e: 'cancel'): void;
 }>();
+
+const selectedProviderModel = ref<string | null>(
+  `${props.selectedProvider}:${props.selectedModel}`
+);
+
+const onModelChange = (value: string) => {
+  const [provider, model] = value.split(':');
+  emit('model-change', { provider, model });
+};
+
+const providerSelectOptions = computed<SelectOption[]>(() => {
+  return (
+    props.providers?.map(provider => {
+      const providerName = getLLMProviderName(provider.key!);
+      return {
+        label: providerName,
+        value: provider.key,
+        children:
+          provider.models?.map(model => ({
+            label: model,
+            value: `${provider.key}:${model}`,
+          })) || [],
+      };
+    }) || []
+  );
+});
 
 const adjustTextareaHeight = () => {
   if (!textareaRef.value) return;
-  
+
   // Reset height to calculate properly
   textareaRef.value.style.height = '0px';
-  
+
   // Set the height based on scrollHeight
   const scrollHeight = textareaRef.value.scrollHeight;
-  
+
   // If scrollHeight exceeds max-height (200px), set to max and show scrollbar
   // Otherwise set to exact scrollHeight for auto-height behavior
   const maxHeight = 200;
@@ -43,10 +82,10 @@ watch(userInput, () => {
 
 const sendMessage = () => {
   if (!userInput.value.trim() || props.isLoading) return;
-  
+
   emit('send', userInput.value);
   userInput.value = '';
-  
+
   // Reset textarea height after sending
   nextTick(() => {
     adjustTextareaHeight();
@@ -67,13 +106,31 @@ const handleKeydown = (e: KeyboardEvent) => {
 onMounted(() => {
   if (textareaRef.value) {
     textareaRef.value.focus();
-    
+
     // Initial height adjustment
     nextTick(adjustTextareaHeight);
   }
-  
+
   // Add window resize listener to readjust height
   window.addEventListener('resize', adjustTextareaHeight);
+});
+
+// Cleanup event listener on component unmount
+onUnmounted(() => {
+  window.removeEventListener('resize', adjustTextareaHeight);
+});
+
+// For popover visibility control
+const popoverVisible = ref(false);
+
+// Get current model display name
+const currentModelDisplay = computed(() => {
+  if (!selectedProviderModel.value)
+    return t('components.ai.chatbot.selectModel');
+
+  const [_, modelName] = selectedProviderModel.value.split(':');
+
+  return modelName || '';
 });
 
 defineOptions({ name: 'ClChatInput' });
@@ -91,25 +148,84 @@ defineOptions({ name: 'ClChatInput' });
         @keydown="handleKeydown"
         :disabled="props.isLoading"
         rows="1"
-      ></textarea>
-      
-      <div class="input-actions">
-        <el-tooltip :content="t('common.actions.send')" placement="top">
-          <el-button 
-            type="text"
-            class="send-button" 
-            :class="{ 'send-button-active': userInput.trim() }" 
-            @click="sendMessage" 
-            :disabled="!userInput.trim() || props.isLoading"
-          >
-            <cl-icon :icon="props.isLoading ? ['fas', 'spinner'] : ['fas', 'paper-plane']" :spin="props.isLoading" />
-          </el-button>
-        </el-tooltip>
-      </div>
+      />
     </div>
-    
+
     <div class="input-footer">
-      <span class="shortcut-hint">{{ t('components.ai.chatbot.enterHint') }}</span>
+      <div class="left-content">
+        <div class="model-select-wrapper">
+          <el-popover
+            placement="top"
+            :width="280"
+            trigger="click"
+            v-model:visible="popoverVisible"
+            popper-class="model-select-popover"
+          >
+            <template #reference>
+              <div class="model-select-trigger">
+                <cl-icon :icon="getLLMProviderIcon(selectedProvider!)" />
+                <span class="model-name">{{ currentModelDisplay }}</span>
+                <cl-icon
+                  :icon="['fa', 'angle-down']"
+                  class="arrow-icon"
+                  :class="{ 'is-active': popoverVisible }"
+                />
+              </div>
+            </template>
+
+            <!-- Model selection content inside popover -->
+            <div class="model-select-container">
+              <el-tree
+                :data="providerSelectOptions"
+                node-key="value"
+                :expand-on-click-node="false"
+                @node-click="
+                  (data: TreeNode) => {
+                    if (data.children?.length) return;
+                    selectedProviderModel = data.value;
+                    onModelChange(data.value);
+                    popoverVisible = false;
+                  }
+                "
+                default-expand-all
+              >
+                <template #default="{ data }">
+                  <span
+                    class="model-tree-node"
+                    :class="{
+                      'is-selected': selectedProviderModel === data.value,
+                    }"
+                  >
+                    {{ data.label }}
+                  </span>
+                </template>
+              </el-tree>
+            </div>
+          </el-popover>
+        </div>
+      </div>
+      <div class="right-content">
+        <!-- Cancel button when request is loading -->
+        <cl-label-button
+          v-if="props.isLoading"
+          type="info"
+          plain
+          size="small"
+          :icon="['fas', 'stop-circle']"
+          :label="t('common.actions.stop')"
+          @click="emit('cancel')"
+        />
+        <!-- Send button when no request is loading -->
+        <cl-label-button
+          v-else
+          type="text"
+          size="small"
+          :class="{ 'send-button-active': userInput.trim() }"
+          :label="t('common.actions.send') + ' ⏎'"
+          @click="sendMessage"
+          :disabled="!userInput.trim() || props.isLoading"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -126,10 +242,10 @@ defineOptions({ name: 'ClChatInput' });
 .input-container {
   position: relative;
   display: flex;
-  border: 1px solid var(--el-border-color);
-  border-radius: 8px;
-  background-color: var(--el-bg-color-overlay);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--el-bg-color);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   overflow: hidden;
 }
 
@@ -137,7 +253,7 @@ defineOptions({ name: 'ClChatInput' });
   flex: 1;
   min-height: 24px;
   max-height: 200px;
-  padding: 12px;
+  padding: 6px 12px;
   border: none;
   background: transparent;
   font-family: inherit;
@@ -170,19 +286,11 @@ defineOptions({ name: 'ClChatInput' });
   color: var(--el-text-color-placeholder);
 }
 
-.input-actions {
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  display: flex;
-  align-items: center;
-}
-
 .send-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
+  font-size: 12px;
   height: 32px;
   border-radius: 50%;
   border: none;
@@ -208,10 +316,77 @@ defineOptions({ name: 'ClChatInput' });
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   margin-top: 8px;
   padding: 0 4px;
   font-size: 12px;
   color: var(--el-text-color-secondary);
+
+  .left-content {
+    flex: 1;
+  }
+
+  .right-content {
+  }
+}
+
+.model-select-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: var(--el-fill-color-light);
+  border: 1px solid var(--el-border-color-lighter);
+  color: var(--el-text-color-regular);
+  transition: all 0.2s;
+  width: auto;
+
+  &:deep(.arrow-icon) {
+    transition: transform 0.3s ease;
+    font-size: 12px;
+  }
+
+  &:not(:hover):deep(.arrow-icon) {
+    color: var(--el-text-color-placeholder);
+  }
+
+  &:deep(.arrow-icon.is-active) {
+    transform: rotate(180deg);
+  }
+}
+
+.model-select-trigger:hover {
+  border-color: var(--el-color-primary-light-7);
+  color: var(--el-color-primary);
+}
+
+.model-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trigger-icon {
+  font-size: 12px;
+}
+
+.model-select-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.model-tree-node {
+  display: block;
+  padding: 4px 0;
+}
+
+.model-tree-node.is-selected {
+  color: var(--el-color-primary);
+  font-weight: bold;
 }
 
 .shortcut-hint {
@@ -233,4 +408,4 @@ defineOptions({ name: 'ClChatInput' });
     display: none;
   }
 }
-</style> 
+</style>

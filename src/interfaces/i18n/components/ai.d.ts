@@ -22,6 +22,8 @@ export declare global {
       add: string;
       enterHint: string;
       poweredBy: string;
+      cancel: string;
+      generating: string;
     };
   }
 } 
