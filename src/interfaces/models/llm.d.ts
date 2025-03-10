@@ -11,15 +11,19 @@ export declare global {
     | 'openai-compatible';
 
   interface LLMProvider extends BaseModel {
-    key: LLMProviderKey;
+    key?: LLMProviderKey;
     name?: string;
-    description?: string;
-    models?: string[];
+    enabled?: boolean;
     api_key?: string;
     api_base_url?: string;
-    enabled?: boolean;
-    priority?: number;
-    config_schema?: string;
-    default_config?: string;
+    api_version?: string;
+    models?: string[];
+  }
+
+  interface LLMProviderItem {
+    key: LLMProviderKey;
+    name: string;
+    icon?: Icon;
+    defaultModels?: string[];
   }
 }

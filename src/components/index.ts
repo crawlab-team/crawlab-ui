@@ -77,6 +77,7 @@ import DraggableItem from './ui/drag/DraggableItem.vue';
 import DraggableList from './ui/drag/DraggableList.vue';
 import DropdownButton from './ui/lexical/components/DropdownButton.vue';
 import Duration from './ui/time/Duration.vue';
+import EditInput from './ui/input/EditInput.vue';
 import EditorOptionsDropdownList from './ui/editor/EditorOptionsDropdownList.vue';
 import EditTable from './ui/table/EditTable.vue';
 import EditTableActionCell from './ui/table/EditTableActionCell.vue';
@@ -315,6 +316,7 @@ export {
   DraggableList as ClDraggableList,
   DropdownButton as ClDropdownButton,
   Duration as ClDuration,
+  EditInput as ClEditInput,
   EditorOptionsDropdownList as ClEditorOptionsDropdownList,
   EditTable as ClEditTable,
   EditTableActionCell as ClEditTableActionCell,

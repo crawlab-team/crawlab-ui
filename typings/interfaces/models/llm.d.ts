@@ -15,11 +15,19 @@ export declare global {
     name?: string;
     description?: string;
     models?: string[];
-    apiKey?: string;
-    apiBaseUrl?: string;
-    enabled: boolean;
+    api_key?: string;
+    api_base_url?: string;
+    api_version?: string;
+    enabled?: boolean;
     priority?: number;
-    configSchema?: string;
-    defaultConfig?: string;
+    config_schema?: string;
+    default_config?: string;
+  }
+
+  interface LLMProviderItem {
+    key: LLMProviderKey;
+    name: string;
+    icon?: Icon;
+    defaultModels?: string[];
   }
 }

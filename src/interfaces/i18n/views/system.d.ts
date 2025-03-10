@@ -7,12 +7,21 @@ interface LViewsSystem {
   };
   ai: {
     llmProvider: string;
+    enabled: string;
     apiKey: string;
     apiBaseUrl: string;
-    model: string;
+    apiVersion: string;
+    models: string;
+    defaultModels: string;
+    customModels: string;
+    addCustomModel: string;
+    noCustomModels: string;
+    modelAlreadyExists: string;
     temperature: string;
     maxTokens: string;
     topP: string;
+    unset: string;
+    disabled: string;
   };
   customize: {
     customTitle: string;

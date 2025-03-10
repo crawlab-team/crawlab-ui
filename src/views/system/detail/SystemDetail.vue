@@ -88,6 +88,11 @@ defineOptions({ name: 'ClSystemDetail' });
   display: flex;
   flex-direction: column;
 
+  &:deep(.form) {
+    display: block;
+    width: 100%;
+  }
+
   .system-detail-content-wrapper {
     flex: 1;
     display: flex;
