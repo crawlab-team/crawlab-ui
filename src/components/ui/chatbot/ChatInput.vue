@@ -325,9 +325,6 @@ defineOptions({ name: 'ClChatInput' });
   .left-content {
     flex: 1;
   }
-
-  .right-content {
-  }
 }
 
 .model-select-trigger {
