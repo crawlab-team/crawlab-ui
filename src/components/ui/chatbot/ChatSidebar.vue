@@ -109,17 +109,27 @@ const extractErrorMessage = (errorData: string): string => {
   try {
     // Try to parse the error data as JSON
     const parsed = JSON.parse(errorData);
-    
-    // Check if it has an error property
-    if (parsed.error) {
-      return parsed.error;
+
+    // First check for structured error_detail with message
+    if (parsed.error_detail && parsed.error_detail.message) {
+      return parsed.error_detail.message;
     }
     
+    // Fall back to the error property
+    if (parsed.error) {
+      return typeof parsed.error === 'string' ? parsed.error : JSON.stringify(parsed.error);
+    }
+    
+    // Alternative: check for text field (some providers include human-readable messages)
+    if (parsed.text && parsed.text.startsWith('Error:')) {
+      return parsed.text;
+    }
+
     // If it's an object but doesn't have error property, stringify it nicely
-    if (typeof parsed === 'object' && parsed !== null) {
+    if (typeof parsed === 'object') {
       return JSON.stringify(parsed, null, 2);
     }
-    
+
     // If parsing succeeded but didn't give us a useful error, return the original
     return errorData;
   } catch (e) {
@@ -136,7 +146,6 @@ const loadLLMProviders = debounce(async () => {
     });
 
     availableProviders.value = res.data || [];
-    console.debug(chatbotConfig.value);
 
     if (chatbotConfig.value.provider && chatbotConfig.value.model) {
       return;
@@ -155,6 +164,14 @@ const loadLLMProviders = debounce(async () => {
   }
 });
 onBeforeMount(loadLLMProviders);
+watch(
+  () => props.visible,
+  () => {
+    if (props.visible) {
+      loadLLMProviders();
+    }
+  }
+);
 
 // Load configuration from localStorage
 const loadChatbotConfig = () => {
@@ -205,16 +222,17 @@ const sendMessage = async (message: string) => {
     await sendStreamingRequest(message, responseIndex);
   } catch (error) {
     console.error('Error sending message:', error);
-    
+
     // Don't show error message if request was intentionally aborted
     if (error instanceof DOMException && error.name === 'AbortError') {
       chatHistory.splice(responseIndex, 1); // Remove the system message placeholder
     } else {
       // Extract a cleaner error message
-      const errorMessage = error instanceof Error 
-        ? extractErrorMessage(error.message)
-        : 'An error occurred while sending your message';
-        
+      const errorMessage =
+        error instanceof Error
+          ? extractErrorMessage(error.message)
+          : 'An error occurred while sending your message';
+
       streamError.value = errorMessage;
 
       // Update response with error
@@ -236,7 +254,7 @@ const cancelMessage = () => {
     abortController.value.abort();
     abortController.value = null;
     isLoading.value = false;
-    
+
     // Find and update any streaming messages
     const streamingMessageIndex = chatHistory.findIndex(msg => msg.isStreaming);
     if (streamingMessageIndex >= 0) {
@@ -355,6 +373,10 @@ const sendStreamingRequest = async (
                 if (errorLine) {
                   const errorData = errorLine.slice(5).trim();
                   const errorMessage = extractErrorMessage(errorData);
+                  
+                  // Log the full error for debugging
+                  console.error('Stream error:', errorData);
+                  
                   reject(new Error(errorMessage));
                   return;
                 }
@@ -407,7 +429,7 @@ defineOptions({ name: 'ClChatSidebar' });
 <template>
   <div
     class="chat-sidebar"
-    :class="{ visible: visible }"
+    :class="{ visible: visible, resizing: isResizing }"
     :style="visible ? { width: `${sidebarWidth}px`, right: 0 } : {}"
   >
     <div class="resize-handle" @mousedown="onResizeStart"></div>
@@ -493,6 +515,11 @@ defineOptions({ name: 'ClChatSidebar' });
     width 0.3s ease;
   z-index: 2000;
   border-left: 1px solid var(--el-border-color);
+}
+
+/* Disable width transition during resize */
+.chat-sidebar.resizing {
+  transition: right 0.3s ease;
 }
 
 .chat-sidebar.visible {

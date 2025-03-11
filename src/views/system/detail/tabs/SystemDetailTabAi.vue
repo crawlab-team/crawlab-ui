@@ -110,6 +110,10 @@ const showApiBaseUrl = computed(() => {
   );
 });
 
+const showDeploymentName = computed(() => {
+  return ['azure-openai'].includes(activeLLMProviderKey.value);
+});
+
 const showApiVersion = computed(() => {
   return ['azure-openai'].includes(activeLLMProviderKey.value);
 });
@@ -117,6 +121,10 @@ const showApiVersion = computed(() => {
 // Models functionality
 const defaultModels = computed(() => {
   return activeLLMProvider.value?.defaultModels || [];
+});
+
+const defaultApiVersion = computed(() => {
+  return activeLLMProvider.value?.defaultApiVersions?.[0] || '';
 });
 
 const customModelInput = ref('');
@@ -185,10 +193,17 @@ const initializeDefaultModels = () => {
   }
 };
 
+const initializeDefaultApiVersion = () => {
+  if (!form.value.api_version && defaultApiVersion.value) {
+    form.value.api_version = defaultApiVersion.value;
+  }
+};
+
 watch(
   () => activeLLMProvider.value,
   () => {
     initializeDefaultModels();
+    initializeDefaultApiVersion();
   },
   { immediate: true }
 );
@@ -197,6 +212,7 @@ onBeforeMount(async () => {
   await getLLMProviderList();
   await updateLLMProvider();
   initializeDefaultModels();
+  initializeDefaultApiVersion();
 });
 
 defineOptions({ name: 'ClSystemDetailTabAi' });
@@ -257,6 +273,18 @@ defineOptions({ name: 'ClSystemDetailTabAi' });
         required
       >
         <cl-edit-input v-model="form.api_base_url" @change="saveLLMProvider" />
+      </cl-form-item>
+      <cl-form-item
+        v-if="showDeploymentName"
+        :label="$t('views.system.ai.deploymentName')"
+        :span="4"
+        prop="deployment_name"
+        required
+      >
+        <cl-edit-input
+          v-model="form.deployment_name"
+          @change="saveLLMProvider"
+        />
       </cl-form-item>
       <cl-form-item
         v-if="showApiVersion"

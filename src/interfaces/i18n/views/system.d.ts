@@ -10,6 +10,7 @@ interface LViewsSystem {
     enabled: string;
     apiKey: string;
     apiBaseUrl: string;
+    deploymentName: string;
     apiVersion: string;
     models: string;
     defaultModels: string;

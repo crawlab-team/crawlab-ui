@@ -9,6 +9,7 @@ const system: LViewsSystem = {
     llmProvider: 'LLM Provider',
     enabled: 'Enabled',
     apiKey: 'API Key',
+    deploymentName: 'Deployment Name',
     apiBaseUrl: 'API Base URL',
     apiVersion: 'API Version',
     models: 'Models',

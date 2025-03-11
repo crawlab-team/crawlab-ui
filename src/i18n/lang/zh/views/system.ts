@@ -9,6 +9,7 @@ const system: LViewsSystem = {
     llmProvider: 'LLM 提供商',
     enabled: '是否启用',
     apiKey: 'API 密钥',
+    deploymentName: '部署名称',
     apiBaseUrl: 'API 基础 URL',
     apiVersion: 'API 版本',
     models: '模型',

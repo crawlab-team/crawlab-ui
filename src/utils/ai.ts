@@ -25,7 +25,7 @@ export const getLLMProviderItems = (): LLMProviderItem[] => {
         'o3-mini',
         'o3',
       ],
-      defaultApiVersions: ['2025-01-31', '2024-12-17', '2024-09-12'],
+      defaultApiVersions: ['2025-02-01-preview'],
     },
     {
       key: 'anthropic',

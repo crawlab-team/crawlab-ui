@@ -51,7 +51,7 @@ const renderMarkdown = (content: string): string => {
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
       'a', 'b', 'br', 'code', 'div', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'hr', 'i', 'img', 'li', 'ol', 'p', 'pre', 'span', 'strong', 'table', 
+      'hr', 'i', 'img', 'li', 'ol', 'p', 'pre', 'span', 'strong', 'table',
       'tbody', 'td', 'th', 'thead', 'tr', 'ul', 'blockquote'
     ],
     ALLOWED_ATTR: ['href', 'target', 'rel', 'src', 'alt', 'class', 'style'],
@@ -184,19 +184,45 @@ defineOptions({ name: 'ClChatMessage' });
 }
 
 .message-content :deep(h1) {
+  margin: 0;
   padding: 12px 0;
 }
 
 .message-content :deep(h2) {
+  margin: 0;
   padding: 12px 0;
 }
 
 .message-content :deep(h3) {
+  margin: 0;
   padding: 12px 0;
 }
 
 .message-content :deep(h4) {
+  margin: 0;
   padding: 12px 0;
+}
+
+.message-content :deep(h5) {
+  margin: 0;
+  padding: 12px 0;
+}
+
+.message-content :deep(h6) {
+  margin: 0;
+  padding: 12px 0;
+}
+
+.message-content :deep(ul) {
+  margin: 0;
+}
+
+.message-content :deep(ol) {
+  margin: 0;
+}
+
+.message-content :deep(li) {
+  margin: 3px 0;
 }
 
 .message-time {
@@ -236,4 +262,4 @@ defineOptions({ name: 'ClChatMessage' });
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
-</style> 
+</style>
