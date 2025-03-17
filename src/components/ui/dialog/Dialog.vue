@@ -20,6 +20,7 @@ withDefaults(
   {
     top: '15vh',
     confirmType: 'primary',
+    appendToBody: true,
   }
 );
 

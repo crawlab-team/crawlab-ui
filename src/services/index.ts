@@ -14,10 +14,14 @@ export const useService = <T = any>(endpoint: string): Services<T> => {
       return await get<T>(`${endpoint}/${id}`);
     }) as any,
     create: async (form: T) => {
-      return await post<T>(`${endpoint}`, form);
+      return await post<{ data: T }, ResponseWithData<T>>(`${endpoint}`, {
+        data: form,
+      });
     },
     updateById: async (id: string, form: T) => {
-      return await put<T>(`${endpoint}/${id}`, form);
+      return await put<{ data: T }, ResponseWithData<T>>(`${endpoint}/${id}`, {
+        data: form,
+      });
     },
     deleteById: async (id: string) => {
       return await del(`${endpoint}/${id}`);
