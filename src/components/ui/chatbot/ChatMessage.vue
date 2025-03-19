@@ -7,12 +7,7 @@ import DOMPurify from 'dompurify';
 const { t } = useI18n();
 
 const props = defineProps<{
-  message: {
-    role: 'user' | 'system',
-    content: string,
-    timestamp: Date,
-    isStreaming?: boolean
-  }
+  message: ChatMessageType;
 }>();
 
 // Initialize markdown converter with custom options
@@ -121,6 +116,10 @@ defineOptions({ name: 'ClChatMessage' });
   margin: 0 12px;
   padding: 12px;
   position: relative;
+}
+
+.message-container:first-child.user {
+  margin-top: 12px;
 }
 
 .message-container.user {

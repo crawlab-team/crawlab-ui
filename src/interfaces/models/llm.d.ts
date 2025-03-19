@@ -29,12 +29,47 @@ export declare global {
     defaultApiVersions?: string[];
   }
 
-  type ChatMessageType = {
-    role: 'system' | 'user';
+  type ChatMessageRole = 'system' | 'user' | 'assistant';
+  
+  type ChatMessageStatus = 'pending' | 'completed' | 'failed';
+
+  interface ChatMessage extends BaseModel {
+    conversation_id: string;
+    role: ChatMessageRole;
+    content: string;
+    model?: string;
+    tokens?: number;
+    status: ChatMessageStatus;
+    error?: string;
+    metadata?: Record<string, any>;
+    created_ts?: string;
+    updated_ts?: string;
+  }
+
+  type ChatConversationStatus = 'active' | 'archived' | 'deleted';
+
+  interface ChatConversation extends BaseModel {
+    title: string;
+    description?: string;
+    user_id: string;
+    model: string;
+    status: ChatConversationStatus;
+    last_message_at?: string;
+    settings?: Record<string, any>;
+    tags?: string[];
+    messages?: ChatMessage[];
+    created_ts?: string;
+    updated_ts?: string;
+  }
+
+  // Frontend-specific types for UI state
+  interface ChatMessageType {
+    role: ChatMessageRole;
     content: string;
     timestamp: Date;
     isStreaming?: boolean;
-  };
+    conversationId?: string;
+  }
 
   interface ChatRequest {
     provider: string;
@@ -44,6 +79,7 @@ export declare global {
     temperature?: number;
     top_p?: number;
     other_params?: Record<string, any>;
+    conversation_id?: string;
   }
 
   interface ChatbotConfig {

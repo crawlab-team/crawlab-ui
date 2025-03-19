@@ -18,11 +18,13 @@ const ai: LangAi = {
       maxTokens: 'Max Tokens',
     },
     history: 'Chat History',
-    add: 'New Chat',
+    new: 'New Chat',
     enterHint: 'Press Enter to send, Shift+Enter for new line',
     poweredBy: 'Powered by Crawlab AI',
     cancel: 'Cancel',
     generating: 'Generating...',
+    searchHistory: 'Search history',
+    noConversations: 'No chat history found',
   },
 };
 

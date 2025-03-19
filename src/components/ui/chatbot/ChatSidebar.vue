@@ -101,6 +101,133 @@ const availableProviders = ref<LLMProvider[]>([]);
 const isLoading = ref(false);
 const streamError = ref('');
 
+// Add conversation management
+const conversations = ref<ChatConversation[]>([]);
+const selectedConversationId = ref<string>('');
+const currentConversationId = ref<string>('');
+const isLoadingConversations = ref(false);
+const isLoadingMessages = ref(false);
+
+// History dialog state
+const historyDialogVisible = ref(false);
+const historySearchQuery = ref('');
+
+// Computed property for filtered conversations
+const filteredConversations = computed(() => {
+  if (!historySearchQuery.value) return conversations.value;
+  const query = historySearchQuery.value.toLowerCase();
+  return conversations.value.filter(conv => {
+    const title = getConversationTitle(conv).toLowerCase();
+    const model = (conv.model || '').toLowerCase();
+    return title.includes(query) || model.includes(query);
+  });
+});
+
+// Load conversations
+const loadConversations = async () => {
+  isLoadingConversations.value = true;
+  try {
+    const res = await get('/ai/chat/conversations', {
+      page: 1,
+      size: 500,
+      sort: JSON.stringify([{ key: 'last_message_at', direction: 'desc' }]),
+    });
+    conversations.value = res.data || [];
+  } catch (error) {
+    console.error('Failed to load conversations:', error);
+  } finally {
+    isLoadingConversations.value = false;
+  }
+};
+
+// Load messages for a conversation
+const loadConversationMessages = async (conversationId: string) => {
+  if (!conversationId) return;
+
+  isLoadingMessages.value = true;
+  try {
+    const res = await get(`/ai/chat/conversations/${conversationId}/messages`);
+    const messages = (res.data || []).map((msg: ChatMessage) => ({
+      role: msg.role as ChatMessageRole,
+      content: msg.content || '',
+      timestamp: new Date(msg.created_ts || Date.now()),
+      conversationId: msg.conversation_id,
+      isStreaming: false,
+    }));
+
+    // Sort messages by timestamp
+    messages.sort(
+      (a: ChatMessageType, b: ChatMessageType) =>
+        a.timestamp.getTime() - b.timestamp.getTime()
+    );
+
+    // Update chat history
+    chatHistory.splice(0, chatHistory.length, ...messages);
+    currentConversationId.value = conversationId;
+  } catch (error) {
+    console.error('Failed to load conversation messages:', error);
+    // Show error to user
+    streamError.value =
+      error instanceof Error ? error.message : 'Failed to load messages';
+  } finally {
+    isLoadingMessages.value = false;
+  }
+};
+
+// Select conversation
+const selectConversation = async (conversationId: string) => {
+  if (selectedConversationId.value === conversationId) return;
+
+  selectedConversationId.value = conversationId;
+  streamError.value = ''; // Clear any existing errors
+  await loadConversationMessages(conversationId);
+};
+
+// Create new conversation
+const createNewConversation = () => {
+  selectedConversationId.value = '';
+  currentConversationId.value = '';
+  streamError.value = ''; // Clear any existing errors
+  chatHistory.splice(0, chatHistory.length);
+};
+
+// Format conversation title
+const getConversationTitle = (conversation: ChatConversation) => {
+  if (conversation.title) return conversation.title;
+  const firstMessage = conversation.messages?.[0];
+  if (firstMessage?.content) {
+    return (
+      firstMessage.content.slice(0, 30) +
+      (firstMessage.content.length > 30 ? '...' : '')
+    );
+  }
+  return t('components.ai.chatbot.untitled');
+};
+
+// Format conversation date
+const formatConversationDate = (date: string | undefined) => {
+  if (!date) return '';
+  return new Date(date).toLocaleString();
+};
+
+// Watch for conversation updates
+watch(
+  () => currentConversationId.value,
+  async newId => {
+    if (newId && !selectedConversationId.value) {
+      await loadConversations();
+      selectedConversationId.value = newId;
+    }
+  }
+);
+
+// Initialize
+onBeforeMount(async () => {
+  await loadConversations();
+  loadChatbotConfig();
+  await loadLLMProviders();
+});
+
 // Add AbortController for cancelling requests
 const abortController = ref<AbortController | null>(null);
 
@@ -114,12 +241,14 @@ const extractErrorMessage = (errorData: string): string => {
     if (parsed.error_detail && parsed.error_detail.message) {
       return parsed.error_detail.message;
     }
-    
+
     // Fall back to the error property
     if (parsed.error) {
-      return typeof parsed.error === 'string' ? parsed.error : JSON.stringify(parsed.error);
+      return typeof parsed.error === 'string'
+        ? parsed.error
+        : JSON.stringify(parsed.error);
     }
-    
+
     // Alternative: check for text field (some providers include human-readable messages)
     if (parsed.text && parsed.text.startsWith('Error:')) {
       return parsed.text;
@@ -289,6 +418,7 @@ const sendStreamingRequest = async (
       prompt,
       temperature,
       max_tokens: maxTokens,
+      conversation_id: currentConversationId.value, // Add conversation ID if it exists
     };
 
     const baseUrl = getRequestBaseUrl();
@@ -349,11 +479,19 @@ const sendStreamingRequest = async (
 
                   const chunk = JSON.parse(eventData);
 
-                  // Update the response text with each chunk
-                  fullResponse += chunk.text;
+                  // Handle initial message with conversation ID
+                  if (chunk.is_initial) {
+                    currentConversationId.value = chunk.conversation_id;
+                    continue;
+                  }
+
+                  // Update the response content with each chunk
+                  fullResponse += chunk.content;
                   if (chatHistory[responseIndex]) {
                     // Clean response to avoid duplicate newlines
                     chatHistory[responseIndex].content = fullResponse;
+                    chatHistory[responseIndex].conversationId =
+                      chunk.conversation_id;
                   }
 
                   // If we're done, resolve the promise
@@ -373,10 +511,10 @@ const sendStreamingRequest = async (
                 if (errorLine) {
                   const errorData = errorLine.slice(5).trim();
                   const errorMessage = extractErrorMessage(errorData);
-                  
+
                   // Log the full error for debugging
                   console.error('Stream error:', errorData);
-                  
+
                   reject(new Error(errorMessage));
                   return;
                 }
@@ -421,7 +559,11 @@ const openConfig = () => {
 
 // Empty functions for removed buttons
 const openAdd = () => {};
-const openHistory = () => {};
+const openHistory = debounce(() => {
+  historyDialogVisible.value = true;
+  // Refresh conversations list when opening history
+  loadConversations();
+});
 
 defineOptions({ name: 'ClChatSidebar' });
 </script>
@@ -450,16 +592,71 @@ defineOptions({ name: 'ClChatSidebar' });
         <h3 v-else>{{ t('components.ai.chatbot.title') }}</h3>
       </div>
       <div class="right-content">
-        <el-tooltip :content="t('components.ai.chatbot.add')">
-          <el-button type="text" @click="openAdd" class="add-btn">
+        <el-tooltip :content="t('components.ai.chatbot.new')">
+          <el-button type="text" @click="createNewConversation" class="new-btn">
             <cl-icon :icon="['fas', 'plus']" />
           </el-button>
         </el-tooltip>
-        <el-tooltip :content="t('components.ai.chatbot.history')">
-          <el-button type="text" @click="openHistory" class="history-btn">
-            <cl-icon :icon="['fas', 'history']" />
-          </el-button>
-        </el-tooltip>
+        <el-popover
+          v-model:visible="historyDialogVisible"
+          trigger="click"
+          :show-arrow="false"
+          placement="bottom-end"
+          width="320"
+        >
+          <template #reference>
+            <div class="history-btn-wrapper">
+              <el-tooltip :content="t('components.ai.chatbot.history')">
+                <el-button
+                  type="text"
+                  @click.prevent="openHistory"
+                  class="history-btn"
+                >
+                  <cl-icon :icon="['fas', 'history']" />
+                </el-button>
+              </el-tooltip>
+            </div>
+          </template>
+          <div class="chat-history">
+            <div class="chat-history-header">
+              <el-input
+                v-model="historySearchQuery"
+                :placeholder="t('components.ai.chatbot.searchHistory')"
+                clearable
+                size="small"
+              >
+                <template #prefix>
+                  <cl-icon :icon="['fas', 'search']" />
+                </template>
+              </el-input>
+            </div>
+            <div v-if="isLoadingConversations" class="chat-history-loading">
+              <el-skeleton :rows="3" animated />
+            </div>
+            <div v-else-if="filteredConversations.length === 0" class="chat-history-empty">
+              <el-empty :description="t('components.ai.chatbot.noConversations')" :image-size="60" />
+            </div>
+            <div v-else class="chat-history-list">
+              <div
+                v-for="conversation in filteredConversations"
+                :key="conversation._id"
+                class="chat-history-item"
+                :class="{ active: selectedConversationId === conversation._id }"
+                @click="selectConversation(conversation._id!); historyDialogVisible = false;"
+              >
+                <div class="chat-history-item-title">
+                  {{ getConversationTitle(conversation) }}
+                </div>
+                <div class="chat-history-item-meta">
+                  <span class="chat-history-item-date">
+                    {{ formatConversationDate(conversation.last_message_at || conversation.created_ts || '') }}
+                  </span>
+                  <span class="chat-history-item-model">{{ conversation.model }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-popover>
         <el-tooltip :content="t('components.ai.chatbot.config.title')">
           <el-button type="text" @click="openConfig" class="config-btn">
             <cl-icon :icon="['fas', 'cog']" />
@@ -468,26 +665,34 @@ defineOptions({ name: 'ClChatSidebar' });
       </div>
     </div>
 
-    <div class="chat-messages">
-      <chat-message
-        v-for="(message, index) in chatHistory"
-        :key="index"
-        :message="message"
-      />
-      <div v-if="streamError" class="stream-error">
-        <el-alert type="error" :title="streamError" show-icon />
+    <div class="chat-container">
+      <!-- Chat Messages -->
+      <div class="chat-content">
+        <div v-if="isLoadingMessages" class="loading-state">
+          <el-skeleton :rows="5" animated />
+        </div>
+        <div v-else class="chat-messages">
+          <chat-message
+            v-for="(message, index) in chatHistory"
+            :key="index"
+            :message="message"
+          />
+          <div v-if="streamError" class="stream-error">
+            <el-alert type="error" :title="streamError" show-icon />
+          </div>
+        </div>
+
+        <chat-input
+          :is-loading="isLoading"
+          :providers="availableProviders"
+          :selected-provider="chatbotConfig.provider"
+          :selected-model="chatbotConfig.model"
+          @send="sendMessage"
+          @cancel="cancelMessage"
+          @model-change="selectProviderModel"
+        />
       </div>
     </div>
-
-    <chat-input
-      :is-loading="isLoading"
-      :providers="availableProviders"
-      :selected-provider="chatbotConfig.provider"
-      :selected-model="chatbotConfig.model"
-      @send="sendMessage"
-      @cancel="cancelMessage"
-      @model-change="selectProviderModel"
-    />
 
     <!-- Config Dialog -->
     <chatbot-config-dialog
@@ -562,15 +767,38 @@ defineOptions({ name: 'ClChatSidebar' });
 .right-content {
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.chat-container {
+  display: flex;
+  height: calc(100% - 64px); /* Subtract header height */
+  overflow: hidden;
+}
+
+.chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 0;
+  padding: 16px;
+}
+
+.loading-state {
+  padding: 16px;
+}
+
+.empty-state {
   display: flex;
-  flex-direction: column;
-  background-color: var(--el-bg-color);
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--el-text-color-secondary);
 }
 
 .stream-error {
@@ -601,6 +829,68 @@ defineOptions({ name: 'ClChatSidebar' });
 
 .chat-toggle-btn.is-active .toggle-indicator {
   transform: rotate(180deg);
+}
+
+.chat-history {
+  margin: -12px;
+}
+
+.chat-history-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--el-border-color-light);
+}
+
+.chat-history-loading,
+.chat-history-empty {
+  padding: 12px;
+}
+
+.chat-history-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.chat-history-item {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  transition: background-color 0.2s ease;
+}
+
+.chat-history-item:hover {
+  background-color: var(--el-fill-color-light);
+}
+
+.chat-history-item.active {
+  background-color: var(--el-color-primary-light-9);
+}
+
+.chat-history-item-title {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--el-text-color-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-history-item-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+}
+
+.chat-history-item-date {
+  flex-shrink: 0;
+}
+
+.chat-history-item-model {
+  margin-left: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @keyframes fadeIn {
