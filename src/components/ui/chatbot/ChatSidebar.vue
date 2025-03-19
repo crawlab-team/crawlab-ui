@@ -557,8 +557,6 @@ const openConfig = () => {
   configDialogVisible.value = true;
 };
 
-// Empty functions for removed buttons
-const openAdd = () => {};
 const openHistory = debounce(() => {
   historyDialogVisible.value = true;
   // Refresh conversations list when opening history
@@ -633,8 +631,14 @@ defineOptions({ name: 'ClChatSidebar' });
             <div v-if="isLoadingConversations" class="chat-history-loading">
               <el-skeleton :rows="3" animated />
             </div>
-            <div v-else-if="filteredConversations.length === 0" class="chat-history-empty">
-              <el-empty :description="t('components.ai.chatbot.noConversations')" :image-size="60" />
+            <div
+              v-else-if="filteredConversations.length === 0"
+              class="chat-history-empty"
+            >
+              <el-empty
+                :description="t('components.ai.chatbot.noConversations')"
+                :image-size="60"
+              />
             </div>
             <div v-else class="chat-history-list">
               <div
@@ -642,16 +646,27 @@ defineOptions({ name: 'ClChatSidebar' });
                 :key="conversation._id"
                 class="chat-history-item"
                 :class="{ active: selectedConversationId === conversation._id }"
-                @click="selectConversation(conversation._id!); historyDialogVisible = false;"
+                @click="
+                  selectConversation(conversation._id!);
+                  historyDialogVisible = false;
+                "
               >
                 <div class="chat-history-item-title">
                   {{ getConversationTitle(conversation) }}
                 </div>
                 <div class="chat-history-item-meta">
                   <span class="chat-history-item-date">
-                    {{ formatConversationDate(conversation.last_message_at || conversation.created_ts || '') }}
+                    {{
+                      formatConversationDate(
+                        conversation.last_message_at ||
+                          conversation.created_ts ||
+                          ''
+                      )
+                    }}
                   </span>
-                  <span class="chat-history-item-model">{{ conversation.model }}</span>
+                  <span class="chat-history-item-model">{{
+                    conversation.model
+                  }}</span>
                 </div>
               </div>
             </div>
