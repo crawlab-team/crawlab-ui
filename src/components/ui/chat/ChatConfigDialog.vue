@@ -34,7 +34,7 @@ const onClose = () => {
   emit('close');
 };
 
-defineOptions({ name: 'ClChatbotConfigDialog' });
+defineOptions({ name: 'ClChatConfigDialog' });
 </script>
 
 <template>

@@ -28,8 +28,13 @@ const emit = defineEmits<{
   (e: 'cancel'): void;
 }>();
 
-const selectedProviderModel = ref<string | null>(
-  `${props.selectedProvider}:${props.selectedModel}`
+const selectedProviderModel = ref<string>();
+const updateSelectedProviderModel = () => {
+  selectedProviderModel.value = `${props.selectedProvider}:${props.selectedModel}`;
+};
+watch(
+  () => `${props.selectedProvider}:${props.selectedModel}`,
+  updateSelectedProviderModel
 );
 
 const onModelChange = (value: string) => {
@@ -240,7 +245,7 @@ defineOptions({ name: 'ClChatInput' });
 
 <style scoped>
 .chat-input {
-  padding: 12px 16px 16px;
+  padding: 6px 12px 6px;
   border-top: 1px solid var(--el-border-color);
   background-color: var(--el-bg-color);
   display: flex;

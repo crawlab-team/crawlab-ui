@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, watch } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import ClChatSidebar from '@/components/ui/chat/ChatSidebar.vue';
 
 const store = useStore();
 const { layout: state } = store.state as RootStoreState;
@@ -17,10 +18,16 @@ const toggleChatSidebar = () => {
   store.commit('layout/setChatbotSidebarVisible', !chatSidebarVisible.value);
 };
 
+const resizeChatSidebar = (width: number) => {
+  store.commit('layout/setChatbotSidebarWidth', width);
+};
+
+const chatSidebarResizing = ref(false);
+
 // Make sure the chatbotSidebarWidth is initialized from localStorage
 onBeforeMount(() => {
   store.dispatch('common/getMe');
-  
+
   // Ensure sidebar width is initialized from localStorage
   const storedWidth = localStorage.getItem('chatbotSidebarWidth');
   if (storedWidth) {
@@ -35,8 +42,12 @@ defineOptions({ name: 'ClNormalLayout' });
 <template>
   <div class="normal-layout">
     <cl-sidebar />
-    <div 
-      :class="[sidebarCollapsed ? 'collapsed' : '', chatSidebarVisible ? 'chat-visible' : '']" 
+    <div
+      :class="[
+        sidebarCollapsed ? 'collapsed' : '',
+        chatSidebarVisible ? 'chat-visible' : '',
+        chatSidebarResizing ? 'chat-resizing' : '',
+      ]"
       class="main-content"
       :style="chatSidebarVisible ? { right: `${chatSidebarWidth}px` } : {}"
     >
@@ -46,10 +57,14 @@ defineOptions({ name: 'ClNormalLayout' });
         <router-view />
       </div>
     </div>
-    <cl-chat-sidebar 
+    <cl-chat-sidebar
       :visible="chatSidebarVisible"
+      :default-width="chatSidebarWidth"
       @close="closeChatSidebar"
       @toggle="toggleChatSidebar"
+      @resize="resizeChatSidebar"
+      @resize-start="chatSidebarResizing = true"
+      @resize-end="chatSidebarResizing = false"
     />
   </div>
 </template>
@@ -57,7 +72,7 @@ defineOptions({ name: 'ClNormalLayout' });
 <style scoped>
 .normal-layout {
   height: 100vh;
-  
+
   .main-content {
     position: fixed;
     top: 0;
@@ -66,8 +81,13 @@ defineOptions({ name: 'ClNormalLayout' });
     height: 100vh;
     display: flex;
     flex-direction: column;
-    transition: left var(--cl-sidebar-collapse-transition-duration), right 0.3s ease;
     z-index: 2;
+
+    &:not(.chat-resizing) {
+      transition:
+        left var(--cl-sidebar-collapse-transition-duration),
+        right 0.3s ease;
+    }
 
     &.collapsed {
       left: var(--cl-sidebar-width-collapsed);

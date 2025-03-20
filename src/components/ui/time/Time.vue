@@ -5,6 +5,7 @@ import en from 'javascript-time-ago/locale/en';
 import zh from 'javascript-time-ago/locale/zh';
 import dayjs from 'dayjs';
 import { formatTimeAgo } from '@/utils';
+import type { FormatStyle } from 'javascript-time-ago/style';
 
 TimeAgo.addLocale(en as LocaleData);
 TimeAgo.addLocale(zh as LocaleData);
@@ -14,6 +15,7 @@ const props = withDefaults(
     time: Date | string;
     ago: boolean;
     format: string;
+    agoFormatStyle?: string | FormatStyle;
   }>(),
   {
     time: () => new Date(),
@@ -23,11 +25,11 @@ const props = withDefaults(
 );
 
 const label = computed<string | undefined>(() => {
-  const { time, ago, format } = props;
+  const { time, format, ago, agoFormatStyle } = props;
   if (!time) return;
 
   if (ago) {
-    return formatTimeAgo(time);
+    return formatTimeAgo(time, agoFormatStyle);
   } else {
     return dayjs(time).format(format);
   }
@@ -40,5 +42,3 @@ defineOptions({ name: 'ClTime' });
     {{ label }}
   </div>
 </template>
-
-

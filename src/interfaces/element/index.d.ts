@@ -1,5 +1,12 @@
 export declare global {
-  type BasicType = 'primary' | 'success' | 'warning' | 'danger' | 'info';
+  type BasicType =
+    | 'primary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'text'
+    | 'default';
   type BasicEffect = 'dark' | 'light' | 'plain';
   type BasicSize = 'small' | 'default' | 'large';
 

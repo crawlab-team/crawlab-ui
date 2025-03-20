@@ -3,6 +3,7 @@ import TimeAgo, { LocaleData } from 'javascript-time-ago';
 import { getI18n } from '@/i18n';
 import en from 'javascript-time-ago/locale/en';
 import zh from 'javascript-time-ago/locale/zh';
+import { FormatStyle } from 'javascript-time-ago/style';
 
 TimeAgo.addLocale(en as LocaleData);
 TimeAgo.addLocale(zh as LocaleData);
@@ -15,10 +16,14 @@ export const getTimeUnitParts = (timeUnit: string) => {
   return { num, unit };
 };
 
-export const formatTimeAgo = (value: string) => {
+export const formatTimeAgo = (
+  value: string | Date,
+  formatStyle?: string | FormatStyle
+) => {
   const time = dayjs(value);
   const timeAgo = new TimeAgo(
     getI18n().global.locale.value === 'zh' ? 'zh' : 'en'
   );
-  return timeAgo.format(time.toDate()) as string;
+  // @ts-ignore
+  return timeAgo.format(time.toDate(), formatStyle);
 };

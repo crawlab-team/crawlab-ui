@@ -26,6 +26,7 @@ export declare global {
       generating: string;
       searchHistory: string;
       noConversations: string;
+      newChat: string;
     };
   }
-} 
+}

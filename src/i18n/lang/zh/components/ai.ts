@@ -25,7 +25,8 @@ const ai: LangAi = {
     generating: '生成中...',
     searchHistory: '搜索历史',
     noConversations: '没有聊天记录',
+    newChat: '新聊天',
   },
 };
 
-export default ai; 
+export default ai;

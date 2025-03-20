@@ -23,10 +23,13 @@ import Box from './ui/box/Box.vue';
 import Button from './ui/button/Button.vue';
 import ButtonGroup from './ui/button/ButtonGroup.vue';
 import Chart from './ui/chart/Chart.vue';
-import ChatbotConfigDialog from './ui/chatbot/ChatbotConfigDialog.vue';
-import ChatInput from './ui/chatbot/ChatInput.vue';
-import ChatMessage from './ui/chatbot/ChatMessage.vue';
-import ChatSidebar from './ui/chatbot/ChatSidebar.vue';
+import ChatConfigDialog from './ui/chat/ChatConfigDialog.vue';
+import ChatConsole from './ui/chat/ChatConsole.vue';
+import ChatHistory from './ui/chat/ChatHistory.vue';
+import ChatInput from './ui/chat/ChatInput.vue';
+import ChatMessage from './ui/chat/ChatMessage.vue';
+import ChatMessageList from './ui/chat/ChatMessageList.vue';
+import ChatSidebar from './ui/chat/ChatSidebar.vue';
 import CheckboxTree from './ui/checkbox/CheckboxTree.vue';
 import CheckboxTreeGroup from './ui/checkbox/CheckboxTreeGroup.vue';
 import CheckTag from './ui/tag/CheckTag.vue';
@@ -262,9 +265,12 @@ export {
   Button as ClButton,
   ButtonGroup as ClButtonGroup,
   Chart as ClChart,
-  ChatbotConfigDialog as ClChatbotConfigDialog,
+  ChatConfigDialog as ClChatConfigDialog,
+  ChatConsole as ClChatConsole,
+  ChatHistory as ClChatHistory,
   ChatInput as ClChatInput,
   ChatMessage as ClChatMessage,
+  ChatMessageList as ClChatMessageList,
   ChatSidebar as ClChatSidebar,
   CheckboxTree as ClCheckboxTree,
   CheckboxTreeGroup as ClCheckboxTreeGroup,
