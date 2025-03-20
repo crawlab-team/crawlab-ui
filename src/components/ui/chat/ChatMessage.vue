@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { Converter } from 'showdown';
+import markdownit from 'markdown-it';
+import hljs from 'highlight.js';
 import { computed, ref, watch } from 'vue';
 import DOMPurify from 'dompurify';
+import 'highlight.js/styles/github.css';
 
 const { t } = useI18n();
 
@@ -10,16 +12,30 @@ const props = defineProps<{
   message: ChatMessageType;
 }>();
 
-// Initialize markdown converter with custom options
-const converter = new Converter({
-  tables: true,
-  simplifiedAutoLink: true,
-  strikethrough: true,
-  tasklists: true,
-  ghCodeBlocks: true,
-  smoothLivePreview: true,
-  simpleLineBreaks: false,  // Don't convert single line breaks to <br>
-  openLinksInNewWindow: true
+const md = markdownit({
+  html: true,
+  linkify: true,
+  typographer: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        // Add data-language attribute to pre tag
+        return (
+          '<pre data-language="' +
+          lang +
+          '"><code class="hljs language-' +
+          lang +
+          '">' +
+          hljs.highlight(str, { language: lang }).value +
+          '</code></pre>'
+        );
+      } catch (__) {}
+    }
+    // For unknown languages, still add the language if provided
+    return lang
+      ? '<pre data-language="' + lang + '"><code>' + str + '</code></pre>'
+      : '';
+  },
 });
 
 // Format timestamp
@@ -29,11 +45,14 @@ const formatTime = (date: Date): string => {
 
 // Normalize content to prevent duplicate empty lines before rendering
 const normalizeContent = (content: string): string => {
+  return content;
   // Replace sequences of more than 2 newlines with just 2
-  return content
-    .replace(/\n{3,}/g, '\n\n')
-    // Ensure code blocks are properly spaced
-    .replace(/```([a-z]*)\n{0,1}/g, '\n```$1\n');
+  return (
+    content
+      .replace(/\n{3,}/g, '\n\n')
+      // Ensure code blocks are properly spaced
+      .replace(/```([a-z]*)\n{0,1}/g, '\n```$1\n')
+  );
 };
 
 // Safe markdown rendering with sanitization
@@ -41,21 +60,49 @@ const renderMarkdown = (content: string): string => {
   // Normalize content first
   const normalizedContent = normalizeContent(content);
   // Convert to HTML
-  const html = converter.makeHtml(normalizedContent);
+  const html = md.render(normalizedContent);
+  // const html = converter.makeHtml(normalizedContent);
+  return html;
   // Sanitize HTML
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
-      'a', 'b', 'br', 'code', 'div', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'hr', 'i', 'img', 'li', 'ol', 'p', 'pre', 'span', 'strong', 'table',
-      'tbody', 'td', 'th', 'thead', 'tr', 'ul', 'blockquote'
+      'a',
+      'b',
+      'br',
+      'code',
+      'div',
+      'em',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'hr',
+      'i',
+      'img',
+      'li',
+      'ol',
+      'p',
+      'pre',
+      'span',
+      'strong',
+      'table',
+      'tbody',
+      'td',
+      'th',
+      'thead',
+      'tr',
+      'ul',
+      'blockquote',
     ],
     ALLOWED_ATTR: ['href', 'target', 'rel', 'src', 'alt', 'class', 'style'],
-    FORBID_TAGS: ['style', 'script']
+    FORBID_TAGS: ['style', 'script'],
   });
 };
 
 // Configure DOMPurify to add target="_blank" to links
-DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+DOMPurify.addHook('afterSanitizeAttributes', node => {
   if (node.tagName === 'A') {
     node.setAttribute('target', '_blank');
     node.setAttribute('rel', 'noopener noreferrer');
@@ -71,16 +118,24 @@ const messageContent = computed(() => {
 const streamContent = ref('');
 const typing = ref(true);
 
-watch(() => props.message.content, (newContent) => {
-  if (props.message.isStreaming) {
-    streamContent.value = renderMarkdown(newContent);
-  }
-}, { immediate: true });
+watch(
+  () => props.message.content,
+  newContent => {
+    if (props.message.isStreaming) {
+      streamContent.value = renderMarkdown(newContent);
+    }
+  },
+  { immediate: true }
+);
 
 // Stop the typing animation when streaming ends
-watch(() => props.message.isStreaming, (isStreaming) => {
-  typing.value = isStreaming === true;
-}, { immediate: true });
+watch(
+  () => props.message.isStreaming,
+  isStreaming => {
+    typing.value = isStreaming === true;
+  },
+  { immediate: true }
+);
 
 defineOptions({ name: 'ClChatMessage' });
 </script>
@@ -100,7 +155,9 @@ defineOptions({ name: 'ClChatMessage' });
     <div class="message-time">
       <!-- Show 'Generating...' for streaming messages -->
       <template v-if="message.isStreaming">
-        <span class="typing-text">{{ t('components.ai.chatbot.generating') }}</span>
+        <span class="typing-text">{{
+          t('components.ai.chatbot.generating')
+        }}</span>
       </template>
       <template v-else>
         {{ formatTime(message.timestamp) }}
@@ -134,18 +191,91 @@ defineOptions({ name: 'ClChatMessage' });
 .message-content {
   word-break: break-word;
   line-height: 1.5;
+  max-height: 100%;
+  overflow-y: auto;
+
+  /* Firefox scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: var(--el-border-color-darker) var(--el-fill-color-lighter);
+
+  /* Webkit scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--el-border-color-darker);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--el-fill-color-lighter);
+    border-radius: 3px;
+  }
 }
 
 /* Add styles for markdown elements */
 .message-content :deep(pre) {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 6px 0;
-  border-radius: 4px;
+  background-color: var(--el-fill-color-light);
+  padding: 24px 12px 12px 12px;
+  border-radius: 6px;
   overflow-x: auto;
+  margin: 12px 0;
+  position: relative;
 }
 
-.message-content :deep(code) {
-  font-family: monospace;
+.message-content :deep(pre code) {
+  /* Firefox scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: var(--el-border-color-darker) var(--el-fill-color-lighter);
+
+  /* Webkit scrollbar styles */
+  &::-webkit-scrollbar {
+    height: 7px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--el-border-color-darker);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--el-fill-color-lighter);
+    border-radius: 3px;
+  }
+}
+
+/* Add language display */
+.message-content :deep(pre[data-language]::before) {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  background: var(--el-fill-color);
+  padding: 2px 8px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  text-transform: lowercase;
+}
+
+.message-content :deep(pre code) {
+  font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  display: block;
+  padding: 0;
+  background: none;
+}
+
+.message-content :deep(code:not(pre code)) {
+  background-color: var(--el-fill-color-light);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 
 .message-content :deep(a) {
@@ -214,10 +344,12 @@ defineOptions({ name: 'ClChatMessage' });
 
 .message-content :deep(ul) {
   margin: 0;
+  padding-inline-start: 24px;
 }
 
 .message-content :deep(ol) {
   margin: 0;
+  padding-inline-start: 24px;
 }
 
 .message-content :deep(li) {
@@ -258,7 +390,12 @@ defineOptions({ name: 'ClChatMessage' });
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 </style>

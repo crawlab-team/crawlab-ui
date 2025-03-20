@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Converter } from 'showdown';
+import markdownit from 'markdown-it';
 import { translate } from '@/utils';
 
 // i18n
 const t = translate;
 
 // markdown-to-text converter
-const converter = new Converter();
+const md = new markdownit();
 
 // title
 const title = computed<string>(() => t('views.misc.disclaimer.title'));
 
 // content
 const content = computed<string>(() => {
-  return converter.makeHtml(t('views.misc.disclaimer.content'));
+  return md.render(t('views.misc.disclaimer.content'));
 });
 defineOptions({ name: 'ClDisclaimer' });
 </script>

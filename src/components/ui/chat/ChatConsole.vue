@@ -81,6 +81,7 @@ const loadConversationMessages = async (conversationId: string) => {
       (a: ChatMessageType, b: ChatMessageType) =>
         a.timestamp.getTime() - b.timestamp.getTime()
     );
+    console.debug(messages[messages.length - 1].content);
 
     chatHistory.splice(0, chatHistory.length, ...messages);
     currentConversationId.value = conversationId;
@@ -125,7 +126,7 @@ watch(
     } else {
       localStorage.removeItem('currentConversationId');
     }
-    
+
     if (newId && !selectedConversationId.value) {
       await loadConversations();
       selectedConversationId.value = newId;
@@ -138,7 +139,7 @@ onBeforeMount(async () => {
   await loadConversations();
   loadChatbotConfig();
   await loadLLMProviders();
-  
+
   // Load saved conversation ID from localStorage
   const savedConversationId = localStorage.getItem('currentConversationId');
   if (savedConversationId) {
