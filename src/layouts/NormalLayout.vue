@@ -14,10 +14,6 @@ const closeChatSidebar = () => {
   store.commit('layout/setChatbotSidebarVisible', false);
 };
 
-const toggleChatSidebar = () => {
-  store.commit('layout/setChatbotSidebarVisible', !chatSidebarVisible.value);
-};
-
 const resizeChatSidebar = (width: number) => {
   store.commit('layout/setChatbotSidebarWidth', width);
 };
@@ -45,7 +41,6 @@ defineOptions({ name: 'ClNormalLayout' });
     <div
       :class="[
         sidebarCollapsed ? 'collapsed' : '',
-        chatSidebarVisible ? 'chat-visible' : '',
         chatSidebarResizing ? 'chat-resizing' : '',
       ]"
       class="main-content"
@@ -61,7 +56,6 @@ defineOptions({ name: 'ClNormalLayout' });
       :visible="chatSidebarVisible"
       :default-width="chatSidebarWidth"
       @close="closeChatSidebar"
-      @toggle="toggleChatSidebar"
       @resize="resizeChatSidebar"
       @resize-start="chatSidebarResizing = true"
       @resize-end="chatSidebarResizing = false"

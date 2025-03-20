@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive, onBeforeMount, watch } from 'vue';
+import { ref, reactive, onBeforeMount, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ChatInput from './ChatInput.vue';
-import ChatMessageList from './ChatMessageList.vue';
 import useRequest from '@/services/request';
 import { getRequestBaseUrl } from '@/utils';
 import { debounce } from 'lodash';
@@ -10,12 +9,21 @@ import { debounce } from 'lodash';
 const { t } = useI18n();
 const { get } = useRequest();
 
+// Add current conversation ref
+const currentConversation = ref<ChatConversation | null>(null);
+
+// Add computed property for current conversation title
+const currentConversationTitle = computed(() => {
+  if (!currentConversationId.value) return t('components.ai.chatbot.newChat');
+  return currentConversation.value?.title || t('components.ai.chatbot.newChat');
+});
+
 defineProps<{
   visible: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: 'toggle'): void;
+  (e: 'close'): void;
 }>();
 
 const chatbotConfig = ref<ChatbotConfig>({
@@ -43,7 +51,9 @@ const isLoadingMessages = ref(false);
 const historyDialogVisible = ref(false);
 
 // Add ref for message list component
-const messageListRef = ref<{ scrollToBottom: () => Promise<void> } | null>(null);
+const messageListRef = ref<{ scrollToBottom: () => Promise<void> } | null>(
+  null
+);
 
 // Load conversations
 const loadConversations = async () => {
@@ -116,23 +126,38 @@ const createNewConversation = () => {
   focusChatInput();
 };
 
-// Watch for conversation updates
-watch(
-  () => currentConversationId.value,
-  async newId => {
-    // Save current conversation ID to localStorage
-    if (newId) {
-      localStorage.setItem('currentConversationId', newId);
-    } else {
-      localStorage.removeItem('currentConversationId');
-    }
-
-    if (newId && !selectedConversationId.value) {
-      await loadConversations();
-      selectedConversationId.value = newId;
-    }
+// Load current conversation details
+const loadCurrentConversation = async (conversationId: string) => {
+  if (!conversationId) {
+    currentConversation.value = null;
+    return;
   }
-);
+  try {
+    const res = await get(`/ai/chat/conversations/${conversationId}`);
+    currentConversation.value = res.data;
+  } catch (error) {
+    console.error('Failed to load conversation details:', error);
+    currentConversation.value = null;
+  }
+};
+
+// Watch for conversation ID changes to load details
+watch(currentConversationId, async newId => {
+  // Save current conversation ID to localStorage
+  if (newId) {
+    localStorage.setItem('currentConversationId', newId);
+    await loadCurrentConversation(newId);
+  } else {
+    localStorage.removeItem('currentConversationId');
+    currentConversation.value = null;
+  }
+
+  // Update selected conversation ID if needed
+  if (newId && !selectedConversationId.value) {
+    await loadConversations();
+    selectedConversationId.value = newId;
+  }
+});
 
 // Initialize
 onBeforeMount(async () => {
@@ -144,6 +169,7 @@ onBeforeMount(async () => {
   const savedConversationId = localStorage.getItem('currentConversationId');
   if (savedConversationId) {
     await loadConversationMessages(savedConversationId);
+    await loadCurrentConversation(savedConversationId);
     selectedConversationId.value = savedConversationId;
   }
 });
@@ -157,7 +183,10 @@ const extractErrorMessage = (errorData: string): string => {
     // Try to parse the error data as JSON
     const parsed = JSON.parse(errorData);
     if (parsed.error_detail?.message) return parsed.error_detail.message;
-    if (parsed.error) return typeof parsed.error === 'string' ? parsed.error : JSON.stringify(parsed.error);
+    if (parsed.error)
+      return typeof parsed.error === 'string'
+        ? parsed.error
+        : JSON.stringify(parsed.error);
     if (parsed.text?.startsWith('Error:')) return parsed.text;
     if (typeof parsed === 'object') return JSON.stringify(parsed, null, 2);
     return errorData;
@@ -176,7 +205,10 @@ const loadLLMProviders = debounce(async () => {
       if (availableProviders.value.length > 0) {
         chatbotConfig.value.provider = availableProviders.value[0].key!;
         chatbotConfig.value.model = availableProviders.value[0].models![0];
-        localStorage.setItem('chatbotConfig', JSON.stringify(chatbotConfig.value));
+        localStorage.setItem(
+          'chatbotConfig',
+          JSON.stringify(chatbotConfig.value)
+        );
       }
     }
   } catch (error) {
@@ -235,9 +267,10 @@ const sendMessage = async (message: string) => {
     if (error instanceof DOMException && error.name === 'AbortError') {
       chatHistory.splice(responseIndex, 1);
     } else {
-      const errorMessage = error instanceof Error
-        ? extractErrorMessage(error.message)
-        : 'An error occurred while sending your message';
+      const errorMessage =
+        error instanceof Error
+          ? extractErrorMessage(error.message)
+          : 'An error occurred while sending your message';
 
       streamError.value = errorMessage;
 
@@ -274,10 +307,13 @@ const sendStreamingRequest = async (
   responseIndex: number
 ): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
-    const { provider, model, systemPrompt, temperature, maxTokens } = chatbotConfig.value;
+    const { provider, model, systemPrompt, temperature, maxTokens } =
+      chatbotConfig.value;
 
     if (!provider || !model) {
-      reject(new Error('Please select a provider and model before sending a message'));
+      reject(
+        new Error('Please select a provider and model before sending a message')
+      );
       return;
     }
 
@@ -352,7 +388,8 @@ const sendStreamingRequest = async (
                   fullResponse += chunk.content;
                   if (chatHistory[responseIndex]) {
                     chatHistory[responseIndex].content = fullResponse;
-                    chatHistory[responseIndex].conversationId = chunk.conversation_id;
+                    chatHistory[responseIndex].conversationId =
+                      chunk.conversation_id;
                     // Scroll to bottom during streaming
                     messageListRef.value?.scrollToBottom();
                   }
@@ -431,61 +468,50 @@ defineOptions({ name: 'ClChatConsole' });
 <template>
   <div class="chat-console">
     <div class="console-header">
-      <div class="left-content">
-        <el-button
-          v-if="visible"
-          type="primary"
-          @click="emit('toggle')"
-          class="chat-toggle-btn is-active"
-        >
-          <cl-icon :icon="['fa', 'comment-dots']" />
-          <span class="button-text">{{
-            t('components.ai.chatbot.button')
-          }}</span>
-          <cl-icon :icon="['fa', 'angles-right']" class="toggle-indicator" />
+      <span v-if="visible" class="chat-toggle-btn" @click="emit('close')">
+        <cl-icon :icon="['fa', 'angles-right']" class="toggle-indicator" />
+      </span>
+      <div class="chat-conversation-title" :title="currentConversationTitle">
+        {{ currentConversationTitle }}
+      </div>
+      <el-tooltip :content="t('components.ai.chatbot.new')">
+        <el-button type="text" @click="createNewConversation" class="new-btn">
+          <cl-icon :icon="['fas', 'plus']" />
         </el-button>
-        <h3 v-else>{{ t('components.ai.chatbot.title') }}</h3>
-      </div>
-      <div class="right-content">
-        <el-tooltip :content="t('components.ai.chatbot.new')">
-          <el-button type="text" @click="createNewConversation" class="new-btn">
-            <cl-icon :icon="['fas', 'plus']" />
-          </el-button>
-        </el-tooltip>
-        <el-popover
-          v-model:visible="historyDialogVisible"
-          trigger="click"
-          :show-arrow="false"
-          placement="bottom-end"
-          width="320"
-        >
-          <template #reference>
-            <div class="history-btn-wrapper">
-              <el-tooltip :content="t('components.ai.chatbot.history')">
-                <el-button
-                  type="text"
-                  @click.prevent="openHistory"
-                  class="history-btn"
-                >
-                  <cl-icon :icon="['fas', 'history']" />
-                </el-button>
-              </el-tooltip>
-            </div>
-          </template>
-          <cl-chat-history
-            :conversations="conversations"
-            :selected-conversation-id="selectedConversationId"
-            :is-loading="isLoadingConversations"
-            @select="selectConversation"
-            @close="historyDialogVisible = false"
-          />
-        </el-popover>
-        <el-tooltip :content="t('components.ai.chatbot.config.title')">
-          <el-button type="text" @click="openConfig" class="config-btn">
-            <cl-icon :icon="['fas', 'cog']" />
-          </el-button>
-        </el-tooltip>
-      </div>
+      </el-tooltip>
+      <el-popover
+        v-model:visible="historyDialogVisible"
+        trigger="click"
+        :show-arrow="false"
+        placement="bottom-end"
+        width="320"
+      >
+        <template #reference>
+          <div class="history-btn-wrapper">
+            <el-tooltip :content="t('components.ai.chatbot.history')">
+              <el-button
+                type="text"
+                @click.prevent="openHistory"
+                class="history-btn"
+              >
+                <cl-icon :icon="['fas', 'history']" />
+              </el-button>
+            </el-tooltip>
+          </div>
+        </template>
+        <cl-chat-history
+          :conversations="conversations"
+          :selected-conversation-id="selectedConversationId"
+          :is-loading="isLoadingConversations"
+          @select="selectConversation"
+          @close="historyDialogVisible = false"
+        />
+      </el-popover>
+      <el-tooltip :content="t('components.ai.chatbot.config.title')">
+        <el-button type="text" @click="openConfig" class="config-btn">
+          <cl-icon :icon="['fas', 'cog']" />
+        </el-button>
+      </el-tooltip>
     </div>
 
     <div class="chat-container">
@@ -532,23 +558,9 @@ defineOptions({ name: 'ClChatConsole' });
   justify-content: space-between;
   align-items: center;
   padding: 16px;
+  gap: 8px;
   border-bottom: 1px solid var(--el-border-color-light);
   background-color: var(--el-color-white);
-}
-
-.left-content {
-  display: flex;
-  align-items: center;
-}
-
-.console-header h3 {
-  margin: 0;
-}
-
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .chat-container {
@@ -567,9 +579,17 @@ defineOptions({ name: 'ClChatConsole' });
 .chat-toggle-btn {
   display: flex;
   align-items: center;
-  border-radius: 20px;
-  padding: 8px 16px;
+  padding: 8px;
   animation: fadeIn 0.3s ease-in-out;
+  color: var(--el-color-primary-dark-2);
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s;
+
+  &:hover {
+    color: white;
+    background-color: var(--el-color-primary-dark-2);
+  }
 }
 
 .chat-toggle-btn .button-text {
@@ -588,6 +608,15 @@ defineOptions({ name: 'ClChatConsole' });
 
 .chat-toggle-btn.is-active .toggle-indicator {
   transform: rotate(180deg);
+}
+
+.chat-conversation-title {
+  font-size: 14px;
+  color: var(--el-text-color-regular);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
 }
 
 @keyframes fadeIn {

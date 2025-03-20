@@ -15,7 +15,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'toggle'): void;
+  (e: 'close'): void;
   (e: 'resize', width: number): void;
   (e: 'resize-start'): void;
   (e: 'resize-end'): void;
@@ -113,10 +113,14 @@ defineOptions({ name: 'ClChatSidebar' });
   <div
     class="chat-sidebar"
     :class="{ visible, resizing: isResizing }"
-    :style="visible ? { width: `${sidebarWidth}px`, right: 0 } : {}"
+    :style="
+      visible
+        ? { width: `${sidebarWidth}px`, right: 0 }
+        : { width: `${sidebarWidth}px`, right: `-${sidebarWidth}px` }
+    "
   >
     <div class="resize-handle" @mousedown="onResizeStart"></div>
-    <cl-chat-console :visible="visible" @toggle="() => emit('toggle')" />
+    <cl-chat-console :visible="visible" @close="emit('close')" />
   </div>
 </template>
 

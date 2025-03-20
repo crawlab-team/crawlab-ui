@@ -205,9 +205,8 @@ defineOptions({ name: 'ClHeader' });
             </template>
           </el-dropdown>
         </div>
-        <div class="item action">
+        <div class="item action" v-if="!sidebarVisible">
           <el-button
-            v-if="!sidebarVisible"
             type="primary"
             @click="toggleChatbotSidebar"
             class="chat-toggle-btn"
