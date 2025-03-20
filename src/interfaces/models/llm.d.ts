@@ -30,7 +30,7 @@ export declare global {
   }
 
   type ChatMessageRole = 'system' | 'user' | 'assistant';
-  
+
   type ChatMessageStatus = 'pending' | 'completed' | 'failed';
 
   interface ChatMessage extends BaseModel {
@@ -74,7 +74,8 @@ export declare global {
   interface ChatRequest {
     provider: string;
     model: string;
-    prompt: string;
+    query: string;
+    system_prompt?: string;
     max_tokens?: number;
     temperature?: number;
     top_p?: number;

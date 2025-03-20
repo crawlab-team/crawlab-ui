@@ -373,6 +373,7 @@ const sendMessage = async (message: string) => {
     }
   } finally {
     isLoading.value = false;
+    focusChatInput();
     abortController.value = null;
   }
 };
@@ -409,13 +410,11 @@ const sendStreamingRequest = async (
       return;
     }
 
-    // Create prompt with system message and user query
-    const prompt = `${systemPrompt}\n\nUser: ${message}\nAssistant:`;
-
     const chatRequest: ChatRequest = {
       provider,
       model,
-      prompt,
+      query: message,
+      system_prompt: systemPrompt,
       temperature,
       max_tokens: maxTokens,
       conversation_id: currentConversationId.value, // Add conversation ID if it exists
@@ -563,6 +562,12 @@ const openHistory = debounce(() => {
   loadConversations();
 });
 
+const chatInputRef = ref<InstanceType<typeof ChatInput> | null>(null);
+
+const focusChatInput = debounce(() => {
+  chatInputRef.value?.focus();
+});
+
 defineOptions({ name: 'ClChatSidebar' });
 </script>
 
@@ -698,6 +703,7 @@ defineOptions({ name: 'ClChatSidebar' });
         </div>
 
         <chat-input
+          ref="chatInputRef"
           :is-loading="isLoading"
           :providers="availableProviders"
           :selected-provider="chatbotConfig.provider"

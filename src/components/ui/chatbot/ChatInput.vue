@@ -133,6 +133,14 @@ const currentModelDisplay = computed(() => {
   return modelName || '';
 });
 
+// Add focus method
+const focus = () => {
+  textareaRef.value?.focus();
+};
+
+// Expose focus method
+defineExpose({ focus });
+
 defineOptions({ name: 'ClChatInput' });
 </script>
 
