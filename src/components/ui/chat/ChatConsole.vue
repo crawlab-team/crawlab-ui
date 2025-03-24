@@ -5,6 +5,7 @@ import ChatInput from './ChatInput.vue';
 import useRequest from '@/services/request';
 import { getRequestBaseUrl } from '@/utils';
 import { debounce } from 'lodash';
+import { ElMessage } from 'element-plus';
 
 const { t } = useI18n();
 const { get } = useRequest();
@@ -227,6 +228,14 @@ const loadChatbotConfig = () => {
       console.error('Failed to parse stored chatbot config', e);
     }
   }
+};
+
+// Save configuration to localStorage
+const saveChatbotConfig = (config: ChatbotConfig) => {
+  configDialogVisible.value = false;
+  chatbotConfig.value = { ...chatbotConfig.value, ...config };
+  localStorage.setItem('chatbotConfig', JSON.stringify(chatbotConfig.value));
+  ElMessage.success(t('common.message.success.save'));
 };
 
 // Initialize chat history
@@ -541,6 +550,7 @@ defineOptions({ name: 'ClChatConsole' });
       :providers="availableProviders"
       :current-config="chatbotConfig"
       @close="configDialogVisible = false"
+      @confirm="saveChatbotConfig"
     />
   </div>
 </template>

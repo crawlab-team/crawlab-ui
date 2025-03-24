@@ -42,9 +42,11 @@ const saveLLMProvider = debounce(async () => {
   await formRef.value?.validate();
   const exists = !!llmProvidersDict.value[activeLLMProviderKey.value];
   if (exists) {
-    await put(`/ai/llm/providers/${activeLLMProviderKey.value}`, form.value);
+    await put(`/ai/llm/providers/${activeLLMProviderKey.value}`, {
+      data: form.value,
+    });
   } else {
-    await post('/ai/llm/providers', form.value);
+    await post('/ai/llm/providers', { data: form.value });
   }
   ElMessage.success(t('common.message.success.save'));
   await getLLMProviderList();

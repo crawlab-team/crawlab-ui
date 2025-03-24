@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -17,6 +17,12 @@ const emit = defineEmits<{
 
 // Form data
 const form = ref<ChatbotConfig>({ ...props.currentConfig });
+watch(
+  () => JSON.stringify(props.currentConfig),
+  () => {
+    form.value = { ...props.currentConfig };
+  }
+);
 
 const confirmLoading = ref(false);
 
