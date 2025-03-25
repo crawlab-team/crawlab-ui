@@ -26,6 +26,10 @@ const ai: LangAi = {
     searchHistory: '搜索历史',
     noConversations: '没有聊天记录',
     newChat: '新聊天',
+    addModel: {
+      label: '添加模型',
+      tooltip: '您还没有配置任何模型。添加一个模型开始聊天',
+    },
   },
 };
 

@@ -26,6 +26,10 @@ const ai: LangAi = {
     searchHistory: 'Search history',
     noConversations: 'No chat history found',
     newChat: 'New Chat',
+    addModel: {
+      label: 'Add Model',
+      tooltip: 'You haven\'t configured any models yet. Add a model to get started.',
+    },
   },
 };
 

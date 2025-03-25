@@ -258,7 +258,12 @@ defineOptions({ name: 'ClSystemDetailTabAi' });
       <cl-form-item :label="$t('views.system.ai.enabled')" :span="4">
         <cl-switch v-model="form.enabled" @change="saveLLMProvider" />
       </cl-form-item>
-      <cl-form-item :label="$t('views.system.ai.apiKey')" :span="4" required>
+      <cl-form-item
+        :label="$t('views.system.ai.apiKey')"
+        :span="4"
+        prop="api_key"
+        required
+      >
         <cl-edit-input
           v-model="form.api_key"
           :display-value="

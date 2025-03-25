@@ -27,6 +27,10 @@ export declare global {
       searchHistory: string;
       noConversations: string;
       newChat: string;
+      addModel: {
+        label: string;
+        tooltip: string;
+      };
     };
   }
 }

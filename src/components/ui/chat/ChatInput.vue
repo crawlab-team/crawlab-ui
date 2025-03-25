@@ -2,6 +2,7 @@
 import { ref, nextTick, onMounted, watch, computed, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getLLMProviderIcon, getLLMProviderName } from '@/utils/ai';
+import ClLabelButton from '@/components/ui/button/LabelButton.vue';
 
 // Add TypeScript interface for tree node
 interface TreeNode {
@@ -26,6 +27,7 @@ const emit = defineEmits<{
   (e: 'send', message: string): void;
   (e: 'model-change', value: { provider: string; model: string }): void;
   (e: 'cancel'): void;
+  (e: 'add-model'): void;
 }>();
 
 const selectedProviderModel = ref<string>();
@@ -143,6 +145,14 @@ const focus = () => {
   textareaRef.value?.focus();
 };
 
+const inputBoxDisabled = computed(() => {
+  return props.isLoading || props.providers?.length === 0;
+});
+
+const hasProviders = computed(() => {
+  return !!props.providers?.length;
+});
+
 // Expose focus method
 defineExpose({ focus });
 
@@ -151,7 +161,7 @@ defineOptions({ name: 'ClChatInput' });
 
 <template>
   <div class="chat-input">
-    <div class="input-container">
+    <div class="input-container" :class="{ disabled: inputBoxDisabled }">
       <textarea
         ref="textareaRef"
         v-model="userInput"
@@ -159,14 +169,14 @@ defineOptions({ name: 'ClChatInput' });
         :placeholder="t('components.ai.chatbot.inputPlaceholder')"
         @input="adjustTextareaHeight"
         @keydown="handleKeydown"
-        :disabled="props.isLoading"
+        :disabled="inputBoxDisabled"
         rows="1"
       />
     </div>
 
     <div class="input-footer">
       <div class="left-content">
-        <div class="model-select-wrapper">
+        <div v-if="hasProviders" class="model-select-wrapper">
           <el-popover
             placement="top"
             :width="280"
@@ -216,6 +226,16 @@ defineOptions({ name: 'ClChatInput' });
             </div>
           </el-popover>
         </div>
+        <div v-else>
+          <cl-label-button
+            :label="t('components.ai.chatbot.addModel.label')"
+            :tooltip="t('components.ai.chatbot.addModel.tooltip')"
+            :icon="['fas', 'plus']"
+            type="text"
+            size="small"
+            @click="() => emit('add-model')"
+          />
+        </div>
       </div>
       <div class="right-content">
         <!-- Cancel button when request is loading -->
@@ -260,6 +280,12 @@ defineOptions({ name: 'ClChatInput' });
     border-color 0.2s,
     box-shadow 0.2s;
   overflow: hidden;
+
+  &.disabled {
+    textarea {
+      cursor: not-allowed;
+    }
+  }
 }
 
 .message-textarea {

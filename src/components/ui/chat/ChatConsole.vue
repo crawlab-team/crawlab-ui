@@ -6,9 +6,12 @@ import useRequest from '@/services/request';
 import { getRequestBaseUrl } from '@/utils';
 import { debounce } from 'lodash';
 import { ElMessage } from 'element-plus';
-
+import { AxiosError } from 'axios';
+import { useRouter } from 'vue-router';
 const { t } = useI18n();
 const { get } = useRequest();
+
+const router = useRouter();
 
 // Add current conversation ref
 const currentConversation = ref<ChatConversation | null>(null);
@@ -43,7 +46,6 @@ const streamError = ref('');
 
 // Add conversation management
 const conversations = ref<ChatConversation[]>([]);
-const selectedConversationId = ref<string>('');
 const currentConversationId = ref<string>('');
 const isLoadingConversations = ref(false);
 const isLoadingMessages = ref(false);
@@ -74,7 +76,7 @@ const loadConversations = async () => {
 };
 
 // Load messages for a conversation
-const loadConversationMessages = async (conversationId: string) => {
+const loadConversationMessages = debounce(async (conversationId: string) => {
   if (!conversationId) return;
 
   isLoadingMessages.value = true;
@@ -92,26 +94,25 @@ const loadConversationMessages = async (conversationId: string) => {
       (a: ChatMessageType, b: ChatMessageType) =>
         a.timestamp.getTime() - b.timestamp.getTime()
     );
-    console.debug(messages[messages.length - 1].content);
 
     chatHistory.splice(0, chatHistory.length, ...messages);
     currentConversationId.value = conversationId;
   } catch (error) {
     console.error('Failed to load conversation messages:', error);
-    streamError.value =
+    const errorMessage =
       error instanceof Error ? error.message : 'Failed to load messages';
   } finally {
     isLoadingMessages.value = false;
     // Scroll to bottom after loading messages
     messageListRef.value?.scrollToBottom();
   }
-};
+});
 
 // Select conversation
 const selectConversation = async (conversationId: string) => {
-  if (selectedConversationId.value === conversationId) return;
+  if (currentConversationId.value === conversationId) return;
 
-  selectedConversationId.value = conversationId;
+  currentConversationId.value = conversationId;
   streamError.value = '';
   await loadConversationMessages(conversationId);
   messageListRef.value?.scrollToBottom();
@@ -119,7 +120,6 @@ const selectConversation = async (conversationId: string) => {
 
 // Create new conversation
 const createNewConversation = () => {
-  selectedConversationId.value = '';
   currentConversationId.value = '';
   localStorage.removeItem('currentConversationId');
   streamError.value = '';
@@ -128,7 +128,7 @@ const createNewConversation = () => {
 };
 
 // Load current conversation details
-const loadCurrentConversation = async (conversationId: string) => {
+const loadCurrentConversation = debounce(async (conversationId: string) => {
   if (!conversationId) {
     currentConversation.value = null;
     return;
@@ -137,10 +137,14 @@ const loadCurrentConversation = async (conversationId: string) => {
     const res = await get(`/ai/chat/conversations/${conversationId}`);
     currentConversation.value = res.data;
   } catch (error) {
+    if ((error as AxiosError)?.response?.status === 404) {
+      currentConversationId.value = '';
+      return;
+    }
     console.error('Failed to load conversation details:', error);
     currentConversation.value = null;
   }
-};
+});
 
 // Watch for conversation ID changes to load details
 watch(currentConversationId, async newId => {
@@ -154,9 +158,9 @@ watch(currentConversationId, async newId => {
   }
 
   // Update selected conversation ID if needed
-  if (newId && !selectedConversationId.value) {
+  if (newId && !currentConversationId.value) {
     await loadConversations();
-    selectedConversationId.value = newId;
+    currentConversationId.value = newId;
   }
 });
 
@@ -171,7 +175,7 @@ onBeforeMount(async () => {
   if (savedConversationId) {
     await loadConversationMessages(savedConversationId);
     await loadCurrentConversation(savedConversationId);
-    selectedConversationId.value = savedConversationId;
+    currentConversationId.value = savedConversationId;
   }
 });
 
@@ -201,6 +205,11 @@ const loadLLMProviders = debounce(async () => {
   try {
     const res = await get('/ai/llm/providers', { available: true });
     availableProviders.value = res.data || [];
+
+    if (!availableProviders.value.length) {
+      // Reset provider and model if no providers are available
+      resetChatbotConfig();
+    }
 
     if (!chatbotConfig.value.provider || !chatbotConfig.value.model) {
       if (availableProviders.value.length > 0) {
@@ -236,6 +245,12 @@ const saveChatbotConfig = (config: ChatbotConfig) => {
   chatbotConfig.value = { ...chatbotConfig.value, ...config };
   localStorage.setItem('chatbotConfig', JSON.stringify(chatbotConfig.value));
   ElMessage.success(t('common.message.success.save'));
+};
+
+// Reset chatbot configuration
+const resetChatbotConfig = () => {
+  chatbotConfig.value = {};
+  localStorage.removeItem('chatbotConfig');
 };
 
 // Initialize chat history
@@ -453,6 +468,10 @@ const selectProviderModel = ({
   localStorage.setItem('chatbotConfig', JSON.stringify(chatbotConfig.value));
 };
 
+const addProviderModel = () => {
+  router.push('/system/ai');
+};
+
 // Configuration dialog
 const configDialogVisible = ref(false);
 
@@ -510,7 +529,7 @@ defineOptions({ name: 'ClChatConsole' });
         </template>
         <cl-chat-history
           :conversations="conversations"
-          :selected-conversation-id="selectedConversationId"
+          :selected-conversation-id="currentConversationId"
           :is-loading="isLoadingConversations"
           @select="selectConversation"
           @close="historyDialogVisible = false"
@@ -541,6 +560,7 @@ defineOptions({ name: 'ClChatConsole' });
           @send="sendMessage"
           @cancel="cancelMessage"
           @model-change="selectProviderModel"
+          @add-model="addProviderModel"
         />
       </div>
     </div>
