@@ -8,6 +8,7 @@ import { debounce } from 'lodash';
 import { ElMessage } from 'element-plus';
 import { AxiosError } from 'axios';
 import { useRouter } from 'vue-router';
+
 const { t } = useI18n();
 const { get } = useRequest();
 
@@ -402,14 +403,25 @@ const sendStreamingRequest = async (
                   const eventData = line.slice(5).trim();
                   if (eventData === '') continue;
 
-                  const chunk = JSON.parse(eventData);
+                  const chunk: ChatbotStreamMessage = JSON.parse(eventData);
 
                   if (chunk.is_initial) {
-                    currentConversationId.value = chunk.conversation_id;
+                    currentConversationId.value = chunk.conversation_id!;
                     continue;
                   }
 
-                  fullResponse += chunk.content;
+                  if (chunk.conversation_title) {
+                    if (!currentConversation.value) {
+                      currentConversation.value = {
+                        title: chunk.conversation_title,
+                      };
+                    } else {
+                      currentConversation.value.title =
+                        chunk.conversation_title;
+                    }
+                  }
+
+                  fullResponse += chunk.content || '';
                   if (chatHistory[responseIndex]) {
                     chatHistory[responseIndex].content = fullResponse;
                     chatHistory[responseIndex].conversationId =

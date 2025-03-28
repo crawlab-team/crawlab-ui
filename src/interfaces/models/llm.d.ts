@@ -49,11 +49,11 @@ export declare global {
   type ChatConversationStatus = 'active' | 'archived' | 'deleted';
 
   interface ChatConversation extends BaseModel {
-    title: string;
+    title?: string;
     description?: string;
-    user_id: string;
-    model: string;
-    status: ChatConversationStatus;
+    user_id?: string;
+    model?: string;
+    status?: ChatConversationStatus;
     last_message_at?: string;
     settings?: Record<string, any>;
     tags?: string[];
@@ -89,5 +89,15 @@ export declare global {
     systemPrompt?: string;
     temperature?: number;
     maxTokens?: number;
+  }
+
+  interface ChatbotStreamMessage {
+    conversation_id?: string;
+    conversation_title?: string;
+    content?: string;
+    is_done?: boolean;
+    is_initial?: boolean;
+    error?: string;
+    error_details?: Record<string, any>;
   }
 }

@@ -199,6 +199,7 @@ defineOptions({ name: 'ClChatMessage' });
   scrollbar-color: var(--el-border-color-darker) var(--el-fill-color-lighter);
 
   /* Webkit scrollbar styles */
+
   &::-webkit-scrollbar {
     width: 7px;
     background-color: transparent;
@@ -231,6 +232,7 @@ defineOptions({ name: 'ClChatMessage' });
   scrollbar-color: var(--el-border-color-darker) var(--el-fill-color-lighter);
 
   /* Webkit scrollbar styles */
+
   &::-webkit-scrollbar {
     height: 7px;
     background-color: transparent;
@@ -310,6 +312,10 @@ defineOptions({ name: 'ClChatMessage' });
 .message-content :deep(p) {
   margin: 0;
   padding: 0;
+}
+
+.message-content :deep(p:not(:first-child)) {
+  margin-top: 6px;
 }
 
 .message-content :deep(h1) {
